@@ -34,7 +34,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_WIDTH_IMAGES 384
 #define DEFAULT_HEIGHT_IMAGES 288
 
-
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
 //on other images using runBpStereoImageSeries on any number of images)
 #define DEFAULT_REF_IMAGE_PATH "refImageTsukuba.pgm"
@@ -87,7 +86,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //kernal function in runBpStereoHost.cu, though this could be
 //changed)
 #define BLOCK_SIZE_WIDTH_BP 32
-#define BLOCK_SIZE_HEIGHT_BP 1
+#define BLOCK_SIZE_HEIGHT_BP 4
 
 //used to define the two checkerboard "parts" that the image is divided into
 #define CHECKERBOARD_PART_1 1
