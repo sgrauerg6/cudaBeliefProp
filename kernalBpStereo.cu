@@ -227,7 +227,7 @@ __global__ void initializeCurrentLevelDataStereo(float* dataCostDeviceToWriteTo,
 //initialize the message values at each pixel of the current level to the default value
 __global__ void initializeMessageValsToDefault(float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, 
 												float* messageRDeviceCurrentCheckerboard1, float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, 
-												float* messageLDeviceCurrentCheckerboard2, float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel)
+												float* messageLDeviceCurrentCheckerboard2, float* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -237,38 +237,29 @@ __global__ void initializeMessageValsToDefault(float* messageUDeviceCurrentCheck
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
+	int xValInCheckerboard = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
 
-	int widthCheckerboardAtLevel = widthLevel / 2;
-
-	int xValInCheckerboardPart = xVal/2;
-
-
-	if (withinImageBounds(xVal, yVal, widthLevel, heightLevel))
+	if (withinImageBounds(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel))
 	{
-		if (((yVal + xVal) % 2) == 0) //if true, then pixel to move to is from part 1 of the checkerboard; otherwise, it's from part 2
+		//initialize message values in both checkerboards
+
+		//set the message value at each pixel for each disparity to 0
+		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			
-			//set the message value at each pixel for each disparity to 0
-			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
-			{				
-				messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-				messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-				messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-				messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			}
+			messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
 		}
-		else //pixel to move to from part 2 of the checkerboard
+
+		//retrieve the previous message value at each movement at each pixel
+		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			//retrieve the previous message value at each movement at each pixel
-			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
-			{		
-				messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-				messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-				messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-				messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			}
+			messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
 		}	
 	}
 }
@@ -542,7 +533,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereo(float* disparityBetwee
 				float best_val = INF_BP;
 				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					float val = tex1Dfetch(messageUPrevTexStereoCheckerboard2, retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) + 
+					float val = tex1Dfetch(messageUPrevTexStereoCheckerboard2, retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) +
 						 tex1Dfetch(messageDPrevTexStereoCheckerboard2, retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) + 
 						 tex1Dfetch(messageLPrevTexStereoCheckerboard2, retrieveIndexInDataAndMessage((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) + 
 						 tex1Dfetch(messageRPrevTexStereoCheckerboard2,retrieveIndexInDataAndMessage((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) +
@@ -570,7 +561,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereo(float* disparityBetwee
 				float best_val = INF_BP;
 				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					float val = tex1Dfetch(messageUPrevTexStereoCheckerboard1, retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) + 
+					float val = tex1Dfetch(messageUPrevTexStereoCheckerboard1, retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) +
 						tex1Dfetch(messageDPrevTexStereoCheckerboard1, retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) + 
 						tex1Dfetch(messageLPrevTexStereoCheckerboard1, retrieveIndexInDataAndMessage((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) + 
 						tex1Dfetch(messageRPrevTexStereoCheckerboard1,retrieveIndexInDataAndMessage((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)) +
