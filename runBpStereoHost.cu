@@ -109,13 +109,13 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 	//storing the current message values
 	copyPrevLevelToNextLevelBPCheckerboardStereo <<< grid, threads >>> (messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo, 
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo, 
-			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize/2), (heightLevelActualIntegerSize/2), CHECKERBOARD_PART_1);
+			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_1);
 
 	( cudaThreadSynchronize() );
 
 	copyPrevLevelToNextLevelBPCheckerboardStereo <<< grid, threads >>> (messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo, 
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo, 
-			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize/2), (heightLevelActualIntegerSize/2), CHECKERBOARD_PART_2);
+			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_2);
 
 
 	( cudaThreadSynchronize() );

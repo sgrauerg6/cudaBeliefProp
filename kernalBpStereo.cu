@@ -412,7 +412,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(float* messageUDeviceCurr
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, 
 															float* messageRDeviceCurrentCheckerboard1, float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, 
-															float* messageLDeviceCurrentCheckerboard2, float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel,
+															float* messageLDeviceCurrentCheckerboard2, float* messageRDeviceCurrentCheckerboard2, int widthLevelNext, int heightLevelNext,
 															int checkerboardPart)
 {
 	// Block index
@@ -423,19 +423,21 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(float* messageUDevi
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
+	int widthLevelPrev = widthLevelNext / 2;
+	int heightLevelPrev = heightLevelNext / 2;
+
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xVal, yVal, widthLevel/2, heightLevel))
+	if (withinImageBounds(xVal, yVal, widthLevelPrev/2, heightLevelPrev))
 	{
-
-		int widthCheckerboard = widthLevel/2;
-		int widthCheckerboardNextLevel = widthLevel;
-		int heightCheckerboardNextLevel = heightLevel*2;
+		int widthCheckerboardPrevLevel = widthLevelPrev/2;
+		int heightCheckerboardPrevLevel = heightLevelPrev;
+		int widthCheckerboardNextLevel = widthLevelNext / 2;
+		int heightCheckerboardNextLevel = heightLevelNext;
 
 		int indexCopyTo;
 		int indexCopyFrom;
-
 
 		int checkerboardPartAdjustment;
 
@@ -456,7 +458,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(float* messageUDevi
 
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			indexCopyFrom = retrieveIndexInDataAndMessage(xVal, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES); 
+			indexCopyFrom = retrieveIndexInDataAndMessage(xVal, yVal, widthCheckerboardPrevLevel, heightCheckerboardPrevLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 			
 			if (checkerboardPart == CHECKERBOARD_PART_1)
 			{
@@ -496,10 +498,69 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(float* messageUDevi
 			messageDDeviceCurrentCheckerboard2[indexCopyTo] = prevValD;
 			messageLDeviceCurrentCheckerboard2[indexCopyTo] = prevValL;
 			messageRDeviceCurrentCheckerboard2[indexCopyTo] = prevValR;
+
+			//if width of next level is odd, need to copy last column of previous checkerboard to final column of current checkerboard if current checkboard is at "end" (case when checkerboardPartAdjustment is 1)
+			if ((xVal == (widthLevelPrev/2 - 1)) && (widthCheckerboardNextLevel % 2 == 1) && (checkerboardPartAdjustment==1))
+			{
+				indexCopyTo = retrieveIndexInDataAndMessage(((xVal*2 + 1) + checkerboardPartAdjustment), (yVal*2), widthCheckerboardNextLevel, heightCheckerboardNextLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+
+				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+
+				messageUDeviceCurrentCheckerboard2[indexCopyTo] = prevValU;
+				messageDDeviceCurrentCheckerboard2[indexCopyTo] = prevValD;
+				messageLDeviceCurrentCheckerboard2[indexCopyTo] = prevValL;
+				messageRDeviceCurrentCheckerboard2[indexCopyTo] = prevValR;
+
+				indexCopyTo = retrieveIndexInDataAndMessage(((xVal*2 + 1) + checkerboardPartAdjustment), (yVal*2 + 1), widthCheckerboardNextLevel, heightCheckerboardNextLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+
+				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+
+				messageUDeviceCurrentCheckerboard2[indexCopyTo] = prevValU;
+				messageDDeviceCurrentCheckerboard2[indexCopyTo] = prevValD;
+				messageLDeviceCurrentCheckerboard2[indexCopyTo] = prevValL;
+				messageRDeviceCurrentCheckerboard2[indexCopyTo] = prevValR;
+
+				//if height of next level is odd, also need to copy into lower right diagonal
+				if ((yVal == (heightLevelPrev - 1)) && (heightCheckerboardNextLevel % 2 == 1))
+				{
+					indexCopyTo = retrieveIndexInDataAndMessage(((xVal*2 + 1) + checkerboardPartAdjustment), (yVal*2 + 2), widthCheckerboardNextLevel, heightCheckerboardNextLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+
+					messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+					messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+					messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+					messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+
+					messageUDeviceCurrentCheckerboard2[indexCopyTo] = prevValU;
+					messageDDeviceCurrentCheckerboard2[indexCopyTo] = prevValD;
+					messageLDeviceCurrentCheckerboard2[indexCopyTo] = prevValL;
+					messageRDeviceCurrentCheckerboard2[indexCopyTo] = prevValR;
+				}
+			}
+
+			//if height of next level is odd, need to copy last row of previous checkerboard to final column of current checkerboards
+			if ((yVal == (heightLevelPrev - 1)) && (heightCheckerboardNextLevel % 2 == 1))
+			{
+				indexCopyTo = retrieveIndexInDataAndMessage((xVal*2 + checkerboardPartAdjustment), (yVal*2 + 2), widthCheckerboardNextLevel, heightCheckerboardNextLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+
+				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+
+				messageUDeviceCurrentCheckerboard2[indexCopyTo] = prevValU;
+				messageDDeviceCurrentCheckerboard2[indexCopyTo] = prevValD;
+				messageLDeviceCurrentCheckerboard2[indexCopyTo] = prevValL;
+				messageRDeviceCurrentCheckerboard2[indexCopyTo] = prevValR;
+			}
 		}
 	}
 }
-
 
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
