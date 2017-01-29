@@ -31,7 +31,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages, unsigned
 {
 
 	double totalTime = 0.0;
-	for (int numRun=0; numRun < 10; numRun++)
+	for (int numRun=0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 {
 
 	//first run Stereo estimation on the first two images
