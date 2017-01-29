@@ -21,14 +21,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_CUDA_PARAMETERS_CUH
 #define BP_STEREO_CUDA_PARAMETERS_CUH
 
-
 #include <stdio.h>
 
-#define INF_BP 100000000.0f     // large cost (used for "infinity")
-#define SMALL_VAL_BP .01f
+#define TSUKUBA_IMAGES 1
+#define CONES_IMAGES_QUARTER_SIZE 2
+#define CONES_IMAGES_HALF_SIZE 3
+#define CONES_IMAGES_FULL_SIZE 4
+#define IMAGE_SET_TO_PROCESS CONES_IMAGES_QUARTER_SIZE
 
-//define the default message value...
-#define DEFAULT_INITIAL_MESSAGE_VAL 0.0f
+#if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
 
 //define the default height and width of the current images (this value is not "fixed" within the program)
 #define DEFAULT_WIDTH_IMAGES 384
@@ -44,8 +45,88 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 #define NUM_POSSIBLE_DISPARITY_VALUES 15
 
+#define SCALE_BP 16.0f     // scaling from computed disparity to graylevel in output
+
+//info about a default ground truth
+#define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "groundTruthDispTsukuba.pgm"
+#define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 16.0f //scaling from ground truth disparity to ground truth disparity map image
+
+#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
+
+//define the default height and width of the current images (this value is not "fixed" within the program)
+#define DEFAULT_WIDTH_IMAGES 450
+#define DEFAULT_HEIGHT_IMAGES 375
+
+//define the path for the 'default' reference and test images and the output "movement" images (can easily run
+//on other images using runBpStereoImageSeries on any number of images)
+#define DEFAULT_REF_IMAGE_PATH "conesQuarter2.pgm"
+#define DEFAULT_TEST_IMAGE_PATH "conesQuarter6.pgm"
+
+#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityConesQuarter.pgm"
+
+//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
+#define NUM_POSSIBLE_DISPARITY_VALUES 63
+
+#define SCALE_BP 4.0f     // scaling from computed disparity to graylevel in output
+
+//info about a default ground truth
+#define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "conesQuarterGroundTruth.pgm"
+#define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 4.0f //scaling from ground truth disparity to ground truth disparity map image
+
+#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_HALF_SIZE)
+
+//define the default height and width of the current images (this value is not "fixed" within the program)
+#define DEFAULT_WIDTH_IMAGES 900
+#define DEFAULT_HEIGHT_IMAGES 750
+
+//define the path for the 'default' reference and test images and the output "movement" images (can easily run
+//on other images using runBpStereoImageSeries on any number of images)
+#define DEFAULT_REF_IMAGE_PATH "conesHalf2.pgm"
+#define DEFAULT_TEST_IMAGE_PATH "conesHalf6.pgm"
+
+#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityConesHalf.pgm"
+
+//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
+#define NUM_POSSIBLE_DISPARITY_VALUES 110
+
+#define SCALE_BP 2.0f     // scaling from computed disparity to graylevel in output
+
+//info about a default ground truth
+#define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "conesHalfGroundTruth.pgm"
+#define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 2.0f //scaling from ground truth disparity to ground truth disparity map image
+
+#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_FULL_SIZE)
+
+//define the default height and width of the current images (this value is not "fixed" within the program)
+#define DEFAULT_WIDTH_IMAGES 1800
+#define DEFAULT_HEIGHT_IMAGES 1500
+
+//define the path for the 'default' reference and test images and the output "movement" images (can easily run
+//on other images using runBpStereoImageSeries on any number of images)
+#define DEFAULT_REF_IMAGE_PATH "conesFull2.pgm"
+#define DEFAULT_TEST_IMAGE_PATH "conesFull6.pgm"
+
+#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityConesFull.pgm"
+
+//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
+#define NUM_POSSIBLE_DISPARITY_VALUES 255
+
+#define SCALE_BP 1.0f     // scaling from computed disparity to graylevel in output
+
+//info about a default ground truth
+#define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "conesFullGroundTruth.pgm"
+#define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 1.0f //scaling from ground truth disparity to ground truth disparity map image
+
+#endif //IMAGE_SET_TO_PROCESS
+
+#define INF_BP 100000000.0f     // large cost (used for "infinity")
+#define SMALL_VAL_BP .01f
+
+//define the default message value...
+#define DEFAULT_INITIAL_MESSAGE_VAL 0.0f
+
 // number of BP iterations at each scale/level
-#define ITER_BP 6
+#define ITER_BP 10
 
 // number of scales/levels in the pyramid to run BP
 #define LEVELS_BP 5
@@ -61,12 +142,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
 #define SIGMA_BP 1.0f    // amount to smooth the input images 
-
-#define SCALE_BP 16.0f     // scaling from computed disparity to graylevel in output
-
-//info about a default ground truth
-#define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "groundTruthDispTsukuba.pgm"
-#define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 16.0f //scaling from ground truth disparity to ground truth disparity map image
 
 #define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY 18
 #define DEFAULT_Y_BORDER_GROUND_TRUTH_DISPARITY 18

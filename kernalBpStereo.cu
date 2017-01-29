@@ -314,7 +314,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceUseTexBoundAndLocalM
 
 	//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
 	//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
-	if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - checkerboardAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+	if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
 	{
 
 		float prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
