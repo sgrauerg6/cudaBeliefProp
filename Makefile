@@ -2,7 +2,8 @@ CUDA_DIR = /usr/local/cuda/
 CUDA_SDK_ROOT := 
 
 CU_FILE = driverCudaBp.cu
-CU_OBJ = driverCudaBp.o 
+CU_OBJ = driverCudaBp.o
+FILE_DEPENDENCIES = bpStereoCudaParameters.cuh imageHelpersHost.cu imageHelpersHostHeader.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh runBpStereoDivideImage.cu runBpStereoDivideImageHeader.cuh runBpStereoDivideImageParameters.cuh runBpStereoHost.cu runBpStereoHostHeader.cuh runBpStereoImageSeries.cu runBpStereoImageSeriesHeader.cuh saveResultingDisparityMap.cu saveResultingDisparityMapHeader.cuh smoothImageHost.cu smoothImageHostHeader.cuh stereoResultsEvalHost.cu stereoResultsEvalHostHeader.cuh stereoResultsEvalParameters.cuh utilityFunctsForEval.cu utilityFunctsForEvalHeader.cuh
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -32,7 +33,7 @@ all: impDriver
 impDriver: $(CU_OBJ)
 	g++ $(CU_OBJ) $(LIB) -o driverCudaBp -O -m64
 
-$(CU_OBJ): $(CU_FILE) $(CU_HEADER)
+$(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)
 	$(NVCC) -c $(CU_FILE) -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_35,code=sm_35 -gencode arch=compute_30,code=sm_30 -gencode arch=compute_20,code=sm_21 -gencode arch=compute_20,code=sm_20 -o $(CU_OBJ) $(COMPILE_FLAGS) 
 make clean:
 	rm *.o driverCudaBp
