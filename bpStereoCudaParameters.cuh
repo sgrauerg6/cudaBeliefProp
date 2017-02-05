@@ -117,10 +117,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_INITIAL_MESSAGE_VAL 0.0f
 
 // number of BP iterations at each scale/level
-#define ITER_BP 10
+#define ITER_BP 100
 
 // number of scales/levels in the pyramid to run BP
-#define LEVELS_BP 5
+#define LEVELS_BP 1
 
 //truncation of discontinuity cost
 #define DISC_K_BP 1.7f
