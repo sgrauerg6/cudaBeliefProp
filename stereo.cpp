@@ -157,7 +157,7 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 	int height = data->height();
 
 	for (int t = 0; t < ITER; t++) {
-		std::cout << "iter " << t << "\n";
+		//std::cout << "iter " << t << "\n";
 
 		for (int y = 1; y < height - 1; y++) {
 			for (int x = ((y + t) % 2) + 1; x < width - 1; x += 2) {
@@ -267,7 +267,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2) {
 			+ (timeStart.tv_usec / 1000000.0);
 	double timeEndSeconds = timeEnd.tv_sec
 			+ (timeEnd.tv_usec / 1000000.0);
-	printf("Running time: %.10lf seconds\n",
+	printf("CPU Running time: %.10lf seconds\n",
 			timeEndSeconds - timeStartSeconds);
 
 	delete u[0];

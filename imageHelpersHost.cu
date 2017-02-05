@@ -126,11 +126,8 @@ int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
       while (line[0]=='#' || line[0]=='\n') fgets(line,MAXLENGTH,filePointer);
       sscanf (line,"%d",&maximumValue);
 
-      /* display specifications and return an error if h,w, or
+      /* Check specifications and return an error if h,w, or
       *  maximum value is illegal.*/
-      printf("Rows: %u   Columns: %u\n",*rows,*cols); 
-      printf("Maximum value: %d\n\n",maximumValue); 
-
       if ((*cols)<1 ||(*rows)<1 || maximumValue<0 || maximumValue>MAXVALUE){
 	   printf ("ERROR: invalid file specifications (cols/rows/max value)\n\n");
 	   fclose (filePointer);
@@ -192,12 +189,6 @@ int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
       long nwritten = 0; /* counter for the number of pixels written */
       long i,j;          /* for loop counters */
 
-      /* return 0 if the dimensions are larger than the image array. */
-      //if (rows > MAXROWS || cols > MAXCOLS) {
-       //    printf ("ERROR: row/col specifications larger than image array:\n");
-//	   return (0);
-      //}
-
       /* open the file; write header and comments specified by the user. */
       if ((file = fopen(filename, "w")) == NULL)	{
            printf("ERROR: file open failed\n");
@@ -245,8 +236,6 @@ __host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scale
 
 	pgmWrite(filePathSaveImage, widthImage, heightImage,
 	     movementImageToSave, "blah");
-
-	printf("OUTPUT IMAGE SAVED\n");
 }
 
 

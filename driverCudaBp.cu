@@ -55,10 +55,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //of the disparity map image
 void compareComputedDispMapWithGroundTruth(const char* computedDispMapFile, float scaleComputedDispMap, const char* groundTruthDispMapFile, float scaleGroundTruthDispMap, unsigned int widthDispMap, unsigned int heightDispMap)
 {
-	printf("DISP MAP DIMS: %d %d\n", widthDispMap, heightDispMap);
 	//first retrieve the unsigned int arrays from the computed disparity map and ground truth disparity map images
 	unsigned int* compDispMapUnsignedInts = loadImageFromPGM(computedDispMapFile, widthDispMap, heightDispMap);
-	printf("DISP MAP DIMS: %d %d\n", widthDispMap, heightDispMap);
 	unsigned int* groundTruthDispMapUnsignedInts = loadImageFromPGM(groundTruthDispMapFile, widthDispMap, heightDispMap);
 
 	//retrieve the evaluation between the two disparity maps according to the parameters in stereoResultsEvalParameters.cuh
