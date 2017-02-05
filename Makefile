@@ -43,7 +43,7 @@ all: impDriver
 impDriver: $(CU_OBJ) stereo.o
 	g++ $(CU_OBJ) stereo.o $(LIB) -o driverCudaBp -O -m64
 	
-stereo.o:
+stereo.o: bpStereoCudaParameters.cuh
 	g++ stereo.cpp -c $(INCLUDE_DIRS)
 
 $(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)

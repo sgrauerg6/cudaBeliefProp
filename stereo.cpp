@@ -287,15 +287,11 @@ void runStereoCpu()
 	img1 = loadPGM(DEFAULT_REF_IMAGE_PATH);
 	img2 = loadPGM(DEFAULT_TEST_IMAGE_PATH);
 
-	std::string outputDispGpu = DEFAULT_GROUND_TRUTH_DISPARITY_FILE;
-	std::string outputDispBase = outputDispGpu.substr(0, outputDispGpu.size() - 4);
-	std::string outputDispCpu = outputDispBase + "Cpu.pgm";
-
 	// compute disparities
 	out = stereo_ms(img1, img2);
 
 	// save output
-	savePGM(out, outputDispCpu.c_str());
+	savePGM(out, SAVE_DISPARITY_IMAGE_PATH_CPU);
 
 	delete img1;
 	delete img2;

@@ -101,7 +101,7 @@ void runStereoOnDefaultImagesUsingDefaultSettings()
 	const char* imageFiles[] = {DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH};
 
 	//only one set of images to save disparity map for...
-	const char* saveDisparityMapFilePaths[] = {SAVE_DISPARITY_IMAGE_PATH};
+	const char* saveDisparityMapFilePaths[] = {SAVE_DISPARITY_IMAGE_PATH_GPU};
 
 	//do save resulting disparity map...
 	bool saveResultingDisparityMap = true;
@@ -110,8 +110,11 @@ void runStereoOnDefaultImagesUsingDefaultSettings()
 	unsigned int heightImages;
 
 	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths);
+	runStereoCpu();
 
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
 }
 
 void retrieveDeviceProperties(int numDevice)
@@ -126,5 +129,4 @@ void retrieveDeviceProperties(int numDevice)
 int main(int argc, char** argv)
 {
 	runStereoOnDefaultImagesUsingDefaultSettings();
-	runStereoCpu();
 }

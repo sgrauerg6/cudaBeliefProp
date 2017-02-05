@@ -36,7 +36,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_REF_IMAGE_PATH "refImageTsukuba.pgm"
 #define DEFAULT_TEST_IMAGE_PATH "testImageTsukuba.pgm"
 
-#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityMapTsukuba.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_GPU "computedDisparityMapTsukubaGPU.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_CPU "computedDisparityMapTsukubaCPU.pgm"
 
 //defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 #define NUM_POSSIBLE_DISPARITY_VALUES 15
@@ -54,7 +55,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_REF_IMAGE_PATH "conesQuarter2.pgm"
 #define DEFAULT_TEST_IMAGE_PATH "conesQuarter6.pgm"
 
-#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityConesQuarter.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_GPU "computedDisparityConesQuarterGPU.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_CPU "computedDisparityConesQuarterCPU.pgm"
 
 //defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 #define NUM_POSSIBLE_DISPARITY_VALUES 63
@@ -72,7 +74,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_REF_IMAGE_PATH "conesHalf2.pgm"
 #define DEFAULT_TEST_IMAGE_PATH "conesHalf6.pgm"
 
-#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityConesHalf.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_GPU "computedDisparityConesHalfGPU.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_CPU "computedDisparityConesHalfCPU.pgm"
 
 //defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 #define NUM_POSSIBLE_DISPARITY_VALUES 110
@@ -90,7 +93,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_REF_IMAGE_PATH "conesFull2.pgm"
 #define DEFAULT_TEST_IMAGE_PATH "conesFull6.pgm"
 
-#define SAVE_DISPARITY_IMAGE_PATH "computedDisparityConesFull.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_GPU "computedDisparityConesFullGPU.pgm"
+#define SAVE_DISPARITY_IMAGE_PATH_CPU "computedDisparityConesFullCPU.pgm"
 
 //defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 #define NUM_POSSIBLE_DISPARITY_VALUES 255

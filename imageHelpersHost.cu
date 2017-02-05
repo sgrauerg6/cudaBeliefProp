@@ -30,8 +30,6 @@ __host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage,
 	unsigned int imageWidth = widthImage;
 	unsigned int imageHeight = heightImage;
 
-	//cutLoadPGMi( filePathPgmImage, &imageData, &imageWidth, &imageHeight);
-
 	float* disparityVals = new float[widthImage*heightImage];
 
 	//go through every pixel and retrieve the Stereo value using the pixel value and the scale factor
@@ -52,8 +50,6 @@ __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned i
 	unsigned int imageWidth = widthImage;
 	unsigned int imageHeight = heightImage;
 
-	//cutLoadPGMi( filePathPgmImage, &imageData, &imageWidth, &imageHeight);
-
 	unsigned char *dataRead;
 
 	pgmRead (filePathPgmImage, &widthImage, &heightImage,
@@ -61,17 +57,12 @@ __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned i
 
 	imageData = new unsigned int[widthImage*heightImage];
 
-	printf("%d %d\n", widthImage, heightImage);
-	printf("HERE\n");
-
 	for (int numPixel = 0; numPixel < (widthImage*heightImage); numPixel++)
 	{
 		imageData[numPixel] = (unsigned int)(dataRead[numPixel]);	
 	}
-	printf("HERE2\n");
 
 	delete [] dataRead;
-	printf("%d %d\n", widthImage, heightImage);
 	return imageData;
 }
 
@@ -174,9 +165,6 @@ int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
 	   }
       } 
  
-   /*    printf ("  Rows * Columns = %ld\n",(*rows)*(*cols)); */
-/*       printf ("  Number of pixels read = %ld\n\n",numberRead); */
-
       /* Insure the number of pixels read is at least the
        *   number indicated by w*h.
        * If not, return an error message, but proceed */
@@ -235,10 +223,6 @@ int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 	  		   cols, file);
       }	
 
-      
-  /*     printf ("\nNumber of pixels total(from rows*cols): %ld\n",rows*cols); */
-/*       printf ("Number of pixels written: %ld\n\n",nwritten); */
-
       fclose(file);
       return(1);
 }
@@ -263,8 +247,6 @@ __host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scale
 	     movementImageToSave, "blah");
 
 	printf("OUTPUT IMAGE SAVED\n");
-
-	//cutSavePGMi(filePathSaveImage, movementImageToSave, widthImage, heightImage);
 }
 
 
