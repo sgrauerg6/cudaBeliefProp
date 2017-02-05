@@ -46,26 +46,29 @@ __host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage,
 }
 
 //load the PGM image and return as an array of floats
-__host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage)
+__host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
-	unsigned int* imageData = new unsigned int[widthImage*heightImage];
+	unsigned int* imageData;
 	unsigned int imageWidth = widthImage;
 	unsigned int imageHeight = heightImage;
 
 	//cutLoadPGMi( filePathPgmImage, &imageData, &imageWidth, &imageHeight);
 
-	printf("WH %d %d\n", widthImage, heightImage);
-	unsigned char *dataRead = new unsigned char[widthImage*heightImage];
+	unsigned char *dataRead;
 
 	pgmRead (filePathPgmImage, &widthImage, &heightImage,
 	     dataRead);
 
+	imageData = new unsigned int[widthImage*heightImage];
+
 	printf("%d %d\n", widthImage, heightImage);
+	printf("HERE\n");
 
 	for (int numPixel = 0; numPixel < (widthImage*heightImage); numPixel++)
 	{
 		imageData[numPixel] = (unsigned int)(dataRead[numPixel]);	
 	}
+	printf("HERE2\n");
 
 	delete [] dataRead;
 	printf("%d %d\n", widthImage, heightImage);
@@ -84,8 +87,8 @@ __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned i
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int pgmRead (const char *fileName, unsigned int *rows, unsigned int *cols,
-	     unsigned char* image) {
+int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
+	     unsigned char*& image) {
       FILE *filePointer;    /* for file buffer */
       char line[MAXLENGTH]; /* for character input from file */
       int maximumValue = 0; /* max value from header */
@@ -147,6 +150,9 @@ int pgmRead (const char *fileName, unsigned int *rows, unsigned int *cols,
 	   fclose (filePointer);
 	   return (0);
       } 
+
+      image = new unsigned char[(*cols)*(*rows)];
+
       /* Read in the data for binary (P5) or ascii (P2) PGM formats   */
       if (binary) {
 	   for (i = 0; i < (*rows); i++) {
@@ -191,7 +197,7 @@ int pgmRead (const char *fileName, unsigned int *rows, unsigned int *cols,
  *   and 0 if it was not.  An error message is returned if the file is not
  *   properly opened.  
  */ 
-int pgmWrite(const char* filename, unsigned int rows, unsigned int cols,
+int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 	     unsigned char* image,char* comment_string) {
       FILE* file;        /* pointer to the file buffer */
       int maxval;        /* maximum value in the image array */
@@ -253,7 +259,7 @@ __host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scale
 		movementImageToSave[currentPixel] = (unsigned char)((calcDisparityBetweenImages[currentPixel])*scaleMovement + .5f);
 	}
 
-	pgmWrite(filePathSaveImage, heightImage, widthImage,
+	pgmWrite(filePathSaveImage, widthImage, heightImage,
 	     movementImageToSave, "blah");
 
 	printf("OUTPUT IMAGE SAVED\n");

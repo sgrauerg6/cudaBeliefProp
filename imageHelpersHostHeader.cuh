@@ -34,17 +34,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 __host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor);
 
 //load the PGM image and return as an array of unsigned int (between values 0 and 255 assuming image is 8-bit grayscale)
-__host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage);
+__host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage);
 
 //save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
 //0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
 __host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage);
 
-int pgmWrite(const char* filename, unsigned int rows, unsigned int cols,
+int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 	     unsigned char* image,char* comment_string);
 
-int pgmRead (const char *fileName, unsigned int *rows, unsigned int *cols,
-	     unsigned char* image);
+int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
+	     unsigned char*& image);
 
 
 

@@ -27,13 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CONES_IMAGES_QUARTER_SIZE 2
 #define CONES_IMAGES_HALF_SIZE 3
 #define CONES_IMAGES_FULL_SIZE 4
-#define IMAGE_SET_TO_PROCESS CONES_IMAGES_QUARTER_SIZE
+#define IMAGE_SET_TO_PROCESS TSUKUBA_IMAGES
 
 #if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
-
-//define the default height and width of the current images (this value is not "fixed" within the program)
-#define DEFAULT_WIDTH_IMAGES 384
-#define DEFAULT_HEIGHT_IMAGES 288
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
 //on other images using runBpStereoImageSeries on any number of images)
@@ -53,10 +49,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
 
-//define the default height and width of the current images (this value is not "fixed" within the program)
-#define DEFAULT_WIDTH_IMAGES 450
-#define DEFAULT_HEIGHT_IMAGES 375
-
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
 //on other images using runBpStereoImageSeries on any number of images)
 #define DEFAULT_REF_IMAGE_PATH "conesQuarter2.pgm"
@@ -75,10 +67,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_HALF_SIZE)
 
-//define the default height and width of the current images (this value is not "fixed" within the program)
-#define DEFAULT_WIDTH_IMAGES 900
-#define DEFAULT_HEIGHT_IMAGES 750
-
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
 //on other images using runBpStereoImageSeries on any number of images)
 #define DEFAULT_REF_IMAGE_PATH "conesHalf2.pgm"
@@ -96,10 +84,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 2.0f //scaling from ground truth disparity to ground truth disparity map image
 
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_FULL_SIZE)
-
-//define the default height and width of the current images (this value is not "fixed" within the program)
-#define DEFAULT_WIDTH_IMAGES 1800
-#define DEFAULT_HEIGHT_IMAGES 1500
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
 //on other images using runBpStereoImageSeries on any number of images)
@@ -144,7 +128,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define LAMBDA_BP 0.07f
 
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
-#define SIGMA_BP 1.0f    // amount to smooth the input images 
+#define SIGMA_BP 1.0f    // amount to smooth the input images
 
 #define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY 18
 #define DEFAULT_Y_BORDER_GROUND_TRUTH_DISPARITY 18
@@ -189,23 +173,7 @@ typedef struct
 	float discCostCap;
 }BPsettings;
 
-BPsettings initializeAndReturnBPSettings()
-{
-	BPsettings startBPSettings;
 
-	startBPSettings.numLevels = LEVELS_BP;
-	startBPSettings.numIterations = ITER_BP;
-
-	startBPSettings.widthImages = DEFAULT_WIDTH_IMAGES;
-	startBPSettings.heightImages = DEFAULT_HEIGHT_IMAGES;
-
-	startBPSettings.discCostCap = DISC_K_BP;
-
-	startBPSettings.dataWeight = LAMBDA_BP;
-	startBPSettings.dataCostCap = DATA_K_BP;
-
-	return startBPSettings;
-};
 
 
 #endif // BP_STEREO_CUDA_PARAMETERS_CUH

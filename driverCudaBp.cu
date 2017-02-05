@@ -46,6 +46,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed for general utility functions to evaluate the results
 #include "utilityFunctsForEval.cu"
 
+#include "stereo.h"
+
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
 //this function takes as input the file names of a computed disparity map and also the
@@ -66,6 +68,25 @@ void compareComputedDispMapWithGroundTruth(const char* computedDispMapFile, floa
 	printStereoEvaluationResults(stereoEvaluation);
 }
 
+BPsettings initializeAndReturnBPSettings()
+{
+	BPsettings startBPSettings;
+
+	startBPSettings.numLevels = LEVELS_BP;
+	startBPSettings.numIterations = ITER_BP;
+
+	//height/width determined when image read from file
+	startBPSettings.widthImages = 0;
+	startBPSettings.heightImages = 0;
+
+	startBPSettings.discCostCap = DISC_K_BP;
+
+	startBPSettings.dataWeight = LAMBDA_BP;
+	startBPSettings.dataCostCap = DATA_K_BP;
+
+	return startBPSettings;
+};
+
 //run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 //saved disparity map file as defined in bpStereoCudaParameters.cuh
 void runStereoOnDefaultImagesUsingDefaultSettings()
@@ -85,9 +106,12 @@ void runStereoOnDefaultImagesUsingDefaultSettings()
 	//do save resulting disparity map...
 	bool saveResultingDisparityMap = true;
 
-	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, DEFAULT_WIDTH_IMAGES, DEFAULT_HEIGHT_IMAGES, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths);
+	unsigned int widthImages;
+	unsigned int heightImages;
 
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, DEFAULT_WIDTH_IMAGES, DEFAULT_HEIGHT_IMAGES);
+	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths);
+
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
 }
 
 void retrieveDeviceProperties(int numDevice)
@@ -102,4 +126,5 @@ void retrieveDeviceProperties(int numDevice)
 int main(int argc, char** argv)
 {
 	runStereoOnDefaultImagesUsingDefaultSettings();
+	runStereoCpu();
 }
