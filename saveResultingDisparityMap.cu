@@ -22,9 +22,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //save the output disparity map using the scale defined in scaleDisparityInOutput at each pixel to the file at disparityMapSaveImagePath
 //also takes in the timer to time the implementation including the transfer time from the device to the host
-void saveResultingDisparityMap(const char* disparityMapSaveImagePath, float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput, unsigned int widthImages, unsigned int heightImages, struct timeval& timeWithTransferStart)
+void saveResultingDisparityMap(const char* disparityMapSaveImagePath, float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput, unsigned int widthImages, unsigned int heightImages, struct timeval& timeWithTransferStart, double& totalTimeIncludeTransfer)
 {
-	    struct timeval timeWithTransferEnd;
+	struct timeval timeWithTransferEnd;
 	//allocate the space on the host for and x and y movement between images
 	float* disparityMapFromImage1To2Host = new float[widthImages * heightImages];
 
@@ -35,7 +35,8 @@ void saveResultingDisparityMap(const char* disparityMapSaveImagePath, float*& di
 	gettimeofday(&timeWithTransferEnd, NULL);
 	double timeStart = timeWithTransferStart.tv_sec+(timeWithTransferStart.tv_usec/1000000.0);
 	double timeEnd = timeWithTransferEnd.tv_sec+(timeWithTransferEnd.tv_usec/1000000.0);
-	printf("Running time including transfer time: %.10lf seconds\n", timeEnd-timeStart);	
+	//printf("Running time including transfer time: %.10lf seconds\n", timeEnd-timeStart);
+	totalTimeIncludeTransfer += (timeEnd-timeStart);
 	//stop the timer and print the total time of the BP implementation including the device-host transfer time
 	//cutStopTimer(timerImp);
 	//printf("Time to retrieve movement on host (including transfer): %f (ms) \n", cutGetTimerValue(timerImp));

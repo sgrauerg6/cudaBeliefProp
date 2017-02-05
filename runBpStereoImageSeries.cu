@@ -31,9 +31,10 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		BPsettings algSettings, bool saveResults,
 		const char* saveDisparityMapImagePaths[]) {
 
-	double totalTime = 0.0;
+	double totalTimeNoTransfer = 0.0;
+	double totalTimeIncludeTransfer = 0.0;
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++) {
-		printf("RUN %d\n", numRun);
+		//printf("RUN %d\n", numRun);
 		//first run Stereo estimation on the first two images
 		unsigned int* image1AsUnsignedIntArrayHost = loadImageFromPGM(
 				imageFiles[0], widthImages, heightImages);
@@ -126,14 +127,14 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 				+ (timeNoTransferStart.tv_usec / 1000000.0);
 		double timeEnd = timeNoTransferEnd.tv_sec
 				+ (timeNoTransferEnd.tv_usec / 1000000.0);
-		printf("Running time not including transfer time: %.10lf seconds\n",
-				timeEnd - timeStart);
-		totalTime += (timeEnd - timeStart);
+		//printf("Running time not including transfer time: %.10lf seconds\n",
+		//		timeEnd - timeStart);
+		totalTimeNoTransfer += (timeEnd - timeStart);
 
 		if (saveResults) {
 			saveResultingDisparityMap(saveDisparityMapImagePaths[0],
 					disparityMapFromImage1To2Device, SCALE_BP, widthImages,
-					heightImages, timeWithTransferStart);
+					heightImages, timeWithTransferStart, totalTimeIncludeTransfer);
 		}
 
 		//now go through the rest of the images, the "second" image of one set as the "first one" of the next and also using
@@ -176,10 +177,11 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 
 			//save results if desired
 			if (saveResults) {
+				//TODO: fix measuring runtime in cases w/ more than two images
 				saveResultingDisparityMap(
 						saveDisparityMapImagePaths[numImage - 1],
 						disparityMapFromImage1To2Device, SCALE_BP, widthImages,
-						heightImages, timeWithTransferStart);
+						heightImages, timeWithTransferStart, totalTimeIncludeTransfer);
 			}
 		}
 
@@ -190,11 +192,13 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		//free the space allocated to the smoothed images on the device
 		cudaFree(smoothedImage1Device);
 		cudaFree(smoothedImage2Device);
-		printf("\n");
+		//printf("\n");
 	}
 
 	//printf("Total time: %f\n", totalTime);
-	float averageGpuRunTime = totalTime / NUM_BP_STEREO_RUNS;
-	printf("AVERAGE GPU RUN TIME: %f\n", averageGpuRunTime);
+	float averageGpuRunTimeNoTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
+	float averageGpuRunTimeIncludeTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;
+	printf("AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeNoTransfer);
+	printf("AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeIncludeTransfer);
 }
 

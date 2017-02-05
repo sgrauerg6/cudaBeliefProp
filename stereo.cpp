@@ -267,7 +267,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2) {
 			+ (timeStart.tv_usec / 1000000.0);
 	double timeEndSeconds = timeEnd.tv_sec
 			+ (timeEnd.tv_usec / 1000000.0);
-	printf("CPU Running time: %.10lf seconds\n",
+	printf("AVERAGE CPU RUN TIME: %.10lf seconds\n",
 			timeEndSeconds - timeStartSeconds);
 
 	delete u[0];
@@ -279,19 +279,19 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2) {
 	return out;
 }
 
-void runStereoCpu()
+void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
 	// load input
-	img1 = loadPGM(DEFAULT_REF_IMAGE_PATH);
-	img2 = loadPGM(DEFAULT_TEST_IMAGE_PATH);
+	img1 = loadPGM(refImagePath);
+	img2 = loadPGM(testImagePath);
 
 	// compute disparities
 	out = stereo_ms(img1, img2);
 
 	// save output
-	savePGM(out, SAVE_DISPARITY_IMAGE_PATH_CPU);
+	savePGM(out, saveDisparityImagePath);
 
 	delete img1;
 	delete img2;

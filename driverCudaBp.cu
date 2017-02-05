@@ -108,10 +108,13 @@ void runStereoOnDefaultImagesUsingDefaultSettings()
 	unsigned int heightImages;
 
 	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths);
-	runStereoCpu();
+	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU);
 
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	printf("\nCPU output vs. Ground Truth result:\n");
 	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	printf("\nGPU output vs. Ground Truth result:\n");
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	printf("\nGPU output vs. CPU output:\n");
 	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
 }
 

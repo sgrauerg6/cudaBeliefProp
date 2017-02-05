@@ -300,7 +300,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		widthLevelActualIntegerSize = (int)floor(widthLevel);
 		heightLevelActualIntegerSize = (int)floor(heightLevel);
 
-		printf("LevelNum: %d  Width: %d  Height: %d \n", levelNum, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
+		//printf("LevelNum: %d  Width: %d  Height: %d \n", levelNum, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
 
 		//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
 		//the four-connected neighbors are in the other checkerboard
@@ -395,12 +395,11 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		//offset needed because of alignment requirement for textures
 		size_t offset;
 
-
 		//bind the portion of the data cost "pyramid" for the current level to a texture
 		cudaBindTexture(&offset, dataCostTexStereoCheckerboard1, &dataCostDeviceCheckerboard1[offsetLevel], numBytesDataAndMessageSetInCheckerboardAtLevel);
 		cudaBindTexture(&offset, dataCostTexStereoCheckerboard2, &dataCostDeviceCheckerboard2[offsetLevel], numBytesDataAndMessageSetInCheckerboardAtLevel);
 			
-		printf("LevelNumBP: %d  Width: %f  Height: %f \n", levelNum, widthLevel, heightLevel);
+		//printf("LevelNumBP: %d  Width: %f  Height: %f \n", levelNum, widthLevel, heightLevel);
 
 		if (levelNum >= 0)
 		{
@@ -505,13 +504,11 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	cudaUnbindTexture(dataCostTexStereoCheckerboard1);
 	cudaUnbindTexture(dataCostTexStereoCheckerboard2);
 
-
 	//bind the data costs at the "bottom level" of the image pyramid
 	cudaBindTexture(0, dataCostTexStereoCheckerboard1, dataCostDeviceCheckerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
 	cudaBindTexture(0, dataCostTexStereoCheckerboard2, dataCostDeviceCheckerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
 
-
-	printf("Final  Width: %d  Height: %d \n", widthLevelActualIntegerSize, heightLevelActualIntegerSize);
+	//printf("Final  Width: %d  Height: %d \n", widthLevelActualIntegerSize, heightLevelActualIntegerSize);
 
 	grid.x = (unsigned int)ceil((float)widthLevel / (float)threads.x);
 	grid.y = (unsigned int)ceil((float)heightLevel / (float)threads.y);
