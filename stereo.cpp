@@ -28,6 +28,7 @@
 #include <sys/time.h>
 #include <string>
 #include "bpStereoCudaParameters.cuh"
+#include "stereo.h"
 
 #define ITER ITER_BP      // number of BP iterations at each scale
 #define LEVELS LEVELS_BP     // number of scales
@@ -180,7 +181,7 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 }
 
 // multiscale belief propagation for image restoration
-image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFile) {
+image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFile, float& averageRunTimeCpu) {
 	image<float[VALUES]> *u[LEVELS];
 	image<float[VALUES]> *d[LEVELS];
 	image<float[VALUES]> *l[LEVELS];
@@ -269,6 +270,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 			+ (timeEnd.tv_usec / 1000000.0);
 	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf seconds\n",
 			timeEndSeconds - timeStartSeconds);
+	averageRunTimeCpu = timeEndSeconds - timeStartSeconds;
 
 	delete u[0];
 	delete d[0];
@@ -279,7 +281,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 	return out;
 }
 
-void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath, FILE* resultsFile)
+void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath, FILE* resultsFile, float& averageRunTimeCpu)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
@@ -288,7 +290,7 @@ void runStereoCpu(const char* refImagePath, const char* testImagePath, const cha
 	img2 = loadPGM(testImagePath);
 
 	// compute disparities
-	out = stereo_ms(img1, img2, resultsFile);
+	out = stereo_ms(img1, img2, resultsFile, averageRunTimeCpu);
 
 	// save output
 	savePGM(out, saveDisparityImagePath);

@@ -23,6 +23,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoCudaParameters.cuh"
 
+float averageRunTimeGpuNotIncludingMemoryTransfer = 0.0;
+float averageRunTimeGpuIncludingMemoryTransfer = 0.0;
+
 //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
 void runStereoEstOnImageSeries(const char* imageFiles[], int numImages, unsigned int& widthImages, unsigned int& heightImages, BPsettings algSettings, bool saveResults, const char* saveDisparityMapImagePaths[], FILE* resultsFile);
 

@@ -196,9 +196,9 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	}
 
 	//printf("Total time: %f\n", totalTime);
-	float averageGpuRunTimeNoTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
-	float averageGpuRunTimeIncludeTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;
-	fprintf(resultsFile, "AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeNoTransfer);
-	fprintf(resultsFile, "AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeIncludeTransfer);
+	averageRunTimeGpuNotIncludingMemoryTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
+	averageRunTimeGpuIncludingMemoryTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;
+	fprintf(resultsFile, "AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuNotIncludingMemoryTransfer);
+	fprintf(resultsFile, "AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuIncludingMemoryTransfer);
 }
 

@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "bpStereoCudaParameters.cuh"
+#include "stereo.h"
 
 //needed for functions to load input images/store resulting disp/movement image
 #include "imageHelpersHost.cu"
@@ -46,7 +47,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed for general utility functions to evaluate the results
 #include "utilityFunctsForEval.cu"
 
-#include "stereo.h"
 
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
@@ -106,9 +106,15 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 
 	unsigned int widthImages;
 	unsigned int heightImages;
+	float averageRunTimeCpu;
 
 	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths, resultsFile);
-	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
+	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile, averageRunTimeCpu);
+	if ((averageRunTimeCpu > 0.0) && (averageRunTimeGpuNotIncludingMemoryTransfer > 0.0) && (averageRunTimeGpuIncludingMemoryTransfer > 0.0))
+	{
+		fprintf(resultsFile, "\nGPU Speedup (not including transfer time): %f\n", averageRunTimeCpu / averageRunTimeGpuNotIncludingMemoryTransfer);
+		fprintf(resultsFile, "GPU Speedup (including transfer time): %f\n", averageRunTimeCpu / averageRunTimeGpuIncludingMemoryTransfer);
+	}
 
 	fprintf(resultsFile, "\nCPU output vs. Ground Truth result:\n");
 	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);

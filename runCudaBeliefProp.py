@@ -15,8 +15,8 @@ if __name__ == "__main__":
 	scaleBp = ["16.0f", "4.0f", "2.0f"]
 	groundTruthDisp = ["\"groundTruthDispTsukuba.pgm\"", "\"conesQuarterGroundTruth.pgm\"", "\"conesHalfGroundTruth.pgm\""]
 	groundTruthDispScale = ["16.0f", "4.0f", "2.0f"]
-	numBpIters = [ "5", "10", "10"]
-	numBpLevels = ["5", "6", "7"]
+	numBpIters = [ "500", "500", "500"]
+	numBpLevels = ["1", "1", "1"]
 	fileOutput = open("outputPython.txt", "w")
 	for i in range(3):
 		file = open("bpParametersFromPython.h", "w")
