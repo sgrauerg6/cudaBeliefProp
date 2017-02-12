@@ -50,7 +50,7 @@ __host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDisp
 //and the "comparison" disparity (such as the ground truth) is stored in scaledDispMap2
 __host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDispMap(float* unscaledDispMap1Host, unsigned int* scaledDispMap2Host, float scaleFactorDispMap2, unsigned int widthDisparityMap, unsigned int heightDisparityMap);
 
-__host__ void printStereoEvaluationResults(stereoEvaluationResults* evaluationResults);
+__host__ void printStereoEvaluationResults(stereoEvaluationResults* evaluationResults, FILE* resultsFile);
 
 __host__ void writeStereoResultsToFile(FILE* currentfp, stereoEvaluationResults* evaluationResults);
 

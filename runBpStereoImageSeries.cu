@@ -29,7 +29,7 @@
 void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		unsigned int& widthImages, unsigned int& heightImages,
 		BPsettings algSettings, bool saveResults,
-		const char* saveDisparityMapImagePaths[]) {
+		const char* saveDisparityMapImagePaths[], FILE* resultsFile) {
 
 	double totalTimeNoTransfer = 0.0;
 	double totalTimeIncludeTransfer = 0.0;
@@ -198,7 +198,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	//printf("Total time: %f\n", totalTime);
 	float averageGpuRunTimeNoTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
 	float averageGpuRunTimeIncludeTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;
-	printf("AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeNoTransfer);
-	printf("AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeIncludeTransfer);
+	fprintf(resultsFile, "AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeNoTransfer);
+	fprintf(resultsFile, "AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageGpuRunTimeIncludeTransfer);
 }
 

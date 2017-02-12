@@ -28,7 +28,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //define the difference in disparity for it to be considered a "significant difference"
 //pixels with difference beyond this are called a "bad pixel" if one of the images is the ground truth
 //(when value is SMALL_VAL_BP, then any pixel where disparity values are not the same value are considered "bad pixels")
-#define SIG_DIFF_THRESHOLD_STEREO_EVAL SMALL_VAL_BP
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1 SMALL_VAL_BP
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2 2.01
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3 5.01
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4 10.01
 
 //don't evaluate the disparities that are within the "border"
 //the x-border is from the left/right sides and the
@@ -45,17 +48,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 typedef struct
 {
 	//total value of the absolute difference between the disparity values for all pixels in disparity images 1 and 2 (not including border regions)
-	float totalDispAbsDiff;
+	float totalDispAbsDiffNoMax;
+	float totalDispAbsDiffWithMax;
 	
 	//average absolute difference between the disparity values in disparity images 1 and 2 (not including border regions)
-	float averageDispAbsDiff;
+	float averageDispAbsDiffNoMax;
+	float averageDispAbsDiffWithMax;
 	
 	//proportion of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
 	//(not including border regions)
-	float propSigDiffPixels;
+	float propSigDiffPixelsThreshold1;
+	float propSigDiffPixelsThreshold2;
+	float propSigDiffPixelsThreshold3;
+	float propSigDiffPixelsThreshold4;
 	
 	//stores the number of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
-	unsigned int numSigDiffPixels;
+	unsigned int numSigDiffPixelsThreshold1;
+	unsigned int numSigDiffPixelsThreshold2;
+	unsigned int numSigDiffPixelsThreshold3;
+	unsigned int numSigDiffPixelsThreshold4;
 } stereoEvaluationResults;
 
 #endif //STEREO_RESULTS_EVAL_PARAMETERS_CUH

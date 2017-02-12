@@ -180,7 +180,7 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 }
 
 // multiscale belief propagation for image restoration
-image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2) {
+image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFile) {
 	image<float[VALUES]> *u[LEVELS];
 	image<float[VALUES]> *d[LEVELS];
 	image<float[VALUES]> *l[LEVELS];
@@ -267,7 +267,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2) {
 			+ (timeStart.tv_usec / 1000000.0);
 	double timeEndSeconds = timeEnd.tv_sec
 			+ (timeEnd.tv_usec / 1000000.0);
-	printf("AVERAGE CPU RUN TIME: %.10lf seconds\n",
+	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf seconds\n",
 			timeEndSeconds - timeStartSeconds);
 
 	delete u[0];
@@ -279,7 +279,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2) {
 	return out;
 }
 
-void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath)
+void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath, FILE* resultsFile)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
@@ -288,7 +288,7 @@ void runStereoCpu(const char* refImagePath, const char* testImagePath, const cha
 	img2 = loadPGM(testImagePath);
 
 	// compute disparities
-	out = stereo_ms(img1, img2);
+	out = stereo_ms(img1, img2, resultsFile);
 
 	// save output
 	savePGM(out, saveDisparityImagePath);

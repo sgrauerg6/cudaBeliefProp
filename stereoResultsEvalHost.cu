@@ -25,8 +25,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 __host__ void initializeStereoResults(stereoEvaluationResults*& currentStereoEvaluation)
 {
 	//initialize the total disparity absolute difference and number of corresponding with significant disparity differences to 0
-	currentStereoEvaluation->totalDispAbsDiff = 0.0f;
-	currentStereoEvaluation->numSigDiffPixels = 0;
+	currentStereoEvaluation->totalDispAbsDiffNoMax = 0.0f;
+	currentStereoEvaluation->numSigDiffPixelsThreshold1 = 0;
+	currentStereoEvaluation->numSigDiffPixelsThreshold2 = 0;
+	currentStereoEvaluation->numSigDiffPixelsThreshold3 = 0;
+	currentStereoEvaluation->numSigDiffPixelsThreshold4 = 0;
 }
 
 //given the corresponding disparity values currentDispVal1 and currentDispVal2 from disparity maps 1 and 2, update the current stereo evaluation
@@ -36,13 +39,26 @@ __host__ void updateStereoEvaluation(float unscaledCurrentDispVal1, float unscal
 	float absDiffBetweenCorrDispVals = abs(unscaledCurrentDispVal2 - unscaledCurrentDispVal1);
 
 	//add the absolute disparity different to the total absolute difference in disparity capped at MAX_ABS_DIFF_BETWEEN_CORR_DISP
-	currentStereoEvaluation->totalDispAbsDiff += min(absDiffBetweenCorrDispVals, MAX_ABS_DIFF_BETWEEN_CORR_DISP);
+	currentStereoEvaluation->totalDispAbsDiffNoMax += min(absDiffBetweenCorrDispVals, MAX_ABS_DIFF_BETWEEN_CORR_DISP);
+	currentStereoEvaluation->totalDispAbsDiffWithMax += min(absDiffBetweenCorrDispVals, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4);
 
 	//if absolute difference is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL, increment the number of corresponding
 	//pixels with significantly different disparity
-	if (absDiffBetweenCorrDispVals > SIG_DIFF_THRESHOLD_STEREO_EVAL)
+	if (absDiffBetweenCorrDispVals > SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1)
 	{
-		currentStereoEvaluation->numSigDiffPixels++;
+		currentStereoEvaluation->numSigDiffPixelsThreshold1++;
+	}
+	if (absDiffBetweenCorrDispVals > SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2)
+	{
+		currentStereoEvaluation->numSigDiffPixelsThreshold2++;
+	}
+	if (absDiffBetweenCorrDispVals > SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3)
+	{
+		currentStereoEvaluation->numSigDiffPixelsThreshold3++;
+	}
+	if (absDiffBetweenCorrDispVals > SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4)
+	{
+		currentStereoEvaluation->numSigDiffPixelsThreshold4++;
 	}
 }
 
@@ -54,10 +70,14 @@ __host__ void retrieveFinalStereoEvaluation(stereoEvaluationResults*& currentSte
 	unsigned int sizeDispMapWithoutBorder = (heightDisparityMap - 2*Y_BORDER_SIZE_STEREO_EVAL) * (widthDisparityMap - 2*X_BORDER_SIZE_STEREO_EVAL);
 
 	//retrieve the averageDispAbsDiff by dividing the totalDispAbsDiff by the size of the disparity map (not including the border)
-	currentStereoEvaluation->averageDispAbsDiff = ((float)currentStereoEvaluation->totalDispAbsDiff) / ((float) sizeDispMapWithoutBorder);
+	currentStereoEvaluation->averageDispAbsDiffNoMax = ((float)currentStereoEvaluation->totalDispAbsDiffNoMax) / ((float) sizeDispMapWithoutBorder);
+	currentStereoEvaluation->averageDispAbsDiffWithMax = ((float)currentStereoEvaluation->totalDispAbsDiffWithMax) / ((float) sizeDispMapWithoutBorder);
 
 	//retrieve the proportion of significantly different disparities by dividing the numSignDiffPixels by the size of the disparity map (not including the border)
-	currentStereoEvaluation->propSigDiffPixels = ((float)currentStereoEvaluation->numSigDiffPixels) / ((float) sizeDispMapWithoutBorder);
+	currentStereoEvaluation->propSigDiffPixelsThreshold1 = ((float)currentStereoEvaluation->numSigDiffPixelsThreshold1) / ((float) sizeDispMapWithoutBorder);
+	currentStereoEvaluation->propSigDiffPixelsThreshold2 = ((float)currentStereoEvaluation->numSigDiffPixelsThreshold2) / ((float) sizeDispMapWithoutBorder);
+	currentStereoEvaluation->propSigDiffPixelsThreshold3 = ((float)currentStereoEvaluation->numSigDiffPixelsThreshold3) / ((float) sizeDispMapWithoutBorder);
+	currentStereoEvaluation->propSigDiffPixelsThreshold4 = ((float)currentStereoEvaluation->numSigDiffPixelsThreshold4) / ((float) sizeDispMapWithoutBorder);
 }
 
 //retrieve the stereo evaluation results between the unsigned int scaled disparity maps stored in scaledDispMap1Host and scaledDispMap2Host
@@ -145,20 +165,27 @@ __host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDisp
 	return stereoResults;
 }
 
-__host__ void printStereoEvaluationResults(stereoEvaluationResults* evaluationResults)
+__host__ void printStereoEvaluationResults(stereoEvaluationResults* evaluationResults, FILE* resultsFile)
 {
-	printf("Total RMS error: %f \n", evaluationResults->totalDispAbsDiff);
-	printf("Average RMS error: %f \n", evaluationResults->averageDispAbsDiff);
-	printf("Total bad pixels: %d \n", evaluationResults->numSigDiffPixels);
-	printf("Proportion bad pixels: %f \n", evaluationResults->propSigDiffPixels);
+	//fprintf(resultsFile, "Total RMS error: %f \n", evaluationResults->totalDispAbsDiff);
+	fprintf(resultsFile, "Average RMS error: %f \n", evaluationResults->averageDispAbsDiffNoMax);
+	fprintf(resultsFile, "Average RMS error (with disparity error cap at %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4, evaluationResults->averageDispAbsDiffWithMax);
+	//fprintf(resultsFile, "Total bad pixels (Threshold 1): %d \n", evaluationResults->numSigDiffPixelsThreshold1);
+	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1, evaluationResults->propSigDiffPixelsThreshold1);
+	//fprintf(resultsFile, "Total bad pixels (Threshold 2): %d \n", evaluationResults->numSigDiffPixelsThreshold2);
+	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2, evaluationResults->propSigDiffPixelsThreshold2);
+	//fprintf(resultsFile, "Total bad pixels (Threshold 3): %d \n", evaluationResults->numSigDiffPixelsThreshold3);
+	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3, evaluationResults->propSigDiffPixelsThreshold3);
+	//fprintf(resultsFile, "Total bad pixels (Threshold 4): %d \n", evaluationResults->numSigDiffPixelsThreshold4);
+	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4, evaluationResults->propSigDiffPixelsThreshold4);
 }
 
 __host__ void writeStereoResultsToFile(FILE* currentfp, stereoEvaluationResults* evaluationResults)
 {
-	fprintf(currentfp, "Total RMS error: %f \n", evaluationResults->totalDispAbsDiff);
-	fprintf(currentfp, "Average RMS error: %f \n", evaluationResults->averageDispAbsDiff);
-	fprintf(currentfp, "Total bad pixels: %d \n", evaluationResults->numSigDiffPixels);
-	fprintf(currentfp, "Proportion bad pixels: %f \n", evaluationResults->propSigDiffPixels);
+	fprintf(currentfp, "Total RMS error: %f \n", evaluationResults->totalDispAbsDiffNoMax);
+	fprintf(currentfp, "Average RMS error: %f \n", evaluationResults->averageDispAbsDiffNoMax);
+	fprintf(currentfp, "Total bad pixels: %d \n", evaluationResults->numSigDiffPixelsThreshold1);
+	fprintf(currentfp, "Proportion bad pixels: %f \n", evaluationResults->propSigDiffPixelsThreshold1);
 }
 
 

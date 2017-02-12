@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //this function takes as input the file names of a computed disparity map and also the
 //ground truth disparity map and the factor that each disparity was scaled by in the generation
 //of the disparity map image
-void compareComputedDispMapWithGroundTruth(const char* computedDispMapFile, float scaleComputedDispMap, const char* groundTruthDispMapFile, float scaleGroundTruthDispMap, unsigned int widthDispMap, unsigned int heightDispMap)
+void compareComputedDispMapWithGroundTruth(const char* computedDispMapFile, float scaleComputedDispMap, const char* groundTruthDispMapFile, float scaleGroundTruthDispMap, unsigned int widthDispMap, unsigned int heightDispMap, FILE* resultsFile)
 {
 	//first retrieve the unsigned int arrays from the computed disparity map and ground truth disparity map images
 	unsigned int* compDispMapUnsignedInts = loadImageFromPGM(computedDispMapFile, widthDispMap, heightDispMap);
@@ -63,7 +63,7 @@ void compareComputedDispMapWithGroundTruth(const char* computedDispMapFile, floa
 	stereoEvaluationResults* stereoEvaluation =
 		runStereoResultsEvaluationUsedUnsignedIntScaledDispMap(compDispMapUnsignedInts, groundTruthDispMapUnsignedInts, scaleComputedDispMap, scaleGroundTruthDispMap, widthDispMap, heightDispMap);
 
-	printStereoEvaluationResults(stereoEvaluation);
+	printStereoEvaluationResults(stereoEvaluation, resultsFile);
 }
 
 BPsettings initializeAndReturnBPSettings()
@@ -87,7 +87,7 @@ BPsettings initializeAndReturnBPSettings()
 
 //run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 //saved disparity map file as defined in bpStereoCudaParameters.cuh
-void runStereoOnDefaultImagesUsingDefaultSettings()
+void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 {
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings = initializeAndReturnBPSettings();
@@ -107,27 +107,30 @@ void runStereoOnDefaultImagesUsingDefaultSettings()
 	unsigned int widthImages;
 	unsigned int heightImages;
 
-	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths);
-	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU);
+	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths, resultsFile);
+	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
 
-	printf("\nCPU output vs. Ground Truth result:\n");
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
-	printf("\nGPU output vs. Ground Truth result:\n");
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
-	printf("\nGPU output vs. CPU output:\n");
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages);
+	fprintf(resultsFile, "\nCPU output vs. Ground Truth result:\n");
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
+	fprintf(resultsFile, "\nGPU output vs. Ground Truth result:\n");
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
+	fprintf(resultsFile, "\nGPU output vs. CPU output:\n");
+	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
 }
 
-void retrieveDeviceProperties(int numDevice)
+void retrieveDeviceProperties(int numDevice, FILE* resultsFile)
 {
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties( &prop, numDevice);
 
-	printf("Device %d: %s with %d multiprocessors\n", numDevice, prop.name, prop.multiProcessorCount);
+	fprintf(resultsFile, "Device %d: %s with %d multiprocessors\n", numDevice, prop.name, prop.multiProcessorCount);
 }
 
 
 int main(int argc, char** argv)
 {
-	runStereoOnDefaultImagesUsingDefaultSettings();
+	//FILE* resultsFile = stdout;
+	FILE* resultsFile = fopen("output.txt", "w");
+	retrieveDeviceProperties(0, resultsFile);
+	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);
 }

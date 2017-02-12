@@ -24,6 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpStereoCudaParameters.cuh"
 
 //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-void runStereoEstOnImageSeries(const char* imageFiles[], int numImages, unsigned int& widthImages, unsigned int& heightImages, BPsettings algSettings, bool saveResults, const char* saveDisparityMapImagePaths[]);
+void runStereoEstOnImageSeries(const char* imageFiles[], int numImages, unsigned int& widthImages, unsigned int& heightImages, BPsettings algSettings, bool saveResults, const char* saveDisparityMapImagePaths[], FILE* resultsFile);
 
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

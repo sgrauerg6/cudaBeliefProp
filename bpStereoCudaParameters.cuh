@@ -22,12 +22,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define BP_STEREO_CUDA_PARAMETERS_CUH
 
 #include <stdio.h>
+#include "bpParametersFromPython.h"
 
 #define TSUKUBA_IMAGES 1
 #define CONES_IMAGES_QUARTER_SIZE 2
 #define CONES_IMAGES_HALF_SIZE 3
 #define CONES_IMAGES_FULL_SIZE 4
-#define IMAGE_SET_TO_PROCESS TSUKUBA_IMAGES
+#define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
+#define IMAGE_SET_TO_PROCESS IMAGE_SET_PARAMETERS_FROM_PYTHON
 
 #if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
 
@@ -48,6 +50,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "groundTruthDispTsukuba.pgm"
 #define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 16.0f //scaling from ground truth disparity to ground truth disparity map image
 
+// number of BP iterations at each scale/level
+#define ITER_BP 10
+
+// number of scales/levels in the pyramid to run BP
+#define LEVELS_BP 5
+
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
@@ -67,6 +75,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "conesQuarterGroundTruth.pgm"
 #define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 4.0f //scaling from ground truth disparity to ground truth disparity map image
 
+// number of BP iterations at each scale/level
+#define ITER_BP 10
+
+// number of scales/levels in the pyramid to run BP
+#define LEVELS_BP 6
+
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_HALF_SIZE)
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
@@ -78,13 +92,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define SAVE_DISPARITY_IMAGE_PATH_CPU "computedDisparityConesHalfCPU.pgm"
 
 //defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-#define NUM_POSSIBLE_DISPARITY_VALUES 110
+#define NUM_POSSIBLE_DISPARITY_VALUES 90
 
 #define SCALE_BP 2.0f     // scaling from computed disparity to graylevel in output
 
 //info about a default ground truth
 #define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "conesHalfGroundTruth.pgm"
 #define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 2.0f //scaling from ground truth disparity to ground truth disparity map image
+
+// number of BP iterations at each scale/level
+#define ITER_BP 10
+
+// number of scales/levels in the pyramid to run BP
+#define LEVELS_BP 7
 
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_FULL_SIZE)
 
@@ -105,7 +125,39 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DEFAULT_GROUND_TRUTH_DISPARITY_FILE "conesFullGroundTruth.pgm"
 #define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY 1.0f //scaling from ground truth disparity to ground truth disparity map image
 
+// number of BP iterations at each scale/level
+#define ITER_BP 8
+
+// number of scales/levels in the pyramid to run BP
+#define LEVELS_BP 10
+
+#elif (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
+
+//define the path for the 'default' reference and test images and the output "movement" images (can easily run
+//on other images using runBpStereoImageSeries on any number of images)
+#define DEFAULT_REF_IMAGE_PATH REF_IMAGE_FROM_PYTHON
+#define DEFAULT_TEST_IMAGE_PATH TEST_IMAGE_FROM_PYTHON
+
+#define SAVE_DISPARITY_IMAGE_PATH_GPU SAVE_DISPARITY_IMAGE_PATH_GPU_FROM_PYTHON
+#define SAVE_DISPARITY_IMAGE_PATH_CPU SAVE_DISPARITY_IMAGE_PATH_CPU_FROM_PYTHON
+
+//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
+#define NUM_POSSIBLE_DISPARITY_VALUES NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON
+
+#define SCALE_BP SCALE_BP_FROM_PYTHON     // scaling from computed disparity to graylevel in output
+
+//info about a default ground truth
+#define DEFAULT_GROUND_TRUTH_DISPARITY_FILE DEFAULT_GROUND_TRUTH_DISPARITY_FILE_FROM_PYTHON
+#define DEFAULT_SCALE_GROUND_TRUTH_DISPARITY DEFAULT_GROUND_TRUTH_DISPARITY_SCALE_FROM_PYTHON //scaling from ground truth disparity to ground truth disparity map image
+
+// number of BP iterations at each scale/level
+#define ITER_BP ITER_BP_FROM_PYTHON
+
+// number of scales/levels in the pyramid to run BP
+#define LEVELS_BP LEVELS_BP_FROM_PYTHON
+
 #endif //IMAGE_SET_TO_PROCESS
+
 
 //number of belief propagation stereo runs of same image set
 #define NUM_BP_STEREO_RUNS 5
@@ -115,12 +167,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //define the default message value...
 #define DEFAULT_INITIAL_MESSAGE_VAL 0.0f
-
-// number of BP iterations at each scale/level
-#define ITER_BP 100
-
-// number of scales/levels in the pyramid to run BP
-#define LEVELS_BP 1
 
 //truncation of discontinuity cost
 #define DISC_K_BP 1.7f
@@ -132,9 +178,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define LAMBDA_BP 0.07f
 
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
-#define SIGMA_BP 1.0f    // amount to smooth the input images
+#define SIGMA_BP 0.7f    // amount to smooth the input images
 
-#define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY 18
+#define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY NUM_POSSIBLE_DISPARITY_VALUES
 #define DEFAULT_Y_BORDER_GROUND_TRUTH_DISPARITY 18
 
 //more parameters for smoothing
