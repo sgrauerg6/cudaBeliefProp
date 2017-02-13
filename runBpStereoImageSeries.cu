@@ -195,6 +195,10 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		//printf("\n");
 	}
 
+	fprintf(resultsFile, "Image Width: %d\n", widthImages);
+	fprintf(resultsFile, "Image Height: %d\n", heightImages);
+	fprintf(resultsFile, "Total Image Pixels: %d\n", widthImages * heightImages);
+
 	//printf("Total time: %f\n", totalTime);
 	averageRunTimeGpuNotIncludingMemoryTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
 	averageRunTimeGpuIncludingMemoryTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;

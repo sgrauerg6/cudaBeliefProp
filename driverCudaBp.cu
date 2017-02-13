@@ -137,6 +137,15 @@ int main(int argc, char** argv)
 {
 	//FILE* resultsFile = stdout;
 	FILE* resultsFile = fopen("output.txt", "w");
+	fprintf(resultsFile, "Ref Image: %s\n", DEFAULT_REF_IMAGE_PATH);
+	fprintf(resultsFile, "Test Image: %s\n", DEFAULT_TEST_IMAGE_PATH);
+	fprintf(resultsFile, "Num Possible Disparity Values: %d\n", NUM_POSSIBLE_DISPARITY_VALUES);
+	fprintf(resultsFile, "Num BP Levels: %d\n", LEVELS_BP);
+	fprintf(resultsFile, "Num BP Iterations: %d\n", ITER_BP);
+	fprintf(resultsFile, "DISC_K_BP: %f\n", DISC_K_BP);
+	fprintf(resultsFile, "DATA_K_BP: %f\n", DATA_K_BP);
+	fprintf(resultsFile, "LAMBDA_BP: %f\n", LAMBDA_BP);
+	fprintf(resultsFile, "SIGMA_BP: %f\n", SIGMA_BP);
 	retrieveDeviceProperties(0, resultsFile);
 	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);
 }

@@ -56,6 +56,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 // number of scales/levels in the pyramid to run BP
 #define LEVELS_BP 5
 
+//truncation of discontinuity cost
+#define DISC_K_BP 1.7f
+
+// truncation of data cost
+#define DATA_K_BP 15.0f
+
+// weighing of data cost
+#define LAMBDA_BP 0.07f
+
+#define SIGMA_BP 0.7f    // amount to smooth the input images
+
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
@@ -80,6 +91,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 // number of scales/levels in the pyramid to run BP
 #define LEVELS_BP 6
+
+//truncation of discontinuity cost
+#define DISC_K_BP 1.7f
+
+// truncation of data cost
+#define DATA_K_BP 15.0f
+
+// weighing of data cost
+#define LAMBDA_BP 0.07f
+
+#define SIGMA_BP 0.7f    // amount to smooth the input images
 
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_HALF_SIZE)
 
@@ -106,6 +128,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 // number of scales/levels in the pyramid to run BP
 #define LEVELS_BP 7
 
+//truncation of discontinuity cost
+#define DISC_K_BP 1.7f
+
+// truncation of data cost
+#define DATA_K_BP 15.0f
+
+// weighing of data cost
+#define LAMBDA_BP 0.07f
+
+#define SIGMA_BP 0.7f    // amount to smooth the input images
+
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_FULL_SIZE)
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
@@ -130,6 +163,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 // number of scales/levels in the pyramid to run BP
 #define LEVELS_BP 10
+
+//truncation of discontinuity cost
+#define DISC_K_BP 1.7f
+
+// truncation of data cost
+#define DATA_K_BP 15.0f
+
+// weighing of data cost
+#define LAMBDA_BP 0.07f
+
+#define SIGMA_BP 0.7f    // amount to smooth the input images
+
 
 #elif (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
@@ -156,8 +201,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 // number of scales/levels in the pyramid to run BP
 #define LEVELS_BP LEVELS_BP_FROM_PYTHON
 
-#endif //IMAGE_SET_TO_PROCESS
+//truncation of discontinuity cost
+#define DISC_K_BP DISC_K_BP_FROM_PYTHON
 
+// truncation of data cost
+#define DATA_K_BP DATA_K_BP_FROM_PYTHON
+
+// weighing of data cost
+#define LAMBDA_BP LAMBDA_BP_FROM_PYTHON
+
+#define SIGMA_BP SIGMA_BP_FROM_PYTHON    // amount to smooth the input images
+
+#endif //IMAGE_SET_TO_PROCESS
 
 //number of belief propagation stereo runs of same image set
 #define NUM_BP_STEREO_RUNS 5
@@ -168,17 +223,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //define the default message value...
 #define DEFAULT_INITIAL_MESSAGE_VAL 0.0f
 
-//truncation of discontinuity cost
-#define DISC_K_BP 1.7f
-
-// truncation of data cost
-#define DATA_K_BP 15.0f  
-
-// weighing of data cost
-#define LAMBDA_BP 0.07f
-
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
-#define SIGMA_BP 0.7f    // amount to smooth the input images
 
 #define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY NUM_POSSIBLE_DISPARITY_VALUES
 #define DEFAULT_Y_BORDER_GROUND_TRUTH_DISPARITY 18

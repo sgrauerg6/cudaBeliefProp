@@ -268,7 +268,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 			+ (timeStart.tv_usec / 1000000.0);
 	double timeEndSeconds = timeEnd.tv_sec
 			+ (timeEnd.tv_usec / 1000000.0);
-	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf seconds\n",
+	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf\n",
 			timeEndSeconds - timeStartSeconds);
 	averageRunTimeCpu = timeEndSeconds - timeStartSeconds;
 
