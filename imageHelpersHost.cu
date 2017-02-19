@@ -43,6 +43,46 @@ __host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage,
 	return disparityVals;
 }
 
+__host__ unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
+{
+	char pgmExtension[] = "pgm";
+	char ppmExtension[] = "ppm";
+	char* filePathImageCopy = new char[strlen(filePathImage) + 1];
+	strcpy(filePathImageCopy, filePathImage);
+
+	//check if PGM or PPM image (types currently supported)
+	char* token = strtok(filePathImageCopy, ".");
+	char* lastToken = new char[strlen(token) + 1];;
+	strcpy(lastToken, token);
+	while( token != NULL )
+	{
+		delete [] lastToken;
+		lastToken = new char[strlen(token) + 1];
+		strcpy(lastToken, token);
+	    token = strtok(NULL, ".");
+	}
+
+	//last token after "." is file extension
+	if (strcmp(lastToken, pgmExtension) == 0)
+	{
+		delete [] filePathImageCopy;
+		printf("PGM IMAGE\n");
+		return loadImageFromPGM(filePathImage, widthImage, heightImage);
+	}
+	else if (strcmp(lastToken, ppmExtension) == 0)
+	{
+		delete [] filePathImageCopy;
+		printf("PPM IMAGE\n");
+		return loadImageFromPPM(filePathImage, widthImage, heightImage);
+	}
+	else
+	{
+		delete [] filePathImageCopy;
+		printf("ERROR, IMAGE FILE %s NOT SUPPORTED\n", filePathImage);
+		return NULL;
+	}
+}
+
 //load the PGM image and return as an array of floats
 __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
@@ -60,6 +100,29 @@ __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned i
 	for (int numPixel = 0; numPixel < (widthImage*heightImage); numPixel++)
 	{
 		imageData[numPixel] = (unsigned int)(dataRead[numPixel]);	
+	}
+
+	delete [] dataRead;
+	return imageData;
+}
+
+//load the PPM image, convert to grayscale, and return as an array of floats
+__host__ unsigned int* loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage)
+{
+	unsigned int* imageData;
+	unsigned int imageWidth = widthImage;
+	unsigned int imageHeight = heightImage;
+
+	unsigned char *dataRead;
+
+	ppmReadReturnGrayScale(filePathPpmImage, &widthImage, &heightImage,
+	     dataRead, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
+
+	imageData = new unsigned int[widthImage*heightImage];
+
+	for (int numPixel = 0; numPixel < (widthImage*heightImage); numPixel++)
+	{
+		imageData[numPixel] = (unsigned int)(dataRead[numPixel]);
 	}
 
 	delete [] dataRead;
@@ -173,6 +236,132 @@ int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
       fclose (filePointer);
       return (1);
 }
+
+/* INPUT: a filename (char*),row and column dimension variables (long), and
+ *   a pointer to a 2D array of unsigned char's of size MAXROWS x MAXCOLS
+ *   (row major).
+ * OUTPUT: an integer is returned indicating whether or not the
+ *   file was read into memory (in row major order).  1 is returned if the
+ *   file is read correctly, 0 if it is not.  If there are
+ *   too few pixels, the function still returns 1, but returns an error
+ *   message.  Error messages are also returned if a file cannot be open,
+ *   or if the specifications of the file are invalid.
+ * NOTE: The case where too many pixels are in a file is not detected.
+ */
+int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
+	     unsigned char*& image, bool weightedRGBConversion) {
+      FILE *filePointer;    /* for file buffer */
+      char line[MAXLENGTH]; /* for character input from file */
+      int maximumValue = 0; /* max value from header */
+      int binary;           /* flag to indicate if file is binary (P5)*/
+      long numberRead = 0;  /* counter for number of pixels read */
+      long i,j;             /* (i,j) for loops */
+      int test,temp;        /* for detecting EOF(test) and temp storage */
+
+      /* Open the file, return an error if necessary. */
+      if ((filePointer = fopen(fileName,"r")) == NULL) {
+	   printf ("ERROR: cannot open file\n\n");
+	   fclose (filePointer);
+	   return (0);
+      }
+
+      /* Initialize columnsidth, and height */
+      *cols = *rows =0;
+
+      /* Check the file signature ("Magic Numbers" P2 and P5); skip comments
+       * and blank lines (CR with no spaces before it).*/
+      fgets (line,MAXLENGTH,filePointer);
+      while (line[0]=='#' || line[0]=='\n') fgets (line,MAXLENGTH,filePointer);
+      if (line[0]=='P' && (line[1]=='3')) {
+	   binary = 0;
+	 /*   printf ("\nFile Format: P2\n"); */
+      }
+      else if (line[0]=='P' && (line[1]=='6')) {
+	   binary = 1;
+	  /*  printf ("\nFORMAT: P5\n"); */
+      }
+      else {
+	   printf ("ERROR: incorrect file format\n\n");
+	   fclose (filePointer);
+	   return (0);
+      }
+
+      /* Input the width, height and maximum value, skip comments and blank
+       * lines. */
+      fgets (line,MAXLENGTH,filePointer);
+      while (line[0]=='#' || line[0]=='\n') fgets (line,MAXLENGTH,filePointer);
+      sscanf (line,"%u %u",cols,rows);
+
+      fgets (line,MAXLENGTH,filePointer);
+      while (line[0]=='#' || line[0]=='\n') fgets(line,MAXLENGTH,filePointer);
+      sscanf (line,"%d",&maximumValue);
+
+      /* Check specifications and return an error if h,w, or
+      *  maximum value is illegal.*/
+      if ((*cols)<1 ||(*rows)<1 || maximumValue<0 || maximumValue>MAXVALUE){
+	   printf ("ERROR: invalid file specifications (cols/rows/max value)\n\n");
+	   fclose (filePointer);
+	   return (0);
+      }
+      else if ((*cols) > MAXCOLS || (*rows) > MAXROWS) {
+	   printf ("ERROR: increase MAXROWS/MAXCOLS in PGM.h");
+	   fclose (filePointer);
+	   return (0);
+      }
+
+      unsigned char* rgbImage = new unsigned char[3*(*cols)*(*rows)];
+      image = new unsigned char[(*cols)*(*rows)];
+
+      /* Read in the data for binary (P5) or ascii (P2) PGM formats   */
+      if (binary) {
+	   for (i = 0; i < (*rows); i++) {
+	        numberRead += fread((void *)&(rgbImage[(3*i)*(*cols) + 0]),
+		  sizeof(unsigned char), 3*(*cols), filePointer);
+		if (feof(filePointer)) break;
+	   }
+      }
+      else {
+	   for (i= 0; i < (*rows); i++) {
+	        for (j =0; j < (3*(*cols)); j++) {
+	             test = fscanf (filePointer,"%d",&temp);
+	             if (test == EOF) break;
+	             rgbImage[i*(*cols) + j] = (unsigned char)temp;
+	             numberRead++;
+	        }
+		if (test == EOF) break;
+	   }
+      }
+
+      /* Insure the number of pixels read is at least the
+       *   number indicated by w*h.
+       * If not, return an error message, but proceed */
+      if (numberRead < (3*(*rows)*(*cols))) {
+	   printf ("ERROR: fewer pixels than rows*cols indicates\n\n");
+      }
+
+      //convert the RGB image to grayscale
+      for (i = 0; i < (*rows)*(*cols); i++)
+      {
+    	  float rChannelWeight = 1.0f / 3.0f;
+    	  float bChannelWeight = 1.0f / 3.0f;
+    	  float gChannelWeight = 1.0f / 3.0f;
+    	  if (weightedRGBConversion)
+    	  {
+    		  rChannelWeight = 0.299f;
+    		  bChannelWeight = 0.587f;
+    		  gChannelWeight = 0.114f;
+    	  }
+    	  image[i] = (unsigned char)floor(rChannelWeight*((float)rgbImage[i*3]) + gChannelWeight*((float)rgbImage[i*3 + 1]) + bChannelWeight*((float)rgbImage[i*3 + 2]) + 0.5f);
+      }
+
+      //free memory used for storing rgb image (since using grayscale image)
+      delete [] rgbImage;
+
+      /* close the file and return 1 indicating success */
+      fclose (filePointer);
+      return (1);
+}
+
     
 /* INPUT: a filename (char*), the dimensions of the pixmap (rows,cols of
  *   type long), and a pointer to a 2D array (MAXROWS x MAXCOLS) in row

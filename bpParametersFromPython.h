@@ -1,7 +1,7 @@
 #ifndef BP_STEREO_FROM_PYTHON_H
 #define BP_STEREO_FROM_PYTHON_H
-#define REF_IMAGE_FROM_PYTHON "conesQuarter2.pgm"
-#define TEST_IMAGE_FROM_PYTHON "conesQuarter6.pgm"
+#define REF_IMAGE_FROM_PYTHON "conesQuarterSize//im2.ppm"
+#define TEST_IMAGE_FROM_PYTHON "conesQuarterSize//im6.ppm"
 #define SAVE_DISPARITY_IMAGE_PATH_GPU_FROM_PYTHON "computedDisparityConesQuarterGPU.pgm"
 #define SAVE_DISPARITY_IMAGE_PATH_CPU_FROM_PYTHON "computedDisparityConesQuarterCPU.pgm"
 #define NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON 63
@@ -9,7 +9,7 @@
 #define DEFAULT_GROUND_TRUTH_DISPARITY_FILE_FROM_PYTHON "conesQuarterGroundTruth.pgm"
 #define DEFAULT_GROUND_TRUTH_DISPARITY_SCALE_FROM_PYTHON 4.0f
 #define ITER_BP_FROM_PYTHON 10
-#define LEVELS_BP_FROM_PYTHON 1
+#define LEVELS_BP_FROM_PYTHON 5
 #define DISC_K_BP_FROM_PYTHON 1.7f
 #define DATA_K_BP_FROM_PYTHON 15.0f
 #define LAMBDA_BP_FROM_PYTHON 0.07f

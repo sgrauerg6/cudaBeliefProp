@@ -251,6 +251,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #define NO_EXPECTED_STEREO_BP -999.0f
 
+const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
+
 
 
 //structure to store the settings for the number of levels and iterations

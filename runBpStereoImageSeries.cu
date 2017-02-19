@@ -36,9 +36,9 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++) {
 		//printf("RUN %d\n", numRun);
 		//first run Stereo estimation on the first two images
-		unsigned int* image1AsUnsignedIntArrayHost = loadImageFromPGM(
+		unsigned int* image1AsUnsignedIntArrayHost = loadImageAsGrayScale(
 				imageFiles[0], widthImages, heightImages);
-		unsigned int* image2AsUnsignedIntArrayHost = loadImageFromPGM(
+		unsigned int* image2AsUnsignedIntArrayHost = loadImageAsGrayScale(
 				imageFiles[1], widthImages, heightImages);
 
 		float* smoothedImage1Device;
@@ -146,7 +146,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 					cudaMemcpyDeviceToDevice);
 
 			//load the next image from memory...this is will be image 2
-			image2AsUnsignedIntArrayHost = loadImageFromPGM(
+			image2AsUnsignedIntArrayHost = loadImageAsGrayScale(
 					imageFiles[numImage], widthImages, heightImages);
 
 			//transfer the image from the host to the device

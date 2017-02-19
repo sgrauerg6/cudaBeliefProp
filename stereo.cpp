@@ -285,9 +285,46 @@ void runStereoCpu(const char* refImagePath, const char* testImagePath, const cha
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
-	// load input
-	img1 = loadPGM(refImagePath);
-	img2 = loadPGM(testImagePath);
+	char pgmExtension[] = "pgm";
+	char ppmExtension[] = "ppm";
+	char* filePathImageCopy = new char[strlen(refImagePath) + 1];
+	strcpy(filePathImageCopy, refImagePath);
+
+	//check if PGM or PPM image (types currently supported)
+	char* token = strtok(filePathImageCopy, ".");
+	char* lastToken = new char[strlen(token) + 1];;
+	strcpy(lastToken, token);
+	while( token != NULL )
+	{
+		delete [] lastToken;
+		lastToken = new char[strlen(token) + 1];
+		strcpy(lastToken, token);
+	    token = strtok(NULL, ".");
+	}
+
+	//last token after "." is file extension
+	if (strcmp(lastToken, pgmExtension) == 0)
+	{
+		delete [] filePathImageCopy;
+		printf("CPU PGM IMAGE\n");
+		// load input
+		img1 = loadPGM(refImagePath);
+		img2 = loadPGM(testImagePath);
+	}
+	else if (strcmp(lastToken, ppmExtension) == 0)
+	{
+		delete [] filePathImageCopy;
+		printf("CPU PPM IMAGE\n");
+		// load input
+		img1 = loadPPMAndConvertToGrayScale(refImagePath);
+		img2 = loadPPMAndConvertToGrayScale(testImagePath);
+	}
+	else
+	{
+		delete [] filePathImageCopy;
+		printf("CPU ERROR, IMAGE FILE %s NOT SUPPORTED\n", refImagePath);
+		return;
+	}
 
 	// compute disparities
 	out = stereo_ms(img1, img2, resultsFile, averageRunTimeCpu);

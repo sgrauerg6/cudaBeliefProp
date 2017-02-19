@@ -169,6 +169,52 @@ static image<rgb> *loadPPM(const char *name) {
   return im;
 }
 
+static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
+  char buf[BUF_SIZE], doc[BUF_SIZE];
+
+  /* read header */
+  std::ifstream file(name, std::ios::in | std::ios::binary);
+  pnm_read(file, buf);
+  if (strncmp(buf, "P6", 2))
+    throw pnm_error();
+
+  pnm_read(file, buf);
+  int width = atoi(buf);
+  pnm_read(file, buf);
+  int height = atoi(buf);
+
+  pnm_read(file, buf);
+  if (atoi(buf) > UCHAR_MAX)
+    throw pnm_error();
+
+  /* read data */
+  image<rgb> *im = new image<rgb>(width, height);
+  image<uchar> *imGrayScale = new image<uchar>(width, height);
+  file.read((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
+
+  float rChannelWeight = 1.0f / 3.0f;
+  float gChannelWeight = 1.0f / 3.0f;
+  float bChannelWeight = 1.0f / 3.0f;
+  if (true)
+  {
+      		  rChannelWeight = 0.299f;
+      		  gChannelWeight = 0.114f;
+      		  bChannelWeight = 0.587f;
+  }
+
+  for (int i=0; i<width; i++)
+  {
+	  for (int j=0; j<height; j++)
+	  {
+		  imRef(imGrayScale, i, j) = floor(((float)imRef(im, i, j).r)*rChannelWeight + ((float)imRef(im, i, j).g)*gChannelWeight + ((float)imRef(im, i, j).b)*bChannelWeight + 0.5f);
+	  }
+  }
+  delete im;
+
+  return imGrayScale;
+}
+
+
 static void savePPM(image<rgb> *im, const char *name) {
   int width = im->width();
   int height = im->height();
