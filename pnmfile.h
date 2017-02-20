@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <fstream>
 #include "image.h"
 #include "misc.h"
+#include "bpStereoCudaParameters.cuh"
 
 #define BUF_SIZE 256
 
@@ -195,7 +196,7 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
   float rChannelWeight = 1.0f / 3.0f;
   float gChannelWeight = 1.0f / 3.0f;
   float bChannelWeight = 1.0f / 3.0f;
-  if (true)
+  if (USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION)
   {
       		  rChannelWeight = 0.299f;
       		  gChannelWeight = 0.114f;
@@ -222,6 +223,49 @@ static void savePPM(image<rgb> *im, const char *name) {
 
   file << "P6\n" << width << " " << height << "\n" << UCHAR_MAX << "\n";
   file.write((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
+}
+
+static image<uchar> *loadPGMOrPPMImage(const char *name) {
+	char pgmExtension[] = "pgm";
+	char ppmExtension[] = "ppm";
+	char* filePathImageCopy = new char[strlen(name) + 1];
+	strcpy(filePathImageCopy, name);
+
+	//check if PGM or PPM image (types currently supported)
+	char* token = strtok(filePathImageCopy, ".");
+	char* lastToken = new char[strlen(token) + 1];;
+	strcpy(lastToken, token);
+	while( token != NULL )
+	{
+		delete [] lastToken;
+		lastToken = new char[strlen(token) + 1];
+		strcpy(lastToken, token);
+	    token = strtok(NULL, ".");
+	}
+
+	//last token after "." is file extension
+	if (strcmp(lastToken, pgmExtension) == 0)
+	{
+		delete [] filePathImageCopy;
+		//printf("CPU PGM IMAGE\n");
+
+		// load input pgm image
+		return loadPGM(name);
+	}
+	else if (strcmp(lastToken, ppmExtension) == 0)
+	{
+		delete [] filePathImageCopy;
+		//printf("CPU PPM IMAGE\n");
+
+		// load input ppm image
+		return loadPPMAndConvertToGrayScale(name);
+	}
+	else
+	{
+		delete [] filePathImageCopy;
+		printf("CPU ERROR, IMAGE FILE %s NOT SUPPORTED\n", name);
+		return NULL;
+	}
 }
 
 template <class T>

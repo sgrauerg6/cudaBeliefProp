@@ -66,13 +66,13 @@ __host__ unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned 
 	if (strcmp(lastToken, pgmExtension) == 0)
 	{
 		delete [] filePathImageCopy;
-		printf("PGM IMAGE\n");
+		//printf("PGM IMAGE\n");
 		return loadImageFromPGM(filePathImage, widthImage, heightImage);
 	}
 	else if (strcmp(lastToken, ppmExtension) == 0)
 	{
 		delete [] filePathImageCopy;
-		printf("PPM IMAGE\n");
+		//printf("PPM IMAGE\n");
 		return loadImageFromPPM(filePathImage, widthImage, heightImage);
 	}
 	else
