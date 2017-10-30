@@ -46,6 +46,9 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 
 		unsigned int timerTransferTimeNotIncluded;
 		unsigned int timerIncludeTransferTime;
+		unsigned int timerBPIters;
+		unsigned int timerCudaMalloc;
+		unsigned int timerCudaFree;
 
 		//create timers to time the implementation with and without the transfer time between the host and device
 		struct timeval timeWithTransferStart;
@@ -202,6 +205,8 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	//printf("Total time: %f\n", totalTime);
 	averageRunTimeGpuNotIncludingMemoryTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
 	averageRunTimeGpuIncludingMemoryTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;
+	printf("AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuNotIncludingMemoryTransfer);
+	printf("AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuIncludingMemoryTransfer);
 	fprintf(resultsFile, "AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuNotIncludingMemoryTransfer);
 	fprintf(resultsFile, "AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuIncludingMemoryTransfer);
 }
