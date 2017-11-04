@@ -666,7 +666,12 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	struct timeval timeFinalUnbindFreeStart;
 			struct timeval timeFinalUnbindFreeEnd;
+			struct timeval timeFinalUnbindStart;
+			struct timeval timeFinalUnbindEnd;
+			struct timeval timeFinalFreeStart;
+			struct timeval timeFinalFreeEnd;
 			gettimeofday(&timeFinalUnbindFreeStart, NULL);
+			gettimeofday(&timeFinalUnbindStart, NULL);
 
 	//textures for message values no longer needed after output disparity/movement found
 	cudaUnbindTexture( messageUPrevTexStereoCheckerboard1);
@@ -679,6 +684,20 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	cudaUnbindTexture( messageLPrevTexStereoCheckerboard2);
 	cudaUnbindTexture( messageRPrevTexStereoCheckerboard2);
 
+	//unbind the texture attached to the data costs
+	cudaUnbindTexture(dataCostTexStereoCheckerboard1);
+	cudaUnbindTexture(dataCostTexStereoCheckerboard2);
+	( cudaThreadSynchronize() );
+	gettimeofday(&timeFinalUnbindEnd, NULL);
+
+	timeStart = timeFinalUnbindStart.tv_sec
+						+ (timeFinalUnbindStart.tv_usec / 1000000.0);
+			timeEnd = timeFinalUnbindEnd.tv_sec
+						+ (timeFinalUnbindEnd.tv_usec / 1000000.0);
+
+	double totalTimeFinalUnbind = timeEnd - timeStart;
+
+	gettimeofday(&timeFinalFreeStart, NULL);
 
 	//free the device storage for the message values used to retrieve the output movement values
 	if (currentCheckerboardSet == 0)
@@ -709,16 +728,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	}
 
 
-	//unbind the texture attached to the data costs
-	cudaUnbindTexture(dataCostTexStereoCheckerboard1);
-	cudaUnbindTexture(dataCostTexStereoCheckerboard2);
-
 	//now free the allocated data space
 	cudaFree(dataCostDeviceCheckerboard1);
 	cudaFree(dataCostDeviceCheckerboard2);
 
 	( cudaThreadSynchronize() );
 	gettimeofday(&timeFinalUnbindFreeEnd, NULL);
+	gettimeofday(&timeFinalFreeEnd, NULL);
 
 	timeStart = timeFinalUnbindFreeStart.tv_sec
 												+ (timeFinalUnbindFreeStart.tv_usec / 1000000.0);
@@ -726,6 +742,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 												+ (timeFinalUnbindFreeEnd.tv_usec / 1000000.0);
 
 		double totalTimeFinalUnbindFree = timeEnd - timeStart;
+
+		timeStart = timeFinalFreeStart.tv_sec
+					+ (timeFinalFreeStart.tv_usec / 1000000.0);
+		timeEnd = timeFinalFreeEnd.tv_sec
+					+ (timeFinalFreeEnd.tv_usec / 1000000.0);
+
+		double totalTimeFinalFree = timeEnd - timeStart;
 
 		printf("Time init settings and malloc: %f\n", totalTimeInitSettingsMallocStart);
 	printf("Time get data costs bottom level: %f\n", totalTimeGetDataCostsBottomLevel);
@@ -737,6 +760,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		printf("Total time Copy Data (kernel portion only): %f\n", timeCopyDataKernelTotalTime);
 	printf("Time get output disparity: %f\n", totalTimeGetOutputDisparity);
 	printf("Time final unbind free: %f\n", totalTimeFinalUnbindFree);
+	printf("Time final unbind: %f\n", totalTimeFinalUnbind);
+	printf("Time final free: %f\n", totalTimeFinalFree);
 	double totalTimed = totalTimeInitSettingsMallocStart + totalTimeGetDataCostsBottomLevel + totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals + totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity + totalTimeFinalUnbindFree;
 	printf("Total timed: %f\n", totalTimed);
 }
