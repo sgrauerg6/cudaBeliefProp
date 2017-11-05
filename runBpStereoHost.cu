@@ -368,14 +368,31 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	struct timeval timeInitSettingsMallocStart;
-				struct timeval timeInitSettingsMallocEnd;
-				gettimeofday(&timeInitSettingsMallocStart, NULL);
+				struct timeval timeInitSettingsConstMemStart;
+								struct timeval timeInitSettingsConstMemEnd;
 
+								gettimeofday(&timeInitSettingsConstMemStart, NULL);
 #endif
 
 	//set the BP algorithm and extension settings on the device
-	setBPSettingInConstMem(algSettings);	
+	setBPSettingInConstMem(algSettings);
+
+	( cudaThreadSynchronize() );
+
+#ifdef RUN_DETAILED_TIMING
+
+	gettimeofday(&timeInitSettingsConstMemStart, NULL);
+
+	timeStart = timeInitSettingsConstMemStart.tv_sec
+													+ (timeInitSettingsConstMemStart.tv_usec / 1000000.0);
+									timeEnd = timeInitSettingsConstMemEnd.tv_sec
+													+ (timeInitSettingsConstMemEnd.tv_usec / 1000000.0);
+
+
+		double totalTimeInitSettingsConstMem = timeEnd - timeStart;
+
+#endif
+
 
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
@@ -411,6 +428,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	float* dataCostDeviceCheckerboard1; //checkerboard 1 includes the pixel in slot (0, 0)
 	float* dataCostDeviceCheckerboard2;
 
+#ifdef RUN_DETAILED_TIMING
+
+	struct timeval timeInitSettingsMallocStart;
+				struct timeval timeInitSettingsMallocEnd;
+				gettimeofday(&timeInitSettingsMallocStart, NULL);
+#endif
+
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float))); 
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
 
@@ -438,13 +462,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-	//now go "back to" the bottom level to initialize the data costs starting at the bottom level and going up the pyramid
-	widthLevel = (float)algSettings.widthImages;
-	heightLevel = (float)algSettings.heightImages;
-
-	widthLevelActualIntegerSize = (int)floor(widthLevel);
-	heightLevelActualIntegerSize = (int)floor(heightLevel);
-
 	( cudaThreadSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
@@ -466,6 +483,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	gettimeofday(&timeInitDataCostsStart, NULL);
 
 #endif
+
+	//now go "back to" the bottom level to initialize the data costs starting at the bottom level and going up the pyramid
+		widthLevel = (float)algSettings.widthImages;
+		heightLevel = (float)algSettings.heightImages;
+
+		widthLevelActualIntegerSize = (int)floor(widthLevel);
+		heightLevelActualIntegerSize = (int)floor(heightLevel);
 
 
 	//initialize the data cost at the bottom level 
@@ -1061,7 +1085,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		double totalTimeFinalFree = timeEnd - timeStart;
 
-		printf("Time init settings and malloc: %f\n", totalTimeInitSettingsMallocStart);
+		printf("Time const mem in init settings: %f\n", totalTimeInitSettingsConstMem);
+		printf("Time init settings malloc: %f\n", totalTimeInitSettingsMallocStart);
 	printf("Time get data costs bottom level: %f\n", totalTimeGetDataCostsBottomLevel);
 	printf("Time get data costs higher levels: %f\n", totalTimeGetDataCostsHigherLevels);
 	printf("Time to init message values: %f\n", totalTimeInitMessageVals);
