@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
 #define RUN_DETAILED_TIMING
+#define USE_SAME_ARRAY_FOR_ALL_ALLOC
 
 struct timeval timeCopyDataKernelStart;
 		struct timeval timeCopyDataKernelEnd;
@@ -435,7 +436,35 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 				gettimeofday(&timeInitSettingsMallocStart, NULL);
 #endif
 
-	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float))); 
+#ifdef USE_SAME_ARRAY_FOR_ALL_ALLOC
+
+				printf("ALLOC ALL MEMORY\n");
+	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, 10*(halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
+	dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1*(halfTotalDataAllLevels)*totalPossibleMovements]);
+
+	float* messageUDeviceCheckerboard1;
+		float* messageDDeviceCheckerboard1;
+		float* messageLDeviceCheckerboard1;
+		float* messageRDeviceCheckerboard1;
+
+		float* messageUDeviceCheckerboard2;
+		float* messageDDeviceCheckerboard2;
+		float* messageLDeviceCheckerboard2;
+		float* messageRDeviceCheckerboard2;
+
+		messageUDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[2*(halfTotalDataAllLevels)*totalPossibleMovements]);
+		messageDDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[3*(halfTotalDataAllLevels)*totalPossibleMovements]);
+		messageLDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[4*(halfTotalDataAllLevels)*totalPossibleMovements]);
+		messageRDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[5*(halfTotalDataAllLevels)*totalPossibleMovements]);
+
+		messageUDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[6*(halfTotalDataAllLevels)*totalPossibleMovements]);
+		messageDDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[7*(halfTotalDataAllLevels)*totalPossibleMovements]);
+		messageLDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[8*(halfTotalDataAllLevels)*totalPossibleMovements]);
+		messageRDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[9*(halfTotalDataAllLevels)*totalPossibleMovements]);
+
+#else
+
+	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
 
 #ifdef USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
@@ -459,6 +488,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	(cudaMalloc((void**) &messageDDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
 	(cudaMalloc((void**) &messageLDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
 	(cudaMalloc((void**) &messageRDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
+
+#endif
 
 #endif
 
@@ -1016,6 +1047,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
+#ifdef USE_SAME_ARRAY_FOR_ALL_ALLOC
+
+#else
+
 #ifdef USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
 
 	cudaFree(messageUDeviceCheckerboard1);
@@ -1059,10 +1094,21 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	}
 
 #endif
+#endif
+
+#ifdef USE_SAME_ARRAY_FOR_ALL_ALLOC
+	printf("FREE ALL MEMORY\n");
+
+	cudaFree(dataCostDeviceCheckerboard1);
+
+#else
+	printf("ALLOC MULT MEM SEGMENTS\n");
 
 	//now free the allocated data space
 	cudaFree(dataCostDeviceCheckerboard1);
 	cudaFree(dataCostDeviceCheckerboard2);
+
+#endif
 
 	( cudaThreadSynchronize() );
 
