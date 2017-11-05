@@ -381,7 +381,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeInitSettingsConstMemStart, NULL);
+	gettimeofday(&timeInitSettingsConstMemEnd, NULL);
 
 	timeStart = timeInitSettingsConstMemStart.tv_sec
 													+ (timeInitSettingsConstMemStart.tv_usec / 1000000.0);
