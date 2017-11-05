@@ -36,6 +36,8 @@ __device__ __constant__ BPsettings BPSettingsConstMemStereo;
 texture<float, 2, cudaReadModeElementType> image1PixelsTextureBPStereo;
 texture<float, 2, cudaReadModeElementType> image2PixelsTextureBPStereo;
 
+#ifdef USE_TEXTURES
+
 texture<float, 1, cudaReadModeElementType> dataCostTexStereoCheckerboard1;
 texture<float, 1, cudaReadModeElementType> dataCostTexStereoCheckerboard2;
 
@@ -49,6 +51,8 @@ texture<float, 1, cudaReadModeElementType> messageUPrevTexStereoCheckerboard2;
 texture<float, 1, cudaReadModeElementType> messageDPrevTexStereoCheckerboard2;
 texture<float, 1, cudaReadModeElementType> messageLPrevTexStereoCheckerboard2;
 texture<float, 1, cudaReadModeElementType> messageRPrevTexStereoCheckerboard2;
+
+#endif
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBounds(int xVal, int yVal, int width, int height);

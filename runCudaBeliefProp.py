@@ -33,7 +33,7 @@ if __name__ == "__main__":
 	teddyImageSetHalfSizeAdjusted = {"RefImage" : "\"teddyHAdjusted/im2.ppm\"", "TestImage" : "\"teddyHAdjusted/im6.ppm\"", "CompGpuDispMap" : "\"teddyHAdjusted/computedDisparityMapTsukubaGPU.pgm\"", "CompCpuDispMap" : "\"teddyHAdjusted/computedDisparityMapTsukubaCPU.pgm\"", "NumDispVals" : "127", "ScaleBp" : "2.0f", "GroundTruthDisp" : "\"teddyH/disp2.pgm\"", "GroundTruthDispScale" : "2.0f"}
 
 	#imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, barn2ImageSet, bullImageSet, mapImageSet, posterImageSet, sawtoothImageSet, conesImageSetQuarterSize, teddyImageSetQuarterSize, conesImageSetHalfSize, teddyImageSetHalfSize, conesImageSetHalfSizeAdjusted, teddyImageSetHalfSizeAdjusted]
-	imageSets = [tsukubaImageSet]
+	imageSets = [conesImageSetQuarterSize]
 	#refImages = ["\"tsukuba1.pgm\"", "\"conesQuarter2.pgm\"", "\"conesHalf2.pgm\""]
 	#testImages = ["\"tsukuba2.pgm\"", "\"conesQuarter6.pgm\"", "\"conesHalf6.pgm\""]
 	#saveDispGpuOutput = ["\"computedDisparityMapTsukubaGPU.pgm\"", "\"computedDisparityConesQuarterGPU.pgm\"", "\"computedDisparityConesHalfGPU.pgm\""]

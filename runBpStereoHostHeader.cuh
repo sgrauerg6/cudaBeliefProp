@@ -45,7 +45,8 @@ __host__ void setBPSettingInConstMem(BPsettings& currentBPSettings);
 __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelInt, int& heightLevelInt, size_t& dataTexOffset,
 		float*& messageUDeviceCheckerboard1, float*& messageDDeviceCheckerboard1, float*& messageLDeviceCheckerboard1, 
 		float*& messageRDeviceCheckerboard1, float*& messageUDeviceCheckerboard2, float*& messageDDeviceCheckerboard2, float*& messageLDeviceCheckerboard2, 
-		float*& messageRDeviceCheckerboard2, dim3& grid, dim3& threads, int& numBytesDataAndMessageSetInCheckerboardAtLevel);
+		float*& messageRDeviceCheckerboard2, dim3& grid, dim3& threads, int& numBytesDataAndMessageSetInCheckerboardAtLevel, float* dataCostDeviceCheckerboard1,
+		float* dataCostDeviceCheckerboard2);
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory without using textures
 __host__ void runBPAtCurrentLevelNoTextures(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize, 
