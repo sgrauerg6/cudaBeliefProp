@@ -418,7 +418,6 @@ __host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scale
 	//represents 0 intensity and the intensity increases linearly using scaleMovement from minMovementDirection
 	for (unsigned int currentPixel = 0; currentPixel < (widthImage*heightImage); currentPixel++)
 	{
-
 		//add .5 and truncate to "round" the intensity to save to an integer
 		movementImageToSave[currentPixel] = (unsigned char)((calcDisparityBetweenImages[currentPixel])*scaleMovement + .5f);
 	}

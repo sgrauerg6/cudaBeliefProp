@@ -121,11 +121,8 @@ __global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheck
 
 	int indexVal;
 
-
 	if (withinImageBounds(xVal, yVal, BPSettingsConstMemStereo.widthImages, BPSettingsConstMemStereo.heightImages))
 	{
-		
-
 		//make sure that it is possible to check every disparity value
 		if ((xVal - NUM_POSSIBLE_DISPARITY_VALUES) >= 0)
 		{
@@ -148,14 +145,12 @@ __global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheck
 				{
 					dataCostDeviceStereoCheckerboard2[indexVal] = BPSettingsConstMemStereo.dataWeight * min(abs(currentPixelImage1 - currentPixelImage2), BPSettingsConstMemStereo.dataCostCap);
 				}
-
 			}
 		}
 		else
 		{
 			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 			{
-
 				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, (BPSettingsConstMemStereo.widthImages/2), BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
@@ -167,7 +162,6 @@ __global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheck
 				{
 					dataCostDeviceStereoCheckerboard2[indexVal] = 0;
 				}
-
 			}
 		}
 	}
@@ -241,7 +235,6 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(float* dataCostStereo
 
 	if (withinImageBounds(xVal, yVal, widthLevel/2, heightLevel))
 	{
-
 		int widthLevelPrevCheckerboard = widthLevel;
 		int widthLevelCurrentCheckerboard = widthLevel/2;
 		int heightLevelPrev = heightLevel*2;
@@ -348,7 +341,6 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceUseTexBoundAndLocalM
 	int indexWriteTo;
 	int checkerboardAdjustment;
 
-	
 	//if iterationNum is even, update checkerboard part 2
 	//if iterationNum is odd, update checkerboard part 1
 	//checkerboardAdjustment used for indexing into current checkerboard
@@ -361,7 +353,6 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceUseTexBoundAndLocalM
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-
 
 	//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
 	//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
@@ -439,7 +430,6 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 	int indexWriteTo;
 	int checkerboardAdjustment;
 
-
 	//if iterationNum is even, update checkerboard part 2
 	//if iterationNum is odd, update checkerboard part 1
 	//checkerboardAdjustment used for indexing into current checkerboard
@@ -452,7 +442,6 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-
 
 	//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
 	//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
@@ -608,7 +597,6 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(float* messageUDevi
 
 		int indexCopyTo;
 		int indexCopyFrom;
-
 		int checkerboardPartAdjustment;
 
 		float prevValU;
@@ -624,7 +612,6 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(float* messageUDevi
 		{
 			checkerboardPartAdjustment = ((yVal+1)%2);
 		}
-
 
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
@@ -906,7 +893,6 @@ __global__ void retrieveOutputDisparityCheckerboardStereo(float* disparityBetwee
 
 	if (withinImageBounds(xVal, yVal, widthLevel, heightLevel))
 	{
-
 		int widthCheckerboard = widthLevel/2;
 		int xValInCheckerboardPart = xVal/2;
 
@@ -988,7 +974,6 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(float* dataC
 
 	if (withinImageBounds(xVal, yVal, widthLevel, heightLevel))
 	{
-
 		int widthCheckerboard = widthLevel/2;
 		int xValInCheckerboardPart = xVal/2;
 
@@ -996,7 +981,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(float* dataC
 		{
 			int	checkerboardPartAdjustment = (yVal%2);
 
-			if ((xVal >= 0) && (xVal <= (widthLevel - 1)) && (yVal >= 0) && (yVal <= (heightLevel - 1)))
+			if ((xVal >= 1) && (xVal < (widthLevel - 1)) && (yVal >= 1) && (yVal < (heightLevel - 1)))
 			{
 				// keep track of "best" disparity for current pixel
 				int bestDisparity = 0;
@@ -1024,7 +1009,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(float* dataC
 		{
 			int	checkerboardPartAdjustment = ((yVal + 1) % 2);
 
-			if ((xVal >= 0) && (xVal <= (widthLevel - 1)) && (yVal >= 0) && (yVal <= (heightLevel - 1)))
+			if ((xVal >= 1) && (xVal < (widthLevel - 1)) && (yVal >= 1) && (yVal < (heightLevel - 1)))
 			{
 				// keep track of "best" disparity for current pixel
 				int bestDisparity = 0;
