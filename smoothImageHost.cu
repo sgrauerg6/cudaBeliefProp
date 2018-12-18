@@ -90,7 +90,7 @@ __host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InH
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
 		convertUnsignedIntImageToFloat <<< grid, threads >>>(image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//now do the same thing with image 2: load to device and convert the pixel values to floats stored in image2SmoothedDevice
 
@@ -104,7 +104,7 @@ __host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InH
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
 		convertUnsignedIntImageToFloat <<< grid, threads >>>(image2SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 
 		//unbind the texture the unsigned int textured that the input images were bound to
@@ -147,7 +147,7 @@ __host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InH
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
 		filterUnsignedIntImageAcross <<< grid, threads >>> (intermediateImageDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//bind the "float-valued" intermediate image on the device to a float texture
 		cudaBindTexture(0, imagePixelsFloatToFilterTexture, intermediateImageDevice, widthImages*heightImages*sizeof(float));
@@ -155,7 +155,7 @@ __host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InH
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVertical <<< grid, threads >>> (image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 	
 
@@ -168,7 +168,7 @@ __host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InH
 
 		filterUnsignedIntImageAcross <<< grid, threads >>> (intermediateImageDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//bind the "float-valued" intermediate image on the device to a float texture
 		cudaBindTexture(0, imagePixelsFloatToFilterTexture, intermediateImageDevice, widthImages*heightImages*sizeof(float));
@@ -176,7 +176,7 @@ __host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InH
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVertical <<< grid, threads >>> (image2SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 
 
@@ -214,7 +214,7 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
 		convertUnsignedIntImageToFloat <<< grid, threads >>>(image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//now do the same thing with image 2: load to device and convert the pixel values to floats stored in image2SmoothedDevice
 
@@ -224,7 +224,7 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
 		convertUnsignedIntImageToFloat <<< grid, threads >>>(image2SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 
 		//unbind the texture the unsigned int textured that the input images were bound to
@@ -255,7 +255,7 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
 		filterUnsignedIntImageAcross <<< grid, threads >>> (intermediateImageDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//bind the "float-valued" intermediate image on the device to a float texture
 		cudaBindTexture(0, imagePixelsFloatToFilterTexture, intermediateImageDevice, widthImages*heightImages*sizeof(float));
@@ -263,7 +263,7 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVertical <<< grid, threads >>> (image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 	
 
@@ -274,7 +274,7 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 
 		filterUnsignedIntImageAcross <<< grid, threads >>> (intermediateImageDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//bind the "float-valued" intermediate image on the device to a float texture
 		cudaBindTexture(0, imagePixelsFloatToFilterTexture, intermediateImageDevice, widthImages*heightImages*sizeof(float));
@@ -282,7 +282,7 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVertical <<< grid, threads >>> (image2SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 
 
@@ -330,7 +330,7 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
 		convertUnsignedIntImageToFloat <<< grid, threads >>>(image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 
 
@@ -374,7 +374,7 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
 		filterUnsignedIntImageAcross <<< grid, threads >>> (intermediateImageDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//bind the "float-valued" intermediate image on the device to a float texture
 		cudaBindTexture(0, imagePixelsFloatToFilterTexture, intermediateImageDevice, widthImages*heightImages*sizeof(float));
@@ -382,7 +382,7 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVertical <<< grid, threads >>> (image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//unbind the texture the unsigned int and float textures used for the smoothing
 		cudaUnbindTexture( imagePixelsUnsignedIntToFilterTexture);
@@ -418,7 +418,7 @@ __host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, in
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
 		convertUnsignedIntImageToFloat <<< grid, threads >>>(image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//unbind the texture the unsigned int textured that the input images were bound to
 		cudaUnbindTexture( imagePixelsUnsignedIntToFilterTexture);
@@ -450,7 +450,7 @@ __host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, in
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
 		filterUnsignedIntImageAcross <<< grid, threads >>> (intermediateImageDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//bind the "float-valued" intermediate image on the device to a float texture
 		cudaBindTexture(0, imagePixelsFloatToFilterTexture, intermediateImageDevice, widthImages*heightImages*sizeof(float));
@@ -458,7 +458,7 @@ __host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, in
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVertical <<< grid, threads >>> (image1SmoothedDevice);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		//unbind the texture the unsigned int and float textures used for the smoothing
 		cudaUnbindTexture( imagePixelsUnsignedIntToFilterTexture);

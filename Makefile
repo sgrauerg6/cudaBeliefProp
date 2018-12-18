@@ -30,7 +30,7 @@ COMPILE_FLAGS += -O2
 
 INCDIR = -I.
 DBG    = -g
-OPT    = -O3
+OPT    = -O2
 CPP    = g++
 CFLAGS = $(DBG) $(OPT) $(INCDIR)
 LINK   = -lm

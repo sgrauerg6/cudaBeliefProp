@@ -55,7 +55,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 	{
 		if ((iterationNum % 2) == 0)
 		{
-			(cudaThreadSynchronize());
+			(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
 			gettimeofday(&timeBpItersKernelStart, NULL);
@@ -75,7 +75,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 
 #endif
 
-			(cudaThreadSynchronize());
+			(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -99,7 +99,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 		}
 		else
 		{
-			(cudaThreadSynchronize());
+			(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -118,7 +118,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1, widthLevelActualIntegerSize, heightLevelActualIntegerSize, iterationNum, ((int)dataTexOffset / sizeof(float)));
 #endif
-			(cudaThreadSynchronize());
+			(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -188,7 +188,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 
 #endif
 
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef USE_TEXTURES
 
@@ -200,7 +200,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo, 
 			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_1);
 
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 	copyPrevLevelToNextLevelBPCheckerboardStereo <<< grid, threads >>> (messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo, 
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo, 
@@ -223,7 +223,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 				messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
 				messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_1);
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures <<< grid, threads >>> (messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 				messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
@@ -233,7 +233,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 				messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_2);
 
 #endif
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -319,7 +319,7 @@ __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2Pixe
 	//initialize the data the the "bottom" of the image pyramid
 	initializeBottomLevelDataStereo <<< grid, threads >>> (dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
 
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 	//unbind the texture attached to the image pixel values
 	cudaUnbindTexture( image1PixelsTextureBPStereo);
@@ -345,7 +345,7 @@ __host__ void initializeMessageValsToDefault(float*& messageUDeviceSet0Checkerbo
 												messageRDeviceSet0Checkerboard1, messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, 
 												messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2, widthOfCheckerboard, heightOfCheckerboard);
 
-	cudaThreadSynchronize();
+	cudaDeviceSynchronize();
 }
 
 
@@ -378,7 +378,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//set the BP algorithm and extension settings on the device
 	setBPSettingInConstMem(algSettings);
 
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -493,7 +493,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -591,7 +591,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		//the "next level" starts at the calculated offsetLevel
 		initializeCurrentLevelDataStereo <<< grid, threads >>> (&dataCostDeviceCheckerboard1[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_1, ((int)offsetNum/sizeof(float)));
 		
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 		
 		initializeCurrentLevelDataStereo <<< grid, threads >>> (&dataCostDeviceCheckerboard2[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_2, ((int)offsetNum/sizeof(float)));
 
@@ -600,12 +600,12 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		initializeCurrentLevelDataStereoNoTextures <<< grid, threads >>> (&dataCostDeviceCheckerboard1[prev_level_offset_level], &dataCostDeviceCheckerboard2[prev_level_offset_level], &dataCostDeviceCheckerboard1[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_1, ((int)offsetNum/sizeof(float)));
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 		initializeCurrentLevelDataStereoNoTextures <<< grid, threads >>> (&dataCostDeviceCheckerboard1[prev_level_offset_level], &dataCostDeviceCheckerboard2[prev_level_offset_level], &dataCostDeviceCheckerboard2[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_2, ((int)offsetNum/sizeof(float)));
 
 #endif
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 #ifdef USE_TEXTURES
 
@@ -635,7 +635,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 	//declare the space to pass the BP messages
 	//need to have two "sets" of checkerboards because
@@ -713,7 +713,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
 		cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
 #endif
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -751,7 +751,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	{
 		//offset needed because of alignment requirement for textures
 		size_t offset = 0;
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -792,7 +792,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 					&dataCostDeviceCheckerboard1[offsetLevel], &dataCostDeviceCheckerboard2[offsetLevel]);
 			}
 
-			( cudaThreadSynchronize() );
+			( cudaDeviceSynchronize() );
 		}
 
 #ifdef RUN_DETAILED_TIMING
@@ -915,7 +915,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 			}
 #endif
 		}
-		( cudaThreadSynchronize() );
+		( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -979,7 +979,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	}
 
 #endif
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -1024,7 +1024,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//unbind the texture attached to the data costs
 	cudaUnbindTexture(dataCostTexStereoCheckerboard1);
 	cudaUnbindTexture(dataCostTexStereoCheckerboard2);
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -1110,7 +1110,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-	( cudaThreadSynchronize() );
+	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
 
