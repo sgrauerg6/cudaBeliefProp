@@ -23,7 +23,7 @@
 #include "smoothImageHostHeader.cuh"
 
 #include "saveResultingDisparityMapHeader.cuh"
-#include <sys/time.h>
+#include <chrono>
 
 #define USE_TEXTURES
 
@@ -36,6 +36,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 
 	double totalTimeNoTransfer = 0.0;
 	double totalTimeIncludeTransfer = 0.0;
+	DetailedTimings timings;
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++) {
 		//printf("RUN %d\n", numRun);
 		//first run Stereo estimation on the first two images
@@ -53,11 +54,6 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		unsigned int timerCudaMalloc;
 		unsigned int timerCudaFree;
 
-		//create timers to time the implementation with and without the transfer time between the host and device
-		struct timeval timeWithTransferStart;
-		struct timeval timeNoTransferStart;
-		struct timeval timeNoTransferEnd;
-
 		//allocate the device memory to store and x and y smoothed images
 		(cudaMalloc((void**) &smoothedImage1Device,
 				widthImages * heightImages * sizeof(float)));
@@ -74,7 +70,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 				widthImages * heightImages * sizeof(unsigned int));
 
 		//start timer to retrieve the time of implementation including transfer time
-		gettimeofday(&timeWithTransferStart, NULL);
+		auto timeWithTransferStart = std::chrono::system_clock::now();
 
 		//transfer the image 1 and image 2 data from the host to the device
 		cudaMemcpy(image1Device, image1AsUnsignedIntArrayHost,
@@ -89,7 +85,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		delete[] image2AsUnsignedIntArrayHost;
 
 		//start timer to retrieve the time of implementation not including transfer time
-		gettimeofday(&timeNoTransferStart, NULL);
+		auto timeNoTransferStart = std::chrono::system_clock::now();
 
 		//first smooth the images using the CUDA Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored global memory on the device at locations image1SmoothedDevice and image2SmoothedDevice
@@ -114,28 +110,23 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		if ((widthImages <= WIDTH_IMAGE_CHUNK_RUN_STEREO_EST_BP)
 				&& (heightImages <= HEIGHT_IMAGE_CHUNK_RUN_STEREO_EST_BP)) {
 			runBeliefPropStereoCUDA(smoothedImage1Device, smoothedImage2Device,
-					disparityMapFromImage1To2Device, algSettings);
+					disparityMapFromImage1To2Device, algSettings, timings);
 		}
 		//otherwise run the BP Stereo on the image set "in chunks"
 		else {
 			printf("RUN IMAGE IN CHUNKS\n");
 			runBPStereoEstOnImageSetInChunks(smoothedImage1Device,
 					smoothedImage2Device, widthImages, heightImages,
-					disparityMapFromImage1To2Device, algSettings);
+					disparityMapFromImage1To2Device, algSettings, timings);
 		}
 
 		//retrieve the running time of the implementation not including the host/device transfer time
-		//cutStopTimer(timerTransferTimeNotIncluded);
 		//printf("Running time not including transfer time: %f (ms) \n", cutGetTimerValue(timerTransferTimeNotIncluded));
-		//cutResetTimer(timerTransferTimeNotIncluded);
-		gettimeofday(&timeNoTransferEnd, NULL);
-		double timeStart = timeNoTransferStart.tv_sec
-				+ (timeNoTransferStart.tv_usec / 1000000.0);
-		double timeEnd = timeNoTransferEnd.tv_sec
-				+ (timeNoTransferEnd.tv_usec / 1000000.0);
+		auto timeNoTransferEnd = std::chrono::system_clock::now();
+		std::chrono::duration<double> diff = timeNoTransferEnd-timeNoTransferStart;
 		//printf("Running time not including transfer time: %.10lf seconds\n",
 		//		timeEnd - timeStart);
-		totalTimeNoTransfer += (timeEnd - timeStart);
+		totalTimeNoTransfer += diff.count();
 
 		if (saveResults) {
 			saveResultingDisparityMap(saveDisparityMapImagePaths[0],
@@ -172,13 +163,13 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 					&& (heightImages <= HEIGHT_IMAGE_CHUNK_RUN_STEREO_EST_BP)) {
 				runBeliefPropStereoCUDA(smoothedImage1Device,
 						smoothedImage2Device, disparityMapFromImage1To2Device,
-						algSettings);
+						algSettings, timings);
 			}
 			//otherwise run the BP Stereo on the image set "in chunks" (although for a small image, there may only be one chunk)
 			else {
 				runBPStereoEstOnImageSetInChunks(smoothedImage1Device,
 						smoothedImage2Device, widthImages, heightImages,
-						disparityMapFromImage1To2Device, algSettings);
+						disparityMapFromImage1To2Device, algSettings, timings);
 			}
 
 			//save results if desired
@@ -204,6 +195,9 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	fprintf(resultsFile, "Image Width: %d\n", widthImages);
 	fprintf(resultsFile, "Image Height: %d\n", heightImages);
 	fprintf(resultsFile, "Total Image Pixels: %d\n", widthImages * heightImages);
+
+	timings.PrintMedianTimings();
+	timings.PrintMedianTimingsToFile(resultsFile);
 
 	//printf("Total time: %f\n", totalTime);
 	averageRunTimeGpuNotIncludingMemoryTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;

@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //run the BP Stereo estimation algorithm in "chunks" on a set of images of given width and height stored on the device (already been loaded and "smoothed" if desired)
 //assume that the device memory is already allocated for output disparity map in disparityMapImageSetDevice
-void runBPStereoEstOnImageSetInChunks(float* image1Device, float* image2Device, unsigned int widthImages, unsigned int heightImages, float*& disparityMapImageSetDevice, BPsettings& runBPAlgSettings, unsigned int widthImageChunk, unsigned int heightImageChunk, unsigned int imageChunkPaddingX, unsigned int imageChunkPaddingY)
+void runBPStereoEstOnImageSetInChunks(float* image1Device, float* image2Device, unsigned int widthImages, unsigned int heightImages, float*& disparityMapImageSetDevice, BPsettings& runBPAlgSettings, DetailedTimings& timings, unsigned int widthImageChunk, unsigned int heightImageChunk, unsigned int imageChunkPaddingX, unsigned int imageChunkPaddingY)
 {
 	float* currentPortionImage1Device;
 	float* currentPortionImage2Device;
@@ -67,7 +67,7 @@ void runBPStereoEstOnImageSetInChunks(float* image1Device, float* image2Device, 
 
 
 			//run BP on the image portion
-			runBeliefPropStereoCUDA(currentPortionImage1Device, currentPortionImage2Device, disparityMapPortionDevice, runBPAlgSettings);
+			runBeliefPropStereoCUDA(currentPortionImage1Device, currentPortionImage2Device, disparityMapPortionDevice, runBPAlgSettings, timings);
 
 
 			//retrieve the size of the chunk to write to the device (may be smaller than chunk size if at "end")...write the portion of the Stereo without the padding

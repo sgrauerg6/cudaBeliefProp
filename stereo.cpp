@@ -25,10 +25,10 @@
 #include <pnmfile.h>
 #include <filter.h>
 #include <imconv.h>
-#include <sys/time.h>
 #include <string>
 #include "bpStereoCudaParameters.cuh"
 #include "stereo.h"
+#include <chrono>
 
 #define ITER ITER_BP      // number of BP iterations at each scale
 #define LEVELS LEVELS_BP     // number of scales
@@ -188,9 +188,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 	image<float[VALUES]> *r[LEVELS];
 	image<float[VALUES]> *data[LEVELS];
 
-	struct timeval timeStart;
-	struct timeval timeEnd;
-	gettimeofday(&timeStart, NULL);
+	auto timeStart = std::chrono::system_clock::now();
 
 	// data costs
 	data[0] = comp_data(img1, img2);
@@ -263,14 +261,12 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 
 	image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
 
-	gettimeofday(&timeEnd, NULL);
-	double timeStartSeconds = timeStart.tv_sec
-			+ (timeStart.tv_usec / 1000000.0);
-	double timeEndSeconds = timeEnd.tv_sec
-			+ (timeEnd.tv_usec / 1000000.0);
+	auto timeEnd = std::chrono::system_clock::now();
+	std::chrono::duration<double> diff = timeEnd-timeStart;
+
 	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf\n",
-			timeEndSeconds - timeStartSeconds);
-	averageRunTimeCpu = timeEndSeconds - timeStartSeconds;
+			diff.count());
+	averageRunTimeCpu = diff.count();
 
 	delete u[0];
 	delete d[0];

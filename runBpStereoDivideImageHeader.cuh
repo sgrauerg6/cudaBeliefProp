@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //run the BP Stereo estimation algorithm in "chunks" on a set of images of given width and height stored on the device (already been loaded and "smoothed" if desired)
 //assume that the device memory is already allocated for output disparity map in disparityMapImageSetDevice
-void runBPStereoEstOnImageSetInChunks(float* image1Device, float* image2Device, unsigned int widthImages, unsigned int heightImages, float*& disparityMapImageSetDevice, BPsettings& runBPAlgSettings, unsigned int widthImageChunk = WIDTH_IMAGE_CHUNK_RUN_STEREO_EST_BP, unsigned int heightImageChunk = HEIGHT_IMAGE_CHUNK_RUN_STEREO_EST_BP, unsigned int imageChunkPaddingX = PADDING_IMAGE_CHUNK_X_RUN_STEREO_EST_BP, unsigned int imageChunkPaddingY = PADDING_IMAGE_CHUNK_Y_RUN_STEREO_EST_BP);
+void runBPStereoEstOnImageSetInChunks(float* image1Device, float* image2Device, unsigned int widthImages, unsigned int heightImages, float*& disparityMapImageSetDevice, BPsettings& runBPAlgSettings, DetailedTimings& timings, unsigned int widthImageChunk = WIDTH_IMAGE_CHUNK_RUN_STEREO_EST_BP, unsigned int heightImageChunk = HEIGHT_IMAGE_CHUNK_RUN_STEREO_EST_BP, unsigned int imageChunkPaddingX = PADDING_IMAGE_CHUNK_X_RUN_STEREO_EST_BP, unsigned int imageChunkPaddingY = PADDING_IMAGE_CHUNK_Y_RUN_STEREO_EST_BP);
 
 //extract a submatrix widthMatrixRetrieve X heightMatrixRetrieve of size in device memory from a 2d array in the device given the starting point (startXIn2DArray, startYIn2DArray)
 //the output outputSubMatrixDevice is a pointer to the desired submatrix in the device 

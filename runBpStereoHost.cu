@@ -19,18 +19,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
 #include "runBpStereoHostHeader.cuh"
-#include <sys/time.h>
+#include <chrono>
 
-#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
+//#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
 #define RUN_DETAILED_TIMING
 //#define USE_SAME_ARRAY_FOR_ALL_ALLOC
 
-struct timeval timeCopyDataKernelStart;
-struct timeval timeCopyDataKernelEnd;
-double timeCopyDataKernelTotalTime = 0.0;
 
-struct timeval timeBpItersKernelStart;
-struct timeval timeBpItersKernelEnd;
+double timeCopyDataKernelTotalTime = 0.0;
 double timeBpItersKernelTotalTime = 0.0;
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
@@ -68,7 +64,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 			(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
-			gettimeofday(&timeBpItersKernelStart, NULL);
+			auto timeBpItersKernelStart = std::chrono::system_clock::now();
 #endif
 
 #ifdef USE_TEXTURES
@@ -89,12 +85,10 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 
 #ifdef RUN_DETAILED_TIMING
 
-			gettimeofday(&timeBpItersKernelEnd, NULL);
+			auto timeBpItersKernelEnd = std::chrono::system_clock::now();
+			std::chrono::duration<double> diff = timeBpItersKernelEnd-timeBpItersKernelStart;
 
-			double timeStart = timeBpItersKernelStart.tv_sec + (timeBpItersKernelStart.tv_usec / 1000000.0);
-			double timeEnd = timeBpItersKernelEnd.tv_sec + (timeBpItersKernelEnd.tv_usec / 1000000.0);
-
-			timeBpItersKernelTotalTime += (timeEnd - timeStart);
+			timeBpItersKernelTotalTime += diff.count();
 
 #endif
 
@@ -111,7 +105,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 
 #ifdef RUN_DETAILED_TIMING
 
-			gettimeofday(&timeBpItersKernelStart, NULL);
+			auto timeBpItersKernelStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -130,12 +124,10 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 
 #ifdef RUN_DETAILED_TIMING
 
-			gettimeofday(&timeBpItersKernelEnd, NULL);
+			auto timeBpItersKernelEnd = std::chrono::system_clock::now();
+			std::chrono::duration<double> diff = timeBpItersKernelEnd-timeBpItersKernelStart;
 
-			double timeStart = timeBpItersKernelStart.tv_sec + (timeBpItersKernelStart.tv_usec / 1000000.0);
-			double timeEnd = timeBpItersKernelEnd.tv_sec + (timeBpItersKernelEnd.tv_usec / 1000000.0);
-
-			timeBpItersKernelTotalTime += (timeEnd - timeStart);
+			timeBpItersKernelTotalTime += diff.count();
 
 #endif
 
@@ -198,7 +190,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 
 #ifdef USE_TEXTURES
 
-	gettimeofday(&timeCopyDataKernelStart, NULL);
+	auto timeCopyDataKernelStart = std::chrono::system_clock::now();
 
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
@@ -216,7 +208,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeCopyDataKernelStart, NULL);
+	auto timeCopyDataKernelStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -243,12 +235,10 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeCopyDataKernelEnd, NULL);
+	auto timeCopyDataKernelEnd = std::chrono::system_clock::now();
+	std::chrono::duration<double> diff = timeCopyDataKernelEnd-timeCopyDataKernelStart;
 
-	double timeStart = timeCopyDataKernelStart.tv_sec + (timeCopyDataKernelStart.tv_usec / 1000000.0);
-	double timeEnd = timeCopyDataKernelEnd.tv_sec + (timeCopyDataKernelEnd.tv_usec / 1000000.0);
-
-	timeCopyDataKernelTotalTime += (timeEnd - timeStart);
+	timeCopyDataKernelTotalTime += diff.count();
 
 #endif
 
@@ -358,7 +348,7 @@ __host__ void initializeMessageValsToDefault(float*& messageUDeviceSet0Checkerbo
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
-__host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings)
+__host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
 {	
 #ifdef RUN_DETAILED_TIMING
 
@@ -373,10 +363,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	struct timeval timeInitSettingsConstMemStart;
-	struct timeval timeInitSettingsConstMemEnd;
+	auto timeInitSettingsConstMemStart = std::chrono::system_clock::now();
 
-	gettimeofday(&timeInitSettingsConstMemStart, NULL);
 #endif
 
 	//set the BP algorithm and extension settings on the device
@@ -386,12 +374,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeInitSettingsConstMemEnd, NULL);
+	auto timeInitSettingsConstMemEnd = std::chrono::system_clock::now();
 
-	timeStart = timeInitSettingsConstMemStart.tv_sec + (timeInitSettingsConstMemStart.tv_usec / 1000000.0);
-	timeEnd = timeInitSettingsConstMemEnd.tv_sec + (timeInitSettingsConstMemEnd.tv_usec / 1000000.0);
-
-	double totalTimeInitSettingsConstMem = timeEnd - timeStart;
+	std::chrono::duration<double> diff = timeInitSettingsConstMemEnd-timeInitSettingsConstMemStart;
+	double totalTimeInitSettingsConstMem = diff.count();
 
 #endif
 
@@ -441,9 +427,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	struct timeval timeInitSettingsMallocStart;
-	struct timeval timeInitSettingsMallocEnd;
-	gettimeofday(&timeInitSettingsMallocStart, NULL);
+	auto timeInitSettingsMallocStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -488,17 +472,12 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeInitSettingsMallocEnd, NULL);
+	auto timeInitSettingsMallocEnd = std::chrono::system_clock::now();
 
-	timeStart = timeInitSettingsMallocStart.tv_sec + (timeInitSettingsMallocStart.tv_usec / 1000000.0);
-	timeEnd = timeInitSettingsMallocEnd.tv_sec + (timeInitSettingsMallocEnd.tv_usec / 1000000.0);
+	diff = timeInitSettingsMallocEnd-timeInitSettingsMallocStart;
+	double totalTimeInitSettingsMallocStart = diff.count();
 
-	double totalTimeInitSettingsMallocStart = timeEnd - timeStart;
-
-	struct timeval timeInitDataCostsStart;
-	struct timeval timeInitDataCostsEnd;
-
-	gettimeofday(&timeInitDataCostsStart, NULL);
+	auto timeInitDataCostsStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -514,12 +493,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeInitDataCostsEnd, NULL);
+	auto timeInitDataCostsEnd = std::chrono::system_clock::now();
+	diff = timeInitDataCostsEnd-timeInitDataCostsStart;
 
-	timeStart = timeInitDataCostsStart.tv_sec + (timeInitDataCostsStart.tv_usec / 1000000.0);
-	timeEnd = timeInitDataCostsEnd.tv_sec + (timeInitDataCostsEnd.tv_usec / 1000000.0);
-
-	double totalTimeGetDataCostsBottomLevel = timeEnd - timeStart;
+	double totalTimeGetDataCostsBottomLevel = diff.count();
 
 #endif
 
@@ -532,10 +509,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	struct timeval timeInitDataCostsHigherLevelsStart;
-	struct timeval timeInitDataCostsHigherLevelsEnd;
-
-	gettimeofday(&timeInitDataCostsHigherLevelsStart, NULL);
+	auto timeInitDataCostsHigherLevelsStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -607,12 +581,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeInitDataCostsHigherLevelsEnd, NULL);
-	
-	timeStart = timeInitDataCostsHigherLevelsStart.tv_sec + (timeInitDataCostsHigherLevelsStart.tv_usec / 1000000.0);
-	timeEnd = timeInitDataCostsHigherLevelsEnd.tv_sec + (timeInitDataCostsHigherLevelsEnd.tv_usec / 1000000.0);
+	auto timeInitDataCostsHigherLevelsEnd = std::chrono::system_clock::now();
+	diff = timeInitDataCostsHigherLevelsEnd-timeInitDataCostsHigherLevelsStart;
 
-	double totalTimeGetDataCostsHigherLevels = timeEnd - timeStart;
+	double totalTimeGetDataCostsHigherLevels = diff.count();
 
 #endif
 
@@ -645,10 +617,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	struct timeval timeInitMessageValuesStart;
-	struct timeval timeInitMessageValuesEnd;
-
-	gettimeofday(&timeInitMessageValuesStart, NULL);
+	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -679,6 +648,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
+	auto timeInitMessageValuesKernelTimeStart = std::chrono::system_clock::now();
+
 	//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
 	numBytesDataAndMessageSetInCheckerboardAtLevel = (widthLevelActualIntegerSize/2)*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
 
@@ -686,6 +657,11 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	initializeMessageValsToDefault(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 											widthLevelActualIntegerSize / 2, heightLevelActualIntegerSize, totalPossibleMovements);
+
+	auto timeInitMessageValuesKernelTimeEnd = std::chrono::system_clock::now();
+	diff = timeInitMessageValuesKernelTimeEnd-timeInitMessageValuesKernelTimeStart;
+
+	double totalTimeInitMessageValuesKernelTime = diff.count();
 
 #ifdef USE_TEXTURES
 
@@ -698,12 +674,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeInitMessageValuesEnd, NULL);
+	auto timeInitMessageValuesEnd = std::chrono::system_clock::now();
+	diff = timeInitMessageValuesEnd-timeInitMessageValuesStart;
 
-	timeStart = timeInitMessageValuesStart.tv_sec + (timeInitMessageValuesStart.tv_usec / 1000000.0);
-	timeEnd = timeInitMessageValuesEnd.tv_sec + (timeInitMessageValuesEnd.tv_usec / 1000000.0);
-
-	double totalTimeInitMessageVals = (timeEnd - timeStart);
+	double totalTimeInitMessageVals = diff.count();
 
 #endif
 
@@ -736,7 +710,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-		gettimeofday(&timeBpIterStart, NULL);
+		auto timeBpIterStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -778,14 +752,12 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-		gettimeofday(&timeBpIterEnd, NULL);
+		auto timeBpIterEnd = std::chrono::system_clock::now();
+		diff = timeBpIterEnd-timeBpIterStart;
 
-		timeStart = timeBpIterStart.tv_sec + (timeBpIterStart.tv_usec / 1000000.0);
-		timeEnd = timeBpIterEnd.tv_sec + (timeBpIterEnd.tv_usec / 1000000.0);
-
-		totalTimeBpIters += (timeEnd - timeStart);
+		totalTimeBpIters += diff.count();
 		
-		gettimeofday(&timeCopyMessageValuesStart, NULL);
+		auto timeCopyMessageValuesStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -898,12 +870,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-		gettimeofday(&timeCopyMessageValuesEnd, NULL);
+		auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
+		diff = timeCopyMessageValuesEnd-timeCopyMessageValuesStart;
 
-		timeStart = timeCopyMessageValuesStart.tv_sec + (timeCopyMessageValuesStart.tv_usec / 1000000.0);
-		timeEnd = timeCopyMessageValuesEnd.tv_sec + (timeCopyMessageValuesEnd.tv_usec / 1000000.0);
-
-		totalTimeCopyData += (timeEnd - timeStart);
+		totalTimeCopyData += diff.count();
 
 #endif
 	}
@@ -922,10 +892,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	struct timeval timeGetOutputDisparityStart;
-	struct timeval timeGetOutputDisparityEnd;
-
-	gettimeofday(&timeGetOutputDisparityStart, NULL);
+	auto timeGetOutputDisparityStart = std::chrono::system_clock::now();
 	gpuErrchk( cudaPeekAtLastError() );
 
 #endif
@@ -960,20 +927,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeGetOutputDisparityEnd, NULL);
+	auto timeGetOutputDisparityEnd = std::chrono::system_clock::now();
+	diff = timeGetOutputDisparityEnd-timeGetOutputDisparityStart;
 
-	timeStart = timeGetOutputDisparityStart.tv_sec + (timeGetOutputDisparityStart.tv_usec / 1000000.0);
-	timeEnd = timeGetOutputDisparityEnd.tv_sec + (timeGetOutputDisparityEnd.tv_usec / 1000000.0);
+	double totalTimeGetOutputDisparity = diff.count();
 
-	double totalTimeGetOutputDisparity = timeEnd - timeStart;
-
-	struct timeval timeFinalUnbindFreeStart;
-	struct timeval timeFinalUnbindFreeEnd;
-	struct timeval timeFinalUnbindStart;
-	struct timeval timeFinalUnbindEnd;
-	struct timeval timeFinalFreeStart;
-	struct timeval timeFinalFreeEnd;
-	gettimeofday(&timeFinalUnbindFreeStart, NULL);
+	auto timeFinalUnbindFreeStart = std::chrono::system_clock::now();
+	double totalTimeFinalUnbind = 0.0;
 
 #endif
 
@@ -981,7 +941,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeFinalUnbindStart, NULL);
+	auto timeFinalUnbindStart = std::chrono::system_clock::now();
 
 #endif
 
@@ -1003,7 +963,9 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeFinalUnbindEnd, NULL);
+	auto timeFinalUnbindEnd = std::chrono::system_clock::now();
+	diff = timeFinalUnbindEnd-timeFinalUnbindStart;
+	totalTimeFinalUnbind += diff.count();
 
 #endif
 
@@ -1011,12 +973,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	timeStart = timeFinalUnbindStart.tv_sec + (timeFinalUnbindStart.tv_usec / 1000000.0);
-	timeEnd = timeFinalUnbindEnd.tv_sec + (timeFinalUnbindEnd.tv_usec / 1000000.0);
-
-	double totalTimeFinalUnbind = timeEnd - timeStart;
-
-	gettimeofday(&timeFinalFreeStart, NULL);
+	auto timeFinalFreeStart = std::chrono::system_clock::now();
 
 #endif
 	gpuErrchk( cudaPeekAtLastError() );
@@ -1087,34 +1044,52 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef RUN_DETAILED_TIMING
 
-	gettimeofday(&timeFinalUnbindFreeEnd, NULL);
-	gettimeofday(&timeFinalFreeEnd, NULL);
+	auto timeFinalUnbindFreeEnd = std::chrono::system_clock::now();
+	auto timeFinalFreeEnd = std::chrono::system_clock::now();
 
-	timeStart = timeFinalUnbindFreeStart.tv_sec + (timeFinalUnbindFreeStart.tv_usec / 1000000.0);
-	timeEnd = timeFinalUnbindFreeEnd.tv_sec	+ (timeFinalUnbindFreeEnd.tv_usec / 1000000.0);
+	diff = timeFinalUnbindFreeEnd-timeFinalUnbindFreeStart;
+	double totalTimeFinalUnbindFree = diff.count();
 
-	double totalTimeFinalUnbindFree = timeEnd - timeStart;
+	diff = timeFinalFreeEnd-timeFinalFreeStart;
+	double totalTimeFinalFree = diff.count();
 
-	timeStart = timeFinalFreeStart.tv_sec + (timeFinalFreeStart.tv_usec / 1000000.0);
-	timeEnd = timeFinalFreeEnd.tv_sec + (timeFinalFreeEnd.tv_usec / 1000000.0);
-
-	double totalTimeFinalFree = timeEnd - timeStart;
-
-	printf("Time const mem in init settings: %f\n", totalTimeInitSettingsConstMem);
-	printf("Time init settings malloc: %f\n", totalTimeInitSettingsMallocStart);
-	printf("Time get data costs bottom level: %f\n", totalTimeGetDataCostsBottomLevel);
-	printf("Time get data costs higher levels: %f\n", totalTimeGetDataCostsHigherLevels);
-	printf("Time to init message values: %f\n", totalTimeInitMessageVals);
-	printf("Total time BP Iters: %f\n", totalTimeBpIters);
-	printf("Total time BP Iters (kernel portion only): %f\n", timeBpItersKernelTotalTime);
-	printf("Total time Copy Data: %f\n", totalTimeCopyData);
-	printf("Total time Copy Data (kernel portion only): %f\n", timeCopyDataKernelTotalTime);
-	printf("Time get output disparity: %f\n", totalTimeGetOutputDisparity);
-	printf("Time final unbind free: %f\n", totalTimeFinalUnbindFree);
-	printf("Time final unbind: %f\n", totalTimeFinalUnbind);
-	printf("Time final free: %f\n", totalTimeFinalFree);
-	double totalTimed = totalTimeInitSettingsMallocStart + totalTimeGetDataCostsBottomLevel + totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals + totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity + totalTimeFinalUnbindFree;
-	printf("Total timed: %f\n", totalTimed);
+	double totalMemoryProcessingTime = totalTimeInitSettingsConstMem
+			+ totalTimeInitSettingsMallocStart + totalTimeFinalUnbindFree
+			+ (totalTimeInitMessageVals - totalTimeInitMessageValuesKernelTime)
+			+ (totalTimeCopyData - timeCopyDataKernelTotalTime)
+			+ (totalTimeBpIters - timeBpItersKernelTotalTime);
+	double totalComputationProcessing = totalTimeGetDataCostsBottomLevel
+			+ totalTimeGetDataCostsHigherLevels
+			+ totalTimeInitMessageValuesKernelTime + timeCopyDataKernelTotalTime
+			+ timeBpItersKernelTotalTime + totalTimeGetOutputDisparity;
+	double totalTimed = totalTimeInitSettingsConstMem
+			+ totalTimeInitSettingsMallocStart
+			+ totalTimeGetDataCostsBottomLevel
+			+ totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals
+			+ totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity
+			+ totalTimeFinalUnbindFree;
+	timings.totalTimeInitSettingsConstMem.push_back(
+			totalTimeInitSettingsConstMem);
+	timings.totalTimeInitSettingsMallocStart.push_back(
+			totalTimeInitSettingsMallocStart);
+	timings.totalTimeGetDataCostsBottomLevel.push_back(
+			totalTimeGetDataCostsBottomLevel);
+	timings.totalTimeGetDataCostsHigherLevels.push_back(
+			totalTimeGetDataCostsHigherLevels);
+	timings.totalTimeInitMessageVals.push_back(totalTimeInitMessageVals);
+	timings.totalTimeInitMessageValuesKernelTime.push_back(totalTimeInitMessageValuesKernelTime);
+	timings.totalTimeBpIters.push_back(totalTimeBpIters);
+	timings.timeBpItersKernelTotalTime.push_back(timeBpItersKernelTotalTime);
+	timings.totalTimeCopyData.push_back(totalTimeCopyData);
+	timings.timeCopyDataKernelTotalTime.push_back(timeCopyDataKernelTotalTime);
+	timings.totalTimeGetOutputDisparity.push_back(totalTimeGetOutputDisparity);
+	timings.totalTimeFinalUnbindFree.push_back(totalTimeFinalUnbindFree);
+	timings.totalTimeFinalUnbind.push_back(totalTimeFinalUnbind);
+	timings.totalTimeFinalFree.push_back(totalTimeFinalFree);
+	timings.totalTimed.push_back(totalTimed);
+	timings.totalMemoryProcessingTime.push_back(totalMemoryProcessingTime);
+	timings.totalComputationProcessing.push_back(totalComputationProcessing);
+	timings.totNumTimings++;
 
 #endif
 }

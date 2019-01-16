@@ -24,12 +24,13 @@
 
 //include in order to save the resulting disparity map as a PGM
 #include "imageHelpersHostHeader.cuh"
-#include <sys/time.h>
+#include <chrono>
 
 //save the output disparity map using the scale defined in scaleDisparityInOutput at each pixel to the file at disparityMapSaveImagePath
 void saveResultingDisparityMap(const char* disparityMapSaveImagePath,
 		float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput,
 		unsigned int widthImages, unsigned int heightImages,
-		struct timeval& timerImp, double& totalTimeIncludeTransfer);
+		std::chrono::time_point<std::chrono::system_clock>& timeWithTransferStart,
+		double& totalTimeIncludeTransfer);
 
 #endif //SAVE_RESULTING_Stereo_HEADER_CUH
