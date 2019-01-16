@@ -24,6 +24,8 @@
 
 #include "saveResultingDisparityMapHeader.cuh"
 #include <chrono>
+#include <vector>
+#include <algorithm>
 
 #define USE_TEXTURES
 
@@ -34,8 +36,11 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		BPsettings algSettings, bool saveResults,
 		const char* saveDisparityMapImagePaths[], FILE* resultsFile) {
 
-	double totalTimeNoTransfer = 0.0;
-	double totalTimeIncludeTransfer = 0.0;
+	double timeNoTransfer = 0.0;
+	double timeIncludeTransfer = 0.0;
+
+	std::vector<double> timingsNoTransferVector;
+	std::vector<double> timingsIncludeTransferVector;
 	DetailedTimings timings;
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++) {
 		//printf("RUN %d\n", numRun);
@@ -126,12 +131,13 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		std::chrono::duration<double> diff = timeNoTransferEnd-timeNoTransferStart;
 		//printf("Running time not including transfer time: %.10lf seconds\n",
 		//		timeEnd - timeStart);
-		totalTimeNoTransfer += diff.count();
+		timeNoTransfer += diff.count();
+		timingsNoTransferVector.push_back(diff.count());
 
 		if (saveResults) {
 			saveResultingDisparityMap(saveDisparityMapImagePaths[0],
 					disparityMapFromImage1To2Device, SCALE_BP, widthImages,
-					heightImages, timeWithTransferStart, totalTimeIncludeTransfer);
+					heightImages, timeWithTransferStart, timeIncludeTransfer);
 		}
 
 		//now go through the rest of the images, the "second" image of one set as the "first one" of the next and also using
@@ -178,9 +184,12 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 				saveResultingDisparityMap(
 						saveDisparityMapImagePaths[numImage - 1],
 						disparityMapFromImage1To2Device, SCALE_BP, widthImages,
-						heightImages, timeWithTransferStart, totalTimeIncludeTransfer);
+						heightImages, timeWithTransferStart, timeIncludeTransfer);
 			}
 		}
+
+		timingsIncludeTransferVector.push_back(timeIncludeTransfer);
+
 
 		//free the space allocated to the resulting disparity map
 		cudaFree(disparityMapFromImage1To2Device);
@@ -199,12 +208,13 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	timings.PrintMedianTimings();
 	timings.PrintMedianTimingsToFile(resultsFile);
 
+	std::sort(timingsNoTransferVector.begin(), timingsNoTransferVector.end());
+	std::sort(timingsIncludeTransferVector.begin(), timingsIncludeTransferVector.end());
+
 	//printf("Total time: %f\n", totalTime);
-	averageRunTimeGpuNotIncludingMemoryTransfer = totalTimeNoTransfer / NUM_BP_STEREO_RUNS;
-	averageRunTimeGpuIncludingMemoryTransfer = totalTimeIncludeTransfer / NUM_BP_STEREO_RUNS;
-	printf("AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuNotIncludingMemoryTransfer);
-	printf("AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuIncludingMemoryTransfer);
-	fprintf(resultsFile, "AVERAGE GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuNotIncludingMemoryTransfer);
-	fprintf(resultsFile, "AVERAGE GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", averageRunTimeGpuIncludingMemoryTransfer);
+	printf("MEDIAN GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	printf("MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	fprintf(resultsFile, "MEDIAN GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	fprintf(resultsFile, "MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
 }
 

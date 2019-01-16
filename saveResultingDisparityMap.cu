@@ -38,7 +38,7 @@ void saveResultingDisparityMap(const char* disparityMapSaveImagePath,
 
 	//printf("Running time including transfer time: %.10lf seconds\n", timeEnd-timeStart);
 	std::chrono::duration<double> diff = timeWithTransferEnd-timeWithTransferStart;
-	totalTimeIncludeTransfer += diff.count();
+	totalTimeIncludeTransfer = diff.count();
 	//stop the timer and print the total time of the BP implementation including the device-host transfer time
 	//printf("Time to retrieve movement on host (including transfer): %f (ms) \n", totalTimeIncludeTransfer);
 
