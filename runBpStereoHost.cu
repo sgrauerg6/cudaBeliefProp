@@ -21,10 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "runBpStereoHostHeader.cuh"
 #include <chrono>
 
-//#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
 #define RUN_DETAILED_TIMING
-//#define USE_SAME_ARRAY_FOR_ALL_ALLOC
-
 
 double timeCopyDataKernelTotalTime = 0.0;
 double timeBpItersKernelTotalTime = 0.0;
@@ -354,8 +351,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	timeCopyDataKernelTotalTime = 0.0;
 	timeBpItersKernelTotalTime = 0.0;
-	double timeStart;
-	double timeEnd;
 #endif
 
 	//retrieve the total number of possible movements; this is equal to the number of disparity values 
@@ -688,10 +683,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	double totalTimeBpIters = 0.0;
 	double totalTimeCopyData = 0.0;
-	struct timeval timeBpIterStart;
-	struct timeval timeBpIterEnd;
-	struct timeval timeCopyMessageValuesStart;
-	struct timeval timeCopyMessageValuesEnd;
 
 #endif
 

@@ -212,6 +212,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #define SIGMA_BP SIGMA_BP_FROM_PYTHON    // amount to smooth the input images
 
+#if USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS_PYTHON == 1
+	#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
+#endif
+#if USE_SAME_ARRAY_FOR_ALL_ALLOC_PYTHON == 1
+	#define USE_SAME_ARRAY_FOR_ALL_ALLOC
+#endif
+
 #endif //IMAGE_SET_TO_PROCESS
 
 //number of belief propagation stereo runs of same image set

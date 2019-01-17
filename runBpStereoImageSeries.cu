@@ -53,12 +53,6 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		float* smoothedImage1Device;
 		float* smoothedImage2Device;
 
-		unsigned int timerTransferTimeNotIncluded;
-		unsigned int timerIncludeTransferTime;
-		unsigned int timerBPIters;
-		unsigned int timerCudaMalloc;
-		unsigned int timerCudaFree;
-
 		//allocate the device memory to store and x and y smoothed images
 		(cudaMalloc((void**) &smoothedImage1Device,
 				widthImages * heightImages * sizeof(float)));

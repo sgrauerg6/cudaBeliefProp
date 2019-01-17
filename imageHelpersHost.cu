@@ -27,8 +27,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 __host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor)
 {
 	unsigned int* imageData = new unsigned int[widthImage*heightImage];
-	unsigned int imageWidth = widthImage;
-	unsigned int imageHeight = heightImage;
 
 	float* disparityVals = new float[widthImage*heightImage];
 
@@ -87,8 +85,6 @@ __host__ unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned 
 __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	unsigned int* imageData;
-	unsigned int imageWidth = widthImage;
-	unsigned int imageHeight = heightImage;
 
 	unsigned char *dataRead;
 
@@ -110,9 +106,6 @@ __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned i
 __host__ unsigned int* loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	unsigned int* imageData;
-	unsigned int imageWidth = widthImage;
-	unsigned int imageHeight = heightImage;
-
 	unsigned char *dataRead;
 
 	ppmReadReturnGrayScale(filePathPpmImage, &widthImage, &heightImage,
@@ -374,9 +367,9 @@ int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned i
 int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 	     unsigned char* image,char* comment_string) {
       FILE* file;        /* pointer to the file buffer */
-      int maxval;        /* maximum value in the image array */
+      //int maxval;        /* maximum value in the image array */
       long nwritten = 0; /* counter for the number of pixels written */
-      long i,j;          /* for loop counters */
+      long i;//,j;          /* for loop counters */
 
       /* open the file; write header and comments specified by the user. */
       if ((file = fopen(filename, "w")) == NULL)	{

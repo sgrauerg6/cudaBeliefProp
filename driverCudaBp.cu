@@ -137,8 +137,10 @@ int main(int argc, char** argv)
 {
 	//FILE* resultsFile = stdout;
 	FILE* resultsFile = fopen("output.txt", "w");
+	int optLevel = USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS_PYTHON + USE_SAME_ARRAY_FOR_ALL_ALLOC_PYTHON;
 	fprintf(resultsFile, "Ref Image: %s\n", DEFAULT_REF_IMAGE_PATH);
 	fprintf(resultsFile, "Test Image: %s\n", DEFAULT_TEST_IMAGE_PATH);
+	fprintf(resultsFile, "Memory Optimization Level: %d\n", optLevel);
 	fprintf(resultsFile, "Num Possible Disparity Values: %d\n", NUM_POSSIBLE_DISPARITY_VALUES);
 	fprintf(resultsFile, "Num BP Levels: %d\n", LEVELS_BP);
 	fprintf(resultsFile, "Num BP Iterations: %d\n", ITER_BP);
