@@ -26,7 +26,7 @@ NVCC := $(CUDA_DIR)/bin/nvcc
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX 
 
 # include the optimization level
-COMPILE_FLAGS += -O2
+COMPILE_FLAGS += -O2 -std=c++11
 
 INCDIR = -I.
 DBG    = -g

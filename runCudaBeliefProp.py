@@ -46,7 +46,8 @@ if __name__ == "__main__":
 	#uncomment if using multiple disparity values on single image	
 	#numDispVals = ["15", "16", "17", "18"]	
 	#numBpLevelsAndIters = [{"bpLevels" : 1, "bpIters" : 6}, {"bpLevels" : 1, "bpIters" : 10}, {"bpLevels" : 1, "bpIters" : 25}, {"bpLevels" : 1, "bpIters" : 50}, {"bpLevels" : 1, "bpIters" : 100}, {"bpLevels" : 1, "bpIters" : 250}, {"bpLevels" : 1, "bpIters" : 500}, {"bpLevels" : 1, "bpIters" : 1000}, {"bpLevels" : 2, "bpIters" : 6}, {"bpLevels" : 2, "bpIters" : 10}, {"bpLevels" : 2, "bpIters" : 25}, {"bpLevels" : 2, "bpIters" : 50}, {"bpLevels" : 2, "bpIters" : 100}, {"bpLevels" : 2, "bpIters" : 250}, {"bpLevels" : 3, "bpIters" : 6}, {"bpLevels" : 3, "bpIters" : 10}, {"bpLevels" : 3, "bpIters" : 25}, {"bpLevels" : 3, "bpIters" : 50}, {"bpLevels" : 3, "bpIters" : 100}, {"bpLevels" : 4, "bpIters" : 6}, {"bpLevels" : 4, "bpIters" : 10}, {"bpLevels" : 4, "bpIters" : 25}, {"bpLevels" : 4, "bpIters" : 50}, {"bpLevels" : 5, "bpIters" : 6}, {"bpLevels" : 5, "bpIters" : 10}, {"bpLevels" : 5, "bpIters" : 25}, {"bpLevels" : 6, "bpIters" : 6}, {"bpLevels" : 6, "bpIters" : 10}, {"bpLevels" : 6, "bpIters" : 25}, {"bpLevels" : 7, "bpIters" : 6}, {"bpLevels" : 7, "bpIters" : 10}, {"bpLevels" : 7, "bpIters" : 25}] 
-	numBpLevelsAndIters = [{"bpLevels" : 5, "bpIters" : 2}, {"bpLevels" : 5, "bpIters" : 3}, {"bpLevels" : 5, "bpIters" : 4}, {"bpLevels" : 5, "bpIters" : 5}, {"bpLevels" : 5, "bpIters" : 6}, {"bpLevels" : 5, "bpIters" : 7}, {"bpLevels" : 5, "bpIters" : 8}, {"bpLevels" : 5, "bpIters" : 9}, {"bpLevels" : 5, "bpIters" : 10}, {"bpLevels" : 5, "bpIters" : 12}, {"bpLevels" : 5, "bpIters" : 14}, {"bpLevels" : 5, "bpIters" : 16}, {"bpLevels" : 5, "bpIters" : 18}, {"bpLevels" : 5, "bpIters" : 20}] 
+	#numBpLevelsAndIters = [{"bpLevels" : 5, "bpIters" : 2}, {"bpLevels" : 5, "bpIters" : 3}, {"bpLevels" : 5, "bpIters" : 4}, {"bpLevels" : 5, "bpIters" : 5}, {"bpLevels" : 5, "bpIters" : 6}, {"bpLevels" : 5, "bpIters" : 7}, {"bpLevels" : 5, "bpIters" : 8}, {"bpLevels" : 5, "bpIters" : 9}, {"bpLevels" : 5, "bpIters" : 10}, {"bpLevels" : 5, "bpIters" : 12}, {"bpLevels" : 5, "bpIters" : 14}, {"bpLevels" : 5, "bpIters" : 16}, {"bpLevels" : 5, "bpIters" : 18}, {"bpLevels" : 5, "bpIters" : 20}] 
+	numBpLevelsAndIters = [{"bpLevels" : 5, "bpIters" : 7}]
 	truncationDiscontCost = ["1.7f"]
 	truncationDataCost = ["15.0f"]
 	dataCostWeight = ["0.1f"]
@@ -57,7 +58,7 @@ if __name__ == "__main__":
 	outputLabels = []
 	outputData = []
 	firstLine = True
-	optimizedMemory = [2]
+	optimizedMemory = [0, 1, 2]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
 			for currTruncationDiscontCost in truncationDiscontCost:
@@ -83,6 +84,7 @@ if __name__ == "__main__":
 									#file.write("#define NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON %s\n" % currNumDispVals)
 									file.write("#define NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON %s\n" % imageSet["NumDispVals"])
 									file.write("#define ITER_BP_FROM_PYTHON %s\n" % currNumBpLevelsAndIters["bpIters"])
+									#file.write("#define LEVELS_BP_FROM_PYTHON %s\n" % currNumBpLevelsAndIters["bpLevels"])
 									file.write("#define LEVELS_BP_FROM_PYTHON %s\n" % imageSet["bpLevelsImageSet"])
 									file.write("#define DISC_K_BP_FROM_PYTHON %s\n" % currTruncationDiscontCost)
 									file.write("#define DATA_K_BP_FROM_PYTHON %s\n" % currTruncationDataCost)

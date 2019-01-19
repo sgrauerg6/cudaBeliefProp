@@ -128,8 +128,11 @@ void retrieveDeviceProperties(int numDevice, FILE* resultsFile)
 {
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties( &prop, numDevice);
+	int cudaDriverVersion;
+	cudaDriverGetVersion(&cudaDriverVersion);
 
 	fprintf(resultsFile, "Device %d: %s with %d multiprocessors\n", numDevice, prop.name, prop.multiProcessorCount);
+	fprintf(resultsFile, "Cuda version: %d\n", cudaDriverVersion);
 }
 
 
