@@ -44,7 +44,7 @@ impDriver: $(CU_OBJ) stereo.o
 	g++ $(CU_OBJ) stereo.o $(LIB) -o driverCudaBp -O -m64
 	
 stereo.o: stereo.cpp bpStereoCudaParameters.cuh
-	g++ stereo.cpp -c $(INCLUDE_DIRS)
+	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 
 
 $(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)
 	$(NVCC) -c $(CU_FILE) -gencode arch=compute_70,code=sm_70 -gencode arch=compute_70,code=compute_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_35,code=sm_35 -gencode arch=compute_30,code=sm_30 -o $(CU_OBJ) $(COMPILE_FLAGS) 
