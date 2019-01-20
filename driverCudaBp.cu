@@ -153,4 +153,7 @@ int main(int argc, char** argv)
 	fprintf(resultsFile, "SIGMA_BP: %f\n", SIGMA_BP);
 	retrieveDeviceProperties(0, resultsFile);
 	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);
+	int cudaRuntimeVersion;
+	cudaRuntimeGetVersion(&cudaRuntimeVersion);
+	fprintf(resultsFile, "Cuda Runtime Version: %d\n", cudaRuntimeVersion);
 }
