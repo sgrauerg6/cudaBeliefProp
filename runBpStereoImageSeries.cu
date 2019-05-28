@@ -27,8 +27,6 @@
 #include <vector>
 #include <algorithm>
 
-#define USE_TEXTURES
-
 
 //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
 void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,

@@ -64,19 +64,14 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 			auto timeBpItersKernelStart = std::chrono::system_clock::now();
 #endif
 
-#ifdef USE_TEXTURES
-
-			runBPIterationUsingCheckerboardUpdates <<<  grid, threads >>> (messageUDeviceCheckerboard2, messageDDeviceCheckerboard2, 
-					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2, widthLevelActualIntegerSize, heightLevelActualIntegerSize, iterationNum, ((int)dataTexOffset / sizeof(float)));
-
-#else
-
-			runBPIterationUsingCheckerboardUpdatesNoTextures <<<  grid, threads >>> (dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1, messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+			runBPIterationUsingCheckerboardUpdatesNoTextures<<<grid, threads>>>(
+					dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
 					messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2, widthLevelActualIntegerSize, heightLevelActualIntegerSize, iterationNum, ((int)dataTexOffset / sizeof(float)));
-
-#endif
+					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+					CHECKERBOARD_PART_2, ((int) dataTexOffset / sizeof(float)));
 
 			(cudaDeviceSynchronize());
 
@@ -87,13 +82,6 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 
 			timeBpItersKernelTotalTime += diff.count();
 
-#endif
-
-#ifdef USE_TEXTURES
-			cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceCheckerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceCheckerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceCheckerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceCheckerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
 #endif
 		}
 		else
@@ -106,17 +94,15 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 
 #endif
 
-#ifdef USE_TEXTURES
-
-			runBPIterationUsingCheckerboardUpdates <<<  grid, threads >>> (messageUDeviceCheckerboard1, messageDDeviceCheckerboard1, 
-					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1, widthLevelActualIntegerSize, heightLevelActualIntegerSize, iterationNum, ((int)dataTexOffset / sizeof(float)));
-
-#else
-			runBPIterationUsingCheckerboardUpdatesNoTextures <<<  grid, threads >>> (dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-					messageUDeviceCheckerboard2, messageDDeviceCheckerboard2, messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+			runBPIterationUsingCheckerboardUpdatesNoTextures<<<grid, threads>>>(
+					dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
 					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1, widthLevelActualIntegerSize, heightLevelActualIntegerSize, iterationNum, ((int)dataTexOffset / sizeof(float)));
-#endif
+					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+					messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+					CHECKERBOARD_PART_1, ((int) dataTexOffset / sizeof(float)));
+
 			(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
@@ -125,15 +111,6 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 			std::chrono::duration<double> diff = timeBpItersKernelEnd-timeBpItersKernelStart;
 
 			timeBpItersKernelTotalTime += diff.count();
-
-#endif
-
-#ifdef USE_TEXTURES
-
-			cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceCheckerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceCheckerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceCheckerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceCheckerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
 
 #endif
 		}
@@ -154,19 +131,6 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 	float*& messageUDeviceCheckerboard2CopyTo, float*& messageDDeviceCheckerboard2CopyTo, float*& messageLDeviceCheckerboard2CopyTo, 
 	float*& messageRDeviceCheckerboard2CopyTo, int& numBytesDataAndMessageSetInCheckerboardAtLevel, dim3& grid, dim3& threads)
 {
-#ifdef USE_TEXTURES
-
-	//bind the linear memory storing to computed message values to copy from to a texture
-	cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceCheckerboard1CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceCheckerboard1CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceCheckerboard1CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceCheckerboard1CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-
-	cudaBindTexture(0, messageUPrevTexStereoCheckerboard2, messageUDeviceCheckerboard2CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageDPrevTexStereoCheckerboard2, messageDDeviceCheckerboard2CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageLPrevTexStereoCheckerboard2, messageLDeviceCheckerboard2CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageRPrevTexStereoCheckerboard2, messageRDeviceCheckerboard2CopyFrom, numBytesDataAndMessageSetInCheckerboardAtLevel);
-#endif
 
 #if !defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) && !defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
 
@@ -184,24 +148,6 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 #endif
 
 	( cudaDeviceSynchronize() );
-
-#ifdef USE_TEXTURES
-
-	auto timeCopyDataKernelStart = std::chrono::system_clock::now();
-
-	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
-	//storing the current message values
-	copyPrevLevelToNextLevelBPCheckerboardStereo <<< grid, threads >>> (messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo, 
-			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo, 
-			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_1);
-
-	( cudaDeviceSynchronize() );
-
-	copyPrevLevelToNextLevelBPCheckerboardStereo <<< grid, threads >>> (messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo, 
-			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo, 
-			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_2);
-
-#else
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -227,7 +173,6 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
 			messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSize), (heightLevelActualIntegerSize), CHECKERBOARD_PART_2);
 
-#endif
 	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
@@ -252,15 +197,6 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSize,
 	cudaFree(messageLDeviceCheckerboard2CopyFrom);
 	cudaFree(messageRDeviceCheckerboard2CopyFrom);
 
-#endif
-
-#ifdef USE_TEXTURES
-
-	//bind the newly written message data to the appropriate texture
-	cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel);
 #endif
 }
 
@@ -511,13 +447,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//set the data costs at each level from the bottom level "up"
 	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
 	{
-#ifdef USE_TEXTURES
-
-		//need to have "offset" to deal with hardware alignment requirement for textures
-		size_t offsetNum; 
-		cudaBindTexture(&offsetNum, dataCostTexStereoCheckerboard1, &dataCostDeviceCheckerboard1[offsetLevel], numBytesDataAndMessageSetInCheckerboardAtLevel);
-		cudaBindTexture(&offsetNum, dataCostTexStereoCheckerboard2, &dataCostDeviceCheckerboard2[offsetLevel], numBytesDataAndMessageSetInCheckerboardAtLevel);
-#endif
 		int prev_level_offset_level = offsetLevel;
 
 		//width is half since each part of the checkboard contains half the values going across
@@ -537,17 +466,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		grid.x = (unsigned int)ceil((float)(widthLevel / 2.0f) / (float)threads.x);
 		grid.y = (unsigned int)ceil((float)heightLevel / (float)threads.y);
 
-#ifdef USE_TEXTURES
-
-		//initialize the data costs for the "next level" of the pyramid
-		//the "next level" starts at the calculated offsetLevel
-		initializeCurrentLevelDataStereo <<< grid, threads >>> (&dataCostDeviceCheckerboard1[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_1, ((int)offsetNum/sizeof(float)));
-		
-		( cudaDeviceSynchronize() );
-		
-		initializeCurrentLevelDataStereo <<< grid, threads >>> (&dataCostDeviceCheckerboard2[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_2, ((int)offsetNum/sizeof(float)));
-
-#else
 		size_t offsetNum = 0;
 
 		initializeCurrentLevelDataStereoNoTextures <<< grid, threads >>> (&dataCostDeviceCheckerboard1[prev_level_offset_level], &dataCostDeviceCheckerboard2[prev_level_offset_level], &dataCostDeviceCheckerboard1[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_1, ((int)offsetNum/sizeof(float)));
@@ -556,15 +474,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		initializeCurrentLevelDataStereoNoTextures <<< grid, threads >>> (&dataCostDeviceCheckerboard1[prev_level_offset_level], &dataCostDeviceCheckerboard2[prev_level_offset_level], &dataCostDeviceCheckerboard2[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, CHECKERBOARD_PART_2, ((int)offsetNum/sizeof(float)));
 
-#endif
 		( cudaDeviceSynchronize() );
-
-#ifdef USE_TEXTURES
-
-		( cudaUnbindTexture( dataCostTexStereoCheckerboard1));	
-		( cudaUnbindTexture( dataCostTexStereoCheckerboard2));	
-
-#endif
 
 		//update number of bytes of data and message cost if not at bottom level
 		if (levelNum < (algSettings.numLevels - 1))
@@ -590,6 +500,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//the message values at the "higher" level in the image
 	//pyramid need copied to a lower level without overwriting
 	//values
+	float* dataCostDeviceCurrentLevelCheckerboard1;
+	float* dataCostDeviceCurrentLevelCheckerboard2;
 	float* messageUDeviceSet0Checkerboard1;
 	float* messageDDeviceSet0Checkerboard1;
 	float* messageLDeviceSet0Checkerboard1;
@@ -615,6 +527,9 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
 
 #endif
+
+	dataCostDeviceCurrentLevelCheckerboard1 = &dataCostDeviceCheckerboard1[offsetLevel];
+	dataCostDeviceCurrentLevelCheckerboard2 = &dataCostDeviceCheckerboard2[offsetLevel];
 
 #if defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) || defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
 
@@ -658,13 +573,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	double totalTimeInitMessageValuesKernelTime = diff.count();
 
-#ifdef USE_TEXTURES
-
-	cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-#endif
 	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
@@ -705,41 +613,47 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-#ifdef USE_TEXTURES
-
-		//bind the portion of the data cost "pyramid" for the current level to a texture
-		cudaBindTexture(&offset, dataCostTexStereoCheckerboard1, &dataCostDeviceCheckerboard1[offsetLevel], numBytesDataAndMessageSetInCheckerboardAtLevel);
-		cudaBindTexture(&offset, dataCostTexStereoCheckerboard2, &dataCostDeviceCheckerboard2[offsetLevel], numBytesDataAndMessageSetInCheckerboardAtLevel);
-
-#endif
-
 		//printf("LevelNumBP: %d  Width: %f  Height: %f \n", levelNum, widthLevel, heightLevel);
 
-		if (levelNum >= 0)
+		grid.x = (unsigned int) ceil(
+				(float) (widthLevel / 2.0f) / (float) threads.x); //only updating half at a time
+		grid.y = (unsigned int) ceil((float) heightLevel / (float) threads.y);
+
+		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
+		if (currentCheckerboardSet == 0)
 		{
-			grid.x = (unsigned int)ceil((float)(widthLevel/2.0f) / (float)threads.x); //only updating half at a time
-			grid.y = (unsigned int)ceil((float)heightLevel / (float)threads.y);
-
-			//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
-			if (currentCheckerboardSet == 0)
-			{
-				runBPAtCurrentLevel(algSettings.numIterations, widthLevelActualIntegerSize, heightLevelActualIntegerSize, offset,
-					messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, 
-					messageRDeviceSet0Checkerboard1, messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, 
-					messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2, grid, threads, numBytesDataAndMessageSetInCheckerboardAtLevel,
-					&dataCostDeviceCheckerboard1[offsetLevel], &dataCostDeviceCheckerboard2[offsetLevel]);
-			}
-			else
-			{
-				runBPAtCurrentLevel(algSettings.numIterations, widthLevelActualIntegerSize, heightLevelActualIntegerSize, offset,
-					messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, 
-					messageRDeviceSet1Checkerboard1, messageUDeviceSet1Checkerboard2, messageDDeviceSet1Checkerboard2, 
-					messageLDeviceSet1Checkerboard2, messageRDeviceSet1Checkerboard2, grid, threads, numBytesDataAndMessageSetInCheckerboardAtLevel,
-					&dataCostDeviceCheckerboard1[offsetLevel], &dataCostDeviceCheckerboard2[offsetLevel]);
-			}
-
-			( cudaDeviceSynchronize() );
+			runBPAtCurrentLevel(algSettings.numIterations,
+					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+					offset, messageUDeviceSet0Checkerboard1,
+					messageDDeviceSet0Checkerboard1,
+					messageLDeviceSet0Checkerboard1,
+					messageRDeviceSet0Checkerboard1,
+					messageUDeviceSet0Checkerboard2,
+					messageDDeviceSet0Checkerboard2,
+					messageLDeviceSet0Checkerboard2,
+					messageRDeviceSet0Checkerboard2, grid, threads,
+					numBytesDataAndMessageSetInCheckerboardAtLevel,
+					dataCostDeviceCurrentLevelCheckerboard1,
+					dataCostDeviceCurrentLevelCheckerboard2);
 		}
+		else
+		{
+			runBPAtCurrentLevel(algSettings.numIterations,
+					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+					offset, messageUDeviceSet1Checkerboard1,
+					messageDDeviceSet1Checkerboard1,
+					messageLDeviceSet1Checkerboard1,
+					messageRDeviceSet1Checkerboard1,
+					messageUDeviceSet1Checkerboard2,
+					messageDDeviceSet1Checkerboard2,
+					messageLDeviceSet1Checkerboard2,
+					messageRDeviceSet1Checkerboard2, grid, threads,
+					numBytesDataAndMessageSetInCheckerboardAtLevel,
+					dataCostDeviceCurrentLevelCheckerboard1,
+					dataCostDeviceCurrentLevelCheckerboard2);
+		}
+
+		(cudaDeviceSynchronize());
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -770,6 +684,9 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 			grid.x = (unsigned int)ceil((float)(widthLevel / 4.0f) / (float)threads.x);
 			grid.y = (unsigned int)ceil((float)(heightLevel / 2.0f) / (float)threads.y);
+
+			dataCostDeviceCurrentLevelCheckerboard1 = &dataCostDeviceCheckerboard1[offsetLevel];
+			dataCostDeviceCurrentLevelCheckerboard2 = &dataCostDeviceCheckerboard2[offsetLevel];
 
 			//bind messages in the current checkerboard set to the texture to copy to the "other" checkerboard set at the next level 
 			if (currentCheckerboardSet == 0)
@@ -828,35 +745,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 			}
 		}
 		//otherwise in "bottom level"; use message values and data costs to retrieve final movement values
-		else
-		{
-#ifdef USE_TEXTURES
-			if (currentCheckerboardSet == 0)
-			{
-				cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-
-				cudaBindTexture(0, messageUPrevTexStereoCheckerboard2, messageUDeviceSet0Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageDPrevTexStereoCheckerboard2, messageDDeviceSet0Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageLPrevTexStereoCheckerboard2, messageLDeviceSet0Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageRPrevTexStereoCheckerboard2, messageRDeviceSet0Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			}
-			else
-			{
-				cudaBindTexture(0, messageUPrevTexStereoCheckerboard1, messageUDeviceSet1Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageDPrevTexStereoCheckerboard1, messageDDeviceSet1Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageLPrevTexStereoCheckerboard1, messageLDeviceSet1Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageRPrevTexStereoCheckerboard1, messageRDeviceSet1Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-
-				cudaBindTexture(0, messageUPrevTexStereoCheckerboard2, messageUDeviceSet1Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageDPrevTexStereoCheckerboard2, messageDDeviceSet1Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageLPrevTexStereoCheckerboard2, messageLDeviceSet1Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-				cudaBindTexture(0, messageRPrevTexStereoCheckerboard2, messageRDeviceSet1Checkerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-			}
-#endif
-		}
 		( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
@@ -870,15 +758,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	}
 	gpuErrchk( cudaPeekAtLastError() );
 
-#ifdef USE_TEXTURES
-		
-	cudaUnbindTexture(dataCostTexStereoCheckerboard1);
-	cudaUnbindTexture(dataCostTexStereoCheckerboard2);
-
-	//bind the data costs at the "bottom level" of the image pyramid
-	cudaBindTexture(0, dataCostTexStereoCheckerboard1, dataCostDeviceCheckerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel);
-	cudaBindTexture(0, dataCostTexStereoCheckerboard2, dataCostDeviceCheckerboard2, numBytesDataAndMessageSetInCheckerboardAtLevel);
-#endif
 	//printf("Final  Width: %d  Height: %d \n", widthLevelActualIntegerSize, heightLevelActualIntegerSize);
 
 #ifdef RUN_DETAILED_TIMING
@@ -890,29 +769,22 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	grid.x = (unsigned int)ceil((float)widthLevel / (float)threads.x);
 	grid.y = (unsigned int)ceil((float)heightLevel / (float)threads.y);
-#ifdef USE_TEXTURES
-
-	//retrieve the output disparity/movement values
-	retrieveOutputDisparityCheckerboardStereo <<< grid, threads >>> (resultingDisparityMapDevice, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
-
-#else
 
 	if (currentCheckerboardSet == 0)
 	{
-		retrieveOutputDisparityCheckerboardStereoNoTextures <<< grid, threads >>> (dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+		retrieveOutputDisparityCheckerboardStereoNoTextures <<< grid, threads >>> (dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 				messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
-				resultingDisparityMapDevice, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
+				resultingDisparityMapDevice, widthLevel, heightLevel);
 	}
 	else
 	{
-		retrieveOutputDisparityCheckerboardStereoNoTextures <<< grid, threads >>> (dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+		retrieveOutputDisparityCheckerboardStereoNoTextures <<< grid, threads >>> (dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
 				messageUDeviceSet1Checkerboard2, messageDDeviceSet1Checkerboard2, messageLDeviceSet1Checkerboard2, messageRDeviceSet1Checkerboard2,
-				resultingDisparityMapDevice, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
+				resultingDisparityMapDevice, widthLevel, heightLevel);
 	}
 
-#endif
 	( cudaDeviceSynchronize() );
 	gpuErrchk( cudaPeekAtLastError() );
 
@@ -925,40 +797,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	auto timeFinalUnbindFreeStart = std::chrono::system_clock::now();
 	double totalTimeFinalUnbind = 0.0;
-
-#endif
-
-#ifdef USE_TEXTURES
-
-#ifdef RUN_DETAILED_TIMING
-
-	auto timeFinalUnbindStart = std::chrono::system_clock::now();
-
-#endif
-
-	//textures for message values no longer needed after output disparity/movement found
-	cudaUnbindTexture( messageUPrevTexStereoCheckerboard1);
-	cudaUnbindTexture( messageDPrevTexStereoCheckerboard1);
-	cudaUnbindTexture( messageLPrevTexStereoCheckerboard1);
-	cudaUnbindTexture( messageRPrevTexStereoCheckerboard1);
-
-	cudaUnbindTexture( messageUPrevTexStereoCheckerboard2);
-	cudaUnbindTexture( messageDPrevTexStereoCheckerboard2);
-	cudaUnbindTexture( messageLPrevTexStereoCheckerboard2);
-	cudaUnbindTexture( messageRPrevTexStereoCheckerboard2);
-
-	//unbind the texture attached to the data costs
-	cudaUnbindTexture(dataCostTexStereoCheckerboard1);
-	cudaUnbindTexture(dataCostTexStereoCheckerboard2);
-	( cudaDeviceSynchronize() );
-
-#ifdef RUN_DETAILED_TIMING
-
-	auto timeFinalUnbindEnd = std::chrono::system_clock::now();
-	diff = timeFinalUnbindEnd-timeFinalUnbindStart;
-	totalTimeFinalUnbind += diff.count();
-
-#endif
 
 #endif
 

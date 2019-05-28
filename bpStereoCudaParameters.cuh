@@ -261,7 +261,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 
 
-
 //structure to store the settings for the number of levels and iterations
 typedef struct 
 {
@@ -270,11 +269,6 @@ typedef struct
 	
 	int widthImages;
 	int heightImages;
-	
-	float dataWeight;
-	float dataCostCap;
-	
-	float discCostCap;
 }BPsettings;
 
 

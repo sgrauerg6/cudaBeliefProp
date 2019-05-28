@@ -77,11 +77,6 @@ BPsettings initializeAndReturnBPSettings()
 	startBPSettings.widthImages = 0;
 	startBPSettings.heightImages = 0;
 
-	startBPSettings.discCostCap = DISC_K_BP;
-
-	startBPSettings.dataWeight = LAMBDA_BP;
-	startBPSettings.dataCostCap = DATA_K_BP;
-
 	return startBPSettings;
 };
 
