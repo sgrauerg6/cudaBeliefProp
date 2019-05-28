@@ -205,7 +205,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 		assert(new_height >= 1);
 
 		data[i] = new image<float[VALUES]>(new_width, new_height);
-		for (int y = 1; y < old_height; y++) {
+		for (int y = 0; y < old_height; y++) {
 			for (int x = 0; x < old_width; x++) {
 				for (int value = 0; value < VALUES; value++) {
 					imRef(data[i], x/2, y/2)[value] +=
