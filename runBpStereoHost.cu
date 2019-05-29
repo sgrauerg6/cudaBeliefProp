@@ -49,64 +49,44 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < numIterationsAtLevel; iterationNum++)
 	{
+		int checkboardPartUpdate = CHECKERBOARD_PART_2;
+
 		if ((iterationNum % 2) == 0)
 		{
-			(cudaDeviceSynchronize());
-
-#ifdef RUN_DETAILED_TIMING
-			auto timeBpItersKernelStart = std::chrono::system_clock::now();
-#endif
-
-			runBPIterationUsingCheckerboardUpdatesNoTextures<<<grid, threads>>>(
-					dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-					messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-					CHECKERBOARD_PART_2, ((int) dataTexOffset / sizeof(float)));
-
-			(cudaDeviceSynchronize());
-
-#ifdef RUN_DETAILED_TIMING
-
-			auto timeBpItersKernelEnd = std::chrono::system_clock::now();
-			std::chrono::duration<double> diff = timeBpItersKernelEnd-timeBpItersKernelStart;
-
-			timeBpItersKernelTotalTime += diff.count();
-
-#endif
+			checkboardPartUpdate = CHECKERBOARD_PART_2;
 		}
 		else
 		{
-			(cudaDeviceSynchronize());
-
-#ifdef RUN_DETAILED_TIMING
-
-			auto timeBpItersKernelStart = std::chrono::system_clock::now();
-
-#endif
-
-			runBPIterationUsingCheckerboardUpdatesNoTextures<<<grid, threads>>>(
-					dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-					messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-					CHECKERBOARD_PART_1, ((int) dataTexOffset / sizeof(float)));
-
-			(cudaDeviceSynchronize());
-
-#ifdef RUN_DETAILED_TIMING
-
-			auto timeBpItersKernelEnd = std::chrono::system_clock::now();
-			std::chrono::duration<double> diff = timeBpItersKernelEnd-timeBpItersKernelStart;
-
-			timeBpItersKernelTotalTime += diff.count();
-
-#endif
+			checkboardPartUpdate = CHECKERBOARD_PART_1;
 		}
+
+		(cudaDeviceSynchronize());
+
+#ifdef RUN_DETAILED_TIMING
+		auto timeBpItersKernelStart = std::chrono::system_clock::now();
+#endif
+
+		runBPIterationUsingCheckerboardUpdatesNoTextures<<<grid, threads>>>(
+				dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+				messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+				widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+				checkboardPartUpdate, ((int) dataTexOffset / sizeof(float)));
+
+		(cudaDeviceSynchronize());
+
+#ifdef RUN_DETAILED_TIMING
+
+		auto timeBpItersKernelEnd = std::chrono::system_clock::now();
+		std::chrono::duration<double> diff = timeBpItersKernelEnd
+				- timeBpItersKernelStart;
+
+		timeBpItersKernelTotalTime += diff.count();
+
+#endif
+
 	}
 }
 
