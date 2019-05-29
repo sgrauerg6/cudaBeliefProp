@@ -206,58 +206,19 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizeP
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& dataCostDeviceCheckerboard1, float*& dataCostDeviceCheckerboard2, BPsettings& algSettings)
 {
-	//allocate array and copy image data
-	//data is in the single-float value format
-	cudaChannelFormatDesc channelDescImages = cudaCreateChannelDesc<float>();
-
-	//store the two image pixels in the GPU in a CUDA array
-	cudaArray* cu_arrayImage1BP;
-	cudaArray* cu_arrayImage2BP;
-
-	//allocate and then copy the image pixel data for the two images on the GPU
-	( cudaMallocArray( &cu_arrayImage1BP, &channelDescImages, algSettings.widthImages, algSettings.heightImages )); 
-	( cudaMallocArray( &cu_arrayImage2BP, &channelDescImages, algSettings.widthImages, algSettings.heightImages )); 
-
-	( cudaMemcpyToArray( cu_arrayImage1BP, 0, 0, image1PixelsDevice, algSettings.widthImages*algSettings.heightImages*sizeof(float), cudaMemcpyDeviceToDevice));
-	( cudaMemcpyToArray( cu_arrayImage2BP, 0, 0, image2PixelsDevice, algSettings.widthImages*algSettings.heightImages*sizeof(float), cudaMemcpyDeviceToDevice));
-
-	// set texture parameters for the CUDA arrays to hold the input images
-	image1PixelsTextureBPStereo.addressMode[0] = cudaAddressModeClamp;
-	image1PixelsTextureBPStereo.addressMode[1] = cudaAddressModeClamp;
-	image1PixelsTextureBPStereo.filterMode = cudaFilterModePoint;
-	image1PixelsTextureBPStereo.normalized = false;    // access with normalized texture coordinates
-
-	image2PixelsTextureBPStereo.addressMode[0] = cudaAddressModeClamp;
-	image2PixelsTextureBPStereo.addressMode[1] = cudaAddressModeClamp;
-	image2PixelsTextureBPStereo.filterMode = cudaFilterModePoint;
-	image2PixelsTextureBPStereo.normalized = false;    // access with normalized texture coordinates
-
-	//Bind the CUDA Arrays holding the input image pixel arrays to the appropriate texture
-	( cudaBindTextureToArray( image1PixelsTextureBPStereo, cu_arrayImage1BP, channelDescImages));
-	( cudaBindTextureToArray( image2PixelsTextureBPStereo, cu_arrayImage2BP, channelDescImages));
-
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
-
 
 	//kernal run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
 	grid.x = (unsigned int)ceil((float)algSettings.widthImages / (float)threads.x);
 	grid.y = (unsigned int)ceil((float)algSettings.heightImages / (float)threads.y);
 
 	//initialize the data the the "bottom" of the image pyramid
-	initializeBottomLevelDataStereo <<< grid, threads >>> (dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
+	initializeBottomLevelDataStereo <<< grid, threads >>> (image1PixelsDevice, image2PixelsDevice, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
 
 	( cudaDeviceSynchronize() );
-
-	//unbind the texture attached to the image pixel values
-	cudaUnbindTexture( image1PixelsTextureBPStereo);
-	cudaUnbindTexture( image2PixelsTextureBPStereo);
-
-	//image data no longer needed after data costs are computed
-	(cudaFreeArray(cu_arrayImage1BP));
-	(cudaFreeArray(cu_arrayImage2BP));
 }
 
 
@@ -336,7 +297,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//using "half" because the data is split in two using the checkerboard scheme
 	for (int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
 	{
-		halfTotalDataAllLevels += (int)(ceil(widthLevelActualIntegerSize/2.0f))*(heightLevelActualIntegerSize);
+		halfTotalDataAllLevels += (getCheckerboardWidth(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize);
 		widthLevel /= 2.0f;
 		heightLevel /= 2.0f;
 
@@ -439,7 +400,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//stores the number of bytes for the data costs and one set of message values in each of the two "checkerboards" at the current level
 	//this is half the total number of bytes for the data/message info at the level, since there are two equal-sized checkerboards
 	//initially at "bottom level" of width widthImages and height heightImages
-	int numBytesDataAndMessageSetInCheckerboardAtLevel = (ceil(widthLevelActualIntegerSize/2.0f))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
+	int numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth(widthLevelActualIntegerSize))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -454,7 +415,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		//width is half since each part of the checkboard contains half the values going across
 		//retrieve offset where the data starts at the "current level"
-		offsetLevel += ((int)(ceil(widthLevelActualIntegerSize/2.0f))) *(heightLevelActualIntegerSize)*totalPossibleMovements;
+		offsetLevel += (getCheckerboardWidth(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * totalPossibleMovements;
 
 		widthLevel /= 2.0f;
 		heightLevel /= 2.0f;
@@ -464,7 +425,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		widthLevelActualIntegerSize = (int)ceil(widthLevel);
 		heightLevelActualIntegerSize = (int)ceil(heightLevel);
-		int widthCheckerboard = (int)ceil(((float)widthLevelActualIntegerSize) / 2.0f);
+		int widthCheckerboard = getCheckerboardWidth(widthLevelActualIntegerSize);
 
 		//printf("LevelNum: %d  Width: %d  Height: %d \n", levelNum, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
 
@@ -487,7 +448,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		if (levelNum < (algSettings.numLevels - 1))
 		{
 			//each "checkerboard" where the computation alternates contains half the data
-			numBytesDataAndMessageSetInCheckerboardAtLevel = (ceil(widthLevelActualIntegerSize/2.0f))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
+			numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth(widthLevelActualIntegerSize))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
 		}
 	}
 
@@ -568,12 +529,12 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	auto timeInitMessageValuesKernelTimeStart = std::chrono::system_clock::now();
 
 	//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
-	numBytesDataAndMessageSetInCheckerboardAtLevel = (ceil(widthLevelActualIntegerSize/2.0f))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
+	numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth(widthLevelActualIntegerSize)) * heightLevelActualIntegerSize * totalPossibleMovements *sizeof(float);
 
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
-											(int)(ceil(widthLevelActualIntegerSize/2.0f)), heightLevelActualIntegerSize, totalPossibleMovements);
+											getCheckerboardWidth(widthLevelActualIntegerSize), heightLevelActualIntegerSize, totalPossibleMovements);
 
 	auto timeInitMessageValuesKernelTimeEnd = std::chrono::system_clock::now();
 	diff = timeInitMessageValuesKernelTimeEnd-timeInitMessageValuesKernelTimeStart;
@@ -621,7 +582,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 #endif
 
 		//printf("LevelNumBP: %d  Width: %f  Height: %f \n", levelNum, widthLevel, heightLevel);
-		int widthCheckerboard = (int)ceil(((float)widthLevelActualIntegerSize) / 2.0f);
+		int widthCheckerboard = getCheckerboardWidth(widthLevelActualIntegerSize);
 		grid.x = (unsigned int) ceil(
 				(float) (widthCheckerboard) / (float) threads.x); //only updating half at a time
 		grid.y = (unsigned int) ceil((float) heightLevel / (float) threads.y);
@@ -685,13 +646,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 			widthLevelActualIntegerSize = (int)ceil(widthLevel);
 			heightLevelActualIntegerSize = (int)ceil(heightLevel);
-			int widthCheckerboard = (int)ceil(((float)widthLevelActualIntegerSize) / 2.0f);
+			int widthCheckerboard = getCheckerboardWidth(widthLevelActualIntegerSize);
 
-			offsetLevel -= ((int)ceil(widthLevelActualIntegerSize/2.0f))*(heightLevelActualIntegerSize)*totalPossibleMovements;
+			offsetLevel -= widthCheckerboard * heightLevelActualIntegerSize * totalPossibleMovements;
 			printf("OffsetLevel: %d\n", offsetLevel);
 
 			//update the number of bytes needed to store each set
-			numBytesDataAndMessageSetInCheckerboardAtLevel = ((int)(ceil(widthLevelActualIntegerSize/2.0f)))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(float);
+			numBytesDataAndMessageSetInCheckerboardAtLevel = widthCheckerboard * heightLevelActualIntegerSize * totalPossibleMovements * sizeof(float);
 
 			grid.x = (unsigned int)ceil((float)(widthCheckerboard / 2.0f) / (float)threads.x);
 			grid.y = (unsigned int)ceil((float)(heightLevel / 2.0f) / (float)threads.y);

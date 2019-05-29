@@ -36,6 +36,10 @@ __device__ int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int 
 	return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION + offsetData;
 }
 
+__device__ __host__ int getCheckerboardWidth(int imageWidth)
+{
+	return (int)ceil(((float)imageWidth) / 2.0);
+}
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 __device__ void dtStereo(float f[NUM_POSSIBLE_DISPARITY_VALUES]) 
@@ -101,7 +105,7 @@ __device__ void msgStereo(float messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALU
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-__global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheckerboard1, float* dataCostDeviceStereoCheckerboard2)
+__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, float* dataCostDeviceStereoCheckerboard1, float* dataCostDeviceStereoCheckerboard2)
 {
 	// Block index
     int bx = blockIdx.x;
@@ -118,6 +122,8 @@ __global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheck
 
 	if (withinImageBounds(xVal, yVal, BPSettingsConstMemStereo.widthImages, BPSettingsConstMemStereo.heightImages))
 	{
+		int imageCheckerboardWidth = getCheckerboardWidth(BPSettingsConstMemStereo.widthImages);
+
 		//make sure that it is possible to check every disparity value
 		if ((xVal - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0)
 		{
@@ -126,10 +132,10 @@ __global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheck
 				float currentPixelImage1;
 				float currentPixelImage2;
 
-				currentPixelImage1 = tex2D(image1PixelsTextureBPStereo, xVal, yVal);
-				currentPixelImage2 = tex2D(image2PixelsTextureBPStereo, xVal - currentDisparity, yVal);
+				currentPixelImage1 = image1PixelsDevice[yVal*BPSettingsConstMemStereo.widthImages + xVal];
+				currentPixelImage2 = image2PixelsDevice[yVal*BPSettingsConstMemStereo.widthImages + (xVal - currentDisparity)];
 
-				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, (int)(ceil(((float)BPSettingsConstMemStereo.widthImages)/2.0)), BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
@@ -146,7 +152,7 @@ __global__ void initializeBottomLevelDataStereo(float* dataCostDeviceStereoCheck
 		{
 			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 			{
-				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, (int)(ceil(((float)BPSettingsConstMemStereo.widthImages)/2.0)), BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
@@ -176,8 +182,8 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(float* dataCostStereo
 
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
-	int widthCheckerboardCurrentLevel = (int)ceil(((float)widthCurrentLevel) / 2.0);
-	int widthCheckerboardPrevLevel = (int)ceil(((float)widthPrevLevel) / 2.0);
+	int widthCheckerboardCurrentLevel = getCheckerboardWidth(widthCurrentLevel);
+	int widthCheckerboardPrevLevel = getCheckerboardWidth(widthPrevLevel);
 
 	if (withinImageBounds(xVal, yVal, widthCheckerboardCurrentLevel, heightCurrentLevel))
 	{
@@ -421,7 +427,7 @@ __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(float* dataCost
 
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
-	int widthCheckerboardCurrentLevel = (int)ceil(((float)widthLevel) / 2.0);
+	int widthCheckerboardCurrentLevel = getCheckerboardWidth(widthLevel);
 
 	if (withinImageBounds(xVal, yVal, widthLevel/2, heightLevel))
 	{
@@ -455,8 +461,8 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(float* me
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int widthCheckerboardPrevLevel = (int)ceil(((float)widthLevelPrev) / 2.0);
-	int widthCheckerboardNextLevel = (int)ceil(((float)widthLevelNext) / 2.0);
+	int widthCheckerboardPrevLevel = getCheckerboardWidth(widthLevelPrev);
+	int widthCheckerboardNextLevel = getCheckerboardWidth(widthLevelNext);
 
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
@@ -557,10 +563,9 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(float* dataC
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
 
-
 	if (withinImageBounds(xVal, yVal, widthLevel, heightLevel))
 	{
-		int widthCheckerboard = (int)ceil(((float)widthLevel) / 2.0);
+		int widthCheckerboard = getCheckerboardWidth(widthLevel);
 		int xValInCheckerboardPart = xVal/2;
 
 		if (((yVal+xVal) % 2) == 0) //if true, then pixel is from part 1 of the checkerboard; otherwise, it's from part 2
