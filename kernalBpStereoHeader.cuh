@@ -25,9 +25,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 
 //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
+#if OPTIMIZED_INDEXING_SETTING == 1
 #define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION (yVal*width*totalNumDispVals + width*currentDisparity + xVal)
+#else
+#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
+#endif
 //#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION (height*width*currentDisparity + width*yVal + xVal)
-//#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION (width*yVal*totalNumDispVals + xVal*totalNumDispVals + currentDisparity)
+//#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBounds(int xVal, int yVal, int width, int height);
