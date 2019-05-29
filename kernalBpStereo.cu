@@ -36,10 +36,12 @@ __device__ int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int 
 	return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION + offsetData;
 }
 
+
 __device__ __host__ int getCheckerboardWidth(int imageWidth)
 {
 	return (int)ceil(((float)imageWidth) / 2.0);
 }
+
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 __device__ void dtStereo(float f[NUM_POSSIBLE_DISPARITY_VALUES]) 
