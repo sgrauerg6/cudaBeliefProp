@@ -106,7 +106,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 		//run BP on the image if image is smaller than "chunk size"
 		if ((widthImages <= WIDTH_IMAGE_CHUNK_RUN_STEREO_EST_BP)
 				&& (heightImages <= HEIGHT_IMAGE_CHUNK_RUN_STEREO_EST_BP)) {
-			runBeliefPropStereoCUDA(smoothedImage1Device, smoothedImage2Device,
+			runBeliefPropStereoCUDA<beliefPropProcessingDataType>(smoothedImage1Device, smoothedImage2Device,
 					disparityMapFromImage1To2Device, algSettings, timings);
 		}
 		//otherwise run the BP Stereo on the image set "in chunks"
@@ -159,7 +159,7 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 			//run BP on the image if image is smaller than "chunk size"
 			if ((widthImages <= WIDTH_IMAGE_CHUNK_RUN_STEREO_EST_BP)
 					&& (heightImages <= HEIGHT_IMAGE_CHUNK_RUN_STEREO_EST_BP)) {
-				runBeliefPropStereoCUDA(smoothedImage1Device,
+				runBeliefPropStereoCUDA<beliefPropProcessingDataType>(smoothedImage1Device,
 						smoothedImage2Device, disparityMapFromImage1To2Device,
 						algSettings, timings);
 			}

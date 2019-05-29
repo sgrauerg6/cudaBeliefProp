@@ -33,7 +33,7 @@ if __name__ == "__main__":
 	conesImageSetHalfSize = {"RefImage" : "\"conesH/im2.ppm\"", "TestImage" : "\"conesH/im6.ppm\"", "CompGpuDispMap" : "\"conesH/computedDisparityMapTsukubaGPU.pgm\"", "CompCpuDispMap" : "\"conesH/computedDisparityMapTsukubaCPU.pgm\"", "NumDispVals" : "127", "ScaleBp" : "2.0f", "GroundTruthDisp" : "\"conesH/disp2.pgm\"", "GroundTruthDispScale" : "2.0f", "bpLevelsImageSet" : 6}
 
 	#imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, barn2ImageSet, bullImageSet, mapImageSet, posterImageSet, sawtoothImageSet, conesImageSetQuarterSize, teddyImageSetQuarterSize, conesImageSetHalfSize, teddyImageSetHalfSize, conesImageSetHalfSizeAdjusted, teddyImageSetHalfSizeAdjusted]
-	imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, conesImageSetQuarterSize, conesImageSetHalfSize]
+	imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, conesImageSetQuarterSize]#, conesImageSetHalfSize]
 	#refImages = ["\"tsukuba1.pgm\"", "\"conesQuarter2.pgm\"", "\"conesHalf2.pgm\""]
 	#testImages = ["\"tsukuba2.pgm\"", "\"conesQuarter6.pgm\"", "\"conesHalf6.pgm\""]
 	#saveDispGpuOutput = ["\"computedDisparityMapTsukubaGPU.pgm\"", "\"computedDisparityConesQuarterGPU.pgm\"", "\"computedDisparityConesHalfGPU.pgm\""]
@@ -59,6 +59,7 @@ if __name__ == "__main__":
 	outputData = []
 	firstLine = True
 	optimizedMemory = [0, 1]
+	beliefPropDataTypeProcessing = [0, 1, 2]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
 			for currTruncationDiscontCost in truncationDiscontCost:
@@ -66,6 +67,7 @@ if __name__ == "__main__":
 					for currDataCostWeight in dataCostWeight:
 						for currSmoothImagesSigma in smoothImagesSigma:
 							for optMemory in optimizedMemory:
+								for beliefPropDataTypeToProcess in beliefPropDataTypeProcessing:
 								#uncomment if using multiple disparity values on single image	
 								#for currNumDispVals in numDispVals:
 									numDispLevels = imageSet["NumDispVals"]
@@ -95,6 +97,13 @@ if __name__ == "__main__":
 										file.write("#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON 1\n")
 									else:
 										file.write("#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON 0\n")
+
+									if (beliefPropDataTypeToProcess == 1):
+										file.write("#define CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON 1\n")
+									elif (beliefPropDataTypeToProcess == 2):
+										file.write("#define CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON 2\n")
+									else:
+										file.write("#define CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON 0\n")
 									
 									file.write("#endif")
 									file.close()
@@ -127,7 +136,7 @@ if __name__ == "__main__":
 	fileOutputCsv.write("\n")
 	#uncomment if using multiple disparity values on single image	
 	#for i in range(len(imageSets)*len(numDispVals)*len(numBpIters)*len(numBpLevels)*len(truncationDiscontCost)*len(truncationDataCost)*len(dataCostWeight)*len(smoothImagesSigma)):
-	for i in range(len(imageSets)*len(numBpLevelsAndIters)*len(truncationDiscontCost)*len(truncationDataCost)*len(dataCostWeight)*len(smoothImagesSigma)*len(optimizedMemory)):
+	for i in range(len(imageSets)*len(numBpLevelsAndIters)*len(truncationDiscontCost)*len(truncationDataCost)*len(dataCostWeight)*len(smoothImagesSigma)*len(optimizedMemory)*len(beliefPropDataTypeProcessing)):
 		for data in outputData:
 			if (len(data) == 0):
 				fileOutputCsv.write(",")

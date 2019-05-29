@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <stdio.h>
 #include "bpParametersFromPython.h"
+#include <cuda_fp16.h>
 
 #define TSUKUBA_IMAGES 1
 #define CONES_IMAGES_QUARTER_SIZE 2
@@ -254,6 +255,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CHECKERBOARD_PART_2 2
 
 #define NO_EXPECTED_STEREO_BP -999.0f
+
+#define DATA_TYPE_PROCESSING_FLOAT 0
+#define DATA_TYPE_PROCESSING_DOUBLE 1
+#define DATA_TYPE_PROCESSING_HALF 2
+#define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
+
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
+typedef double beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+typedef half beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
+#else
+typedef float beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
+#endif
 
 const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 

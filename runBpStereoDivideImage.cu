@@ -67,7 +67,7 @@ void runBPStereoEstOnImageSetInChunks(float* image1Device, float* image2Device, 
 
 
 			//run BP on the image portion
-			runBeliefPropStereoCUDA(currentPortionImage1Device, currentPortionImage2Device, disparityMapPortionDevice, runBPAlgSettings, timings);
+			runBeliefPropStereoCUDA<beliefPropProcessingDataType>(currentPortionImage1Device, currentPortionImage2Device, disparityMapPortionDevice, runBPAlgSettings, timings);
 
 
 			//retrieve the size of the chunk to write to the device (may be smaller than chunk size if at "end")...write the portion of the Stereo without the padding
