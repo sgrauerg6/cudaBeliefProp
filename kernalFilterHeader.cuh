@@ -29,10 +29,6 @@ __device__ __constant__ int sizeFilterConst;
 __device__ __constant__ int widthImageConstFilt;
 __device__ __constant__ int heightImageConstFilt;
 
-// declare texture reference for 1D float texture
-texture<float, 1, cudaReadModeElementType> imagePixelsFloatToFilterTexture;
-texture<unsigned int, 1, cudaReadModeElementType> imagePixelsUnsignedIntToFilterTexture;
-
 //checks if the current point is within the image bounds
 __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int height);
 
@@ -40,29 +36,27 @@ __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int heigh
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //output filtered image stored in floatImagePixels
-__global__ void convertUnsignedIntImageToFloat(float* floatImagePixels);
+__global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels);
 
 //kernal to apply a horizontal filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageAcross(float* filteredImagePixels);
-
+__global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* filteredImagePixels);
 
 //kernal to apply a vertical filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageVertical(float* filteredImagePixels);
+__global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float* filteredImagePixels);
 
 //kernal to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageAcross(float* filteredImagePixels);
-
+__global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels);
 
 //kernal to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageVertical(float* filteredImagePixels);
+__global__ void filterUnsignedIntImageVertical(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels);
 
 
 #endif //KERNAL_FILTER_HEADER_CUH

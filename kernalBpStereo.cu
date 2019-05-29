@@ -105,7 +105,7 @@ __device__ void msgStereo(float messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALU
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, float* dataCostDeviceStereoCheckerboard1, float* dataCostDeviceStereoCheckerboard2)
+__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, float* dataCostDeviceStereoCheckerboard1, float* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages)
 {
 	// Block index
     int bx = blockIdx.x;
@@ -120,9 +120,9 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 
 	int indexVal;
 
-	if (withinImageBounds(xVal, yVal, BPSettingsConstMemStereo.widthImages, BPSettingsConstMemStereo.heightImages))
+	if (withinImageBounds(xVal, yVal, widthImages, heightImages))
 	{
-		int imageCheckerboardWidth = getCheckerboardWidth(BPSettingsConstMemStereo.widthImages);
+		int imageCheckerboardWidth = getCheckerboardWidth(widthImages);
 
 		//make sure that it is possible to check every disparity value
 		if ((xVal - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0)
@@ -132,10 +132,10 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 				float currentPixelImage1;
 				float currentPixelImage2;
 
-				currentPixelImage1 = image1PixelsDevice[yVal*BPSettingsConstMemStereo.widthImages + xVal];
-				currentPixelImage2 = image2PixelsDevice[yVal*BPSettingsConstMemStereo.widthImages + (xVal - currentDisparity)];
+				currentPixelImage1 = image1PixelsDevice[yVal * widthImages + xVal];
+				currentPixelImage2 = image2PixelsDevice[yVal * widthImages + (xVal - currentDisparity)];
 
-				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
@@ -152,7 +152,7 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 		{
 			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 			{
-				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, BPSettingsConstMemStereo.heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)

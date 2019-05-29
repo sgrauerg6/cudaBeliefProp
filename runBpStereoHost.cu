@@ -38,13 +38,6 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
 
 //functions directed related to running BP to retrieve the movement between the images
 
-//set the current BP settings in the host in constant memory on the device
-__host__ void setBPSettingInConstMem(BPsettings& currentBPSettings)
-{
-	//write BP settings to constant memory on the GPU
-	(cudaMemcpyToSymbol(BPSettingsConstMemStereo, &currentBPSettings, sizeof(BPsettings)));
-}
-
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize, size_t& dataTexOffset,
 	float*& messageUDeviceCheckerboard1, float*& messageDDeviceCheckerboard1, float*& messageLDeviceCheckerboard1, 
@@ -216,7 +209,10 @@ __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2Pixe
 	grid.y = (unsigned int)ceil((float)algSettings.heightImages / (float)threads.y);
 
 	//initialize the data the the "bottom" of the image pyramid
-	initializeBottomLevelDataStereo <<< grid, threads >>> (image1PixelsDevice, image2PixelsDevice, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
+	initializeBottomLevelDataStereo<<<grid, threads>>>(image1PixelsDevice,
+			image2PixelsDevice, dataCostDeviceCheckerboard1,
+			dataCostDeviceCheckerboard2, algSettings.widthImages,
+			algSettings.heightImages);
 
 	( cudaDeviceSynchronize() );
 }
@@ -261,9 +257,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	auto timeInitSettingsConstMemStart = std::chrono::system_clock::now();
 
 #endif
-
-	//set the BP algorithm and extension settings on the device
-	setBPSettingInConstMem(algSettings);
 
 	( cudaDeviceSynchronize() );
 
