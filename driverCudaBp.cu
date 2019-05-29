@@ -135,7 +135,7 @@ int main(int argc, char** argv)
 {
 	//FILE* resultsFile = stdout;
 	FILE* resultsFile = fopen("output.txt", "w");
-	int optLevel = USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS_PYTHON + USE_SAME_ARRAY_FOR_ALL_ALLOC_PYTHON;
+	int optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON;
 	fprintf(resultsFile, "Ref Image: %s\n", DEFAULT_REF_IMAGE_PATH);
 	fprintf(resultsFile, "Test Image: %s\n", DEFAULT_TEST_IMAGE_PATH);
 	fprintf(resultsFile, "Memory Optimization Level: %d\n", optLevel);

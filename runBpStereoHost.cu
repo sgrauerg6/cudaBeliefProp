@@ -111,7 +111,6 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 }
 
 
-
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
@@ -126,7 +125,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizeP
 	float*& messageRDeviceCheckerboard2CopyTo, int& numBytesDataAndMessageSetInCheckerboardAtLevel, dim3& grid, dim3& threads)
 {
 
-#if !defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) && !defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
+#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	//allocate space in the GPU for the message values in the checkerboard set to copy to
 	(cudaMalloc((void**) &messageUDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
@@ -180,7 +179,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizeP
 
 #endif
 
-#if !defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) && !defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
+#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	//free the now-copied from computed data of the completed level
 	cudaFree(messageUDeviceCheckerboard1CopyFrom);
@@ -195,6 +194,7 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizeP
 
 #endif
 }
+
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& dataCostDeviceCheckerboard1, float*& dataCostDeviceCheckerboard2, BPsettings& algSettings)
@@ -218,7 +218,6 @@ __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2Pixe
 }
 
 
-
 //initialize the message values with no previous message values...all message values are set to 0
 __host__ void initializeMessageValsToDefault(float*& messageUDeviceSet0Checkerboard1, float*& messageDDeviceSet0Checkerboard1, float*& messageLDeviceSet0Checkerboard1, float*& messageRDeviceSet0Checkerboard1,
 												  float*& messageUDeviceSet0Checkerboard2, float*& messageDDeviceSet0Checkerboard2, float*& messageLDeviceSet0Checkerboard2, float*& messageRDeviceSet0Checkerboard2,
@@ -234,8 +233,6 @@ __host__ void initializeMessageValsToDefault(float*& messageUDeviceSet0Checkerbo
 
 	cudaDeviceSynchronize();
 }
-
-
 
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -319,7 +316,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-#ifdef USE_SAME_ARRAY_FOR_ALL_ALLOC
+#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	printf("ALLOC ALL MEMORY\n");
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, 10*(halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
@@ -339,20 +336,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-
-#ifdef USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS
-
-	(cudaMalloc((void**) &messageUDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-	(cudaMalloc((void**) &messageDDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-	(cudaMalloc((void**) &messageLDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-	(cudaMalloc((void**) &messageRDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-
-	(cudaMalloc((void**) &messageUDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-	(cudaMalloc((void**) &messageDDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-	(cudaMalloc((void**) &messageLDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-	(cudaMalloc((void**) &messageRDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(float)));
-
-#endif
 
 #endif
 
@@ -492,7 +475,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	dataCostDeviceCurrentLevelCheckerboard1 = &dataCostDeviceCheckerboard1[offsetLevel];
 	dataCostDeviceCurrentLevelCheckerboard2 = &dataCostDeviceCheckerboard2[offsetLevel];
 
-#if defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) || defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
+#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	messageUDeviceSet0Checkerboard1 = &messageUDeviceCheckerboard1[offsetLevel];
 	messageDDeviceSet0Checkerboard1 = &messageDDeviceCheckerboard1[offsetLevel];
@@ -657,7 +640,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 			if (currentCheckerboardSet == 0)
 			{
 
-#if defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) || defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
+#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 				messageUDeviceSet1Checkerboard1 = &messageUDeviceCheckerboard1[offsetLevel];
 				messageDDeviceSet1Checkerboard1 = &messageDDeviceCheckerboard1[offsetLevel];
@@ -700,7 +683,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 			else
 			{
 
-#if defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) || defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
+#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 				messageUDeviceSet0Checkerboard1 = &messageUDeviceCheckerboard1[offsetLevel];
 				messageDDeviceSet0Checkerboard1 = &messageDDeviceCheckerboard1[offsetLevel];
@@ -804,21 +787,9 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 #endif
 	gpuErrchk( cudaPeekAtLastError() );
 
-#if defined(USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS) && !defined(USE_SAME_ARRAY_FOR_ALL_ALLOC)
+#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	cudaFree(messageUDeviceCheckerboard1);
-	cudaFree(messageDDeviceCheckerboard1);
-	cudaFree(messageLDeviceCheckerboard1);
-	cudaFree(messageRDeviceCheckerboard1);
-
-	cudaFree(messageUDeviceCheckerboard2);
-	cudaFree(messageDDeviceCheckerboard2);
-	cudaFree(messageLDeviceCheckerboard2);
-	cudaFree(messageRDeviceCheckerboard2);
-
-#else
-
-#ifndef USE_SAME_ARRAY_FOR_ALL_ALLOC
+	printf("ALLOC MULT MEM SEGMENTS\n");
 
 	//free the device storage for the message values used to retrieve the output movement values
 	if (currentCheckerboardSet == 0)
@@ -848,23 +819,17 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		cudaFree(messageRDeviceSet1Checkerboard2);
 	}
 
-#endif
-#endif
-	gpuErrchk( cudaPeekAtLastError() );
-
-#ifdef USE_SAME_ARRAY_FOR_ALL_ALLOC
-	printf("FREE ALL MEMORY\n");
-
-	cudaFree(dataCostDeviceCheckerboard1);
-
-#else
-	printf("ALLOC MULT MEM SEGMENTS\n");
-
 	//now free the allocated data space
 	cudaFree(dataCostDeviceCheckerboard1);
 	cudaFree(dataCostDeviceCheckerboard2);
 
+#else
+
+	printf("FREE ALL MEMORY\n");
+	cudaFree(dataCostDeviceCheckerboard1);
+
 #endif
+
 	gpuErrchk( cudaPeekAtLastError() );
 	( cudaDeviceSynchronize() );
 
@@ -919,4 +884,3 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 }
-

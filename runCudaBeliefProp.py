@@ -58,7 +58,7 @@ if __name__ == "__main__":
 	outputLabels = []
 	outputData = []
 	firstLine = True
-	optimizedMemory = [0, 1, 2]
+	optimizedMemory = [0, 1]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
 			for currTruncationDiscontCost in truncationDiscontCost:
@@ -92,14 +92,9 @@ if __name__ == "__main__":
 									file.write("#define SIGMA_BP_FROM_PYTHON %s\n" % currSmoothImagesSigma)
 									
 									if (optMemory == 1):
-										file.write("#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS_PYTHON 1\n")
-										file.write("#define USE_SAME_ARRAY_FOR_ALL_ALLOC_PYTHON 0\n")
-									elif (optMemory == 2):
-										file.write("#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS_PYTHON 1\n")
-										file.write("#define USE_SAME_ARRAY_FOR_ALL_ALLOC_PYTHON 1\n")
+										file.write("#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON 1\n")
 									else:
-										file.write("#define USE_SAME_ARRAY_FOR_ALL_LEVEL_MESSAGE_VALS_PYTHON 0\n")
-										file.write("#define USE_SAME_ARRAY_FOR_ALL_ALLOC_PYTHON 0\n")
+										file.write("#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON 0\n")
 									
 									file.write("#endif")
 									file.close()
