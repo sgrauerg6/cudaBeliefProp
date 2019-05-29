@@ -261,6 +261,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DATA_TYPE_PROCESSING_HALF 2
 #define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
 
+//remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
 typedef double beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
