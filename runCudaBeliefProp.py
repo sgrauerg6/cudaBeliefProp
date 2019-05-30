@@ -59,7 +59,7 @@ if __name__ == "__main__":
 	outputData = []
 	firstLine = True
 	optimizedMemory = [0, 1]
-	beliefPropDataTypeProcessing = [0, 1, 1]
+	beliefPropDataTypeProcessing = [0, 1, 0]
 	indexOptimizationSettings = ["0", "1"]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
