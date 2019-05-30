@@ -149,11 +149,12 @@ __host__ void setBPSettingInConstMem(BPsettings& currentBPSettings);
 
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-__host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelInt, int& heightLevelInt, size_t& dataTexOffset,
-		float*& messageUDeviceCheckerboard1, float*& messageDDeviceCheckerboard1, float*& messageLDeviceCheckerboard1, 
-		float*& messageRDeviceCheckerboard1, float*& messageUDeviceCheckerboard2, float*& messageDDeviceCheckerboard2, float*& messageLDeviceCheckerboard2, 
-		float*& messageRDeviceCheckerboard2, dim3& grid, dim3& threads, int& numBytesDataAndMessageSetInCheckerboardAtLevel, float* dataCostDeviceCheckerboard1,
-		float* dataCostDeviceCheckerboard2);
+template<typename T>
+__host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize,
+	T*& messageUDeviceCheckerboard1, T*& messageDDeviceCheckerboard1, T*& messageLDeviceCheckerboard1,
+	T*& messageRDeviceCheckerboard1, T*& messageUDeviceCheckerboard2, T*& messageDDeviceCheckerboard2, T*& messageLDeviceCheckerboard2,
+	T*& messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
+	T* dataCostDeviceCheckerboard2);
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory without using textures
 __host__ void runBPAtCurrentLevelNoTextures(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize, 
@@ -166,13 +167,15 @@ __host__ void runBPAtCurrentLevelNoTextures(int& numIterationsAtLevel, int& widt
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-__host__ void copyMessageValuesToNextLevelDown(int& widthLevelInt, int& heightLevelInt,
-		float*& messageUDeviceCheckerboard1CopyFrom, float*& messageDDeviceCheckerboard1CopyFrom, float*& messageLDeviceCheckerboard1CopyFrom, 
-		float*& messageRDeviceCheckerboard1CopyFrom, float*& messageUDeviceCheckerboard2CopyFrom, float*& messageDDeviceCheckerboard2CopyFrom, 
-		float*& messageLDeviceCheckerboard2CopyFrom, float*& messageRDeviceCheckerboard2CopyFrom, float*& messageUDeviceCheckerboard1CopyTo, 
-		float*& messageDDeviceCheckerboard1CopyTo, float*& messageLDeviceCheckerboard1CopyTo, float*& messageRDeviceCheckerboard1CopyTo, 
-		float*& messageUDeviceCheckerboard2CopyTo, float*& messageDDeviceCheckerboard2CopyTo, float*& messageLDeviceCheckerboard2CopyTo, 
-		float*& messageRDeviceCheckerboard2CopyTo, int& numBytesDataAndMessageSetInCheckerboardAtLevel, dim3& grid, dim3& threads);
+template<typename T>
+__host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizePrevLevel, int& heightLevelActualIntegerSizePrevLevel,
+	int& widthLevelActualIntegerSizeNextLevel, int& heightLevelActualIntegerSizeNextLevel,
+	T*& messageUDeviceCheckerboard1CopyFrom, T*& messageDDeviceCheckerboard1CopyFrom, T*& messageLDeviceCheckerboard1CopyFrom,
+	T*& messageRDeviceCheckerboard1CopyFrom, T*& messageUDeviceCheckerboard2CopyFrom, T*& messageDDeviceCheckerboard2CopyFrom,
+	T*& messageLDeviceCheckerboard2CopyFrom, T*& messageRDeviceCheckerboard2CopyFrom, T*& messageUDeviceCheckerboard1CopyTo,
+	T*& messageDDeviceCheckerboard1CopyTo, T*& messageLDeviceCheckerboard1CopyTo, T*& messageRDeviceCheckerboard1CopyTo,
+	T*& messageUDeviceCheckerboard2CopyTo, T*& messageDDeviceCheckerboard2CopyTo, T*& messageLDeviceCheckerboard2CopyTo,
+	T*& messageRDeviceCheckerboard2CopyTo);
 
 //initialize the data cost at each pixel for each disparity value
 __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& dataCostDeviceCheckerboard1, float*& dataCostDeviceCheckerboard2, BPsettings& algSettings);
@@ -183,6 +186,18 @@ __host__ void initializeMessageValsToDefault(float*& messageUDeviceSet0Checkerbo
 												float*& messageUDeviceSet0Checkerboard2, float*& messageDDeviceSet0Checkerboard2, float*& messageLDeviceSet0Checkerboard2, float*& messageRDeviceSet0Checkerboard2,
 												int widthOfCheckerboard, int heightOfCheckerboard, int numPossibleMovements);
 
+template<typename T>
+__host__ void initializeDataCurrentLevel(T* dataCostDeviceCheckerboard1,
+		T* dataCostDeviceCheckerboard2, int prev_level_offset_level,
+		int offsetLevel, int widthLevelActualIntegerSize,
+		int heightLevelActualIntegerSize, int prevWidthLevelActualIntegerSize,
+		int prevHeightLevelActualIntegerSize);
+
+template<typename T>
+__host__ void retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
+		float* resultingDisparityMapDevice, int widthLevel, int heightLevel, int currentCheckerboardSet);
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU

@@ -36,10 +36,17 @@ __device__ int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int 
 	return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION + offsetData;
 }
 
-
+template<typename T>
 __device__ __host__ int getCheckerboardWidth(int imageWidth)
 {
 	return (int)ceil(((float)imageWidth) / 2.0);
+}
+
+//checkerboard width is half size when using half2 data type
+template <>
+__device__ __host__ int getCheckerboardWidth<half2>(int imageWidth)
+{
+	return (int)ceil(((ceil(((float)imageWidth) / 2.0)) / 2.0));
 }
 
 
@@ -127,7 +134,7 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 
 	if (withinImageBounds(xVal, yVal, widthImages, heightImages))
 	{
-		int imageCheckerboardWidth = getCheckerboardWidth(widthImages);
+		int imageCheckerboardWidth = getCheckerboardWidth<T>(widthImages);
 
 		//make sure that it is possible to check every disparity value
 		if ((xVal - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0)
@@ -188,8 +195,8 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoChec
 
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
-	int widthCheckerboardCurrentLevel = getCheckerboardWidth(widthCurrentLevel);
-	int widthCheckerboardPrevLevel = getCheckerboardWidth(widthPrevLevel);
+	int widthCheckerboardCurrentLevel = getCheckerboardWidth<T>(widthCurrentLevel);
+	int widthCheckerboardPrevLevel = getCheckerboardWidth<T>(widthPrevLevel);
 
 	if (withinImageBounds(xVal, yVal, widthCheckerboardCurrentLevel, heightCurrentLevel))
 	{
@@ -425,7 +432,7 @@ template<typename T>
 __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, int offsetData)
+								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -437,7 +444,7 @@ __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostSter
 
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
-	int widthCheckerboardCurrentLevel = getCheckerboardWidth(widthLevel);
+	int widthCheckerboardCurrentLevel = getCheckerboardWidth<T>(widthLevel);
 
 	if (withinImageBounds(xVal, yVal, widthLevel/2, heightLevel))
 	{
@@ -451,7 +458,7 @@ __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostSter
 				messageDDeviceCurrentCheckerboard2,
 				messageLDeviceCurrentCheckerboard2,
 				messageRDeviceCurrentCheckerboard2, widthCheckerboardCurrentLevel, heightLevel,
-				checkerboardPartUpdate, xVal, yVal, offsetData);
+				checkerboardPartUpdate, xVal, yVal, 0);
 	}
 }
 
@@ -472,8 +479,8 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(T* messag
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int widthCheckerboardPrevLevel = getCheckerboardWidth(widthLevelPrev);
-	int widthCheckerboardNextLevel = getCheckerboardWidth(widthLevelNext);
+	int widthCheckerboardPrevLevel = getCheckerboardWidth<T>(widthLevelPrev);
+	int widthCheckerboardNextLevel = getCheckerboardWidth<T>(widthLevelNext);
 
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
@@ -577,7 +584,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostS
 
 	if (withinImageBounds(xVal, yVal, widthLevel, heightLevel))
 	{
-		int widthCheckerboard = getCheckerboardWidth(widthLevel);
+		int widthCheckerboard = getCheckerboardWidth<T>(widthLevel);
 		int xValInCheckerboardPart = xVal/2;
 
 		if (((yVal+xVal) % 2) == 0) //if true, then pixel is from part 1 of the checkerboard; otherwise, it's from part 2

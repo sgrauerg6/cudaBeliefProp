@@ -41,13 +41,20 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-__host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize, size_t& dataTexOffset,
+__host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize,
 	T*& messageUDeviceCheckerboard1, T*& messageDDeviceCheckerboard1, T*& messageLDeviceCheckerboard1,
 	T*& messageRDeviceCheckerboard1, T*& messageUDeviceCheckerboard2, T*& messageDDeviceCheckerboard2, T*& messageLDeviceCheckerboard2,
-	T*& messageRDeviceCheckerboard2, dim3& grid, dim3& threads, int& numBytesDataAndMessageSetInCheckerboardAtLevel, T* dataCostDeviceCheckerboard1,
+	T*& messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
 	T* dataCostDeviceCheckerboard2)
-
 {
+	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 grid;
+
+	int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
+	grid.x = (unsigned int) ceil(
+			(float) (widthCheckerboard) / (float) threads.x); //only updating half at a time
+	grid.y = (unsigned int) ceil((float) heightLevelActualIntegerSize / (float) threads.y);
+
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < numIterationsAtLevel; iterationNum++)
 	{
@@ -75,7 +82,7 @@ __host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActu
 				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 				widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-				checkboardPartUpdate, ((int) dataTexOffset / sizeof(float)));
+				checkboardPartUpdate);
 
 		(cudaDeviceSynchronize());
 
@@ -105,10 +112,21 @@ __host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizeP
 	T*& messageLDeviceCheckerboard2CopyFrom, T*& messageRDeviceCheckerboard2CopyFrom, T*& messageUDeviceCheckerboard1CopyTo,
 	T*& messageDDeviceCheckerboard1CopyTo, T*& messageLDeviceCheckerboard1CopyTo, T*& messageRDeviceCheckerboard1CopyTo,
 	T*& messageUDeviceCheckerboard2CopyTo, T*& messageDDeviceCheckerboard2CopyTo, T*& messageLDeviceCheckerboard2CopyTo,
-	T*& messageRDeviceCheckerboard2CopyTo, int& numBytesDataAndMessageSetInCheckerboardAtLevel, dim3& grid, dim3& threads)
+	T*& messageRDeviceCheckerboard2CopyTo)
 {
+	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 grid;
+
+	int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel);
+	grid.x = (unsigned int)ceil((float)(widthCheckerboard / 2.0f) / (float)threads.x);
+	grid.y = (unsigned int)ceil((float)(heightLevelActualIntegerSizeNextLevel / 2.0f) / (float)threads.y);
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
+
+	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
+
+	//update the number of bytes needed to store each set
+	int numBytesDataAndMessageSetInCheckerboardAtLevel = widthCheckerboard * heightLevelActualIntegerSizeNextLevel * totalPossibleMovements * sizeof(T);
 
 	//allocate space in the GPU for the message values in the checkerboard set to copy to
 	(cudaMalloc((void**) &messageUDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
@@ -219,6 +237,97 @@ __host__ void initializeMessageValsToDefault(T*& messageUDeviceSet0Checkerboard1
 	cudaDeviceSynchronize();
 }
 
+template<typename T>
+__host__ void initializeDataCurrentLevel(T* dataCostDeviceCheckerboard1,
+		T* dataCostDeviceCheckerboard2, int prev_level_offset_level,
+		int offsetLevel, int widthLevelActualIntegerSize,
+		int heightLevelActualIntegerSize, int prevWidthLevelActualIntegerSize,
+		int prevHeightLevelActualIntegerSize)
+{
+	int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
+
+	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 grid;
+
+	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
+	//the four-connected neighbors are in the other checkerboard
+	grid.x = (unsigned int) ceil(
+			((float) widthCheckerboard) / (float) threads.x);
+	grid.y = (unsigned int) ceil(
+			(float) heightLevelActualIntegerSize / (float) threads.y);
+
+	size_t offsetNum = 0;
+
+	initializeCurrentLevelDataStereoNoTextures<T> <<<grid, threads>>>(
+			&dataCostDeviceCheckerboard1[prev_level_offset_level],
+			&dataCostDeviceCheckerboard2[prev_level_offset_level],
+			&dataCostDeviceCheckerboard1[offsetLevel],
+			widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+			prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize,
+			CHECKERBOARD_PART_1, ((int) offsetNum / sizeof(float)));
+
+	(cudaDeviceSynchronize());
+
+	initializeCurrentLevelDataStereoNoTextures<T> <<<grid, threads>>>(
+			&dataCostDeviceCheckerboard1[prev_level_offset_level],
+			&dataCostDeviceCheckerboard2[prev_level_offset_level],
+			&dataCostDeviceCheckerboard2[offsetLevel],
+			widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+			prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize,
+			CHECKERBOARD_PART_2, ((int) offsetNum / sizeof(float)));
+
+	(cudaDeviceSynchronize());
+}
+
+template<typename T>
+__host__ void retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2, T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
+		float* resultingDisparityMapDevice, int widthLevel, int heightLevel, int currentCheckerboardSet)
+{
+	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 grid;
+
+	grid.x = (unsigned int) ceil((float) widthLevel / (float) threads.x);
+	grid.y = (unsigned int) ceil((float) heightLevel / (float) threads.y);
+
+	if (currentCheckerboardSet == 0)
+	{
+		retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
+				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostDeviceCurrentLevelCheckerboard2,
+				messageUDeviceSet0Checkerboard1,
+				messageDDeviceSet0Checkerboard1,
+				messageLDeviceSet0Checkerboard1,
+				messageRDeviceSet0Checkerboard1,
+				messageUDeviceSet0Checkerboard2,
+				messageDDeviceSet0Checkerboard2,
+				messageLDeviceSet0Checkerboard2,
+				messageRDeviceSet0Checkerboard2, resultingDisparityMapDevice,
+				widthLevel, heightLevel);
+	}
+	else
+	{
+		retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
+				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostDeviceCurrentLevelCheckerboard2,
+				messageUDeviceSet1Checkerboard1,
+				messageDDeviceSet1Checkerboard1,
+				messageLDeviceSet1Checkerboard1,
+				messageRDeviceSet1Checkerboard1,
+				messageUDeviceSet1Checkerboard2,
+				messageDDeviceSet1Checkerboard2,
+				messageLDeviceSet1Checkerboard2,
+				messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
+				widthLevel, heightLevel);
+	}
+
+	(cudaDeviceSynchronize());
+	gpuErrchk(cudaPeekAtLastError());
+}
+
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
@@ -226,10 +335,12 @@ __host__ void initializeMessageValsToDefault(T*& messageUDeviceSet0Checkerboard1
 template<typename T>
 __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
 {	
+
 #ifdef RUN_DETAILED_TIMING
 
 	timeCopyDataKernelTotalTime = 0.0;
 	timeBpItersKernelTotalTime = 0.0;
+
 #endif
 
 	//retrieve the total number of possible movements; this is equal to the number of disparity values 
@@ -252,12 +363,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-	//setup execution parameters
-	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
-	//start at the "bottom level" and word way up to determine amount of space needed to store data costs
+	//start at the "bottom level" and work way up to determine amount of space needed to store data costs
 	float widthLevel = (float)algSettings.widthImages;
 	float heightLevel = (float)algSettings.heightImages;
 
@@ -273,7 +379,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//using "half" because the data is split in two using the checkerboard scheme
 	for (int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
 	{
-		halfTotalDataAllLevels += (getCheckerboardWidth(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize);
+		halfTotalDataAllLevels += (getCheckerboardWidth<T>(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * (totalPossibleMovements);
 		widthLevel /= 2.0f;
 		heightLevel /= 2.0f;
 
@@ -305,23 +411,23 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	printf("ALLOC ALL MEMORY\n");
-	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, 10*(halfTotalDataAllLevels)*totalPossibleMovements*sizeof(T)));
-	dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1*(halfTotalDataAllLevels)*totalPossibleMovements]);
+	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, 10*(halfTotalDataAllLevels)*sizeof(T)));
+	dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1*(halfTotalDataAllLevels)]);
 
-	messageUDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[2*(halfTotalDataAllLevels)*totalPossibleMovements]);
-	messageDDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[3*(halfTotalDataAllLevels)*totalPossibleMovements]);
-	messageLDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[4*(halfTotalDataAllLevels)*totalPossibleMovements]);
-	messageRDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[5*(halfTotalDataAllLevels)*totalPossibleMovements]);
+	messageUDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[2*(halfTotalDataAllLevels)]);
+	messageDDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[3*(halfTotalDataAllLevels)]);
+	messageLDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[4*(halfTotalDataAllLevels)]);
+	messageRDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[5*(halfTotalDataAllLevels)]);
 
-	messageUDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[6*(halfTotalDataAllLevels)*totalPossibleMovements]);
-	messageDDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[7*(halfTotalDataAllLevels)*totalPossibleMovements]);
-	messageLDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[8*(halfTotalDataAllLevels)*totalPossibleMovements]);
-	messageRDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[9*(halfTotalDataAllLevels)*totalPossibleMovements]);
+	messageUDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[6*(halfTotalDataAllLevels)]);
+	messageDDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[7*(halfTotalDataAllLevels)]);
+	messageLDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[8*(halfTotalDataAllLevels)]);
+	messageRDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[9*(halfTotalDataAllLevels)]);
 
 #else
 
-	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(T)));
-	(cudaMalloc((void**) &dataCostDeviceCheckerboard2, (halfTotalDataAllLevels)*totalPossibleMovements*sizeof(T)));
+	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, (halfTotalDataAllLevels)*sizeof(T)));
+	(cudaMalloc((void**) &dataCostDeviceCheckerboard2, (halfTotalDataAllLevels)*sizeof(T)));
 
 #endif
 
@@ -359,11 +465,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	int offsetLevel = 0;
 
-	//stores the number of bytes for the data costs and one set of message values in each of the two "checkerboards" at the current level
-	//this is half the total number of bytes for the data/message info at the level, since there are two equal-sized checkerboards
-	//initially at "bottom level" of width widthImages and height heightImages
-	int numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth(widthLevelActualIntegerSize))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(T);
-
 #ifdef RUN_DETAILED_TIMING
 
 	auto timeInitDataCostsHigherLevelsStart = std::chrono::system_clock::now();
@@ -377,7 +478,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		//width is half since each part of the checkboard contains half the values going across
 		//retrieve offset where the data starts at the "current level"
-		offsetLevel += (getCheckerboardWidth(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * totalPossibleMovements;
+		offsetLevel += (getCheckerboardWidth<T>(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * totalPossibleMovements;
 
 		widthLevel /= 2.0f;
 		heightLevel /= 2.0f;
@@ -387,31 +488,14 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 		widthLevelActualIntegerSize = (int)ceil(widthLevel);
 		heightLevelActualIntegerSize = (int)ceil(heightLevel);
-		int widthCheckerboard = getCheckerboardWidth(widthLevelActualIntegerSize);
+		int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
 
 		//printf("LevelNum: %d  Width: %d  Height: %d \n", levelNum, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
-
-		//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
-		//the four-connected neighbors are in the other checkerboard
-		grid.x = (unsigned int)ceil(((float)widthCheckerboard) / (float)threads.x);
-		grid.y = (unsigned int)ceil((float)heightLevel / (float)threads.y);
-
-		size_t offsetNum = 0;
-
-		initializeCurrentLevelDataStereoNoTextures<T> <<< grid, threads >>> (&dataCostDeviceCheckerboard1[prev_level_offset_level], &dataCostDeviceCheckerboard2[prev_level_offset_level], &dataCostDeviceCheckerboard1[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize, CHECKERBOARD_PART_1, ((int)offsetNum/sizeof(float)));
-
-		( cudaDeviceSynchronize() );
-
-		initializeCurrentLevelDataStereoNoTextures<T> <<< grid, threads >>> (&dataCostDeviceCheckerboard1[prev_level_offset_level], &dataCostDeviceCheckerboard2[prev_level_offset_level], &dataCostDeviceCheckerboard2[offsetLevel], widthLevelActualIntegerSize, heightLevelActualIntegerSize, prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize, CHECKERBOARD_PART_2, ((int)offsetNum/sizeof(float)));
-
-		( cudaDeviceSynchronize() );
-
-		//update number of bytes of data and message cost if not at bottom level
-		if (levelNum < (algSettings.numLevels - 1))
-		{
-			//each "checkerboard" where the computation alternates contains half the data
-			numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth(widthLevelActualIntegerSize))*(heightLevelActualIntegerSize)*totalPossibleMovements*sizeof(T);
-		}
+		initializeDataCurrentLevel<T>(dataCostDeviceCheckerboard1,
+				dataCostDeviceCheckerboard2, prev_level_offset_level,
+				offsetLevel, widthLevelActualIntegerSize,
+				heightLevelActualIntegerSize, prevWidthLevelActualIntegerSize,
+				prevHeightLevelActualIntegerSize);
 	}
 
 #ifdef RUN_DETAILED_TIMING
@@ -475,6 +559,9 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #else
 
+	//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
+	int numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth<T>(widthLevelActualIntegerSize)) * heightLevelActualIntegerSize * totalPossibleMovements * sizeof(T);
+
 	//allocate the space for the message values in the first checkboard set at the current level
 	(cudaMalloc((void**) &messageUDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel));
 	(cudaMalloc((void**) &messageDDeviceSet0Checkerboard1, numBytesDataAndMessageSetInCheckerboardAtLevel));
@@ -490,13 +577,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 	auto timeInitMessageValuesKernelTimeStart = std::chrono::system_clock::now();
 
-	//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
-	numBytesDataAndMessageSetInCheckerboardAtLevel = (getCheckerboardWidth(widthLevelActualIntegerSize)) * heightLevelActualIntegerSize * totalPossibleMovements *sizeof(float);
-
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault<T>(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
-											getCheckerboardWidth(widthLevelActualIntegerSize), heightLevelActualIntegerSize, totalPossibleMovements);
+											getCheckerboardWidth<T>(widthLevelActualIntegerSize), heightLevelActualIntegerSize, totalPossibleMovements);
 
 	auto timeInitMessageValuesKernelTimeEnd = std::chrono::system_clock::now();
 	diff = timeInitMessageValuesKernelTimeEnd-timeInitMessageValuesKernelTimeStart;
@@ -533,8 +617,6 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	{
 		gpuErrchk( cudaPeekAtLastError() );
 
-		//offset needed because of alignment requirement for textures
-		size_t offset = 0;
 		( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
@@ -544,25 +626,20 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 #endif
 
 		//printf("LevelNumBP: %d  Width: %f  Height: %f \n", levelNum, widthLevel, heightLevel);
-		int widthCheckerboard = getCheckerboardWidth(widthLevelActualIntegerSize);
-		grid.x = (unsigned int) ceil(
-				(float) (widthCheckerboard) / (float) threads.x); //only updating half at a time
-		grid.y = (unsigned int) ceil((float) heightLevel / (float) threads.y);
 
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == 0)
 		{
 			runBPAtCurrentLevel<T>(algSettings.numIterations,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-					offset, messageUDeviceSet0Checkerboard1,
+					messageUDeviceSet0Checkerboard1,
 					messageDDeviceSet0Checkerboard1,
 					messageLDeviceSet0Checkerboard1,
 					messageRDeviceSet0Checkerboard1,
 					messageUDeviceSet0Checkerboard2,
 					messageDDeviceSet0Checkerboard2,
 					messageLDeviceSet0Checkerboard2,
-					messageRDeviceSet0Checkerboard2, grid, threads,
-					numBytesDataAndMessageSetInCheckerboardAtLevel,
+					messageRDeviceSet0Checkerboard2,
 					dataCostDeviceCurrentLevelCheckerboard1,
 					dataCostDeviceCurrentLevelCheckerboard2);
 		}
@@ -570,15 +647,14 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		{
 			runBPAtCurrentLevel<T>(algSettings.numIterations,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-					offset, messageUDeviceSet1Checkerboard1,
+					messageUDeviceSet1Checkerboard1,
 					messageDDeviceSet1Checkerboard1,
 					messageLDeviceSet1Checkerboard1,
 					messageRDeviceSet1Checkerboard1,
 					messageUDeviceSet1Checkerboard2,
 					messageDDeviceSet1Checkerboard2,
 					messageLDeviceSet1Checkerboard2,
-					messageRDeviceSet1Checkerboard2, grid, threads,
-					numBytesDataAndMessageSetInCheckerboardAtLevel,
+					messageRDeviceSet1Checkerboard2,
 					dataCostDeviceCurrentLevelCheckerboard1,
 					dataCostDeviceCurrentLevelCheckerboard2);
 		}
@@ -608,16 +684,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 			widthLevelActualIntegerSize = (int)ceil(widthLevel);
 			heightLevelActualIntegerSize = (int)ceil(heightLevel);
-			int widthCheckerboard = getCheckerboardWidth(widthLevelActualIntegerSize);
+			int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
 
 			offsetLevel -= widthCheckerboard * heightLevelActualIntegerSize * totalPossibleMovements;
 			printf("OffsetLevel: %d\n", offsetLevel);
-
-			//update the number of bytes needed to store each set
-			numBytesDataAndMessageSetInCheckerboardAtLevel = widthCheckerboard * heightLevelActualIntegerSize * totalPossibleMovements * sizeof(T);
-
-			grid.x = (unsigned int)ceil((float)(widthCheckerboard / 2.0f) / (float)threads.x);
-			grid.y = (unsigned int)ceil((float)(heightLevel / 2.0f) / (float)threads.y);
 
 			dataCostDeviceCurrentLevelCheckerboard1 = &dataCostDeviceCheckerboard1[offsetLevel];
 			dataCostDeviceCurrentLevelCheckerboard2 = &dataCostDeviceCheckerboard2[offsetLevel];
@@ -660,9 +730,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 						messageUDeviceSet1Checkerboard2,
 						messageDDeviceSet1Checkerboard2,
 						messageLDeviceSet1Checkerboard2,
-						messageRDeviceSet1Checkerboard2,
-						numBytesDataAndMessageSetInCheckerboardAtLevel, grid,
-						threads);
+						messageRDeviceSet1Checkerboard2);
 
 				currentCheckerboardSet = 1;
 			}
@@ -703,9 +771,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 						messageUDeviceSet0Checkerboard2,
 						messageDDeviceSet0Checkerboard2,
 						messageLDeviceSet0Checkerboard2,
-						messageRDeviceSet0Checkerboard2,
-						numBytesDataAndMessageSetInCheckerboardAtLevel, grid,
-						threads);
+						messageRDeviceSet0Checkerboard2);
 
 				currentCheckerboardSet = 0;
 			}
@@ -733,25 +799,13 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
-	grid.x = (unsigned int)ceil((float)widthLevel / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)heightLevel / (float)threads.y);
+	retrieveOutputDisparity<T>(dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
+			messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
+			messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
+			messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
+			messageUDeviceSet1Checkerboard2, messageDDeviceSet1Checkerboard2, messageLDeviceSet1Checkerboard2, messageRDeviceSet1Checkerboard2,
+			resultingDisparityMapDevice, widthLevel, heightLevel, currentCheckerboardSet);
 
-	if (currentCheckerboardSet == 0)
-	{
-		retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<< grid, threads >>> (dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
-				messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
-				messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
-				resultingDisparityMapDevice, widthLevel, heightLevel);
-	}
-	else
-	{
-		retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<< grid, threads >>> (dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
-				messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
-				messageUDeviceSet1Checkerboard2, messageDDeviceSet1Checkerboard2, messageLDeviceSet1Checkerboard2, messageRDeviceSet1Checkerboard2,
-				resultingDisparityMapDevice, widthLevel, heightLevel);
-	}
-
-	( cudaDeviceSynchronize() );
 	gpuErrchk( cudaPeekAtLastError() );
 
 #ifdef RUN_DETAILED_TIMING

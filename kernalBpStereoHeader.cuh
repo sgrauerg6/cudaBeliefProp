@@ -95,7 +95,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
 								float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
 								float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
-								float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, int offsetData);
+								float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate);
 
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
