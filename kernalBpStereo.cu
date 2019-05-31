@@ -130,48 +130,48 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 	half2 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], half2 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 	half2 dst[NUM_POSSIBLE_DISPARITY_VALUES])
 {
-	float messageValsNeighbor1Float[NUM_POSSIBLE_DISPARITY_VALUES];
-	float messageValsNeighbor2Float[NUM_POSSIBLE_DISPARITY_VALUES];
-	float messageValsNeighbor3Float[NUM_POSSIBLE_DISPARITY_VALUES];
-	float dataCostsFloat[NUM_POSSIBLE_DISPARITY_VALUES];
-	float dstFloatLow[NUM_POSSIBLE_DISPARITY_VALUES];
-	float dstFloatHigh[NUM_POSSIBLE_DISPARITY_VALUES];
+	half messageValsNeighbor1Float[NUM_POSSIBLE_DISPARITY_VALUES];
+	half messageValsNeighbor2Float[NUM_POSSIBLE_DISPARITY_VALUES];
+	half messageValsNeighbor3Float[NUM_POSSIBLE_DISPARITY_VALUES];
+	half dataCostsFloat[NUM_POSSIBLE_DISPARITY_VALUES];
+	half dstFloatLow[NUM_POSSIBLE_DISPARITY_VALUES];
+	half dstFloatHigh[NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0;
 			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
-		messageValsNeighbor1Float[currentDisparity] = __low2float(
+		messageValsNeighbor1Float[currentDisparity] = __low2half(
 				messageValsNeighbor1[currentDisparity]);
-		messageValsNeighbor2Float[currentDisparity] = __low2float(
+		messageValsNeighbor2Float[currentDisparity] = __low2half(
 				messageValsNeighbor2[currentDisparity]);
-		messageValsNeighbor3Float[currentDisparity] = __low2float(
+		messageValsNeighbor3Float[currentDisparity] = __low2half(
 				messageValsNeighbor3[currentDisparity]);
-		dataCostsFloat[currentDisparity] = __low2float(
+		dataCostsFloat[currentDisparity] = __low2half(
 				dataCosts[currentDisparity]);
 	}
 
-	msgStereo<float>(messageValsNeighbor1Float, messageValsNeighbor2Float, messageValsNeighbor3Float, dataCostsFloat, dstFloatLow);
+	msgStereo<half>(messageValsNeighbor1Float, messageValsNeighbor2Float, messageValsNeighbor3Float, dataCostsFloat, dstFloatLow);
 
 	for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
-			messageValsNeighbor1Float[currentDisparity] = __high2float(
+			messageValsNeighbor1Float[currentDisparity] = __high2half(
 					messageValsNeighbor1[currentDisparity]);
-			messageValsNeighbor2Float[currentDisparity] = __high2float(
+			messageValsNeighbor2Float[currentDisparity] = __high2half(
 					messageValsNeighbor2[currentDisparity]);
-			messageValsNeighbor3Float[currentDisparity] = __high2float(
+			messageValsNeighbor3Float[currentDisparity] = __high2half(
 					messageValsNeighbor3[currentDisparity]);
-			dataCostsFloat[currentDisparity] = __high2float(
+			dataCostsFloat[currentDisparity] = __high2half(
 					dataCosts[currentDisparity]);
 		}
 
-	msgStereo<float>(messageValsNeighbor1Float, messageValsNeighbor2Float, messageValsNeighbor3Float, dataCostsFloat, dstFloatHigh);
+	msgStereo<half>(messageValsNeighbor1Float, messageValsNeighbor2Float, messageValsNeighbor3Float, dataCostsFloat, dstFloatHigh);
 
 	for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++)
 	{
-		dst[currentDisparity] = __floats2half2_rn(dstFloatLow[currentDisparity], dstFloatHigh[currentDisparity]);
+		dst[currentDisparity] = __halves2half2(dstFloatLow[currentDisparity], dstFloatHigh[currentDisparity]);
 	}
 }
 
@@ -215,18 +215,10 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
 				{
-					if ((yVal == 1) && ((xVal == 17)))
-														{
-															printf("1INDEX: %d %f\n", indexVal, (LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP)));
-														}
 					dataCostDeviceStereoCheckerboard1[indexVal] = (T)(LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP));
 				}
 				else
 				{
-					if ((yVal == 1) && ((xVal == 17)))
-														{
-															printf("2INDEX: %d %f\n", indexVal, (LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP)));
-														}
 					dataCostDeviceStereoCheckerboard2[indexVal] = (T)(LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP));
 				}
 			}
@@ -634,17 +626,17 @@ __global__ void initializeBottomLevelDataStereo<half2>(float* image1PixelsDevice
 				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 
-				float lowVal = (LAMBDA_BP * min(abs(currentPixelImage1_low - currentPixelImage2_low), DATA_K_BP));
-				float highVal = (LAMBDA_BP * min(abs(currentPixelImage1_high - currentPixelImage2_high), DATA_K_BP));
+				half lowVal = (half)(LAMBDA_BP * min(abs(currentPixelImage1_low - currentPixelImage2_low), DATA_K_BP));
+				half highVal = (half)(LAMBDA_BP * min(abs(currentPixelImage1_high - currentPixelImage2_high), DATA_K_BP));
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (checkerboardNum == 1)
 				{
-					dataCostDeviceStereoCheckerboard1[indexVal] = __floats2half2_rn(lowVal, highVal);
+					dataCostDeviceStereoCheckerboard1[indexVal] = __halves2half2(lowVal, highVal);
 				}
 				else
 				{
-					dataCostDeviceStereoCheckerboard2[indexVal] = __floats2half2_rn(lowVal, highVal);
+					dataCostDeviceStereoCheckerboard2[indexVal] = __halves2half2(lowVal, highVal);
 				}
 			}
 		}
