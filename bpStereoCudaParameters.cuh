@@ -222,7 +222,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //number of belief propagation stereo runs of same image set
 #define NUM_BP_STEREO_RUNS 15
 
-#define INF_BP 100000000.0f     // large cost (used for "infinity")
+#define INF_BP 65504.0f     // large cost (used for "infinity"), value set to support half type
 #define SMALL_VAL_BP .01f
 
 //define the default message value...
