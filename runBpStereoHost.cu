@@ -86,17 +86,6 @@ __host__ void runBPAtCurrentLevel(int numIterationsAtLevel, int widthLevelActual
 
 		(cudaDeviceSynchronize());
 
-		/*printDataAndMessageValsAtPoint<T>(50, 22, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-								messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-								messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-								messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-								messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-												messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-												messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-												messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-						getCheckerboardWidth<T>(widthLevelActualIntegerSize), heightLevelActualIntegerSize, 0);*/
-
 #ifdef RUN_DETAILED_TIMING
 
 		auto timeBpItersKernelEnd = std::chrono::system_clock::now();
@@ -124,6 +113,67 @@ __host__ void runBPAtCurrentLevel<half2>(int numIterationsAtLevel, int widthLeve
 		(half*)messageRDeviceCheckerboard1, (half*)messageUDeviceCheckerboard2, (half*)messageDDeviceCheckerboard2, (half*)messageLDeviceCheckerboard2,
 		(half*)messageRDeviceCheckerboard2, (half*)dataCostDeviceCheckerboard1,
 		(half*)dataCostDeviceCheckerboard2);
+}*/
+
+/*template<>
+__host__ void runBPAtCurrentLevel<half>(int numIterationsAtLevel, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
+		half* messageUDeviceCheckerboard1, half* messageDDeviceCheckerboard1, half* messageLDeviceCheckerboard1,
+		half* messageRDeviceCheckerboard1, half* messageUDeviceCheckerboard2, half* messageDDeviceCheckerboard2, half* messageLDeviceCheckerboard2,
+		half* messageRDeviceCheckerboard2, half* dataCostDeviceCheckerboard1,
+		half* dataCostDeviceCheckerboard2)
+{
+	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+		dim3 grid;
+
+		int widthCheckerboard = getCheckerboardWidth<half>(widthLevelActualIntegerSize);
+		grid.x = (unsigned int) ceil(
+				(float) (widthCheckerboard / 2.0) / (float) threads.x); //only updating half at a time
+		grid.y = (unsigned int) ceil((float) heightLevelActualIntegerSize / (float) threads.y);
+
+		//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
+		for (int iterationNum = 0; iterationNum < numIterationsAtLevel; iterationNum++)
+		{
+			int checkboardPartUpdate = CHECKERBOARD_PART_2;
+
+			if ((iterationNum % 2) == 0)
+			{
+				checkboardPartUpdate = CHECKERBOARD_PART_2;
+			}
+			else
+			{
+				checkboardPartUpdate = CHECKERBOARD_PART_1;
+			}
+
+			(cudaDeviceSynchronize());
+
+	#ifdef RUN_DETAILED_TIMING
+			auto timeBpItersKernelStart = std::chrono::system_clock::now();
+	#endif
+
+			runBPIterationUsingCheckerboardUpdatesNoTextures<half><<<grid, threads>>>(
+					dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+					messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+					messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+					messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+					messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+					checkboardPartUpdate);
+
+			(cudaDeviceSynchronize());
+
+	#ifdef RUN_DETAILED_TIMING
+
+			auto timeBpItersKernelEnd = std::chrono::system_clock::now();
+			std::chrono::duration<double> diff = timeBpItersKernelEnd
+					- timeBpItersKernelStart;
+
+			timeBpItersKernelTotalTime += diff.count();
+
+	#endif
+
+		}
+
+		gpuErrchk( cudaPeekAtLastError() );
 }*/
 
 
