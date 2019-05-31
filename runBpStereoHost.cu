@@ -86,6 +86,17 @@ __host__ void runBPAtCurrentLevel(int numIterationsAtLevel, int widthLevelActual
 
 		(cudaDeviceSynchronize());
 
+		/*printDataAndMessageValsAtPoint<T>(50, 22, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+								messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+								messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+								messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+								messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+												messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+												messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+												messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+						getCheckerboardWidth<T>(widthLevelActualIntegerSize), heightLevelActualIntegerSize, 0);*/
+
 #ifdef RUN_DETAILED_TIMING
 
 		auto timeBpItersKernelEnd = std::chrono::system_clock::now();
@@ -414,6 +425,172 @@ __host__ void retrieveOutputDisparity<half2>(half2* dataCostDeviceCurrentLevelCh
 			resultingDisparityMapDevice, widthLevel, heightLevel, currentCheckerboardSet);
 }*/
 
+template<typename T>
+__host__ void printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
+		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
+		T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1,
+		T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2,
+		T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
+		int widthCheckerboard, int heightLevel, int currentCheckerboardSet)
+{
+	dim3 threads(1, 1);
+	dim3 grid;
+
+	grid.x = 1;
+	grid.y = 1;
+
+	if (currentCheckerboardSet == 0) {
+		printDataAndMessageValsToPoint<T> <<<grid, threads>>>(xVal, yVal,
+				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostDeviceCurrentLevelCheckerboard2,
+				messageUDeviceSet0Checkerboard1,
+				messageDDeviceSet0Checkerboard1,
+				messageLDeviceSet0Checkerboard1,
+				messageRDeviceSet0Checkerboard1,
+				messageUDeviceSet0Checkerboard2,
+				messageDDeviceSet0Checkerboard2,
+				messageLDeviceSet0Checkerboard2,
+				messageRDeviceSet0Checkerboard2, widthCheckerboard,
+				heightLevel);
+	} else {
+		printDataAndMessageValsToPoint<T> <<<grid, threads>>>(xVal, yVal,
+				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostDeviceCurrentLevelCheckerboard2,
+				messageUDeviceSet1Checkerboard1,
+				messageDDeviceSet1Checkerboard1,
+				messageLDeviceSet1Checkerboard1,
+				messageRDeviceSet1Checkerboard1,
+				messageUDeviceSet1Checkerboard2,
+				messageDDeviceSet1Checkerboard2,
+				messageLDeviceSet1Checkerboard2,
+				messageRDeviceSet1Checkerboard2, widthCheckerboard,
+				heightLevel);
+	}
+}
+
+template<>
+__host__ void printDataAndMessageValsToPoint<half2>(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
+		half2* messageUDeviceSet0Checkerboard1,
+		half2* messageDDeviceSet0Checkerboard1,
+		half2* messageLDeviceSet0Checkerboard1,
+		half2* messageRDeviceSet0Checkerboard1,
+		half2* messageUDeviceSet0Checkerboard2,
+		half2* messageDDeviceSet0Checkerboard2,
+		half2* messageLDeviceSet0Checkerboard2,
+		half2* messageRDeviceSet0Checkerboard2, half2* messageUDeviceSet1Checkerboard1, half2* messageDDeviceSet1Checkerboard1,
+		half2* messageLDeviceSet1Checkerboard1, half2* messageRDeviceSet1Checkerboard1,
+		half2* messageUDeviceSet1Checkerboard2, half2* messageDDeviceSet1Checkerboard2,
+		half2* messageLDeviceSet1Checkerboard2, half2* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
+		int heightLevel, int currentCheckerboardSet)
+{
+	printDataAndMessageValsToPoint<half>(xVal, yVal, (half*)dataCostDeviceCurrentLevelCheckerboard1, (half*)dataCostDeviceCurrentLevelCheckerboard2,
+			(half*) messageUDeviceSet0Checkerboard1,
+			(half*) messageDDeviceSet0Checkerboard1,
+			(half*) messageLDeviceSet0Checkerboard1,
+			(half*) messageRDeviceSet0Checkerboard1,
+			(half*) messageUDeviceSet0Checkerboard2,
+			(half*) messageDDeviceSet0Checkerboard2,
+			(half*) messageLDeviceSet0Checkerboard2,
+			(half*) messageRDeviceSet0Checkerboard2,
+			(half*) messageUDeviceSet1Checkerboard1,
+			(half*) messageDDeviceSet1Checkerboard1,
+			(half*) messageLDeviceSet1Checkerboard1,
+			(half*) messageRDeviceSet1Checkerboard1,
+			(half*) messageUDeviceSet1Checkerboard2,
+			(half*) messageDDeviceSet1Checkerboard2,
+			(half*) messageLDeviceSet1Checkerboard2,
+			(half*) messageRDeviceSet1Checkerboard2, widthCheckerboard * 2,
+			heightLevel, currentCheckerboardSet);
+}
+
+
+template<typename T>
+__host__ void printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
+		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
+		T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1,
+		T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2,
+		T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
+		int widthCheckerboard, int heightLevel, int currentCheckerboardSet)
+{
+	dim3 threads(1, 1);
+	dim3 grid;
+
+	grid.x = 1;
+	grid.y = 1;
+
+	if (currentCheckerboardSet == 0) {
+		printDataAndMessageValsAtPoint<T> <<<grid, threads>>>(xVal, yVal,
+				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostDeviceCurrentLevelCheckerboard2,
+				messageUDeviceSet0Checkerboard1,
+				messageDDeviceSet0Checkerboard1,
+				messageLDeviceSet0Checkerboard1,
+				messageRDeviceSet0Checkerboard1,
+				messageUDeviceSet0Checkerboard2,
+				messageDDeviceSet0Checkerboard2,
+				messageLDeviceSet0Checkerboard2,
+				messageRDeviceSet0Checkerboard2, widthCheckerboard,
+				heightLevel);
+	} else {
+		printDataAndMessageValsAtPoint<T> <<<grid, threads>>>(xVal, yVal,
+				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostDeviceCurrentLevelCheckerboard2,
+				messageUDeviceSet1Checkerboard1,
+				messageDDeviceSet1Checkerboard1,
+				messageLDeviceSet1Checkerboard1,
+				messageRDeviceSet1Checkerboard1,
+				messageUDeviceSet1Checkerboard2,
+				messageDDeviceSet1Checkerboard2,
+				messageLDeviceSet1Checkerboard2,
+				messageRDeviceSet1Checkerboard2, widthCheckerboard,
+				heightLevel);
+	}
+}
+
+template<>
+__host__ void printDataAndMessageValsAtPoint<half2>(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
+		half2* messageUDeviceSet0Checkerboard1,
+		half2* messageDDeviceSet0Checkerboard1,
+		half2* messageLDeviceSet0Checkerboard1,
+		half2* messageRDeviceSet0Checkerboard1,
+		half2* messageUDeviceSet0Checkerboard2,
+		half2* messageDDeviceSet0Checkerboard2,
+		half2* messageLDeviceSet0Checkerboard2,
+		half2* messageRDeviceSet0Checkerboard2, half2* messageUDeviceSet1Checkerboard1, half2* messageDDeviceSet1Checkerboard1,
+		half2* messageLDeviceSet1Checkerboard1, half2* messageRDeviceSet1Checkerboard1,
+		half2* messageUDeviceSet1Checkerboard2, half2* messageDDeviceSet1Checkerboard2,
+		half2* messageLDeviceSet1Checkerboard2, half2* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
+		int heightLevel, int currentCheckerboardSet)
+{
+	printDataAndMessageValsAtPoint<half>(xVal, yVal, (half*)dataCostDeviceCurrentLevelCheckerboard1, (half*)dataCostDeviceCurrentLevelCheckerboard2,
+			(half*) messageUDeviceSet0Checkerboard1,
+			(half*) messageDDeviceSet0Checkerboard1,
+			(half*) messageLDeviceSet0Checkerboard1,
+			(half*) messageRDeviceSet0Checkerboard1,
+			(half*) messageUDeviceSet0Checkerboard2,
+			(half*) messageDDeviceSet0Checkerboard2,
+			(half*) messageLDeviceSet0Checkerboard2,
+			(half*) messageRDeviceSet0Checkerboard2,
+			(half*) messageUDeviceSet1Checkerboard1,
+			(half*) messageDDeviceSet1Checkerboard1,
+			(half*) messageLDeviceSet1Checkerboard1,
+			(half*) messageRDeviceSet1Checkerboard1,
+			(half*) messageUDeviceSet1Checkerboard2,
+			(half*) messageDDeviceSet1Checkerboard2,
+			(half*) messageLDeviceSet1Checkerboard2,
+			(half*) messageRDeviceSet1Checkerboard2, widthCheckerboard * 2,
+			heightLevel, currentCheckerboardSet);
+}
+
+
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
@@ -715,6 +892,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #endif
 
+
 		//printf("LevelNumBP: %d  Width: %f  Height: %f \n", levelNum, widthLevel, heightLevel);
 
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
@@ -890,6 +1068,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	gpuErrchk( cudaPeekAtLastError() );
 
 #endif
+
 
 	retrieveOutputDisparity<T>(dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 			messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
