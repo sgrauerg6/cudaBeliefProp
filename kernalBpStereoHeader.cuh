@@ -61,9 +61,10 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(float* dataCostStereo
 
 
 //initialize the message values at each pixel of the current level to the default value
-__global__ void initializeMessageValsToDefault(float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1,
-												float* messageRDeviceCurrentCheckerboard1, float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2,
-												float* messageLDeviceCurrentCheckerboard2, float* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel);
+template<typename T>
+__host__ void initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+												  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
+												  int widthLevel, int heightLevel, int numPossibleMovements);
 
 
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory

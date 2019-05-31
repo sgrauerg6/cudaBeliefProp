@@ -259,6 +259,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DATA_TYPE_PROCESSING_FLOAT 0
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2
+#define DATA_TYPE_PROCESSING_HALF_TWO 3
 #define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
@@ -268,6 +269,9 @@ typedef double beliefPropProcessingDataType;
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 typedef half beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+typedef half2 beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
 #else
 typedef float beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"

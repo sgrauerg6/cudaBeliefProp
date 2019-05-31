@@ -49,6 +49,17 @@ __device__ __host__ int getCheckerboardWidth<half2>(int imageWidth)
 	return (int)ceil(((ceil(((float)imageWidth) / 2.0)) / 2.0));
 }
 
+template<typename T>
+__device__ __host__ T getZeroVal()
+{
+	return (T)0.0;
+}
+
+template<>
+__device__ __host__ half2 getZeroVal<half2>()
+{
+	return __floats2half2_rn (0.0, 0.0);
+}
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<typename T>
@@ -113,6 +124,58 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		dst[currentDisparity] -= valToNormalize;
 }
 
+// compute current message
+template<>
+__device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half2 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+	half2 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], half2 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+	half2 dst[NUM_POSSIBLE_DISPARITY_VALUES])
+{
+	float messageValsNeighbor1Float[NUM_POSSIBLE_DISPARITY_VALUES];
+	float messageValsNeighbor2Float[NUM_POSSIBLE_DISPARITY_VALUES];
+	float messageValsNeighbor3Float[NUM_POSSIBLE_DISPARITY_VALUES];
+	float dataCostsFloat[NUM_POSSIBLE_DISPARITY_VALUES];
+	float dstFloatLow[NUM_POSSIBLE_DISPARITY_VALUES];
+	float dstFloatHigh[NUM_POSSIBLE_DISPARITY_VALUES];
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++) {
+		messageValsNeighbor1Float[currentDisparity] = __low2float(
+				messageValsNeighbor1[currentDisparity]);
+		messageValsNeighbor2Float[currentDisparity] = __low2float(
+				messageValsNeighbor2[currentDisparity]);
+		messageValsNeighbor3Float[currentDisparity] = __low2float(
+				messageValsNeighbor3[currentDisparity]);
+		dataCostsFloat[currentDisparity] = __low2float(
+				dataCosts[currentDisparity]);
+	}
+
+	msgStereo<float>(messageValsNeighbor1Float, messageValsNeighbor2Float, messageValsNeighbor3Float, dataCostsFloat, dstFloatLow);
+
+	for (int currentDisparity = 0;
+				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+				currentDisparity++) {
+			messageValsNeighbor1Float[currentDisparity] = __high2float(
+					messageValsNeighbor1[currentDisparity]);
+			messageValsNeighbor2Float[currentDisparity] = __high2float(
+					messageValsNeighbor2[currentDisparity]);
+			messageValsNeighbor3Float[currentDisparity] = __high2float(
+					messageValsNeighbor3[currentDisparity]);
+			dataCostsFloat[currentDisparity] = __high2float(
+					dataCosts[currentDisparity]);
+		}
+
+	msgStereo<float>(messageValsNeighbor1Float, messageValsNeighbor2Float, messageValsNeighbor3Float, dataCostsFloat, dstFloatHigh);
+
+	for (int currentDisparity = 0;
+				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+				currentDisparity++)
+	{
+		dst[currentDisparity] = __floats2half2_rn(dstFloatLow[currentDisparity], dstFloatHigh[currentDisparity]);
+	}
+}
+
+
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
@@ -152,10 +215,18 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
 				{
+					if ((yVal == 1) && ((xVal == 17)))
+														{
+															printf("1INDEX: %d %f\n", indexVal, (LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP)));
+														}
 					dataCostDeviceStereoCheckerboard1[indexVal] = (T)(LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP));
 				}
 				else
 				{
+					if ((yVal == 1) && ((xVal == 17)))
+														{
+															printf("2INDEX: %d %f\n", indexVal, (LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP)));
+														}
 					dataCostDeviceStereoCheckerboard2[indexVal] = (T)(LAMBDA_BP * min(abs(currentPixelImage1 - currentPixelImage2), DATA_K_BP));
 				}
 			}
@@ -169,11 +240,142 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
 				{
-					dataCostDeviceStereoCheckerboard1[indexVal] = (T)0;
+					dataCostDeviceStereoCheckerboard1[indexVal] = getZeroVal<T>();
 				}
 				else
 				{
-					dataCostDeviceStereoCheckerboard2[indexVal] = (T)0;
+					dataCostDeviceStereoCheckerboard2[indexVal] = getZeroVal<T>();
+				}
+			}
+		}
+	}
+}
+
+
+template<>
+__global__ void initializeBottomLevelDataStereo<half2>(float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages)
+{
+	// Block index
+    int bx = blockIdx.x;
+    int by = blockIdx.y;
+
+    // Thread index
+    int tx = threadIdx.x;
+    int ty = threadIdx.y;
+
+	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+
+	int indexVal;
+
+	if (withinImageBounds(xVal, yVal, (int)ceil(((float)widthImages) / 2.0), heightImages))
+	{
+		int imageCheckerboardWidth = getCheckerboardWidth<half2>(widthImages);
+
+		/*if ((xVal == 1) && (yVal == 1))
+		{
+			printf("imageCheckerboardWidth: %d\n", imageCheckerboardWidth);
+		}*/
+
+		int imageXPixelIndexStart = 0;
+		int checkerboardNum = 1;
+
+		//check which checkerboard data values for and make necessary adjustment to start
+		if (((yVal) % 2) == 0) {
+			if (((xVal) % 2) == 0) {
+				checkerboardNum = 1;
+			} else {
+				checkerboardNum = 2;
+			}
+		} else {
+			if (((xVal) % 2) == 0) {
+				checkerboardNum = 2;
+			} else {
+				checkerboardNum = 1;
+			}
+		}
+
+		imageXPixelIndexStart = xVal*2;
+		if ((((yVal) % 2) == 0) && (checkerboardNum == 2)) {
+			imageXPixelIndexStart -= 1;
+		}
+		if ((((yVal) % 2) == 1) && (checkerboardNum == 1)) {
+			imageXPixelIndexStart -= 1;
+		}
+		/*if ((yVal < 3) && (xVal < 20)) {
+			printf("%d %d %d\n", xVal, yVal, imageXPixelIndexStart);
+		}*/
+
+		//make sure that it is possible to check every disparity value
+		if ((((imageXPixelIndexStart + 2) - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0))
+		{
+			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+			{
+				float currentPixelImage1_low = 0.0;
+				float currentPixelImage2_low = 0.0;
+
+				if ((((imageXPixelIndexStart) - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0))
+				{
+					if (withinImageBounds(imageXPixelIndexStart, yVal, widthImages,
+							heightImages)) {
+						currentPixelImage1_low = image1PixelsDevice[yVal
+								* widthImages + imageXPixelIndexStart];
+						currentPixelImage2_low = image2PixelsDevice[yVal
+								* widthImages + (imageXPixelIndexStart - currentDisparity)];
+					}
+				}
+
+				float currentPixelImage1_high = 0.0;
+				float currentPixelImage2_high = 0.0;
+
+				if (withinImageBounds(imageXPixelIndexStart + 2, yVal, widthImages,
+						heightImages))
+				{
+					currentPixelImage1_high = image1PixelsDevice[yVal * widthImages
+							+ (imageXPixelIndexStart + 2)];
+					currentPixelImage2_high = image2PixelsDevice[yVal * widthImages
+							+ ((imageXPixelIndexStart + 2) - currentDisparity)];
+				}
+
+				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+
+
+				float lowVal = (LAMBDA_BP * min(abs(currentPixelImage1_low - currentPixelImage2_low), DATA_K_BP));
+				float highVal = (LAMBDA_BP * min(abs(currentPixelImage1_high - currentPixelImage2_high), DATA_K_BP));
+
+				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
+				if (checkerboardNum == 1)
+				{
+					if ((yVal == 1) && ((imageXPixelIndexStart == 17) || (imageXPixelIndexStart == 15)))
+									{
+										printf("1INDEX: %d %f %f %d %d\n", indexVal, lowVal, highVal, xVal, yVal);
+									}
+					dataCostDeviceStereoCheckerboard1[indexVal] = __floats2half2_rn(lowVal, highVal);
+				}
+				else
+				{
+					if ((yVal == 1) && ((imageXPixelIndexStart == 17) || (imageXPixelIndexStart == 15)))
+									{
+										printf("2INDEX: %d %f %f %d %d\n", indexVal, lowVal, highVal, xVal, yVal);
+									}
+					dataCostDeviceStereoCheckerboard2[indexVal] = __floats2half2_rn(lowVal, highVal);
+				}
+			}
+		}
+		else
+		{
+			for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+			{
+				indexVal = retrieveIndexInDataAndMessage((xVal/2), yVal, imageCheckerboardWidth, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+
+				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
+				if (((xVal + yVal) % 2) == 0)
+				{
+					dataCostDeviceStereoCheckerboard1[indexVal] = getZeroVal<half2>();
+				}
+				else
+				{
+					dataCostDeviceStereoCheckerboard2[indexVal] = getZeroVal<half2>();
 				}
 			}
 		}
@@ -246,6 +448,87 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoChec
 	}
 }
 
+//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
+template<>
+__global__ void initializeCurrentLevelDataStereoNoTextures<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum)
+{
+	// Block index
+	int bx = blockIdx.x;
+	int by = blockIdx.y;
+
+	// Thread index
+	int tx = threadIdx.x;
+	int ty = threadIdx.y;
+
+	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int widthCheckerboardCurrentLevel = getCheckerboardWidth<half2>(widthCurrentLevel);
+	int widthCheckerboardPrevLevel = getCheckerboardWidth<half2>(widthPrevLevel);
+
+	if (withinImageBounds(xVal, yVal, widthCheckerboardCurrentLevel, heightCurrentLevel))
+	{
+		//add 1 or 0 to the x-value depending on checkerboard part and row adding to; CHECKERBOARD_PART_1 with slot at (0, 0) has adjustment of 0 in row 0,
+		//while CHECKERBOARD_PART_2 with slot at (0, 1) has adjustment of 1 in row 0
+		int checkerboardPartAdjustment = 0;
+
+		if (checkerboardPart == CHECKERBOARD_PART_1)
+		{
+			checkerboardPartAdjustment = (yVal%2);
+		}
+		else if (checkerboardPart == CHECKERBOARD_PART_2)
+		{
+			checkerboardPartAdjustment = ((yVal+1)%2);
+		}
+
+		//the corresponding x-values at the "lower" level depends on which checkerboard the pixel is in
+		int xValPrev = xVal*2 + checkerboardPartAdjustment;
+
+		for (int currentDisparity = 0;
+				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+				currentDisparity++)
+		{
+			dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal, yVal,
+					widthCheckerboardCurrentLevel, heightCurrentLevel,
+					currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = __hadd2(
+					dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2), widthCheckerboardPrevLevel,
+							heightPrevLevel, currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)],
+					dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2), widthCheckerboardPrevLevel,
+							heightPrevLevel, currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)]);
+
+			dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal, yVal,
+					widthCheckerboardCurrentLevel, heightCurrentLevel,
+					currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = __hadd2(
+					dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal,
+							yVal, widthCheckerboardCurrentLevel,
+							heightCurrentLevel, currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES)],
+					dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2 + 1),
+							widthCheckerboardPrevLevel, heightPrevLevel,
+							currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)]);
+
+			dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal, yVal,
+					widthCheckerboardCurrentLevel, heightCurrentLevel,
+					currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = __hadd2(
+					dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal,
+							yVal, widthCheckerboardCurrentLevel,
+							heightCurrentLevel, currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES)],
+					dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2 + 1),
+							widthCheckerboardPrevLevel, heightPrevLevel,
+							currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)]);
+		}
+	}
+}
+
+
 
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
@@ -271,19 +554,19 @@ __global__ void initializeMessageValsToDefault(T* messageUDeviceCurrentCheckerbo
 		//set the message value at each pixel for each disparity to 0
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
+			messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
+			messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
+			messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
 		}
 
 		//retrieve the previous message value at each movement at each pixel
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
-			messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = DEFAULT_INITIAL_MESSAGE_VAL;
+			messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
+			messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
+			messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
+			messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboard, yVal, widthCheckerboardAtLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroVal<T>();
 		}	
 	}
 }
@@ -409,17 +692,232 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 			indexWriteTo = retrieveIndexInDataAndMessage(xVal, yVal, widthLevelCheckerboardPart, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 			{
-				messageUDeviceCurrentCheckerboard1[indexWriteTo] = (T)0.0;
-				messageDDeviceCurrentCheckerboard1[indexWriteTo] = (T)0.0;
-				messageLDeviceCurrentCheckerboard1[indexWriteTo] = (T)0.0;
-				messageRDeviceCurrentCheckerboard1[indexWriteTo] = (T)0.0;
+				messageUDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<T>();
+				messageDDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<T>();
+				messageLDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<T>();
+				messageRDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<T>();
 			}
 			else
 			{
-				messageUDeviceCurrentCheckerboard2[indexWriteTo] = (T)0.0;
-				messageDDeviceCurrentCheckerboard2[indexWriteTo] = (T)0.0;
-				messageLDeviceCurrentCheckerboard2[indexWriteTo] = (T)0.0;
-				messageRDeviceCurrentCheckerboard2[indexWriteTo] = (T)0.0;
+				messageUDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<T>();
+				messageDDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<T>();
+				messageLDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<T>();
+				messageRDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<T>();
+			}
+		}
+	}
+}
+
+
+//device portion of the kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the
+//"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
+//this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
+//this function uses linear memory bound to textures to access the current data and message values
+template<>
+__device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMem<half2>(
+		half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2,
+		half2* messageUDeviceCurrentCheckerboard1,
+		half2* messageDDeviceCurrentCheckerboard1,
+		half2* messageLDeviceCurrentCheckerboard1,
+		half2* messageRDeviceCurrentCheckerboard1,
+		half2* messageUDeviceCurrentCheckerboard2,
+		half2* messageDDeviceCurrentCheckerboard2,
+		half2* messageLDeviceCurrentCheckerboard2,
+		half2* messageRDeviceCurrentCheckerboard2,
+		int widthLevelCheckerboardPart, int heightLevel,
+		int checkerboardToUpdate, int xVal, int yVal, int offsetData)
+{
+	int indexWriteTo;
+	int checkerboardAdjustment;
+
+	//checkerboardAdjustment used for indexing into current checkerboard to update
+	if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+	{
+		checkerboardAdjustment = ((yVal)%2);
+	}
+	else //checkerboardToUpdate == CHECKERBOARD_PART_2
+	{
+		checkerboardAdjustment = ((yVal+1)%2);
+	}
+
+	//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
+	//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
+	//if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+	if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - checkerboardAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+	{
+		half2 prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+		half2 prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+		half2 prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+		half2 prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+		half2 dataMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+		if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+		{
+			half* messageLDeviceCurrentCheckerboard2Half = (half*)messageLDeviceCurrentCheckerboard2;
+			half* messageRDeviceCurrentCheckerboard2Half = (half*)messageRDeviceCurrentCheckerboard2;
+
+			for (int currentDisparity = 0;
+					currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+					currentDisparity++)
+			{
+				dataMessage[currentDisparity] =
+						dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+								xVal, yVal, widthLevelCheckerboardPart,
+								heightLevel, currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES, offsetData)];
+				prevUMessage[currentDisparity] =
+						messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(
+								xVal, (yVal + 1), widthLevelCheckerboardPart,
+								heightLevel, currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevDMessage[currentDisparity] =
+						messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(
+								xVal, (yVal - 1), widthLevelCheckerboardPart,
+								heightLevel, currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES)];
+				/*prevLMessage[currentDisparity] =
+						messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(
+								(xVal + checkerboardAdjustment), (yVal),
+								widthLevelCheckerboardPart, heightLevel,
+								currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevRMessage[currentDisparity] =
+						messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(
+								(xVal - 1 + checkerboardAdjustment), (yVal),
+								widthLevelCheckerboardPart, heightLevel,
+								currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];*/
+				prevLMessage[currentDisparity] =
+						__halves2half2(
+								messageLDeviceCurrentCheckerboard2Half[retrieveIndexInDataAndMessage(
+										((xVal * 2) + checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)],
+								messageLDeviceCurrentCheckerboard2Half[retrieveIndexInDataAndMessage(
+										((xVal * 2 + 1) + checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)]);
+
+				prevRMessage[currentDisparity] =
+						__halves2half2(
+								messageRDeviceCurrentCheckerboard2Half[retrieveIndexInDataAndMessage(
+										((xVal * 2) - 1 + checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)],
+								messageRDeviceCurrentCheckerboard2Half[retrieveIndexInDataAndMessage(
+										((xVal * 2 + 1) - 1
+												+ checkerboardAdjustment), yVal,
+										widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)]);
+			}
+		}
+		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		{
+			half* messageLDeviceCurrentCheckerboard1Half = (half*)messageLDeviceCurrentCheckerboard1;
+			half* messageRDeviceCurrentCheckerboard1Half = (half*)messageRDeviceCurrentCheckerboard1;
+
+			for (int currentDisparity = 0;
+					currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+					currentDisparity++)
+			{
+				dataMessage[currentDisparity] =
+						dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
+								xVal, yVal, widthLevelCheckerboardPart,
+								heightLevel, currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES, offsetData)];
+				prevUMessage[currentDisparity] =
+						messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+								xVal, (yVal + 1), widthLevelCheckerboardPart,
+								heightLevel, currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevDMessage[currentDisparity] =
+						messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+								xVal, (yVal - 1), widthLevelCheckerboardPart,
+								heightLevel, currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevLMessage[currentDisparity] =
+						__halves2half2(
+								messageLDeviceCurrentCheckerboard1Half[retrieveIndexInDataAndMessage(
+										((xVal * 2)
+												+ checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)],
+								messageLDeviceCurrentCheckerboard1Half[retrieveIndexInDataAndMessage(
+										((xVal * 2 + 1)
+												+ checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)]);
+
+				prevRMessage[currentDisparity] =
+						__halves2half2(
+								messageRDeviceCurrentCheckerboard1Half[retrieveIndexInDataAndMessage(
+										((xVal * 2) - 1
+												+ checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)],
+								messageRDeviceCurrentCheckerboard1Half[retrieveIndexInDataAndMessage(
+										((xVal * 2 + 1) - 1
+												+ checkerboardAdjustment),
+										yVal, widthLevelCheckerboardPart * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)]);
+			}
+		}
+
+		half2 currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+		half2 currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+		half2 currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+		half2 currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+		//uses the previous message values and data cost to calculate the current message values and store the results
+		runBPIterationInOutDataInLocalMem<half2>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+							currentUMessage, currentDMessage, currentLMessage, currentRMessage);
+
+
+		//write the calculated message values to global memory
+		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+		{
+			indexWriteTo = retrieveIndexInDataAndMessage(xVal, yVal, widthLevelCheckerboardPart, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+			{
+				messageUDeviceCurrentCheckerboard1[indexWriteTo] = currentUMessage[currentDisparity];
+				messageDDeviceCurrentCheckerboard1[indexWriteTo] = currentDMessage[currentDisparity];
+				messageLDeviceCurrentCheckerboard1[indexWriteTo] = currentLMessage[currentDisparity];
+				messageRDeviceCurrentCheckerboard1[indexWriteTo] = currentRMessage[currentDisparity];
+			}
+			else //checkerboardToUpdate == CHECKERBOARD_PART_2
+			{
+				messageUDeviceCurrentCheckerboard2[indexWriteTo] = currentUMessage[currentDisparity];
+				messageDDeviceCurrentCheckerboard2[indexWriteTo] = currentDMessage[currentDisparity];
+				messageLDeviceCurrentCheckerboard2[indexWriteTo] = currentLMessage[currentDisparity];
+				messageRDeviceCurrentCheckerboard2[indexWriteTo] = currentRMessage[currentDisparity];
+			}
+		}
+	}
+	else
+	{
+		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+		{
+			indexWriteTo = retrieveIndexInDataAndMessage(xVal, yVal, widthLevelCheckerboardPart, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+			{
+				messageUDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<half2>();
+				messageDDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<half2>();
+				messageLDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<half2>();
+				messageRDeviceCurrentCheckerboard1[indexWriteTo] = getZeroVal<half2>();
+			}
+			else
+			{
+				messageUDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<half2>();
+				messageDDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<half2>();
+				messageLDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<half2>();
+				messageRDeviceCurrentCheckerboard2[indexWriteTo] = getZeroVal<half2>();
 			}
 		}
 	}
@@ -598,6 +1096,18 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostS
 				T best_val = INF_BP;
 				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
+
+					if ((yVal == 6) && (((xVal == 34))))
+										{
+											printf("xVal: %d\n", xVal);
+											printf("DISP: %d\n", currentDisparity);
+											printf("messageUPrevStereoCheckerboard2: %f \n", (float)messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+											printf("messageDPrevStereoCheckerboard2: %f \n", (float)messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+											printf("messageLPrevStereoCheckerboard2Half: %f \n", (float)messageLPrevStereoCheckerboard2[retrieveIndexInDataAndMessage((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+											printf("messageRPrevStereoCheckerboard2Half: %f \n", (float)messageRPrevStereoCheckerboard2[retrieveIndexInDataAndMessage((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+											printf("dataCostStereoCheckerboard1: %f \n", (float)dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+										}
+
 					T val = messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
 						 messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
 						 messageLPrevStereoCheckerboard2[retrieveIndexInDataAndMessage((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
@@ -622,6 +1132,8 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostS
 
 			if ((xVal >= 1) && (xVal < (widthLevel - 1)) && (yVal >= 1) && (yVal < (heightLevel - 1)))
 			{
+
+
 				// keep track of "best" disparity for current pixel
 				int bestDisparity = 0;
 				T best_val = INF_BP;
@@ -644,6 +1156,257 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostS
 			else
 			{
 				disparityBetweenImagesDevice[yVal*widthLevel + xVal] = 0;
+			}
+		}
+	}
+}
+
+//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
+template<>
+__global__ void retrieveOutputDisparityCheckerboardStereoNoTextures<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+{
+	// Block index
+	int bx = blockIdx.x;
+	int by = blockIdx.y;
+
+	// Thread index
+	int tx = threadIdx.x;
+	int ty = threadIdx.y;
+
+	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+
+	if (withinImageBounds(xVal*2, yVal, widthLevel, heightLevel))
+	{
+		int widthCheckerboard = getCheckerboardWidth<half2>(widthLevel);
+		int xValInCheckerboardPart = xVal/2;
+
+		if (((yVal+xVal) % 2) == 0) //if true, then pixel is from part 1 of the checkerboard; otherwise, it's from part 2
+		{
+			int	checkerboardPartAdjustment = (yVal%2);
+
+			half* messageLPrevStereoCheckerboard2Half = (half*)messageLPrevStereoCheckerboard2;
+			half* messageRPrevStereoCheckerboard2Half = (half*)messageRPrevStereoCheckerboard2;
+
+			if ((xVal >= 1) && (xVal < (widthLevel - 1)) && (yVal >= 1) && (yVal < (heightLevel - 1)))
+			{
+				// keep track of "best" disparity for current pixel
+				int bestDisparity1 = 0;
+				int bestDisparity2 = 0;
+				float best_val1 = INF_BP;
+				float best_val2 = INF_BP;
+				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+				{
+					if ((yVal == 6) && (((xVal*2 - checkerboardPartAdjustment) == 34) || ((xVal*2 + 2 - checkerboardPartAdjustment) == 34)))
+					{
+						printf("xVal: %d\n", xVal);
+						printf("DISP: %d\n", currentDisparity);
+						printf("messageUPrevStereoCheckerboard2: %f %f\n", __low2float(messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]), __high2float(messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						printf("messageDPrevStereoCheckerboard2: %f %f\n", __low2float(messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]), __high2float(messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						printf("messageLPrevStereoCheckerboard2Half: %f %f\n", (float)messageLPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+								((xValInCheckerboardPart * 2)
+										+ checkerboardPartAdjustment),
+								yVal, widthCheckerboard * 2,
+								heightLevel,
+								currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES)],
+								(float)messageLPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+																			((xValInCheckerboardPart * 2 + 1)
+																					+ checkerboardPartAdjustment),
+																			yVal, widthCheckerboard * 2,
+																			heightLevel, currentDisparity,
+																			NUM_POSSIBLE_DISPARITY_VALUES)]);
+						printf("messageRPrevStereoCheckerboard2Half: %f %f\n", (float)messageRPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+								((xValInCheckerboardPart * 2)
+										- 1
+										+ checkerboardPartAdjustment),
+								yVal, widthCheckerboard * 2,
+								heightLevel,
+								currentDisparity,
+								NUM_POSSIBLE_DISPARITY_VALUES)], (float)messageLPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+										((xValInCheckerboardPart * 2 + 1)
+												+ checkerboardPartAdjustment),
+										yVal, widthCheckerboard * 2,
+										heightLevel, currentDisparity,
+										NUM_POSSIBLE_DISPARITY_VALUES)]);
+						printf("dataCostStereoCheckerboard1: %f %f\n", __low2float(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]), __high2float(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+					}
+
+					half2 val = __hadd2(messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)],
+											 messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+					val =
+							__hadd2(val,
+									__halves2half2(
+											messageLPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+													((xValInCheckerboardPart * 2)
+															+ checkerboardPartAdjustment),
+													yVal, widthCheckerboard * 2,
+													heightLevel,
+													currentDisparity,
+													NUM_POSSIBLE_DISPARITY_VALUES)],
+									messageLPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+											((xValInCheckerboardPart * 2 + 1)
+													+ checkerboardPartAdjustment),
+											yVal, widthCheckerboard * 2,
+											heightLevel, currentDisparity,
+											NUM_POSSIBLE_DISPARITY_VALUES)]));
+					val =
+							__hadd2(val,
+									__halves2half2(
+											messageRPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+													((xValInCheckerboardPart * 2)
+															- 1
+															+ checkerboardPartAdjustment),
+													yVal, widthCheckerboard * 2,
+													heightLevel,
+													currentDisparity,
+													NUM_POSSIBLE_DISPARITY_VALUES)],
+									messageRPrevStereoCheckerboard2Half[retrieveIndexInDataAndMessage(
+											((xValInCheckerboardPart * 2 + 1)
+													- 1
+													+ checkerboardPartAdjustment),
+											yVal, widthCheckerboard * 2,
+											heightLevel, currentDisparity,
+											NUM_POSSIBLE_DISPARITY_VALUES)]));
+					val = __hadd2(val, dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+
+					float valLow = __low2float ( val);
+					float valHigh = __high2float ( val);
+					if (valLow < best_val1)
+					{
+						if ((yVal == 6) && (((xVal*2 - checkerboardPartAdjustment) == 34) || ((xVal*2 + 2 - checkerboardPartAdjustment) == 34)))
+											{
+						printf("Update BestDisp1\n");
+											}
+						best_val1 = valLow;
+						bestDisparity1 = currentDisparity;
+					}
+					if (valHigh < best_val2)
+					{
+						if ((yVal == 6) && (((xVal*2 - checkerboardPartAdjustment) == 34) || ((xVal*2 + 2 - checkerboardPartAdjustment) == 34)))
+											{
+						printf("Update BestDisp2\n");
+											}
+						best_val2 = valHigh;
+						bestDisparity2 = currentDisparity;
+					}
+				}
+				disparityBetweenImagesDevice[yVal*widthLevel + (xVal*2 - checkerboardPartAdjustment)] = bestDisparity1;
+				if (((xVal*2) + 2) < widthLevel)
+				{
+					disparityBetweenImagesDevice[yVal*widthLevel + (xVal*2 - checkerboardPartAdjustment) + 2] = bestDisparity2;
+				}
+			}
+			else
+			{
+				disparityBetweenImagesDevice[yVal * widthLevel + (xVal * 2 - checkerboardPartAdjustment)] =
+						0;
+				if (((xVal * 2) + 2) < widthLevel)
+				{
+					disparityBetweenImagesDevice[yVal * widthLevel + (xVal * 2 - checkerboardPartAdjustment)
+							+ 2] = 0;
+				}
+			}
+		}
+		else //pixel from part 2 of checkerboard
+		{
+			int	checkerboardPartAdjustment = ((yVal + 1) % 2);
+			half* messageLPrevStereoCheckerboard1Half = (half*)messageLPrevStereoCheckerboard1;
+			half* messageRPrevStereoCheckerboard1Half = (half*)messageRPrevStereoCheckerboard1;
+
+			if ((xVal >= 1) && (xVal < (widthLevel - 1)) && (yVal >= 1) && (yVal < (heightLevel - 1)))
+			{
+				// keep track of "best" disparity for current pixel
+				int bestDisparity1 = 0;
+				int bestDisparity2 = 0;
+				float best_val1 = INF_BP;
+				float best_val2 = INF_BP;
+				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+				{
+					half2 val =
+							__hadd2(
+									messageUPrevStereoCheckerboard1[retrieveIndexInDataAndMessage(
+											xValInCheckerboardPart, (yVal + 1),
+											widthCheckerboard, heightLevel,
+											currentDisparity,
+											NUM_POSSIBLE_DISPARITY_VALUES)],
+											messageDPrevStereoCheckerboard1[retrieveIndexInDataAndMessage(
+													xValInCheckerboardPart,
+													(yVal - 1),
+													widthCheckerboard,
+													heightLevel,
+													currentDisparity,
+													NUM_POSSIBLE_DISPARITY_VALUES)]);
+					val =
+							__hadd2(val,
+									__halves2half2(
+											messageLPrevStereoCheckerboard1Half[retrieveIndexInDataAndMessage(
+													((xValInCheckerboardPart * 2)
+															+ checkerboardPartAdjustment),
+													yVal, widthCheckerboard * 2,
+													heightLevel,
+													currentDisparity,
+													NUM_POSSIBLE_DISPARITY_VALUES)],
+									messageLPrevStereoCheckerboard1Half[retrieveIndexInDataAndMessage(
+											((xValInCheckerboardPart * 2 + 1)
+													+ checkerboardPartAdjustment),
+											yVal, widthCheckerboard * 2,
+											heightLevel, currentDisparity,
+											NUM_POSSIBLE_DISPARITY_VALUES)]));
+					val =
+							__hadd2(val,
+									__halves2half2(
+											messageRPrevStereoCheckerboard1Half[retrieveIndexInDataAndMessage(
+													((xValInCheckerboardPart * 2)
+															- 1
+															+ checkerboardPartAdjustment),
+													yVal, widthCheckerboard * 2,
+													heightLevel,
+													currentDisparity,
+													NUM_POSSIBLE_DISPARITY_VALUES)],
+									messageRPrevStereoCheckerboard1Half[retrieveIndexInDataAndMessage(
+											((xValInCheckerboardPart * 2 + 1)
+													- 1
+													+ checkerboardPartAdjustment),
+											yVal, widthCheckerboard * 2,
+											heightLevel, currentDisparity,
+											NUM_POSSIBLE_DISPARITY_VALUES)]));
+
+					val =
+							__hadd2(val,
+									dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
+											xValInCheckerboardPart, yVal,
+											widthCheckerboard, heightLevel,
+											currentDisparity,
+											NUM_POSSIBLE_DISPARITY_VALUES)]);
+
+					float val1 = __low2float(val);
+					float val2 = __high2float(val);
+					if (val1 < best_val1) {
+						best_val1 = val1;
+						bestDisparity1 = currentDisparity;
+					}
+					if (val2 < best_val2) {
+						best_val2 = val2;
+						bestDisparity2 = currentDisparity;
+					}
+				}
+
+				disparityBetweenImagesDevice[yVal * widthLevel + (xVal * 2 - checkerboardPartAdjustment)] =
+						bestDisparity1;
+				if (((xVal * 2) + 2) < widthLevel) {
+					disparityBetweenImagesDevice[yVal * widthLevel + (xVal * 2 - checkerboardPartAdjustment)
+							+ 2] = bestDisparity2;
+				}
+			}
+			else
+			{
+				disparityBetweenImagesDevice[yVal * widthLevel + (xVal * 2 - checkerboardPartAdjustment)] =
+						0;
+				if (((xVal * 2) + 2) < widthLevel) {
+					disparityBetweenImagesDevice[yVal * widthLevel + (xVal * 2 - checkerboardPartAdjustment)
+							+ 2] = 0;
+				}
 			}
 		}
 	}

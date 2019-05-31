@@ -150,10 +150,10 @@ __host__ void setBPSettingInConstMem(BPsettings& currentBPSettings);
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-__host__ void runBPAtCurrentLevel(int& numIterationsAtLevel, int& widthLevelActualIntegerSize, int& heightLevelActualIntegerSize,
-	T*& messageUDeviceCheckerboard1, T*& messageDDeviceCheckerboard1, T*& messageLDeviceCheckerboard1,
-	T*& messageRDeviceCheckerboard1, T*& messageUDeviceCheckerboard2, T*& messageDDeviceCheckerboard2, T*& messageLDeviceCheckerboard2,
-	T*& messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
+__host__ void runBPAtCurrentLevel(int numIterationsAtLevel, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
+	T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
+	T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
+	T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
 	T* dataCostDeviceCheckerboard2);
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory without using textures
@@ -168,17 +168,18 @@ __host__ void runBPAtCurrentLevelNoTextures(int& numIterationsAtLevel, int& widt
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T>
-__host__ void copyMessageValuesToNextLevelDown(int& widthLevelActualIntegerSizePrevLevel, int& heightLevelActualIntegerSizePrevLevel,
-	int& widthLevelActualIntegerSizeNextLevel, int& heightLevelActualIntegerSizeNextLevel,
-	T*& messageUDeviceCheckerboard1CopyFrom, T*& messageDDeviceCheckerboard1CopyFrom, T*& messageLDeviceCheckerboard1CopyFrom,
-	T*& messageRDeviceCheckerboard1CopyFrom, T*& messageUDeviceCheckerboard2CopyFrom, T*& messageDDeviceCheckerboard2CopyFrom,
-	T*& messageLDeviceCheckerboard2CopyFrom, T*& messageRDeviceCheckerboard2CopyFrom, T*& messageUDeviceCheckerboard1CopyTo,
-	T*& messageDDeviceCheckerboard1CopyTo, T*& messageLDeviceCheckerboard1CopyTo, T*& messageRDeviceCheckerboard1CopyTo,
-	T*& messageUDeviceCheckerboard2CopyTo, T*& messageDDeviceCheckerboard2CopyTo, T*& messageLDeviceCheckerboard2CopyTo,
-	T*& messageRDeviceCheckerboard2CopyTo);
+__host__ void copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
+	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
+	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
+	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
+	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, void** messageUDeviceCheckerboard1CopyTo,
+	void** messageDDeviceCheckerboard1CopyTo, void** messageLDeviceCheckerboard1CopyTo, void** messageRDeviceCheckerboard1CopyTo,
+	void** messageUDeviceCheckerboard2CopyTo, void** messageDDeviceCheckerboard2CopyTo, void** messageLDeviceCheckerboard2CopyTo,
+	void** messageRDeviceCheckerboard2CopyTo);
 
 //initialize the data cost at each pixel for each disparity value
-__host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& dataCostDeviceCheckerboard1, float*& dataCostDeviceCheckerboard2, BPsettings& algSettings);
+template<typename T>
+__host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings);
 
 
 //initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
