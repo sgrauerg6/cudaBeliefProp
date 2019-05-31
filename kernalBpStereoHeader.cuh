@@ -101,9 +101,10 @@ __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(float* dataCost
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
-__global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1, float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1, float* messageUPrevStereoCheckerboard2, float* messageDPrevStereoCheckerboard2, float* messageLPrevStereoCheckerboard2, float* messageRPrevStereoCheckerboard2, float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1,
-															float* messageRDeviceCurrentCheckerboard1, float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2,
-															float* messageLDeviceCurrentCheckerboard2, float* messageRDeviceCurrentCheckerboard2, int widthLevelPrev, int heightLevelPrev, int widthLevelNext, int heightLevelNext,
+template<typename T>
+__global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+															T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
+															T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardPrevLevel, int heightLevelPrev, int widthCheckerboardNextLevel, int heightLevelNext,
 															int checkerboardPart);
 
 

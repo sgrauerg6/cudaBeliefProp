@@ -183,8 +183,8 @@ __host__ void copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePr
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			*messageUDeviceCheckerboard1CopyTo, *messageDDeviceCheckerboard1CopyTo, *messageLDeviceCheckerboard1CopyTo,
 			*messageRDeviceCheckerboard1CopyTo, *messageUDeviceCheckerboard2CopyTo, *messageDDeviceCheckerboard2CopyTo, *messageLDeviceCheckerboard2CopyTo,
-			*messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
-			widthLevelActualIntegerSizeNextLevel, heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_1);
+			*messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
+			getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_1);
 
 	( cudaDeviceSynchronize() );
 
@@ -193,8 +193,8 @@ __host__ void copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePr
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			*messageUDeviceCheckerboard1CopyTo, *messageDDeviceCheckerboard1CopyTo, *messageLDeviceCheckerboard1CopyTo,
 			*messageRDeviceCheckerboard1CopyTo, *messageUDeviceCheckerboard2CopyTo, *messageDDeviceCheckerboard2CopyTo, *messageLDeviceCheckerboard2CopyTo,
-			*messageRDeviceCheckerboard2CopyTo, (widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
-			widthLevelActualIntegerSizeNextLevel, heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_2);
+			*messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
+			getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_2);
 
 	( cudaDeviceSynchronize() );
 
@@ -224,7 +224,7 @@ __host__ void copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePr
 	gpuErrchk( cudaPeekAtLastError() );
 }
 
-template<>
+/*template<>
 __host__ void copyMessageValuesToNextLevelDown<half2>(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	half2* messageUDeviceCheckerboard1CopyFrom, half2* messageDDeviceCheckerboard1CopyFrom, half2* messageLDeviceCheckerboard1CopyFrom,
@@ -242,7 +242,7 @@ __host__ void copyMessageValuesToNextLevelDown<half2>(int widthLevelActualIntege
 		(half**)messageDDeviceCheckerboard1CopyTo, (half**)messageLDeviceCheckerboard1CopyTo, (half**)messageRDeviceCheckerboard1CopyTo,
 		(half**)messageUDeviceCheckerboard2CopyTo, (half**)messageDDeviceCheckerboard2CopyTo, (half**)messageLDeviceCheckerboard2CopyTo,
 		(half**)messageRDeviceCheckerboard2CopyTo);
-}
+}*/
 
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
