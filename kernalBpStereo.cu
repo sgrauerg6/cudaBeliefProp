@@ -129,11 +129,10 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	
 	dtStereo<T>(dst);
 
 	// truncate 
-	minimum += DISC_K_BP;//BPSettingsConstMemStereo.discCostCap;
+	minimum += DISC_K_BP;
 
 	// normalize
 	T valToNormalize = 0;
@@ -154,8 +153,9 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		dst[currentDisparity] -= valToNormalize;
 }
 
-
-/*template<>
+//template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
+//for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
+template<>
 __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], half dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		half dst[NUM_POSSIBLE_DISPARITY_VALUES])
@@ -171,11 +171,10 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-
 	dtStereo<half>(dst);
 
 	// truncate
-	minimum += DISC_K_BP;//BPSettingsConstMemStereo.discCostCap;
+	minimum += DISC_K_BP;
 
 	// normalize
 	half valToNormalize = 0;
@@ -189,10 +188,11 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 
 		valToNormalize += dst[currentDisparity];
 	}
-*/
-	//if valToNormalize is infinite or NaN, set destination vector to 0 for all disparities
+
+	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
+	//set destination vector to 0 for all disparities
 	//note that may cause results to differ a little from ideal
-	/*if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
+	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
 	{
 		for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
@@ -201,8 +201,8 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 			dst[currentDisparity] = (half)0.0;
 		}
 	}
-	else*/
-/*	{
+	else
+	{
 		valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
 
 		for (int currentDisparity = 0;
@@ -212,7 +212,7 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 			dst[currentDisparity] -= valToNormalize;
 		}
 	}
-}*/
+}
 
 template<>
 __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half2 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
@@ -232,7 +232,6 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-
 	dtStereo<half2>(dst);
 
 	// truncate
@@ -249,7 +248,7 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 
 	//if either valToNormalize in half2 is infinite or NaN, set destination vector to 0 for all disparities
 	//note that may cause results to differ a little from ideal
-	/*if (((__hisnan(__low2half(valToNormalize)))
+	if (((__hisnan(__low2half(valToNormalize)))
 			|| ((__hisinf(__low2half(valToNormalize)) != 0)))
 			|| ((__hisnan(__high2half(valToNormalize)))
 					|| ((__hisinf(__high2half(valToNormalize)) != 0))))
@@ -260,7 +259,20 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 		{
 			dst[currentDisparity] = __floats2half2_rn(0.0f, 0.0f);
 		}
-	}*/
+	}
+	else
+	{
+		valToNormalize = __h2div(valToNormalize,
+				__float2half2_rn((float) NUM_POSSIBLE_DISPARITY_VALUES));
+
+		for (int currentDisparity = 0;
+				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+				currentDisparity++)
+		{
+			dst[currentDisparity] = __hsub2(dst[currentDisparity],
+					valToNormalize);
+		}
+	}
 	//check if both values in half2 are inf or nan
 	/*if (((__hisnan(__low2half(valToNormalize)))
 			|| ((__hisinf(__low2half(valToNormalize)) != 0)))
@@ -319,20 +331,7 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 			dst[currentDisparity] = __halves2half2(
 					__low2half(dst[currentDisparity]), (half)0.0f);
 		}
-	}
-	else*/
-	{
-		valToNormalize = __h2div(valToNormalize,
-				__float2half2_rn((float) NUM_POSSIBLE_DISPARITY_VALUES));
-
-		for (int currentDisparity = 0;
-				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
-				currentDisparity++)
-		{
-			dst[currentDisparity] = __hsub2(dst[currentDisparity],
-					valToNormalize);
-		}
-	}
+	}*/
 }
 
 // compute current message
