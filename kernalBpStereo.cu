@@ -153,6 +153,7 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		dst[currentDisparity] -= valToNormalize;
 }
 
+
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
@@ -213,6 +214,7 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 		}
 	}
 }
+
 
 template<>
 __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half2 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
@@ -333,6 +335,7 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 		}
 	}*/
 }
+
 
 // compute current message
 /*template<>
@@ -509,6 +512,7 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 	}
 }
 
+
 template<typename T>
 __global__ void printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
@@ -580,6 +584,7 @@ __global__ void printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostSt
 	}
 }
 
+
 template<typename T>
 __device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
@@ -650,6 +655,7 @@ __device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* data
 		}
 	}
 }
+
 
 template<typename T>
 __global__ void printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
@@ -731,6 +737,7 @@ __global__ void printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostSt
 		}
 }
 
+
 template<typename T>
 __device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
@@ -811,6 +818,7 @@ __device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* data
 		}
 	}
 }
+
 
 template<>
 __global__ void initializeBottomLevelDataStereo<half2>(float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages)
@@ -995,6 +1003,7 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoChec
 	}
 }
 
+
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 /*template<>
 __global__ void initializeCurrentLevelDataStereoNoTextures<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum)
@@ -1074,7 +1083,6 @@ __global__ void initializeCurrentLevelDataStereoNoTextures<half2>(half2* dataCos
 		}
 	}
 }*/
-
 
 
 //initialize the message values at each pixel of the current level to the default value
