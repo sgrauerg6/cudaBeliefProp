@@ -32,7 +32,7 @@ __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int heigh
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //output filtered image stored in floatImagePixels
-__global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels)
+__global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels, int widthImages, int heightImages)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -46,12 +46,12 @@ __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsigned
 	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImageConstFilt, heightImageConstFilt))
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
 		//retrieve the float-value of the unsigned int pixel value at the current location
-		float floatPixelVal = 1.0f * imagePixelsUnsignedIntToFilter[yVal*widthImageConstFilt + xVal];
+		float floatPixelVal = 1.0f * imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];
 
-		floatImagePixels[yVal*widthImageConstFilt + xVal] = floatPixelVal;
+		floatImagePixels[yVal*widthImages + xVal] = floatPixelVal;
 	}
 }
 
@@ -59,7 +59,7 @@ __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsigned
 //kernal to apply a horizontal filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* filteredImagePixels)
+__global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -73,19 +73,17 @@ __global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* f
 	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImageConstFilt, heightImageConstFilt))
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
+		float filteredPixelVal = imageFilter[0]*imagePixelsFloatToFilter[yVal*widthImages + xVal];
 
-		float filteredPixelVal = imageFilterConst[0]*imagePixelsFloatToFilter[yVal*widthImageConstFilt + xVal];
-
-
-		for (int i = 1; i < sizeFilterConst; i++) 
+		for (int i = 1; i < sizeFilter; i++)
 		{
-			filteredPixelVal += imageFilterConst[i] * (imagePixelsFloatToFilter[yVal*widthImageConstFilt + max(xVal-i, 0)]
-				+ imagePixelsFloatToFilter[yVal*widthImageConstFilt + min(xVal+i, widthImageConstFilt-1)]);
+			filteredPixelVal += imageFilter[i] * (imagePixelsFloatToFilter[yVal*widthImages + max(xVal-i, 0)]
+				+ imagePixelsFloatToFilter[yVal*widthImages + min(xVal+i, widthImages-1)]);
 		}
 
-		filteredImagePixels[yVal*widthImageConstFilt + xVal] = filteredPixelVal;
+		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
 	}
 }
 
@@ -93,7 +91,7 @@ __global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* f
 //kernal to apply a vertical filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float* filteredImagePixels)
+__global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -107,24 +105,23 @@ __global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float*
 	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImageConstFilt, heightImageConstFilt))
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
-		float filteredPixelVal = imageFilterConst[0]*(imagePixelsFloatToFilter[yVal*widthImageConstFilt + xVal]);
+		float filteredPixelVal = imageFilter[0]*(imagePixelsFloatToFilter[yVal*widthImages + xVal]);
 
-
-		for (int i = 1; i < sizeFilterConst; i++) {
-			filteredPixelVal += imageFilterConst[i] * (imagePixelsFloatToFilter[max(yVal-i, 0)*widthImageConstFilt + xVal]
-				+ imagePixelsFloatToFilter[min(yVal+i, heightImageConstFilt-1)*widthImageConstFilt + xVal]);
+		for (int i = 1; i < sizeFilter; i++) {
+			filteredPixelVal += imageFilter[i] * (imagePixelsFloatToFilter[max(yVal-i, 0)*widthImages + xVal]
+				+ imagePixelsFloatToFilter[min(yVal+i, heightImages-1)*widthImages + xVal]);
 		}
 
-		filteredImagePixels[yVal*widthImageConstFilt + xVal] = filteredPixelVal;
+		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
 	}
 }
 
 //kernal to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels)
+__global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -138,17 +135,16 @@ __global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIn
 	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImageConstFilt, heightImageConstFilt))
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
-		float filteredPixelVal = imageFilterConst[0] * imagePixelsUnsignedIntToFilter[yVal*widthImageConstFilt + xVal];
+		float filteredPixelVal = imageFilter[0] * ((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal]);
 
-
-		for (int i = 1; i < sizeFilterConst; i++) {
-			filteredPixelVal += imageFilterConst[i] * (imagePixelsUnsignedIntToFilter[yVal*widthImageConstFilt + max(xVal-i, 0)]
-				+ imagePixelsUnsignedIntToFilter[yVal*widthImageConstFilt + min(xVal+i, widthImageConstFilt-1)]);
+		for (int i = 1; i < sizeFilter; i++) {
+			filteredPixelVal += imageFilter[i] * (((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + max(xVal-i, 0)])
+				+ ((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + min(xVal+i, widthImages-1)]));
 		}
 
-		filteredImagePixels[yVal*widthImageConstFilt + xVal] = filteredPixelVal;
+		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
 	}
 }
 
@@ -156,7 +152,7 @@ __global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIn
 //kernal to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageVertical(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels)
+__global__ void filterUnsignedIntImageVertical(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -170,17 +166,15 @@ __global__ void filterUnsignedIntImageVertical(unsigned int* imagePixelsUnsigned
 	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImageConstFilt, heightImageConstFilt))
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
+		float filteredPixelVal = imageFilter[0] * ((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal]);
 
-		float filteredPixelVal = imageFilterConst[0] * imagePixelsUnsignedIntToFilter[yVal*widthImageConstFilt + xVal];
-
-
-		for (int i = 1; i < sizeFilterConst; i++) {
-			filteredPixelVal += imageFilterConst[i] * (imagePixelsUnsignedIntToFilter[max(yVal-i, 0)*widthImageConstFilt + xVal]
-				+ imagePixelsUnsignedIntToFilter[min(yVal+i, heightImageConstFilt-1)*widthImageConstFilt + xVal]);
+		for (int i = 1; i < sizeFilter; i++) {
+			filteredPixelVal += imageFilter[i] * ((float)(imagePixelsUnsignedIntToFilter[max(yVal-i, 0)*widthImages + xVal])
+				+ ((float)imagePixelsUnsignedIntToFilter[min(yVal+i, heightImages-1)*widthImages + xVal]));
 		}
 
-		filteredImagePixels[yVal*widthImageConstFilt + xVal] = filteredPixelVal;
+		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
 	}
 }

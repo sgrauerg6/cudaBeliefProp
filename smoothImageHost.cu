@@ -47,117 +47,11 @@ __host__ float* makeFilter(float sigma, int& sizeFilter)
 	float* mask = new float[sizeFilter];
 	for (int i = 0; i < sizeFilter; i++) 
 	{
-		mask[i] = exp(-0.5f*((i/sigma) * (i/sigma)));
+		mask[i] = exp(-0.5*((i/sigma) * (i/sigma)));
 	}
 	normalizeFilter(mask, sizeFilter);
 
 	return mask;
-}
-
-	
-
-//function to use the CUDA-image filter to apply a guassian filter to the two images
-//input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
-//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-__host__ void smoothImages(unsigned int*& image1InHost, unsigned int*& image2InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice, float*& image2SmoothedDevice)
-{
-	// setup execution parameters
-	dim3 threads(BLOCK_SIZE_WIDTH_FILTER_IMAGES, BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
-	dim3 grid((unsigned int)(ceil((float)widthImages / (float)threads.x)), (unsigned int)(ceil((float)heightImages / (float)threads.y)));
-
-	//copy the width and height of the images to the constant memory of the device
-	cudaMemcpyToSymbol(widthImageConstFilt, &widthImages, sizeof(int));
-	cudaMemcpyToSymbol(heightImageConstFilt, &heightImages, sizeof(int));
-
-	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
-	//of unsigned ints to an output image of float values
-	if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
-	{
-		//declare and allocate the space for the input unsigned int image pixels and the output float image pixels
-		unsigned int* originalImageDevice;
-
-		(cudaMalloc((void**) &originalImageDevice, (widthImages*heightImages*sizeof(unsigned int))));
-
-		//load image 1 to the device and convert the pixel values to floats stored in image1SmoothedDevice
-
-		//loads image 1 to the device
-		(cudaMemcpy(originalImageDevice, image1InHost, (widthImages*heightImages*sizeof(unsigned int)),
-								cudaMemcpyHostToDevice));
-
-		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>> (originalImageDevice, image1SmoothedDevice);
-
-		( cudaDeviceSynchronize() );
-
-		//now do the same thing with image 2: load to device and convert the pixel values to floats stored in image2SmoothedDevice
-
-		//loads image 2 to the device
-		(cudaMemcpy(originalImageDevice, image2InHost, (widthImages*heightImages*sizeof(unsigned int)),
-								cudaMemcpyHostToDevice));
-
-		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>> (originalImageDevice, image2SmoothedDevice);
-
-		( cudaDeviceSynchronize() );
-
-
-		//free the device memory used to store original images
-		(cudaFree(originalImageDevice));
-	}
-
-	//otherwise apply a Guassian filter to the images
-	else
-	{
-
-		//sizeFilter set in makeFilter based on sigmaVal
-		int sizeFilter;
-		float* filter = makeFilter(sigmaVal, sizeFilter);
-
-		//copy the image filter and the size of the filter to constant memory on the GPU
-		cudaMemcpyToSymbol(imageFilterConst, filter, sizeFilter*sizeof(float));
-		cudaMemcpyToSymbol(sizeFilterConst, &sizeFilter, sizeof(int));
-
-		//allocate the GPU global memory for the original, intermediate (when the image has been filtered horizontally but not vertically), and final image
-		unsigned int* originalImageDevice;
-		float* intermediateImageDevice; 
-
-		//it is possible to use the same storage for the original and final images...
-		(cudaMalloc((void**) &originalImageDevice, (widthImages*heightImages*sizeof(unsigned int))));
-		(cudaMalloc((void**) &intermediateImageDevice, (widthImages*heightImages*sizeof(float))));
-
-		//first smooth the image 1, so copy image 1 to GPU memory
-
-		//load image 1 to the device
-		(cudaMemcpy(originalImageDevice, image1InHost, (widthImages*heightImages*sizeof(unsigned int)),
-									cudaMemcpyHostToDevice));
-
-		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-		filterUnsignedIntImageAcross <<< grid, threads >>> (originalImageDevice, intermediateImageDevice);
-
-		( cudaDeviceSynchronize() );
-
-		//now use the vertical filter to complete the smoothing of image 1 on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice);
-
-		( cudaDeviceSynchronize() );
-
-		//then smooth image 2 in the same manner
-		(cudaMemcpy(originalImageDevice, image2InHost, (widthImages*heightImages*sizeof(unsigned int)),
-									cudaMemcpyHostToDevice) );
-
-		filterUnsignedIntImageAcross <<< grid, threads >>> (originalImageDevice, intermediateImageDevice);
-
-		( cudaDeviceSynchronize() );
-
-		//now use the vertical filter to complete the smoothing of image 1 on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image2SmoothedDevice);
-
-		( cudaDeviceSynchronize() );
-
-		//free the device memory used to store the images
-		(cudaFree(originalImageDevice));
-		(cudaFree(intermediateImageDevice));
-	}
 }
 
 
@@ -170,23 +64,19 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 	dim3 threads(BLOCK_SIZE_WIDTH_FILTER_IMAGES, BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
 	dim3 grid((unsigned int)(ceil((float)widthImages / (float)threads.x)), (unsigned int)(ceil((float)heightImages / (float)threads.y)));
 
-	//copy the width and height of the images to the constant memory of the device
-	cudaMemcpyToSymbol(widthImageConstFilt, &widthImages, sizeof(int));
-	cudaMemcpyToSymbol(heightImageConstFilt, &heightImages, sizeof(int));
-
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 	//of unsigned ints to an output image of float values
 	if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
 	{
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>> (image1InDevice, image1SmoothedDevice);
+		convertUnsignedIntImageToFloat <<< grid, threads >>> (image1InDevice, image1SmoothedDevice, widthImages, heightImages);
 
 		( cudaDeviceSynchronize() );
 
 		//now do the same thing with image 2: load to device and convert the pixel values to floats stored in image2SmoothedDevice
 
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>> (image2InDevice, image2SmoothedDevice);
+		convertUnsignedIntImageToFloat <<< grid, threads >>> (image2InDevice, image2SmoothedDevice, widthImages, heightImages);
 
 		( cudaDeviceSynchronize() );
 	}
@@ -194,14 +84,14 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 	//otherwise apply a Guassian filter to the images
 	else
 	{
-
 		//sizeFilter set in makeFilter based on sigmaVal
 		int sizeFilter;
 		float* filter = makeFilter(sigmaVal, sizeFilter);
 
-		//copy the image filter and the size of the filter to constant memory on the GPU
-		cudaMemcpyToSymbol(imageFilterConst, filter, sizeFilter*sizeof(float));
-		cudaMemcpyToSymbol(sizeFilterConst, &sizeFilter, sizeof(int));
+		//copy the image filter to the GPU
+		float* filterDevice;
+		(cudaMalloc((void**) &filterDevice, (sizeFilter*sizeof(float))));
+		cudaMemcpy(filterDevice, filter, (sizeFilter*sizeof(float)), cudaMemcpyHostToDevice);
 
 		//allocate the GPU global memory for the intermediate image (when the image has been filtered horizontally but not vertically)
 		float* intermediateImageDevice; 
@@ -210,28 +100,29 @@ __host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigne
 		//first smooth the image 1, so copy image 1 to GPU memory
 
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-		filterUnsignedIntImageAcross <<< grid, threads >>> (image1InDevice, intermediateImageDevice);
+		filterUnsignedIntImageAcross <<< grid, threads >>> (image1InDevice, intermediateImageDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//now use the vertical filter to complete the smoothing of image 1 on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice);
+		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//then smooth image 2 in the same manner
 
-		filterUnsignedIntImageAcross <<< grid, threads >>> (image2InDevice, intermediateImageDevice);
+		filterUnsignedIntImageAcross <<< grid, threads >>> (image2InDevice, intermediateImageDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//now use the vertical filter to complete the smoothing of image 1 on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image2SmoothedDevice);
+		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image2SmoothedDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//free the device memory used to store the intermediate images
 		(cudaFree(intermediateImageDevice));
+		cudaFree(filterDevice);
 	}
 }
 
@@ -245,10 +136,6 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 	dim3 threads(BLOCK_SIZE_WIDTH_FILTER_IMAGES, BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
 	dim3 grid((unsigned int)(ceil((float)widthImages / (float)threads.x)), (unsigned int)(ceil((float)heightImages / (float)threads.y)));
 
-	//copy the width and height of the images to the constant memory of the device
-	cudaMemcpyToSymbol(widthImageConstFilt, &widthImages, sizeof(int));
-	cudaMemcpyToSymbol(heightImageConstFilt, &heightImages, sizeof(int));
-
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 	//of unsigned ints to an output image of float values
 	if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
@@ -265,7 +152,7 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 								cudaMemcpyHostToDevice));
 
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>>(originalImageDevice, image1SmoothedDevice);
+		convertUnsignedIntImageToFloat <<< grid, threads >>>(originalImageDevice, image1SmoothedDevice, widthImages, heightImages);
 
 		( cudaDeviceSynchronize() );
 
@@ -281,9 +168,10 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 		int sizeFilter;
 		float* filter = makeFilter(sigmaVal, sizeFilter);
 
-		//copy the image filter and the size of the filter to constant memory on the GPU
-		cudaMemcpyToSymbol(imageFilterConst, filter, sizeFilter*sizeof(float));
-		cudaMemcpyToSymbol(sizeFilterConst, &sizeFilter, sizeof(int));
+		//copy the image filter to the GPU
+		float* filterDevice;
+		(cudaMalloc((void**) &filterDevice, (sizeFilter*sizeof(float))));
+		cudaMemcpy(filterDevice, filter, (sizeFilter*sizeof(float)), cudaMemcpyHostToDevice);
 
 		//allocate the GPU global memory for the original, intermediate (when the image has been filtered horizontally but not vertically), and final image
 		unsigned int* originalImageDevice;
@@ -300,18 +188,19 @@ __host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, in
 									cudaMemcpyHostToDevice));
 
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-		filterUnsignedIntImageAcross <<< grid, threads >>> (originalImageDevice, intermediateImageDevice);
+		filterUnsignedIntImageAcross <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//now use the vertical filter to complete the smoothing of image 1 on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice);
+		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//free the device memory used to store the images
 		(cudaFree(originalImageDevice));
 		(cudaFree(intermediateImageDevice));
+		cudaFree(filterDevice);
 	}
 }
 
@@ -325,16 +214,12 @@ __host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, in
 	dim3 threads(BLOCK_SIZE_WIDTH_FILTER_IMAGES, BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
 	dim3 grid((unsigned int)(ceil((float)widthImages / (float)threads.x)), (unsigned int)(ceil((float)heightImages / (float)threads.y)));
 
-	//copy the width and height of the images to the constant memory of the device
-	cudaMemcpyToSymbol(widthImageConstFilt, &widthImages, sizeof(int));
-	cudaMemcpyToSymbol(heightImageConstFilt, &heightImages, sizeof(int));
-
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 	//of unsigned ints to an output image of float values
 	if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
 	{
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>>(image1InDevice, image1SmoothedDevice);
+		convertUnsignedIntImageToFloat <<< grid, threads >>>(image1InDevice, image1SmoothedDevice, widthImages, heightImages);
 
 		( cudaDeviceSynchronize() );
 	}
@@ -342,14 +227,14 @@ __host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, in
 	//otherwise apply a Guassian filter to the images
 	else
 	{
-
 		//sizeFilter set in makeFilter based on sigmaVal
 		int sizeFilter;
 		float* filter = makeFilter(sigmaVal, sizeFilter);
 
-		//copy the image filter and the size of the filter to constant memory on the GPU
-		cudaMemcpyToSymbol(imageFilterConst, filter, sizeFilter*sizeof(float));
-		cudaMemcpyToSymbol(sizeFilterConst, &sizeFilter, sizeof(int));
+		//copy the image filter to the GPU
+		float* filterDevice;
+		(cudaMalloc((void**) &filterDevice, (sizeFilter*sizeof(float))));
+		cudaMemcpy(filterDevice, filter, (sizeFilter*sizeof(float)), cudaMemcpyHostToDevice);
 
 		float* intermediateImageDevice; 
 
@@ -358,16 +243,17 @@ __host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, in
 
 		//first smooth the image 1, so copy image 1 to GPU memory
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-		filterUnsignedIntImageAcross <<< grid, threads >>> (image1InDevice, intermediateImageDevice);
+		filterUnsignedIntImageAcross <<< grid, threads >>> (image1InDevice, intermediateImageDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//now use the vertical filter to complete the smoothing of image 1 on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice);
+		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, image1SmoothedDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		( cudaDeviceSynchronize() );
 
 		//free the device memory used to store the images
 		(cudaFree(intermediateImageDevice));
+		cudaFree(filterDevice);
 	}
 }
