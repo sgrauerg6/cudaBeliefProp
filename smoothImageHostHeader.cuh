@@ -34,22 +34,9 @@ __host__ void normalizeFilter(float*& filter, int sizeFilter);
 //this function creates a Gaussian filter given a sigma value
 __host__ float* makeFilter(float sigma, int& sizeFilter);
 
-//function to use the CUDA-image filter to apply a guassian filter to the two images
-__host__ void smoothImages(float*& image1InHost, float*& image2InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice, float*& image2SmoothedDevice);
-
-//function to use the CUDA-image filter to apply a guassian filter to the two images
-//input images have each pixel stored as an unsigned int in the device (value between 0 and 255 assuming 8-bit grayscale image used)
-//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-__host__ void smoothImagesAllDataInDevice(unsigned int*& image1InDevice, unsigned int*& image2InDevice, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice, float*& image2SmoothedDevice);
-
 //function to use the CUDA-image filter to apply a guassian filter to the a single images
 //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
 //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-__host__ void smoothSingleImage(unsigned int*& image1InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice);
-
-//function to use the CUDA-image filter to apply a guassian filter to the a single images
-//input images have each pixel stored as an unsigned int the device (value between 0 and 255 assuming 8-bit grayscale image used)
-//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-__host__ void smoothSingleImageAllDataInDevice(unsigned int*& image1InDevice, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice);
+__host__ void smoothSingleImageInputHostOutputDeviceCUDA(unsigned int*& image1InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice);
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

@@ -27,6 +27,6 @@ float averageRunTimeGpuNotIncludingMemoryTransfer = 0.0;
 float averageRunTimeGpuIncludingMemoryTransfer = 0.0;
 
 //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-void runStereoEstOnImageSeries(const char* imageFiles[], int numImages, unsigned int& widthImages, unsigned int& heightImages, BPsettings algSettings, bool saveResults, const char* saveDisparityMapImagePaths[], FILE* resultsFile);
+void runStereoEstOnStereoSet(const char* refImagePath, const char* testImagePath, BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile);
 
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

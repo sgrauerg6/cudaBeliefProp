@@ -8,8 +8,6 @@
 #ifndef STEREO_H_
 #define STEREO_H_
 
-void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath, FILE* resultsFile, float& averageRunTimeCpu);
-
-
+void runStereoCpu(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile);
 
 #endif /* STEREO_H_ */

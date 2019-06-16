@@ -30,8 +30,9 @@
 #include "stereo.h"
 #include <chrono>
 
-#define ITER ITER_BP      // number of BP iterations at each scale
-#define LEVELS LEVELS_BP     // number of scales
+//#define ITER ITER_BP      // number of BP iterations at each scale
+//#define LEVELS LEVELS_BP     // number of scales
+#define MAX_ALLOWED_LEVELS 10
 
 #define DISC_K DISC_K_BP         // truncation of discontinuity cost
 #define DATA_K DATA_K_BP       // truncation of data cost
@@ -158,7 +159,7 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 	int width = data->width();
 	int height = data->height();
 
-	for (int t = 0; t < ITER; t++) {
+	for (int t = 0; t < iter; t++) {
 		//std::cout << "iter " << t << "\n";
 
 		for (int y = 1; y < height - 1; y++) {
@@ -182,12 +183,12 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 }
 
 // multiscale belief propagation for image restoration
-image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFile, float& averageRunTimeCpu) {
-	image<float[VALUES]> *u[LEVELS];
-	image<float[VALUES]> *d[LEVELS];
-	image<float[VALUES]> *l[LEVELS];
-	image<float[VALUES]> *r[LEVELS];
-	image<float[VALUES]> *data[LEVELS];
+image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile) {
+	image<float[VALUES]> *u[MAX_ALLOWED_LEVELS];
+	image<float[VALUES]> *d[MAX_ALLOWED_LEVELS];
+	image<float[VALUES]> *l[MAX_ALLOWED_LEVELS];
+	image<float[VALUES]> *r[MAX_ALLOWED_LEVELS];
+	image<float[VALUES]> *data[MAX_ALLOWED_LEVELS];
 
 	auto timeStart = std::chrono::system_clock::now();
 
@@ -195,7 +196,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 	data[0] = comp_data(img1, img2);
 
 	// data pyramid
-	for (int i = 1; i < LEVELS; i++) {
+	for (int i = 1; i < algSettings.numLevels; i++) {
 		int old_width = data[i - 1]->width();
 		int old_height = data[i - 1]->height();
 		int new_width = (int) ceil(old_width / 2.0);
@@ -216,12 +217,12 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 	}
 
 	// run bp from coarse to fine
-	for (int i = LEVELS - 1; i >= 0; i--) {
+	for (int i = algSettings.numLevels - 1; i >= 0; i--) {
 		int width = data[i]->width();
 		int height = data[i]->height();
 
 		// allocate & init memory for messages
-		if (i == LEVELS - 1) {
+		if (i == algSettings.numLevels - 1) {
 			// in the coarsest level messages are initialized to zero
 			u[i] = new image<float[VALUES]>(width, height);
 			d[i] = new image<float[VALUES]>(width, height);
@@ -257,7 +258,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 		}
 
 		// BP
-		bp_cb(u[i], d[i], l[i], r[i], data[i], ITER);
+		bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations);
 	}
 
 	image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
@@ -269,7 +270,6 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 			diff.count());
 	printf("CPU RUN TIME: %.10lf\n",
 				diff.count());
-	averageRunTimeCpu = diff.count();
 
 	delete u[0];
 	delete d[0];
@@ -280,7 +280,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 	return out;
 }
 
-void runStereoCpu(const char* refImagePath, const char* testImagePath, const char* saveDisparityImagePath, FILE* resultsFile, float& averageRunTimeCpu)
+void runStereoCpu(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
@@ -289,7 +289,7 @@ void runStereoCpu(const char* refImagePath, const char* testImagePath, const cha
 	img2 = loadPGMOrPPMImage(testImagePath);
 
 	// compute disparities
-	out = stereo_ms(img1, img2, resultsFile, averageRunTimeCpu);
+	out = stereo_ms(img1, img2, algSettings, resultsFile);
 
 	// save output
 	savePGM(out, saveDisparityImagePath);

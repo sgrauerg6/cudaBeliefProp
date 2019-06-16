@@ -35,11 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed to evaluate the disparity/Stereo found
 #include "stereoResultsEvalHost.cu"
 
-//needed to run the "chunk-based" Stereo estimation
-#include "runBpStereoDivideImage.cu"
-
-//needed to run the implementation on a series of images
-#include "runBpStereoImageSeries.cu"
+//needed to run the implementation a stereo set using CUDA
+#include "runBpStereoSetCUDA.cu"
 
 //needed to save the resulting Stereo...
 #include "saveResultingDisparityMap.cu"
@@ -50,14 +47,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
-//this function takes as input the file names of a computed disparity map and also the
-//ground truth disparity map and the factor that each disparity was scaled by in the generation
-//of the disparity map image
-void compareComputedDispMapWithGroundTruth(const char* computedDispMapFile, float scaleComputedDispMap, const char* groundTruthDispMapFile, float scaleGroundTruthDispMap, unsigned int widthDispMap, unsigned int heightDispMap, FILE* resultsFile)
+//this function takes as input the file names of a two disparity maps and the factor
+//that each disparity was scaled by in the generation of the disparity map image
+void compareDispMaps(const char* dispMap1File, float scaleComputedDispMap, const char* dispMap2File, float scaleGroundTruthDispMap, FILE* resultsFile)
 {
+	unsigned int widthDispMap = 0;
+	unsigned int heightDispMap = 0;
+
 	//first retrieve the unsigned int arrays from the computed disparity map and ground truth disparity map images
-	unsigned int* compDispMapUnsignedInts = loadImageFromPGM(computedDispMapFile, widthDispMap, heightDispMap);
-	unsigned int* groundTruthDispMapUnsignedInts = loadImageFromPGM(groundTruthDispMapFile, widthDispMap, heightDispMap);
+	unsigned int* compDispMapUnsignedInts = loadImageFromPGM(dispMap1File, widthDispMap, heightDispMap);
+	unsigned int* groundTruthDispMapUnsignedInts = loadImageFromPGM(dispMap2File, widthDispMap, heightDispMap);
 
 	//retrieve the evaluation between the two disparity maps according to the parameters in stereoResultsEvalParameters.cuh
 	stereoEvaluationResults* stereoEvaluation =
@@ -87,39 +86,19 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings = initializeAndReturnBPSettings();
 
+	printf("Running belief propagation on reference image %s and test image %s on GPU and CPU\n", DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
+	runStereoEstOnStereoSet(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_GPU, resultsFile);
+	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
 
-	//default image sequence has two images...reference image followed by the test image
-	int numImagesInDefaultSequence = 2;
-
-	const char* imageFiles[] = {DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH};
-
-	//only one set of images to save disparity map for...
-	const char* saveDisparityMapFilePaths[] = {SAVE_DISPARITY_IMAGE_PATH_GPU};
-
-	//do save resulting disparity map...
-	bool saveResultingDisparityMap = true;
-
-	unsigned int widthImages;
-	unsigned int heightImages;
-	float averageRunTimeCpu;
-
-	printf("Running belief propagation on reference image %s and test image %s on GPU and CPU\n", imageFiles[0], imageFiles[1]);
-	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths, resultsFile);
-	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile, averageRunTimeCpu);
-	if ((averageRunTimeCpu > 0.0) && (averageRunTimeGpuNotIncludingMemoryTransfer > 0.0) && (averageRunTimeGpuIncludingMemoryTransfer > 0.0))
-	{
-		fprintf(resultsFile, "\nGPU Speedup (not including transfer time): %f\n", averageRunTimeCpu / averageRunTimeGpuNotIncludingMemoryTransfer);
-		fprintf(resultsFile, "GPU Speedup (including transfer time): %f\n", averageRunTimeCpu / averageRunTimeGpuIncludingMemoryTransfer);
-	}
-	printf("Output disparity map from final GPU run at %s\n", saveDisparityMapFilePaths[0]);
+	printf("Output disparity map from final GPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_GPU);
 	printf("Output disparity map from CPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_CPU);
 
 	fprintf(resultsFile, "\nCPU output vs. Ground Truth result:\n");
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	fprintf(resultsFile, "\nGPU output vs. Ground Truth result:\n");
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	fprintf(resultsFile, "\nGPU output vs. CPU output:\n");
-	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	printf("More info including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file.\n");
 }
 
