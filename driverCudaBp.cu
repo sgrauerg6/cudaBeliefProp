@@ -103,6 +103,7 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	unsigned int heightImages;
 	float averageRunTimeCpu;
 
+	printf("Running belief propagation on reference image %s and test image %s on GPU and CPU\n", imageFiles[0], imageFiles[1]);
 	runStereoEstOnImageSeries(imageFiles, numImagesInDefaultSequence, widthImages, heightImages, algSettings, saveResultingDisparityMap, saveDisparityMapFilePaths, resultsFile);
 	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile, averageRunTimeCpu);
 	if ((averageRunTimeCpu > 0.0) && (averageRunTimeGpuNotIncludingMemoryTransfer > 0.0) && (averageRunTimeGpuIncludingMemoryTransfer > 0.0))
@@ -110,6 +111,8 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 		fprintf(resultsFile, "\nGPU Speedup (not including transfer time): %f\n", averageRunTimeCpu / averageRunTimeGpuNotIncludingMemoryTransfer);
 		fprintf(resultsFile, "GPU Speedup (including transfer time): %f\n", averageRunTimeCpu / averageRunTimeGpuIncludingMemoryTransfer);
 	}
+	printf("Output disparity map from final GPU run at %s\n", saveDisparityMapFilePaths[0]);
+	printf("Output disparity map from CPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_CPU);
 
 	fprintf(resultsFile, "\nCPU output vs. Ground Truth result:\n");
 	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
@@ -117,6 +120,7 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
 	fprintf(resultsFile, "\nGPU output vs. CPU output:\n");
 	compareComputedDispMapWithGroundTruth(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, widthImages, heightImages, resultsFile);
+	printf("More info including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file.\n");
 }
 
 void retrieveDeviceProperties(int numDevice, FILE* resultsFile)

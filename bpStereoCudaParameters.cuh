@@ -219,6 +219,39 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #endif //IMAGE_SET_TO_PROCESS
 
+#define DATA_TYPE_PROCESSING_FLOAT 0
+#define DATA_TYPE_PROCESSING_DOUBLE 1
+#define DATA_TYPE_PROCESSING_HALF 2
+#define DATA_TYPE_PROCESSING_HALF_TWO 3
+
+#if (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
+#define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
+#define OPTIMIZED_INDEXING_SETTING OPTIMIZED_INDEXING_SETTING_FROM_PYTHON
+#else
+//by default, floats data is used with optimized GPU memory management and optimized indexing
+//See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these optimizations (note that the optimized indexing was present in the initial implementation)
+//Can remove optimized GPU memory management (making the processing more similar to the initial work) by commenting out the "#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT" line
+//May be able to speed up processing by switching to using half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
+#define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
+#define OPTIMIZED_INDEXING_SETTING 1
+#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
+#endif //(IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
+
+//remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
+typedef double beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+typedef half beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+typedef half2 beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
+#else
+typedef float beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
+#endif
+
 //number of belief propagation stereo runs of same image set
 #define NUM_BP_STEREO_RUNS 15
 
@@ -255,29 +288,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CHECKERBOARD_PART_2 2
 
 #define NO_EXPECTED_STEREO_BP -999.0f
-
-#define DATA_TYPE_PROCESSING_FLOAT 0
-#define DATA_TYPE_PROCESSING_DOUBLE 1
-#define DATA_TYPE_PROCESSING_HALF 2
-#define DATA_TYPE_PROCESSING_HALF_TWO 3
-#define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
-
-//remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
-typedef double beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
-typedef half beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
-typedef half2 beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
-#else
-typedef float beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
-#endif
-
-#define OPTIMIZED_INDEXING_SETTING OPTIMIZED_INDEXING_SETTING_FROM_PYTHON
 
 const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 
