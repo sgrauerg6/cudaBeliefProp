@@ -30,8 +30,6 @@
 #include "stereo.h"
 #include <chrono>
 
-//#define ITER ITER_BP      // number of BP iterations at each scale
-//#define LEVELS LEVELS_BP     // number of scales
 #define MAX_ALLOWED_LEVELS 10
 
 #define DISC_K DISC_K_BP         // truncation of discontinuity cost
@@ -41,8 +39,6 @@
 #define INF 1E20     // large cost
 #define VALUES NUM_POSSIBLE_DISPARITY_VALUES    // number of possible disparities
 #define SCALE SCALE_BP     // scaling from disparity to graylevel in output
-
-#define SIGMA SIGMA_BP    // amount to smooth the input images
 
 // dt of 1d function
 static void dt(float f[VALUES]) {
@@ -91,15 +87,15 @@ void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 }
 
 // computation of data costs
-image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2) {
+image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, float smoothingSigma) {
 	int width = img1->width();
 	int height = img1->height();
 	image<float[VALUES]> *data = new image<float[VALUES]>(width, height);
 
 	image<float> *sm1, *sm2;
-	if (SIGMA >= 0.1) {
-		sm1 = smooth(img1, SIGMA);
-		sm2 = smooth(img2, SIGMA);
+	if (smoothingSigma >= 0.1) {
+		sm1 = smooth(img1, smoothingSigma);
+		sm2 = smooth(img2, smoothingSigma);
 	} else {
 		sm1 = imageUCHARtoFLOAT(img1);
 		sm2 = imageUCHARtoFLOAT(img2);
@@ -193,7 +189,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSe
 	auto timeStart = std::chrono::system_clock::now();
 
 	// data costs
-	data[0] = comp_data(img1, img2);
+	data[0] = comp_data(img1, img2, algSettings.smoothingSigma);
 
 	// data pyramid
 	for (int i = 1; i < algSettings.numLevels; i++) {

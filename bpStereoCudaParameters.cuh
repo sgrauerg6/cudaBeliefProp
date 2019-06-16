@@ -305,6 +305,8 @@ typedef struct
 	
 	int widthImages;
 	int heightImages;
+
+	float smoothingSigma;
 }BPsettings;
 
 

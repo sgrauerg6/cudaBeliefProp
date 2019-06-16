@@ -65,9 +65,9 @@ void runStereoEstOnStereoSet(const char* refImagePath, const char* testImagePath
 		//first smooth the images using the CUDA Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored global memory on the device at locations image1SmoothedDevice and image2SmoothedDevice
 		smoothSingleImageInputHostOutputDeviceCUDA(image1AsUnsignedIntArrayHost,
-				widthImages, heightImages, SIGMA_BP, smoothedImage1Device);
+				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage1Device);
 		smoothSingleImageInputHostOutputDeviceCUDA(image2AsUnsignedIntArrayHost,
-				widthImages, heightImages, SIGMA_BP, smoothedImage2Device);
+				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2Device);
 
 		//free the host memory allocatted to original image 1 and image 2 on the host
 		delete[] image1AsUnsignedIntArrayHost;

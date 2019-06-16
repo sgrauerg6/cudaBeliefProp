@@ -69,6 +69,7 @@ BPsettings initializeAndReturnBPSettings()
 {
 	BPsettings startBPSettings;
 
+	startBPSettings.smoothingSigma = SIGMA_BP;
 	startBPSettings.numLevels = LEVELS_BP;
 	startBPSettings.numIterations = ITER_BP;
 
