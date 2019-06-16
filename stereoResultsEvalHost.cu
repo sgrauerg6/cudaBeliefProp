@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 
 //initialize the stereo results
-__host__ void initializeStereoResults(stereoEvaluationResults*& currentStereoEvaluation)
+void StereoResultsEvaluation::initializeStereoResults(stereoEvaluationResults*& currentStereoEvaluation)
 {
 	//initialize the total disparity absolute difference and number of corresponding with significant disparity differences to 0
 	currentStereoEvaluation->totalDispAbsDiffNoMax = 0.0f;
@@ -33,7 +33,7 @@ __host__ void initializeStereoResults(stereoEvaluationResults*& currentStereoEva
 }
 
 //given the corresponding disparity values currentDispVal1 and currentDispVal2 from disparity maps 1 and 2, update the current stereo evaluation
-__host__ void updateStereoEvaluation(float unscaledCurrentDispVal1, float unscaledCurrentDispVal2, stereoEvaluationResults*& currentStereoEvaluation)
+void StereoResultsEvaluation::updateStereoEvaluation(float unscaledCurrentDispVal1, float unscaledCurrentDispVal2, stereoEvaluationResults*& currentStereoEvaluation)
 {
 	//retrieve the absolute difference between corresponding disparity values
 	float absDiffBetweenCorrDispVals = abs(unscaledCurrentDispVal2 - unscaledCurrentDispVal1);
@@ -64,7 +64,7 @@ __host__ void updateStereoEvaluation(float unscaledCurrentDispVal1, float unscal
 
 //retrieve the "final" stereo evaluation after the evaluation was updated with every set of corresponding disparity values in disparity maps 1 and 2
 //(not including the border region)
-__host__ void retrieveFinalStereoEvaluation(stereoEvaluationResults*& currentStereoEvaluation, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
+void StereoResultsEvaluation::retrieveFinalStereoEvaluation(stereoEvaluationResults*& currentStereoEvaluation, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
 {
 	//retrieve the size of the disparity map (not including the border)
 	unsigned int sizeDispMapWithoutBorder = (heightDisparityMap - 2*Y_BORDER_SIZE_STEREO_EVAL) * (widthDisparityMap - 2*X_BORDER_SIZE_STEREO_EVAL);
@@ -82,7 +82,7 @@ __host__ void retrieveFinalStereoEvaluation(stereoEvaluationResults*& currentSte
 
 //retrieve the stereo evaluation results between the unsigned int scaled disparity maps stored in scaledDispMap1Host and scaledDispMap2Host
 //(this method is primary for when the input disparity images are being read from a file)
-__host__ stereoEvaluationResults* runStereoResultsEvaluationUsedUnsignedIntScaledDispMap(unsigned int* scaledDispMap1Host, unsigned int* scaledDispMap2Host, float scaleFactorDispMap1, float scaleFactorDispMap2, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
+stereoEvaluationResults* StereoResultsEvaluation::runStereoResultsEvaluationUsedUnsignedIntScaledDispMap(unsigned int* scaledDispMap1Host, unsigned int* scaledDispMap2Host, float scaleFactorDispMap1, float scaleFactorDispMap2, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
 {
 	//first declare and initialize the stereo evaluation results
 	stereoEvaluationResults* stereoResults = new stereoEvaluationResults;
@@ -101,6 +101,7 @@ __host__ stereoEvaluationResults* runStereoResultsEvaluationUsedUnsignedIntScale
 	//retrieve the final stereo evaluation results including the average absolute difference between corresponding disparities and the proportion
 	//of corresponding disparities where the difference is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
 	retrieveFinalStereoEvaluation(stereoResults, widthDisparityMap, heightDisparityMap);
+
 	//return the resulting stereo results
 	return stereoResults;
 }
@@ -108,7 +109,7 @@ __host__ stereoEvaluationResults* runStereoResultsEvaluationUsedUnsignedIntScale
 
 //retrieve the stereo evaluation results between the float-valued unscaled disparity maps stored in unscaledDispMap1Host and unscaledDispMap2Host
 //(this method is primary for when the disparity data is current stored in main memory)
-__host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDispMap(float* unscaledDispMap1Host, float* unscaledDispMap2Host, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
+stereoEvaluationResults* StereoResultsEvaluation::runStereoResultsEvaluationUseFloatUnscaledDispMap(float* unscaledDispMap1Host, float* unscaledDispMap2Host, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
 {
 	//first declare and initialize the stereo evaluation results
 	stereoEvaluationResults* stereoResults = new stereoEvaluationResults;
@@ -138,7 +139,7 @@ __host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDisp
 //retrieve the stereo evaluation results between the float-valued unscaled disparity map 1 stored in unscaledDispMap1Host and the unsigned int disparity 
 //map stored in scaledDispMap2Host (this method is primary for when the calculated disparity data in unscaledDispMap1Host is current stored in main memory 
 //and the "comparison" disparity (such as the ground truth) is stored in scaledDispMap2
-__host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDispMap(float* unscaledDispMap1Host, unsigned int* scaledDispMap2Host, float scaleFactorDispMap2, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
+stereoEvaluationResults* StereoResultsEvaluation::runStereoResultsEvaluationUseFloatUnscaledDispMap(float* unscaledDispMap1Host, unsigned int* scaledDispMap2Host, float scaleFactorDispMap2, unsigned int widthDisparityMap, unsigned int heightDisparityMap)
 {
 	//first declare and initialize the stereo evaluation results
 	stereoEvaluationResults* stereoResults = new stereoEvaluationResults;
@@ -165,7 +166,7 @@ __host__ stereoEvaluationResults* runStereoResultsEvaluationUseFloatUnscaledDisp
 	return stereoResults;
 }
 
-__host__ void printStereoEvaluationResults(stereoEvaluationResults* evaluationResults, FILE* resultsFile)
+void StereoResultsEvaluation::writeStereoEvaluationResultsToFile(stereoEvaluationResults* evaluationResults, FILE* resultsFile)
 {
 	//fprintf(resultsFile, "Total RMS error: %f \n", evaluationResults->totalDispAbsDiff);
 	fprintf(resultsFile, "Average RMS error: %f \n", evaluationResults->averageDispAbsDiffNoMax);
@@ -178,14 +179,6 @@ __host__ void printStereoEvaluationResults(stereoEvaluationResults* evaluationRe
 	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3, evaluationResults->propSigDiffPixelsThreshold3);
 	//fprintf(resultsFile, "Total bad pixels (Threshold 4): %d \n", evaluationResults->numSigDiffPixelsThreshold4);
 	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4, evaluationResults->propSigDiffPixelsThreshold4);
-}
-
-__host__ void writeStereoResultsToFile(FILE* currentfp, stereoEvaluationResults* evaluationResults)
-{
-	fprintf(currentfp, "Total RMS error: %f \n", evaluationResults->totalDispAbsDiffNoMax);
-	fprintf(currentfp, "Average RMS error: %f \n", evaluationResults->averageDispAbsDiffNoMax);
-	fprintf(currentfp, "Total bad pixels: %d \n", evaluationResults->numSigDiffPixelsThreshold1);
-	fprintf(currentfp, "Proportion bad pixels: %f \n", evaluationResults->propSigDiffPixelsThreshold1);
 }
 
 

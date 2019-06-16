@@ -410,7 +410,7 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 
 
 template<typename T>
-__global__ void printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
@@ -554,7 +554,7 @@ __device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* data
 
 
 template<typename T>
-__global__ void printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
@@ -901,7 +901,7 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoChec
 
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
-__global__ void initializeMessageValsToDefault(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+__global__ void initializeMessageValsToDefaultKernel(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
 												T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
 												T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel)
 {

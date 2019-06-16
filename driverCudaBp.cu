@@ -18,7 +18,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the CUDA BP implementation
 
-
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "bpStereoCudaParameters.cuh"
 #include "stereo.h"
@@ -44,8 +43,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed for general utility functions to evaluate the results
 #include "utilityFunctsForEval.cu"
 
-
-
 //compare resulting disparity map with a ground truth (or some other disparity map...)
 //this function takes as input the file names of a two disparity maps and the factor
 //that each disparity was scaled by in the generation of the disparity map image
@@ -59,11 +56,13 @@ void compareDispMaps(const char* dispMap1File, float scaleComputedDispMap, const
 	unsigned int* groundTruthDispMapUnsignedInts = loadImageFromPGM(dispMap2File, widthDispMap, heightDispMap);
 
 	//retrieve the evaluation between the two disparity maps according to the parameters in stereoResultsEvalParameters.cuh
+	StereoResultsEvaluation runStereoEvaluation;
 	stereoEvaluationResults* stereoEvaluation =
-		runStereoResultsEvaluationUsedUnsignedIntScaledDispMap(compDispMapUnsignedInts, groundTruthDispMapUnsignedInts, scaleComputedDispMap, scaleGroundTruthDispMap, widthDispMap, heightDispMap);
+			runStereoEvaluation.runStereoResultsEvaluationUsedUnsignedIntScaledDispMap(compDispMapUnsignedInts, groundTruthDispMapUnsignedInts, scaleComputedDispMap, scaleGroundTruthDispMap, widthDispMap, heightDispMap);
 
-	printStereoEvaluationResults(stereoEvaluation, resultsFile);
+	runStereoEvaluation.writeStereoEvaluationResultsToFile(stereoEvaluation, resultsFile);
 }
+
 
 BPsettings initializeAndReturnBPSettings()
 {
@@ -81,7 +80,8 @@ BPsettings initializeAndReturnBPSettings()
 	startBPSettings.heightImages = 0;
 
 	return startBPSettings;
-};
+}
+
 
 //run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 //saved disparity map file as defined in bpStereoCudaParameters.cuh
@@ -91,9 +91,13 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	BPsettings algSettings = initializeAndReturnBPSettings();
 
 	printf("Running belief propagation on reference image %s and test image %s on GPU and CPU\n", DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
-	runStereoEstOnStereoSet(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_GPU, resultsFile);
-	runStereoCpu(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
+	RunBpStereoSetOnGPUWithCUDA runBpStereoSetCUDA;
+	RunBpStereoCPUSingleThread runBpStereoSetCPU;
+	float cudaRunTime = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_GPU, resultsFile);
+	float cpuRunTime = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
 
+	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTime);
+	printf("CPU runtime: %f\n", cpuRunTime);
 	printf("Output disparity map from final GPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_GPU);
 	printf("Output disparity map from CPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_CPU);
 
@@ -105,6 +109,7 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	printf("More info including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file.\n");
 }
+
 
 void retrieveDeviceProperties(int numDevice, FILE* resultsFile)
 {

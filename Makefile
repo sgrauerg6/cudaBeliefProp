@@ -40,8 +40,11 @@ LINK   = -lm
 
 all: impDriver
 
-impDriver: $(CU_OBJ) stereo.o
-	g++ $(CU_OBJ) stereo.o $(LIB) -o driverCudaBp -O -m64
+impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o
+	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o $(LIB) -o driverCudaBp -O -m64
+	
+RunBpStereoSet.o: RunBpStereoSet.cpp
+	g++ RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 
 	
 stereo.o: stereo.cpp bpStereoCudaParameters.cuh
 	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 

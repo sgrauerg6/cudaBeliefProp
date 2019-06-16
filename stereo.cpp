@@ -16,24 +16,7 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 
-#include <cstdio>
-#include <iostream>
-#include <algorithm>
-#include <assert.h>
-#include <image.h>
-#include <misc.h>
-#include <pnmfile.h>
-#include <filter.h>
-#include <imconv.h>
-#include <string>
-#include "bpStereoCudaParameters.cuh"
 #include "stereo.h"
-#include <chrono>
-
-#define MAX_ALLOWED_LEVELS 10
-#define INF 1E20     // large cost
-#define VALUES NUM_POSSIBLE_DISPARITY_VALUES    // number of possible disparities
-#define SCALE SCALE_BP     // scaling from disparity to graylevel in output
 
 // dt of 1d function
 static void dt(float f[VALUES]) {
@@ -50,7 +33,7 @@ static void dt(float f[VALUES]) {
 }
 
 // compute message
-void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
+void RunBpStereoCPUSingleThread::msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 		float dst[VALUES], float disc_k_bp) {
 	float val;
 
@@ -82,15 +65,15 @@ void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 }
 
 // computation of data costs
-image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings) {
+image<float[VALUES]> * RunBpStereoCPUSingleThread::comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings) {
 	int width = img1->width();
 	int height = img1->height();
 	image<float[VALUES]> *data = new image<float[VALUES]>(width, height);
 
 	image<float> *sm1, *sm2;
 	if (algSettings.smoothingSigma >= 0.1) {
-		sm1 = smooth(img1, algSettings.smoothingSigma);
-		sm2 = smooth(img2, algSettings.smoothingSigma);
+		sm1 = FilterImage::smooth(img1, algSettings.smoothingSigma);
+		sm2 = FilterImage::smooth(img2, algSettings.smoothingSigma);
 	} else {
 		sm1 = imageUCHARtoFLOAT(img1);
 		sm2 = imageUCHARtoFLOAT(img2);
@@ -111,7 +94,7 @@ image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, BPsettin
 }
 
 // generate output from current messages
-image<uchar> *output(image<float[VALUES]> *u, image<float[VALUES]> *d,
+image<uchar> * RunBpStereoCPUSingleThread::output(image<float[VALUES]> *u, image<float[VALUES]> *d,
 		image<float[VALUES]> *l, image<float[VALUES]> *r,
 		image<float[VALUES]> *data) {
 	int width = data->width();
@@ -144,7 +127,7 @@ image<uchar> *output(image<float[VALUES]> *u, image<float[VALUES]> *d,
 }
 
 // belief propagation using checkerboard update scheme
-void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
+void RunBpStereoCPUSingleThread::bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 		image<float[VALUES]> *l, image<float[VALUES]> *r,
 		image<float[VALUES]> *data, int iter, float disc_k_bp) {
 	int width = data->width();
@@ -174,7 +157,7 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 }
 
 // multiscale belief propagation for image restoration
-image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile) {
+image<uchar> * RunBpStereoCPUSingleThread::stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile, float& runtime) {
 	image<float[VALUES]> *u[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *d[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *l[MAX_ALLOWED_LEVELS];
@@ -259,8 +242,9 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSe
 
 	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf\n",
 			diff.count());
-	printf("CPU RUN TIME: %.10lf\n",
-				diff.count());
+	/*printf("CPU RUN TIME: %.10lf\n",
+				diff.count());*/
+	runtime = diff.count();
 
 	delete u[0];
 	delete d[0];
@@ -271,16 +255,17 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSe
 	return out;
 }
 
-void runStereoCpu(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile)
+float RunBpStereoCPUSingleThread::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
 	// load input
 	img1 = loadPGMOrPPMImage(refImagePath);
 	img2 = loadPGMOrPPMImage(testImagePath);
+	float runtime = 0.0f;
 
 	// compute disparities
-	out = stereo_ms(img1, img2, algSettings, resultsFile);
+	out = stereo_ms(img1, img2, algSettings, resultsFile, runtime);
 
 	// save output
 	savePGM(out, saveDisparityImagePath);
@@ -288,4 +273,6 @@ void runStereoCpu(const char* refImagePath, const char* testImagePath, BPsetting
 	delete img1;
 	delete img2;
 	delete out;
+
+	return runtime;
 }

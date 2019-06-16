@@ -22,11 +22,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
 
 #include "bpStereoCudaParameters.cuh"
+#include "RunBpStereoSet.h"
 
-float averageRunTimeGpuNotIncludingMemoryTransfer = 0.0;
-float averageRunTimeGpuIncludingMemoryTransfer = 0.0;
-
+class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet
+{
+public:
 //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-void runStereoEstOnStereoSet(const char* refImagePath, const char* testImagePath, BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile);
-
+ float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile);
+};
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

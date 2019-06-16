@@ -27,7 +27,8 @@
 
 
 //run the disparity map estimation BP on a stereo image set and save the results between each set of images if desired
-void runStereoEstOnStereoSet(const char* refImagePath, const char* testImagePath,
+//returns the runtime (including transfer time)
+float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
 		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile)
 {
 	double timeNoTransfer = 0.0;
@@ -83,7 +84,8 @@ void runStereoEstOnStereoSet(const char* refImagePath, const char* testImagePath
 		cudaMalloc((void **) &disparityMapFromImage1To2Device,
 				widthImages * heightImages * sizeof(float));
 
-		runBeliefPropStereoCUDA<beliefPropProcessingDataType>(smoothedImage1Device, smoothedImage2Device,
+		ProcessCUDABP processBPOnGPUUsingCUDA;
+		processBPOnGPUUsingCUDA.runBeliefPropStereoCUDA<beliefPropProcessingDataType>(smoothedImage1Device, smoothedImage2Device,
 				disparityMapFromImage1To2Device, algSettings, timings);
 
 		//retrieve the running time of the implementation not including the host/device transfer time
@@ -120,9 +122,11 @@ void runStereoEstOnStereoSet(const char* refImagePath, const char* testImagePath
 	std::sort(timingsNoTransferVector.begin(), timingsNoTransferVector.end());
 	std::sort(timingsIncludeTransferVector.begin(), timingsIncludeTransferVector.end());
 
-	printf("MEDIAN GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
-	printf("MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
-	fprintf(resultsFile, "MEDIAN GPU RUN TIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
-	fprintf(resultsFile, "MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	printf("Median CUDA runtime (not including transfer of data to/from GPU memory): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	//printf("MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	fprintf(resultsFile, "MEDIAN GPU RUN RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
+	fprintf(resultsFile, "MEDIAN GPU RUN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
+
+	return timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2);
 }
 
