@@ -53,13 +53,13 @@ and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64.
 capabilities 6.0, 6.1, 7.0, and 7.5, which correspond to Pascal, Volta, and Turing architecture discrete GPUs.  May need to make
 adjustments to run on other NVIDIA GPUs or to run on SOCs such as the Jetson TX1/2).
 
-4.  The executable named "driverCudaBp" should now be created, so call ./driverCudaBp to run the implementation on the Tsukuba sets.  The
-implementation is run multiple times to more accuracy guage the runtime, with the median GPU runtime given.  The CPU implementation code
-from http://cs.brown.edu/people/pfelzens/bp/index.html is also run with the runtime given.
+4.  The executable named "driverCudaBp" should now be created, so call ./driverCudaBp to run the implementation on the Tsukuba sets.
+The implementation is run multiple times to more accuracy guage the runtime, with the median GPU runtime given.  The CPU
+implementation code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run with the runtime given.
 
-5.  The GPU and CPU runtimes are output in the terminal also with the location of the output disparity maps.  More detailed info including
-input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file (in the same folder as the
-driverCudaBp executable).
+5.  The GPU and CPU runtimes are output in the terminal also with the location of the output disparity maps.  More detailed info
+including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file (in the
+same folder as the driverCudaBp executable).
 
 6.  In order to adjust the parameters to run on different input or different parameters, adjust the desired parameters in 
 bpStereoCudaParameters.cuh, run "make clean" and "make" to compile to the program with the adjusted parameters, then call ./driverCudaBp 
