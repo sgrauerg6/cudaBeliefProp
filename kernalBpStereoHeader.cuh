@@ -53,7 +53,8 @@ __device__ void msgStereo(float messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALU
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, float* dataCostDeviceStereoCheckerboard1, float* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages);
+template<typename T>
+__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp);
 
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set

@@ -31,11 +31,6 @@
 #include <chrono>
 
 #define MAX_ALLOWED_LEVELS 10
-
-#define DISC_K DISC_K_BP         // truncation of discontinuity cost
-#define DATA_K DATA_K_BP       // truncation of data cost
-#define LAMBDA LAMBDA_BP        // weighting of data cost
-
 #define INF 1E20     // large cost
 #define VALUES NUM_POSSIBLE_DISPARITY_VALUES    // number of possible disparities
 #define SCALE SCALE_BP     // scaling from disparity to graylevel in output
@@ -56,7 +51,7 @@ static void dt(float f[VALUES]) {
 
 // compute message
 void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
-		float dst[VALUES]) {
+		float dst[VALUES], float disc_k_bp) {
 	float val;
 
 	// aggregate and find min
@@ -71,7 +66,7 @@ void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 	dt(dst);
 
 	// truncate
-	minimum += DISC_K;
+	minimum += disc_k_bp;
 	for (int value = 0; value < VALUES; value++)
 		if (minimum < dst[value])
 			dst[value] = minimum;
@@ -87,15 +82,15 @@ void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 }
 
 // computation of data costs
-image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, float smoothingSigma) {
+image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings) {
 	int width = img1->width();
 	int height = img1->height();
 	image<float[VALUES]> *data = new image<float[VALUES]>(width, height);
 
 	image<float> *sm1, *sm2;
-	if (smoothingSigma >= 0.1) {
-		sm1 = smooth(img1, smoothingSigma);
-		sm2 = smooth(img2, smoothingSigma);
+	if (algSettings.smoothingSigma >= 0.1) {
+		sm1 = smooth(img1, algSettings.smoothingSigma);
+		sm2 = smooth(img2, algSettings.smoothingSigma);
 	} else {
 		sm1 = imageUCHARtoFLOAT(img1);
 		sm2 = imageUCHARtoFLOAT(img2);
@@ -105,7 +100,7 @@ image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, float sm
 		for (int x = VALUES - 1; x < width; x++) {
 			for (int value = 0; value < VALUES; value++) {
 				float val = abs(imRef(sm1, x, y) - imRef(sm2, x - value, y));
-				imRef(data, x, y)[value] = LAMBDA * std::min(val, DATA_K);
+				imRef(data, x, y)[value] = algSettings.lambda_bp * std::min(val, algSettings.data_k_bp);
 			}
 		}
 	}
@@ -151,7 +146,7 @@ image<uchar> *output(image<float[VALUES]> *u, image<float[VALUES]> *d,
 // belief propagation using checkerboard update scheme
 void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 		image<float[VALUES]> *l, image<float[VALUES]> *r,
-		image<float[VALUES]> *data, int iter) {
+		image<float[VALUES]> *data, int iter, float disc_k_bp) {
 	int width = data->width();
 	int height = data->height();
 
@@ -162,16 +157,16 @@ void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 			for (int x = ((y + t) % 2) + 1; x < width - 1; x += 2) {
 
 				msg(imRef(u, x, y + 1), imRef(l, x + 1, y), imRef(r, x - 1, y),
-						imRef(data, x, y), imRef(u, x, y));
+						imRef(data, x, y), imRef(u, x, y), disc_k_bp);
 
 				msg(imRef(d, x, y - 1), imRef(l, x + 1, y), imRef(r, x - 1, y),
-						imRef(data, x, y), imRef(d, x, y));
+						imRef(data, x, y), imRef(d, x, y), disc_k_bp);
 
 				msg(imRef(u, x, y + 1), imRef(d, x, y - 1), imRef(r, x - 1, y),
-						imRef(data, x, y), imRef(r, x, y));
+						imRef(data, x, y), imRef(r, x, y), disc_k_bp);
 
 				msg(imRef(u, x, y + 1), imRef(d, x, y - 1), imRef(l, x + 1, y),
-						imRef(data, x, y), imRef(l, x, y));
+						imRef(data, x, y), imRef(l, x, y), disc_k_bp);
 
 			}
 		}
@@ -189,7 +184,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSe
 	auto timeStart = std::chrono::system_clock::now();
 
 	// data costs
-	data[0] = comp_data(img1, img2, algSettings.smoothingSigma);
+	data[0] = comp_data(img1, img2, algSettings);
 
 	// data pyramid
 	for (int i = 1; i < algSettings.numLevels; i++) {
@@ -254,7 +249,7 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSe
 		}
 
 		// BP
-		bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations);
+		bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations, algSettings.disc_k_bp);
 	}
 
 	image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);

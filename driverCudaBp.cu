@@ -72,6 +72,9 @@ BPsettings initializeAndReturnBPSettings()
 	startBPSettings.smoothingSigma = SIGMA_BP;
 	startBPSettings.numLevels = LEVELS_BP;
 	startBPSettings.numIterations = ITER_BP;
+	startBPSettings.lambda_bp = LAMBDA_BP;
+	startBPSettings.data_k_bp = DATA_K_BP;
+	startBPSettings.disc_k_bp = DISC_K_BP;
 
 	//height/width determined when image read from file
 	startBPSettings.widthImages = 0;

@@ -116,7 +116,7 @@ __device__ void dtStereo<half2>(half2 f[NUM_POSSIBLE_DISPARITY_VALUES])
 template<typename T>
 __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 	T messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], T dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-	T dst[NUM_POSSIBLE_DISPARITY_VALUES])
+	T dst[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
 {
 	// aggregate and find min
 	T minimum = INF_BP;
@@ -132,7 +132,7 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 	dtStereo<T>(dst);
 
 	// truncate 
-	minimum += DISC_K_BP;
+	minimum += disc_k_bp;
 
 	// normalize
 	T valToNormalize = 0;
@@ -159,7 +159,7 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 template<>
 __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], half dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		half dst[NUM_POSSIBLE_DISPARITY_VALUES])
+		half dst[NUM_POSSIBLE_DISPARITY_VALUES], half disc_k_bp)
 {
 	// aggregate and find min
 	half minimum = INF_BP;
@@ -175,7 +175,7 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 	dtStereo<half>(dst);
 
 	// truncate
-	minimum += DISC_K_BP;
+	minimum += disc_k_bp;
 
 	// normalize
 	half valToNormalize = 0;
@@ -219,7 +219,7 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 template<>
 __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half2 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		half2 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], half2 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		half2 dst[NUM_POSSIBLE_DISPARITY_VALUES])
+		half2 dst[NUM_POSSIBLE_DISPARITY_VALUES], half2 disc_k_bp)
 {
 	// aggregate and find min
 	half2 minimum = __float2half2_rn(INF_BP);
@@ -237,7 +237,7 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 	dtStereo<half2>(dst);
 
 	// truncate
-	minimum = __hadd2(minimum, __float2half2_rn((float)DISC_K_BP));
+	minimum = __hadd2(minimum, disc_k_bp);
 
 	// normalize
 	half2 valToNormalize = __float2half2_rn(0.0f);
@@ -444,7 +444,7 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T>
-__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages)
+__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
 {
 	// Block index
     int bx = blockIdx.x;
@@ -484,11 +484,11 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0)
 				{
-					dataCostDeviceStereoCheckerboard1[indexVal] = (T)(LAMBDA_BP * min(((T)abs(currentPixelImage1 - currentPixelImage2)), DATA_K_BP));
+					dataCostDeviceStereoCheckerboard1[indexVal] = (T)(lambda_bp * min(((T)abs(currentPixelImage1 - currentPixelImage2)), data_k_bp));
 				}
 				else
 				{
-					dataCostDeviceStereoCheckerboard2[indexVal] = (T)(LAMBDA_BP * min(((T)abs(currentPixelImage1 - currentPixelImage2)), DATA_K_BP));
+					dataCostDeviceStereoCheckerboard2[indexVal] = (T)(lambda_bp * min(((T)abs(currentPixelImage1 - currentPixelImage2)), data_k_bp));
 				}
 			}
 		}
@@ -821,7 +821,7 @@ __device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* data
 
 
 template<>
-__global__ void initializeBottomLevelDataStereo<half2>(float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages)
+__global__ void initializeBottomLevelDataStereo<half2>(float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
 {
 	// Block index
     int bx = blockIdx.x;
@@ -899,9 +899,8 @@ __global__ void initializeBottomLevelDataStereo<half2>(float* image1PixelsDevice
 
 				indexVal = retrieveIndexInDataAndMessage(xInCheckerboard, yVal, imageCheckerboardWidth, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
-
-				half lowVal = (half)(LAMBDA_BP * min(abs(currentPixelImage1_low - currentPixelImage2_low), DATA_K_BP));
-				half highVal = (half)(LAMBDA_BP * min(abs(currentPixelImage1_high - currentPixelImage2_high), DATA_K_BP));
+				half lowVal = (half)(lambda_bp * min(abs(currentPixelImage1_low - currentPixelImage2_low), data_k_bp));
+				half highVal = (half)(lambda_bp * min(abs(currentPixelImage1_high - currentPixelImage2_high), data_k_bp));
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (checkerboardNum == 1)
@@ -1131,19 +1130,19 @@ __global__ void initializeMessageValsToDefault(T* messageUDeviceCurrentCheckerbo
 //and the output message values are stored in local memory
 template<typename T>
 __device__ void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES])
+								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
  {
 	msgStereo<T>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
-			currentUMessage);
+			currentUMessage, disc_k_bp);
 
 	msgStereo<T>(prevDMessage, prevLMessage, prevRMessage, dataMessage,
-			currentDMessage);
+			currentDMessage, disc_k_bp);
 
 	msgStereo<T>(prevUMessage, prevDMessage, prevRMessage, dataMessage,
-			currentRMessage);
+			currentRMessage, disc_k_bp);
 
 	msgStereo<T>(prevUMessage, prevDMessage, prevLMessage, dataMessage,
-			currentLMessage);
+			currentLMessage, disc_k_bp);
 }
 
 
@@ -1163,7 +1162,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 		T* messageLDeviceCurrentCheckerboard2,
 		T* messageRDeviceCurrentCheckerboard2,
 		int widthLevelCheckerboardPart, int heightLevel,
-		int checkerboardToUpdate, int xVal, int yVal, int offsetData)
+		int checkerboardToUpdate, int xVal, int yVal, int offsetData, float disc_k_bp)
 {
 	int indexWriteTo;
 	int checkerboardAdjustment;
@@ -1217,7 +1216,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 
 		//uses the previous message values and data cost to calculate the current message values and store the results
 		runBPIterationInOutDataInLocalMem<T>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-							currentUMessage, currentDMessage, currentLMessage, currentRMessage);
+							currentUMessage, currentDMessage, currentLMessage, currentRMessage, (T)disc_k_bp);
 
 		//write the calculated message values to global memory
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -1474,7 +1473,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 		half2* messageLDeviceCurrentCheckerboard2,
 		half2* messageRDeviceCurrentCheckerboard2,
 		int widthLevelCheckerboardPart, int heightLevel,
-		int checkerboardToUpdate, int xVal, int yVal, int offsetData)
+		int checkerboardToUpdate, int xVal, int yVal, int offsetData, float disc_k_bp)
 {
 	int indexWriteTo;
 	int checkerboardAdjustment;
@@ -1651,7 +1650,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 
 		//uses the previous message values and data cost to calculate the current message values and store the results
 		runBPIterationInOutDataInLocalMem<half2>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-							currentUMessage, currentDMessage, currentLMessage, currentRMessage);
+							currentUMessage, currentDMessage, currentLMessage, currentRMessage, __float2half2_rn(disc_k_bp));
 
 		//write the calculated message values to global memory
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -1682,7 +1681,7 @@ template<typename T>
 __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate)
+								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -1708,7 +1707,7 @@ __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostSter
 				messageDDeviceCurrentCheckerboard2,
 				messageLDeviceCurrentCheckerboard2,
 				messageRDeviceCurrentCheckerboard2, widthCheckerboardCurrentLevel, heightLevel,
-				checkerboardPartUpdate, xVal, yVal, 0);
+				checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
 	}
 }
 

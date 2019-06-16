@@ -307,6 +307,9 @@ typedef struct
 	int heightImages;
 
 	float smoothingSigma;
+	float lambda_bp;
+	float data_k_bp;
+	float disc_k_bp;
 }BPsettings;
 
 

@@ -88,7 +88,7 @@ __host__ void printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDevi
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-__host__ void runBPAtCurrentLevel(int numIterationsAtLevel, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
+__host__ void runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
 	T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
 	T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
 	T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
@@ -115,7 +115,7 @@ __host__ void runBPAtCurrentLevel(int numIterationsAtLevel, int widthLevelActual
 			heightLevelActualIntegerSize, 0);*/
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
-	for (int iterationNum = 0; iterationNum < numIterationsAtLevel; iterationNum++)
+	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
 		int checkboardPartUpdate = CHECKERBOARD_PART_2;
 
@@ -141,7 +141,7 @@ __host__ void runBPAtCurrentLevel(int numIterationsAtLevel, int widthLevelActual
 				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 				widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-				checkboardPartUpdate);
+				checkboardPartUpdate, algSettings.disc_k_bp);
 
 		(cudaDeviceSynchronize());
 
@@ -383,7 +383,7 @@ __host__ void initializeDataCosts(float*& image1PixelsDevice, float*& image2Pixe
 	initializeBottomLevelDataStereo<T><<<grid, threads>>>(image1PixelsDevice,
 			image2PixelsDevice, dataCostDeviceCheckerboard1,
 			dataCostDeviceCheckerboard2, algSettings.widthImages,
-			algSettings.heightImages);
+			algSettings.heightImages, algSettings.lambda_bp, algSettings.data_k_bp);
 
 	( cudaDeviceSynchronize() );
 }
@@ -995,7 +995,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == 0)
 		{
-			runBPAtCurrentLevel<T>(algSettings.numIterations,
+			runBPAtCurrentLevel<T>(algSettings,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 					messageUDeviceSet0Checkerboard1,
 					messageDDeviceSet0Checkerboard1,
@@ -1010,7 +1010,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		}
 		else
 		{
-			runBPAtCurrentLevel<T>(algSettings.numIterations,
+			runBPAtCurrentLevel<T>(algSettings,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 					messageUDeviceSet1Checkerboard1,
 					messageDDeviceSet1Checkerboard1,
