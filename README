@@ -62,8 +62,8 @@ including input parameters, detailed timings, and output disparity maps comparis
 same folder as the driverCudaBp executable).
 
 6.  In order to adjust the parameters to run on different input or different parameters, adjust the desired parameters in 
-bpStereoCudaParameters.cuh, run "make clean" and "make" to compile to the program with the adjusted parameters, then call ./driverCudaBp 
-to run the program with the adjusted parameters.
+bpStereoCudaParameters.cuh, run "make clean" and "make" to compile to the program with the adjusted parameters, then call
+./driverCudaBp to run the program with the adjusted parameters.
 
 7.  The runCudaBeliefProp.py script can be used to run many tests with different parameters, including running the implementation with
 different stereo sets and/or the same stereo set with different input parameters and/or optimization settings.  If using this script,
