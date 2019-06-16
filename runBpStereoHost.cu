@@ -446,7 +446,7 @@ __host__ void initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
 			(float) heightLevelActualIntegerSize / (float) threads.y);
 
 	size_t offsetNum = 0;
-	printf("widthLevelActualIntegerSize: %d\n", widthLevelActualIntegerSize);
+	//printf("widthLevelActualIntegerSize: %d\n", widthLevelActualIntegerSize);
 
 	initializeCurrentLevelDataStereoNoTextures<T> <<<grid, threads>>>(
 			dataCostStereoCheckerboard1,
@@ -753,7 +753,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	printf("ALLOC ALL MEMORY\n");
+	//printf("ALLOC ALL MEMORY\n");
 	(cudaMalloc((void**) &dataCostDeviceCheckerboard1, 10*(halfTotalDataAllLevels)*sizeof(T)));
 	dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1*(halfTotalDataAllLevels)]);
 
@@ -842,10 +842,10 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 		T* dataCostDeviceToWriteToCheckerboard2 =
 				&dataCostDeviceCheckerboard2[offsetLevel];
 
-		printf("LEVEL: %d\n", levelNum);
+		/*printf("LEVEL: %d\n", levelNum);
 		printf("prev_level_offset_level: %d\n", prev_level_offset_level);
 		printf("OffsetLevel: %d\n", offsetLevel);
-		printf("widthCheckerboard: %d\n", widthCheckerboard);
+		printf("widthCheckerboard: %d\n", widthCheckerboard);*/
 
 		//printf("LevelNum: %d  Width: %d  Height: %d \n", levelNum, widthLevelActualIntegerSize, heightLevelActualIntegerSize);
 		initializeDataCurrentLevel<T>(dataCostStereoCheckerboard1,
@@ -977,8 +977,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 	//to converge more quickly
 	for (int levelNum = algSettings.numLevels - 1; levelNum >= 0; levelNum--)
 	{
-		printf("LevelNum: %d\n", levelNum);
-		printf("currentCheckerboardSet: %d\n", currentCheckerboardSet);
+		//printf("LevelNum: %d\n", levelNum);
+		//printf("currentCheckerboardSet: %d\n", currentCheckerboardSet);
 		gpuErrchk( cudaPeekAtLastError() );
 
 		( cudaDeviceSynchronize() );
@@ -1052,8 +1052,8 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 			int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
 
 			offsetLevel -= widthCheckerboard * heightLevelActualIntegerSize * totalPossibleMovements;
-			printf("OffsetLevel: %d\n", offsetLevel);
-			printf("widthCheckboard: %d\n", widthCheckerboard);
+			//printf("OffsetLevel: %d\n", offsetLevel);
+			//printf("widthCheckboard: %d\n", widthCheckerboard);
 
 			dataCostDeviceCurrentLevelCheckerboard1 = &dataCostDeviceCheckerboard1[offsetLevel];
 			dataCostDeviceCurrentLevelCheckerboard2 = &dataCostDeviceCheckerboard2[offsetLevel];
@@ -1198,7 +1198,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	printf("ALLOC MULT MEM SEGMENTS\n");
+	//printf("ALLOC MULT MEM SEGMENTS\n");
 
 	//free the device storage for the message values used to retrieve the output movement values
 	if (currentCheckerboardSet == 0)
@@ -1234,7 +1234,7 @@ __host__ void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2
 
 #else
 
-	printf("FREE ALL MEMORY\n");
+	//printf("FREE ALL MEMORY\n");
 	cudaFree(dataCostDeviceCheckerboard1);
 
 #endif

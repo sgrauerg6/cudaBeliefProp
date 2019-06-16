@@ -197,7 +197,8 @@ void runStereoEstOnImageSeries(const char* imageFiles[], int numImages,
 	fprintf(resultsFile, "Image Height: %d\n", heightImages);
 	fprintf(resultsFile, "Total Image Pixels: %d\n", widthImages * heightImages);
 
-	timings.PrintMedianTimings();
+	//uncomment to print timings for each part of implementation
+	//timings.PrintMedianTimings();
 	timings.PrintMedianTimingsToFile(resultsFile);
 
 	std::sort(timingsNoTransferVector.begin(), timingsNoTransferVector.end());
