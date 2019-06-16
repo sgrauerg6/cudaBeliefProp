@@ -24,7 +24,7 @@ published at the 2008 IAPR Workshop on Pattern Recognition in Remote Sensing (PR
 found at the following address: http://scottgg.net/cudaBeliefProp.pdf.  Please cite this 
 work if using any of this code as part of a research paper or other work.
 
-Will note that there have been changes from the initial implementation as presented in the paper, both for optimizations
+Will note that there have been changes from the initial implementation as presented in the paper, both for optimization
 and to work on the latest NVIDIA GPUs with the latest CUDA toolkits.  Also, the motion estimation portion of the code
 was removed to narrow the focus of this work (though could certainly be added back in the future).  The additional
 optimizations are described in http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf.  The original code 
