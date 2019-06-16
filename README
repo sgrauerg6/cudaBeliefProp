@@ -48,8 +48,8 @@ In order to compile/re-compile the program, navigate to the directory with the f
 The Tsukuba stereo set is included as part of this folder as a sample program.  In order to test the implementation on this 
 stereo set using the initial parameters as defined in bpStereoCudaParameters.cuh, perform the following steps:
 
-1.  Set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs (usually PATH is appended with $CUDA_DIR/bin 
-and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64.
+1.  If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs (usually PATH is appended
+with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64).
 
 2.  Navigate to the folder with all the implementation files (including this README...)
 
