@@ -37,9 +37,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //needed to run the implementation a stereo set using CUDA
 #include "runBpStereoSetCUDA.cu"
 
-//needed to save the resulting Stereo...
-#include "saveResultingDisparityMap.cu"
-
 //needed for general utility functions to evaluate the results
 #include "utilityFunctsForEval.cu"
 
@@ -52,8 +49,8 @@ void compareDispMaps(const char* dispMap1File, float scaleComputedDispMap, const
 	unsigned int heightDispMap = 0;
 
 	//first retrieve the unsigned int arrays from the computed disparity map and ground truth disparity map images
-	unsigned int* compDispMapUnsignedInts = loadImageFromPGM(dispMap1File, widthDispMap, heightDispMap);
-	unsigned int* groundTruthDispMapUnsignedInts = loadImageFromPGM(dispMap2File, widthDispMap, heightDispMap);
+	unsigned int* compDispMapUnsignedInts = ImageHelperFunctions::loadImageFromPGM(dispMap1File, widthDispMap, heightDispMap);
+	unsigned int* groundTruthDispMapUnsignedInts = ImageHelperFunctions::loadImageFromPGM(dispMap2File, widthDispMap, heightDispMap);
 
 	//retrieve the evaluation between the two disparity maps according to the parameters in stereoResultsEvalParameters.cuh
 	StereoResultsEvaluation runStereoEvaluation;

@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = bpStereoCudaParameters.cuh imageHelpersHost.cu imageHelpersHostHeader.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh runBpStereoHost.cu runBpStereoHostHeader.cuh runBpStereoSetCUDA.cu runBpStereoSetCUDAHeader.cuh saveResultingDisparityMap.cu saveResultingDisparityMapHeader.cuh smoothImageHost.cu smoothImageHostHeader.cuh stereoResultsEvalHost.cu stereoResultsEvalHostHeader.cuh stereoResultsEvalParameters.cuh utilityFunctsForEval.cu utilityFunctsForEvalHeader.cuh
+FILE_DEPENDENCIES = bpStereoCudaParameters.cuh imageHelpersHost.cu imageHelpersHostHeader.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh runBpStereoHost.cu runBpStereoHostHeader.cuh runBpStereoSetCUDA.cu runBpStereoSetCUDAHeader.cuh smoothImageHost.cu smoothImageHostHeader.cuh stereoResultsEvalHost.cu stereoResultsEvalHostHeader.cuh stereoResultsEvalParameters.cuh utilityFunctsForEval.cu utilityFunctsForEvalHeader.cuh
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include

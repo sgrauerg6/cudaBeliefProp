@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //functions used to load input images/save resulting movment images
 
 //function to retrieve the disparity values from a disparity map with a known scale factor
-__host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor)
+float* ImageHelperFunctions::retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor)
 {
 	unsigned int* imageData = new unsigned int[widthImage*heightImage];
 
@@ -41,7 +41,7 @@ __host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage,
 	return disparityVals;
 }
 
-__host__ unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
+unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	char pgmExtension[] = "pgm";
 	char ppmExtension[] = "ppm";
@@ -82,7 +82,7 @@ __host__ unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned 
 }
 
 //load the PGM image and return as an array of floats
-__host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
+unsigned int* ImageHelperFunctions::loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	unsigned int* imageData;
 
@@ -103,7 +103,7 @@ __host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned i
 }
 
 //load the PPM image, convert to grayscale, and return as an array of floats
-__host__ unsigned int* loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage)
+unsigned int* ImageHelperFunctions::loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	unsigned int* imageData;
 	unsigned char *dataRead;
@@ -134,7 +134,7 @@ __host__ unsigned int* loadImageFromPPM(const char* filePathPpmImage, unsigned i
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
+int ImageHelperFunctions::pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
 	     unsigned char*& image) {
       FILE *filePointer;    /* for file buffer */
       char line[MAXLENGTH]; /* for character input from file */
@@ -241,7 +241,7 @@ int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
+int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
 	     unsigned char*& image, bool weightedRGBConversion) {
       FILE *filePointer;    /* for file buffer */
       char line[MAXLENGTH]; /* for character input from file */
@@ -364,7 +364,7 @@ int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned i
  *   and 0 if it was not.  An error message is returned if the file is not
  *   properly opened.  
  */ 
-int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
+int ImageHelperFunctions::pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 	     unsigned char* image,char* comment_string) {
       FILE* file;        /* pointer to the file buffer */
       //int maxval;        /* maximum value in the image array */
@@ -402,7 +402,7 @@ int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 
 //save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
 //0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
-__host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage)
+void ImageHelperFunctions::saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage)
 {
 	//declare and allocate the space for the movement image to save
 	unsigned char* movementImageToSave = new unsigned char[widthImage*heightImage];
@@ -417,6 +417,34 @@ __host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scale
 
 	pgmWrite(filePathSaveImage, widthImage, heightImage,
 	     movementImageToSave, "blah");
+}
+
+//save the output disparity map using the scale defined in scaleDisparityInOutput at each pixel to the file at disparityMapSaveImagePath
+//also takes in the timer to time the implementation including the transfer time from the device to the host
+void ImageHelperFunctions::saveResultingDisparityMap(const char* disparityMapSaveImagePath,
+		float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput,
+		unsigned int widthImages, unsigned int heightImages,
+		std::chrono::time_point<std::chrono::system_clock>& timeWithTransferStart,
+		double& totalTimeIncludeTransfer) {
+	//allocate the space on the host for and x and y movement between images
+	float* disparityMapFromImage1To2Host = new float[widthImages * heightImages];
+
+	//transfer the disparity map estimation on the device to the host for output
+	(cudaMemcpy(disparityMapFromImage1To2Host, disparityMapFromImage1To2Device, widthImages*heightImages*sizeof(float),
+						  cudaMemcpyDeviceToHost) );
+
+	auto timeWithTransferEnd = std::chrono::system_clock::now();
+
+	//printf("Running time including transfer time: %.10lf seconds\n", timeEnd-timeStart);
+	std::chrono::duration<double> diff = timeWithTransferEnd-timeWithTransferStart;
+	totalTimeIncludeTransfer = diff.count();
+	//stop the timer and print the total time of the BP implementation including the device-host transfer time
+	//printf("Time to retrieve movement on host (including transfer): %f (ms) \n", totalTimeIncludeTransfer);
+
+	//save the resulting disparity map images to a file
+	ImageHelperFunctions::saveDisparityImageToPGM(disparityMapSaveImagePath, scaleDisparityInOutput, disparityMapFromImage1To2Host, widthImages, heightImages);
+
+	delete [] disparityMapFromImage1To2Host;
 }
 
 

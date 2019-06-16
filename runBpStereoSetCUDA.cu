@@ -20,7 +20,6 @@
 
 #include "runBpStereoSetCUDAHeader.cuh"
 #include "smoothImageHostHeader.cuh"
-#include "saveResultingDisparityMapHeader.cuh"
 #include <chrono>
 #include <vector>
 #include <algorithm>
@@ -43,9 +42,9 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
 		//first run Stereo estimation on the first two images
-		unsigned int* image1AsUnsignedIntArrayHost = loadImageAsGrayScale(
+		unsigned int* image1AsUnsignedIntArrayHost = ImageHelperFunctions::loadImageAsGrayScale(
 				refImagePath, widthImages, heightImages);
-		unsigned int* image2AsUnsignedIntArrayHost = loadImageAsGrayScale(
+		unsigned int* image2AsUnsignedIntArrayHost = ImageHelperFunctions::loadImageAsGrayScale(
 				testImagePath, widthImages, heightImages);
 
 		float* smoothedImage1Device;
@@ -97,7 +96,7 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		timeNoTransfer += diff.count();
 		timingsNoTransferVector.push_back(diff.count());
 
-		saveResultingDisparityMap(saveDisparityMapImagePath,
+		ImageHelperFunctions::saveResultingDisparityMap(saveDisparityMapImagePath,
 				disparityMapFromImage1To2Device, SCALE_BP, widthImages,
 				heightImages, timeWithTransferStart, timeIncludeTransfer);
 

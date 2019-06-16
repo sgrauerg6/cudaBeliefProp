@@ -27,31 +27,42 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define MAXVALUE 255
 
 #include "bpStereoCudaParameters.cuh"
+#include <chrono>
 
-//functions used to load input images/save resulting movment images
+class ImageHelperFunctions
+{
+public:
+	//functions used to load input images/save resulting movment images
 
-//function to retrieve the disparity values from a disparity map with a known scale factor
-__host__ float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor);
+	//function to retrieve the disparity values from a disparity map with a known scale factor
+	static float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor);
 
-__host__ unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage);
+	static unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage);
 
-//load the PGM image and return as an array of unsigned int (between values 0 and 255 assuming image is 8-bit grayscale)
-__host__ unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage);
+	//load the PGM image and return as an array of unsigned int (between values 0 and 255 assuming image is 8-bit grayscale)
+	static unsigned int* loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage);
 
-__host__ unsigned int* loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage);
+	static unsigned int* loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage);
 
-//save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
-//0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
-__host__ void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage);
+	//save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
+	//0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
+	static void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage);
 
-int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
-	     unsigned char* image,char* comment_string);
+	static int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
+			 unsigned char* image,char* comment_string);
 
-int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
-	     unsigned char*& image);
+	static int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
+			 unsigned char*& image);
 
-int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
-	     unsigned char*& image, bool weightedRGBConversion);
+	static int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
+			 unsigned char*& image, bool weightedRGBConversion);
+
+	static void saveResultingDisparityMap(const char* disparityMapSaveImagePath,
+			float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput,
+			unsigned int widthImages, unsigned int heightImages,
+			std::chrono::time_point<std::chrono::system_clock>& timeWithTransferStart,
+			double& totalTimeIncludeTransfer);
+};
 
 
 
