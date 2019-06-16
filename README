@@ -22,7 +22,7 @@ S. Grauer-Gray, C. Kambhammettu, and K.Palaniappan
 This README describes an implementation of the CUDA belief propagation algorithm described in our paper 
 "GPU implementation of belief propagation using CUDA for cloud tracking and reconstruction" which was 
 published at the 2008 IAPR Workshop on Pattern Recognition in Remote Sensing (PRRS 2008) and can be 
-found at the following address: http://www.cis.udel.edu/~grauerg/cudaBeliefProp.pdf.  Please cite this 
+found at the following address: http://scottgg.net/cudaBeliefProp.pdf.  Please cite this 
 \work if using any of this code as part of a research paper or other work.
 
 In addition, the code is distributed using the GNU General Public License, so any derivative work which 
