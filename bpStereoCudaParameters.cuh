@@ -177,6 +177,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define SIGMA_BP 0.7f    // amount to smooth the input images
 
 
+//If image set parameters from python, then use settings in current iteration in python script
+//These settings are written to file bpParametersFromPython.h as part of the python script
 #elif (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
 //define the path for the 'default' reference and test images and the output "movement" images (can easily run
@@ -224,14 +226,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DATA_TYPE_PROCESSING_HALF 2
 #define DATA_TYPE_PROCESSING_HALF_TWO 3
 
+//If image set parameters from python, then use optimization settings set in current iteration in python script
+//These settings are written to file bpParametersFromPython.h as part of the python script
 #if (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 #define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
 #define OPTIMIZED_INDEXING_SETTING OPTIMIZED_INDEXING_SETTING_FROM_PYTHON
 #else
-//by default, floats data is used with optimized GPU memory management and optimized indexing
+//by default, 32-bit float data is used with optimized GPU memory management and optimized indexing
 //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these optimizations (note that the optimized indexing was present in the initial implementation)
 //Can remove optimized GPU memory management (making the processing more similar to the initial work) by commenting out the "#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT" line
-//May be able to speed up processing by switching to using half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
+//May be able to speed up processing by switching to using 16-bit half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
+//Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to 0 (not recommended; this slows down processing)
 #define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
 #define OPTIMIZED_INDEXING_SETTING 1
 #define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
