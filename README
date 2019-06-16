@@ -49,7 +49,9 @@ and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64.
 
 2.  Navigate to the folder with all the implementation files (including this README...)
 
-3.  Execute the commands "make clean" and "make" on the command line.
+3.  Execute the commands "make clean" and "make" on the command line (Note that the current Makefile compiles specifically for compute
+capabilities 6.0, 6.1, 7.0, and 7.5, which correspond to Pascal, Volta, and Turing architecture discrete GPUs.  May need to make
+adjustments to run on other NVIDIA GPUs or to run on SOCs such as the Jetson TX1/2).
 
 4.  The executable named "driverCudaBp" should now be created, so call ./driverCudaBp to run the implementation on the Tsukuba sets.  The
 implementation is run 10 times to more accuracy guage the runtime.
