@@ -267,6 +267,8 @@ image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, FILE* resultsFil
 
 	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf\n",
 			diff.count());
+	printf("CPU RUN TIME: %.10lf\n",
+				diff.count());
 	averageRunTimeCpu = diff.count();
 
 	delete u[0];
