@@ -54,11 +54,17 @@ capabilities 6.0, 6.1, 7.0, and 7.5, which correspond to Pascal, Volta, and Turi
 adjustments to run on other NVIDIA GPUs or to run on SOCs such as the Jetson TX1/2).
 
 4.  The executable named "driverCudaBp" should now be created, so call ./driverCudaBp to run the implementation on the Tsukuba sets.  The
-implementation is run 10 times to more accuracy guage the runtime.
+implementation is run multiple times to more accuracy guage the runtime, with the median GPU runtime given.  The CPU implementation code
+from http://cs.brown.edu/people/pfelzens/bp/index.html is also run with the runtime given.
 
-5.  The output running time and accuracy should be given on the command line, with the output disparity map using the settings as defined in 
-bpStereoCudaParameters.cuh stored in the current folder with the file name "computedDisparityMapTsukuba.pgm".
+5.  The GPU and CPU runtimes are output in the terminal also with the location of the output disparity maps.  More detailed info including
+input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file (in the same folder as the
+driverCudaBp executable).
 
 6.  In order to adjust the parameters to run on different input or different parameters, adjust the desired parameters in 
 bpStereoCudaParameters.cuh, run "make clean" and "make" to compile to the program with the adjusted parameters, then call ./driverCudaBp 
 to run the program with the adjusted parameters.
+
+7.  The runCudaBeliefProp.py script can be used to run many tests with different parameters, including running the implementation with
+different stereo sets and/or the same stereo set with different input parameters and/or optimization settings.  If using this script,
+set the #define IMAGE_SET_TO_PROCESS in bpStereoCudaParameters.cuh to IMAGE_SET_PARAMETERS_FROM_PYTHON (defined in file).
