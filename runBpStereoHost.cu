@@ -19,8 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
 #include "runBpStereoHostHeader.cuh"
-#include <chrono>
-#include <cuda_fp16.h>
+#include "kernalBpStereo.cu"
 
 #define RUN_DETAILED_TIMING
 

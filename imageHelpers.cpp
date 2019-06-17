@@ -18,8 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Defines the functions used to load the input images and store the disparity map image for use in the CUDA BP implementation
 
-#include "imageHelpersHostHeader.cuh"
-
+#include "imageHelpers.h"
 
 //functions used to load input images/save resulting movment images
 
@@ -418,34 +417,3 @@ void ImageHelperFunctions::saveDisparityImageToPGM(const char* filePathSaveImage
 	pgmWrite(filePathSaveImage, widthImage, heightImage,
 	     movementImageToSave, "blah");
 }
-
-//save the output disparity map using the scale defined in scaleDisparityInOutput at each pixel to the file at disparityMapSaveImagePath
-//also takes in the timer to time the implementation including the transfer time from the device to the host
-void ImageHelperFunctions::saveResultingDisparityMap(const char* disparityMapSaveImagePath,
-		float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput,
-		unsigned int widthImages, unsigned int heightImages,
-		std::chrono::time_point<std::chrono::system_clock>& timeWithTransferStart,
-		double& totalTimeIncludeTransfer) {
-	//allocate the space on the host for and x and y movement between images
-	float* disparityMapFromImage1To2Host = new float[widthImages * heightImages];
-
-	//transfer the disparity map estimation on the device to the host for output
-	(cudaMemcpy(disparityMapFromImage1To2Host, disparityMapFromImage1To2Device, widthImages*heightImages*sizeof(float),
-						  cudaMemcpyDeviceToHost) );
-
-	auto timeWithTransferEnd = std::chrono::system_clock::now();
-
-	//printf("Running time including transfer time: %.10lf seconds\n", timeEnd-timeStart);
-	std::chrono::duration<double> diff = timeWithTransferEnd-timeWithTransferStart;
-	totalTimeIncludeTransfer = diff.count();
-	//stop the timer and print the total time of the BP implementation including the device-host transfer time
-	//printf("Time to retrieve movement on host (including transfer): %f (ms) \n", totalTimeIncludeTransfer);
-
-	//save the resulting disparity map images to a file
-	ImageHelperFunctions::saveDisparityImageToPGM(disparityMapSaveImagePath, scaleDisparityInOutput, disparityMapFromImage1To2Host, widthImages, heightImages);
-
-	delete [] disparityMapFromImage1To2Host;
-}
-
-
-

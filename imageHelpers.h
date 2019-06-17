@@ -28,6 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoCudaParameters.cuh"
 #include <chrono>
+#include <math.h>
+#include <cstring>
 
 class ImageHelperFunctions
 {
@@ -56,14 +58,7 @@ public:
 
 	static int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
 			 unsigned char*& image, bool weightedRGBConversion);
-
-	static void saveResultingDisparityMap(const char* disparityMapSaveImagePath,
-			float*& disparityMapFromImage1To2Device, float scaleDisparityInOutput,
-			unsigned int widthImages, unsigned int heightImages,
-			std::chrono::time_point<std::chrono::system_clock>& timeWithTransferStart,
-			double& totalTimeIncludeTransfer);
 };
-
 
 
 #endif //IMAGE_HELPERS_HOST_HEADER_CUH

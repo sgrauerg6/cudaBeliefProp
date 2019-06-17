@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Defines the functions used to evaluate the results of corresponding disparity maps 1 and 2
 
-#include "stereoResultsEvalHostHeader.cuh"
+#include "stereoResultsEval.h"
 
 
 //initialize the stereo results
@@ -39,8 +39,8 @@ void StereoResultsEvaluation::updateStereoEvaluation(float unscaledCurrentDispVa
 	float absDiffBetweenCorrDispVals = abs(unscaledCurrentDispVal2 - unscaledCurrentDispVal1);
 
 	//add the absolute disparity different to the total absolute difference in disparity capped at MAX_ABS_DIFF_BETWEEN_CORR_DISP
-	currentStereoEvaluation->totalDispAbsDiffNoMax += min(absDiffBetweenCorrDispVals, MAX_ABS_DIFF_BETWEEN_CORR_DISP);
-	currentStereoEvaluation->totalDispAbsDiffWithMax += min(absDiffBetweenCorrDispVals, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4);
+	currentStereoEvaluation->totalDispAbsDiffNoMax += std::min(absDiffBetweenCorrDispVals, MAX_ABS_DIFF_BETWEEN_CORR_DISP);
+	currentStereoEvaluation->totalDispAbsDiffWithMax += std::min(absDiffBetweenCorrDispVals, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4);
 
 	//if absolute difference is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL, increment the number of corresponding
 	//pixels with significantly different disparity
@@ -180,5 +180,18 @@ void StereoResultsEvaluation::writeStereoEvaluationResultsToFile(stereoEvaluatio
 	//fprintf(resultsFile, "Total bad pixels (Threshold 4): %d \n", evaluationResults->numSigDiffPixelsThreshold4);
 	fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4, evaluationResults->propSigDiffPixelsThreshold4);
 }
+
+//retrieve the 1-D index into the "Stereo"/"pixel" image given the current x and y in the image and the width and height of the Stereo
+int StereoResultsEvaluation::retrieveIndexStereoOrPixelImage(int xVal, int yVal, int widthSpace, int heightSpace)
+{
+	return (yVal*widthSpace + xVal);
+}
+
+//return true if pixel if within the bounds of the given space
+bool StereoResultsEvaluation::pixelWithinBounds(int xVal, int yVal, int widthSpace, int heightSpace)
+{
+	return ((xVal >= 0) && (xVal < widthSpace) && (yVal >= 0) && (yVal < heightSpace));
+}
+
 
 

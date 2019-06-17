@@ -21,14 +21,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef STEREO_RESULTS_EVAL_HOST_HEADER_CUH
 #define STEREO_RESULTS_EVAL_HOST_HEADER_CUH
 
-#include "stereoResultsEvalParameters.cuh"
-
-//include for general utility functions for evaluation
-#include "utilityFunctsForEvalHeader.cuh"
+#include "stereoResultsEvalParameters.h"
+#include <math.h>
+#include <algorithm>
 
 class StereoResultsEvaluation
 {
 private:
+	//retrieve the 1-D index into the "Stereo"/"pixel" image given the current x and y in the image and the width and height of the Stereo
+	int retrieveIndexStereoOrPixelImage(int xVal, int yVal, int widthSpace, int heightSpace);
+
+	//return true if pixel if within the bounds of the given space
+	bool pixelWithinBounds(int xVal, int yVal, int widthSpace, int heightSpace);
+
 	//initialize the stereo results
 	void initializeStereoResults(stereoEvaluationResults*& currentStereoEvaluation);
 

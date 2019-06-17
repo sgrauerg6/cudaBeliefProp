@@ -23,7 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <stdio.h>
 #include "bpParametersFromPython.h"
-#include <cuda_fp16.h>
+#include <vector>
+#include <algorithm>
 
 #define TSUKUBA_IMAGES 1
 #define CONES_IMAGES_QUARTER_SIZE 2
@@ -311,8 +312,5 @@ typedef struct
 	float data_k_bp;
 	float disc_k_bp;
 }BPsettings;
-
-
-
 
 #endif // BP_STEREO_CUDA_PARAMETERS_CUH

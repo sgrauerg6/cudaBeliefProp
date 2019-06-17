@@ -16,17 +16,20 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//Declares utility functions to be used for a variety of evaluation functions
+//Declares the methods to run Stereo BP on a series of images
 
-#ifndef UTILITY_FUNCTS_FOR_EVAL_HEADER_CUH
-#define UTILITY_FUNCTS_FOR_EVAL_HEADER_CUH
+#ifndef RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
+#define RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
 
+#include "bpStereoCudaParameters.cuh"
+#include "RunBpStereoSet.h"
+#include <cuda_runtime.h>
+#include "runBpStereoHostHeader.cuh"
 
-//retrieve the 1-D index into the "Stereo"/"pixel" image given the current x and y in the image and the width and height of the Stereo
-__host__ int retrieveIndexStereoOrPixelImage(int xVal, int yVal, int widthSpace, int heightSpace);
-
-//return true if pixel if within the bounds of the given space
-__host__ bool pixelWithinBounds(int xVal, int yVal, int widthSpace, int heightSpace);
-
-
-#endif //UTILITY_FUNCTS_FOR_EVAL_HEADER_CUH
+class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet
+{
+public:
+	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
+	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile);
+};
+#endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

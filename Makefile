@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = bpStereoCudaParameters.cuh imageHelpersHost.cu imageHelpersHostHeader.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh runBpStereoHost.cu runBpStereoHostHeader.cuh runBpStereoSetCUDA.cu runBpStereoSetCUDAHeader.cuh smoothImageHost.cu smoothImageHostHeader.cuh stereoResultsEvalHost.cu stereoResultsEvalHostHeader.cuh stereoResultsEvalParameters.cuh utilityFunctsForEval.cu utilityFunctsForEvalHeader.cuh
+FILE_DEPENDENCIES = bpStereoCudaParameters.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -40,12 +40,18 @@ LINK   = -lm
 
 all: impDriver
 
-impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o
-	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o $(LIB) -o driverCudaBp -O -m64
-	
+impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o
+	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o $(LIB) -o driverCudaBp -O -m64
+
 RunBpStereoSet.o: RunBpStereoSet.cpp
-	g++ RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 
-	
+	g++ RunBpStereoSet.cpp -x cu -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+imageHelpers.o: imageHelpers.cpp imageHelpers.h
+	$(NVCC) imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
+	$(NVCC) stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
 stereo.o: stereo.cpp bpStereoCudaParameters.cuh
 	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 
 

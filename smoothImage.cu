@@ -18,14 +18,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Defines the functions used to smooth the input images with a gaussian filter of SIGMA_BP (see bpCudaParameters.cuh) implemented in CUDA
 
-#include "smoothImageHostHeader.cuh"
-
+#include "smoothImage.cuh"
+#include "kernalFilter.cu"
 
 //functions relating to smoothing the images before running BP
 
 
 /* normalize mask so it integrates to one */
-__host__ void normalizeFilter(float*& filter, int sizeFilter) 
+void SmoothImage::normalizeFilter(float*& filter, int sizeFilter)
 {
 	float sum = 0;
 	for (int i = 1; i < sizeFilter; i++) 
@@ -40,9 +40,9 @@ __host__ void normalizeFilter(float*& filter, int sizeFilter)
 }
 
 //this function creates a Gaussian filter given a sigma value
-__host__ float* makeFilter(float sigma, int& sizeFilter)
+float* SmoothImage::makeFilter(float sigma, int& sizeFilter)
 {
-	sigma = max(sigma, 0.01f);
+	sigma = std::max(sigma, 0.01f);
 	sizeFilter = (int)ceil(sigma * WIDTH_SIGMA_1) + 1;
 	float* mask = new float[sizeFilter];
 	for (int i = 0; i < sizeFilter; i++) 
@@ -58,7 +58,7 @@ __host__ float* makeFilter(float sigma, int& sizeFilter)
 //function to use the CUDA-image filter to apply a guassian filter to the a single images
 //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
 //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-__host__ void smoothSingleImageInputHostOutputDeviceCUDA(unsigned int*& image1InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice)
+void SmoothImage::smoothSingleImageInputHostOutputDeviceCUDA(unsigned int*& image1InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice)
 {
 	// setup execution parameters
 	dim3 threads(BLOCK_SIZE_WIDTH_FILTER_IMAGES, BLOCK_SIZE_HEIGHT_FILTER_IMAGES);

@@ -23,22 +23,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "stereo.h"
 
 //needed for functions to load input images/store resulting disp/movement image
-#include "imageHelpersHost.cu"
-
-//needed to use the CUDA implementation of the Gaussian filter to smooth the images
-#include "smoothImageHost.cu"
-
-//need to run the CUDA BP Stereo estimation implementation on the smoothed input images
-#include "runBpStereoHost.cu"
+#include "imageHelpers.h"
 
 //needed to evaluate the disparity/Stereo found
-#include "stereoResultsEvalHost.cu"
+#include "stereoResultsEval.h"
 
 //needed to run the implementation a stereo set using CUDA
-#include "runBpStereoSetCUDA.cu"
-
-//needed for general utility functions to evaluate the results
-#include "utilityFunctsForEval.cu"
+#include "RunBpStereoSetOnGPUWithCUDA.cu"
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
 //this function takes as input the file names of a two disparity maps and the factor

@@ -18,12 +18,14 @@
 
 //Defines the methods to run BP Stereo implementation on a series of images using various options
 
-#include "runBpStereoSetCUDAHeader.cuh"
-#include "smoothImageHostHeader.cuh"
+#include "RunBpStereoSetOnGPUWithCUDA.cuh"
+#include "smoothImage.cu"
 #include <chrono>
 #include <vector>
 #include <algorithm>
-
+#include "imageHelpers.h"
+#include "runBpStereoHost.cu"
+#include "DetailedTimings.h"
 
 //run the disparity map estimation BP on a stereo image set and save the results between each set of images if desired
 //returns the runtime (including transfer time)
@@ -64,9 +66,10 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 
 		//first smooth the images using the CUDA Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored global memory on the device at locations image1SmoothedDevice and image2SmoothedDevice
-		smoothSingleImageInputHostOutputDeviceCUDA(image1AsUnsignedIntArrayHost,
+		SmoothImage smooth_image;
+		smooth_image.smoothSingleImageInputHostOutputDeviceCUDA(image1AsUnsignedIntArrayHost,
 				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage1Device);
-		smoothSingleImageInputHostOutputDeviceCUDA(image2AsUnsignedIntArrayHost,
+		smooth_image.smoothSingleImageInputHostOutputDeviceCUDA(image2AsUnsignedIntArrayHost,
 				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2Device);
 
 		//free the host memory allocatted to original image 1 and image 2 on the host
@@ -96,9 +99,31 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		timeNoTransfer += diff.count();
 		timingsNoTransferVector.push_back(diff.count());
 
-		ImageHelperFunctions::saveResultingDisparityMap(saveDisparityMapImagePath,
-				disparityMapFromImage1To2Device, SCALE_BP, widthImages,
-				heightImages, timeWithTransferStart, timeIncludeTransfer);
+		//allocate the space on the host for and x and y movement between images
+		float* disparityMapFromImage1To2Host = new float[widthImages
+				* heightImages];
+
+		//transfer the disparity map estimation on the device to the host for output
+		(cudaMemcpy(disparityMapFromImage1To2Host,
+				disparityMapFromImage1To2Device,
+				widthImages * heightImages * sizeof(float),
+				cudaMemcpyDeviceToHost));
+
+		auto timeWithTransferEnd = std::chrono::system_clock::now();
+
+		//printf("Running time including transfer time: %.10lf seconds\n", timeEnd-timeStart);
+		std::chrono::duration<double> diffWithTransferTime = timeWithTransferEnd
+				- timeWithTransferStart;
+		timeIncludeTransfer = diffWithTransferTime.count();
+		//stop the timer and print the total time of the BP implementation including the device-host transfer time
+		//printf("Time to retrieve movement on host (including transfer): %f (ms) \n", totalTimeIncludeTransfer);
+
+		//save the resulting disparity map images to a file
+		ImageHelperFunctions::saveDisparityImageToPGM(saveDisparityMapImagePath,
+				SCALE_BP, disparityMapFromImage1To2Host,
+				widthImages, heightImages);
+
+		delete[] disparityMapFromImage1To2Host;
 
 		timingsIncludeTransferVector.push_back(timeIncludeTransfer);
 

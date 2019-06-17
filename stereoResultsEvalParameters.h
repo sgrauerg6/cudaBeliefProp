@@ -29,9 +29,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //pixels with difference beyond this are called a "bad pixel" if one of the images is the ground truth
 //(when value is SMALL_VAL_BP, then any pixel where disparity values are not the same value are considered "bad pixels")
 #define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1 SMALL_VAL_BP
-#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2 2.01
-#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3 5.01
-#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4 10.01
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2 2.01f
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3 5.01f
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4 10.01f
 
 //don't evaluate the disparities that are within the "border"
 //the x-border is from the left/right sides and the
