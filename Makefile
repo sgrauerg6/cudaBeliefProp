@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = runBpStereoHost.cu runBpStereoHost.cuh bpStereoCudaParameters.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh RunBpStereoSetOnGPUWithCUDA.cu RunBpStereoSetOnGPUWithCUDA.cuh DetailedTimings.h bpParametersFromPython.h
+FILE_DEPENDENCIES = bpStereoCudaParameters.cuh bpParametersFromPython.h
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -27,6 +27,8 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O2 -std=c++11
+
+# need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
 ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=compute_75,code=compute_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_70,code=compute_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60
 
 INCDIR = -I.
@@ -41,8 +43,8 @@ LINK   = -lm
 
 all: impDriver
 
-impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o smoothImage.o
-	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o smoothImage.o $(LIB) -o driverCudaBp -O -m64
+impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o smoothImage.o RunBpStereoSetOnGPUWithCUDA.o
+	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o smoothImage.o RunBpStereoSetOnGPUWithCUDA.o $(LIB) -o driverCudaBp -O -m64
 
 RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h
 	g++ RunBpStereoSet.cpp -x cu -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -56,12 +58,14 @@ stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEval
 stereo.o: stereo.cpp stereo.h bpStereoCudaParameters.cuh bpParametersFromPython.h
 	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-smoothImage.o: smoothImage.cpp smoothImage.h
-	$(NVCC) -x cu -c smoothImage.cpp $(ARCHITECTURES_GENCODE) -o smoothImage.o $(COMPILE_FLAGS) 
+smoothImage.o: smoothImage.cpp smoothImage.h kernalFilter.cu kernalFilterHeader.cuh
+	$(NVCC) -x cu -c smoothImage.cpp $(ARCHITECTURES_GENCODE) -o smoothImage.o $(COMPILE_FLAGS)
+	
+RunBpStereoSetOnGPUWithCUDA.o: RunBpStereoSetOnGPUWithCUDA.cpp RunBpStereoSetOnGPUWithCUDA.h runBpStereoHost.cu runBpStereoHost.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh bpStereoCudaParameters.cuh bpParametersFromPython.h DetailedTimings.h
+	$(NVCC) -x cu -c RunBpStereoSetOnGPUWithCUDA.cpp $(ARCHITECTURES_GENCODE) -o RunBpStereoSetOnGPUWithCUDA.o $(COMPILE_FLAGS)
 
 $(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)
-	#need to adjust to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
-	#$(NVCC) -c $(CU_FILE) -gencode arch=compute_75,code=sm_75 -gencode arch=compute_75,code=compute_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_70,code=compute_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_52,code=sm_52 -gencode arch=compute_50,code=sm_50 -gencode arch=compute_37,code=sm_37 -gencode arch=compute_35,code=sm_35 -gencode arch=compute_30,code=sm_30 -o $(CU_OBJ) $(COMPILE_FLAGS) 
+	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
 	$(NVCC) -c $(CU_FILE) $(ARCHITECTURES_GENCODE) -o $(CU_OBJ) $(COMPILE_FLAGS) 
 make clean:
 	rm *.o driverCudaBp
