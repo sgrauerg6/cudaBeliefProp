@@ -19,7 +19,7 @@
 //Defines the methods to run BP Stereo implementation on a series of images using various options
 
 #include "RunBpStereoSetOnGPUWithCUDA.h"
-#include "smoothImage.h"
+#include "SmoothImageCUDA.h"
 #include <chrono>
 #include <vector>
 #include <algorithm>
@@ -66,10 +66,10 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 
 		//first smooth the images using the CUDA Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored global memory on the device at locations image1SmoothedDevice and image2SmoothedDevice
-		SmoothImage smooth_image;
-		smooth_image.smoothSingleImageInputHostOutputDeviceCUDA(image1AsUnsignedIntArrayHost,
+		SmoothImageCUDA smooth_image;
+		smooth_image(image1AsUnsignedIntArrayHost,
 				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage1Device);
-		smooth_image.smoothSingleImageInputHostOutputDeviceCUDA(image2AsUnsignedIntArrayHost,
+		smooth_image(image2AsUnsignedIntArrayHost,
 				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2Device);
 
 		//free the host memory allocatted to original image 1 and image 2 on the host

@@ -43,8 +43,8 @@ LINK   = -lm
 
 all: impDriver
 
-impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o smoothImage.o RunBpStereoSetOnGPUWithCUDA.o
-	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o smoothImage.o RunBpStereoSetOnGPUWithCUDA.o $(LIB) -o driverCudaBp -O -m64
+impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o RunBpStereoSetOnGPUWithCUDA.o SmoothImage.o
+	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o $(LIB) -o driverCudaBp -O -m64
 
 RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h
 	g++ RunBpStereoSet.cpp -x cu -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -58,8 +58,11 @@ stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEval
 stereo.o: stereo.cpp stereo.h bpStereoCudaParameters.cuh bpParametersFromPython.h
 	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-smoothImage.o: smoothImage.cpp smoothImage.h kernalFilter.cu kernalFilterHeader.cuh
-	$(NVCC) -x cu -c smoothImage.cpp $(ARCHITECTURES_GENCODE) -o smoothImage.o $(COMPILE_FLAGS)
+SmoothImage.o: SmoothImage.cpp SmoothImage.h
+	g++ SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	
+SmoothImageCUDA.o: SmoothImageCUDA.cpp SmoothImageCUDA.h kernalFilter.cu kernalFilterHeader.cuh
+	$(NVCC) -x cu -c SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 	
 RunBpStereoSetOnGPUWithCUDA.o: RunBpStereoSetOnGPUWithCUDA.cpp RunBpStereoSetOnGPUWithCUDA.h runBpStereoHost.cu runBpStereoHost.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh bpStereoCudaParameters.cuh bpParametersFromPython.h DetailedTimings.h
 	$(NVCC) -x cu -c RunBpStereoSetOnGPUWithCUDA.cpp $(ARCHITECTURES_GENCODE) -o RunBpStereoSetOnGPUWithCUDA.o $(COMPILE_FLAGS)

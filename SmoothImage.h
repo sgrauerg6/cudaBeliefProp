@@ -23,29 +23,27 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoCudaParameters.cuh"
 
-//include for the kernal functions to be run on the GPU
-#include "kernalFilterHeader.cuh"
-
-#include <cuda_runtime.h>
 #include <math.h>
 #include <algorithm>
 
+//functions relating to smoothing the images before running BP
 class SmoothImage
 {
-private:
-	//functions relating to smoothing the images before running BP
+public:
+	SmoothImage() {};
+	virtual ~SmoothImage() {};
 
-	//normalize mask so it integrates to one
+	//normalize filter mask so it integrates to one
 	void normalizeFilter(float*& filter, int sizeFilter);
 
 	//this function creates a Gaussian filter given a sigma value
 	float* makeFilter(float sigma, int& sizeFilter);
 
-public:
-	//function to use the CUDA-image filter to apply a guassian filter to the a single images
-	//input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
+	//function to use the image filter to apply a guassian filter to the a single images
+	//input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
 	//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-	void smoothSingleImageInputHostOutputDeviceCUDA(unsigned int*& image1InHost, int widthImages, int heightImages, float sigmaVal, float*& image1SmoothedDevice);
+	//normalize mask so it integrates to one
+	virtual void operator()(unsigned int* inImage, unsigned int widthImages, unsigned int heightImages, float sigmaVal, float* smoothedImage) = 0;
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH
