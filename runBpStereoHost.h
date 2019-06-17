@@ -24,40 +24,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpStereoCudaParameters.cuh"
 
 //include for the kernal functions to be run on the GPU
-#include "kernalBpStereoHeader.cuh"
 #include <vector>
 #include <algorithm>
 #include <cuda_runtime.h>
 #include "DetailedTimings.h"
 #include <chrono>
 #include <cuda_fp16.h>
-
-class PrintDataCostAndMessageData
-{
-	template<typename T>
-		void printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
-				T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
-				T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1,
-				T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2,
-				T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-				int widthCheckerboard, int heightLevel, int currentCheckerboardSet);
-
-		template<typename T>
-		void printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
-				T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
-				T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1,
-				T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2,
-				T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-				int widthCheckerboard, int heightLevel, int currentCheckerboardSet);
-};
 
 class ProcessCUDABPHelperFuncts
 {
@@ -111,6 +83,50 @@ public:
 			T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
 			T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2, T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
 			float* resultingDisparityMapDevice, int widthLevel, int heightLevel, int currentCheckerboardSet);
+
+	template<typename T>
+	void printDataAndMessageValsToPoint(int xVal, int yVal,
+			T* dataCostDeviceCurrentLevelCheckerboard1,
+			T* dataCostDeviceCurrentLevelCheckerboard2,
+			T* messageUDeviceSet0Checkerboard1,
+			T* messageDDeviceSet0Checkerboard1,
+			T* messageLDeviceSet0Checkerboard1,
+			T* messageRDeviceSet0Checkerboard1,
+			T* messageUDeviceSet0Checkerboard2,
+			T* messageDDeviceSet0Checkerboard2,
+			T* messageLDeviceSet0Checkerboard2,
+			T* messageRDeviceSet0Checkerboard2,
+			T* messageUDeviceSet1Checkerboard1,
+			T* messageDDeviceSet1Checkerboard1,
+			T* messageLDeviceSet1Checkerboard1,
+			T* messageRDeviceSet1Checkerboard1,
+			T* messageUDeviceSet1Checkerboard2,
+			T* messageDDeviceSet1Checkerboard2,
+			T* messageLDeviceSet1Checkerboard2,
+			T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
+			int heightLevel, int currentCheckerboardSet);
+
+	template<typename T>
+	void printDataAndMessageValsAtPoint(int xVal, int yVal,
+			T* dataCostDeviceCurrentLevelCheckerboard1,
+			T* dataCostDeviceCurrentLevelCheckerboard2,
+			T* messageUDeviceSet0Checkerboard1,
+			T* messageDDeviceSet0Checkerboard1,
+			T* messageLDeviceSet0Checkerboard1,
+			T* messageRDeviceSet0Checkerboard1,
+			T* messageUDeviceSet0Checkerboard2,
+			T* messageDDeviceSet0Checkerboard2,
+			T* messageLDeviceSet0Checkerboard2,
+			T* messageRDeviceSet0Checkerboard2,
+			T* messageUDeviceSet1Checkerboard1,
+			T* messageDDeviceSet1Checkerboard1,
+			T* messageLDeviceSet1Checkerboard1,
+			T* messageRDeviceSet1Checkerboard1,
+			T* messageUDeviceSet1Checkerboard2,
+			T* messageDDeviceSet1Checkerboard2,
+			T* messageLDeviceSet1Checkerboard2,
+			T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
+			int heightLevel, int currentCheckerboardSet);
 };
 
 template<typename T>

@@ -9,6 +9,8 @@
 #define RUNBPSTEREOOPTIMIZEDCPU_H_
 
 #include "SmoothImageCPU.h"
+#include "imageHelpers.h"
+#include "BpStereoProcessingOptimizedCPU.h"
 
 class RunBpStereoOptimizedCPU {
 public:

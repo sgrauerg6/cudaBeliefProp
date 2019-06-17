@@ -15,8 +15,7 @@ public:
 	SmoothImageCPU();
 	virtual ~SmoothImageCPU();
 
-	void operator()(unsigned int* inImage, int widthImages,
-			int heightImages, float sigmaVal, float* imageSmoothed);
+	void operator()(unsigned int* inImage, unsigned int widthImages, unsigned int heightImages, float sigmaVal, float* smoothedImage);
 };
 
 #endif /* SMOOTHIMAGECPU_H_ */

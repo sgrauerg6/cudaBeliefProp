@@ -56,13 +56,13 @@ __device__ __host__ int getCheckerboardWidth<half>(int imageWidth)
 }
 
 template<typename T>
-__device__ __host__ T getZeroVal()
+__device__ T getZeroVal()
 {
 	return (T)0.0;
 }
 
 template<>
-__device__ __host__ half2 getZeroVal<half2>()
+__device__ half2 getZeroVal<half2>()
 {
 	return __floats2half2_rn (0.0, 0.0);
 }

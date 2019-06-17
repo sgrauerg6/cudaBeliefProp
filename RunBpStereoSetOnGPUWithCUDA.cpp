@@ -24,7 +24,7 @@
 #include <vector>
 #include <algorithm>
 #include "imageHelpers.h"
-#include "runBpStereoHost.cu"
+#include "runBpStereoHost.cpp"
 #include "DetailedTimings.h"
 
 //run the disparity map estimation BP on a stereo image set and save the results between each set of images if desired

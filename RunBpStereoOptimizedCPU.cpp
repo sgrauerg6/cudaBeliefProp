@@ -6,6 +6,7 @@
  */
 
 #include "RunBpStereoOptimizedCPU.h"
+#include "BpStereoProcessingOptimizedCPU.cpp"
 
 RunBpStereoOptimizedCPU::RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated constructor stub
@@ -57,25 +58,24 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		//allocate the space for the disparity map estimation
 		float* disparityMapFromImage1To2 = new float[widthImages * heightImages];
 
-		ProcessCUDABP processBPOnGPUUsingCUDA;
-		processBPOnGPUUsingCUDA.runBeliefPropStereoCUDA<beliefPropProcessingDataType>(smoothedImage1Device, smoothedImage2Device,
-				disparityMapFromImage1To2, algSettings, timings);
+		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataType> processBPOnCPUOptimized;
+		processBPOnCPUOptimized(smoothedImage1, smoothedImage2,
+				disparityMapFromImage1To2, algSettings);
 
 		//retrieve the runtime for implementation
 		auto timeEnd = std::chrono::system_clock::now();
 		std::chrono::duration<double> diff = timeEnd
 				- timeStart;
-		runtime = diff.count();
+		double runTime = diff.count();
+		runTimings.push_back(runTime);
 
 		//save the resulting disparity map images to a file
 		ImageHelperFunctions::saveDisparityImageToPGM(saveDisparityMapImagePath,
 				SCALE_BP, disparityMapFromImage1To2,
 				widthImages, heightImages);
 
-		runTimings.push_back(runtime);
-
 		//free the space allocated to the resulting disparity map
-		cudaFree(disparityMapFromImage1To2Device);
+		delete [] disparityMapFromImage1To2;
 
 		//free the space allocated to the smoothed images
 		delete [] smoothedImage1;

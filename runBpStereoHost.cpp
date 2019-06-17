@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
-#include "runBpStereoHost.cuh"
+#include "runBpStereoHost.h"
 #include "kernalBpStereo.cu"
 
 #define RUN_DETAILED_TIMING
@@ -37,7 +37,7 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
 }
 
 template<typename T>
-void PrintDataCostAndMessageData::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessCUDABPHelperFuncts::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
 		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
@@ -84,7 +84,7 @@ void PrintDataCostAndMessageData::printDataAndMessageValsAtPoint(int xVal, int y
 }
 
 template<>
-void PrintDataCostAndMessageData::printDataAndMessageValsAtPoint<half2>(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessCUDABPHelperFuncts::printDataAndMessageValsAtPoint<half2>(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
 		half2* messageUDeviceSet0Checkerboard1,
 		half2* messageDDeviceSet0Checkerboard1,
 		half2* messageLDeviceSet0Checkerboard1,
@@ -119,7 +119,7 @@ void PrintDataCostAndMessageData::printDataAndMessageValsAtPoint<half2>(int xVal
 }
 
 template<typename T>
-void PrintDataCostAndMessageData::printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessCUDABPHelperFuncts::printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
 		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
@@ -757,24 +757,26 @@ void ProcessCUDABP<T>::operator()(float*& image1PixelsDevice, float*& image2Pixe
 #endif
 	gpuErrchk( cudaPeekAtLastError() );
 
+#ifdef RUN_DETAILED_TIMING
+
 	auto timeInitMessageValuesKernelTimeStart = std::chrono::system_clock::now();
+
+#endif
 
 	//initialize all the BP message values at every pixel for every disparity to 0
 	ProcessCUDABPHelperFuncts::initializeMessageValsToDefault<T>(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 											widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
 
+	( cudaDeviceSynchronize() );
 	gpuErrchk( cudaPeekAtLastError() );
+
+#ifdef RUN_DETAILED_TIMING
 
 	auto timeInitMessageValuesKernelTimeEnd = std::chrono::system_clock::now();
 	diff = timeInitMessageValuesKernelTimeEnd-timeInitMessageValuesKernelTimeStart;
 
 	double totalTimeInitMessageValuesKernelTime = diff.count();
-
-	( cudaDeviceSynchronize() );
-	gpuErrchk( cudaPeekAtLastError() );
-
-#ifdef RUN_DETAILED_TIMING
 
 	auto timeInitMessageValuesEnd = std::chrono::system_clock::now();
 	diff = timeInitMessageValuesEnd-timeInitMessageValuesStart;

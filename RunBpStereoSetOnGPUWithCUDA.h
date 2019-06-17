@@ -18,13 +18,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Declares the methods to run Stereo BP on a series of images
 
-#ifndef RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
-#define RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
+#ifndef RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
+#define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
 #include "bpStereoCudaParameters.cuh"
 #include "RunBpStereoSet.h"
 #include <cuda_runtime.h>
-#include "runBpStereoHost.cuh"
+#include "BpStereoProcessingOptimizedCPU.h"
 
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet
 {
