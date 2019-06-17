@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = bpStereoCudaParameters.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh
+FILE_DEPENDENCIES = runBpStereoHost.cu runBpStereoHost.cuh bpStereoCudaParameters.cuh kernalBpStereo.cu kernalBpStereoHeader.cuh  kernalFilter.cu kernalFilterHeader.cuh RunBpStereoSetOnGPUWithCUDA.cu RunBpStereoSetOnGPUWithCUDA.cuh smoothImage.cu smoothImage.cuh DetailedTimings.h bpParametersFromPython.h
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -52,7 +52,7 @@ imageHelpers.o: imageHelpers.cpp imageHelpers.h
 stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
 	g++ stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: stereo.cpp bpStereoCudaParameters.cuh
+stereo.o: stereo.cpp bpStereoCudaParameters.cuh bpParametersFromPython.h
 	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 
 
 $(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)
