@@ -153,11 +153,11 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 						//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 						if (((xVal + yVal) % 2) == 0)
 						{
-							dataCostDeviceStereoCheckerboard1[indexVal] = (T)(lambda_bp * std::min(((T)abs(currentPixelImage1 - currentPixelImage2)), data_k_bp));
+							dataCostDeviceStereoCheckerboard1[indexVal] = (T)(lambda_bp * std::min(((T)abs(currentPixelImage1 - currentPixelImage2)), (T)data_k_bp));
 						}
 						else
 						{
-							dataCostDeviceStereoCheckerboard2[indexVal] = (T)(lambda_bp * std::min(((T)abs(currentPixelImage1 - currentPixelImage2)), data_k_bp));
+							dataCostDeviceStereoCheckerboard2[indexVal] = (T)(lambda_bp * std::min(((T)abs(currentPixelImage1 - currentPixelImage2)), (T)data_k_bp));
 						}
 					}
 				}
