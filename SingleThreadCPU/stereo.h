@@ -13,11 +13,11 @@
 #include <iostream>
 #include <algorithm>
 #include <assert.h>
-#include <image.h>
-#include <misc.h>
-#include <pnmfile.h>
-#include <filter.h>
-#include <imconv.h>
+#include "image.h"
+#include "misc.h"
+#include "pnmfile.h"
+#include "filter.h"
+#include "imconv.h"
 #include <string>
 #include "bpStereoCudaParameters.cuh"
 #include <chrono>

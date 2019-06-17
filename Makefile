@@ -55,8 +55,8 @@ imageHelpers.o: imageHelpers.cpp imageHelpers.h
 stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h bpStereoCudaParameters.cuh bpParametersFromPython.h
 	g++ stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: stereo.cpp stereo.h bpStereoCudaParameters.cuh bpParametersFromPython.h
-	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h bpStereoCudaParameters.cuh bpParametersFromPython.h
+	g++ SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
 SmoothImage.o: SmoothImage.cpp SmoothImage.h
 	g++ SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

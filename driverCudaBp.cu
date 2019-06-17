@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "bpStereoCudaParameters.cuh"
-#include "stereo.h"
+#include "SingleThreadCPU/stereo.h"
 
 //needed for functions to load input images/store resulting disp/movement image
 #include "imageHelpers.h"
