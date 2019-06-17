@@ -47,7 +47,7 @@ RunBpStereoSet.o: RunBpStereoSet.cpp
 	g++ RunBpStereoSet.cpp -x cu -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 imageHelpers.o: imageHelpers.cpp imageHelpers.h
-	$(NVCC) imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	g++ imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
 	$(NVCC) stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
