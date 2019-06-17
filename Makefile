@@ -50,7 +50,7 @@ imageHelpers.o: imageHelpers.cpp imageHelpers.h
 	g++ imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
-	$(NVCC) stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	g++ stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 stereo.o: stereo.cpp bpStereoCudaParameters.cuh
 	g++ stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) 
