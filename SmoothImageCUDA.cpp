@@ -36,7 +36,7 @@ void SmoothImageCUDA::operator()(unsigned int* inImage, unsigned int widthImages
 								cudaMemcpyHostToDevice);
 
 		//call kernel to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloat <<< grid, threads >>>(inImage, smoothedImage, widthImages, heightImages);
+		convertUnsignedIntImageToFloat <<< grid, threads >>>(originalImageDevice, smoothedImage, widthImages, heightImages);
 
 		cudaDeviceSynchronize();
 
