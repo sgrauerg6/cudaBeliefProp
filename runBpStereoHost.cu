@@ -506,7 +506,7 @@ void ProcessCUDABP::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChecker
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
 void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
-{	
+{
 #ifdef RUN_DETAILED_TIMING
 
 	timeCopyDataKernelTotalTime = 0.0;

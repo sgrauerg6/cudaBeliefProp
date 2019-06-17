@@ -19,7 +19,7 @@
 //Defines the methods to run BP Stereo implementation on a series of images using various options
 
 #include "RunBpStereoSetOnGPUWithCUDA.cuh"
-#include "smoothImage.cu"
+#include "smoothImage.h"
 #include <chrono>
 #include <vector>
 #include <algorithm>

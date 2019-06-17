@@ -122,7 +122,7 @@ public:
 	//the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 	//the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 	template<typename T>
-	 void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
+	void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
 
 };
 
