@@ -81,5 +81,7 @@ void SmoothImageCUDA::operator()(unsigned int* inImage, unsigned int widthImages
 		cudaFree(originalImageDevice);
 		cudaFree(intermediateImageDevice);
 		cudaFree(filterDevice);
+
+		delete [] filter;
 	}
 }

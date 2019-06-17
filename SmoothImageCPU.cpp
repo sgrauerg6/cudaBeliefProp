@@ -23,30 +23,33 @@ void SmoothImageCPU::operator()(unsigned int* inImage, int widthImages,
 {
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 	//of unsigned ints to an output image of float values
-	if (sigmaVal < MIN_SIGMA_VAL_SMOOTH) {
+	if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
+	{
 		//call kernal to convert input unsigned int pixels to output float pixels on the device
-		convertUnsignedIntImageToFloatCPU(originalImageDevice,
-				image1SmoothedDevice, widthImages, heightImages);
+		convertUnsignedIntImageToFloatCPU(inImage,
+				imageSmoothed, widthImages, heightImages);
 	}
 	//otherwise apply a Guassian filter to the images
-	else {
+	else
+	{
 		//sizeFilter set in makeFilter based on sigmaVal
 		int sizeFilter;
 		float* filter = makeFilter(sigmaVal, sizeFilter);
 
-		//allocate the GPU global memory for the original, intermediate (when the image has been filtered horizontally but not vertically), and final image
-		unsigned int* originalImageDevice;
-		float* intermediateImageDevice = new float[widthImages * heightImages];
+		//space for intermediate image (when the image has been filtered horizontally but not vertically)
+		float* intermediateImage = new float[widthImages * heightImages];
 
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-		filterUnsignedIntImageAcrossCPU(originalImageDevice,
+		filterUnsignedIntImageAcrossCPU(inImage,
 				intermediateImageDevice, widthImages, heightImages, filter,
 				sizeFilter);
 
 		//now use the vertical filter to complete the smoothing of image 1 on the device
 		filterFloatImageVerticalCPU(intermediateImageDevice,
-				image1SmoothedDevice, widthImages, heightImages, filter,
+				imageSmoothed, widthImages, heightImages, filter,
 				sizeFilter);
+
+		delete [] intermediateImage;
+		delete [] filter;
 	}
 }
-
