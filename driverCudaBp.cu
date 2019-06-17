@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "stereoResultsEval.h"
 
 //needed to run the implementation a stereo set using CUDA
-#include "RunBpStereoSetOnGPUWithCUDA.h"
-#include "RunBpStereoOptimizedCPU.h"
+#include "OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+#include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
 //this function takes as input the file names of a two disparity maps and the factor

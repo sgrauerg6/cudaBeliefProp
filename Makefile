@@ -61,17 +61,17 @@ stereo.o: stereo.cpp stereo.h bpStereoCudaParameters.cuh bpParametersFromPython.
 SmoothImage.o: SmoothImage.cpp SmoothImage.h
 	g++ SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-SmoothImageCPU.o: SmoothImageCPU.cpp SmoothImageCPU.h
-	g++ SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
+	g++ OptimizeCPU/SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-RunBpStereoOptimizedCPU.o: RunBpStereoOptimizedCPU.cpp RunBpStereoOptimizedCPU.h
-	g++ RunBpStereoOptimizedCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h
+	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
-SmoothImageCUDA.o: SmoothImageCUDA.cpp SmoothImageCUDA.h kernalFilter.cu kernalFilterHeader.cuh
-	$(NVCC) -x cu -c SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
+SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
+	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 	
-RunBpStereoSetOnGPUWithCUDA.o: RunBpStereoSetOnGPUWithCUDA.cpp RunBpStereoSetOnGPUWithCUDA.h kernalBpStereo.cu kernalBpStereoHeader.cuh bpStereoCudaParameters.cuh bpParametersFromPython.h DetailedTimings.h
-	$(NVCC) -x cu -c RunBpStereoSetOnGPUWithCUDA.cpp $(ARCHITECTURES_GENCODE) -o RunBpStereoSetOnGPUWithCUDA.o $(COMPILE_FLAGS)
+RunBpStereoSetOnGPUWithCUDA.o: OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h OptimizeCUDA/kernalBpStereo.cu OptimizeCUDA/kernalBpStereoHeader.cuh bpStereoCudaParameters.cuh bpParametersFromPython.h OptimizeCUDA/DetailedTimings.h
+	$(NVCC) -x cu -c OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp $(ARCHITECTURES_GENCODE) -o RunBpStereoSetOnGPUWithCUDA.o $(COMPILE_FLAGS)
 
 $(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
