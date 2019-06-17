@@ -86,8 +86,8 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		cudaMalloc((void **) &disparityMapFromImage1To2Device,
 				widthImages * heightImages * sizeof(float));
 
-		ProcessCUDABP processBPOnGPUUsingCUDA;
-		processBPOnGPUUsingCUDA.runBeliefPropStereoCUDA<beliefPropProcessingDataType>(smoothedImage1Device, smoothedImage2Device,
+		ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
+		processBPOnGPUUsingCUDA(smoothedImage1Device, smoothedImage2Device,
 				disparityMapFromImage1To2Device, algSettings, timings);
 
 		//retrieve the running time of the implementation not including the host/device transfer time

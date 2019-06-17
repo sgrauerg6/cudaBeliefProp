@@ -59,6 +59,7 @@ class PrintDataCostAndMessageData
 				int widthCheckerboard, int heightLevel, int currentCheckerboardSet);
 };
 
+template<typename T>
 class ProcessCUDABP
 {
 
@@ -67,7 +68,6 @@ class ProcessCUDABP
 private:
 
 	//run the given number of iterations of BP at the current level using the given message values in global device memory
-	template<typename T>
 		void runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
 			T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
 			T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
@@ -78,7 +78,6 @@ private:
 	//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 	//in the next level down
 	//need two different "sets" of message values to avoid read-write conflicts
-	template<typename T>
 	void copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
 		int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 		T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
@@ -89,17 +88,14 @@ private:
 		T** messageRDeviceCheckerboard2CopyTo);
 
 	//initialize the data cost at each pixel for each disparity value
-	template<typename T>
 	void initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings);
 
 
 	//initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
-	template<typename T>
 	void initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 													  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
 													  int widthLevel, int heightLevel, int numPossibleMovements);
 
-	template<typename T>
 	void initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
 			T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteToCheckerboard1,
 			T* dataCostDeviceToWriteToCheckerboard2,
@@ -108,7 +104,6 @@ private:
 			int prevHeightLevelActualIntegerSize);
 
 
-	template<typename T>
 	void retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 			T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 			T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
@@ -121,8 +116,7 @@ public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	//the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 	//the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
-	template<typename T>
-	void runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
+	void operator()(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
 
 };
 

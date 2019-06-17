@@ -169,7 +169,7 @@ void PrintDataCostAndMessageData::printDataAndMessageValsToPoint(int xVal, int y
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-void ProcessCUDABP::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
+void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
 	T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
 	T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
 	T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
@@ -234,7 +234,7 @@ void ProcessCUDABP::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelA
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T>
-void ProcessCUDABP::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
+void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
 	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
@@ -327,7 +327,7 @@ void ProcessCUDABP::copyMessageValuesToNextLevelDown(int widthLevelActualInteger
 }
 
 //due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
-template<>
+/*template<>
 void ProcessCUDABP::copyMessageValuesToNextLevelDown<half2>(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	half2* messageUDeviceCheckerboard1CopyFrom, half2* messageDDeviceCheckerboard1CopyFrom, half2* messageLDeviceCheckerboard1CopyFrom,
@@ -345,12 +345,12 @@ void ProcessCUDABP::copyMessageValuesToNextLevelDown<half2>(int widthLevelActual
 		(half**)messageDDeviceCheckerboard1CopyTo, (half**)messageLDeviceCheckerboard1CopyTo, (half**)messageRDeviceCheckerboard1CopyTo,
 		(half**)messageUDeviceCheckerboard2CopyTo, (half**)messageDDeviceCheckerboard2CopyTo, (half**)messageLDeviceCheckerboard2CopyTo,
 		(half**)messageRDeviceCheckerboard2CopyTo);
-}
+}*/
 
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessCUDABP::initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings)
+void ProcessCUDABP<T>::initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings)
 {
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
@@ -372,7 +372,7 @@ void ProcessCUDABP::initializeDataCosts(float*& image1PixelsDevice, float*& imag
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T>
-void ProcessCUDABP::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+void ProcessCUDABP<T>::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 												  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
 												  int widthLevel, int heightLevel, int numPossibleMovements)
 {
@@ -391,7 +391,7 @@ void ProcessCUDABP::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerb
 
 
 template<typename T>
-void ProcessCUDABP::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
+void ProcessCUDABP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
 		T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteToCheckerboard1,
 		T* dataCostDeviceToWriteToCheckerboard2,
 		int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
@@ -437,7 +437,7 @@ void ProcessCUDABP::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
 }
 
 //due to indexing, need to convert to half* and use half arrays for this function
-template<>
+/*template<>
 void ProcessCUDABP::initializeDataCurrentLevel<half2>(half2* dataCostStereoCheckerboard1,
 		half2* dataCostStereoCheckerboard2, half2* dataCostDeviceToWriteToCheckerboard1,
 		half2* dataCostDeviceToWriteToCheckerboard2, int widthLevelActualIntegerSize,
@@ -449,10 +449,10 @@ void ProcessCUDABP::initializeDataCurrentLevel<half2>(half2* dataCostStereoCheck
 			(half*)dataCostDeviceToWriteToCheckerboard2, widthLevelActualIntegerSize,
 			heightLevelActualIntegerSize, prevWidthLevelActualIntegerSize,
 			prevHeightLevelActualIntegerSize);
-}
+}*/
 
 template<typename T>
-void ProcessCUDABP::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
 		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
@@ -505,7 +505,7 @@ void ProcessCUDABP::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChecker
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
-void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
+void ProcessCUDABP<T>::operator()(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
 {
 #ifdef RUN_DETAILED_TIMING
 
@@ -623,7 +623,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 	heightLevelActualIntegerSize = (int)roundf(heightLevel);
 
 	//initialize the data cost at the bottom level 
-	initializeDataCosts<T>(image1PixelsDevice, image2PixelsDevice, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2, algSettings);
+	initializeDataCosts(image1PixelsDevice, image2PixelsDevice, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2, algSettings);
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -670,7 +670,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 		T* dataCostDeviceToWriteToCheckerboard2 =
 				&dataCostDeviceCheckerboard2[offsetLevel];
 
-		initializeDataCurrentLevel<T>(dataCostStereoCheckerboard1,
+		initializeDataCurrentLevel(dataCostStereoCheckerboard1,
 				dataCostStereoCheckerboard2, dataCostDeviceToWriteToCheckerboard1,
 				dataCostDeviceToWriteToCheckerboard2,
 				widthLevelActualIntegerSize,
@@ -759,7 +759,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 	auto timeInitMessageValuesKernelTimeStart = std::chrono::system_clock::now();
 
 	//initialize all the BP message values at every pixel for every disparity to 0
-	initializeMessageValsToDefault<T>(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
+	initializeMessageValsToDefault(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 											widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
 
@@ -812,7 +812,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == 0)
 		{
-			runBPAtCurrentLevel<T>(algSettings,
+			runBPAtCurrentLevel(algSettings,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 					messageUDeviceSet0Checkerboard1,
 					messageDDeviceSet0Checkerboard1,
@@ -827,7 +827,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 		}
 		else
 		{
-			runBPAtCurrentLevel<T>(algSettings,
+			runBPAtCurrentLevel(algSettings,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 					messageUDeviceSet1Checkerboard1,
 					messageDDeviceSet1Checkerboard1,
@@ -891,7 +891,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 
 #endif
 
-				copyMessageValuesToNextLevelDown<T>(
+				copyMessageValuesToNextLevelDown(
 						prevWidthLevelActualIntegerSize,
 						prevHeightLevelActualIntegerSize,
 						widthLevelActualIntegerSize,
@@ -932,7 +932,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 
 #endif
 
-				copyMessageValuesToNextLevelDown<T>(
+				copyMessageValuesToNextLevelDown(
 						prevWidthLevelActualIntegerSize,
 						prevHeightLevelActualIntegerSize,
 						widthLevelActualIntegerSize,
@@ -980,7 +980,7 @@ void ProcessCUDABP::runBeliefPropStereoCUDA(float*& image1PixelsDevice, float*& 
 
 #endif
 
-	retrieveOutputDisparity<T>(dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
+	retrieveOutputDisparity(dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 			messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 			messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 			messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
