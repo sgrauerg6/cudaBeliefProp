@@ -43,13 +43,13 @@ all: impDriver
 impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o
 	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o $(LIB) -o driverCudaBp -O -m64
 
-RunBpStereoSet.o: RunBpStereoSet.cpp
+RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h
 	g++ RunBpStereoSet.cpp -x cu -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 imageHelpers.o: imageHelpers.cpp imageHelpers.h
 	g++ imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
+stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h bpStereoCudaParameters.cuh bpParametersFromPython.h
 	g++ stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 stereo.o: stereo.cpp bpStereoCudaParameters.cuh bpParametersFromPython.h
