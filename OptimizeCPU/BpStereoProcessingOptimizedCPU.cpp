@@ -455,7 +455,6 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 	T* messageLDeviceSet1Checkerboard2;
 	T* messageRDeviceSet1Checkerboard2;
 
-
 	dataCostDeviceCurrentLevelCheckerboard1 = &dataCostDeviceCheckerboard1[offsetLevel];
 	dataCostDeviceCurrentLevelCheckerboard2 = &dataCostDeviceCheckerboard2[offsetLevel];
 

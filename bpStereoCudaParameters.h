@@ -23,14 +23,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoParameters.h"
 
+//remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
+typedef double beliefPropProcessingDataTypeCUDA;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
+typedef float beliefPropProcessingDataTypeCUDA;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
 //half precision currently only supported on CPU if using GPU with compute capability under 5.3
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 #include <cuda_fp16.h>
-typedef half beliefPropProcessingDataType;
+typedef half beliefPropProcessingDataTypeCUDA;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 #include <cuda_fp16.h>
-typedef half2 beliefPropProcessingDataType;
+typedef half2 beliefPropProcessingDataTypeCUDA;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
 #endif
 

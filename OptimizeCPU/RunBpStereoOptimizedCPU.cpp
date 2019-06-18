@@ -58,7 +58,7 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		//allocate the space for the disparity map estimation
 		float* disparityMapFromImage1To2 = new float[widthImages * heightImages];
 
-		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataType> processBPOnCPUOptimized;
+		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataTypeCPU> processBPOnCPUOptimized;
 		processBPOnCPUOptimized(smoothedImage1, smoothedImage2,
 				disparityMapFromImage1To2, algSettings);
 

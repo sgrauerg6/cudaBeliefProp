@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CONES_IMAGES_HALF_SIZE 3
 #define CONES_IMAGES_FULL_SIZE 4
 #define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
-#define IMAGE_SET_TO_PROCESS TSUKUBA_IMAGES
+#define IMAGE_SET_TO_PROCESS IMAGE_SET_PARAMETERS_FROM_PYTHON
 
 #if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
 
@@ -258,11 +258,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
-typedef double beliefPropProcessingDataType;
+typedef double beliefPropProcessingDataTypeCPU;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
-typedef float beliefPropProcessingDataType;
+typedef float beliefPropProcessingDataTypeCPU;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+typedef short beliefPropProcessingDataTypeCPU;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
 #endif
 
 //number of belief propagation stereo runs of same image set

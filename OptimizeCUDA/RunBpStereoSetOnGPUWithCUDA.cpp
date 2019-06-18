@@ -86,7 +86,7 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		cudaMalloc((void **) &disparityMapFromImage1To2Device,
 				widthImages * heightImages * sizeof(float));
 
-		ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
+		ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processBPOnGPUUsingCUDA;
 		processBPOnGPUUsingCUDA(smoothedImage1Device, smoothedImage2Device,
 				disparityMapFromImage1To2Device, algSettings, timings);
 
