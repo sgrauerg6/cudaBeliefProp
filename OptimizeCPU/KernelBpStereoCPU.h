@@ -129,6 +129,11 @@ public:
 									T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 									T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
 
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
+			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 	template<typename T>

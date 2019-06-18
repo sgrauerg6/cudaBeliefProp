@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.h"
 #include <math.h>
 #include <omp.h>
+#include <x86intrin.h>
 
 //checks if the current point is within the image bounds
 bool KernelBpStereoCPU::withinImageBoundsCPU(int xVal, int yVal, int width, int height)
@@ -68,6 +69,31 @@ void KernelBpStereoCPU::dtStereoCPU(T f[NUM_POSSIBLE_DISPARITY_VALUES])
 	}
 }
 
+//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+template<>
+void KernelBpStereoCPU::dtStereoCPU<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALUES])
+{
+	__m256 prev;
+	__m256 vectorAllOneVal = _mm256_set1_ps(1.0);
+	for (int currentDisparity = 1; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	{
+		prev = _mm256_add_ps(f[currentDisparity-1], vectorAllOneVal);
+		//prev = f[currentDisparity-1] + (T)1.0;
+		/*if (prev < f[currentDisparity])
+					f[currentDisparity] = prev;*/
+		f[currentDisparity] = _mm256_min_ps(prev, f[currentDisparity]);
+	}
+
+	for (int currentDisparity = NUM_POSSIBLE_DISPARITY_VALUES-2; currentDisparity >= 0; currentDisparity--)
+	{
+		//prev = f[currentDisparity+1] + (T)1.0;
+		prev = _mm256_add_ps(f[currentDisparity+1], vectorAllOneVal);
+		//if (prev < f[currentDisparity])
+		//	f[currentDisparity] = prev;
+		f[currentDisparity] = _mm256_min_ps(prev, f[currentDisparity]);
+	}
+}
+
 // compute current message
 template<typename T>
 void KernelBpStereoCPU::msgStereoCPU(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
@@ -107,6 +133,61 @@ void KernelBpStereoCPU::msgStereoCPU(T messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++) 
 		dst[currentDisparity] -= valToNormalize;
+}
+
+// compute current message
+template<>
+void KernelBpStereoCPU::msgStereoCPU<__m256>(__m256 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+		__m256 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+		__m256 dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256 disc_k_bp)
+{
+	// aggregate and find min
+	//T minimum = INF_BP;
+	__m256 minimum = _mm256_set1_ps(INF_BP);
+
+	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	{
+		dst[currentDisparity] = _mm256_add_ps(messageValsNeighbor1[currentDisparity], messageValsNeighbor2[currentDisparity]);
+		dst[currentDisparity] = _mm256_add_ps(dst[currentDisparity], messageValsNeighbor3[currentDisparity]);
+		dst[currentDisparity] = _mm256_add_ps(dst[currentDisparity], dataCosts[currentDisparity]);
+		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
+		//if (dst[currentDisparity] < minimum)
+		//	minimum = dst[currentDisparity];
+		minimum = _mm256_min_ps(minimum, dst[currentDisparity]);
+	}
+
+	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	dtStereoCPU<__m256>(dst);
+
+	// truncate
+	//minimum += disc_k_bp;
+	minimum = _mm256_add_ps(minimum, disc_k_bp);
+
+	// normalize
+	//T valToNormalize = 0;
+	__m256 valToNormalize = _mm256_set1_ps(0.0f);
+
+
+	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	{
+		/*if (minimum < dst[currentDisparity])
+		{
+			dst[currentDisparity] = minimum;
+		}*/
+		dst[currentDisparity] = _mm256_min_ps(minimum, dst[currentDisparity]);
+
+		//valToNormalize += dst[currentDisparity];
+		valToNormalize = _mm256_add_ps(valToNormalize, dst[currentDisparity]);
+	}
+
+	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
+	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)NUM_POSSIBLE_DISPARITY_VALUES));
+
+	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	{
+		//dst[currentDisparity] -= valToNormalize;
+		dst[currentDisparity] = _mm256_sub_ps(dst[currentDisparity], valToNormalize);
+	}
 }
 
 
@@ -638,6 +719,147 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(T* d
 						checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
 			//}
 		//}
+	}
+}
+
+
+//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
+//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+		float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
+		float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+{
+	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+
+	/*#pragma omp parallel for
+	for (int val = 0; val < (widthLevel / 2)*heightLevel; val++)
+	{
+		int yVal = val / (widthLevel / 2);
+		int xVal = val % (widthLevel / 2);*/
+	//checkerboardAdjustment used for indexing into current checkerboard to update
+	#pragma omp parallel for
+	for (int yVal = 1; yVal < heightLevel-1; yVal++)
+	{
+		int checkerboardAdjustment;
+		if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+			checkerboardAdjustment = ((yVal) % 2);
+		} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+		{
+			checkerboardAdjustment = ((yVal + 1) % 2);
+		}
+		int startX = (checkerboardAdjustment == 1 ? 0 : 1);
+		int endXAvxStart = ((((widthCheckerboardCurrentLevel - startX) - checkerboardAdjustment) / 8) * 8 - 8) + startX;
+		int endFinal = widthCheckerboardCurrentLevel - checkerboardAdjustment;
+
+		for (int xVal = startX; xVal <= endXAvxStart; xVal += 8)
+		{
+			//if (withinImageBoundsCPU(xVal, yVal, widthLevel / 2, heightLevel)) {
+				/*runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
+						T>(dataCostStereoCheckerboard1,
+						dataCostStereoCheckerboard2,
+						messageUDeviceCurrentCheckerboard1,
+						messageDDeviceCurrentCheckerboard1,
+						messageLDeviceCurrentCheckerboard1,
+						messageRDeviceCurrentCheckerboard1,
+						messageUDeviceCurrentCheckerboard2,
+						messageDDeviceCurrentCheckerboard2,
+						messageLDeviceCurrentCheckerboard2,
+						messageRDeviceCurrentCheckerboard2,
+						widthCheckerboardCurrentLevel, heightLevel,
+						checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);*/
+
+			int indexWriteTo;
+
+			//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
+			//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
+			//if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+			if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthCheckerboardCurrentLevel - checkerboardAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+			{
+				__m256 prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+				__m256 dataMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+				{
+					if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+					{
+						dataMessage[currentDisparity] = _mm256_loadu_ps(&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevUMessage[currentDisparity] = _mm256_loadu_ps(&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevDMessage[currentDisparity] = _mm256_loadu_ps(&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevLMessage[currentDisparity] = _mm256_loadu_ps(&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevRMessage[currentDisparity] = _mm256_loadu_ps(&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+					}
+					else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+					{
+						dataMessage[currentDisparity] = _mm256_loadu_ps(&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevUMessage[currentDisparity] = _mm256_loadu_ps(&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevDMessage[currentDisparity] = _mm256_loadu_ps(&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevLMessage[currentDisparity] = _mm256_loadu_ps(&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevRMessage[currentDisparity] = _mm256_loadu_ps(&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+					}
+				}
+
+				__m256 currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m256 disc_k_bp_vector = _mm256_set1_ps(disc_k_bp);
+
+				msgStereoCPU<__m256>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
+						currentUMessage, disc_k_bp_vector);
+
+				msgStereoCPU<__m256>(prevDMessage, prevLMessage, prevRMessage, dataMessage,
+						currentDMessage, disc_k_bp_vector);
+
+				msgStereoCPU<__m256>(prevUMessage, prevDMessage, prevRMessage, dataMessage,
+						currentRMessage, disc_k_bp_vector);
+
+				msgStereoCPU<__m256>(prevUMessage, prevDMessage, prevLMessage, dataMessage,
+						currentLMessage, disc_k_bp_vector);
+
+				//write the calculated message values to global memory
+				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+				{
+					indexWriteTo = retrieveIndexInDataAndMessageCPU(xVal, yVal, widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+					if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+					{
+						_mm256_storeu_ps(&messageUDeviceCurrentCheckerboard1[indexWriteTo], currentUMessage[currentDisparity]);
+						_mm256_storeu_ps(&messageDDeviceCurrentCheckerboard1[indexWriteTo], currentDMessage[currentDisparity]);
+						_mm256_storeu_ps(&messageLDeviceCurrentCheckerboard1[indexWriteTo], currentLMessage[currentDisparity]);
+						_mm256_storeu_ps(&messageRDeviceCurrentCheckerboard1[indexWriteTo], currentRMessage[currentDisparity]);
+					}
+					else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+					{
+						_mm256_storeu_ps(&messageUDeviceCurrentCheckerboard2[indexWriteTo], currentUMessage[currentDisparity]);
+						_mm256_storeu_ps(&messageDDeviceCurrentCheckerboard2[indexWriteTo], currentDMessage[currentDisparity]);
+						_mm256_storeu_ps(&messageLDeviceCurrentCheckerboard2[indexWriteTo], currentLMessage[currentDisparity]);
+						_mm256_storeu_ps(&messageRDeviceCurrentCheckerboard2[indexWriteTo], currentRMessage[currentDisparity]);
+					}
+				}
+			}
+			//}
+		}
+
+		for (int xVal = endXAvxStart + 8; xVal < endFinal; xVal ++)
+		{
+			runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
+					float>(dataCostStereoCheckerboard1,
+					dataCostStereoCheckerboard2,
+					messageUDeviceCurrentCheckerboard1,
+					messageDDeviceCurrentCheckerboard1,
+					messageLDeviceCurrentCheckerboard1,
+					messageRDeviceCurrentCheckerboard1,
+					messageUDeviceCurrentCheckerboard2,
+					messageDDeviceCurrentCheckerboard2,
+					messageLDeviceCurrentCheckerboard2,
+					messageRDeviceCurrentCheckerboard2,
+					widthCheckerboardCurrentLevel, heightLevel,
+					checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
+		}
 	}
 }
 

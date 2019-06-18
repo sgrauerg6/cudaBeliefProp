@@ -65,7 +65,7 @@ SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
 RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h
-	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)

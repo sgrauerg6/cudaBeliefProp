@@ -130,14 +130,23 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::runBPAtCurrentLevel(BPse
 			checkboardPartUpdate = CHECKERBOARD_PART_1;
 		}
 
-		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
+		/*KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
 				dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
 				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 				messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
 				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 				widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-				checkboardPartUpdate, algSettings.disc_k_bp);
+				checkboardPartUpdate, algSettings.disc_k_bp);*/
+
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(
+						dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+						widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+						checkboardPartUpdate, algSettings.disc_k_bp);
 	}
 }
 
