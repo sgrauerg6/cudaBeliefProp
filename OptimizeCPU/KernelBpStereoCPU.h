@@ -32,6 +32,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION (height*width*currentDisparity + width*yVal + xVal)
 //#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
 
+#define USE_DEFAULT 0
+#define USE_AVX_256 1
+#define USE_AVX_512 2
+
+#define OPTIMIZATION_SETTING USE_AVX_256
+
 class KernelBpStereoCPU
 {
 public:
@@ -133,6 +139,15 @@ public:
 			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
 			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
 			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+#if OPTIMIZATION_SETTING == USE_AVX_512
+
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
+			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+#endif
 
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places

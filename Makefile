@@ -66,6 +66,8 @@ SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	
 RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h
 	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	#use below if using the avx512 code on skylake
+	#g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp -mavx2 -march=skylake-avx512 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)

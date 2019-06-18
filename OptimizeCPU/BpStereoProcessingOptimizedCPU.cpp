@@ -130,14 +130,7 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::runBPAtCurrentLevel(BPse
 			checkboardPartUpdate = CHECKERBOARD_PART_1;
 		}
 
-		/*KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
-				dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-				messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-				widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-				checkboardPartUpdate, algSettings.disc_k_bp);*/
+#if OPTIMIZATION_SETTING == USE_AVX_256
 
 		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(
 						dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
@@ -147,6 +140,30 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::runBPAtCurrentLevel(BPse
 						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 						widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 						checkboardPartUpdate, algSettings.disc_k_bp);
+
+#elif OPTIMIZATION_SETTING == USE_AVX_512
+
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(
+								dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+								messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+								messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+								messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+								messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+								widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+								checkboardPartUpdate, algSettings.disc_k_bp);
+
+#else
+
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
+						dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+						widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+						checkboardPartUpdate, algSettings.disc_k_bp);
+
+#endif
 	}
 }
 
