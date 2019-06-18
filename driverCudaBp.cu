@@ -79,27 +79,44 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings = initializeAndReturnBPSettings();
 
-	printf("Running belief propagation on reference image %s and test image %s on GPU and CPU\n", DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
+	printf(
+			"Running belief propagation on reference image %s and test image %s on GPU and CPU\n",
+			DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
 	RunBpStereoSetOnGPUWithCUDA runBpStereoSetCUDA;
 	RunBpStereoOptimizedCPU runBpStereoOptCPU;
 	RunBpStereoCPUSingleThread runBpStereoSetCPU;
-	float cudaRunTime = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_GPU, resultsFile);
-	float singleThreadCpuRunTime = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
-	float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_CPU, resultsFile);
+	float cudaRunTime = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH,
+			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_1,
+			resultsFile);
+	float singleThreadCpuRunTime = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH,
+			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
+			resultsFile);
+	float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH,
+			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
+			resultsFile);
 
 	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTime);
 	printf("Optimized CPU runtime: %f\n", cpuRunTime);
 	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTime);
-	printf("Output disparity map from final GPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_GPU);
-	printf("Output disparity map from CPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_CPU);
+	printf("Output disparity map from final GPU run at %s\n",
+			SAVE_DISPARITY_IMAGE_PATH_1);
+	printf("Output disparity map from CPU run at %s\n",
+			SAVE_DISPARITY_IMAGE_PATH_2);
 
 	fprintf(resultsFile, "\nCPU output vs. Ground Truth result:\n");
-	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_2, SCALE_BP,
+			DEFAULT_GROUND_TRUTH_DISPARITY_FILE,
+			DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	fprintf(resultsFile, "\nGPU output vs. Ground Truth result:\n");
-	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_GPU, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP,
+			DEFAULT_GROUND_TRUTH_DISPARITY_FILE,
+			DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	fprintf(resultsFile, "\nGPU output vs. CPU output:\n");
-	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_CPU, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_GPU, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
-	printf("More info including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file.\n");
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_2, SCALE_BP,
+			SAVE_DISPARITY_IMAGE_PATH_1, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY,
+			resultsFile);
+	printf(
+			"More info including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file.\n");
 }
 
 

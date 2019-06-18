@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = bpStereoCudaParameters.h bpParametersFromPython.h
+FILE_DEPENDENCIES = bpStereoCudaParameters.h bpParametersFromPython.h bpStereoParameters.h
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -41,22 +41,28 @@ LINK   = -lm
 .cpp.o:
 	$(CPP) $(CFLAGS) -c $< -o $@
 
-all: impDriver
+all: impDriver 
 
 impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o RunBpStereoSetOnGPUWithCUDA.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o
 	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB) -fopenmp -o driverCudaBp -O -m64
 	#g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB) -o driverCudaBp -O -m64
 
+impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o
+	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB) -fopenmp -o driverCPUBp -O -m64
+
+driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h
+	g++ driverBpStereoCPU.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
 RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h
-	g++ RunBpStereoSet.cpp -x cu -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	g++ RunBpStereoSet.cpp -x cu -c $(INCLUdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpDE_DIRS) $(COMPILE_FLAGS)
 
 imageHelpers.o: imageHelpers.cpp imageHelpers.h
 	g++ imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h bpStereoCudaParameters.h bpParametersFromPython.h
+stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
 	g++ stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h bpStereoCudaParameters.h bpParametersFromPython.h
+stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h bpStereoCudaParameters.h bpParametersFromPython.h bpStereoParameters.h
 	g++ SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
 SmoothImage.o: SmoothImage.cpp SmoothImage.h
@@ -66,7 +72,7 @@ SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#g++ OptimizeCPU/SmoothImageCPU.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h
+RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h bpParametersFromPython.h bpStereoParameters.h OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/BpStereoProcessingOptimizedCPU.cpp OptimizeCPU/BpStereoProcessingOptimizedCPU.h OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#use below if using the avx512 code on skylake
@@ -75,11 +81,11 @@ RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/R
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 	
-RunBpStereoSetOnGPUWithCUDA.o: OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h OptimizeCUDA/kernalBpStereo.cu OptimizeCUDA/kernalBpStereoHeader.cuh bpStereoCudaParameters.h bpParametersFromPython.h OptimizeCUDA/DetailedTimings.h
+RunBpStereoSetOnGPUWithCUDA.o: OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h OptimizeCUDA/kernalBpStereo.cu OptimizeCUDA/kernalBpStereoHeader.cuh bpStereoParameters.h bpStereoCudaParameters.h bpParametersFromPython.h OptimizeCUDA/DetailedTimings.h
 	$(NVCC) -x cu -c OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp $(ARCHITECTURES_GENCODE) -o RunBpStereoSetOnGPUWithCUDA.o $(COMPILE_FLAGS)
 
 $(CU_OBJ): $(CU_FILE) $(CU_HEADER) $(FILE_DEPENDENCIES)
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
 	$(NVCC) -c $(CU_FILE) $(ARCHITECTURES_GENCODE) -o $(CU_OBJ) $(COMPILE_FLAGS) 
 make clean:
-	rm *.o driverCudaBp
+	rm *.o driverCudaBp driverCPUBp

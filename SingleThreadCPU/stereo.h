@@ -19,7 +19,7 @@
 #include "filter.h"
 #include "imconv.h"
 #include <string>
-#include "bpStereoCudaParameters.h"
+#include "bpStereoParameters.h"
 #include <chrono>
 
 #define MAX_ALLOWED_LEVELS 10

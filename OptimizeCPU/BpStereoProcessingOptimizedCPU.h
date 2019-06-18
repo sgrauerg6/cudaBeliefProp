@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 #define BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 
-#include "bpStereoCudaParameters.h"
+#include "bpStereoParameters.h"
 
 //include for the kernal functions to be run on the GPU
 #include "KernelBpStereoCPU.h"
@@ -139,6 +139,9 @@ public:
 	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings);
 };
 
+//if data type is half or half2, process using float on CPU since doesn't have native support for half (like some NVIDIA GPUs)
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+
 //CPU does not current support half and half2 operations natively, so instead process float if that is specified
 template<>
 class BpStereoProcessingOptimizedCPU<half>
@@ -154,6 +157,8 @@ public:
 	}
 };
 
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+
 template<>
 class BpStereoProcessingOptimizedCPU<half2>
 {
@@ -167,5 +172,8 @@ public:
 		bpStereoFloat(image1Pixels, image2Pixels, resultingDisparityMap, algSettings);
 	}
 };
+
+#endif
+
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

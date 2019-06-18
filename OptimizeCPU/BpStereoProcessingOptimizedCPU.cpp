@@ -156,12 +156,7 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::copyMessageValuesToNextL
 	T** messageUDeviceCheckerboard2CopyTo, T** messageDDeviceCheckerboard2CopyTo, T** messageLDeviceCheckerboard2CopyTo,
 	T** messageRDeviceCheckerboard2CopyTo)
 {
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
 	int widthCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel);
-	grid.x = (unsigned int)ceil((float)(widthCheckerboard / 2.0f) / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)(heightLevelActualIntegerSizeNextLevel / 2.0f) / (float)threads.y);
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 

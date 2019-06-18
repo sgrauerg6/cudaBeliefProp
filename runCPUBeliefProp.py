@@ -59,7 +59,7 @@ if __name__ == "__main__":
 	outputData = []
 	firstLine = True
 	optimizedMemory = [0, 1]
-	beliefPropDataTypeProcessing = ["0", "1"]
+	beliefPropDataTypeProcessing = ["0"]
 	indexOptimizationSettings = ["1"]
 	cpuOptimizationSettings = ["0", "1"]
 	for imageSet in imageSets:
@@ -110,8 +110,8 @@ if __name__ == "__main__":
 											file.close()
 				
 											os.system("make clean")
-											os.system("make")
-											os.system("./driverCudaBp")
+											os.system("make impDriveCPU")
+											os.system("./driverCPUBp")
 			 	
 											file = open("output.txt", "r") 
 											numLabel = 0
