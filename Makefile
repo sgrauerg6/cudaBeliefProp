@@ -18,6 +18,7 @@ INCLUDE_DIRS := -I. -I./ -I$(CUDA_DIR)/include -I$(COMMONDIR)/inc -I$(SHAREDDIR)
 
 # contains the library files needed for linking
 LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart
+LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER)
 
 # define the path for the nvcc cuda compiler
 NVCC := $(CUDA_DIR)/bin/nvcc
@@ -48,7 +49,7 @@ impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.
 	#g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB) -o driverCudaBp -O -m64
 
 impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o
-	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB) -fopenmp -o driverCPUBp -O -m64
+	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB_CPU) -fopenmp -o driverCPUBp -O -m64
 
 driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h
 	g++ driverBpStereoCPU.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
