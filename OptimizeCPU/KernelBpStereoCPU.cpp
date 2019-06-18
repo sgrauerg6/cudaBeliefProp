@@ -1033,7 +1033,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 				__m512 currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
 				__m512 currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
 				__m512 currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
-				__m512 disc_k_bp_vector = _mm256_set1_ps(disc_k_bp);
+				__m512 disc_k_bp_vector = _mm512_set1_ps(disc_k_bp);
 
 				msgStereoCPU<__m512>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
 						currentUMessage, disc_k_bp_vector);
