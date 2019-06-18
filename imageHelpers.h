@@ -25,11 +25,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define MAXCOLS 2000
 #define MAXLENGTH 256
 #define MAXVALUE 255
+const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 
-#include "bpStereoCudaParameters.cuh"
 #include <chrono>
 #include <math.h>
 #include <cstring>
+#include <stdio.h>
 
 class ImageHelperFunctions
 {

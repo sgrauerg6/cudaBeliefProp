@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <fstream>
 #include "image.h"
 #include "misc.h"
-#include "bpStereoCudaParameters.cuh"
 
 #define BUF_SIZE 256
+const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION_PNMFILE = true;
 
 class pnm_error { };
 
@@ -196,7 +196,7 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
   float rChannelWeight = 1.0f / 3.0f;
   float gChannelWeight = 1.0f / 3.0f;
   float bChannelWeight = 1.0f / 3.0f;
-  if (USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION)
+  if (USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION_PNMFILE)
   {
       		  rChannelWeight = 0.299f;
       		  gChannelWeight = 0.114f;

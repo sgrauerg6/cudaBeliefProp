@@ -8,7 +8,7 @@
 #ifndef RUNBPSTEREOSET_H_
 #define RUNBPSTEREOSET_H_
 
-#include "bpStereoCudaParameters.cuh"
+#include "bpStereoCudaParameters.h"
 
 class RunBpStereoSet {
 public:

@@ -130,29 +130,6 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::runBPAtCurrentLevel(BPse
 			checkboardPartUpdate = CHECKERBOARD_PART_1;
 		}
 
-#if OPTIMIZATION_SETTING == USE_AVX_256
-
-		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(
-						dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-						widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-						checkboardPartUpdate, algSettings.disc_k_bp);
-
-#elif OPTIMIZATION_SETTING == USE_AVX_512
-
-		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(
-								dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
-								messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
-								messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
-								messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-								messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-								widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-								checkboardPartUpdate, algSettings.disc_k_bp);
-
-#else
 
 		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
 						dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
@@ -162,8 +139,6 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::runBPAtCurrentLevel(BPse
 						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 						widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 						checkboardPartUpdate, algSettings.disc_k_bp);
-
-#endif
 	}
 }
 
@@ -196,15 +171,15 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::copyMessageValuesToNextL
 	int numDataAndMessageSetInCheckerboardAtLevel = widthCheckerboard * heightLevelActualIntegerSizeNextLevel * totalPossibleMovements;
 
 	//allocate space in the GPU for the message values in the checkerboard set to copy to
-	messageUDeviceCheckerboard1CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
-	messageDDeviceCheckerboard1CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
-	messageLDeviceCheckerboard1CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
-	messageRDeviceCheckerboard1CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
+	*messageUDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
+	*messageDDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
+	*messageLDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
+	*messageRDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
 
-	messageUDeviceCheckerboard2CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
-	messageDDeviceCheckerboard2CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
-	messageLDeviceCheckerboard2CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
-	messageRDeviceCheckerboard2CopyTo = new T[numBytesDataAndMessageSetInCheckerboardAtLevel];
+	*messageUDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
+	*messageDDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
+	*messageLDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
+	*messageRDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
 
 #endif
 
@@ -721,3 +696,5 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 
 #endif
 }
+
+

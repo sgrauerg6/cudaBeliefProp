@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file contains the "main" function that drives the CUDA BP implementation
 
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
-#include "bpStereoCudaParameters.cuh"
+#include "bpStereoCudaParameters.h"
 #include "SingleThreadCPU/stereo.h"
 
 //needed for functions to load input images/store resulting disp/movement image
@@ -132,6 +132,7 @@ int main(int argc, char** argv)
 	fprintf(resultsFile, "DATA_K_BP: %f\n", DATA_K_BP);
 	fprintf(resultsFile, "LAMBDA_BP: %f\n", LAMBDA_BP);
 	fprintf(resultsFile, "SIGMA_BP: %f\n", SIGMA_BP);
+	fprintf(resultsFile, "CPU_OPTIMIZATION_LEVEL: %d\n", CPU_OPTIMIZATION_SETTING);
 	retrieveDeviceProperties(0, resultsFile);
 	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);
 	int cudaRuntimeVersion;

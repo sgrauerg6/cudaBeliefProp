@@ -22,13 +22,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef STEREO_RESULTS_EVAL_PARAMETERS_CUH
 #define STEREO_RESULTS_EVAL_PARAMETERS_CUH
 
-//use the width/height from bpCudaParameters
-#include "bpStereoCudaParameters.cuh"
+#define SMALL_VAL_FOR_EVAL .01f
+#define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY 0
+#define DEFAULT_Y_BORDER_GROUND_TRUTH_DISPARITY 0
 
 //define the difference in disparity for it to be considered a "significant difference"
 //pixels with difference beyond this are called a "bad pixel" if one of the images is the ground truth
 //(when value is SMALL_VAL_BP, then any pixel where disparity values are not the same value are considered "bad pixels")
-#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1 SMALL_VAL_BP
+#define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1 SMALL_VAL_FOR_EVAL
 #define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2 2.01f
 #define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3 5.01f
 #define SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4 10.01f
@@ -42,7 +43,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //define a "cap" of the maximum difference between the corresponding disparities
 //(make this infinity if you don't want to cap this value)
-#define MAX_ABS_DIFF_BETWEEN_CORR_DISP INF_BP
+#define MAX_ABS_DIFF_BETWEEN_CORR_DISP 65504.0f
 
 //structure holding results of the stereo evaluation
 typedef struct

@@ -21,10 +21,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef SMOOTH_IMAGE_HOST_HEADER_CUH
 #define SMOOTH_IMAGE_HOST_HEADER_CUH
 
-#include "bpStereoCudaParameters.cuh"
-
 #include <math.h>
 #include <algorithm>
+
+#define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
+
+//more parameters for smoothing
+#define WIDTH_SIGMA_1 4.0
+#define MAX_SIZE_FILTER 25
 
 //functions relating to smoothing the images before running BP
 class SmoothImage

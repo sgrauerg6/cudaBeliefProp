@@ -19,11 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file defines the methods to perform belief propagation for disparity map estimation from stereo images on CUDA
 
 
-#include "bpStereoCudaParameters.cuh"
 #include "KernelBpStereoCPU.h"
-#include <math.h>
-#include <omp.h>
-#include <x86intrin.h>
 
 //checks if the current point is within the image bounds
 bool KernelBpStereoCPU::withinImageBoundsCPU(int xVal, int yVal, int width, int height)
@@ -94,7 +90,7 @@ void KernelBpStereoCPU::dtStereoCPU<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALU
 	}
 }
 
-#if OPTIMIZATION_SETTING == USE_AVX_512
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<>
@@ -283,7 +279,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 	int imageCheckerboardWidth = getCheckerboardWidthCPU<T>(widthImages);
 
 	#pragma omp parallel for
-	for (int val = 0; val < widthImages*heightImages; val++)
+	for (int val = 0; val < (widthImages*heightImages); val++)
 	{
 		int yVal = val / widthImages;
 		int xVal = val % widthImages;
@@ -510,7 +506,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCos
 	int widthCheckerboardPrevLevel = getCheckerboardWidthCPU<T>(widthPrevLevel);
 
 	#pragma omp parallel for
-	for (int val = 0; val < widthCheckerboardCurrentLevel*heightCurrentLevel; val++)
+	for (int val = 0; val < (widthCheckerboardCurrentLevel*heightCurrentLevel); val++)
 	{
 		int yVal = val / widthCheckerboardCurrentLevel;
 		int xVal = val % widthCheckerboardCurrentLevel;
@@ -587,7 +583,7 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(T* messageUDevic
 												T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel)
 {
 	#pragma omp parallel for
-	for (int val = 0; val < widthCheckerboardAtLevel*heightLevel; val++)
+	for (int val = 0; val < (widthCheckerboardAtLevel*heightLevel); val++)
 	{
 		int yVal = val / widthCheckerboardAtLevel;
 		int xValInCheckerboard = val % widthCheckerboardAtLevel;
@@ -777,54 +773,109 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(T* d
 {
 	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<T>(widthLevel);
 
-	#pragma omp parallel for
-	for (int val = 0; val < (widthLevel / 2)*heightLevel; val++)
-	{
-		int yVal = val / (widthLevel / 2);
-		int xVal = val % (widthLevel / 2);
-	/*for (int yVal = 0; yVal < heightLevel; yVal++)
-	{
 		#pragma omp parallel for
-		for (int xVal = 0; xVal < widthLevel / 2; xVal++)
-		{*/
-			//if (withinImageBoundsCPU(xVal, yVal, widthLevel / 2, heightLevel)) {
-				runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
-						T>(dataCostStereoCheckerboard1,
-						dataCostStereoCheckerboard2,
-						messageUDeviceCurrentCheckerboard1,
-						messageDDeviceCurrentCheckerboard1,
-						messageLDeviceCurrentCheckerboard1,
-						messageRDeviceCurrentCheckerboard1,
-						messageUDeviceCurrentCheckerboard2,
-						messageDDeviceCurrentCheckerboard2,
-						messageLDeviceCurrentCheckerboard2,
-						messageRDeviceCurrentCheckerboard2,
-						widthCheckerboardCurrentLevel, heightLevel,
-						checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
+		for (int val = 0; val < (widthCheckerboardCurrentLevel*heightLevel); val++)
+		{
+			int yVal = val / widthCheckerboardCurrentLevel;
+			int xVal = val % widthCheckerboardCurrentLevel;
+		/*for (int yVal = 0; yVal < heightLevel; yVal++)
+		{
+			#pragma omp parallel for
+			for (int xVal = 0; xVal < widthLevel / 2; xVal++)
+			{*/
+				//if (withinImageBoundsCPU(xVal, yVal, widthLevel / 2, heightLevel)) {
+					runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
+							T>(dataCostStereoCheckerboard1,
+							dataCostStereoCheckerboard2,
+							messageUDeviceCurrentCheckerboard1,
+							messageDDeviceCurrentCheckerboard1,
+							messageLDeviceCurrentCheckerboard1,
+							messageRDeviceCurrentCheckerboard1,
+							messageUDeviceCurrentCheckerboard2,
+							messageDDeviceCurrentCheckerboard2,
+							messageLDeviceCurrentCheckerboard2,
+							messageRDeviceCurrentCheckerboard2,
+							widthCheckerboardCurrentLevel, heightLevel,
+							checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
+				//}
 			//}
-		//}
-	}
+		}
 }
-
 
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+template<>
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
+		float>(float* dataCostStereoCheckerboard1,
+		float* dataCostStereoCheckerboard2,
+		float* messageUDeviceCurrentCheckerboard1,
+		float* messageDDeviceCurrentCheckerboard1,
+		float* messageLDeviceCurrentCheckerboard1,
+		float* messageRDeviceCurrentCheckerboard1,
+		float* messageUDeviceCurrentCheckerboard2,
+		float* messageDDeviceCurrentCheckerboard2,
+		float* messageLDeviceCurrentCheckerboard2,
+		float* messageRDeviceCurrentCheckerboard2, int widthLevel,
+		int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+{
+
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+			messageRDeviceCurrentCheckerboard2, widthLevel, heightLevel, checkerboardPartUpdate, disc_k_bp);
+
+#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
+
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX512(dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+				messageRDeviceCurrentCheckerboard2, widthLevel, heightLevel, checkerboardPartUpdate, disc_k_bp);
+#else
+
+	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+
+		#pragma omp parallel for
+		for (int val = 0; val < (widthCheckerboardCurrentLevel*heightLevel); val++)
+		{
+			int yVal = val / widthCheckerboardCurrentLevel;
+			int xVal = val % widthCheckerboardCurrentLevel;
+		/*for (int yVal = 0; yVal < heightLevel; yVal++)
+		{
+			#pragma omp parallel for
+			for (int xVal = 0; xVal < widthLevel / 2; xVal++)
+			{*/
+				//if (withinImageBoundsCPU(xVal, yVal, widthLevel / 2, heightLevel)) {
+					runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<float>(dataCostStereoCheckerboard1,
+							dataCostStereoCheckerboard2,
+							messageUDeviceCurrentCheckerboard1,
+							messageDDeviceCurrentCheckerboard1,
+							messageLDeviceCurrentCheckerboard1,
+							messageRDeviceCurrentCheckerboard1,
+							messageUDeviceCurrentCheckerboard2,
+							messageDDeviceCurrentCheckerboard2,
+							messageLDeviceCurrentCheckerboard2,
+							messageRDeviceCurrentCheckerboard2,
+							widthCheckerboardCurrentLevel, heightLevel,
+							checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
+				//}
+			//}
+		}
+#endif
+}
+
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
 		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
 		float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
 		float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
 {
 	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
 
-	/*#pragma omp parallel for
-	for (int val = 0; val < (widthLevel / 2)*heightLevel; val++)
-	{
-		int yVal = val / (widthLevel / 2);
-		int xVal = val % (widthLevel / 2);*/
-	//checkerboardAdjustment used for indexing into current checkerboard to update
 	#pragma omp parallel for
 	for (int yVal = 1; yVal < heightLevel-1; yVal++)
 	{
+		//checkerboardAdjustment used for indexing into current checkerboard to update
 		int checkerboardAdjustment;
 		if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
 			checkerboardAdjustment = ((yVal) % 2);
@@ -838,21 +889,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 
 		for (int xVal = startX; xVal <= endXAvxStart; xVal += 8)
 		{
-			//if (withinImageBoundsCPU(xVal, yVal, widthLevel / 2, heightLevel)) {
-				/*runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
-						T>(dataCostStereoCheckerboard1,
-						dataCostStereoCheckerboard2,
-						messageUDeviceCurrentCheckerboard1,
-						messageDDeviceCurrentCheckerboard1,
-						messageLDeviceCurrentCheckerboard1,
-						messageRDeviceCurrentCheckerboard1,
-						messageUDeviceCurrentCheckerboard2,
-						messageDDeviceCurrentCheckerboard2,
-						messageLDeviceCurrentCheckerboard2,
-						messageRDeviceCurrentCheckerboard2,
-						widthCheckerboardCurrentLevel, heightLevel,
-						checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);*/
-
 			int indexWriteTo;
 
 			//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
@@ -947,11 +983,11 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 	}
 }
 
-#if OPTIMIZATION_SETTING == USE_AVX_512
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
 		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
 		float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
 		float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
@@ -980,21 +1016,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 
 		for (int xVal = startX; xVal <= endXAvxStart; xVal += 16)
 		{
-			//if (withinImageBoundsCPU(xVal, yVal, widthLevel / 2, heightLevel)) {
-				/*runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
-						T>(dataCostStereoCheckerboard1,
-						dataCostStereoCheckerboard2,
-						messageUDeviceCurrentCheckerboard1,
-						messageDDeviceCurrentCheckerboard1,
-						messageLDeviceCurrentCheckerboard1,
-						messageRDeviceCurrentCheckerboard1,
-						messageUDeviceCurrentCheckerboard2,
-						messageDDeviceCurrentCheckerboard2,
-						messageLDeviceCurrentCheckerboard2,
-						messageRDeviceCurrentCheckerboard2,
-						widthCheckerboardCurrentLevel, heightLevel,
-						checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);*/
-
 			int indexWriteTo;
 
 			//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
@@ -1113,7 +1134,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 		int heightLevelNext, int checkerboardPart)
 {
 	#pragma omp parallel for
-	for (int val = 0; val < widthCheckerboardPrevLevel*heightLevelPrev; val++)
+	for (int val = 0; val < (widthCheckerboardPrevLevel*heightLevelPrev); val++)
 	{
 		int yVal = val / widthCheckerboardPrevLevel;
 		int xVal = val % widthCheckerboardPrevLevel;
@@ -1236,7 +1257,7 @@ template<typename T>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
 		#pragma omp parallel for
-		for (int val = 0; val < widthLevel*heightLevel; val++)
+		for (int val = 0; val < (widthLevel*heightLevel); val++)
 			{
 				int yVal = val / widthLevel;
 				int xVal = val % widthLevel;

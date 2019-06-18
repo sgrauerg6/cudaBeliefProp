@@ -19,9 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file defines the methods to perform belief propagation for disparity map estimation from stereo images on CUDA
 
 
-#include "bpStereoCudaParameters.cuh"
 #include "kernalBpStereoHeader.cuh"
-#include <cuda_fp16.h>
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBounds(int xVal, int yVal, int width, int height)

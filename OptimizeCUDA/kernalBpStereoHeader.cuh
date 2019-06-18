@@ -21,7 +21,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNAL_BP_H
 #define KERNAL_BP_H
 
-#include "bpStereoCudaParameters.cuh"
+#include "bpStereoCudaParameters.h"
+#include <cuda_fp16.h>
 
 //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 #if OPTIMIZED_INDEXING_SETTING == 1

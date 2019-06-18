@@ -18,14 +18,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This class defines parameters for the cuda implementation for disparity map estimation for a pair of stereo images
 
-#ifndef BP_STEREO_CUDA_PARAMETERS_CUH
-#define BP_STEREO_CUDA_PARAMETERS_CUH
+#ifndef BP_STEREO_CUDA_PARAMETERS_H
+#define BP_STEREO_CUDA_PARAMETERS_H
 
 #include <stdio.h>
 #include "bpParametersFromPython.h"
 #include <vector>
 #include <algorithm>
-#include <cuda_fp16.h>
 
 #define TSUKUBA_IMAGES 1
 #define CONES_IMAGES_QUARTER_SIZE 2
@@ -68,7 +67,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 // weighing of data cost
 #define LAMBDA_BP 0.07f
 
-#define SIGMA_BP 0.7f    // amount to smooth the input images
+#define SIGMA_BP 0.0f    // amount to smooth the input images
 
 #elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
 
@@ -228,11 +227,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DATA_TYPE_PROCESSING_HALF 2
 #define DATA_TYPE_PROCESSING_HALF_TWO 3
 
+#define USE_DEFAULT 0
+#define USE_AVX_256 1
+#define USE_AVX_512 2
+
 //If image set parameters from python, then use optimization settings set in current iteration in python script
 //These settings are written to file bpParametersFromPython.h as part of the python script
 #if (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 #define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
 #define OPTIMIZED_INDEXING_SETTING OPTIMIZED_INDEXING_SETTING_FROM_PYTHON
+#define CPU_OPTIMIZATION_SETTING CPU_OPTIMIZATION_SETTING_FROM_PYTHON
 #else
 //by default, 32-bit float data is used with optimized GPU memory management and optimized indexing
 //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these optimizations (note that the optimized indexing was present in the initial implementation)
@@ -242,6 +246,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
 #define OPTIMIZED_INDEXING_SETTING 1
 #define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
+#define CPU_OPTIMIZATION_SETTING USE_DEFAULT
 #endif //(IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
@@ -249,9 +254,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 typedef double beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+#include <cuda_fp16.h>
 typedef half beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+#include <cuda_fp16.h>
 typedef half2 beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
 #else
@@ -267,15 +274,6 @@ typedef float beliefPropProcessingDataType;
 
 //define the default message value...
 #define DEFAULT_INITIAL_MESSAGE_VAL 0.0f
-
-#define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
-
-#define DEFAULT_X_BORDER_GROUND_TRUTH_DISPARITY NUM_POSSIBLE_DISPARITY_VALUES
-#define DEFAULT_Y_BORDER_GROUND_TRUTH_DISPARITY 18
-
-//more parameters for smoothing
-#define WIDTH_SIGMA_1 4.0
-#define MAX_SIZE_FILTER 25
 
 //defines the width and height of the thread block used for 
 //image filtering (applying the Guassian filter in smoothImageHost)
@@ -296,8 +294,6 @@ typedef float beliefPropProcessingDataType;
 
 #define NO_EXPECTED_STEREO_BP -999.0f
 
-const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
-
 
 //structure to store the settings for the number of levels and iterations
 typedef struct 
@@ -314,4 +310,4 @@ typedef struct
 	float disc_k_bp;
 }BPsettings;
 
-#endif // BP_STEREO_CUDA_PARAMETERS_CUH
+#endif // BP_STEREO_CUDA_PARAMETERS_H

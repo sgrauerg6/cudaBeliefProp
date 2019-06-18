@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
-#include "bpStereoCudaParameters.cuh"
+#include "bpStereoCudaParameters.h"
 #include "RunBpStereoSet.h"
 #include <cuda_runtime.h>
 

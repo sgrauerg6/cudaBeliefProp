@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 #define BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 
-#include "bpStereoCudaParameters.cuh"
+#include "bpStereoCudaParameters.h"
 
 //include for the kernal functions to be run on the GPU
 #include "KernelBpStereoCPU.h"
@@ -137,6 +137,35 @@ public:
 	//input is images image1Pixels and image1Pixels
 	//output is resultingDisparityMap
 	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings);
+};
+
+//CPU does not current support half and half2 operations natively, so instead process float if that is specified
+template<>
+class BpStereoProcessingOptimizedCPU<half>
+{
+public:
+	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
+	//input is images image1Pixels and image1Pixels
+	//output is resultingDisparityMap
+	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings)
+	{
+		BpStereoProcessingOptimizedCPU<float> bpStereoFloat;
+		bpStereoFloat(image1Pixels, image2Pixels, resultingDisparityMap, algSettings);
+	}
+};
+
+template<>
+class BpStereoProcessingOptimizedCPU<half2>
+{
+public:
+	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
+	//input is images image1Pixels and image1Pixels
+	//output is resultingDisparityMap
+	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings)
+	{
+		BpStereoProcessingOptimizedCPU<float> bpStereoFloat;
+		bpStereoFloat(image1Pixels, image2Pixels, resultingDisparityMap, algSettings);
+	}
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

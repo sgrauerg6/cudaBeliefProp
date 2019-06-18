@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_runtime.h>
 #include <cuda.h>
-#include "bpStereoCudaParameters.cuh"
+#include "bpStereoCudaParameters.h"
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int height)
