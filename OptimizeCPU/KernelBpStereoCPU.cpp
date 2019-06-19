@@ -1248,17 +1248,15 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
 				short* messageRDeviceCurrentCheckerboard2, int widthLevel,
 				int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
 {
-
-//#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, widthLevel, heightLevel, checkerboardPartUpdate, disc_k_bp);
 
-
-
-		/*int widthCheckerboard = getCheckerboardWidthCPU<short>(widthLevel);
+#else
+		int widthCheckerboard = getCheckerboardWidthCPU<short>(widthLevel);
 		float* dataCostStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
 		float* dataCostStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
 		float* messageUDeviceCurrentCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
@@ -1314,7 +1312,9 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
 		delete [] messageUDeviceCurrentCheckerboard2Float;
 		delete [] messageDDeviceCurrentCheckerboard2Float;
 		delete [] messageLDeviceCurrentCheckerboard2Float;
-		delete [] messageRDeviceCurrentCheckerboard2Float;*/
+		delete [] messageRDeviceCurrentCheckerboard2Float;
+
+#endif
 }
 
 template<>
