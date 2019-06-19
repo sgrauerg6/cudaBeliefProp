@@ -28,7 +28,8 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O2 -std=c++11
-ARCHITECTURE_COMPILE_FLAG = -march=skylake
+# ARCHITECTURE_COMPILE_FLAG = -march=skylake
+ARCHITECTURE_COMPILE_FLAG = -march=skylake-avx512
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
 ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60
@@ -77,8 +78,6 @@ SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h bpParametersFromPython.h bpStereoParameters.h OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/BpStereoProcessingOptimizedCPU.cpp OptimizeCPU/BpStereoProcessingOptimizedCPU.h OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	#use below if using the avx512 code on skylake
-	#g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp -mavx2 -march=skylake-avx512 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)

@@ -90,9 +90,9 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	printf("Output disparity map from single-thread CPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_2);
 
 	fprintf(resultsFile, "\nOptimized CPU output vs. Ground Truth result:\n");
-	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
-	fprintf(resultsFile, "\nSingle Thread CPU output vs. Ground Truth result:\n");
 	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_2, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
+	fprintf(resultsFile, "\nSingle Thread CPU output vs. Ground Truth result:\n");
+	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP, DEFAULT_GROUND_TRUTH_DISPARITY_FILE, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	fprintf(resultsFile, "\nOptimized CPU output vs. Single Thread CPU output:\n");
 	compareDispMaps(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP, SAVE_DISPARITY_IMAGE_PATH_2, DEFAULT_SCALE_GROUND_TRUTH_DISPARITY, resultsFile);
 	printf("More info including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file.\n");
