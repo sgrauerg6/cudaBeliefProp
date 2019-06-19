@@ -7,6 +7,7 @@
 
 #include "RunBpStereoOptimizedCPU.h"
 #include "BpStereoProcessingOptimizedCPU.cpp"
+#include <omp.h>
 
 RunBpStereoOptimizedCPU::RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated constructor stub
@@ -87,7 +88,13 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 	fprintf(resultsFile, "Total Image Pixels: %d\n", widthImages * heightImages);
 
 	std::sort(runTimings.begin(), runTimings.end());
-
+	int nthreads = 0;
+	#pragma omp parallel
+	{
+		nthreads = omp_get_num_threads();
+	}
+	printf("Number of OMP threads: %d\n", nthreads);
+	fprintf(resultsFile, "Number of OMP threads: %d\n", nthreads);
 	printf("Median optimized CPU runtime: %f\n", runTimings.at(NUM_BP_STEREO_RUNS/2));
 	//printf("MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
 	fprintf(resultsFile, "Median optimized CPU runtime: %f\n", runTimings.at(NUM_BP_STEREO_RUNS/2));

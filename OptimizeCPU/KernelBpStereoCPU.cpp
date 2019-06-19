@@ -562,7 +562,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 	}
 }
 
-void KernelBpStereoCPU::convertShortToFloat(float* destinationFloat, const short* inputShort, int widthArray, int heightArray)
+void KernelBpStereoCPU::convertShortToFloat(float* destinationFloat, short* inputShort, int widthArray, int heightArray)
 {
 	int numDataInAvxVector = 8;
 	#pragma omp parallel for
@@ -582,10 +582,12 @@ void KernelBpStereoCPU::convertShortToFloat(float* destinationFloat, const short
 					currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 					currentDisparity++)
 			{
+				//load __m128i vector and convert to __m256 (set of 8 32-bit floats)
 				__m256 data32Bit =
 						_mm256_cvtph_ps(
-								_mm_load_si128((__m128i*)(&inputShort[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthArray, heightArray, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)])),
-								0);
+								_mm_loadu_si128((__m128i*)(&inputShort[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthArray, heightArray, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)])));
+
+				//store the __m256
 				_mm256_storeu_ps(
 						(&destinationFloat[retrieveIndexInDataAndMessageCPU(
 								xVal, yVal, widthArray,
@@ -596,7 +598,7 @@ void KernelBpStereoCPU::convertShortToFloat(float* destinationFloat, const short
 	}
 }
 
-void KernelBpStereoCPU::convertFloatToShort(short* destinationShort, const float* inputFloat, int widthArray, int heightArray)
+void KernelBpStereoCPU::convertFloatToShort(short* destinationShort, float* inputFloat, int widthArray, int heightArray)
 {
 	int numDataInAvxVector = 8;
 	#pragma omp parallel for
@@ -616,12 +618,14 @@ void KernelBpStereoCPU::convertFloatToShort(short* destinationShort, const float
 					currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 					currentDisparity++)
 			{
+				//load __m256 vector and convert to __m128i (that is storing 16-bit floats)
 				__m128i data16Bit =
-						_mm_cvtps_ph(
-								_mm256_loadu_ps((&inputFloat[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthArray, heightArray, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)])),
-								0);
+						_mm256_cvtps_ph(
+								_mm256_loadu_ps(&inputFloat[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthArray, heightArray, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]), 0);
+
+				//store the 16-bit floats
 				_mm_storeu_si128(
-						(&destinationShort[retrieveIndexInDataAndMessageCPU(
+						((__m128i*)&destinationShort[retrieveIndexInDataAndMessageCPU(
 								xVal, yVal, widthArray,
 								heightArray, currentDisparity,
 								NUM_POSSIBLE_DISPARITY_VALUES)]), data16Bit);
@@ -633,11 +637,17 @@ void KernelBpStereoCPU::convertFloatToShort(short* destinationShort, const float
 template<>
 void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<short>(float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
 {
-	int imageCheckerboardWidth = getCheckerboardWidthCPU<T>(widthImages);
+	int imageCheckerboardWidth = getCheckerboardWidthCPU<short>(widthImages);
 	float* dataCostDeviceStereoCheckerboard1Float = new float[imageCheckerboardWidth*heightImages*NUM_POSSIBLE_DISPARITY_VALUES];
 	float* dataCostDeviceStereoCheckerboard2Float = new float[imageCheckerboardWidth*heightImages*NUM_POSSIBLE_DISPARITY_VALUES];
 
 	initializeBottomLevelDataStereoCPU<float>(image1PixelsDevice, image2PixelsDevice, dataCostDeviceStereoCheckerboard1Float, dataCostDeviceStereoCheckerboard2Float, widthImages, heightImages, lambda_bp, data_k_bp);
+
+	convertFloatToShort(dataCostDeviceStereoCheckerboard1, dataCostDeviceStereoCheckerboard1Float, imageCheckerboardWidth, heightImages);
+	convertFloatToShort(dataCostDeviceStereoCheckerboard2, dataCostDeviceStereoCheckerboard2Float, imageCheckerboardWidth, heightImages);
+
+	delete [] dataCostDeviceStereoCheckerboard1Float;
+	delete [] dataCostDeviceStereoCheckerboard2Float;
 }
 
 
@@ -872,6 +882,32 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCos
 }
 
 
+template<>
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<short>(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum)
+{
+	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<short>(widthCurrentLevel);
+	int widthCheckerboardPrevLevel = getCheckerboardWidthCPU<short>(widthPrevLevel);
+
+	float* dataCostDeviceStereoCheckerboard1Float = new float[widthCheckerboardPrevLevel*heightPrevLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* dataCostDeviceStereoCheckerboard2Float = new float[widthCheckerboardPrevLevel*heightPrevLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* dataCostDeviceToWriteToFloat = new float[widthCheckerboardCurrentLevel*heightCurrentLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+
+	convertShortToFloat(dataCostDeviceStereoCheckerboard1Float, dataCostStereoCheckerboard1, widthCheckerboardPrevLevel, heightPrevLevel);
+	convertShortToFloat(dataCostDeviceStereoCheckerboard2Float, dataCostStereoCheckerboard2, widthCheckerboardPrevLevel, heightPrevLevel);
+
+	initializeCurrentLevelDataStereoNoTexturesCPU<float>(
+			dataCostDeviceStereoCheckerboard1Float, dataCostDeviceStereoCheckerboard2Float,
+			dataCostDeviceToWriteToFloat, widthCurrentLevel, heightCurrentLevel,
+			widthPrevLevel, heightPrevLevel, checkerboardPart, offsetNum);
+
+	convertFloatToShort(dataCostDeviceToWriteTo, dataCostDeviceToWriteToFloat, widthCheckerboardCurrentLevel, heightCurrentLevel);
+
+	delete [] dataCostDeviceStereoCheckerboard1Float;
+	delete [] dataCostDeviceStereoCheckerboard2Float;
+	delete [] dataCostDeviceToWriteToFloat;
+}
+
+
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
 void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
@@ -941,6 +977,43 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(T* messageUDevic
 			}
 		//}
 	}
+}
+
+template<>
+void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<short>(short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1,
+		short* messageRDeviceCurrentCheckerboard1, short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2,
+		short* messageLDeviceCurrentCheckerboard2, short* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel)
+{
+	float* messageUDeviceCurrentCheckerboard1Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageDDeviceCurrentCheckerboard1Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageLDeviceCurrentCheckerboard1Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageRDeviceCurrentCheckerboard1Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageUDeviceCurrentCheckerboard2Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageDDeviceCurrentCheckerboard2Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageLDeviceCurrentCheckerboard2Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageRDeviceCurrentCheckerboard2Float = new float[widthCheckerboardAtLevel*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+
+	initializeMessageValsToDefaultKernelCPU<float>(messageUDeviceCurrentCheckerboard1Float, messageDDeviceCurrentCheckerboard1Float, messageLDeviceCurrentCheckerboard1Float,
+			messageRDeviceCurrentCheckerboard1Float, messageUDeviceCurrentCheckerboard2Float, messageDDeviceCurrentCheckerboard2Float,
+			messageLDeviceCurrentCheckerboard2Float, messageRDeviceCurrentCheckerboard2Float, widthCheckerboardAtLevel, heightLevel);
+
+	convertFloatToShort(messageUDeviceCurrentCheckerboard1, messageUDeviceCurrentCheckerboard1Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageDDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageLDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageRDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageUDeviceCurrentCheckerboard2, messageUDeviceCurrentCheckerboard2Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageDDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageLDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2Float, widthCheckerboardAtLevel, heightLevel);
+	convertFloatToShort(messageRDeviceCurrentCheckerboard2, messageRDeviceCurrentCheckerboard2Float, widthCheckerboardAtLevel, heightLevel);
+
+	delete [] messageUDeviceCurrentCheckerboard1Float;
+	delete [] messageDDeviceCurrentCheckerboard1Float;
+	delete [] messageLDeviceCurrentCheckerboard1Float;
+	delete [] messageRDeviceCurrentCheckerboard1Float;
+	delete [] messageUDeviceCurrentCheckerboard2Float;
+	delete [] messageDDeviceCurrentCheckerboard2Float;
+	delete [] messageLDeviceCurrentCheckerboard2Float;
+	delete [] messageRDeviceCurrentCheckerboard2Float;
 }
 
 
@@ -1159,6 +1232,89 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
 			//}
 		}
 #endif
+}
+
+template<>
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
+		short>(short* dataCostStereoCheckerboard1,
+				short* dataCostStereoCheckerboard2,
+				short* messageUDeviceCurrentCheckerboard1,
+				short* messageDDeviceCurrentCheckerboard1,
+				short* messageLDeviceCurrentCheckerboard1,
+				short* messageRDeviceCurrentCheckerboard1,
+				short* messageUDeviceCurrentCheckerboard2,
+				short* messageDDeviceCurrentCheckerboard2,
+				short* messageLDeviceCurrentCheckerboard2,
+				short* messageRDeviceCurrentCheckerboard2, int widthLevel,
+				int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+{
+
+//#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+			messageRDeviceCurrentCheckerboard2, widthLevel, heightLevel, checkerboardPartUpdate, disc_k_bp);
+
+
+
+		/*int widthCheckerboard = getCheckerboardWidthCPU<short>(widthLevel);
+		float* dataCostStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* dataCostStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageUDeviceCurrentCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageDDeviceCurrentCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageLDeviceCurrentCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageRDeviceCurrentCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageUDeviceCurrentCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageDDeviceCurrentCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageLDeviceCurrentCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+		float* messageRDeviceCurrentCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+
+		convertShortToFloat(dataCostStereoCheckerboard1Float, dataCostStereoCheckerboard1, widthCheckerboard, heightLevel);
+		convertShortToFloat(dataCostStereoCheckerboard2Float, dataCostStereoCheckerboard2, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageUDeviceCurrentCheckerboard1Float, messageUDeviceCurrentCheckerboard1, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageDDeviceCurrentCheckerboard1Float, messageDDeviceCurrentCheckerboard1, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageLDeviceCurrentCheckerboard1Float, messageLDeviceCurrentCheckerboard1, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageRDeviceCurrentCheckerboard1Float, messageRDeviceCurrentCheckerboard1, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageUDeviceCurrentCheckerboard2Float, messageUDeviceCurrentCheckerboard2, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageDDeviceCurrentCheckerboard2Float, messageDDeviceCurrentCheckerboard2, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageLDeviceCurrentCheckerboard2Float, messageLDeviceCurrentCheckerboard2, widthCheckerboard, heightLevel);
+		convertShortToFloat(messageRDeviceCurrentCheckerboard2Float, messageRDeviceCurrentCheckerboard2, widthCheckerboard, heightLevel);
+
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
+				float>(dataCostStereoCheckerboard1Float,
+						dataCostStereoCheckerboard2Float,
+						messageUDeviceCurrentCheckerboard1Float,
+						messageDDeviceCurrentCheckerboard1Float,
+						messageLDeviceCurrentCheckerboard1Float,
+						messageRDeviceCurrentCheckerboard1Float,
+						messageUDeviceCurrentCheckerboard2Float,
+						messageDDeviceCurrentCheckerboard2Float,
+						messageLDeviceCurrentCheckerboard2Float,
+						messageRDeviceCurrentCheckerboard2Float, widthLevel,
+						heightLevel, checkerboardPartUpdate, disc_k_bp);
+
+		convertFloatToShort(dataCostStereoCheckerboard1, dataCostStereoCheckerboard1Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(dataCostStereoCheckerboard2, dataCostStereoCheckerboard2Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageUDeviceCurrentCheckerboard1, messageUDeviceCurrentCheckerboard1Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageDDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageLDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageRDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageUDeviceCurrentCheckerboard2, messageUDeviceCurrentCheckerboard2Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageDDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageLDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2Float, widthCheckerboard, heightLevel);
+		convertFloatToShort(messageRDeviceCurrentCheckerboard2, messageRDeviceCurrentCheckerboard2Float, widthCheckerboard, heightLevel);
+
+		delete [] dataCostStereoCheckerboard1Float;
+		delete [] dataCostStereoCheckerboard2Float;
+		delete [] messageUDeviceCurrentCheckerboard1Float;
+		delete [] messageDDeviceCurrentCheckerboard1Float;
+		delete [] messageLDeviceCurrentCheckerboard1Float;
+		delete [] messageRDeviceCurrentCheckerboard1Float;
+		delete [] messageUDeviceCurrentCheckerboard2Float;
+		delete [] messageDDeviceCurrentCheckerboard2Float;
+		delete [] messageLDeviceCurrentCheckerboard2Float;
+		delete [] messageRDeviceCurrentCheckerboard2Float;*/
 }
 
 template<>
@@ -1445,6 +1601,134 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubl
 		{
 			runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
 					double>(dataCostStereoCheckerboard1,
+					dataCostStereoCheckerboard2,
+					messageUDeviceCurrentCheckerboard1,
+					messageDDeviceCurrentCheckerboard1,
+					messageLDeviceCurrentCheckerboard1,
+					messageRDeviceCurrentCheckerboard1,
+					messageUDeviceCurrentCheckerboard2,
+					messageDDeviceCurrentCheckerboard2,
+					messageLDeviceCurrentCheckerboard2,
+					messageRDeviceCurrentCheckerboard2,
+					widthCheckerboardCurrentLevel, heightLevel,
+					checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
+		}*/
+	}
+}
+
+
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(
+		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
+		short* messageUDeviceCurrentCheckerboard1,
+		short* messageDDeviceCurrentCheckerboard1,
+		short* messageLDeviceCurrentCheckerboard1,
+		short* messageRDeviceCurrentCheckerboard1,
+		short* messageUDeviceCurrentCheckerboard2,
+		short* messageDDeviceCurrentCheckerboard2,
+		short* messageLDeviceCurrentCheckerboard2,
+		short* messageRDeviceCurrentCheckerboard2, int widthLevel,
+		int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+{
+	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+	__m128i disc_k_bp_vector = _mm256_cvtps_ph(_mm256_set1_ps(disc_k_bp), 0);
+
+	int numDataInAvxVector = 8;
+	#pragma omp parallel for
+	for (int yVal = 1; yVal < heightLevel-1; yVal++)
+	{
+		//checkerboardAdjustment used for indexing into current checkerboard to update
+		int checkerboardAdjustment;
+		if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+			checkerboardAdjustment = ((yVal) % 2);
+		} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+		{
+			checkerboardAdjustment = ((yVal + 1) % 2);
+		}
+		int startX = (checkerboardAdjustment == 1 ? 0 : 1);
+		int endXAvxStart = ((((widthCheckerboardCurrentLevel - startX) - checkerboardAdjustment) / numDataInAvxVector) * numDataInAvxVector - numDataInAvxVector) + startX;
+		int endFinal = widthCheckerboardCurrentLevel - checkerboardAdjustment;
+
+		for (int xVal = startX; xVal < endFinal; xVal += numDataInAvxVector)
+		{
+			//if past the last AVX start (since the next one would go beyond the row), set to numDataInAvxVector from the final pixel so processing the last numDataInAvxVector in avx
+			//may be a few pixels that are computed twice but that's OK
+			if (xVal > endXAvxStart)
+			{
+				xVal = endFinal - numDataInAvxVector;
+			}
+
+			//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
+			//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
+			//if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+			__m128i dataMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+			__m128i prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+			__m128i prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+			__m128i prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+			__m128i prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+				{
+					if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+					{
+						dataMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevUMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevDMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+					}
+					else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+					{
+						dataMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, yVal, widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevUMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevDMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+						prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)(&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]));
+					}
+				}
+
+				__m128i currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m128i currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m128i currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+				__m128i currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
+
+				msgStereoCPU<__m128i>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
+						currentUMessage, disc_k_bp_vector);
+
+				msgStereoCPU<__m128i>(prevDMessage, prevLMessage, prevRMessage, dataMessage,
+						currentDMessage, disc_k_bp_vector);
+
+				msgStereoCPU<__m128i>(prevUMessage, prevDMessage, prevRMessage, dataMessage,
+						currentRMessage, disc_k_bp_vector);
+
+				msgStereoCPU<__m128i>(prevUMessage, prevDMessage, prevLMessage, dataMessage,
+						currentLMessage, disc_k_bp_vector);
+
+				//write the calculated message values to global memory
+				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+				{
+					int indexWriteTo = retrieveIndexInDataAndMessageCPU(xVal, yVal, widthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+					if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+					{
+						_mm_storeu_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[indexWriteTo], currentUMessage[currentDisparity]);
+						_mm_storeu_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[indexWriteTo], currentDMessage[currentDisparity]);
+						_mm_storeu_si128((__m128i*)&messageLDeviceCurrentCheckerboard1[indexWriteTo], currentLMessage[currentDisparity]);
+						_mm_storeu_si128((__m128i*)&messageRDeviceCurrentCheckerboard1[indexWriteTo], currentRMessage[currentDisparity]);
+					}
+					else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+					{
+						_mm_storeu_si128((__m128i*)&messageUDeviceCurrentCheckerboard2[indexWriteTo], currentUMessage[currentDisparity]);
+						_mm_storeu_si128((__m128i*)&messageDDeviceCurrentCheckerboard2[indexWriteTo], currentDMessage[currentDisparity]);
+						_mm_storeu_si128((__m128i*)&messageLDeviceCurrentCheckerboard2[indexWriteTo], currentLMessage[currentDisparity]);
+						_mm_storeu_si128((__m128i*)&messageRDeviceCurrentCheckerboard2[indexWriteTo], currentRMessage[currentDisparity]);
+					}
+				}
+			//}
+		}
+
+		/*for (int xVal = endXAvxStart + 8; xVal < endFinal; xVal ++)
+		{
+			runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<
+					float>(dataCostStereoCheckerboard1,
 					dataCostStereoCheckerboard2,
 					messageUDeviceCurrentCheckerboard1,
 					messageDDeviceCurrentCheckerboard1,
@@ -1984,4 +2268,50 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(T
 			}
 		//}
 	}
+}
+
+template<>
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<short>(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+{
+	int widthCheckerboard = getCheckerboardWidthCPU<short>(widthLevel);
+	float* dataCostStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* dataCostStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageUPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageDPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageLPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageRPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageUPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageDPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageLPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageRPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+
+	convertShortToFloat(dataCostStereoCheckerboard1Float, dataCostStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloat(dataCostStereoCheckerboard2Float, dataCostStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageUPrevStereoCheckerboard1Float, messageUPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageDPrevStereoCheckerboard1Float, messageDPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageLPrevStereoCheckerboard1Float, messageLPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageRPrevStereoCheckerboard1Float, messageRPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageUPrevStereoCheckerboard2Float, messageUPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageDPrevStereoCheckerboard2Float, messageDPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageLPrevStereoCheckerboard2Float, messageLPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloat(messageRPrevStereoCheckerboard2Float, messageRPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+
+	retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<float>(
+			dataCostStereoCheckerboard1Float, dataCostStereoCheckerboard2Float,
+			messageUPrevStereoCheckerboard1Float, messageDPrevStereoCheckerboard1Float,
+			messageLPrevStereoCheckerboard1Float, messageRPrevStereoCheckerboard1Float,
+			messageUPrevStereoCheckerboard2Float, messageDPrevStereoCheckerboard2Float,
+			messageLPrevStereoCheckerboard2Float, messageRPrevStereoCheckerboard2Float,
+			disparityBetweenImagesDevice, widthLevel, heightLevel);
+
+	delete [] dataCostStereoCheckerboard1Float;
+	delete [] dataCostStereoCheckerboard2Float;
+	delete [] messageUPrevStereoCheckerboard1Float;
+	delete [] messageDPrevStereoCheckerboard1Float;
+	delete [] messageLPrevStereoCheckerboard1Float;
+	delete [] messageRPrevStereoCheckerboard1Float;
+	delete [] messageUPrevStereoCheckerboard2Float;
+	delete [] messageDPrevStereoCheckerboard2Float;
+	delete [] messageLPrevStereoCheckerboard2Float;
+	delete [] messageRPrevStereoCheckerboard2Float;
 }

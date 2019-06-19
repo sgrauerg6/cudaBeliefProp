@@ -137,41 +137,5 @@ public:
 	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings);
 };
 
-//if data type is half or half2, process using float on CPU since doesn't have native support for half (like some NVIDIA GPUs)
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
-
-//CPU does not current support half and half2 operations natively, so instead process float if that is specified
-template<>
-class BpStereoProcessingOptimizedCPU<half>
-{
-public:
-	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
-	//input is images image1Pixels and image1Pixels
-	//output is resultingDisparityMap
-	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings)
-	{
-		BpStereoProcessingOptimizedCPU<float> bpStereoFloat;
-		bpStereoFloat(image1Pixels, image2Pixels, resultingDisparityMap, algSettings);
-	}
-};
-
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
-
-template<>
-class BpStereoProcessingOptimizedCPU<half2>
-{
-public:
-	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
-	//input is images image1Pixels and image1Pixels
-	//output is resultingDisparityMap
-	void operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings)
-	{
-		BpStereoProcessingOptimizedCPU<float> bpStereoFloat;
-		bpStereoFloat(image1Pixels, image2Pixels, resultingDisparityMap, algSettings);
-	}
-};
-
-#endif
-
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

@@ -387,8 +387,10 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 	widthLevelActualIntegerSize = (int)roundf(widthLevel);
 	heightLevelActualIntegerSize = (int)roundf(heightLevel);
 
+	//printf("INIT DATA COSTS\n");
 	//initialize the data cost at the bottom level 
 	ProcessBpStereoProcessingOptimizedCPUHelperFuncts::initializeDataCosts<T>(image1Pixels, image2Pixels, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2, algSettings);
+	//printf("DONE INIT DATA COSTS\n");
 
 	int offsetLevel = 0;
 
@@ -420,12 +422,14 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 		T* dataCostDeviceToWriteToCheckerboard2 =
 				&dataCostDeviceCheckerboard2[offsetLevel];
 
+		//printf("INIT DATA COSTS CURRENT LEVEL\n");
 		ProcessBpStereoProcessingOptimizedCPUHelperFuncts::initializeDataCurrentLevel<T>(dataCostStereoCheckerboard1,
 				dataCostStereoCheckerboard2, dataCostDeviceToWriteToCheckerboard1,
 				dataCostDeviceToWriteToCheckerboard2,
 				widthLevelActualIntegerSize,
 				heightLevelActualIntegerSize, prevWidthLevelActualIntegerSize,
 				prevHeightLevelActualIntegerSize);
+		//printf("DONE INIT DATA COSTS CURRENT LEVEL\n");
 	}
 
 	//declare the space to pass the BP messages
@@ -488,10 +492,12 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 
 #endif
 
+	//printf("initializeMessageValsToDefault\n");
 	//initialize all the BP message values at every pixel for every disparity to 0
 	ProcessBpStereoProcessingOptimizedCPUHelperFuncts::initializeMessageValsToDefault<T>(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 											widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
+	//printf("DONE initializeMessageValsToDefault\n");
 
 
 	//alternate between checkerboard sets 0 and 1
@@ -503,6 +509,7 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 	//to converge more quickly
 	for (int levelNum = algSettings.numLevels - 1; levelNum >= 0; levelNum--)
 	{
+		//printf("LEVEL: %d\n", levelNum);
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == 0)
 		{
@@ -534,6 +541,7 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*&
 					dataCostDeviceCurrentLevelCheckerboard1,
 					dataCostDeviceCurrentLevelCheckerboard2);
 		}
+		//printf("DONE BP RUN\n");
 
 		//if not at the "bottom level" copy the current message values at the current level to the corresponding slots next level 
 		if (levelNum > 0)

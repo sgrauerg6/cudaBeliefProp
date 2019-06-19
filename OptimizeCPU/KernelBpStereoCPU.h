@@ -39,8 +39,8 @@ class KernelBpStereoCPU
 {
 public:
 
-	void convertShortToFloat(float* destinationFloat, const short* inputShort, int widthArray, int heightArray);
-	void convertFloatToShort(short* destinationShort, const float* inputFloat, int widthArray, int heightArray);
+	static void convertShortToFloat(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
+	static void convertFloatToShort(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
 
 	template<typename T>
 	void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
@@ -155,6 +155,11 @@ public:
 			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
 			double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
 			double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
+			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+			short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2, short* messageLDeviceCurrentCheckerboard2,
+			short* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
 
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
