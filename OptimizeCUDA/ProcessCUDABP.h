@@ -27,9 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <algorithm>
 #include <cuda_runtime.h>
-#include "DetailedTimings.h"
+#include "DetailedTimingsCUDA.h"
 #include <chrono>
 #include <cuda_fp16.h>
+#include "ProcessBPOnTarget.h"
 
 class ProcessCUDABPHelperFuncts
 {
@@ -130,13 +131,28 @@ public:
 };
 
 template<typename T>
-class ProcessCUDABP
+class ProcessCUDABP : public ProcessBPOnTarget<beliefPropProcessingDataTypeCUDA>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	//the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 	//the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
-	void operator()(float* image1PixelsDevice, float* image2PixelsDevice, float* resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
+	//Return detailed timings of processing (or null if data not collected)
+	DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings);
+};
+
+template<>
+class ProcessCUDABP<short> : public ProcessBPOnTarget<short>
+{
+public:
+	//if type is specified as short, process as half on GPU
+	//note that half is considered a data type for 16-bit floats in CUDA
+	DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
+	{
+		printf("Processing as half on GPU\n");
+		ProcessCUDABP<half> processCUDABPHalfType;
+		return processCUDABPHalfType(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
+	}
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

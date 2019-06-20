@@ -7,7 +7,6 @@
 
 #include "RunBpStereoOptimizedCPU.h"
 #include "BpStereoProcessingOptimizedCPU.cpp"
-#include <omp.h>
 
 RunBpStereoOptimizedCPU::RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated constructor stub
@@ -18,7 +17,15 @@ RunBpStereoOptimizedCPU::~RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated destructor stub
 }
 
-float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile)
+float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath,
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
+	{
+		SmoothImageCPU smoothImageCPU;
+		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataTypeCPU> processImageCPU;
+		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);
+	}
+
+/*float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
 {
 	double timeStart = 0.0;
 
@@ -48,6 +55,8 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		smooth_image(image2AsUnsignedIntArrayHost,
 				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2);
 
+		printf("Smooth images done\n");
+
 		//free the host memory allocatted to original image 1 and image 2 on the host
 		delete[] image1AsUnsignedIntArrayHost;
 		delete[] image2AsUnsignedIntArrayHost;
@@ -59,12 +68,15 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		//allocate the space for the disparity map estimation
 		float* disparityMapFromImage1To2 = new float[widthImages * heightImages];
 
-		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataTypeCPU> processBPOnCPUOptimized;
-		processBPOnCPUOptimized(smoothedImage1, smoothedImage2,
+		printf("Start processing\n");
+		(*runBpStereo)(smoothedImage1, smoothedImage2,
 				disparityMapFromImage1To2, algSettings);
+		/*BpStereoProcessingOptimizedCPU<beliefPropProcessingDataTypeCPU> processBPOnCPUOptimized;
+		processBPOnCPUOptimized(smoothedImage1, smoothedImage2,
+				disparityMapFromImage1To2, algSettings);*/
 
 		//retrieve the runtime for implementation
-		auto timeEnd = std::chrono::system_clock::now();
+	/*	auto timeEnd = std::chrono::system_clock::now();
 		std::chrono::duration<double> diff = timeEnd
 				- timeStart;
 		double runTime = diff.count();
@@ -100,4 +112,4 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 	fprintf(resultsFile, "Median optimized CPU runtime: %f\n", runTimings.at(NUM_BP_STEREO_RUNS/2));
 
 	return runTimings.at(NUM_BP_STEREO_RUNS/2);
-}
+}*/

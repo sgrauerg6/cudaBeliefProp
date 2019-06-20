@@ -24,13 +24,21 @@
 #include <vector>
 #include <algorithm>
 #include "imageHelpers.h"
-#include "runBpStereoHost.cpp"
 #include "DetailedTimings.h"
+#include "ProcessCUDABP.cpp"
+
+float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
+	{
+		SmoothImageCUDA smoothImageCUDA;
+		ProcessCUDABP<beliefPropProcessingDataTypeCPU> processImageCUDA;
+		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA);
+	}
 
 //run the disparity map estimation BP on a stereo image set and save the results between each set of images if desired
 //returns the runtime (including transfer time)
-float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
-		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile)
+/*float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
+		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCUDA>* runBpStereo)
 {
 	double timeNoTransfer = 0.0;
 	double timeIncludeTransfer = 0.0;
@@ -53,10 +61,12 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		float* smoothedImage2Device;
 
 		//allocate the device memory to store and x and y smoothed images
-		(cudaMalloc((void**) &smoothedImage1Device,
-				widthImages * heightImages * sizeof(float)));
-		(cudaMalloc((void**) &smoothedImage2Device,
-				widthImages * heightImages * sizeof(float)));
+		allocateDataOnCompDevice((void**)&smoothedImage1Device, widthImages * heightImages * sizeof(float));
+		allocateDataOnCompDevice((void**)&smoothedImage2Device, widthImages * heightImages * sizeof(float));
+//		(cudaMalloc((void**) &smoothedImage1Device,
+//				widthImages * heightImages * sizeof(float)));
+//		(cudaMalloc((void**) &smoothedImage2Device,
+//				widthImages * heightImages * sizeof(float)));
 
 		//start timer to retrieve the time of implementation including transfer time
 		auto timeWithTransferStart = std::chrono::system_clock::now();
@@ -64,13 +74,16 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		//start timer to retrieve the time of implementation not including transfer time
 		auto timeNoTransferStart = std::chrono::system_clock::now();
 
-		//first smooth the images using the CUDA Gaussian filter with the given SIGMA_BP value
-		//smoothed images are stored global memory on the device at locations image1SmoothedDevice and image2SmoothedDevice
-		SmoothImageCUDA smooth_image;
-		smooth_image(image1AsUnsignedIntArrayHost,
-				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage1Device);
-		smooth_image(image2AsUnsignedIntArrayHost,
-				widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2Device);
+		if (smoothImage != nullptr)
+		{
+			//first smooth the images using the CUDA Gaussian filter with the given SIGMA_BP value
+			//smoothed images are stored global memory on the device at locations image1SmoothedDevice and image2SmoothedDevice
+			//SmoothImageCUDA smooth_image;
+			(*smoothImage)(image1AsUnsignedIntArrayHost,
+					widthImages, heightImages, algSettings.smoothingSigma, smoothedImage1Device);
+			(*smoothImage)(image2AsUnsignedIntArrayHost,
+					widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2Device);
+		}
 
 		//free the host memory allocatted to original image 1 and image 2 on the host
 		delete[] image1AsUnsignedIntArrayHost;
@@ -80,15 +93,17 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		algSettings.widthImages = widthImages;
 		algSettings.heightImages = heightImages;
 
-		float* disparityMapFromImage1To2Device;
+		float* disparityMapFromImage1To2CompDevice;
 
 		//allocate the space for the disparity map estimation
-		cudaMalloc((void **) &disparityMapFromImage1To2Device,
-				widthImages * heightImages * sizeof(float));
+		allocateDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
-		ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processBPOnGPUUsingCUDA;
-		processBPOnGPUUsingCUDA(smoothedImage1Device, smoothedImage2Device,
-				disparityMapFromImage1To2Device, algSettings, timings);
+		if (runBpStereo != nullptr)
+		{
+			//ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processBPOnGPUUsingCUDA;
+			(*runBpStereo)(smoothedImage1Device, smoothedImage2Device,
+					disparityMapFromImage1To2CompDevice, algSettings);
+		}
 
 		//retrieve the running time of the implementation not including the host/device transfer time
 		//printf("Running time not including transfer time: %f (ms) \n", cutGetTimerValue(timerTransferTimeNotIncluded));
@@ -104,10 +119,11 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 				* heightImages];
 
 		//transfer the disparity map estimation on the device to the host for output
-		(cudaMemcpy(disparityMapFromImage1To2Host,
-				disparityMapFromImage1To2Device,
-				widthImages * heightImages * sizeof(float),
-				cudaMemcpyDeviceToHost));
+//		(cudaMemcpy(disparityMapFromImage1To2Host,
+//				disparityMapFromImage1To2Device,
+//				widthImages * heightImages * sizeof(float),
+//				cudaMemcpyDeviceToHost));
+		transferDataFromCompDeviceToHost(disparityMapFromImage1To2Host, disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 		auto timeWithTransferEnd = std::chrono::system_clock::now();
 
@@ -128,11 +144,14 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 		timingsIncludeTransferVector.push_back(timeIncludeTransfer);
 
 		//free the space allocated to the resulting disparity map
-		cudaFree(disparityMapFromImage1To2Device);
+		//cudaFree(disparityMapFromImage1To2Device);
 
 		//free the space allocated to the smoothed images on the device
-		cudaFree(smoothedImage1Device);
-		cudaFree(smoothedImage2Device);
+		//cudaFree(smoothedImage1Device);
+		//cudaFree(smoothedImage2Device);
+		freeDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice);
+		freeDataOnCompDevice((void**)&smoothedImage1Device);
+		freeDataOnCompDevice((void**)&smoothedImage2Device);
 	}
 
 	fprintf(resultsFile, "Image Width: %d\n", widthImages);
@@ -152,5 +171,4 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 	fprintf(resultsFile, "MEDIAN GPU RUN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
 
 	return timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2);
-}
-
+}*/

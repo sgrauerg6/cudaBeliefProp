@@ -21,6 +21,8 @@
 #include <string>
 #include "bpStereoParameters.h"
 #include <chrono>
+#include "SmoothImage.h"
+#include "ProcessBPOnTarget.h"
 
 #define MAX_ALLOWED_LEVELS 10
 #define INF 1E20     // large cost
@@ -30,7 +32,7 @@
 class RunBpStereoCPUSingleThread : public RunBpStereoSet
 {
 public:
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile);
+	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo = nullptr);
 
 private:
 	// compute message

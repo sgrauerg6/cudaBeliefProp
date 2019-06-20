@@ -88,9 +88,11 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	float cudaRunTime = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH,
 			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_1,
 			resultsFile);
+	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTime);
 	float singleThreadCpuRunTime = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH,
 			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
 			resultsFile);
+	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTime);
 	float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH,
 			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
 			resultsFile);

@@ -255,7 +255,7 @@ image<uchar> * RunBpStereoCPUSingleThread::stereo_ms(image<uchar> *img1, image<u
 	return out;
 }
 
-float RunBpStereoCPUSingleThread::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile)
+float RunBpStereoCPUSingleThread::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 

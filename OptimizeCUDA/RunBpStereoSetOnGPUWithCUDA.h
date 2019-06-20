@@ -23,12 +23,47 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoCudaParameters.h"
 #include "RunBpStereoSet.h"
+#include "SmoothImageCUDA.h"
 #include <cuda_runtime.h>
+
+//#include "runBpStereoHost.h"
 
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet
 {
 public:
+
+	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
+	{
+		printf("ALLOC_GPU\n");
+		//allocate the space for the disparity map estimation
+		cudaMalloc((void **) arrayToAllocate, numBytes);
+	}
+
+	void freeDataOnCompDevice(void** arrayToFree)
+	{
+		printf("FREE_GPU\n");
+		cudaFree(*arrayToFree);
+	}
+
+	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
+	{
+		printf("TRANSFER_GPU\n");
+		cudaMemcpy(destArray,
+				inArray,
+				numBytesTransfer,
+				cudaMemcpyDeviceToHost);
+	}
+
+	float operator()(const char* refImagePath, const char* testImagePath,
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo = nullptr);
+/*	{
+		SmoothImageCUDA smoothImageCUDA;
+		ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processImageCUDA;
+		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA);
+	}*/
+
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile);
+	//float operator()(const char* refImagePath, const char* testImagePath,
+	//		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCUDA>* runBpStereo = nullptr);
 };
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

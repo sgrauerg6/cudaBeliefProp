@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
-#include "runBpStereoHost.h"
+#include "ProcessCUDABP.h"
 #include "kernalBpStereo.cu"
 
 #define RUN_DETAILED_TIMING
@@ -506,34 +506,20 @@ void ProcessCUDABPHelperFuncts::retrieveOutputDisparity(T* dataCostDeviceCurrent
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
-void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2PixelsDevice, float* resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
+DetailedTimings* ProcessCUDABP<T>::operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 {
+	DetailedTimingsCUDA* timingsPointer = new DetailedTimingsCUDA;
+
 #ifdef RUN_DETAILED_TIMING
 
 	timeCopyDataKernelTotalTime = 0.0;
 	timeBpItersKernelTotalTime = 0.0;
+	std::chrono::duration<double> diff;
 
 #endif
 
 	//retrieve the total number of possible movements; this is equal to the number of disparity values 
 	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
-
-#ifdef RUN_DETAILED_TIMING
-
-	auto timeInitSettingsConstMemStart = std::chrono::system_clock::now();
-
-#endif
-
-	( cudaDeviceSynchronize() );
-
-#ifdef RUN_DETAILED_TIMING
-
-	auto timeInitSettingsConstMemEnd = std::chrono::system_clock::now();
-
-	std::chrono::duration<double> diff = timeInitSettingsConstMemEnd-timeInitSettingsConstMemStart;
-	double totalTimeInitSettingsConstMem = diff.count();
-
-#endif
 
 	//start at the "bottom level" and work way up to determine amount of space needed to store data costs
 	float widthLevel = (float)algSettings.widthImages;
@@ -624,7 +610,7 @@ void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2Pixels
 	heightLevelActualIntegerSize = (int)roundf(heightLevel);
 
 	//initialize the data cost at the bottom level 
-	ProcessCUDABPHelperFuncts::initializeDataCosts<T>(image1PixelsDevice, image2PixelsDevice, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2, algSettings);
+	ProcessCUDABPHelperFuncts::initializeDataCosts<T>(image1PixelsCompDevice, image2PixelsCompDevice, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2, algSettings);
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -988,7 +974,7 @@ void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2Pixels
 			messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 			messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
 			messageUDeviceSet1Checkerboard2, messageDDeviceSet1Checkerboard2, messageLDeviceSet1Checkerboard2, messageRDeviceSet1Checkerboard2,
-			resultingDisparityMapDevice, widthLevel, heightLevel, currentCheckerboardSet);
+			resultingDisparityMapCompDevice, widthLevel, heightLevel, currentCheckerboardSet);
 
 	gpuErrchk( cudaPeekAtLastError() );
 
@@ -1000,7 +986,6 @@ void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2Pixels
 	double totalTimeGetOutputDisparity = diff.count();
 
 	auto timeFinalUnbindFreeStart = std::chrono::system_clock::now();
-	double totalTimeFinalUnbind = 0.0;
 
 #endif
 
@@ -1067,8 +1052,7 @@ void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2Pixels
 	diff = timeFinalFreeEnd-timeFinalFreeStart;
 	double totalTimeFinalFree = diff.count();
 
-	double totalMemoryProcessingTime = totalTimeInitSettingsConstMem
-			+ totalTimeInitSettingsMallocStart + totalTimeFinalUnbindFree
+	double totalMemoryProcessingTime =  totalTimeInitSettingsMallocStart + totalTimeFinalUnbindFree
 			+ (totalTimeInitMessageVals - totalTimeInitMessageValuesKernelTime)
 			+ (totalTimeCopyData - timeCopyDataKernelTotalTime)
 			+ (totalTimeBpIters - timeBpItersKernelTotalTime);
@@ -1076,34 +1060,37 @@ void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2Pixels
 			+ totalTimeGetDataCostsHigherLevels
 			+ totalTimeInitMessageValuesKernelTime + timeCopyDataKernelTotalTime
 			+ timeBpItersKernelTotalTime + totalTimeGetOutputDisparity;
-	double totalTimed = totalTimeInitSettingsConstMem
-			+ totalTimeInitSettingsMallocStart
+	double totalTimed = totalTimeInitSettingsMallocStart
 			+ totalTimeGetDataCostsBottomLevel
 			+ totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals
 			+ totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity
 			+ totalTimeFinalUnbindFree;
-	timings.totalTimeInitSettingsConstMem.push_back(
-			totalTimeInitSettingsConstMem);
-	timings.totalTimeInitSettingsMallocStart.push_back(
+	timingsPointer->totalTimeInitSettingsMallocStart.push_back(
 			totalTimeInitSettingsMallocStart);
-	timings.totalTimeGetDataCostsBottomLevel.push_back(
+	timingsPointer->totalTimeGetDataCostsBottomLevel.push_back(
 			totalTimeGetDataCostsBottomLevel);
-	timings.totalTimeGetDataCostsHigherLevels.push_back(
+	timingsPointer->totalTimeGetDataCostsHigherLevels.push_back(
 			totalTimeGetDataCostsHigherLevels);
-	timings.totalTimeInitMessageVals.push_back(totalTimeInitMessageVals);
-	timings.totalTimeInitMessageValuesKernelTime.push_back(totalTimeInitMessageValuesKernelTime);
-	timings.totalTimeBpIters.push_back(totalTimeBpIters);
-	timings.timeBpItersKernelTotalTime.push_back(timeBpItersKernelTotalTime);
-	timings.totalTimeCopyData.push_back(totalTimeCopyData);
-	timings.timeCopyDataKernelTotalTime.push_back(timeCopyDataKernelTotalTime);
-	timings.totalTimeGetOutputDisparity.push_back(totalTimeGetOutputDisparity);
-	timings.totalTimeFinalUnbindFree.push_back(totalTimeFinalUnbindFree);
-	timings.totalTimeFinalUnbind.push_back(totalTimeFinalUnbind);
-	timings.totalTimeFinalFree.push_back(totalTimeFinalFree);
-	timings.totalTimed.push_back(totalTimed);
-	timings.totalMemoryProcessingTime.push_back(totalMemoryProcessingTime);
-	timings.totalComputationProcessing.push_back(totalComputationProcessing);
-	timings.totNumTimings++;
+	timingsPointer->totalTimeInitMessageVals.push_back(totalTimeInitMessageVals);
+	timingsPointer->totalTimeInitMessageValuesKernelTime.push_back(totalTimeInitMessageValuesKernelTime);
+	timingsPointer->totalTimeBpIters.push_back(totalTimeBpIters);
+	timingsPointer->timeBpItersKernelTotalTime.push_back(timeBpItersKernelTotalTime);
+	timingsPointer->totalTimeCopyData.push_back(totalTimeCopyData);
+	timingsPointer->timeCopyDataKernelTotalTime.push_back(timeCopyDataKernelTotalTime);
+	timingsPointer->totalTimeGetOutputDisparity.push_back(totalTimeGetOutputDisparity);
+	timingsPointer->totalTimeFinalUnbindFree.push_back(totalTimeFinalUnbindFree);
+	timingsPointer->totalTimeFinalFree.push_back(totalTimeFinalFree);
+	timingsPointer->totalTimed.push_back(totalTimed);
+	timingsPointer->totalMemoryProcessingTime.push_back(totalMemoryProcessingTime);
+	timingsPointer->totalComputationProcessing.push_back(totalComputationProcessing);
+	timingsPointer->totNumTimings++;
 
 #endif
+
+#ifdef RUN_DETAILED_TIMING
+	return timingsPointer;
+#else
+	return nullptr;
+#endif
+
 }

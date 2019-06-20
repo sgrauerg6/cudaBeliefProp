@@ -312,8 +312,9 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::retrieveOutputDisparity(
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
-void BpStereoProcessingOptimizedCPU<T>::operator()(float* image1Pixels, float* image2Pixels, float* resultingDisparityMap, BPsettings& algSettings)
+DetailedTimings* BpStereoProcessingOptimizedCPU<T>::operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 {
+	//printf("Start opt CPU\n");
 	//retrieve the total number of possible movements; this is equal to the number of disparity values 
 	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
 
@@ -389,7 +390,10 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float* image1Pixels, float* i
 
 	//printf("INIT DATA COSTS\n");
 	//initialize the data cost at the bottom level 
-	ProcessBpStereoProcessingOptimizedCPUHelperFuncts::initializeDataCosts<T>(image1Pixels, image2Pixels, dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2, algSettings);
+	ProcessBpStereoProcessingOptimizedCPUHelperFuncts::initializeDataCosts<T>(
+			image1PixelsCompDevice, image2PixelsCompDevice,
+			dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+			algSettings);
 	//printf("DONE INIT DATA COSTS\n");
 
 	int offsetLevel = 0;
@@ -653,7 +657,7 @@ void BpStereoProcessingOptimizedCPU<T>::operator()(float* image1Pixels, float* i
 			messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 			messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
 			messageUDeviceSet1Checkerboard2, messageDDeviceSet1Checkerboard2, messageLDeviceSet1Checkerboard2, messageRDeviceSet1Checkerboard2,
-			resultingDisparityMap, widthLevel, heightLevel, currentCheckerboardSet);
+			resultingDisparityMapCompDevice, widthLevel, heightLevel, currentCheckerboardSet);
 
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT

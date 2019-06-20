@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <algorithm>
 #include <chrono>
+#include "ProcessBPOnTarget.h"
 
 class ProcessBpStereoProcessingOptimizedCPUHelperFuncts
 {
@@ -127,13 +128,13 @@ public:
 };
 
 template<typename T>
-class BpStereoProcessingOptimizedCPU
+class BpStereoProcessingOptimizedCPU : public ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	//input is images image1Pixels and image1Pixels
 	//output is resultingDisparityMap
-	void operator()(float* image1Pixels, float* image2Pixels, float* resultingDisparityMap, BPsettings& algSettings);
+	DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings);
 };
 
 //if not using AVX-256 or AVX-512, process using float if short data type used
@@ -141,16 +142,16 @@ public:
 #if (CPU_OPTIMIZATION_SETTING != USE_AVX_256) && (CPU_OPTIMIZATION_SETTING != USE_AVX_512)
 
 template<>
-class BpStereoProcessingOptimizedCPU<short>
+class BpStereoProcessingOptimizedCPU<short> : public ProcessBPOnTarget<short>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	//input is images image1Pixels and image1Pixels
 	//output is resultingDisparityMap
-	void operator()(float* image1Pixels, float* image2Pixels, float* resultingDisparityMap, BPsettings& algSettings)
+	DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 	{
 		BpStereoProcessingOptimizedCPU<float> bpStereoCpu;
-		bpStereoCpu(image1Pixels, image2Pixels, resultingDisparityMap, algSettings);
+		return bpStereoCpu(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
 	}
 };
 
