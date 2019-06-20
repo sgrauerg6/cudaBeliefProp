@@ -27,6 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include <cuda_runtime.h>
 
+#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
+#include <cuda_fp16.h>
+#endif
+
 class RunBpStereoSetCUDMemoryManagement : public RunBpStereoSetMemoryManagement
 {
 public:
@@ -75,6 +79,7 @@ public:
 		ProcessCUDABP<T> processImageCUDA;
 		RunBpStereoSet<T> runBPCUDA;
 		RunBpStereoSetCUDMemoryManagement runBPCUDAMemoryManagement;
+		fprintf(resultsFile, "CURRENT RUN: GPU WITH CUDA\n");
 		return runBPCUDA(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
 	}
 };
@@ -118,7 +123,7 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	float operator()(const char* refImagePath, const char* testImagePath,
-			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* = nullptr)
+			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
@@ -126,15 +131,21 @@ public:
 		//printf("Processing as half on GPU\n");
 		RunBpStereoSetOnGPUWithCUDA<half> runCUDABpStereoSet;
 		ProcessCUDABP<half> runCUDABPHalfPrecision;
-		return runCUDABpStereoSet(refImagePath, testImagePath,
-				algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfPrecision, RunBpStereoSetMemoryManagement);
+		return runCUDABpStereoSet(refImagePath,
+				testImagePath,
+				algSettings,
+				saveDisparityMapImagePath,
+				resultsFile,
+				smoothImage,
+				&runCUDABPHalfPrecision,
+				runBPMemoryMangement);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
 		//printf("Processing as half2 on GPU\n");
 		RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
 		ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
-		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfTwoDataType, RunBpStereoSetMemoryManagement);
+		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
 
 #else
 

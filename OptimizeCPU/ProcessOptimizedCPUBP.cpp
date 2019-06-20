@@ -703,6 +703,17 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 #endif
 }*/
 
+#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
+
 template class ProcessOptimizedCPUBP<float>;
+
+#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
+
 template class ProcessOptimizedCPUBP<double>;
+
+#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
+
+template class ProcessOptimizedCPUBP<float>;
 template class ProcessOptimizedCPUBP<short>;
+
+#endif

@@ -15,7 +15,7 @@ class DetailedTimingsCUDA : public DetailedTimings
 {
 public:
 
-	std::vector<double> totalTimeInitSettingsMallocStart;
+	/*std::vector<double> totalTimeInitSettingsMallocStart;
 	std::vector<double> totalTimeGetDataCostsBottomLevel;
 	std::vector<double> totalTimeGetDataCostsHigherLevels;
 	std::vector<double> totalTimeInitMessageVals;
@@ -126,7 +126,7 @@ public:
 				totalMemoryProcessingTime.at(totNumTimings / 2));
 		fprintf(pFile, "Total computation processing time: %f\n",
 				totalComputationProcessing.at(totNumTimings / 2));
-	}
+	}*/
 };
 
 #endif /* DETAILEDTIMINGSCUDA_H_ */

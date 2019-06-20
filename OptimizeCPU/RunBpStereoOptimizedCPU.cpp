@@ -23,6 +23,7 @@ template <typename T>
 float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath, const char* testImagePath,
 				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
 	{
+	fprintf(resultsFile, "CURRENT RUN: OPTIMIZED CPU\n");
 		int nthreads = 0;
 		#pragma omp parallel
 		{
@@ -36,9 +37,20 @@ float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath, const cha
 		return runStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);
 	}
 
+#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
+
 template class RunBpStereoOptimizedCPU<float>;
+
+#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
+
 template class RunBpStereoOptimizedCPU<double>;
+
+#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
+
+template class RunBpStereoOptimizedCPU<float>;
 template class RunBpStereoOptimizedCPU<short>;
+
+#endif
 
 /*float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 {

@@ -20,7 +20,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "ProcessCUDABP.h"
 #include "kernalBpStereo.cu"
-#include <cuda_fp16.h>
 
 #define RUN_DETAILED_TIMING
 
@@ -37,6 +36,8 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
    }
 }
 
+#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
+
 template<>
 int ProcessCUDABP<half2>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
 			return (int)ceil(((ceil(((float)widthLevelActualIntegerSize) / 2.0)) / 2.0));
@@ -46,6 +47,8 @@ template<>
 int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
 		return (getCheckerboardWidth<half2>(widthLevelActualIntegerSize)) * 2;
 }
+
+#endif
 
 template<typename T>
 void ProcessCUDABP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
@@ -557,10 +560,10 @@ DetailedTimings* ProcessCUDABP<T>::operator()(float* image1PixelsCompDevice, flo
 {
 	gpuErrchk( cudaPeekAtLastError() );
 
-	DetailedTimingsCUDA* timingsPointer = new DetailedTimingsCUDA;
 
 #ifdef RUN_DETAILED_TIMING
 
+	DetailedTimingsCUDA* timingsPointer = new DetailedTimingsCUDA;
 	timeCopyDataKernelTotalTime = 0.0;
 	timeBpItersKernelTotalTime = 0.0;
 	std::chrono::duration<double> diff;
@@ -1016,7 +1019,6 @@ DetailedTimings* ProcessCUDABP<T>::operator()(float* image1PixelsCompDevice, flo
 #ifdef RUN_DETAILED_TIMING
 
 	auto timeGetOutputDisparityStart = std::chrono::system_clock::now();
-	gpuErrchk( cudaPeekAtLastError() );
 
 #endif
 
@@ -1146,8 +1148,18 @@ DetailedTimings* ProcessCUDABP<T>::operator()(float* image1PixelsCompDevice, flo
 
 }*/
 
+#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
+
 template class ProcessCUDABP<float>;
+
+#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
+
 template class ProcessCUDABP<double>;
+
+#elif ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
+
+template class ProcessCUDABP<float>;
 template class ProcessCUDABP<half>;
 template class ProcessCUDABP<half2>;
 
+#endif

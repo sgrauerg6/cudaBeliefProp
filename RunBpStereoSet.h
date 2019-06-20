@@ -76,7 +76,7 @@ public:
 
 		std::vector<double> timingsNoTransferVector;
 		std::vector<double> timingsIncludeTransferVector;
-		DetailedTimings* timingsOverall = nullptr;
+		DetailedTimings* detailedTimingsOverall = nullptr;
 		for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 		{
 			//first run Stereo estimation on the first two images
@@ -119,19 +119,20 @@ public:
 			runBPMemoryMangement->allocateDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 			//ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
-			DetailedTimings* timings = (*runBpStereo)(smoothedImage1, smoothedImage2,
+			DetailedTimings* currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
 					disparityMapFromImage1To2CompDevice, algSettings);
 
-			if (timings != nullptr)
+			//check if detailed timings are returned
+			if (currentDetailedTimings != nullptr)
 			{
-				if (timingsOverall == nullptr)
+				if (detailedTimingsOverall == nullptr)
 				{
-					timingsOverall = timings;
+					detailedTimingsOverall = currentDetailedTimings;
 				}
 				else
 				{
-					timingsOverall->addTimings(timings);
-					//TODO: add returned timings to overall set
+					//add timings for run to overall set
+					detailedTimingsOverall->addTimings(currentDetailedTimings);
 				}
 			}
 
@@ -179,11 +180,11 @@ public:
 		fprintf(resultsFile, "Image Height: %d\n", heightImages);
 		fprintf(resultsFile, "Total Image Pixels: %d\n", widthImages * heightImages);
 
-		if (timingsOverall != nullptr)
+		if (detailedTimingsOverall != nullptr)
 		{
 			//uncomment to print timings for each part of implementation
 			//timings.PrintMedianTimings();
-			timingsOverall->PrintMedianTimingsToFile(resultsFile);
+			detailedTimingsOverall->PrintMedianTimingsToFile(resultsFile);
 		}
 
 		std::sort(timingsNoTransferVector.begin(), timingsNoTransferVector.end());
@@ -191,8 +192,8 @@ public:
 
 		printf("Median runtime (not including transfer of data to/from comp device memory): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
 		//printf("MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
-		fprintf(resultsFile, "MEDIAN GPU RUN RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
-		fprintf(resultsFile, "MEDIAN GPU RUN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
+		fprintf(resultsFile, "MEDIAN RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
+		fprintf(resultsFile, "MEDIAN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
 
 		return timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2);
 	}
