@@ -131,7 +131,7 @@ public:
 };
 
 template<typename T>
-class ProcessCUDABP : public ProcessBPOnTarget<beliefPropProcessingDataTypeCUDA>
+class ProcessCUDABP : public ProcessBPOnTarget<beliefPropProcessingDataType>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -149,9 +149,25 @@ public:
 	//note that half is considered a data type for 16-bit floats in CUDA
 	DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 	{
+
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+
 		printf("Processing as half on GPU\n");
 		ProcessCUDABP<half> processCUDABPHalfType;
 		return processCUDABPHalfType(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
+
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+
+		printf("Processing as half on GPU\n");
+		ProcessCUDABP<half2> processCUDABPHalfType;
+		return processCUDABPHalfType(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
+
+#else
+
+		printf("ERROR IN DATA TYPE\n");
+
+#endif
+
 	}
 };
 

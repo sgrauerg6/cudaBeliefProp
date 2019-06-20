@@ -55,15 +55,15 @@ public:
 	}
 
 	float operator()(const char* refImagePath, const char* testImagePath,
-				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo = nullptr);
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr);
 /*	{
 		SmoothImageCUDA smoothImageCUDA;
-		ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processImageCUDA;
+		ProcessCUDABP<beliefPropProcessingDataType> processImageCUDA;
 		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA);
 	}*/
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
 	//float operator()(const char* refImagePath, const char* testImagePath,
-	//		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCUDA>* runBpStereo = nullptr);
+	//		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr);
 };
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

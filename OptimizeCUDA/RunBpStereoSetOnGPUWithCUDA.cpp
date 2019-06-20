@@ -28,17 +28,17 @@
 #include "ProcessCUDABP.cpp"
 
 float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
-				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 	{
 		SmoothImageCUDA smoothImageCUDA;
-		ProcessCUDABP<beliefPropProcessingDataTypeCPU> processImageCUDA;
+		ProcessCUDABP<beliefPropProcessingDataType> processImageCUDA;
 		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA);
 	}
 
 //run the disparity map estimation BP on a stereo image set and save the results between each set of images if desired
 //returns the runtime (including transfer time)
 /*float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
-		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCUDA>* runBpStereo)
+		BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 {
 	double timeNoTransfer = 0.0;
 	double timeIncludeTransfer = 0.0;
@@ -100,7 +100,7 @@ float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const ch
 
 		if (runBpStereo != nullptr)
 		{
-			//ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processBPOnGPUUsingCUDA;
+			//ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
 			(*runBpStereo)(smoothedImage1Device, smoothedImage2Device,
 					disparityMapFromImage1To2CompDevice, algSettings);
 		}

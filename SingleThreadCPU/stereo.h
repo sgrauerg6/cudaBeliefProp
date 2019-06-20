@@ -32,7 +32,7 @@
 class RunBpStereoCPUSingleThread : public RunBpStereoSet
 {
 public:
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo = nullptr);
+	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr);
 
 private:
 	// compute message

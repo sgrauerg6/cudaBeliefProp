@@ -250,7 +250,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //Can remove optimized GPU memory management (making the processing more similar to the initial work) by commenting out the "#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT" line
 //May be able to speed up processing by switching to using 16-bit half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
 //Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to 0 (not recommended; this slows down processing)
-#define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_HALF
+#define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_HALF_TWO
 #define OPTIMIZED_INDEXING_SETTING 1
 #define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 #define CPU_OPTIMIZATION_SETTING USE_DEFAULT
@@ -258,14 +258,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
-typedef double beliefPropProcessingDataTypeCPU;
+typedef double beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
-typedef float beliefPropProcessingDataTypeCPU;
+typedef float beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
-typedef short beliefPropProcessingDataTypeCPU;
+typedef short beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+typedef short beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
 #endif
 
 //number of belief propagation stereo runs of same image set

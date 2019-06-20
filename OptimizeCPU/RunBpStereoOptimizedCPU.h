@@ -20,7 +20,7 @@ public:
 	virtual ~RunBpStereoOptimizedCPU();
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo = nullptr);
+	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr);
 };
 
 #endif /* RUNBPSTEREOOPTIMIZEDCPU_H_ */

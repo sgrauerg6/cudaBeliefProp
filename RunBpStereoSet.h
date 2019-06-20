@@ -37,7 +37,7 @@ public:
 	}
 
 	virtual float operator()(const char* refImagePath, const char* testImagePath,
-			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo = nullptr)
+			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr)
 	{
 		double timeNoTransfer = 0.0;
 		double timeIncludeTransfer = 0.0;
@@ -89,7 +89,7 @@ public:
 			//allocate the space for the disparity map estimation
 			allocateDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
-			//ProcessCUDABP<beliefPropProcessingDataTypeCUDA> processBPOnGPUUsingCUDA;
+			//ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
 			DetailedTimings* timings = (*runBpStereo)(smoothedImage1, smoothedImage2,
 					disparityMapFromImage1To2CompDevice, algSettings);
 

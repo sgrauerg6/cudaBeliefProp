@@ -128,7 +128,7 @@ public:
 };
 
 template<typename T>
-class BpStereoProcessingOptimizedCPU : public ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>
+class BpStereoProcessingOptimizedCPU : public ProcessBPOnTarget<beliefPropProcessingDataType>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map

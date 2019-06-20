@@ -18,14 +18,14 @@ RunBpStereoOptimizedCPU::~RunBpStereoOptimizedCPU() {
 }
 
 float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath,
-				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 	{
 		SmoothImageCPU smoothImageCPU;
-		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataTypeCPU> processImageCPU;
+		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataType> processImageCPU;
 		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);
 	}
 
-/*float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataTypeCPU>* runBpStereo)
+/*float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 {
 	double timeStart = 0.0;
 
@@ -71,7 +71,7 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		printf("Start processing\n");
 		(*runBpStereo)(smoothedImage1, smoothedImage2,
 				disparityMapFromImage1To2, algSettings);
-		/*BpStereoProcessingOptimizedCPU<beliefPropProcessingDataTypeCPU> processBPOnCPUOptimized;
+		/*BpStereoProcessingOptimizedCPU<beliefPropProcessingDataType> processBPOnCPUOptimized;
 		processBPOnCPUOptimized(smoothedImage1, smoothedImage2,
 				disparityMapFromImage1To2, algSettings);*/
 
