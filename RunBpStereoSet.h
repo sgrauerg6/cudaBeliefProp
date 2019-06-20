@@ -95,7 +95,6 @@ public:
 
 			if (timings != nullptr)
 			{
-				timings->PrintMedianTimings();
 				if (timingsOverall == nullptr)
 				{
 					timingsOverall = timings;
@@ -142,10 +141,10 @@ public:
 			freeDataOnCompDevice((void**)&smoothedImage1);
 			freeDataOnCompDevice((void**)&smoothedImage2);
 
-			printf("RUN: %d\n", numRun);
+			//printf("RUN: %d\n", numRun);
 		}
 
-		printf("DONE\n");
+		//printf("DONE\n");
 
 		fprintf(resultsFile, "Image Width: %d\n", widthImages);
 		fprintf(resultsFile, "Image Height: %d\n", heightImages);

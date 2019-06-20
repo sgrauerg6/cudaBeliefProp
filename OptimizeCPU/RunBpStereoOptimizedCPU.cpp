@@ -20,6 +20,13 @@ RunBpStereoOptimizedCPU::~RunBpStereoOptimizedCPU() {
 float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath,
 				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 	{
+		int nthreads = 0;
+		#pragma omp parallel
+		{
+			nthreads = omp_get_num_threads();
+		}
+		printf("Number of OMP threads: %d\n", nthreads);
+		fprintf(resultsFile, "Number of OMP threads: %d\n", nthreads);
 		SmoothImageCPU smoothImageCPU;
 		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataType> processImageCPU;
 		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);

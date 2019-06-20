@@ -34,20 +34,20 @@ public:
 
 	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
-		printf("ALLOC_GPU\n");
+		//printf("ALLOC_GPU\n");
 		//allocate the space for the disparity map estimation
 		cudaMalloc((void **) arrayToAllocate, numBytes);
 	}
 
 	void freeDataOnCompDevice(void** arrayToFree)
 	{
-		printf("FREE_GPU\n");
+		//printf("FREE_GPU\n");
 		cudaFree(*arrayToFree);
 	}
 
 	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		printf("TRANSFER_GPU\n");
+		//printf("TRANSFER_GPU\n");
 		cudaMemcpy(destArray,
 				inArray,
 				numBytesTransfer,

@@ -152,15 +152,15 @@ public:
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
-		printf("Processing as half on GPU\n");
+		//printf("Processing as half on GPU\n");
 		ProcessCUDABP<half> processCUDABPHalfType;
 		return processCUDABPHalfType(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
-		printf("Processing as half on GPU\n");
-		ProcessCUDABP<half2> processCUDABPHalfType;
-		return processCUDABPHalfType(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
+		//printf("Processing as half2 on GPU\n");
+		ProcessCUDABP<half2> processCUDABPHalfTwoType;
+		return processCUDABPHalfTwoType(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
 
 #else
 
