@@ -506,7 +506,7 @@ void ProcessCUDABPHelperFuncts::retrieveOutputDisparity(T* dataCostDeviceCurrent
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
-void ProcessCUDABP<T>::operator()(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
+void ProcessCUDABP<T>::operator()(float* image1PixelsDevice, float* image2PixelsDevice, float* resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings)
 {
 #ifdef RUN_DETAILED_TIMING
 

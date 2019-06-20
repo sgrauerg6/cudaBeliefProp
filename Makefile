@@ -28,7 +28,8 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O2 -std=c++11
-# ARCHITECTURE_COMPILE_FLAG = -march=skylake
+#ARCHITECTURE_COMPILE_FLAG = -march=skylake
+# ARCHITECTURE_COMPILE_FLAG = -march=skylake-avx512
 ARCHITECTURE_COMPILE_FLAG = -march=skylake-avx512
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)

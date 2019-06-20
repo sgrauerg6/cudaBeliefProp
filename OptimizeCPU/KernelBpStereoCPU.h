@@ -39,33 +39,6 @@ class KernelBpStereoCPU
 {
 public:
 
-	static void convertShortToFloat(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
-	static void convertFloatToShort(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
-
-	template<typename T>
-	void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-			T* messageUDeviceCurrentCheckerboard1,
-			T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1,
-			T* messageRDeviceCurrentCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard2,
-			T* messageDDeviceCurrentCheckerboard2,
-			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
-			int heightLevel);
-
-	template<typename T>
-	void printDataAndMessageValsToPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-			T* messageUDeviceCurrentCheckerboard1,
-			T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1,
-			T* messageRDeviceCurrentCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard2,
-			T* messageDDeviceCurrentCheckerboard2,
-			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
-			int heightLevel);
-
 	//checks if the current point is within the image bounds
 	static bool withinImageBoundsCPU(int xVal, int yVal, int width, int height);
 
@@ -77,6 +50,21 @@ public:
 
 	template<typename T>
 	static T getZeroValCPU();
+
+	//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
+	//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
+	template<typename T>
+	static void initializeBottomLevelDataStereoCPU(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp);
+
+	//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
+	template<typename T>
+	static void initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum);
+
+	//initialize the message values at each pixel of the current level to the default value
+	template<typename T>
+	static void initializeMessageValsToDefaultKernelCPU(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+														T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
+														T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel);
 
 	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 	template<typename T>
@@ -112,22 +100,6 @@ public:
 			int widthLevelCheckerboardPart, int heightLevel,
 			int checkerboardToUpdate, int xVal, int yVal, int offsetData, float disc_k_bp);
 
-	//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
-	//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-	template<typename T>
-	static void initializeBottomLevelDataStereoCPU(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp);
-
-
-	//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
-	template<typename T>
-	static void initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum);
-
-	//initialize the message values at each pixel of the current level to the default value
-	template<typename T>
-	static void initializeMessageValsToDefaultKernelCPU(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
-													T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
-													T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel);
-
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 	template<typename T>
@@ -135,31 +107,6 @@ public:
 									T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 									T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 									T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
-			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
-			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
-			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
-			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX256(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
-			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-			double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
-			double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX512(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
-			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-			double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
-			double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
-			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
-			short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2, short* messageLDeviceCurrentCheckerboard2,
-			short* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
 
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
@@ -172,6 +119,71 @@ public:
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 	template<typename T>
 	static void retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel);
+
+	template<typename T>
+	void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
+			int heightLevel);
+
+	template<typename T>
+	void printDataAndMessageValsToPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
+			int heightLevel);
+
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+	static void convertShortToFloatAVX256(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
+	static void convertFloatToShortAVX256(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
+			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX256(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
+			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+			double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
+			double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
+			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+			short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2, short* messageLDeviceCurrentCheckerboard2,
+			short* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
+
+	static void convertShortToFloatAVX512(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
+	static void convertFloatToShortAVX512(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+				float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+				float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
+				float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX512(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
+				double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+				double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
+				double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX512(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
+				short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+				short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2, short* messageLDeviceCurrentCheckerboard2,
+				short* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+
+#endif
+
 };
 
 #endif //KERNAL_BP_STEREO_CPU_H

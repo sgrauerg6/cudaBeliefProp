@@ -312,7 +312,7 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::retrieveOutputDisparity(
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
-void BpStereoProcessingOptimizedCPU<T>::operator()(float*& image1Pixels, float*& image2Pixels, float*& resultingDisparityMap, BPsettings& algSettings)
+void BpStereoProcessingOptimizedCPU<T>::operator()(float* image1Pixels, float* image2Pixels, float* resultingDisparityMap, BPsettings& algSettings)
 {
 	//retrieve the total number of possible movements; this is equal to the number of disparity values 
 	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;

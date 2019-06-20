@@ -62,7 +62,7 @@ if __name__ == "__main__":
 	beliefPropDataTypeProcessing = ["0", "2"]
 	indexOptimizationSettings = ["1"]
 	cpuOptimizationSettings = ["0", "1"]
-	numOpenMPThreads = ["18", "36", "54", "72"]
+	numOpenMPThreads = ["2", "4", "6", "8"]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
 			for currTruncationDiscontCost in truncationDiscontCost:

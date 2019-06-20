@@ -136,7 +136,7 @@ public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	//the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 	//the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
-	void operator()(float*& image1PixelsDevice, float*& image2PixelsDevice, float*& resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
+	void operator()(float* image1PixelsDevice, float* image2PixelsDevice, float* resultingDisparityMapDevice, BPsettings& algSettings, DetailedTimings& timings);
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH
