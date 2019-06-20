@@ -257,12 +257,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif //(IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
-typedef double beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 typedef float beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
+typedef double beliefPropProcessingDataType;
+#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 typedef short beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"

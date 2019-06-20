@@ -29,8 +29,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include "DetailedTimingsCUDA.h"
 #include <chrono>
+#include "ProcessBPOnTargetDevice.h"
+
+#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 #include <cuda_fp16.h>
-#include "ProcessBPOnTarget.h"
+#endif
 
 class ProcessCUDABPHelperFuncts
 {
@@ -131,7 +134,7 @@ public:
 };
 
 template<typename T>
-class ProcessCUDABP : public ProcessBPOnTarget<beliefPropProcessingDataType>
+class ProcessCUDABP : public ProcessBPOnTargetDevice<beliefPropProcessingDataType>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -142,7 +145,7 @@ public:
 };
 
 template<>
-class ProcessCUDABP<short> : public ProcessBPOnTarget<short>
+class ProcessCUDABP<short> : public ProcessBPOnTargetDevice<short>
 {
 public:
 	//if type is specified as short, process as half on GPU

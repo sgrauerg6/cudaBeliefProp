@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <algorithm>
 #include <chrono>
-#include "ProcessBPOnTarget.h"
+#include "ProcessBPOnTargetDevice.h"
 
 class ProcessOptimizedCPUBPHelperFuncts
 {
@@ -128,7 +128,7 @@ public:
 };
 
 template<typename T>
-class ProcessOptimizedCPUBP : public ProcessBPOnTarget<beliefPropProcessingDataType>
+class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<beliefPropProcessingDataType>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -142,7 +142,7 @@ public:
 #if (CPU_OPTIMIZATION_SETTING != USE_AVX_256) && (CPU_OPTIMIZATION_SETTING != USE_AVX_512)
 
 template<>
-class ProcessOptimizedCPUBP<short> : public ProcessBPOnTarget<short>
+class ProcessOptimizedCPUBP<short> : public ProcessBPOnTargetDevice<short>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
