@@ -22,6 +22,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.cpp"
 
 template<typename T>
+int ProcessOptimizedCPUBP<T>::getCheckerboardWidthTargetDevice(
+		int widthLevelActualIntegerSize)
+{
+	return KernelBpStereoCPU::getCheckerboardWidthCPU<T>(
+			widthLevelActualIntegerSize); // (int)ceil(((float)widthLevelActualIntegerSize) / 2.0);
+}
+
+template<typename T>
 void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
 		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,

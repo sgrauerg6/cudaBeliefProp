@@ -34,10 +34,7 @@ template<typename T>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T>
 {
 public:
-		int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize)
-		{
-			return (int)ceil(((float)widthLevelActualIntegerSize) / 2.0);
-		}
+		int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize);
 
 		void allocateMemoryOnTargetDevice(void** arrayToAllocate, int numBytesAllocate)
 		{

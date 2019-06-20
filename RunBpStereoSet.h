@@ -20,12 +20,11 @@ class RunBpStereoSetMemoryManagement
 public:
 	RunBpStereoSetMemoryManagement() {
 			// TODO Auto-generated constructor stub
+	}
 
-		}
-
-		virtual ~RunBpStereoSetMemoryManagement() {
-			// TODO Auto-generated destructor stub
-		}
+	virtual ~RunBpStereoSetMemoryManagement() {
+		// TODO Auto-generated destructor stub
+	}
 
 	virtual void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
@@ -53,12 +52,9 @@ template <typename T>
 class RunBpStereoSet {
 public:
 	RunBpStereoSet() {
-		// TODO Auto-generated constructor stub
-
 	}
 
 	virtual ~RunBpStereoSet() {
-		// TODO Auto-generated destructor stub
 	}
 
 	virtual float operator()(const char* refImagePath, const char* testImagePath,
@@ -68,15 +64,16 @@ public:
 		{
 			runBPMemoryMangement = new RunBpStereoSetMemoryManagement();
 		}
-		double timeNoTransfer = 0.0;
-		double timeIncludeTransfer = 0.0;
 
 		unsigned int heightImages = 0;
 		unsigned int widthImages = 0;
 
 		std::vector<double> timingsNoTransferVector;
 		std::vector<double> timingsIncludeTransferVector;
+		std::vector<double> timingsSmoothing;
+		std::vector<double> timingsTotalBp;
 		DetailedTimings* detailedTimingsOverall = nullptr;
+
 		for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 		{
 			//first run Stereo estimation on the first two images
@@ -98,6 +95,9 @@ public:
 			//start timer to retrieve the time of implementation not including transfer time
 			auto timeNoTransferStart = std::chrono::system_clock::now();
 
+			//start timer for time to smooth image
+			auto timeSmoothStart = std::chrono::system_clock::now();
+
 			//first smooth the images using the Gaussian filter with the given SIGMA_BP value
 			//smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
 			(*smoothImage)(image1AsUnsignedIntArrayHost,
@@ -105,7 +105,12 @@ public:
 			(*smoothImage)(image2AsUnsignedIntArrayHost,
 						widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2);
 
-			//free the host memory allocatted to original image 1 and image 2 on the host
+			//end timer for image smoothing and add to image smoothing timings
+			auto timeSmoothEnd = std::chrono::system_clock::now();
+			std::chrono::duration<double> diffTimeSmoothing = timeSmoothEnd-timeSmoothStart;
+			timingsSmoothing.push_back(diffTimeSmoothing.count());
+
+			//free the host memory allocated to original image 1 and image 2 on the host
 			delete[] image1AsUnsignedIntArrayHost;
 			delete[] image2AsUnsignedIntArrayHost;
 
@@ -118,31 +123,21 @@ public:
 			//allocate the space for the disparity map estimation
 			runBPMemoryMangement->allocateDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
-			//ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
+			//start bp processing time timer
+			auto bpTotalTimeStart = std::chrono::system_clock::now();
+
+			//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 			DetailedTimings* currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
 					disparityMapFromImage1To2CompDevice, algSettings);
 
-			//check if detailed timings are returned
-			if (currentDetailedTimings != nullptr)
-			{
-				if (detailedTimingsOverall == nullptr)
-				{
-					detailedTimingsOverall = currentDetailedTimings;
-				}
-				else
-				{
-					//add timings for run to overall set
-					detailedTimingsOverall->addTimings(currentDetailedTimings);
-				}
-			}
+			//stop the bp processing time and add vector of bp processing times
+			auto bpTotalTimeEnd = std::chrono::system_clock::now();
+			std::chrono::duration<double> diffBpTotalTime = bpTotalTimeEnd-bpTotalTimeStart;
+			timingsTotalBp.push_back(diffBpTotalTime.count());
 
 			//retrieve the running time of the implementation not including the host/device transfer time
-			//printf("Running time not including transfer time: %f (ms) \n", cutGetTimerValue(timerTransferTimeNotIncluded));
 			auto timeNoTransferEnd = std::chrono::system_clock::now();
 			std::chrono::duration<double> diff = timeNoTransferEnd-timeNoTransferStart;
-			//printf("Running time not including transfer time: %.10lf seconds\n",
-			//		timeEnd - timeStart);
-			timeNoTransfer += diff.count();
 			timingsNoTransferVector.push_back(diff.count());
 
 			//allocate the space on the host for and x and y movement between images
@@ -156,7 +151,7 @@ public:
 
 			std::chrono::duration<double> diffWithTransferTime = timeWithTransferEnd
 					- timeWithTransferStart;
-			timeIncludeTransfer = diffWithTransferTime.count();
+			timingsIncludeTransferVector.push_back(diffWithTransferTime.count());
 
 			//save the resulting disparity map images to a file
 			ImageHelperFunctions::saveDisparityImageToPGM(saveDisparityMapImagePath,
@@ -164,21 +159,39 @@ public:
 						widthImages, heightImages);
 
 			delete[] disparityMapFromImage1To2Host;
-			timingsIncludeTransferVector.push_back(timeIncludeTransfer);
 
 			//free the space allocated to the resulting disparity map and smoothed images on the computation device
 			runBPMemoryMangement->freeDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice);
 			runBPMemoryMangement->freeDataOnCompDevice((void**)&smoothedImage1);
 			runBPMemoryMangement->freeDataOnCompDevice((void**)&smoothedImage2);
 
-			//printf("RUN: %d\n", numRun);
+			//check if detailed timings are returned; if so, add to overall detailed timings
+			if (currentDetailedTimings != nullptr)
+			{
+				if (detailedTimingsOverall == nullptr)
+				{
+					detailedTimingsOverall = currentDetailedTimings;
+				}
+				else
+				{
+					//add timings for run to overall set
+					detailedTimingsOverall->addTimings(currentDetailedTimings);
+				}
+			}
 		}
-
-		//printf("DONE\n");
 
 		fprintf(resultsFile, "Image Width: %d\n", widthImages);
 		fprintf(resultsFile, "Image Height: %d\n", heightImages);
-		fprintf(resultsFile, "Total Image Pixels: %d\n", widthImages * heightImages);
+
+		std::sort(timingsNoTransferVector.begin(), timingsNoTransferVector.end());
+		std::sort(timingsIncludeTransferVector.begin(), timingsIncludeTransferVector.end());
+		std::sort(timingsSmoothing.begin(), timingsSmoothing.end());
+		std::sort(timingsTotalBp.begin(), timingsTotalBp.end());
+
+		fprintf(resultsFile, "Median Smoothing Runtime: %f\n", timingsSmoothing.at(NUM_BP_STEREO_RUNS/2));
+		fprintf(resultsFile, "Median Total BP Runtime: %f\n", timingsTotalBp.at(NUM_BP_STEREO_RUNS/2));
+		fprintf(resultsFile, "MEDIAN RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
+		fprintf(resultsFile, "MEDIAN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
 
 		if (detailedTimingsOverall != nullptr)
 		{
@@ -186,14 +199,6 @@ public:
 			//timings.PrintMedianTimings();
 			detailedTimingsOverall->PrintMedianTimingsToFile(resultsFile);
 		}
-
-		std::sort(timingsNoTransferVector.begin(), timingsNoTransferVector.end());
-		std::sort(timingsIncludeTransferVector.begin(), timingsIncludeTransferVector.end());
-
-		printf("Median runtime (not including transfer of data to/from comp device memory): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
-		//printf("MEDIAN GPU RUN TIME (INCLUDING TRANSFER TIME OF DATA TO/FROM GPU MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
-		fprintf(resultsFile, "MEDIAN RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsNoTransferVector.at(NUM_BP_STEREO_RUNS/2));
-		fprintf(resultsFile, "MEDIAN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): %f\n", timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2));
 
 		return timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2);
 	}
