@@ -10,7 +10,7 @@
 
 #include "SmoothImageCPU.h"
 #include "imageHelpers.h"
-//#include "BpStereoProcessingOptimizedCPU.h"
+//#include "ProcessOptimizedCPUBP.h"
 #include "RunBpStereoSet.h"
 #include "ProcessBPOnTarget.h"
 

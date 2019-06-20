@@ -91,7 +91,7 @@ SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#g++ OptimizeCPU/SmoothImageCPU.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h bpParametersFromPython.h bpStereoParameters.h OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/BpStereoProcessingOptimizedCPU.cpp OptimizeCPU/BpStereoProcessingOptimizedCPU.h OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
+RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h bpParametersFromPython.h bpStereoParameters.h OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/ProcessOptimizedCPUBP.cpp OptimizeCPU/ProcessOptimizedCPUBP.h OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		

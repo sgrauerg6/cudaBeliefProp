@@ -6,7 +6,7 @@
  */
 
 #include "RunBpStereoOptimizedCPU.h"
-#include "BpStereoProcessingOptimizedCPU.cpp"
+#include "ProcessOptimizedCPUBP.cpp"
 
 RunBpStereoOptimizedCPU::RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated constructor stub
@@ -28,7 +28,7 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		printf("Number of OMP threads: %d\n", nthreads);
 		fprintf(resultsFile, "Number of OMP threads: %d\n", nthreads);
 		SmoothImageCPU smoothImageCPU;
-		BpStereoProcessingOptimizedCPU<beliefPropProcessingDataType> processImageCPU;
+		ProcessOptimizedCPUBP<beliefPropProcessingDataType> processImageCPU;
 		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);
 	}
 

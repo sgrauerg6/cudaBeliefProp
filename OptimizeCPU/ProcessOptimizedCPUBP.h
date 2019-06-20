@@ -128,7 +128,7 @@ public:
 };
 
 template<typename T>
-class BpStereoProcessingOptimizedCPU : public ProcessBPOnTarget<beliefPropProcessingDataType>
+class ProcessOptimizedCPUBP : public ProcessBPOnTarget<beliefPropProcessingDataType>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -142,7 +142,7 @@ public:
 #if (CPU_OPTIMIZATION_SETTING != USE_AVX_256) && (CPU_OPTIMIZATION_SETTING != USE_AVX_512)
 
 template<>
-class BpStereoProcessingOptimizedCPU<short> : public ProcessBPOnTarget<short>
+class ProcessOptimizedCPUBP<short> : public ProcessBPOnTarget<short>
 {
 public:
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -150,7 +150,7 @@ public:
 	//output is resultingDisparityMap
 	DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 	{
-		BpStereoProcessingOptimizedCPU<float> bpStereoCpu;
+		ProcessOptimizedCPUBP<float> bpStereoCpu;
 		return bpStereoCpu(image1PixelsCompDevice, image2PixelsCompDevice, resultingDisparityMapCompDevice, algSettings);
 	}
 };

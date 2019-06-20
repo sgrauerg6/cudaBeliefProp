@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
-#include "BpStereoProcessingOptimizedCPU.h"
+#include "ProcessOptimizedCPUBP.h"
 #include "KernelBpStereoCPU.cpp"
 
 template<typename T>
@@ -312,7 +312,7 @@ void ProcessBpStereoProcessingOptimizedCPUHelperFuncts::retrieveOutputDisparity(
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
 template<typename T>
-DetailedTimings* BpStereoProcessingOptimizedCPU<T>::operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
+DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 {
 	//printf("Start opt CPU\n");
 	//retrieve the total number of possible movements; this is equal to the number of disparity values 
