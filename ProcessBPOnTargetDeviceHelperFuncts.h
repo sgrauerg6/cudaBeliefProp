@@ -7,7 +7,7 @@
 
 #ifndef PROCESSBPONTARGETDEVICEHELPERFUNCTS_H_
 #define PROCESSBPONTARGETDEVICEHELPERFUNCTS_H_
-
+/*
 #include "bpStereoParameters.h"
 
 template<typename T>
@@ -22,7 +22,7 @@ public:
 
 	virtual void freeMemoryOnTargetDevice(void* arrayToFree);
 
-	virtual void initialDataCosts(float* image1PixelsCompDevice,
+	virtual void initializeDataCosts(float* image1PixelsCompDevice,
 			float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 			T* dataCostDeviceCheckerboard2, BPsettings& algSettings);
 
@@ -100,6 +100,6 @@ public:
 			T* messageRDeviceSet1Checkerboard2,
 			float* resultingDisparityMapCompDevice, int widthLevel,
 			int heightLevel, int currentCheckerboardSet);
-};
+};*/
 
 #endif /* PROCESSBPONTARGETDEVICEHELPERFUNCTS_H_ */

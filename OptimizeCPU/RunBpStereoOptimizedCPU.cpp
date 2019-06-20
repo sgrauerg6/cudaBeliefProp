@@ -6,19 +6,22 @@
  */
 
 #include "RunBpStereoOptimizedCPU.h"
-#include "ProcessOptimizedCPUBP.cpp"
+#include "ProcessOptimizedCPUBP.h"
 
-RunBpStereoOptimizedCPU::RunBpStereoOptimizedCPU() {
+template <typename T>
+RunBpStereoOptimizedCPU<T>::RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated constructor stub
 
 }
 
-RunBpStereoOptimizedCPU::~RunBpStereoOptimizedCPU() {
+template <typename T>
+RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
 	// TODO Auto-generated destructor stub
 }
 
-float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath,
-				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
+template <typename T>
+float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath, const char* testImagePath,
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
 	{
 		int nthreads = 0;
 		#pragma omp parallel
@@ -28,9 +31,14 @@ float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* 
 		printf("Number of OMP threads: %d\n", nthreads);
 		fprintf(resultsFile, "Number of OMP threads: %d\n", nthreads);
 		SmoothImageCPU smoothImageCPU;
-		ProcessOptimizedCPUBP<beliefPropProcessingDataType> processImageCPU;
-		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);
+		ProcessOptimizedCPUBP<T> processImageCPU;
+		RunBpStereoSet<T> runStereoSet;
+		return runStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCPU, &processImageCPU);
 	}
+
+template class RunBpStereoOptimizedCPU<float>;
+template class RunBpStereoOptimizedCPU<double>;
+template class RunBpStereoOptimizedCPU<short>;
 
 /*float RunBpStereoOptimizedCPU::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
 {

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.cpp"
 
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
 		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
@@ -64,7 +64,7 @@ void ProcessOptimizedCPUBPHelperFuncts::printDataAndMessageValsAtPoint(int xVal,
 
 
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
 		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
@@ -108,13 +108,13 @@ void ProcessOptimizedCPUBPHelperFuncts::printDataAndMessageValsToPoint(int xVal,
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
+void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
 	T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
 	T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
 	T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
 	T* dataCostDeviceCheckerboard2)
 {
-	int widthCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSize);
+	int widthCheckerboard = getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize);
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
@@ -147,7 +147,7 @@ void ProcessOptimizedCPUBPHelperFuncts::runBPAtCurrentLevel(BPsettings& algSetti
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
+void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
 	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
@@ -214,7 +214,7 @@ void ProcessOptimizedCPUBPHelperFuncts::copyMessageValuesToNextLevelDown(int wid
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::initializeDataCosts(float*& image1PixelsDevice, float*& image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings)
+void ProcessOptimizedCPUBP<T>::initializeDataCosts(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings)
 {
 	//initialize the data the the "bottom" of the image pyramid
 	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T>(image1PixelsDevice,
@@ -225,7 +225,7 @@ void ProcessOptimizedCPUBPHelperFuncts::initializeDataCosts(float*& image1Pixels
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
+void ProcessOptimizedCPUBP<T>::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 												  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
 												  int widthLevel, int heightLevel, int numPossibleMovements)
 {
@@ -239,7 +239,7 @@ void ProcessOptimizedCPUBPHelperFuncts::initializeMessageValsToDefault(T* messag
 
 
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
+void ProcessOptimizedCPUBP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
 		T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteToCheckerboard1,
 		T* dataCostDeviceToWriteToCheckerboard2,
 		int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
@@ -268,7 +268,7 @@ void ProcessOptimizedCPUBPHelperFuncts::initializeDataCurrentLevel(T* dataCostSt
 }
 
 template<typename T>
-void ProcessOptimizedCPUBPHelperFuncts::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
+void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
 		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
 		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
@@ -311,7 +311,7 @@ void ProcessOptimizedCPUBPHelperFuncts::retrieveOutputDisparity(T* dataCostDevic
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
 //the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
-template<typename T>
+/*template<typename T>
 DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings)
 {
 	//printf("Start opt CPU\n");
@@ -334,7 +334,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 	//using "half" because the data is split in two using the checkerboard scheme
 	for (int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
 	{
-		halfTotalDataAllLevels += (KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * (totalPossibleMovements);
+		halfTotalDataAllLevels += (getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * (totalPossibleMovements);
 		widthLevel /= 2.0f;
 		heightLevel /= 2.0f;
 
@@ -390,7 +390,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 
 	//printf("INIT DATA COSTS\n");
 	//initialize the data cost at the bottom level 
-	ProcessOptimizedCPUBPHelperFuncts::initializeDataCosts<T>(
+	initializeDataCosts(
 			image1PixelsCompDevice, image2PixelsCompDevice,
 			dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
 			algSettings);
@@ -405,7 +405,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 
 		//width is half since each part of the checkboard contains half the values going across
 		//retrieve offset where the data starts at the "current level"
-		offsetLevel += (KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * totalPossibleMovements;
+		offsetLevel += (getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize)) * (heightLevelActualIntegerSize) * totalPossibleMovements;
 
 		widthLevel /= 2.0f;
 		heightLevel /= 2.0f;
@@ -427,7 +427,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 				&dataCostDeviceCheckerboard2[offsetLevel];
 
 		//printf("INIT DATA COSTS CURRENT LEVEL\n");
-		ProcessOptimizedCPUBPHelperFuncts::initializeDataCurrentLevel<T>(dataCostStereoCheckerboard1,
+		initializeDataCurrentLevel(dataCostStereoCheckerboard1,
 				dataCostStereoCheckerboard2, dataCostDeviceToWriteToCheckerboard1,
 				dataCostDeviceToWriteToCheckerboard2,
 				widthLevelActualIntegerSize,
@@ -498,7 +498,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 
 	//printf("initializeMessageValsToDefault\n");
 	//initialize all the BP message values at every pixel for every disparity to 0
-	ProcessOptimizedCPUBPHelperFuncts::initializeMessageValsToDefault<T>(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
+	initializeMessageValsToDefault(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 											messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 											widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
 	//printf("DONE initializeMessageValsToDefault\n");
@@ -517,7 +517,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == 0)
 		{
-			ProcessOptimizedCPUBPHelperFuncts::runBPAtCurrentLevel<T>(algSettings,
+			runBPAtCurrentLevel(algSettings,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 					messageUDeviceSet0Checkerboard1,
 					messageDDeviceSet0Checkerboard1,
@@ -532,7 +532,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 		}
 		else
 		{
-			ProcessOptimizedCPUBPHelperFuncts::runBPAtCurrentLevel<T>(algSettings,
+			runBPAtCurrentLevel(algSettings,
 					widthLevelActualIntegerSize, heightLevelActualIntegerSize,
 					messageUDeviceSet1Checkerboard1,
 					messageDDeviceSet1Checkerboard1,
@@ -559,7 +559,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 
 			widthLevelActualIntegerSize = (int)ceil(widthLevel);
 			heightLevelActualIntegerSize = (int)ceil(heightLevel);
-			int widthCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSize);
+			int widthCheckerboard = getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize);
 
 			offsetLevel -= widthCheckerboard * heightLevelActualIntegerSize * totalPossibleMovements;
 
@@ -584,7 +584,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 
 #endif
 
-				ProcessOptimizedCPUBPHelperFuncts::copyMessageValuesToNextLevelDown<T>(
+				copyMessageValuesToNextLevelDown(
 						prevWidthLevelActualIntegerSize,
 						prevHeightLevelActualIntegerSize,
 						widthLevelActualIntegerSize,
@@ -625,7 +625,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 
 #endif
 
-				ProcessOptimizedCPUBPHelperFuncts::copyMessageValuesToNextLevelDown<T>(
+				copyMessageValuesToNextLevelDown(
 						prevWidthLevelActualIntegerSize,
 						prevHeightLevelActualIntegerSize,
 						widthLevelActualIntegerSize,
@@ -652,7 +652,7 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 		}
 	}
 
-	ProcessOptimizedCPUBPHelperFuncts::retrieveOutputDisparity<T>(dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
+	retrieveOutputDisparity(dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 			messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1, messageRDeviceSet0Checkerboard1,
 			messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2,
 			messageUDeviceSet1Checkerboard1, messageDDeviceSet1Checkerboard1, messageLDeviceSet1Checkerboard1, messageRDeviceSet1Checkerboard1,
@@ -701,6 +701,8 @@ DetailedTimings* ProcessOptimizedCPUBP<T>::operator()(float* image1PixelsCompDev
 	delete [] dataCostDeviceCheckerboard1;
 
 #endif
-}
+}*/
 
-
+template class ProcessOptimizedCPUBP<float>;
+template class ProcessOptimizedCPUBP<double>;
+template class ProcessOptimizedCPUBP<short>;

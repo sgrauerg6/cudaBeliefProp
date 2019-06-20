@@ -33,7 +33,8 @@ static void dt(float f[VALUES]) {
 }
 
 // compute message
-void RunBpStereoCPUSingleThread::msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
+template<typename T>
+void RunBpStereoCPUSingleThread<T>::msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 		float dst[VALUES], float disc_k_bp) {
 	float val;
 
@@ -65,7 +66,8 @@ void RunBpStereoCPUSingleThread::msg(float s1[VALUES], float s2[VALUES], float s
 }
 
 // computation of data costs
-image<float[VALUES]> * RunBpStereoCPUSingleThread::comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings) {
+template<typename T>
+image<float[VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings) {
 	int width = img1->width();
 	int height = img1->height();
 	image<float[VALUES]> *data = new image<float[VALUES]>(width, height);
@@ -94,7 +96,8 @@ image<float[VALUES]> * RunBpStereoCPUSingleThread::comp_data(image<uchar> *img1,
 }
 
 // generate output from current messages
-image<uchar> * RunBpStereoCPUSingleThread::output(image<float[VALUES]> *u, image<float[VALUES]> *d,
+template<typename T>
+image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[VALUES]> *u, image<float[VALUES]> *d,
 		image<float[VALUES]> *l, image<float[VALUES]> *r,
 		image<float[VALUES]> *data) {
 	int width = data->width();
@@ -127,7 +130,8 @@ image<uchar> * RunBpStereoCPUSingleThread::output(image<float[VALUES]> *u, image
 }
 
 // belief propagation using checkerboard update scheme
-void RunBpStereoCPUSingleThread::bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
+template<typename T>
+void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 		image<float[VALUES]> *l, image<float[VALUES]> *r,
 		image<float[VALUES]> *data, int iter, float disc_k_bp) {
 	int width = data->width();
@@ -157,7 +161,8 @@ void RunBpStereoCPUSingleThread::bp_cb(image<float[VALUES]> *u, image<float[VALU
 }
 
 // multiscale belief propagation for image restoration
-image<uchar> * RunBpStereoCPUSingleThread::stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile, float& runtime) {
+template<typename T>
+image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile, float& runtime) {
 	image<float[VALUES]> *u[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *d[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *l[MAX_ALLOWED_LEVELS];
@@ -255,7 +260,8 @@ image<uchar> * RunBpStereoCPUSingleThread::stereo_ms(image<uchar> *img1, image<u
 	return out;
 }
 
-float RunBpStereoCPUSingleThread::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
+template<typename T>
+float RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
@@ -276,3 +282,7 @@ float RunBpStereoCPUSingleThread::operator()(const char* refImagePath, const cha
 
 	return runtime;
 }
+
+template class RunBpStereoCPUSingleThread<float>;
+template class RunBpStereoCPUSingleThread<double>;
+template class RunBpStereoCPUSingleThread<short>;

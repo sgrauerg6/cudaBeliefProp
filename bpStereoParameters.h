@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CONES_IMAGES_HALF_SIZE 3
 #define CONES_IMAGES_FULL_SIZE 4
 #define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
-#define IMAGE_SET_TO_PROCESS TSUKUBA_IMAGES
+#define IMAGE_SET_TO_PROCESS IMAGE_SET_PARAMETERS_FROM_PYTHON
 
 #if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
 
@@ -250,7 +250,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //Can remove optimized GPU memory management (making the processing more similar to the initial work) by commenting out the "#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT" line
 //May be able to speed up processing by switching to using 16-bit half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
 //Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to 0 (not recommended; this slows down processing)
-#define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_HALF_TWO
+#define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
 #define OPTIMIZED_INDEXING_SETTING 1
 #define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 #define CPU_OPTIMIZATION_SETTING USE_DEFAULT

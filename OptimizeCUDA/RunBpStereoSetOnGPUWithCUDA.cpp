@@ -19,21 +19,22 @@
 //Defines the methods to run BP Stereo implementation on a series of images using various options
 
 #include "RunBpStereoSetOnGPUWithCUDA.h"
-#include "SmoothImageCUDA.h"
-#include <chrono>
-#include <vector>
-#include <algorithm>
-#include "imageHelpers.h"
-#include "DetailedTimings.h"
-#include "ProcessCUDABP.cpp"
 
-float RunBpStereoSetOnGPUWithCUDA::operator()(const char* refImagePath, const char* testImagePath,
-				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo)
+/*template <typename T>
+float RunBpStereoSetOnGPUWithCUDA<T>::operator()(const char* refImagePath, const char* testImagePath,
+				BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo)
 	{
 		SmoothImageCUDA smoothImageCUDA;
-		ProcessCUDABP<beliefPropProcessingDataType> processImageCUDA;
-		return RunBpStereoSet::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA);
+		ProcessCUDABP<T> processImageCUDA;
+		return RunBpStereoSet<T>::operator ()(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA);
 	}
+
+template class RunBpStereoSetOnGPUWithCUDA<float>;*/
+//template class RunBpStereoSetOnGPUWithCUDA<double>;
+//template class RunBpStereoSetOnGPUWithCUDA<half>;
+//template class RunBpStereoSetOnGPUWithCUDA<half2>;
+//template class RunBpStereoSetOnGPUWithCUDA<short>;
+
 
 //run the disparity map estimation BP on a stereo image set and save the results between each set of images if desired
 //returns the runtime (including transfer time)

@@ -121,7 +121,7 @@ public:
 	static void retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel);
 
 	template<typename T>
-	void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+	static void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1,
@@ -133,7 +133,7 @@ public:
 			int heightLevel);
 
 	template<typename T>
-	void printDataAndMessageValsToPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+	static void printDataAndMessageValsToPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1,

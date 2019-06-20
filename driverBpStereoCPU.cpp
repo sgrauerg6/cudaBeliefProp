@@ -79,8 +79,8 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	BPsettings algSettings = initializeAndReturnBPSettings();
 
 	printf("Running belief propagation on reference image %s and test image %s on CPU and CPU (optimized)\n", DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
-	RunBpStereoOptimizedCPU runBpStereoOptCPU;
-	RunBpStereoCPUSingleThread runBpStereoSetCPU;
+	RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;
+	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
 	float singleThreadCpuRunTime = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_1, resultsFile);
 	float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2, resultsFile);
 

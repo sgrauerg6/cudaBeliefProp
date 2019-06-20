@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 #include <cuda_fp16.h>
 #endif
+#include <cuda_fp16.h>
 
 //defines the width and height of the thread block used for
 //image filtering (applying the Guassian filter in smoothImageHost)

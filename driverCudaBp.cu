@@ -82,9 +82,9 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	printf(
 			"Running belief propagation on reference image %s and test image %s on GPU and CPU\n",
 			DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
-	RunBpStereoSetOnGPUWithCUDA runBpStereoSetCUDA;
-	RunBpStereoOptimizedCPU runBpStereoOptCPU;
-	RunBpStereoCPUSingleThread runBpStereoSetCPU;
+	RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType> runBpStereoSetCUDA;
+	RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;
+	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
 	float cudaRunTime = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH,
 			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_1,
 			resultsFile);

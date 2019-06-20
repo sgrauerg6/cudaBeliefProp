@@ -6,13 +6,3 @@
  */
 
 #include "RunBpStereoSet.h"
-
-RunBpStereoSet::RunBpStereoSet() {
-	// TODO Auto-generated constructor stub
-
-}
-
-RunBpStereoSet::~RunBpStereoSet() {
-	// TODO Auto-generated destructor stub
-}
-

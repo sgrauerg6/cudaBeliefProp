@@ -47,12 +47,12 @@ LINK   = -lm
 
 all: impDriver 
 
-impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o RunBpStereoSetOnGPUWithCUDA.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o DetailedTimings.o DetailedTimingsCUDA.o ProcessBPOnTarget.o
-	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o DetailedTimings.o DetailedTimingsCUDA.o ProcessBPOnTarget.o $(LIB) -fopenmp -o driverCudaBp -O -m64
+impDriver: $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o RunBpStereoSetOnGPUWithCUDA.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o DetailedTimings.o DetailedTimingsCUDA.o ProcessBPOnTargetDevice.o ProcessCUDABP.o ProcessOptimizedCPUBP.o
+	g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o DetailedTimings.o DetailedTimingsCUDA.o ProcessBPOnTargetDevice.o ProcessCUDABP.o ProcessOptimizedCPUBP.o $(LIB) -fopenmp -o driverCudaBp -O -m64
 	#g++ $(CU_OBJ) stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o $(LIB) -o driverCudaBp -O -m64
 
-impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o ProcessBPOnTarget.o DetailedTimings.o
-	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o ProcessBPOnTarget.o DetailedTimings.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp -o driverCPUBp -O -m64
+impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o ProcessOptimizedCPUBP.o
+	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp -o driverCPUBp -O -m64
 
 DetailedTimingsCUDA.o: OptimizeCUDA/DetailedTimingsCUDA.cpp OptimizeCUDA/DetailedTimingsCUDA.h
 	g++ OptimizeCUDA/DetailedTimingsCUDA.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -66,11 +66,11 @@ DetailedTimings.o: DetailedTimings.cpp DetailedTimings.h
 driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h
 	g++ driverBpStereoCPU.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-ProcessBPOnTarget.o : ProcessBPOnTarget.cpp ProcessBPOnTarget.h
-	g++ ProcessBPOnTarget.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessBPOnTargetDevice.o : ProcessBPOnTargetDevice.cpp ProcessBPOnTargetDevice.h
+	g++ ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-#BpStereoProcessingOptimizedCPU.o : OptimizeCPU/BpStereoProcessingOptimizedCPU.cpp OptimizeCPU/BpStereoProcessingOptimizedCPU.h
-#	g++ OptimizeCPU/BpStereoProcessingOptimizedCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessOptimizedCPUBP.o : OptimizeCPU/ProcessOptimizedCPUBP.cpp OptimizeCPU/ProcessOptimizedCPUBP.h
+	g++ OptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h
 	g++ RunBpStereoSet.cpp -x cu -c $(INCLUdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpdriverCPUBpDE_DIRS) $(COMPILE_FLAGS)
@@ -94,6 +94,9 @@ SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h bpParametersFromPython.h bpStereoParameters.h OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/ProcessOptimizedCPUBP.cpp OptimizeCPU/ProcessOptimizedCPUBP.h OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h
 	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	#g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -mavx2 $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
+	$(NVCC) -x cu -c OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -o ProcessCUDABP.o $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)

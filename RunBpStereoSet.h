@@ -10,15 +10,22 @@
 
 #include "bpStereoParameters.h"
 #include "SmoothImage.h"
-#include "ProcessBPOnTarget.h"
+#include "ProcessBPOnTargetDevice.h"
 #include <cstring>
 #include "imageHelpers.h"
 #include "DetailedTimings.h"
 
-class RunBpStereoSet {
+class RunBpStereoSetMemoryManagement
+{
 public:
-	RunBpStereoSet();
-	virtual ~RunBpStereoSet();
+	RunBpStereoSetMemoryManagement() {
+			// TODO Auto-generated constructor stub
+
+		}
+
+		virtual ~RunBpStereoSetMemoryManagement() {
+			// TODO Auto-generated destructor stub
+		}
 
 	virtual void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
@@ -36,9 +43,31 @@ public:
 		memcpy(destArray, inArray, numBytesTransfer);
 	}
 
-	virtual float operator()(const char* refImagePath, const char* testImagePath,
-			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr)
+	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
 	{
+		memcpy(destArray, inArray, numBytesTransfer);
+	}
+};
+
+template <typename T>
+class RunBpStereoSet {
+public:
+	RunBpStereoSet() {
+		// TODO Auto-generated constructor stub
+
+	}
+
+	virtual ~RunBpStereoSet() {
+		// TODO Auto-generated destructor stub
+	}
+
+	virtual float operator()(const char* refImagePath, const char* testImagePath,
+			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<T>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
+	{
+		if (runBPMemoryMangement == nullptr)
+		{
+			runBPMemoryMangement = new RunBpStereoSetMemoryManagement();
+		}
 		double timeNoTransfer = 0.0;
 		double timeIncludeTransfer = 0.0;
 
@@ -60,8 +89,8 @@ public:
 			float* smoothedImage2;
 
 			//allocate the device memory to store and x and y smoothed images
-			allocateDataOnCompDevice((void**)&smoothedImage1, widthImages * heightImages * sizeof(float));
-			allocateDataOnCompDevice((void**)&smoothedImage2, widthImages * heightImages * sizeof(float));
+			runBPMemoryMangement->allocateDataOnCompDevice((void**)&smoothedImage1, widthImages * heightImages * sizeof(float));
+			runBPMemoryMangement->allocateDataOnCompDevice((void**)&smoothedImage2, widthImages * heightImages * sizeof(float));
 
 			//start timer to retrieve the time of implementation including transfer time
 			auto timeWithTransferStart = std::chrono::system_clock::now();
@@ -87,7 +116,7 @@ public:
 			float* disparityMapFromImage1To2CompDevice;
 
 			//allocate the space for the disparity map estimation
-			allocateDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
+			runBPMemoryMangement->allocateDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 			//ProcessCUDABP<beliefPropProcessingDataType> processBPOnGPUUsingCUDA;
 			DetailedTimings* timings = (*runBpStereo)(smoothedImage1, smoothedImage2,
@@ -120,7 +149,7 @@ public:
 						* heightImages];
 
 			//transfer the disparity map estimation on the device to the host for output
-			transferDataFromCompDeviceToHost(disparityMapFromImage1To2Host, disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
+			runBPMemoryMangement->transferDataFromCompDeviceToHost(disparityMapFromImage1To2Host, disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 			auto timeWithTransferEnd = std::chrono::system_clock::now();
 
@@ -137,9 +166,9 @@ public:
 			timingsIncludeTransferVector.push_back(timeIncludeTransfer);
 
 			//free the space allocated to the resulting disparity map and smoothed images on the computation device
-			freeDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice);
-			freeDataOnCompDevice((void**)&smoothedImage1);
-			freeDataOnCompDevice((void**)&smoothedImage2);
+			runBPMemoryMangement->freeDataOnCompDevice((void**)&disparityMapFromImage1To2CompDevice);
+			runBPMemoryMangement->freeDataOnCompDevice((void**)&smoothedImage1);
+			runBPMemoryMangement->freeDataOnCompDevice((void**)&smoothedImage2);
 
 			//printf("RUN: %d\n", numRun);
 		}

@@ -22,17 +22,18 @@
 #include "bpStereoParameters.h"
 #include <chrono>
 #include "SmoothImage.h"
-#include "ProcessBPOnTarget.h"
+#include "ProcessBPOnTargetDevice.h"
 
 #define MAX_ALLOWED_LEVELS 10
 #define INF 1E20     // large cost
 #define VALUES NUM_POSSIBLE_DISPARITY_VALUES    // number of possible disparities
 #define SCALE SCALE_BP     // scaling from disparity to graylevel in output
 
-class RunBpStereoCPUSingleThread : public RunBpStereoSet
+template<typename T>
+class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTarget<beliefPropProcessingDataType>* runBpStereo = nullptr);
+	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<T>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr);
 
 private:
 	// compute message

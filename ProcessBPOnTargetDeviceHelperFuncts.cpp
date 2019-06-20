@@ -5,14 +5,20 @@
  *      Author: scott
  */
 
-#include "ProcessBPOnTargetDeviceHelperFuncts.h"
+/*#include "ProcessBPOnTargetDeviceHelperFuncts.h"
 
-ProcessBPOnTargetDeviceHelperFuncts::ProcessBPOnTargetDeviceHelperFuncts() {
+template <typename T>
+ProcessBPOnTargetDeviceHelperFuncts<T>::ProcessBPOnTargetDeviceHelperFuncts() {
 	// TODO Auto-generated constructor stub
 
 }
 
-ProcessBPOnTargetDeviceHelperFuncts::~ProcessBPOnTargetDeviceHelperFuncts() {
+template <typename T>
+ProcessBPOnTargetDeviceHelperFuncts<T>::~ProcessBPOnTargetDeviceHelperFuncts() {
 	// TODO Auto-generated destructor stub
 }
 
+template class ProcessBPOnTargetDeviceHelperFuncts<float>;
+''template class ProcessBPOnTargetDeviceHelperFuncts<double>;
+template class ProcessBPOnTargetDeviceHelperFuncts<short>;
+*/
