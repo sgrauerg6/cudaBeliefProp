@@ -24,11 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpStereoCudaParameters.h"
 
 //include for the kernal functions to be run on the GPU
-#include <vector>
-#include <algorithm>
 #include <cuda_runtime.h>
-#include "DetailedTimingsCUDA.h"
-#include <chrono>
 #include "ProcessBPOnTargetDevice.h"
 
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
@@ -174,12 +170,6 @@ public:
 			T* messageLDeviceSet1Checkerboard2,
 			T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
 			int heightLevel, int currentCheckerboardSet);
-
-	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
-	//the input images image1PixelsDevice and image2PixelsDevice are stored in the global memory of the GPU
-	//the output movements resultingDisparityMapDevice is stored in the global memory of the GPU
-	//Return detailed timings of processing (or null if data not collected)
-	//DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings);
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

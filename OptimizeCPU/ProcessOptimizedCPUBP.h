@@ -129,11 +129,6 @@ public:
 				T* messageLDeviceSet1Checkerboard2,
 				T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
 				int heightLevel, int currentCheckerboardSet);
-
-	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
-	//input is images image1Pixels and image1Pixels
-	//output is resultingDisparityMap
-	//DetailedTimings* operator()(float* image1PixelsCompDevice, float* image2PixelsCompDevice, float* resultingDisparityMapCompDevice, BPsettings& algSettings);
 };
 
 //if not using AVX-256 or AVX-512, process using float if short data type used

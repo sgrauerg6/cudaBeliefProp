@@ -9,8 +9,6 @@
 #define RUNBPSTEREOOPTIMIZEDCPU_H_
 
 #include "SmoothImageCPU.h"
-#include "imageHelpers.h"
-//#include "ProcessOptimizedCPUBP.h"
 #include "RunBpStereoSet.h"
 #include "ProcessBPOnTargetDevice.h"
 
