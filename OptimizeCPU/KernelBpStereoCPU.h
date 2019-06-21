@@ -154,50 +154,42 @@ public:
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
-	//needed so that template specializations are used when available
-
-	static void convertShortToFloatAVX256(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
-	static void convertFloatToShortAVX256(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
-			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-			float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
-			float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX256(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
-			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-			double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
-			double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
-			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
-			short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2, short* messageLDeviceCurrentCheckerboard2,
-			short* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+	template<typename T>
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256(
+			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, int widthLevel,
+			int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+	{
+		printf("Data type not currently supported for AVX-256 acceleration in application\n");
+	}
 
 #elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
-	static void convertShortToFloatAVX512(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
-	static void convertFloatToShortAVX512(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
-				float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-				float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
-				float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX512(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
-				double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-				double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
-				double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX512(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
-				short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
-				short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2, short* messageLDeviceCurrentCheckerboard2,
-				short* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
+	template<typename T>
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512(
+				T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+				T* messageUDeviceCurrentCheckerboard1,
+				T* messageDDeviceCurrentCheckerboard1,
+				T* messageLDeviceCurrentCheckerboard1,
+				T* messageRDeviceCurrentCheckerboard1,
+				T* messageUDeviceCurrentCheckerboard2,
+				T* messageDDeviceCurrentCheckerboard2,
+				T* messageLDeviceCurrentCheckerboard2,
+				T* messageRDeviceCurrentCheckerboard2, int widthLevel,
+				int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+	{
+		printf("Data type not currently supported for AVX-512 acceleration in application\n");
+	}
 #endif
 
 };
-
-//needed so that template specializations are used when available
-#include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
@@ -208,5 +200,8 @@ public:
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 
 #endif
+
+//needed so that template specializations are used when available
+#include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
 #endif //KERNAL_BP_STEREO_CPU_H

@@ -715,10 +715,10 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(T
 			{
 				int yVal = val / widthLevel;
 				int xVal = val % widthLevel;
-				/*for (int yVal = 0; yVal < heightLevel; yVal++)
-				{		#pragma omp parallel for
-		for (int xVal = 0; xVal < widthLevel; xVal++)
-		{*/
+				//for (int yVal = 0; yVal < heightLevel; yVal++)
+				//{		#pragma omp parallel for
+		//for (int xVal = 0; xVal < widthLevel; xVal++)
+		//{
 			//if (withinImageBoundsCPU(xVal, yVal, widthLevel, heightLevel))
 			{
 				int widthCheckerboard = getCheckerboardWidthCPU<T>(widthLevel);
