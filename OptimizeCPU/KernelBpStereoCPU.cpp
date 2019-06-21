@@ -21,17 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "KernelBpStereoCPU.h"
 
-#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
-
-#include "KernelBpStereoCPU_AVX256.cpp"
-
-#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
-
-#include "KernelBpStereoCPU_AVX512.cpp"
-
-#endif
-
-
 template<typename T>
 int KernelBpStereoCPU::getCheckerboardWidthCPU(int imageWidth)
 {
