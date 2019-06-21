@@ -24,7 +24,7 @@ public:
 
 		virtual int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) = 0;
 
-		virtual void allocateMemoryOnTargetDevice(void** arrayToAllocate, int numBytesAllocate) = 0;
+		virtual void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate) = 0;
 
 		virtual void freeMemoryOnTargetDevice(void* arrayToFree) = 0;
 
@@ -139,7 +139,7 @@ public:
 		int widthLevelActualIntegerSize = (int) roundf(widthLevel);
 		int heightLevelActualIntegerSize = (int) roundf(heightLevel);
 
-		int halfTotalDataAllLevels = 0;
+		unsigned long halfTotalDataAllLevels = 0;
 
 		//compute "half" the total number of pixels in including every level of the "pyramid"
 		//using "half" because the data is split in two using the checkerboard scheme
@@ -179,7 +179,13 @@ public:
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 		//printf("ALLOC ALL MEMORY\n");
+		//printf("NUM BYES ALLOCATE: %lu\n", 10*halfTotalDataAllLevels*sizeof(T));
 		allocateMemoryOnTargetDevice((void**)&dataCostDeviceCheckerboard1, 10*halfTotalDataAllLevels*sizeof(T));
+		if (dataCostDeviceCheckerboard1 == nullptr)
+		{
+			printf("Memory alloc failed\n");
+		}
+
 		dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1*(halfTotalDataAllLevels)]);
 
 		messageUDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[2*(halfTotalDataAllLevels)]);

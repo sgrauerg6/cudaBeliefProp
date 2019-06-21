@@ -41,7 +41,7 @@ public:
 	}
 
 	void allocateMemoryOnTargetDevice(void** arrayToAllocate,
-			int numBytesAllocate) {
+			unsigned long numBytesAllocate) {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
 	}
 

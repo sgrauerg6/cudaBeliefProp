@@ -36,7 +36,7 @@ class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T>
 public:
 		int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize);
 
-		void allocateMemoryOnTargetDevice(void** arrayToAllocate, int numBytesAllocate)
+		void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
 		{
 			*arrayToAllocate = malloc(numBytesAllocate);
 		}
