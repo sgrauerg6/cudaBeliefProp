@@ -481,12 +481,13 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChec
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
-	grid.x = (unsigned int) ceil((float) widthLevel / (float) threads.x);
+	int widthCheckerboard = getCheckerboardWidth<T>(widthLevel);
+	grid.x = (unsigned int) ceil((float) widthCheckerboard / (float) threads.x);
 	grid.y = (unsigned int) ceil((float) heightLevel / (float) threads.y);
 
 	if (currentCheckerboardSet == 0)
 	{
-		retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
+		retrieveOutputDisparityCheckerboardStereoOptimized<T> <<<grid, threads>>>(
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet0Checkerboard1,
@@ -501,7 +502,7 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChec
 	}
 	else
 	{
-		retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
+		retrieveOutputDisparityCheckerboardStereoOptimized<T> <<<grid, threads>>>(
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet1Checkerboard1,
@@ -514,6 +515,37 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChec
 				messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
 				widthLevel, heightLevel);
 	}
+
+	/*if (currentCheckerboardSet == 0)
+		{
+			retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
+					dataCostDeviceCurrentLevelCheckerboard1,
+					dataCostDeviceCurrentLevelCheckerboard2,
+					messageUDeviceSet0Checkerboard1,
+					messageDDeviceSet0Checkerboard1,
+					messageLDeviceSet0Checkerboard1,
+					messageRDeviceSet0Checkerboard1,
+					messageUDeviceSet0Checkerboard2,
+					messageDDeviceSet0Checkerboard2,
+					messageLDeviceSet0Checkerboard2,
+					messageRDeviceSet0Checkerboard2, resultingDisparityMapDevice,
+					widthLevel, heightLevel);
+		}
+		else
+		{
+			retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
+					dataCostDeviceCurrentLevelCheckerboard1,
+					dataCostDeviceCurrentLevelCheckerboard2,
+					messageUDeviceSet1Checkerboard1,
+					messageDDeviceSet1Checkerboard1,
+					messageLDeviceSet1Checkerboard1,
+					messageRDeviceSet1Checkerboard1,
+					messageUDeviceSet1Checkerboard2,
+					messageDDeviceSet1Checkerboard2,
+					messageLDeviceSet1Checkerboard2,
+					messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
+					widthLevel, heightLevel);
+		}*/
 
 	(cudaDeviceSynchronize());
 	gpuErrchk(cudaPeekAtLastError());

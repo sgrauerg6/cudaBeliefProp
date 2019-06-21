@@ -306,5 +306,59 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(s
 #endif
 }
 
+template<> inline
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+{
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+	int widthCheckerboard = getCheckerboardWidthCPU<short>(widthLevel);
+	float* dataCostStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* dataCostStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageUPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageDPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageLPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageRPrevStereoCheckerboard1Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageUPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageDPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageLPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+	float* messageRPrevStereoCheckerboard2Float = new float[widthCheckerboard*heightLevel*NUM_POSSIBLE_DISPARITY_VALUES];
+
+	convertShortToFloatAVX256(dataCostStereoCheckerboard1Float, dataCostStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(dataCostStereoCheckerboard2Float, dataCostStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageUPrevStereoCheckerboard1Float, messageUPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageDPrevStereoCheckerboard1Float, messageDPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageLPrevStereoCheckerboard1Float, messageLPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageRPrevStereoCheckerboard1Float, messageRPrevStereoCheckerboard1, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageUPrevStereoCheckerboard2Float, messageUPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageDPrevStereoCheckerboard2Float, messageDPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageLPrevStereoCheckerboard2Float, messageLPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+	convertShortToFloatAVX256(messageRPrevStereoCheckerboard2Float, messageRPrevStereoCheckerboard2, widthCheckerboard, heightLevel);
+
+	retrieveOutputDisparityCheckerboardStereoOptimizedCPU<float>(
+			dataCostStereoCheckerboard1Float, dataCostStereoCheckerboard2Float,
+			messageUPrevStereoCheckerboard1Float, messageDPrevStereoCheckerboard1Float,
+			messageLPrevStereoCheckerboard1Float, messageRPrevStereoCheckerboard1Float,
+			messageUPrevStereoCheckerboard2Float, messageDPrevStereoCheckerboard2Float,
+			messageLPrevStereoCheckerboard2Float, messageRPrevStereoCheckerboard2Float,
+			disparityBetweenImagesDevice, widthLevel, heightLevel);
+
+	delete [] dataCostStereoCheckerboard1Float;
+	delete [] dataCostStereoCheckerboard2Float;
+	delete [] messageUPrevStereoCheckerboard1Float;
+	delete [] messageDPrevStereoCheckerboard1Float;
+	delete [] messageLPrevStereoCheckerboard1Float;
+	delete [] messageRPrevStereoCheckerboard1Float;
+	delete [] messageUPrevStereoCheckerboard2Float;
+	delete [] messageDPrevStereoCheckerboard2Float;
+	delete [] messageLPrevStereoCheckerboard2Float;
+	delete [] messageRPrevStereoCheckerboard2Float;
+
+#else
+
+	printf("ERROR, SHORT DATA TYPE NOT SUPPORTED IF NOT USING AVX-256\n");
+
+#endif
+}
+
 #endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 

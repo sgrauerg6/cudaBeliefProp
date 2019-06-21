@@ -622,6 +622,89 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 	//}
 }
 
+template<typename T>
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+{
+	int widthCheckerboard = getCheckerboardWidthCPU<T>(widthLevel);
+
+	#pragma omp parallel for
+	for (int val = 0; val < (widthCheckerboard*heightLevel); val++)
+	{
+		int yVal = val / widthCheckerboard;
+		int xVal = val % widthCheckerboard;
+
+		int xValInCheckerboardPart = xVal;
+
+		//first processing from first part of checkerboard
+		{
+			//adjustment based on checkerboard; need to add 1 to x for odd-numbered rows for final index mapping into disparity images for checkerboard 1
+			int	checkerboardPartAdjustment = (yVal%2);
+
+			if (withinImageBoundsCPU(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, widthLevel, heightLevel))
+			{
+				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (widthCheckerboard - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+				{
+					// keep track of "best" disparity for current pixel
+					int bestDisparity = 0;
+					T best_val = INF_BP;
+					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+					{
+						T val = messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageLPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageRPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+
+						if (val < (best_val)) {
+							best_val = val;
+							bestDisparity = currentDisparity;
+						}
+					}
+
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+				}
+				else
+				{
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+				}
+			}
+		}
+		//process from part 2 of checkerboard
+		{
+			//adjustment based on checkerboard; need to add 1 to x for even-numbered rows for final index mapping into disparity images for checkerboard 2
+			int	checkerboardPartAdjustment = ((yVal + 1) % 2);
+
+			if (withinImageBoundsCPU(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, widthLevel, heightLevel))
+			{
+				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (widthCheckerboard - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+				{
+					// keep track of "best" disparity for current pixel
+					int bestDisparity = 0;
+					T best_val = INF_BP;
+					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+					{
+						T val = messageUPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageDPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageLPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageRPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+
+						if (val < (best_val))
+						{
+							best_val = val;
+							bestDisparity = currentDisparity;
+						}
+					}
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+				}
+				else
+				{
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+				}
+			}
+		}
+	}
+}
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<typename T>

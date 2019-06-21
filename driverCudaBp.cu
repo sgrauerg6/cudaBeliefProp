@@ -92,12 +92,12 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
 			resultsFile);
 	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTime);
-	float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH,
+	/*float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH,
 			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
-			resultsFile);
+			resultsFile);*/
 
 	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTime);
-	printf("Optimized CPU runtime: %f\n", cpuRunTime);
+	//printf("Optimized CPU runtime: %f\n", cpuRunTime);
 	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTime);
 	printf("Output disparity map from final GPU run at %s\n",
 			SAVE_DISPARITY_IMAGE_PATH_1);

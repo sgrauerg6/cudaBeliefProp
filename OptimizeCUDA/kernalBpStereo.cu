@@ -1423,6 +1423,103 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<typename T>
+__global__ void retrieveOutputDisparityCheckerboardStereoOptimized(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+{
+	// Block index
+	int bx = blockIdx.x;
+	int by = blockIdx.y;
+
+	// Thread index
+	int tx = threadIdx.x;
+	int ty = threadIdx.y;
+
+	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int widthCheckerboard = getCheckerboardWidth<T>(widthLevel);
+
+	if (withinImageBounds(xVal, yVal, widthCheckerboard, heightLevel))
+	{
+		int xValInCheckerboardPart = xVal;
+
+		//if (((yVal+xVal) % 2) == 0) //if true, then pixel is from part 1 of the checkerboard; otherwise, it's from part 2
+		//first processing from first part of checkerboard
+		{
+			int	checkerboardPartAdjustment = (yVal%2);
+
+			if (withinImageBounds(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, widthLevel, heightLevel))
+			{
+				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (widthCheckerboard - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+				{
+					// keep track of "best" disparity for current pixel
+					int bestDisparity = 0;
+					T best_val = INF_BP;
+					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+					{
+						T val = messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageLPrevStereoCheckerboard2[retrieveIndexInDataAndMessage((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageRPrevStereoCheckerboard2[retrieveIndexInDataAndMessage((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+
+						if (val < (best_val)) {
+							best_val = val;
+							bestDisparity = currentDisparity;
+						}
+					}
+
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+				}
+				else
+				{
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+				}
+			}
+		}
+		//process from part 2 of checkerboard
+		{
+			int	checkerboardPartAdjustment = ((yVal + 1) % 2);
+
+			if (withinImageBounds(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, widthLevel, heightLevel))
+			{
+				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (widthCheckerboard - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+				{
+					// keep track of "best" disparity for current pixel
+					int bestDisparity = 0;
+					T best_val = INF_BP;
+					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+					{
+						T val = messageUPrevStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal + 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageDPrevStereoCheckerboard1[retrieveIndexInDataAndMessage(xValInCheckerboardPart, (yVal - 1), widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageLPrevStereoCheckerboard1[retrieveIndexInDataAndMessage((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageRPrevStereoCheckerboard1[retrieveIndexInDataAndMessage((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(xValInCheckerboardPart, yVal, widthCheckerboard, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+
+						if (val < (best_val))
+						{
+							best_val = val;
+							bestDisparity = currentDisparity;
+						}
+					}
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+				}
+				else
+				{
+					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+				}
+			}
+		}
+	}
+}
+
+//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
+template<>
+__global__ void retrieveOutputDisparityCheckerboardStereoOptimized<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+{
+
+}
+
+//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
+template<typename T>
 __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
 	// Block index
