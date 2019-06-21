@@ -22,9 +22,9 @@ public:
 		std::vector<double> totalTimeBpIters;
 		std::vector<double> timeBpItersKernelTotalTime;
 		std::vector<double> totalTimeCopyData;
+		std::vector<double> timeCopyDataMemoryManagementTotalTime;
 		std::vector<double> timeCopyDataKernelTotalTime;
 		std::vector<double> totalTimeGetOutputDisparity;
-		std::vector<double> totalTimeFinalUnbindFree;
 		std::vector<double> totalTimeFinalFree;
 		std::vector<double> totalTimed;
 		std::vector<double> totalTimeInitMessageValuesKernelTime;
@@ -46,8 +46,8 @@ public:
 			timeBpItersKernelTotalTime.push_back(timingsToAdd->timeBpItersKernelTotalTime.at(0));
 			totalTimeCopyData.push_back(timingsToAdd->totalTimeCopyData.at(0));
 			timeCopyDataKernelTotalTime.push_back(timingsToAdd->timeCopyDataKernelTotalTime.at(0));
+			timeCopyDataMemoryManagementTotalTime.push_back(timingsToAdd->totalComputationProcessing.at(0));
 			totalTimeGetOutputDisparity.push_back(timingsToAdd->totalTimeGetOutputDisparity.at(0));
-			totalTimeFinalUnbindFree.push_back(timingsToAdd->totalTimeFinalUnbindFree.at(0));
 			totalTimeFinalFree.push_back(timingsToAdd->totalTimeFinalFree.at(0));
 			totalTimed.push_back(timingsToAdd->totalTimed.at(0));
 			totalTimeInitMessageValuesKernelTime.push_back(timingsToAdd->totalTimeInitMessageValuesKernelTime.at(0));
@@ -66,8 +66,8 @@ public:
 			std::sort(timeBpItersKernelTotalTime.begin(), timeBpItersKernelTotalTime.end());
 			std::sort(totalTimeCopyData.begin(), totalTimeCopyData.end());
 			std::sort(timeCopyDataKernelTotalTime.begin(), timeCopyDataKernelTotalTime.end());
+			std::sort(timeCopyDataMemoryManagementTotalTime.begin(), timeCopyDataMemoryManagementTotalTime.end());
 			std::sort(totalTimeGetOutputDisparity.begin(), totalTimeGetOutputDisparity.end());
-			std::sort(totalTimeFinalUnbindFree.begin(), totalTimeFinalUnbindFree.end());
 			std::sort(totalTimeFinalFree.begin(), totalTimeFinalFree.end());
 			std::sort(totalTimed.begin(), totalTimed.end());
 			std::sort(totalTimeInitMessageValuesKernelTime.begin(), totalTimeInitMessageValuesKernelTime.end());
@@ -87,11 +87,11 @@ public:
 			printf("Total time BP Iters: %f\n", totalTimeBpIters.at(totNumTimings/2));
 			//printf("Total time BP Iters (kernel portion only): %f\n", timeBpItersKernelTotalTime.at(totNumTimings/2));
 			printf("Total time Copy Data: %f\n", totalTimeCopyData.at(totNumTimings/2));
-			//printf("Total time Copy Data (kernel portion only): %f\n", timeCopyDataKernelTotalTime.at(totNumTimings/2));
+			printf("Total time Copy Data (kernel portion only): %f\n", timeCopyDataKernelTotalTime.at(totNumTimings/2));
+			printf("Total time Copy Data (memory management portion only): %f\n", timeCopyDataMemoryManagementTotalTime.at(totNumTimings/2));
 			printf("Time get output disparity: %f\n", totalTimeGetOutputDisparity.at(totNumTimings/2));
-			printf("Time final unbind free: %f\n", totalTimeFinalUnbindFree.at(totNumTimings/2));
 			printf("Time final free: %f\n", totalTimeFinalFree.at(totNumTimings/2));
-			//printf("Total timed: %f\n", totalTimed.at(totNumTimings/2));
+			printf("Total timed: %f\n", totalTimed.at(totNumTimings/2));
 			//printf("Total memory processing time: %f\n", totalMemoryProcessingTime.at(totNumTimings/2));
 			//printf("Total computation processing time: %f\n", totalComputationProcessing.at(totNumTimings/2));
 		}
@@ -116,16 +116,17 @@ public:
 			//		timeBpItersKernelTotalTime.at(totNumTimings / 2));
 			fprintf(pFile, "Total time Copy Data: %f\n",
 					totalTimeCopyData.at(totNumTimings / 2));
-			//fprintf(pFile, "Total time Copy Data (kernel portion only): %f\n",
-			//		timeCopyDataKernelTotalTime.at(totNumTimings / 2));
+			fprintf(pFile, "Total time Copy Data (kernel portion only): %f\n",
+					timeCopyDataKernelTotalTime.at(totNumTimings / 2));
+			fprintf(pFile,
+					"Total time Copy Data (memory management portion only): %f\n",
+					timeCopyDataMemoryManagementTotalTime.at(totNumTimings / 2));
 			fprintf(pFile, "Time get output disparity: %f\n",
 					totalTimeGetOutputDisparity.at(totNumTimings / 2));
-			fprintf(pFile, "Time final unbind free: %f\n",
-					totalTimeFinalUnbindFree.at(totNumTimings / 2));
 			fprintf(pFile, "Time final free: %f\n",
 					totalTimeFinalFree.at(totNumTimings / 2));
-			/*fprintf(pFile, "Total timed: %f\n", totalTimed.at(totNumTimings / 2));
-			fprintf(pFile, "Total memory processing time: %f\n",
+			fprintf(pFile, "Total timed: %f\n", totalTimed.at(totNumTimings / 2));
+			/*fprintf(pFile, "Total memory processing time: %f\n",
 					totalMemoryProcessingTime.at(totNumTimings / 2));
 			fprintf(pFile, "Total computation processing time: %f\n",
 					totalComputationProcessing.at(totNumTimings / 2));*/

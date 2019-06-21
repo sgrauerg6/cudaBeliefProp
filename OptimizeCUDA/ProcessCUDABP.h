@@ -103,14 +103,14 @@ public:
 			T* messageDDeviceCheckerboard2CopyFrom,
 			T* messageLDeviceCheckerboard2CopyFrom,
 			T* messageRDeviceCheckerboard2CopyFrom,
-			T** messageUDeviceCheckerboard1CopyTo,
-			T** messageDDeviceCheckerboard1CopyTo,
-			T** messageLDeviceCheckerboard1CopyTo,
-			T** messageRDeviceCheckerboard1CopyTo,
-			T** messageUDeviceCheckerboard2CopyTo,
-			T** messageDDeviceCheckerboard2CopyTo,
-			T** messageLDeviceCheckerboard2CopyTo,
-			T** messageRDeviceCheckerboard2CopyTo);
+			T* messageUDeviceCheckerboard1CopyTo,
+			T* messageDDeviceCheckerboard1CopyTo,
+			T* messageLDeviceCheckerboard1CopyTo,
+			T* messageRDeviceCheckerboard1CopyTo,
+			T* messageUDeviceCheckerboard2CopyTo,
+			T* messageDDeviceCheckerboard2CopyTo,
+			T* messageLDeviceCheckerboard2CopyTo,
+			T* messageRDeviceCheckerboard2CopyTo);
 
 	void retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1,
 			T* dataCostDeviceCurrentLevelCheckerboard2,

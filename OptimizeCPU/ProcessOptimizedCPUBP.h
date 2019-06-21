@@ -76,10 +76,10 @@ public:
 			int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 			T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
 			T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
-			T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T** messageUDeviceCheckerboard1CopyTo,
-			T** messageDDeviceCheckerboard1CopyTo, T** messageLDeviceCheckerboard1CopyTo, T** messageRDeviceCheckerboard1CopyTo,
-			T** messageUDeviceCheckerboard2CopyTo, T** messageDDeviceCheckerboard2CopyTo, T** messageLDeviceCheckerboard2CopyTo,
-			T** messageRDeviceCheckerboard2CopyTo);
+			T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T* messageUDeviceCheckerboard1CopyTo,
+			T* messageDDeviceCheckerboard1CopyTo, T* messageLDeviceCheckerboard1CopyTo, T* messageRDeviceCheckerboard1CopyTo,
+			T* messageUDeviceCheckerboard2CopyTo, T* messageDDeviceCheckerboard2CopyTo, T* messageLDeviceCheckerboard2CopyTo,
+			T* messageRDeviceCheckerboard2CopyTo);
 
 		void retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 				T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,

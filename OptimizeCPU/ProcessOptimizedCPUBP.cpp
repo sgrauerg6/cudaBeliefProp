@@ -159,65 +159,30 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(int widthLevelAc
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
 	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
-	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T** messageUDeviceCheckerboard1CopyTo,
-	T** messageDDeviceCheckerboard1CopyTo, T** messageLDeviceCheckerboard1CopyTo, T** messageRDeviceCheckerboard1CopyTo,
-	T** messageUDeviceCheckerboard2CopyTo, T** messageDDeviceCheckerboard2CopyTo, T** messageLDeviceCheckerboard2CopyTo,
-	T** messageRDeviceCheckerboard2CopyTo)
+	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T* messageUDeviceCheckerboard1CopyTo,
+	T* messageDDeviceCheckerboard1CopyTo, T* messageLDeviceCheckerboard1CopyTo, T* messageRDeviceCheckerboard1CopyTo,
+	T* messageUDeviceCheckerboard2CopyTo, T* messageDDeviceCheckerboard2CopyTo, T* messageLDeviceCheckerboard2CopyTo,
+	T* messageRDeviceCheckerboard2CopyTo)
 {
 	int widthCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel);
-
-#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
-	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
-
-	//update the number of bytes needed to store each set
-	int numDataAndMessageSetInCheckerboardAtLevel = widthCheckerboard * heightLevelActualIntegerSizeNextLevel * totalPossibleMovements;
-
-	//allocate space in the GPU for the message values in the checkerboard set to copy to
-	*messageUDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-	*messageDDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-	*messageLDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-	*messageRDeviceCheckerboard1CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-
-	*messageUDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-	*messageDDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-	*messageLDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-	*messageRDeviceCheckerboard2CopyTo = new T[numDataAndMessageSetInCheckerboardAtLevel];
-
-#endif
 
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
 	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<T>(messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
-			*messageUDeviceCheckerboard1CopyTo, *messageDDeviceCheckerboard1CopyTo, *messageLDeviceCheckerboard1CopyTo,
-			*messageRDeviceCheckerboard1CopyTo, *messageUDeviceCheckerboard2CopyTo, *messageDDeviceCheckerboard2CopyTo, *messageLDeviceCheckerboard2CopyTo,
-			*messageRDeviceCheckerboard2CopyTo, KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
+			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
+			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
+			messageRDeviceCheckerboard2CopyTo, KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
 			KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_1);
 
 	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<T>(messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
-			*messageUDeviceCheckerboard1CopyTo, *messageDDeviceCheckerboard1CopyTo, *messageLDeviceCheckerboard1CopyTo,
-			*messageRDeviceCheckerboard1CopyTo, *messageUDeviceCheckerboard2CopyTo, *messageDDeviceCheckerboard2CopyTo, *messageLDeviceCheckerboard2CopyTo,
-			*messageRDeviceCheckerboard2CopyTo, KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
+			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
+			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
+			messageRDeviceCheckerboard2CopyTo, KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
 			KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_2);
-
-#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
-	//free the now-copied from computed data of the completed level
-	delete [] messageUDeviceCheckerboard1CopyFrom;
-	delete [] messageDDeviceCheckerboard1CopyFrom;
-	delete [] messageLDeviceCheckerboard1CopyFrom;
-	delete [] messageRDeviceCheckerboard1CopyFrom;
-
-	delete [] messageUDeviceCheckerboard2CopyFrom;
-	delete [] messageDDeviceCheckerboard2CopyFrom;
-	delete [] messageLDeviceCheckerboard2CopyFrom;
-	delete [] messageRDeviceCheckerboard2CopyFrom;
-
-#endif
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used

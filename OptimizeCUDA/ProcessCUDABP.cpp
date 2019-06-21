@@ -286,10 +286,10 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
 	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
-	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T** messageUDeviceCheckerboard1CopyTo,
-	T** messageDDeviceCheckerboard1CopyTo, T** messageLDeviceCheckerboard1CopyTo, T** messageRDeviceCheckerboard1CopyTo,
-	T** messageUDeviceCheckerboard2CopyTo, T** messageDDeviceCheckerboard2CopyTo, T** messageLDeviceCheckerboard2CopyTo,
-	T** messageRDeviceCheckerboard2CopyTo)
+	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T* messageUDeviceCheckerboard1CopyTo,
+	T* messageDDeviceCheckerboard1CopyTo, T* messageLDeviceCheckerboard1CopyTo, T* messageRDeviceCheckerboard1CopyTo,
+	T* messageUDeviceCheckerboard2CopyTo, T* messageDDeviceCheckerboard2CopyTo, T* messageLDeviceCheckerboard2CopyTo,
+	T* messageRDeviceCheckerboard2CopyTo)
 {
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
@@ -298,26 +298,6 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 	grid.x = (unsigned int)ceil((float)(widthCheckerboard / 2.0f) / (float)threads.x);
 	grid.y = (unsigned int)ceil((float)(heightLevelActualIntegerSizeNextLevel / 2.0f) / (float)threads.y);
 
-#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
-	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
-
-	//update the number of bytes needed to store each set
-	int numBytesDataAndMessageSetInCheckerboardAtLevel = widthCheckerboard * heightLevelActualIntegerSizeNextLevel * totalPossibleMovements * sizeof(T);
-
-	//allocate space in the GPU for the message values in the checkerboard set to copy to
-	(cudaMalloc((void**) messageUDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-	(cudaMalloc((void**) messageDDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-	(cudaMalloc((void**) messageLDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-	(cudaMalloc((void**) messageRDeviceCheckerboard1CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-
-	(cudaMalloc((void**) messageUDeviceCheckerboard2CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-	(cudaMalloc((void**) messageDDeviceCheckerboard2CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-	(cudaMalloc((void**) messageLDeviceCheckerboard2CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-	(cudaMalloc((void**) messageRDeviceCheckerboard2CopyTo, numBytesDataAndMessageSetInCheckerboardAtLevel));
-
-#endif
-
 	( cudaDeviceSynchronize() );
 
 #ifdef RUN_DETAILED_TIMING
@@ -325,28 +305,32 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 	auto timeCopyDataKernelStart = std::chrono::system_clock::now();
 
 #endif
+	gpuErrchk( cudaPeekAtLastError() );
 
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
 	copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures<T> <<< grid, threads >>> (messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
-			*messageUDeviceCheckerboard1CopyTo, *messageDDeviceCheckerboard1CopyTo, *messageLDeviceCheckerboard1CopyTo,
-			*messageRDeviceCheckerboard1CopyTo, *messageUDeviceCheckerboard2CopyTo, *messageDDeviceCheckerboard2CopyTo, *messageLDeviceCheckerboard2CopyTo,
-			*messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
+			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
+			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
+			messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
 			getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_1);
 
 	( cudaDeviceSynchronize() );
+	gpuErrchk( cudaPeekAtLastError() );
 
 	copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures<T> <<< grid, threads >>> (messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
-			*messageUDeviceCheckerboard1CopyTo, *messageDDeviceCheckerboard1CopyTo, *messageLDeviceCheckerboard1CopyTo,
-			*messageRDeviceCheckerboard1CopyTo, *messageUDeviceCheckerboard2CopyTo, *messageDDeviceCheckerboard2CopyTo, *messageLDeviceCheckerboard2CopyTo,
-			*messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
+			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
+			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
+			messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
 			getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_2);
 
 	( cudaDeviceSynchronize() );
+
+	gpuErrchk( cudaPeekAtLastError() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -356,22 +340,6 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 	timeCopyDataKernelTotalTime += diff.count();
 
 #endif
-
-#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
-	//free the now-copied from computed data of the completed level
-	cudaFree(messageUDeviceCheckerboard1CopyFrom);
-	cudaFree(messageDDeviceCheckerboard1CopyFrom);
-	cudaFree(messageLDeviceCheckerboard1CopyFrom);
-	cudaFree(messageRDeviceCheckerboard1CopyFrom);
-
-	cudaFree(messageUDeviceCheckerboard2CopyFrom);
-	cudaFree(messageDDeviceCheckerboard2CopyFrom);
-	cudaFree(messageLDeviceCheckerboard2CopyFrom);
-	cudaFree(messageRDeviceCheckerboard2CopyFrom);
-
-#endif
-	gpuErrchk( cudaPeekAtLastError() );
 }
 
 //due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
@@ -380,20 +348,20 @@ void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(int widthLevelActual
 	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
 	half2* messageUDeviceCheckerboard1CopyFrom, half2* messageDDeviceCheckerboard1CopyFrom, half2* messageLDeviceCheckerboard1CopyFrom,
 	half2* messageRDeviceCheckerboard1CopyFrom, half2* messageUDeviceCheckerboard2CopyFrom, half2* messageDDeviceCheckerboard2CopyFrom,
-	half2* messageLDeviceCheckerboard2CopyFrom, half2* messageRDeviceCheckerboard2CopyFrom, half2** messageUDeviceCheckerboard1CopyTo,
-	half2** messageDDeviceCheckerboard1CopyTo, half2** messageLDeviceCheckerboard1CopyTo, half2** messageRDeviceCheckerboard1CopyTo,
-	half2** messageUDeviceCheckerboard2CopyTo, half2** messageDDeviceCheckerboard2CopyTo, half2** messageLDeviceCheckerboard2CopyTo,
-	half2** messageRDeviceCheckerboard2CopyTo)
+	half2* messageLDeviceCheckerboard2CopyFrom, half2* messageRDeviceCheckerboard2CopyFrom, half2* messageUDeviceCheckerboard1CopyTo,
+	half2* messageDDeviceCheckerboard1CopyTo, half2* messageLDeviceCheckerboard1CopyTo, half2* messageRDeviceCheckerboard1CopyTo,
+	half2* messageUDeviceCheckerboard2CopyTo, half2* messageDDeviceCheckerboard2CopyTo, half2* messageLDeviceCheckerboard2CopyTo,
+	half2* messageRDeviceCheckerboard2CopyTo)
 {
 	ProcessCUDABP<half> processCUDABPHalf;
 	processCUDABPHalf.copyMessageValuesToNextLevelDown(widthLevelActualIntegerSizePrevLevel, heightLevelActualIntegerSizePrevLevel,
 		widthLevelActualIntegerSizeNextLevel, heightLevelActualIntegerSizeNextLevel,
 		(half*)messageUDeviceCheckerboard1CopyFrom, (half*)messageDDeviceCheckerboard1CopyFrom, (half*)messageLDeviceCheckerboard1CopyFrom,
 		(half*)messageRDeviceCheckerboard1CopyFrom, (half*)messageUDeviceCheckerboard2CopyFrom, (half*)messageDDeviceCheckerboard2CopyFrom,
-		(half*)messageLDeviceCheckerboard2CopyFrom, (half*)messageRDeviceCheckerboard2CopyFrom, (half**)messageUDeviceCheckerboard1CopyTo,
-		(half**)messageDDeviceCheckerboard1CopyTo, (half**)messageLDeviceCheckerboard1CopyTo, (half**)messageRDeviceCheckerboard1CopyTo,
-		(half**)messageUDeviceCheckerboard2CopyTo, (half**)messageDDeviceCheckerboard2CopyTo, (half**)messageLDeviceCheckerboard2CopyTo,
-		(half**)messageRDeviceCheckerboard2CopyTo);
+		(half*)messageLDeviceCheckerboard2CopyFrom, (half*)messageRDeviceCheckerboard2CopyFrom, (half*)messageUDeviceCheckerboard1CopyTo,
+		(half*)messageDDeviceCheckerboard1CopyTo, (half*)messageLDeviceCheckerboard1CopyTo, (half*)messageRDeviceCheckerboard1CopyTo,
+		(half*)messageUDeviceCheckerboard2CopyTo, (half*)messageDDeviceCheckerboard2CopyTo, (half*)messageLDeviceCheckerboard2CopyTo,
+		(half*)messageRDeviceCheckerboard2CopyTo);
 }
 
 
