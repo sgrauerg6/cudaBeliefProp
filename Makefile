@@ -28,8 +28,8 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O2 -std=c++11
-ARCHITECTURE_COMPILE_FLAG = -march=skylake
-#ARCHITECTURE_COMPILE_FLAG = -march=skylake-avx512
+#ARCHITECTURE_COMPILE_FLAG = -march=skylake
+ARCHITECTURE_COMPILE_FLAG = -march=skylake-avx512
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
@@ -58,13 +58,12 @@ DetailedTimings.o: DetailedTimings.cpp DetailedTimings.h
 
 #KernelBpStereoCPU.o: OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h
 #	g++ OptimizeCPU/KernelBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-		
 driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h imageHelpers.o stereoResultsEval.o stereo.o RunBpStereoOptimizedCPU.o
 	g++ driverBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 ProcessBPOnTargetDevice.o : ProcessBPOnTargetDevice.cpp ProcessBPOnTargetDevice.h DetailedTimings.o
 	g++ ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 ProcessOptimizedCPUBP.o : OptimizeCPU/ProcessOptimizedCPUBP.cpp OptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o bpStereoParameters.h OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/KernelBpStereoCPU.cpp
 	g++ OptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
@@ -79,22 +78,22 @@ stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEval
 
 stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h bpStereoCudaParameters.h bpParametersFromPython.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	g++ SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 SmoothImage.o: SmoothImage.cpp SmoothImage.h 
 	g++ SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h SmoothImage.o
 	g++ OptimizeCPU/SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 RunBpStereoOptimizedCPU.o: OptimizeCPU/RunBpStereoOptimizedCPU.cpp OptimizeCPU/RunBpStereoOptimizedCPU.h SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
 	g++ OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunBpStereoSetOnGPUWithCUDA.o: OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h ProcessCUDABP.o SmoothImageCUDA.o RunBpStereoSet.o ProcessBPOnTargetDevice.o
 	g++ OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
 	$(NVCC) -x cu -c OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -o ProcessCUDABP.o $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-		
+
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 
