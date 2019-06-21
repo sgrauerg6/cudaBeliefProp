@@ -33,7 +33,7 @@ if __name__ == "__main__":
 	conesImageSetHalfSize = {"RefImage" : "\"conesH/im2.ppm\"", "TestImage" : "\"conesH/im6.ppm\"", "CompGpuDispMap" : "\"conesH/computedDisparityMapTsukubaGPU.pgm\"", "CompCpuDispMap" : "\"conesH/computedDisparityMapTsukubaCPU.pgm\"", "NumDispVals" : "128", "ScaleBp" : "2.0f", "GroundTruthDisp" : "\"conesH/disp2.pgm\"", "GroundTruthDispScale" : "2.0f", "bpLevelsImageSet" : 5}
 
 	#imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, barn2ImageSet, bullImageSet, mapImageSet, posterImageSet, sawtoothImageSet, conesImageSetQuarterSize, teddyImageSetQuarterSize, conesImageSetHalfSize, teddyImageSetHalfSize, conesImageSetHalfSizeAdjusted, teddyImageSetHalfSizeAdjusted]
-	imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, conesImageSetQuarterSize, conesImageSetHalfSize]
+	imageSets = [tsukubaImageSet, venusImageSet, barn1ImageSet, conesImageSetQuarterSize]
 	#refImages = ["\"tsukuba1.pgm\"", "\"conesQuarter2.pgm\"", "\"conesHalf2.pgm\""]
 	#testImages = ["\"tsukuba2.pgm\"", "\"conesQuarter6.pgm\"", "\"conesHalf6.pgm\""]
 	#saveDispGpuOutput = ["\"computedDisparityMapTsukubaGPU.pgm\"", "\"computedDisparityConesQuarterGPU.pgm\"", "\"computedDisparityConesHalfGPU.pgm\""]
@@ -59,9 +59,9 @@ if __name__ == "__main__":
 	outputData = []
 	firstLine = True
 	optimizedMemory = [0, 1]
-	beliefPropDataTypeProcessing = ["0", "1"]
+	beliefPropDataTypeProcessing = ["0"]
 	indexOptimizationSettings = ["1"]
-	cpuOptimizationSettings = ["0", "1"]
+	cpuOptimizationSettings = ["1"]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
 			for currTruncationDiscontCost in truncationDiscontCost:
