@@ -6,7 +6,6 @@
  */
 
 #include "SmoothImageCPU.h"
-#include <algorithm>
 
 //checks if the current point is within the image bounds
 bool withinImageBoundsFilterCPU(int xVal, int yVal, int width, int height)

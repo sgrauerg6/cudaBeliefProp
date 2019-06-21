@@ -3,8 +3,8 @@
 #ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 
-template<>
-void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<short>(float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
+template<> inline
+void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
 {
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
@@ -28,8 +28,8 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<short>(float* image1P
 }
 
 
-template<>
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<short>(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum)
+template<> inline
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum)
 {
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
@@ -62,8 +62,8 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<short>(sho
 }
 
 
-template<>
-void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<short>(short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1,
+template<> inline
+void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1, short* messageLDeviceCurrentCheckerboard1,
 		short* messageRDeviceCurrentCheckerboard1, short* messageUDeviceCurrentCheckerboard2, short* messageDDeviceCurrentCheckerboard2,
 		short* messageLDeviceCurrentCheckerboard2, short* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel)
 {
@@ -110,9 +110,8 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<short>(short* me
 
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-template<>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
-		float>(float* dataCostStereoCheckerboard1,
+template<> inline
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(float* dataCostStereoCheckerboard1,
 		float* dataCostStereoCheckerboard2,
 		float* messageUDeviceCurrentCheckerboard1,
 		float* messageDDeviceCurrentCheckerboard1,
@@ -171,8 +170,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
 #endif
 }
 
-template<>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<short>(short* dataCostStereoCheckerboard1,
+template<> inline
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(short* dataCostStereoCheckerboard1,
 				short* dataCostStereoCheckerboard2,
 				short* messageUDeviceCurrentCheckerboard1,
 				short* messageDDeviceCurrentCheckerboard1,
@@ -198,9 +197,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<shor
 #endif
 }
 
-template<>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
-		double>(double* dataCostStereoCheckerboard1,
+template<> inline
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(double* dataCostStereoCheckerboard1,
 		double* dataCostStereoCheckerboard2,
 		double* messageUDeviceCurrentCheckerboard1,
 		double* messageDDeviceCurrentCheckerboard1,
@@ -254,8 +252,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<
 }
 
 
-template<>
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<short>(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+template<> inline
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU(short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 

@@ -40,10 +40,16 @@ class KernelBpStereoCPU
 public:
 
 	//checks if the current point is within the image bounds
-	static bool withinImageBoundsCPU(int xVal, int yVal, int width, int height);
+	static bool withinImageBoundsCPU(int xVal, int yVal, int width, int height)
+	{
+		return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
+	}
 
 	//retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
-	static int retrieveIndexInDataAndMessageCPU(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0);
+	static int retrieveIndexInDataAndMessageCPU(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
+	{
+		return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
+	}
 
 	template<typename T>
 	static int getCheckerboardWidthCPU(int imageWidth);
@@ -146,6 +152,8 @@ public:
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
+	//needed so that template specializations are used when available
+
 	static void convertShortToFloatAVX256(float* destinationFloat, short* inputShort, int widthArray, int heightArray);
 	static void convertFloatToShortAVX256(short* destinationShort, float* inputFloat, int widthArray, int heightArray);
 	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
@@ -185,5 +193,18 @@ public:
 #endif
 
 };
+
+//needed so that template specializations are used when available
+#include "KernelBpStereoCPU_TemplateSpFuncts.h"
+
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
+
+#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
+
+#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
+
+#endif
 
 #endif //KERNAL_BP_STEREO_CPU_H

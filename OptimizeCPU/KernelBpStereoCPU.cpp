@@ -21,9 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "KernelBpStereoCPU.h"
 
-//needed so that template specializations are used when available
-#include "KernelBpStereoCPU_TemplateSpFuncts.h"
-
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 #include "KernelBpStereoCPU_AVX256.cpp"
@@ -34,17 +31,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #endif
 
-//checks if the current point is within the image bounds
-bool KernelBpStereoCPU::withinImageBoundsCPU(int xVal, int yVal, int width, int height)
-{
-	return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
-}
-
-//retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
-int KernelBpStereoCPU::retrieveIndexInDataAndMessageCPU(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData)
-{
-	return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
-}
 
 template<typename T>
 int KernelBpStereoCPU::getCheckerboardWidthCPU(int imageWidth)
@@ -96,7 +82,7 @@ void KernelBpStereoCPU::msgStereoCPU(T messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU<T>(dst);
+	dtStereoCPU(dst);
 
 	// truncate 
 	minimum += disc_k_bp;
@@ -350,16 +336,16 @@ template<typename T>
 void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPU(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
 								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
 {
-	msgStereoCPU<T>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
+	msgStereoCPU(prevUMessage, prevLMessage, prevRMessage, dataMessage,
 			currentUMessage, disc_k_bp);
 
-	msgStereoCPU<T>(prevDMessage, prevLMessage, prevRMessage, dataMessage,
+	msgStereoCPU(prevDMessage, prevLMessage, prevRMessage, dataMessage,
 			currentDMessage, disc_k_bp);
 
-	msgStereoCPU<T>(prevUMessage, prevDMessage, prevRMessage, dataMessage,
+	msgStereoCPU(prevUMessage, prevDMessage, prevRMessage, dataMessage,
 			currentRMessage, disc_k_bp);
 
-	msgStereoCPU<T>(prevUMessage, prevDMessage, prevLMessage, dataMessage,
+	msgStereoCPU(prevUMessage, prevDMessage, prevLMessage, dataMessage,
 			currentLMessage, disc_k_bp);
 }
 

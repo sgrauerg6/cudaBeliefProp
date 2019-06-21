@@ -9,6 +9,7 @@
 #define SMOOTHIMAGECPU_H_
 
 #include "SmoothImage.h"
+#include <algorithm>
 
 class SmoothImageCPU : public SmoothImage {
 public:

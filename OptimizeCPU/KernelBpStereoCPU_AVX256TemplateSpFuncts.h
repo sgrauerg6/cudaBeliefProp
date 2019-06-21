@@ -9,7 +9,7 @@
 #define KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-template<>
+template<> inline
 void KernelBpStereoCPU::dtStereoCPU<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	__m256 prev;
@@ -34,7 +34,7 @@ void KernelBpStereoCPU::dtStereoCPU<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALU
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-template<>
+template<> inline
 void KernelBpStereoCPU::dtStereoCPU<__m256d>(__m256d f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	__m256d prev;
@@ -59,7 +59,7 @@ void KernelBpStereoCPU::dtStereoCPU<__m256d>(__m256d f[NUM_POSSIBLE_DISPARITY_VA
 }
 
 // compute current message
-template<>
+template<> inline
 void KernelBpStereoCPU::msgStereoCPU<__m128i>(__m128i messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m128i messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m128i messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m128i dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m128i dst[NUM_POSSIBLE_DISPARITY_VALUES], __m128i disc_k_bp)
@@ -115,7 +115,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m128i>(__m128i messageValsNeighbor1[NUM_P
 }
 
 // compute current message
-template<>
+template<> inline
 void KernelBpStereoCPU::msgStereoCPU<__m256>(__m256 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256 dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256 disc_k_bp)
@@ -171,7 +171,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m256>(__m256 messageValsNeighbor1[NUM_POS
 
 
 // compute current message
-template<>
+template<> inline
 void KernelBpStereoCPU::msgStereoCPU<__m256d>(__m256d messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256d messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256d messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256d dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256d dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256d disc_k_bp)

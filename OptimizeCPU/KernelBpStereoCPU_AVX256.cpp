@@ -1,6 +1,4 @@
-#include "KernelBpStereoCPU.h"
-#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-
+inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX256(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
 		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
 		float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
@@ -122,7 +120,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloat
 	}
 }
 
-
+inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubleUseAVX256(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
 		double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
 		double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
@@ -246,7 +244,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUDoubl
 	}
 }
 
-
+inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShortUseAVX256(
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
 		short* messageUDeviceCurrentCheckerboard1,
@@ -357,7 +355,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUShort
 	}
 }
 
-
+inline
 void KernelBpStereoCPU::convertShortToFloatAVX256(float* destinationFloat, short* inputShort, int widthArray, int heightArray)
 {
 	int numDataInAvxVector = 8;
@@ -394,6 +392,7 @@ void KernelBpStereoCPU::convertShortToFloatAVX256(float* destinationFloat, short
 	}
 }
 
+inline
 void KernelBpStereoCPU::convertFloatToShortAVX256(short* destinationShort, float* inputFloat, int widthArray, int heightArray)
 {
 	int numDataInAvxVector = 8;

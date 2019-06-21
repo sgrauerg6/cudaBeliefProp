@@ -1,6 +1,3 @@
-#include "KernelBpStereoCPU.h"
-#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
-
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUFloatUseAVX512(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
