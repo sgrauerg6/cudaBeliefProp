@@ -139,10 +139,21 @@ public:
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 	template<typename T>
-	static void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU(T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
-																T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
-																T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardPrevLevel, int heightLevelPrev, int widthCheckerboardNextLevel, int heightLevelNext,
-																int checkerboardPart);
+	static void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU(
+			T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
+			T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
+			T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
+			T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
+			int heightCurrentLevel, int widthCheckerboardNextLevel,
+			int heightNextLevel, int checkerboardPart);
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 	template<typename T>

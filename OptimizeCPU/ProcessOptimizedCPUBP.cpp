@@ -122,14 +122,19 @@ void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
-	T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
-	T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
-	T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
-	T* dataCostDeviceCheckerboard2)
+void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
+		levelProperties& currentLevelProperties,
+		T* dataCostDeviceCurrentLevelCheckerboard1,
+		T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceCheckerboard1,
+		T* messageDDeviceCheckerboard1,
+		T* messageLDeviceCheckerboard1,
+		T* messageRDeviceCheckerboard1,
+		T* messageUDeviceCheckerboard2,
+		T* messageDDeviceCheckerboard2,
+		T* messageLDeviceCheckerboard2,
+		T* messageRDeviceCheckerboard2)
 {
-	int widthCheckerboard = getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize);
-
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
@@ -146,12 +151,12 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int 
 
 
 		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
-						dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
 						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-						widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+						currentLevelProperties.widthLevel, currentLevelProperties.heightLevel,
 						checkboardPartUpdate, algSettings.disc_k_bp);
 	}
 }
@@ -161,17 +166,26 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int 
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T>
-void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
-	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
-	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
-	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
-	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T* messageUDeviceCheckerboard1CopyTo,
-	T* messageDDeviceCheckerboard1CopyTo, T* messageLDeviceCheckerboard1CopyTo, T* messageRDeviceCheckerboard1CopyTo,
-	T* messageUDeviceCheckerboard2CopyTo, T* messageDDeviceCheckerboard2CopyTo, T* messageLDeviceCheckerboard2CopyTo,
-	T* messageRDeviceCheckerboard2CopyTo)
+void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(
+		levelProperties& currentLevelPropertes,
+		levelProperties& nextLevelPropertes,
+		T* messageUDeviceCheckerboard1CopyFrom,
+		T* messageDDeviceCheckerboard1CopyFrom,
+		T* messageLDeviceCheckerboard1CopyFrom,
+		T* messageRDeviceCheckerboard1CopyFrom,
+		T* messageUDeviceCheckerboard2CopyFrom,
+		T* messageDDeviceCheckerboard2CopyFrom,
+		T* messageLDeviceCheckerboard2CopyFrom,
+		T* messageRDeviceCheckerboard2CopyFrom,
+		T* messageUDeviceCheckerboard1CopyTo,
+		T* messageDDeviceCheckerboard1CopyTo,
+		T* messageLDeviceCheckerboard1CopyTo,
+		T* messageRDeviceCheckerboard1CopyTo,
+		T* messageUDeviceCheckerboard2CopyTo,
+		T* messageDDeviceCheckerboard2CopyTo,
+		T* messageLDeviceCheckerboard2CopyTo,
+		T* messageRDeviceCheckerboard2CopyTo)
 {
-	int widthCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel);
-
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
 	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<T>(messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
@@ -179,80 +193,101 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(int widthLevelAc
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
-			messageRDeviceCheckerboard2CopyTo, KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
-			KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_1);
+			messageRDeviceCheckerboard2CopyTo, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel,
+			nextLevelPropertes.widthCheckerboardLevel, nextLevelPropertes.heightLevel, CHECKERBOARD_PART_1);
 
 	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<T>(messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
-			messageRDeviceCheckerboard2CopyTo, KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
-			KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_2);
+			messageRDeviceCheckerboard2CopyTo, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel,
+			nextLevelPropertes.widthCheckerboardLevel, nextLevelPropertes.heightLevel, CHECKERBOARD_PART_2);
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessOptimizedCPUBP<T>::initializeDataCosts(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings)
+void ProcessOptimizedCPUBP<T>::initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
+		float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
+		T* dataCostDeviceCheckerboard2)
 {
 	//initialize the data the the "bottom" of the image pyramid
-	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T>(image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceCheckerboard1,
+	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T>(image1PixelsCompDevice,
+			image2PixelsCompDevice, dataCostDeviceCheckerboard1,
 			dataCostDeviceCheckerboard2, algSettings.widthImages,
 			algSettings.heightImages, algSettings.lambda_bp, algSettings.data_k_bp);
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T>
-void ProcessOptimizedCPUBP<T>::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-												  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-												  int widthLevel, int heightLevel, int numPossibleMovements)
+void ProcessOptimizedCPUBP<T>::initializeMessageValsToDefault(
+		levelProperties& currentLevelPropertes,
+		T* messageUDeviceCheckerboard1,
+		T* messageDDeviceCheckerboard1,
+		T* messageLDeviceCheckerboard1,
+		T* messageRDeviceCheckerboard1,
+		T* messageUDeviceCheckerboard2,
+		T* messageDDeviceCheckerboard2,
+		T* messageLDeviceCheckerboard2,
+		T* messageRDeviceCheckerboard2)
 {
-	int widthOfCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevel);
-
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
-	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T>(messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1,
-												messageRDeviceSet0Checkerboard1, messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, 
-												messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2, widthOfCheckerboard, heightLevel);
+	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T>(messageUDeviceCheckerboard1, messageDDeviceCheckerboard1, messageLDeviceCheckerboard1,
+												messageRDeviceCheckerboard1, messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+												messageLDeviceCheckerboard2, messageRDeviceCheckerboard2, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel);
 }
 
 
 template<typename T>
-void ProcessOptimizedCPUBP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
-		T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteToCheckerboard1,
-		T* dataCostDeviceToWriteToCheckerboard2,
-		int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
-		int prevWidthLevelActualIntegerSize,
-		int prevHeightLevelActualIntegerSize)
+void ProcessOptimizedCPUBP<T>::initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
+		levelProperties& prevLevelProperties,
+		T* dataCostStereoCheckerboard1,
+		T* dataCostStereoCheckerboard2,
+		T* dataCostDeviceToWriteToCheckerboard1,
+		T* dataCostDeviceToWriteToCheckerboard2)
 {
-	int widthCheckerboard = KernelBpStereoCPU::getCheckerboardWidthCPU<T>(widthLevelActualIntegerSize);
-
 	size_t offsetNum = 0;
 
 	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard1,
-			widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-			prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize,
+			currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
+			prevLevelProperties.widthLevel, prevLevelProperties.heightLevel,
 			CHECKERBOARD_PART_1, ((int) offsetNum / sizeof(float)));
 
 	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard2,
-			widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-			prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize,
+			currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
+			prevLevelProperties.widthLevel, prevLevelProperties.heightLevel,
 			CHECKERBOARD_PART_2, ((int) offsetNum / sizeof(float)));
 }
 
 template<typename T>
-void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2, T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-		float* resultingDisparityMapDevice, int widthLevel, int heightLevel, int currentCheckerboardSet)
+void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
+		int currentCheckerboardSet,
+		levelProperties& levelPropertes,
+		T* dataCostDeviceCurrentLevelCheckerboard1,
+		T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1,
+		T* messageDDeviceSet0Checkerboard1,
+		T* messageLDeviceSet0Checkerboard1,
+		T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2,
+		T* messageDDeviceSet0Checkerboard2,
+		T* messageLDeviceSet0Checkerboard2,
+		T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1,
+		T* messageDDeviceSet1Checkerboard1,
+		T* messageLDeviceSet1Checkerboard1,
+		T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2,
+		T* messageDDeviceSet1Checkerboard2,
+		T* messageLDeviceSet1Checkerboard2,
+		T* messageRDeviceSet1Checkerboard2,
+		float* resultingDisparityMapCompDevice)
 {
 	if (currentCheckerboardSet == 0)
 	{
@@ -269,8 +304,8 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentL
 						messageUDeviceSet0Checkerboard2,
 						messageDDeviceSet0Checkerboard2,
 						messageLDeviceSet0Checkerboard2,
-						messageRDeviceSet0Checkerboard2, resultingDisparityMapDevice,
-						widthLevel, heightLevel);
+						messageRDeviceSet0Checkerboard2, resultingDisparityMapCompDevice,
+						levelPropertes.widthLevel, levelPropertes.heightLevel);
 		/*KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<T>(
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
@@ -296,8 +331,8 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentL
 						messageUDeviceSet1Checkerboard2,
 						messageDDeviceSet1Checkerboard2,
 						messageLDeviceSet1Checkerboard2,
-						messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
-						widthLevel, heightLevel);
+						messageRDeviceSet1Checkerboard2, resultingDisparityMapCompDevice,
+						levelPropertes.widthLevel, levelPropertes.heightLevel);
 		/*KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<T>(
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,

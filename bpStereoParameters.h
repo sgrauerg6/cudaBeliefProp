@@ -286,8 +286,8 @@ typedef short beliefPropProcessingDataType;
 
 #define NO_EXPECTED_STEREO_BP -999.0f
 
-#define BYTES_ALIGN_MEMORY 64
-#define NUM_DATA_ALIGN_WIDTH 16
+#define BYTES_ALIGN_MEMORY 1 /*64*/
+#define NUM_DATA_ALIGN_WIDTH 1 /*16*/
 
 //structure to store the settings for the number of levels and iterations
 typedef struct
@@ -303,5 +303,14 @@ typedef struct
 	float data_k_bp;
 	float disc_k_bp;
 }BPsettings;
+
+//structure to store the properties of the current level
+typedef struct
+{
+	int widthLevel;
+	int widthCheckerboardLevel;
+	int paddedWidthCheckerboardLevel;
+	int heightLevel;
+} levelProperties;
 
 #endif /* BPSTEREOPARAMETERS_H_ */

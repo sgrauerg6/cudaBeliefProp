@@ -217,19 +217,25 @@ void ProcessCUDABP<half2>::printDataAndMessageValsToPoint(int xVal, int yVal, ha
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
-	T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
-	T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
-	T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
-	T* dataCostDeviceCheckerboard2)
+void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
+		levelProperties& currentLevelPropertes,
+		T* dataCostDeviceCurrentLevelCheckerboard1,
+		T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceCheckerboard1,
+		T* messageDDeviceCheckerboard1,
+		T* messageLDeviceCheckerboard1,
+		T* messageRDeviceCheckerboard1,
+		T* messageUDeviceCheckerboard2,
+		T* messageDDeviceCheckerboard2,
+		T* messageLDeviceCheckerboard2,
+		T* messageRDeviceCheckerboard2)
 {
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
-	int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
 	grid.x = (unsigned int) ceil(
-			(float) (widthCheckerboard) / (float) threads.x); //only updating half at a time
-	grid.y = (unsigned int) ceil((float) heightLevelActualIntegerSize / (float) threads.y);
+			(float) (currentLevelPropertes.widthCheckerboardLevel) / (float) threads.x); //only updating half at a time
+	grid.y = (unsigned int) ceil((float) currentLevelPropertes.heightLevel / (float) threads.y);
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
@@ -252,12 +258,12 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int widthLev
 #endif
 
 		runBPIterationUsingCheckerboardUpdatesNoTextures<T><<<grid, threads>>>(
-				dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2,
+				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 				messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
 				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-				widthLevelActualIntegerSize, heightLevelActualIntegerSize,
+				currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
 				checkboardPartUpdate, algSettings.disc_k_bp);
 
 		(cudaDeviceSynchronize());
@@ -282,21 +288,31 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings, int widthLev
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T>
-void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
-	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
-	T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
-	T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
-	T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T* messageUDeviceCheckerboard1CopyTo,
-	T* messageDDeviceCheckerboard1CopyTo, T* messageLDeviceCheckerboard1CopyTo, T* messageRDeviceCheckerboard1CopyTo,
-	T* messageUDeviceCheckerboard2CopyTo, T* messageDDeviceCheckerboard2CopyTo, T* messageLDeviceCheckerboard2CopyTo,
-	T* messageRDeviceCheckerboard2CopyTo)
+void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
+		levelProperties& currentLevelPropertes,
+		levelProperties& nextLevelPropertes,
+		T* messageUDeviceCheckerboard1CopyFrom,
+		T* messageDDeviceCheckerboard1CopyFrom,
+		T* messageLDeviceCheckerboard1CopyFrom,
+		T* messageRDeviceCheckerboard1CopyFrom,
+		T* messageUDeviceCheckerboard2CopyFrom,
+		T* messageDDeviceCheckerboard2CopyFrom,
+		T* messageLDeviceCheckerboard2CopyFrom,
+		T* messageRDeviceCheckerboard2CopyFrom,
+		T* messageUDeviceCheckerboard1CopyTo,
+		T* messageDDeviceCheckerboard1CopyTo,
+		T* messageLDeviceCheckerboard1CopyTo,
+		T* messageRDeviceCheckerboard1CopyTo,
+		T* messageUDeviceCheckerboard2CopyTo,
+		T* messageDDeviceCheckerboard2CopyTo,
+		T* messageLDeviceCheckerboard2CopyTo,
+		T* messageRDeviceCheckerboard2CopyTo)
 {
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
-	int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel);
-	grid.x = (unsigned int)ceil((float)(widthCheckerboard / 2.0f) / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)(heightLevelActualIntegerSizeNextLevel / 2.0f) / (float)threads.y);
+	grid.x = (unsigned int)ceil((float)(currentLevelPropertes.widthCheckerboardLevel) / (float)threads.x);
+	grid.y = (unsigned int)ceil((float)(currentLevelPropertes.heightLevel) / (float)threads.y);
 
 	( cudaDeviceSynchronize() );
 
@@ -314,8 +330,8 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
-			messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
-			getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_1);
+			messageRDeviceCheckerboard2CopyTo, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel,
+			nextLevelPropertes.widthCheckerboardLevel, nextLevelPropertes.heightLevel, CHECKERBOARD_PART_1);
 
 	( cudaDeviceSynchronize() );
 	gpuErrchk( cudaPeekAtLastError() );
@@ -325,8 +341,8 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
 			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
-			messageRDeviceCheckerboard2CopyTo, getCheckerboardWidth<T>(widthLevelActualIntegerSizePrevLevel), (heightLevelActualIntegerSizePrevLevel),
-			getCheckerboardWidth<T>(widthLevelActualIntegerSizeNextLevel), heightLevelActualIntegerSizeNextLevel, CHECKERBOARD_PART_2);
+			messageRDeviceCheckerboard2CopyTo, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel,
+			nextLevelPropertes.widthCheckerboardLevel, nextLevelPropertes.heightLevel, CHECKERBOARD_PART_2);
 
 	( cudaDeviceSynchronize() );
 
@@ -344,30 +360,54 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(int widthLevelActualInte
 
 //due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
 template<>
-void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
-	int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
-	half2* messageUDeviceCheckerboard1CopyFrom, half2* messageDDeviceCheckerboard1CopyFrom, half2* messageLDeviceCheckerboard1CopyFrom,
-	half2* messageRDeviceCheckerboard1CopyFrom, half2* messageUDeviceCheckerboard2CopyFrom, half2* messageDDeviceCheckerboard2CopyFrom,
-	half2* messageLDeviceCheckerboard2CopyFrom, half2* messageRDeviceCheckerboard2CopyFrom, half2* messageUDeviceCheckerboard1CopyTo,
-	half2* messageDDeviceCheckerboard1CopyTo, half2* messageLDeviceCheckerboard1CopyTo, half2* messageRDeviceCheckerboard1CopyTo,
-	half2* messageUDeviceCheckerboard2CopyTo, half2* messageDDeviceCheckerboard2CopyTo, half2* messageLDeviceCheckerboard2CopyTo,
-	half2* messageRDeviceCheckerboard2CopyTo)
+void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(
+		levelProperties& prevLevelPropertes,
+		levelProperties& currentLevelPropertes,
+		half2* messageUDeviceCheckerboard1CopyFrom,
+		half2* messageDDeviceCheckerboard1CopyFrom,
+		half2* messageLDeviceCheckerboard1CopyFrom,
+		half2* messageRDeviceCheckerboard1CopyFrom,
+		half2* messageUDeviceCheckerboard2CopyFrom,
+		half2* messageDDeviceCheckerboard2CopyFrom,
+		half2* messageLDeviceCheckerboard2CopyFrom,
+		half2* messageRDeviceCheckerboard2CopyFrom,
+		half2* messageUDeviceCheckerboard1CopyTo,
+		half2* messageDDeviceCheckerboard1CopyTo,
+		half2* messageLDeviceCheckerboard1CopyTo,
+		half2* messageRDeviceCheckerboard1CopyTo,
+		half2* messageUDeviceCheckerboard2CopyTo,
+		half2* messageDDeviceCheckerboard2CopyTo,
+		half2* messageLDeviceCheckerboard2CopyTo,
+		half2* messageRDeviceCheckerboard2CopyTo)
 {
 	ProcessCUDABP<half> processCUDABPHalf;
-	processCUDABPHalf.copyMessageValuesToNextLevelDown(widthLevelActualIntegerSizePrevLevel, heightLevelActualIntegerSizePrevLevel,
-		widthLevelActualIntegerSizeNextLevel, heightLevelActualIntegerSizeNextLevel,
-		(half*)messageUDeviceCheckerboard1CopyFrom, (half*)messageDDeviceCheckerboard1CopyFrom, (half*)messageLDeviceCheckerboard1CopyFrom,
-		(half*)messageRDeviceCheckerboard1CopyFrom, (half*)messageUDeviceCheckerboard2CopyFrom, (half*)messageDDeviceCheckerboard2CopyFrom,
-		(half*)messageLDeviceCheckerboard2CopyFrom, (half*)messageRDeviceCheckerboard2CopyFrom, (half*)messageUDeviceCheckerboard1CopyTo,
-		(half*)messageDDeviceCheckerboard1CopyTo, (half*)messageLDeviceCheckerboard1CopyTo, (half*)messageRDeviceCheckerboard1CopyTo,
-		(half*)messageUDeviceCheckerboard2CopyTo, (half*)messageDDeviceCheckerboard2CopyTo, (half*)messageLDeviceCheckerboard2CopyTo,
-		(half*)messageRDeviceCheckerboard2CopyTo);
+	processCUDABPHalf.copyMessageValuesToNextLevelDown(
+			prevLevelPropertes,
+			currentLevelPropertes,
+			(half*)messageUDeviceCheckerboard1CopyFrom,
+			(half*)messageDDeviceCheckerboard1CopyFrom,
+			(half*)messageLDeviceCheckerboard1CopyFrom,
+			(half*)messageRDeviceCheckerboard1CopyFrom,
+			(half*)messageUDeviceCheckerboard2CopyFrom,
+			(half*)messageDDeviceCheckerboard2CopyFrom,
+			(half*)messageLDeviceCheckerboard2CopyFrom,
+			(half*)messageRDeviceCheckerboard2CopyFrom,
+			(half*)messageUDeviceCheckerboard1CopyTo,
+			(half*)messageDDeviceCheckerboard1CopyTo,
+			(half*)messageLDeviceCheckerboard1CopyTo,
+			(half*)messageRDeviceCheckerboard1CopyTo,
+			(half*)messageUDeviceCheckerboard2CopyTo,
+			(half*)messageDDeviceCheckerboard2CopyTo,
+			(half*)messageLDeviceCheckerboard2CopyTo,
+			(half*)messageRDeviceCheckerboard2CopyTo);
 }
 
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessCUDABP<T>::initializeDataCosts(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings)
+void ProcessCUDABP<T>::initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
+		float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
+		T* dataCostDeviceCheckerboard2)
 {
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
@@ -379,8 +419,8 @@ void ProcessCUDABP<T>::initializeDataCosts(float* image1PixelsDevice, float* ima
 	grid.y = (unsigned int)ceil((float)algSettings.heightImages / (float)threads.y);
 
 	//initialize the data the the "bottom" of the image pyramid
-	initializeBottomLevelDataStereo<T><<<grid, threads>>>(image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceCheckerboard1,
+	initializeBottomLevelDataStereo<T><<<grid, threads>>>(image1PixelsCompDevice,
+			image2PixelsCompDevice, dataCostDeviceCheckerboard1,
 			dataCostDeviceCheckerboard2, algSettings.widthImages,
 			algSettings.heightImages, algSettings.lambda_bp, algSettings.data_k_bp);
 
@@ -389,43 +429,46 @@ void ProcessCUDABP<T>::initializeDataCosts(float* image1PixelsDevice, float* ima
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T>
-void ProcessCUDABP<T>::initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-												  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-												  int widthLevel, int heightLevel, int numPossibleMovements)
+void ProcessCUDABP<T>::initializeMessageValsToDefault(
+		levelProperties& currentLevelPropertes,
+		T* messageUDeviceCheckerboard1,
+		T* messageDDeviceCheckerboard1,
+		T* messageLDeviceCheckerboard1,
+		T* messageRDeviceCheckerboard1,
+		T* messageUDeviceCheckerboard2,
+		T* messageDDeviceCheckerboard2,
+		T* messageLDeviceCheckerboard2,
+		T* messageRDeviceCheckerboard2)
 {
-	int widthOfCheckerboard = getCheckerboardWidth<T>(widthLevel);
-
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid((unsigned int)ceil((float)widthOfCheckerboard / (float)threads.x), (unsigned int)ceil((float)heightLevel / (float)threads.y));
+	dim3 grid((unsigned int)ceil((float)currentLevelPropertes.widthCheckerboardLevel / (float)threads.x), (unsigned int)ceil((float)currentLevelPropertes.heightLevel / (float)threads.y));
 
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
-	initializeMessageValsToDefaultKernel<T> <<< grid, threads >>> (messageUDeviceSet0Checkerboard1, messageDDeviceSet0Checkerboard1, messageLDeviceSet0Checkerboard1,
-												messageRDeviceSet0Checkerboard1, messageUDeviceSet0Checkerboard2, messageDDeviceSet0Checkerboard2, 
-												messageLDeviceSet0Checkerboard2, messageRDeviceSet0Checkerboard2, widthOfCheckerboard, heightLevel);
+	initializeMessageValsToDefaultKernel<T> <<< grid, threads >>> (messageUDeviceCheckerboard1, messageDDeviceCheckerboard1, messageLDeviceCheckerboard1,
+												messageRDeviceCheckerboard1, messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+												messageLDeviceCheckerboard2, messageRDeviceCheckerboard2, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel);
 
 	cudaDeviceSynchronize();
 }
 
 
 template<typename T>
-void ProcessCUDABP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
-		T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteToCheckerboard1,
-		T* dataCostDeviceToWriteToCheckerboard2,
-		int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
-		int prevWidthLevelActualIntegerSize,
-		int prevHeightLevelActualIntegerSize)
+void ProcessCUDABP<T>::initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
+		levelProperties& prevLevelProperties,
+		T* dataCostStereoCheckerboard1,
+		T* dataCostStereoCheckerboard2,
+		T* dataCostDeviceToWriteToCheckerboard1,
+		T* dataCostDeviceToWriteToCheckerboard2)
 {
-	int widthCheckerboard = getCheckerboardWidth<T>(widthLevelActualIntegerSize);
-
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
 	//the four-connected neighbors are in the other checkerboard
 	grid.x = (unsigned int) ceil(
-			((float) widthCheckerboard) / (float) threads.x);
+			((float) currentLevelPropertes.widthCheckerboardLevel) / (float) threads.x);
 	grid.y = (unsigned int) ceil(
-			(float) heightLevelActualIntegerSize / (float) threads.y);
+			(float) currentLevelPropertes.heightLevel / (float) threads.y);
 
 	gpuErrchk( cudaPeekAtLastError() );
 
@@ -435,8 +478,8 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard1,
-			widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-			prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize,
+			currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
+			prevLevelProperties.widthLevel, prevLevelProperties.heightLevel,
 			CHECKERBOARD_PART_1, ((int) offsetNum / sizeof(float)));
 
 	cudaDeviceSynchronize();
@@ -446,8 +489,8 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard2,
-			widthLevelActualIntegerSize, heightLevelActualIntegerSize,
-			prevWidthLevelActualIntegerSize, prevHeightLevelActualIntegerSize,
+			currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
+			prevLevelProperties.widthLevel, prevLevelProperties.heightLevel,
 			CHECKERBOARD_PART_2, ((int) offsetNum / sizeof(float)));
 
 	cudaDeviceSynchronize();
@@ -456,34 +499,51 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(T* dataCostStereoCheckerboard1
 
 //due to indexing, need to convert to half* and use half arrays for this function
 template<>
-void ProcessCUDABP<half2>::initializeDataCurrentLevel(half2* dataCostStereoCheckerboard1,
-		half2* dataCostStereoCheckerboard2, half2* dataCostDeviceToWriteToCheckerboard1,
-		half2* dataCostDeviceToWriteToCheckerboard2, int widthLevelActualIntegerSize,
-		int heightLevelActualIntegerSize, int prevWidthLevelActualIntegerSize,
-		int prevHeightLevelActualIntegerSize)
+void ProcessCUDABP<half2>::initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
+		levelProperties& prevLevelProperties,
+		half2* dataCostStereoCheckerboard1,
+		half2* dataCostStereoCheckerboard2,
+		half2* dataCostDeviceToWriteToCheckerboard1,
+		half2* dataCostDeviceToWriteToCheckerboard2)
 {
 	ProcessCUDABP<half> processCUDABPHalf;
-	processCUDABPHalf.initializeDataCurrentLevel((half*)dataCostStereoCheckerboard1,
-			(half*)dataCostStereoCheckerboard2, (half*)dataCostDeviceToWriteToCheckerboard1,
-			(half*)dataCostDeviceToWriteToCheckerboard2, widthLevelActualIntegerSize,
-			heightLevelActualIntegerSize, prevWidthLevelActualIntegerSize,
-			prevHeightLevelActualIntegerSize);
+	processCUDABPHalf.initializeDataCurrentLevel(currentLevelPropertes,
+			prevLevelProperties,
+			(half*)dataCostStereoCheckerboard1,
+			(half*)dataCostStereoCheckerboard2,
+			(half*)dataCostDeviceToWriteToCheckerboard1,
+			(half*)dataCostDeviceToWriteToCheckerboard2);
 }
 
 template<typename T>
-void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2, T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-		float* resultingDisparityMapDevice, int widthLevel, int heightLevel, int currentCheckerboardSet)
+void ProcessCUDABP<T>::retrieveOutputDisparity(
+		int currentCheckerboardSet,
+		levelProperties& levelPropertes,
+		T* dataCostDeviceCurrentLevelCheckerboard1,
+		T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1,
+		T* messageDDeviceSet0Checkerboard1,
+		T* messageLDeviceSet0Checkerboard1,
+		T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2,
+		T* messageDDeviceSet0Checkerboard2,
+		T* messageLDeviceSet0Checkerboard2,
+		T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1,
+		T* messageDDeviceSet1Checkerboard1,
+		T* messageLDeviceSet1Checkerboard1,
+		T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2,
+		T* messageDDeviceSet1Checkerboard2,
+		T* messageLDeviceSet1Checkerboard2,
+		T* messageRDeviceSet1Checkerboard2,
+		float* resultingDisparityMapCompDevice)
 {
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
-	int widthCheckerboard = getCheckerboardWidth<T>(widthLevel);
-	grid.x = (unsigned int) ceil((float) widthCheckerboard / (float) threads.x);
-	grid.y = (unsigned int) ceil((float) heightLevel / (float) threads.y);
+	grid.x = (unsigned int) ceil((float) levelPropertes.widthCheckerboardLevel / (float) threads.x);
+	grid.y = (unsigned int) ceil((float) levelPropertes.heightLevel / (float) threads.y);
 
 	if (currentCheckerboardSet == 0)
 	{
@@ -497,8 +557,8 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChec
 				messageUDeviceSet0Checkerboard2,
 				messageDDeviceSet0Checkerboard2,
 				messageLDeviceSet0Checkerboard2,
-				messageRDeviceSet0Checkerboard2, resultingDisparityMapDevice,
-				widthLevel, heightLevel);
+				messageRDeviceSet0Checkerboard2, resultingDisparityMapCompDevice,
+				levelPropertes.widthLevel, levelPropertes.heightLevel);
 	}
 	else
 	{
@@ -512,8 +572,8 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(T* dataCostDeviceCurrentLevelChec
 				messageUDeviceSet1Checkerboard2,
 				messageDDeviceSet1Checkerboard2,
 				messageLDeviceSet1Checkerboard2,
-				messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
-				widthLevel, heightLevel);
+				messageRDeviceSet1Checkerboard2, resultingDisparityMapCompDevice,
+				levelPropertes.widthLevel, levelPropertes.heightLevel);
 	}
 
 	/*if (currentCheckerboardSet == 0)

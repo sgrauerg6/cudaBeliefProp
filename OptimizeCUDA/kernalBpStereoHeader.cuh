@@ -139,9 +139,9 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 		T* messageUDeviceCurrentCheckerboard2,
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardPrevLevel,
-		int heightLevelPrev, int widthCheckerboardNextLevel,
-		int heightLevelNext, int checkerboardPart);
+		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
+		int heightLevelCurrent, int widthCheckerboardNextLevel,
+		int heightCheckerboardNextLevel, int checkerboardPart);
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<typename T>

@@ -1324,9 +1324,9 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 		T* messageUDeviceCurrentCheckerboard2,
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardPrevLevel,
-		int heightLevelPrev, int widthCheckerboardNextLevel,
-		int heightLevelNext, int checkerboardPart)
+		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
+		int heightLevelCurrent, int widthCheckerboardNextLevel,
+		int heightCheckerboardNextLevel, int checkerboardPart)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -1339,10 +1339,8 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
 	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xVal, yVal, widthCheckerboardPrevLevel, heightLevelPrev))
+	if (withinImageBounds(xVal, yVal, widthCheckerboardCurrentLevel, heightLevelCurrent))
 	{
-		int heightCheckerboardNextLevel = heightLevelNext;
-
 		int indexCopyTo;
 		int indexCopyFrom;
 
@@ -1364,7 +1362,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			indexCopyFrom = retrieveIndexInDataAndMessage(xVal, yVal, widthCheckerboardPrevLevel, heightLevelPrev, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+			indexCopyFrom = retrieveIndexInDataAndMessage(xVal, yVal, widthCheckerboardCurrentLevel, heightLevelCurrent, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 			if (checkerboardPart == CHECKERBOARD_PART_1)
 			{

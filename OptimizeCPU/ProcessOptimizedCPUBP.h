@@ -38,6 +38,7 @@ public:
 
 		void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
 		{
+			//printf("RUN ALLOC: %lu\n", numBytesAllocate);
 			*arrayToAllocate = malloc(numBytesAllocate);
 		}
 
@@ -48,47 +49,83 @@ public:
 
 		int getPaddedCheckerboardWidth(int checkerboardWidth);
 
-	//initialize the data cost at each pixel for each disparity value
-		void initializeDataCosts(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings);
+		void initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
+						float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
+						T* dataCostDeviceCheckerboard2);
 
-		void initializeDataCurrentLevel(T* dataCostStereoCheckerboard1,
-				T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteToCheckerboard1,
-				T* dataCostDeviceToWriteToCheckerboard2,
-				int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
-				int prevWidthLevelActualIntegerSize,
-				int prevHeightLevelActualIntegerSize);
+		void initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
+				levelProperties& prevLevelProperties,
+				T* dataCostStereoCheckerboard1,
+				T* dataCostStereoCheckerboard2,
+				T* dataCostDeviceToWriteToCheckerboard1,
+				T* dataCostDeviceToWriteToCheckerboard2);
 
-		//initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
-		void initializeMessageValsToDefault(T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-														  T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-														  int widthLevel, int heightLevel, int numPossibleMovements);
+		void initializeMessageValsToDefault(
+				levelProperties& currentLevelPropertes,
+				T* messageUDeviceCheckerboard1,
+				T* messageDDeviceCheckerboard1,
+				T* messageLDeviceCheckerboard1,
+				T* messageRDeviceCheckerboard1,
+				T* messageUDeviceCheckerboard2,
+				T* messageDDeviceCheckerboard2,
+				T* messageLDeviceCheckerboard2,
+				T* messageRDeviceCheckerboard2);
 
-		//run the given number of iterations of BP at the current level using the given message values in global device memory
-		void runBPAtCurrentLevel(BPsettings& algSettings, int widthLevelActualIntegerSize, int heightLevelActualIntegerSize,
-				T* messageUDeviceCheckerboard1, T* messageDDeviceCheckerboard1, T* messageLDeviceCheckerboard1,
-				T* messageRDeviceCheckerboard1, T* messageUDeviceCheckerboard2, T* messageDDeviceCheckerboard2, T* messageLDeviceCheckerboard2,
-				T* messageRDeviceCheckerboard2, T* dataCostDeviceCheckerboard1,
-				T* dataCostDeviceCheckerboard2);
+		void runBPAtCurrentLevel(BPsettings& algSettings,
+				levelProperties& currentLevelPropertes,
+				T* dataCostDeviceCurrentLevelCheckerboard1,
+				T* dataCostDeviceCurrentLevelCheckerboard2,
+				T* messageUDeviceCheckerboard1,
+				T* messageDDeviceCheckerboard1,
+				T* messageLDeviceCheckerboard1,
+				T* messageRDeviceCheckerboard1,
+				T* messageUDeviceCheckerboard2,
+				T* messageDDeviceCheckerboard2,
+				T* messageLDeviceCheckerboard2,
+				T* messageRDeviceCheckerboard2);
 
-		//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
-		//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
-		//in the next level down
-		//need two different "sets" of message values to avoid read-write conflicts
-		void copyMessageValuesToNextLevelDown(int widthLevelActualIntegerSizePrevLevel, int heightLevelActualIntegerSizePrevLevel,
-			int widthLevelActualIntegerSizeNextLevel, int heightLevelActualIntegerSizeNextLevel,
-			T* messageUDeviceCheckerboard1CopyFrom, T* messageDDeviceCheckerboard1CopyFrom, T* messageLDeviceCheckerboard1CopyFrom,
-			T* messageRDeviceCheckerboard1CopyFrom, T* messageUDeviceCheckerboard2CopyFrom, T* messageDDeviceCheckerboard2CopyFrom,
-			T* messageLDeviceCheckerboard2CopyFrom, T* messageRDeviceCheckerboard2CopyFrom, T* messageUDeviceCheckerboard1CopyTo,
-			T* messageDDeviceCheckerboard1CopyTo, T* messageLDeviceCheckerboard1CopyTo, T* messageRDeviceCheckerboard1CopyTo,
-			T* messageUDeviceCheckerboard2CopyTo, T* messageDDeviceCheckerboard2CopyTo, T* messageLDeviceCheckerboard2CopyTo,
-			T* messageRDeviceCheckerboard2CopyTo);
+		void copyMessageValuesToNextLevelDown(
+				levelProperties& currentLevelPropertes,
+				levelProperties& nextLevelPropertes,
+				T* messageUDeviceCheckerboard1CopyFrom,
+				T* messageDDeviceCheckerboard1CopyFrom,
+				T* messageLDeviceCheckerboard1CopyFrom,
+				T* messageRDeviceCheckerboard1CopyFrom,
+				T* messageUDeviceCheckerboard2CopyFrom,
+				T* messageDDeviceCheckerboard2CopyFrom,
+				T* messageLDeviceCheckerboard2CopyFrom,
+				T* messageRDeviceCheckerboard2CopyFrom,
+				T* messageUDeviceCheckerboard1CopyTo,
+				T* messageDDeviceCheckerboard1CopyTo,
+				T* messageLDeviceCheckerboard1CopyTo,
+				T* messageRDeviceCheckerboard1CopyTo,
+				T* messageUDeviceCheckerboard2CopyTo,
+				T* messageDDeviceCheckerboard2CopyTo,
+				T* messageLDeviceCheckerboard2CopyTo,
+				T* messageRDeviceCheckerboard2CopyTo);
 
-		void retrieveOutputDisparity(T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1, T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2, T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1, T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2, T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-				float* resultingDisparityMapDevice, int widthLevel, int heightLevel, int currentCheckerboardSet);
+		void retrieveOutputDisparity(
+				int currentCheckerboardSet,
+				levelProperties& levelPropertes,
+				T* dataCostDeviceCurrentLevelCheckerboard1,
+				T* dataCostDeviceCurrentLevelCheckerboard2,
+				T* messageUDeviceSet0Checkerboard1,
+				T* messageDDeviceSet0Checkerboard1,
+				T* messageLDeviceSet0Checkerboard1,
+				T* messageRDeviceSet0Checkerboard1,
+				T* messageUDeviceSet0Checkerboard2,
+				T* messageDDeviceSet0Checkerboard2,
+				T* messageLDeviceSet0Checkerboard2,
+				T* messageRDeviceSet0Checkerboard2,
+				T* messageUDeviceSet1Checkerboard1,
+				T* messageDDeviceSet1Checkerboard1,
+				T* messageLDeviceSet1Checkerboard1,
+				T* messageRDeviceSet1Checkerboard1,
+				T* messageUDeviceSet1Checkerboard2,
+				T* messageDDeviceSet1Checkerboard2,
+				T* messageLDeviceSet1Checkerboard2,
+				T* messageRDeviceSet1Checkerboard2,
+				float* resultingDisparityMapCompDevice);
 
 		void printDataAndMessageValsToPoint(int xVal, int yVal,
 				T* dataCostDeviceCurrentLevelCheckerboard1,

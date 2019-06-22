@@ -510,19 +510,18 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 		T* messageUDeviceCurrentCheckerboard2,
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardPrevLevel,
-		int heightLevelPrev, int widthCheckerboardNextLevel,
-		int heightLevelNext, int checkerboardPart)
+		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
+		int heightCurrentLevel, int widthCheckerboardNextLevel,
+		int heightNextLevel, int checkerboardPart)
 {
-
-	int paddedWidthCheckerboardPrevLevel = getPaddedCheckerboardWidth(widthCheckerboardPrevLevel);
+	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
 	int paddedWidthCheckerboardNextLevel = getPaddedCheckerboardWidth(widthCheckerboardNextLevel);
 
 	#pragma omp parallel for
-	for (int val = 0; val < (widthCheckerboardPrevLevel*heightLevelPrev); val++)
+	for (int val = 0; val < (widthCheckerboardCurrentLevel*heightCurrentLevel); val++)
 	{
-		int yVal = val / widthCheckerboardPrevLevel;
-		int xVal = val % widthCheckerboardPrevLevel;
+		int yVal = val / widthCheckerboardCurrentLevel;
+		int xVal = val % widthCheckerboardCurrentLevel;
 	/*for (int yVal = 0; yVal < heightLevelPrev; yVal++)
 	{
 		#pragma omp parallel for
@@ -530,8 +529,6 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 		{*/
 			/*if (withinImageBoundsCPU(xVal, yVal, widthCheckerboardPrevLevel,
 					heightLevelPrev))*/ {
-				int heightCheckerboardNextLevel = heightLevelNext;
-
 				int indexCopyTo;
 				int indexCopyFrom;
 
@@ -552,7 +549,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 						currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 						currentDisparity++) {
 					indexCopyFrom = retrieveIndexInDataAndMessageCPU(xVal, yVal,
-							paddedWidthCheckerboardPrevLevel, heightLevelPrev,
+							paddedWidthCheckerboardCurrentLevel, heightCurrentLevel,
 							currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 					if (checkerboardPart == CHECKERBOARD_PART_1) {
@@ -577,11 +574,11 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 
 					if (withinImageBoundsCPU(xVal * 2 + checkerboardPartAdjustment,
 							yVal * 2, widthCheckerboardNextLevel,
-							heightCheckerboardNextLevel)) {
+							heightNextLevel)) {
 						indexCopyTo = retrieveIndexInDataAndMessageCPU(
 								(xVal * 2 + checkerboardPartAdjustment),
 								(yVal * 2), paddedWidthCheckerboardNextLevel,
-								heightCheckerboardNextLevel, currentDisparity,
+								heightCurrentLevel, currentDisparity,
 								NUM_POSSIBLE_DISPARITY_VALUES);
 
 						messageUDeviceCurrentCheckerboard1[indexCopyTo] =
@@ -605,11 +602,11 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 
 					if (withinImageBoundsCPU(xVal * 2 + checkerboardPartAdjustment,
 							yVal * 2 + 1, widthCheckerboardNextLevel,
-							heightCheckerboardNextLevel)) {
+							heightNextLevel)) {
 						indexCopyTo = retrieveIndexInDataAndMessageCPU(
 								(xVal * 2 + checkerboardPartAdjustment),
 								(yVal * 2 + 1), paddedWidthCheckerboardNextLevel,
-								heightCheckerboardNextLevel, currentDisparity,
+								heightNextLevel, currentDisparity,
 								NUM_POSSIBLE_DISPARITY_VALUES);
 
 						messageUDeviceCurrentCheckerboard1[indexCopyTo] =
