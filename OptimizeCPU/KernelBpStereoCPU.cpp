@@ -170,21 +170,16 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 	}
 }
 
+
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum)
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
 {
-	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<T>(widthCurrentLevel);
-	int widthCheckerboardPrevLevel = getCheckerboardWidthCPU<T>(widthPrevLevel);
-
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
-	int paddedWidthCheckerboardPrevLevel = getPaddedCheckerboardWidth(widthCheckerboardPrevLevel);
-
 	#pragma omp parallel for
-	for (int val = 0; val < (widthCheckerboardCurrentLevel*heightCurrentLevel); val++)
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
 	{
-		int yVal = val / widthCheckerboardCurrentLevel;
-		int xVal = val % widthCheckerboardCurrentLevel;
+		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
+		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
 	/*for (int yVal = 0; yVal < heightCurrentLevel; yVal++)
 	{
@@ -208,38 +203,38 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCos
 				int xValPrev = xVal * 2 + checkerboardPartAdjustment;
 
 				if (withinImageBoundsCPU(xValPrev, (yVal * 2 + 1),
-						widthCheckerboardPrevLevel, heightPrevLevel)) {
+						prevLevelProperties.widthCheckerboardLevel, prevLevelProperties.heightLevel)) {
 					for (int currentDisparity = 0;
 							currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 							currentDisparity++) {
 						dataCostDeviceToWriteTo[retrieveIndexInDataAndMessageCPU(xVal,
-								yVal, paddedWidthCheckerboardCurrentLevel,
-								heightCurrentLevel, currentDisparity,
+								yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+								currentLevelProperties.heightLevel, currentDisparity,
 								NUM_POSSIBLE_DISPARITY_VALUES)] =
 								(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(
 										xValPrev, (yVal * 2),
-										paddedWidthCheckerboardPrevLevel,
-										heightPrevLevel, currentDisparity,
+										prevLevelProperties.paddedWidthCheckerboardLevel,
+										prevLevelProperties.heightLevel, currentDisparity,
 										NUM_POSSIBLE_DISPARITY_VALUES,
 										offsetNum)]
 										+ dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValPrev, (yVal * 2),
-												paddedWidthCheckerboardPrevLevel,
-												heightPrevLevel,
+												prevLevelProperties.paddedWidthCheckerboardLevel,
+												prevLevelProperties.heightLevel,
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES,
 												offsetNum)]
 										+ dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValPrev, (yVal * 2 + 1),
-												paddedWidthCheckerboardPrevLevel,
-												heightPrevLevel,
+												prevLevelProperties.paddedWidthCheckerboardLevel,
+												prevLevelProperties.heightLevel,
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES,
 												offsetNum)]
 										+ dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValPrev, (yVal * 2 + 1),
-												paddedWidthCheckerboardPrevLevel,
-												heightPrevLevel,
+												prevLevelProperties.paddedWidthCheckerboardLevel,
+												prevLevelProperties.heightLevel,
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES,
 												offsetNum)]);
@@ -253,17 +248,15 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCos
 
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
-void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
-												T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
-												T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel)
+void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(levelProperties& currentLevelProperties, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+		T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
+		T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2)
 {
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardAtLevel);
-
 	#pragma omp parallel for
-	for (int val = 0; val < (widthCheckerboardAtLevel*heightLevel); val++)
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
 	{
-		int yVal = val / widthCheckerboardAtLevel;
-		int xValInCheckerboard = val % widthCheckerboardAtLevel;
+		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
+		int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel;
 	/*for (int yVal = 0; yVal < heightLevel; yVal++)
 	{
 		#pragma omp parallel for
@@ -281,20 +274,20 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(T* messageUDevic
 						currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 						currentDisparity++) {
 					messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 					messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 					messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 					messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 				}
 
@@ -303,20 +296,20 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(T* messageUDevic
 						currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 						currentDisparity++) {
 					messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 					messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 					messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 					messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
-							xValInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel,
-							heightLevel, currentDisparity,
+							xValInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel,
+							currentLevelProperties.heightLevel, currentDisparity,
 							NUM_POSSIBLE_DISPARITY_VALUES)] = getZeroValCPU<T>();
 				}
 			}
@@ -351,6 +344,8 @@ void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPU(T prevUMessage[NUM_
 //this function uses linear memory bound to textures to access the current data and message values
 template<typename T>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU(
+		int xVal, int yVal, int checkerboardToUpdate,
+		levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
@@ -359,11 +354,10 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 		T* messageUDeviceCurrentCheckerboard2,
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2,
-		int widthLevelCheckerboardPart, int heightLevel,
-		int checkerboardToUpdate, int xVal, int yVal, int offsetData, float disc_k_bp)
+		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
+		int offsetData)
 {
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthLevelCheckerboardPart);
+	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthLevelCheckerboardPart);
 
 	int indexWriteTo;
 	int checkerboardAdjustment;
@@ -381,7 +375,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 	//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
 	//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
 	//if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
-	if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - checkerboardAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+	if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (currentLevelProperties.widthCheckerboardLevel - checkerboardAdjustment)) && (yVal > 0) && (yVal < (currentLevelProperties.heightLevel - 1)))
 	{
 		T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
 		T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
@@ -394,19 +388,19 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 		{
 			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 			{
-				dataMessage[currentDisparity] = dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES, offsetData)];
-				prevUMessage[currentDisparity] = messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
-				prevDMessage[currentDisparity] = messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
-				prevLMessage[currentDisparity] = messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
-				prevRMessage[currentDisparity] = messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				dataMessage[currentDisparity] = dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES, offsetData)];
+				prevUMessage[currentDisparity] = messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevDMessage[currentDisparity] = messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevLMessage[currentDisparity] = messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevRMessage[currentDisparity] = messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
 			}
 			else //checkerboardToUpdate == CHECKERBOARD_PART_2
 			{
-				dataMessage[currentDisparity] = dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES, offsetData)];
-				prevUMessage[currentDisparity] = messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
-				prevDMessage[currentDisparity] = messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
-				prevLMessage[currentDisparity] = messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
-				prevRMessage[currentDisparity] = messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				dataMessage[currentDisparity] = dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES, offsetData)];
+				prevUMessage[currentDisparity] = messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevDMessage[currentDisparity] = messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevLMessage[currentDisparity] = messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+				prevRMessage[currentDisparity] = messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
 			}
 		}
 
@@ -422,7 +416,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 		//write the calculated message values to global memory
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			indexWriteTo = retrieveIndexInDataAndMessageCPU(xVal, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+			indexWriteTo = retrieveIndexInDataAndMessageCPU(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 			{
 				messageUDeviceCurrentCheckerboard1[indexWriteTo] = currentUMessage[currentDisparity];
@@ -443,6 +437,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 
 template<typename T>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions(
+		int checkerboardPartUpdate, levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
@@ -451,20 +446,19 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPac
 		T* messageUDeviceCurrentCheckerboard2,
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel,
-		int checkerboardPartUpdate, float disc_k_bp)
+		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<T>(widthLevel);
-	int widthCheckerboardRunProcessing = widthLevel / 2;
+	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
 
 	#pragma omp parallel for
-	for (int val = 0; val < (widthCheckerboardRunProcessing * heightLevel);
+	for (int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel);
 			val++)
 	{
 		int yVal = val / widthCheckerboardRunProcessing;
 		int xVal = val % widthCheckerboardRunProcessing;
 
 		runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<T>(
+				xVal, yVal, checkerboardPartUpdate, currentLevelProperties,
 				dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 				messageUDeviceCurrentCheckerboard1,
 				messageDDeviceCurrentCheckerboard1,
@@ -473,9 +467,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPac
 				messageUDeviceCurrentCheckerboard2,
 				messageDDeviceCurrentCheckerboard2,
 				messageLDeviceCurrentCheckerboard2,
-				messageRDeviceCurrentCheckerboard2,
-				widthCheckerboardCurrentLevel, heightLevel,
-				checkerboardPartUpdate, xVal, yVal, 0, disc_k_bp);
+				messageRDeviceCurrentCheckerboard2, disc_k_bp, 0);
 	}
 
 }
@@ -483,15 +475,27 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPac
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+		T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
+		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions(dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
-											messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-											messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
-											messageRDeviceCurrentCheckerboard2, widthLevel, heightLevel, checkerboardPartUpdate, disc_k_bp);
+
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+			messageRDeviceCurrentCheckerboard2, disc_k_bp);
+
+#else
+
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+				messageRDeviceCurrentCheckerboard2, widthLevel, heightLevel, checkerboardPartUpdate, disc_k_bp);
+
+#endif
 }
 
 
@@ -499,6 +503,9 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(T* d
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU(
+		int checkerboardPart,
+		levelProperties& currentLevelProperties,
+		levelProperties& nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
 		T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
@@ -510,18 +517,13 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 		T* messageUDeviceCurrentCheckerboard2,
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
-		int heightCurrentLevel, int widthCheckerboardNextLevel,
-		int heightNextLevel, int checkerboardPart)
+		T* messageRDeviceCurrentCheckerboard2)
 {
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
-	int paddedWidthCheckerboardNextLevel = getPaddedCheckerboardWidth(widthCheckerboardNextLevel);
-
 	#pragma omp parallel for
-	for (int val = 0; val < (widthCheckerboardCurrentLevel*heightCurrentLevel); val++)
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
 	{
-		int yVal = val / widthCheckerboardCurrentLevel;
-		int xVal = val % widthCheckerboardCurrentLevel;
+		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
+		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 	/*for (int yVal = 0; yVal < heightLevelPrev; yVal++)
 	{
 		#pragma omp parallel for
@@ -549,7 +551,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 						currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 						currentDisparity++) {
 					indexCopyFrom = retrieveIndexInDataAndMessageCPU(xVal, yVal,
-							paddedWidthCheckerboardCurrentLevel, heightCurrentLevel,
+							currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel,
 							currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 					if (checkerboardPart == CHECKERBOARD_PART_1) {
@@ -573,12 +575,12 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 					}
 
 					if (withinImageBoundsCPU(xVal * 2 + checkerboardPartAdjustment,
-							yVal * 2, widthCheckerboardNextLevel,
-							heightNextLevel)) {
+							yVal * 2, nextLevelProperties.widthCheckerboardLevel,
+							nextLevelProperties.heightLevel)) {
 						indexCopyTo = retrieveIndexInDataAndMessageCPU(
 								(xVal * 2 + checkerboardPartAdjustment),
-								(yVal * 2), paddedWidthCheckerboardNextLevel,
-								heightCurrentLevel, currentDisparity,
+								(yVal * 2), nextLevelProperties.paddedWidthCheckerboardLevel,
+								nextLevelProperties.heightLevel, currentDisparity,
 								NUM_POSSIBLE_DISPARITY_VALUES);
 
 						messageUDeviceCurrentCheckerboard1[indexCopyTo] =
@@ -601,12 +603,12 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 					}
 
 					if (withinImageBoundsCPU(xVal * 2 + checkerboardPartAdjustment,
-							yVal * 2 + 1, widthCheckerboardNextLevel,
-							heightNextLevel)) {
+							yVal * 2 + 1, nextLevelProperties.widthCheckerboardLevel,
+							nextLevelProperties.heightLevel)) {
 						indexCopyTo = retrieveIndexInDataAndMessageCPU(
 								(xVal * 2 + checkerboardPartAdjustment),
-								(yVal * 2 + 1), paddedWidthCheckerboardNextLevel,
-								heightNextLevel, currentDisparity,
+								(yVal * 2 + 1), nextLevelProperties.paddedWidthCheckerboardLevel,
+								nextLevelProperties.heightLevel, currentDisparity,
 								NUM_POSSIBLE_DISPARITY_VALUES);
 
 						messageUDeviceCurrentCheckerboard1[indexCopyTo] =
@@ -634,16 +636,16 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 }
 
 template<typename T>
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
-	int widthCheckerboard = getCheckerboardWidthCPU<T>(widthLevel);
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboard);
+	//int widthCheckerboard = getCheckerboardWidthCPU<T>(widthLevel);
+	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboard);
 
 	#pragma omp parallel for
-	for (int val = 0; val < (widthCheckerboard*heightLevel); val++)
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
 	{
-		int yVal = val / widthCheckerboard;
-		int xVal = val % widthCheckerboard;
+		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
+		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
 		int xValInCheckerboardPart = xVal;
 
@@ -652,20 +654,20 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T*
 			//adjustment based on checkerboard; need to add 1 to x for odd-numbered rows for final index mapping into disparity images for checkerboard 1
 			int	checkerboardPartAdjustment = (yVal%2);
 
-			if (withinImageBoundsCPU(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, widthLevel, heightLevel))
+			if (withinImageBoundsCPU(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
 			{
-				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (widthCheckerboard - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (currentLevelProperties.widthCheckerboardLevel - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (currentLevelProperties.heightLevel - 1)))
 				{
 					// keep track of "best" disparity for current pixel
 					int bestDisparity = 0;
 					T best_val = INF_BP;
 					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 					{
-						T val = messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal + 1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							 messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal - 1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							 messageLPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							 messageRPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							 dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+						T val = messageUPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal + 1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageDPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal - 1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageLPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 messageRPrevStereoCheckerboard2[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							 dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
 
 						if (val < (best_val)) {
 							best_val = val;
@@ -673,11 +675,11 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T*
 						}
 					}
 
-					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+					disparityBetweenImagesDevice[yVal*currentLevelProperties.widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
 				}
 				else
 				{
-					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+					disparityBetweenImagesDevice[yVal*currentLevelProperties.widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
 				}
 			}
 		}
@@ -686,20 +688,20 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T*
 			//adjustment based on checkerboard; need to add 1 to x for even-numbered rows for final index mapping into disparity images for checkerboard 2
 			int	checkerboardPartAdjustment = ((yVal + 1) % 2);
 
-			if (withinImageBoundsCPU(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, widthLevel, heightLevel))
+			if (withinImageBoundsCPU(xValInCheckerboardPart*2 + checkerboardPartAdjustment, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
 			{
-				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (widthCheckerboard - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (heightLevel - 1)))
+				if ((xValInCheckerboardPart >= (1 - checkerboardPartAdjustment)) && (xValInCheckerboardPart < (currentLevelProperties.widthCheckerboardLevel - checkerboardPartAdjustment)) && (yVal > 0) && (yVal < (currentLevelProperties.heightLevel - 1)))
 				{
 					// keep track of "best" disparity for current pixel
 					int bestDisparity = 0;
 					T best_val = INF_BP;
 					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 					{
-						T val = messageUPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal + 1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							messageDPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal - 1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							messageLPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							messageRPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
-							dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
+						T val = messageUPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal + 1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageDPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, (yVal - 1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageLPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart + checkerboardPartAdjustment), yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							messageRPrevStereoCheckerboard1[retrieveIndexInDataAndMessageCPU((xValInCheckerboardPart - 1 + checkerboardPartAdjustment), yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)] +
+							dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValInCheckerboardPart, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)];
 
 						if (val < (best_val))
 						{
@@ -707,11 +709,11 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T*
 							bestDisparity = currentDisparity;
 						}
 					}
-					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+					disparityBetweenImagesDevice[yVal*currentLevelProperties.widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
 				}
 				else
 				{
-					disparityBetweenImagesDevice[yVal*widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+					disparityBetweenImagesDevice[yVal*currentLevelProperties.widthLevel + (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
 				}
 			}
 		}

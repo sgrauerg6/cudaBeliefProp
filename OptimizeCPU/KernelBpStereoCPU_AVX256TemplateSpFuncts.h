@@ -226,24 +226,30 @@ void KernelBpStereoCPU::msgStereoCPU<__m256d>(__m256d messageValsNeighbor1[NUM_P
 }
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<float>(float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
-		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1, float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-		float* messageUDeviceCurrentCheckerboard2, float* messageDDeviceCurrentCheckerboard2, float* messageLDeviceCurrentCheckerboard2,
-		float* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<float>(int checkerboardToUpdate, levelProperties& currentLevelProperties,
+		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+		float* messageUDeviceCurrentCheckerboard1,
+		float* messageDDeviceCurrentCheckerboard1,
+		float* messageLDeviceCurrentCheckerboard1,
+		float* messageRDeviceCurrentCheckerboard1,
+		float* messageUDeviceCurrentCheckerboard2,
+		float* messageDDeviceCurrentCheckerboard2,
+		float* messageLDeviceCurrentCheckerboard2,
+		float* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
-	int widthCheckerboardRunProcessing = widthLevel / 2;
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
+	//int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
+	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
 	__m256 disc_k_bp_vector = _mm256_set1_ps(disc_k_bp);
 
 	int numDataInAvxVector = 8;
 
 	#pragma omp parallel for
-	for (int yVal = 1; yVal < heightLevel - 1; yVal++)
+	for (int yVal = 1; yVal < currentLevelProperties.heightLevel - 1; yVal++)
 	{
 		//checkerboardAdjustment used for indexing into current checkerboard to update
 		int checkerboardAdjustment;
-		if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+		if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 			checkerboardAdjustment = ((yVal) % 2);
 		} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 		{
@@ -252,7 +258,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 
 		int startX = (checkerboardAdjustment == 1) ? 0 : 1;
 		int endFinal = std::min(
-				widthCheckerboardCurrentLevel - checkerboardAdjustment,
+				currentLevelProperties.widthCheckerboardLevel - checkerboardAdjustment,
 				widthCheckerboardRunProcessing);
 		int endXAvxStart = (endFinal / numDataInAvxVector) * numDataInAvxVector
 				- numDataInAvxVector;
@@ -287,29 +293,29 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 						currentDisparity++) {
 					if ((xValProcess % numDataInAvxVector) == 0) {
 						//load using aligned instructions when possible
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 							dataMessage[currentDisparity] =
 									_mm256_load_ps(
 											&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(
 													xValProcess, yVal,
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevUMessage[currentDisparity] =
 									_mm256_load_ps(
 											&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal + 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevDMessage[currentDisparity] =
 									_mm256_load_ps(
 											&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal - 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevLMessage[currentDisparity] =
@@ -318,8 +324,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													(xValProcess
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevRMessage[currentDisparity] =
@@ -328,8 +334,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													((xValProcess - 1)
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.	heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 						} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
@@ -338,24 +344,24 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 									_mm256_load_ps(
 											&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(
 													xValProcess, yVal,
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevUMessage[currentDisparity] =
 									_mm256_load_ps(
 											&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal + 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevDMessage[currentDisparity] =
 									_mm256_load_ps(
 											&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal - 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevLMessage[currentDisparity] =
@@ -364,8 +370,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													(xValProcess
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevRMessage[currentDisparity] =
@@ -374,35 +380,35 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													((xValProcess - 1)
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 						}
 					} else {
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 							dataMessage[currentDisparity] =
 									_mm256_loadu_ps(
 											&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(
 													xValProcess, yVal,
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevUMessage[currentDisparity] =
 									_mm256_loadu_ps(
 											&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal + 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevDMessage[currentDisparity] =
 									_mm256_loadu_ps(
 											&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal - 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevLMessage[currentDisparity] =
@@ -411,8 +417,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													(xValProcess
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevRMessage[currentDisparity] =
@@ -421,8 +427,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													((xValProcess - 1)
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 						} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
@@ -431,24 +437,24 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 									_mm256_loadu_ps(
 											&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(
 													xValProcess, yVal,
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevUMessage[currentDisparity] =
 									_mm256_loadu_ps(
 											&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal + 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevDMessage[currentDisparity] =
 									_mm256_loadu_ps(
 											&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 													xValProcess, (yVal - 1),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevLMessage[currentDisparity] =
@@ -457,8 +463,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													(xValProcess
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 							prevRMessage[currentDisparity] =
@@ -467,8 +473,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 													((xValProcess - 1)
 															+ checkerboardAdjustment),
 													(yVal),
-													paddedWidthCheckerboardCurrentLevel,
-													heightLevel,
+													currentLevelProperties.paddedWidthCheckerboardLevel,
+													currentLevelProperties.heightLevel,
 													currentDisparity,
 													NUM_POSSIBLE_DISPARITY_VALUES)]);
 						}
@@ -498,12 +504,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 						currentDisparity++) {
 					int indexWriteTo = retrieveIndexInDataAndMessageCPU(
 							xValProcess, yVal,
-							paddedWidthCheckerboardCurrentLevel, heightLevel,
+							currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel,
 							currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 					//save using aligned instructions when possible
 					if ((xValProcess % numDataInAvxVector) == 0) {
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 							_mm256_store_ps(
 									&messageUDeviceCurrentCheckerboard1[indexWriteTo],
 									currentUMessage[currentDisparity]);
@@ -532,7 +538,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 									currentRMessage[currentDisparity]);
 						}
 					} else {
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 							_mm256_storeu_ps(
 									&messageUDeviceCurrentCheckerboard1[indexWriteTo],
 									currentUMessage[currentDisparity]);
@@ -568,7 +574,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 }
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<short>(
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<short>(int checkerboardToUpdate, levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
 		short* messageUDeviceCurrentCheckerboard1,
 		short* messageDDeviceCurrentCheckerboard1,
@@ -577,21 +583,20 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		short* messageUDeviceCurrentCheckerboard2,
 		short* messageDDeviceCurrentCheckerboard2,
 		short* messageLDeviceCurrentCheckerboard2,
-		short* messageRDeviceCurrentCheckerboard2, int widthLevel,
-		int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
-	int widthCheckerboardRunProcessing = widthLevel / 2;
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
+	//int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
+	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
 	__m128i disc_k_bp_vector = _mm256_cvtps_ph(_mm256_set1_ps(disc_k_bp), 0);
 
 	int numDataInAvxVector = 8;
 	#pragma omp parallel for
-	for (int yVal = 1; yVal < heightLevel-1; yVal++)
+	for (int yVal = 1; yVal < currentLevelProperties.heightLevel-1; yVal++)
 	{
 		//checkerboardAdjustment used for indexing into current checkerboard to update
 		int checkerboardAdjustment;
-		if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+		if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 			checkerboardAdjustment = ((yVal) % 2);
 		} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 		{
@@ -599,7 +604,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		}
 
 		int startX = (checkerboardAdjustment == 1) ? 0 : 1;
-		int endFinal = std::min(widthCheckerboardCurrentLevel - checkerboardAdjustment, widthCheckerboardRunProcessing);
+		int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel - checkerboardAdjustment, widthCheckerboardRunProcessing);
 		int endXAvxStart = (endFinal / numDataInAvxVector) * numDataInAvxVector - numDataInAvxVector;
 
 		for (int xVal = 0; xVal < endFinal; xVal += numDataInAvxVector)
@@ -634,40 +639,40 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 					if ((xValProcess % numDataInAvxVector) == 0)
 					{
 						//load using aligned instructions when possible
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 						{
-							dataMessage[currentDisparity] = _mm_load_si128((__m128i*)&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevUMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevDMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							dataMessage[currentDisparity] = _mm_load_si128((__m128i*)&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevUMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevDMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 						}
 						else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 						{
-							dataMessage[currentDisparity] = _mm_load_si128((__m128i*)&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevUMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevDMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							dataMessage[currentDisparity] = _mm_load_si128((__m128i*)&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevUMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevDMessage[currentDisparity] = _mm_load_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 						}
 					}
 					else
 					{
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 						{
-							dataMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevUMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevDMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							dataMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevUMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevDMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 						}
 						else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 						{
-							dataMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevUMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevDMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							dataMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevUMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevDMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevLMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+							prevRMessage[currentDisparity] = _mm_loadu_si128((__m128i*)&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 						}
 					}
 				}
@@ -692,12 +697,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 				//write the calculated message values to global memory
 				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					int indexWriteTo = retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+					int indexWriteTo = retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 					//save using aligned instructions when possible
 					if ((xValProcess % numDataInAvxVector) == 0)
 					{
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 						{
 							_mm_store_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[indexWriteTo], currentUMessage[currentDisparity]);
 							_mm_store_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[indexWriteTo], currentDMessage[currentDisparity]);
@@ -714,7 +719,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 					}
 					else
 					{
-						if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+						if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 						{
 							_mm_storeu_si128((__m128i*)&messageUDeviceCurrentCheckerboard1[indexWriteTo], currentUMessage[currentDisparity]);
 							_mm_storeu_si128((__m128i*)&messageDDeviceCurrentCheckerboard1[indexWriteTo], currentDMessage[currentDisparity]);
@@ -737,23 +742,29 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 }
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<double>(double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
-		double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1, double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-		double* messageUDeviceCurrentCheckerboard2, double* messageDDeviceCurrentCheckerboard2, double* messageLDeviceCurrentCheckerboard2,
-		double* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<double>(int checkerboardToUpdate, levelProperties& currentLevelProperties,
+		double* dataCostStereoCheckerboard1, double* dataCostStereoCheckerboard2,
+		double* messageUDeviceCurrentCheckerboard1,
+		double* messageDDeviceCurrentCheckerboard1,
+		double* messageLDeviceCurrentCheckerboard1,
+		double* messageRDeviceCurrentCheckerboard1,
+		double* messageUDeviceCurrentCheckerboard2,
+		double* messageDDeviceCurrentCheckerboard2,
+		double* messageLDeviceCurrentCheckerboard2,
+		double* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
-	int widthCheckerboardRunProcessing = widthLevel / 2;
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
+	//int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
+	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
 	__m256d disc_k_bp_vector = _mm256_set1_pd((double)disc_k_bp);
 
 	int numDataInAvxVector = 4;
 	#pragma omp parallel for
-	for (int yVal = 1; yVal < heightLevel-1; yVal++)
+	for (int yVal = 1; yVal < currentLevelProperties.heightLevel-1; yVal++)
 	{
 		//checkerboardAdjustment used for indexing into current checkerboard to update
 		int checkerboardAdjustment;
-		if (checkerboardPartUpdate == CHECKERBOARD_PART_1) {
+		if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 			checkerboardAdjustment = ((yVal) % 2);
 		} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 		{
@@ -793,21 +804,21 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 
 				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+					if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 					{
-						dataMessage[currentDisparity] = _mm256_loadu_pd(&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevUMessage[currentDisparity] = _mm256_loadu_pd(&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevDMessage[currentDisparity] = _mm256_loadu_pd(&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevLMessage[currentDisparity] = _mm256_loadu_pd(&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevRMessage[currentDisparity] = _mm256_loadu_pd(&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						dataMessage[currentDisparity] = _mm256_loadu_pd(&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevUMessage[currentDisparity] = _mm256_loadu_pd(&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevDMessage[currentDisparity] = _mm256_loadu_pd(&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevLMessage[currentDisparity] = _mm256_loadu_pd(&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevRMessage[currentDisparity] = _mm256_loadu_pd(&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 					}
 					else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 					{
-						dataMessage[currentDisparity] = _mm256_loadu_pd(&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevUMessage[currentDisparity] = _mm256_loadu_pd(&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevDMessage[currentDisparity] = _mm256_loadu_pd(&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevLMessage[currentDisparity] = _mm256_loadu_pd(&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
-						prevRMessage[currentDisparity] = _mm256_loadu_pd(&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						dataMessage[currentDisparity] = _mm256_loadu_pd(&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevUMessage[currentDisparity] = _mm256_loadu_pd(&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevDMessage[currentDisparity] = _mm256_loadu_pd(&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(xValProcess, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevLMessage[currentDisparity] = _mm256_loadu_pd(&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU((xValProcess + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
+						prevRMessage[currentDisparity] = _mm256_loadu_pd(&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(((xValProcess - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 					}
 				}
 
@@ -831,8 +842,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 				//write the calculated message values to global memory
 				for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					indexWriteTo = retrieveIndexInDataAndMessageCPU(xValProcess, yVal, paddedWidthCheckerboardCurrentLevel, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
-					if (checkerboardPartUpdate == CHECKERBOARD_PART_1)
+					indexWriteTo = retrieveIndexInDataAndMessageCPU(xValProcess, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+					if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 					{
 						_mm256_storeu_pd(&messageUDeviceCurrentCheckerboard1[indexWriteTo], currentUMessage[currentDisparity]);
 						_mm256_storeu_pd(&messageDDeviceCurrentCheckerboard1[indexWriteTo], currentDMessage[currentDisparity]);

@@ -78,15 +78,14 @@ public:
 	template<typename T>
 	static void initializeBottomLevelDataStereoCPU(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp);
 
-	//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 	template<typename T>
-	static void initializeCurrentLevelDataStereoNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum);
+	static void initializeCurrentLevelDataStereoNoTexturesCPU(int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum);
 
 	//initialize the message values at each pixel of the current level to the default value
 	template<typename T>
-	static void initializeMessageValsToDefaultKernelCPU(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+	static void initializeMessageValsToDefaultKernelCPU(levelProperties& currentLevelProperties, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
 														T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
-														T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel);
+														T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2);
 
 	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 	template<typename T>
@@ -110,6 +109,8 @@ public:
 	//this function uses linear memory bound to textures to access the current data and message values
 	template<typename T>
 	static void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU(
+			int xVal, int yVal, int checkerboardToUpdate,
+			levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
@@ -118,32 +119,21 @@ public:
 			T* messageUDeviceCurrentCheckerboard2,
 			T* messageDDeviceCurrentCheckerboard2,
 			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2,
-			int widthLevelCheckerboardPart, int heightLevel,
-			int checkerboardToUpdate, int xVal, int yVal, int offsetData, float disc_k_bp);
+			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
+			int offsetData);
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 									T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 									T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-									T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+									T* messageRDeviceCurrentCheckerboard2, float disc_k_bp);
 
 	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-										T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-										T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-										T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
-
-	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
-	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
-	template<typename T>
-	static void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU(
-			T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
-			T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
-			T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
-			T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions(
+			int checkerboardPartUpdate, levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1,
@@ -151,13 +141,31 @@ public:
 			T* messageUDeviceCurrentCheckerboard2,
 			T* messageDDeviceCurrentCheckerboard2,
 			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
-			int heightCurrentLevel, int widthCheckerboardNextLevel,
-			int heightNextLevel, int checkerboardPart);
+			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp);
+
+	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
+	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
+	template<typename T>
+		static void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU(
+				int checkerboardPart,
+				levelProperties& currentLevelProperties,
+				levelProperties& nextLevelProperties,
+				T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
+				T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
+				T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
+				T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
+				T* messageUDeviceCurrentCheckerboard1,
+				T* messageDDeviceCurrentCheckerboard1,
+				T* messageLDeviceCurrentCheckerboard1,
+				T* messageRDeviceCurrentCheckerboard1,
+				T* messageUDeviceCurrentCheckerboard2,
+				T* messageDDeviceCurrentCheckerboard2,
+				T* messageLDeviceCurrentCheckerboard2,
+				T* messageRDeviceCurrentCheckerboard2);
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 	template<typename T>
-	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel);
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice);
 
 	template<typename T>
 	static void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
@@ -186,7 +194,7 @@ public:
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256(
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256(int checkerboardToUpdate, levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
@@ -195,8 +203,7 @@ public:
 			T* messageUDeviceCurrentCheckerboard2,
 			T* messageDDeviceCurrentCheckerboard2,
 			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, int widthLevel,
-			int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 	{
 		printf("Data type not currently supported for AVX-256 acceleration in application\n");
 	}

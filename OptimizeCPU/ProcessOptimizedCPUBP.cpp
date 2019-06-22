@@ -150,14 +150,13 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		}
 
 
-		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
 						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-						currentLevelProperties.widthLevel, currentLevelProperties.heightLevel,
-						checkboardPartUpdate, algSettings.disc_k_bp);
+						algSettings.disc_k_bp);
 	}
 }
 
@@ -188,21 +187,43 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(
 {
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
-	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<T>(messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
-			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
-			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
-			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
-			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
-			messageRDeviceCheckerboard2CopyTo, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel,
-			nextLevelPropertes.widthCheckerboardLevel, nextLevelPropertes.heightLevel, CHECKERBOARD_PART_1);
+	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<
+			T>(CHECKERBOARD_PART_1, currentLevelPropertes, nextLevelPropertes,
+			messageUDeviceCheckerboard1CopyFrom,
+			messageDDeviceCheckerboard1CopyFrom,
+			messageLDeviceCheckerboard1CopyFrom,
+			messageRDeviceCheckerboard1CopyFrom,
+			messageUDeviceCheckerboard2CopyFrom,
+			messageDDeviceCheckerboard2CopyFrom,
+			messageLDeviceCheckerboard2CopyFrom,
+			messageRDeviceCheckerboard2CopyFrom,
+			messageUDeviceCheckerboard1CopyTo,
+			messageDDeviceCheckerboard1CopyTo,
+			messageLDeviceCheckerboard1CopyTo,
+			messageRDeviceCheckerboard1CopyTo,
+			messageUDeviceCheckerboard2CopyTo,
+			messageDDeviceCheckerboard2CopyTo,
+			messageLDeviceCheckerboard2CopyTo,
+			messageRDeviceCheckerboard2CopyTo);
 
-	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<T>(messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
-			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
-			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
-			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
-			messageRDeviceCheckerboard1CopyTo, messageUDeviceCheckerboard2CopyTo, messageDDeviceCheckerboard2CopyTo, messageLDeviceCheckerboard2CopyTo,
-			messageRDeviceCheckerboard2CopyTo, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel,
-			nextLevelPropertes.widthCheckerboardLevel, nextLevelPropertes.heightLevel, CHECKERBOARD_PART_2);
+	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<
+			T>(CHECKERBOARD_PART_2, currentLevelPropertes, nextLevelPropertes,
+			messageUDeviceCheckerboard1CopyFrom,
+			messageDDeviceCheckerboard1CopyFrom,
+			messageLDeviceCheckerboard1CopyFrom,
+			messageRDeviceCheckerboard1CopyFrom,
+			messageUDeviceCheckerboard2CopyFrom,
+			messageDDeviceCheckerboard2CopyFrom,
+			messageLDeviceCheckerboard2CopyFrom,
+			messageRDeviceCheckerboard2CopyFrom,
+			messageUDeviceCheckerboard1CopyTo,
+			messageDDeviceCheckerboard1CopyTo,
+			messageLDeviceCheckerboard1CopyTo,
+			messageRDeviceCheckerboard1CopyTo,
+			messageUDeviceCheckerboard2CopyTo,
+			messageDDeviceCheckerboard2CopyTo,
+			messageLDeviceCheckerboard2CopyTo,
+			messageRDeviceCheckerboard2CopyTo);
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
@@ -232,9 +253,9 @@ void ProcessOptimizedCPUBP<T>::initializeMessageValsToDefault(
 		T* messageRDeviceCheckerboard2)
 {
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
-	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T>(messageUDeviceCheckerboard1, messageDDeviceCheckerboard1, messageLDeviceCheckerboard1,
+	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T>(currentLevelPropertes, messageUDeviceCheckerboard1, messageDDeviceCheckerboard1, messageLDeviceCheckerboard1,
 												messageRDeviceCheckerboard1, messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
-												messageLDeviceCheckerboard2, messageRDeviceCheckerboard2, currentLevelPropertes.widthCheckerboardLevel, currentLevelPropertes.heightLevel);
+												messageLDeviceCheckerboard2, messageRDeviceCheckerboard2);
 }
 
 
@@ -248,21 +269,17 @@ void ProcessOptimizedCPUBP<T>::initializeDataCurrentLevel(levelProperties& curre
 {
 	size_t offsetNum = 0;
 
-	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(
+	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(CHECKERBOARD_PART_1, currentLevelPropertes, prevLevelProperties,
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard1,
-			currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
-			prevLevelProperties.widthLevel, prevLevelProperties.heightLevel,
-			CHECKERBOARD_PART_1, ((int) offsetNum / sizeof(float)));
+			((int) offsetNum / sizeof(float)));
 
-	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(
+	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(CHECKERBOARD_PART_2, currentLevelPropertes, prevLevelProperties,
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard2,
-			currentLevelPropertes.widthLevel, currentLevelPropertes.heightLevel,
-			prevLevelProperties.widthLevel, prevLevelProperties.heightLevel,
-			CHECKERBOARD_PART_2, ((int) offsetNum / sizeof(float)));
+			((int) offsetNum / sizeof(float)));
 }
 
 template<typename T>
@@ -294,7 +311,7 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 		//template<typename T>
 		//void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 
-		KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T>(
+		KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T>(levelPropertes,
 						dataCostDeviceCurrentLevelCheckerboard1,
 						dataCostDeviceCurrentLevelCheckerboard2,
 						messageUDeviceSet0Checkerboard1,
@@ -304,8 +321,7 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 						messageUDeviceSet0Checkerboard2,
 						messageDDeviceSet0Checkerboard2,
 						messageLDeviceSet0Checkerboard2,
-						messageRDeviceSet0Checkerboard2, resultingDisparityMapCompDevice,
-						levelPropertes.widthLevel, levelPropertes.heightLevel);
+						messageRDeviceSet0Checkerboard2, resultingDisparityMapCompDevice);
 		/*KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<T>(
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
@@ -321,7 +337,7 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 	}
 	else
 	{
-		KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T>(
+		KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T>(levelPropertes,
 						dataCostDeviceCurrentLevelCheckerboard1,
 						dataCostDeviceCurrentLevelCheckerboard2,
 						messageUDeviceSet1Checkerboard1,
@@ -331,8 +347,7 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 						messageUDeviceSet1Checkerboard2,
 						messageDDeviceSet1Checkerboard2,
 						messageLDeviceSet1Checkerboard2,
-						messageRDeviceSet1Checkerboard2, resultingDisparityMapCompDevice,
-						levelPropertes.widthLevel, levelPropertes.heightLevel);
+						messageRDeviceSet1Checkerboard2, resultingDisparityMapCompDevice);
 		/*KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<T>(
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
