@@ -46,6 +46,8 @@ public:
 			free(arrayToFree);
 		}
 
+		int getPaddedCheckerboardWidth(int checkerboardWidth);
+
 	//initialize the data cost at each pixel for each disparity value
 		void initializeDataCosts(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceCheckerboard1, T* dataCostDeviceCheckerboard2, BPsettings& algSettings);
 

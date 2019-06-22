@@ -45,9 +45,25 @@ public:
 		return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
 	}
 
+	static int getPaddedCheckerboardWidth(int checkerboardWidth)
+	{
+		if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
+		{
+			return checkerboardWidth;
+		}
+		else
+		{
+			unsigned long paddedCheckerboardWidth = checkerboardWidth
+					+ ((NUM_DATA_ALIGN_WIDTH
+							- checkerboardWidth % NUM_DATA_ALIGN_WIDTH));
+			return paddedCheckerboardWidth;
+		}
+	}
+
 	//retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
 	static int retrieveIndexInDataAndMessageCPU(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
 	{
+		//assuming that width includes padding
 		return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
 	}
 

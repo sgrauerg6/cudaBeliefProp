@@ -30,6 +30,12 @@ int ProcessOptimizedCPUBP<T>::getCheckerboardWidthTargetDevice(
 }
 
 template<typename T>
+int ProcessOptimizedCPUBP<T>::getPaddedCheckerboardWidth(int checkerboardWidth)
+{
+	return KernelBpStereoCPU::getPaddedCheckerboardWidth(checkerboardWidth);
+}
+
+template<typename T>
 void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
 		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,

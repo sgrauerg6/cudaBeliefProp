@@ -286,6 +286,8 @@ typedef short beliefPropProcessingDataType;
 
 #define NO_EXPECTED_STEREO_BP -999.0f
 
+#define BYTES_ALIGN_MEMORY 64
+#define NUM_DATA_ALIGN_WIDTH 16
 
 //structure to store the settings for the number of levels and iterations
 typedef struct

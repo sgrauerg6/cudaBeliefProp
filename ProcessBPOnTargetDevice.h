@@ -107,6 +107,32 @@ public:
 				float* resultingDisparityMapCompDevice, int widthLevel,
 				int heightLevel, int currentCheckerboardSet) = 0;
 
+		virtual int getPaddedCheckerboardWidth(int checkerboardWidth) = 0;
+
+		unsigned long getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements)
+		{
+			unsigned long numDataAtLevel = ((unsigned long)getPaddedCheckerboardWidth((int)getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize)))
+								* ((unsigned long)heightLevelActualIntegerSize) * (unsigned long)totalPossibleMovements;
+			//printf("numDataAtLevel: %lu\n", numDataAtLevel);
+
+			unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
+
+			if ((numBytesAtLevel % BYTES_ALIGN_MEMORY) == 0)
+			{
+				return numDataAtLevel;
+			}
+			else
+			{
+				printf("%u %u %u\n", getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(
+					widthLevelActualIntegerSize)), heightLevelActualIntegerSize, totalPossibleMovements);
+				printf("numBytesAtLevel: %lu\n", numBytesAtLevel);
+				numBytesAtLevel += ((BYTES_ALIGN_MEMORY - numBytesAtLevel % BYTES_ALIGN_MEMORY));
+				unsigned long paddedNumDataAtLevel = numBytesAtLevel / sizeof(T);
+				printf("paddedNumDataAtLevel: %lu\n", paddedNumDataAtLevel);
+				return paddedNumDataAtLevel;
+			}
+		}
+
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	//input is images image1Pixels and image1Pixels
 	//output is resultingDisparityMap
@@ -145,9 +171,9 @@ public:
 		//using "half" because the data is split in two using the checkerboard scheme
 		for (int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
 		{
-			halfTotalDataAllLevels += (getCheckerboardWidthTargetDevice(
+			halfTotalDataAllLevels += getNumDataForAlignedMemoryAtLevel(widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);/*(getCheckerboardWidthTargetDevice(
 					widthLevelActualIntegerSize))
-					* (heightLevelActualIntegerSize) * (totalPossibleMovements);
+					* (heightLevelActualIntegerSize) * (totalPossibleMovements);*/
 			widthLevel /= 2.0f;
 			heightLevel /= 2.0f;
 
@@ -243,18 +269,21 @@ public:
 
 #endif
 
-		int offsetLevel = 0;
+		unsigned long currentOffsetLevel = 0;
+		unsigned long* offsetAtLevel = new unsigned long[algSettings.numLevels];
+		offsetAtLevel[0] = 0;
 
 		//set the data costs at each level from the bottom level "up"
 		for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
 		{
-			int prev_level_offset_level = offsetLevel;
+			int prev_level_offset_level = currentOffsetLevel;
 
 			//width is half since each part of the checkboard contains half the values going across
 			//retrieve offset where the data starts at the "current level"
-			offsetLevel += (getCheckerboardWidthTargetDevice(
+			currentOffsetLevel += getNumDataForAlignedMemoryAtLevel(widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);/*(getCheckerboardWidthTargetDevice(
 					widthLevelActualIntegerSize))
-					* (heightLevelActualIntegerSize) * totalPossibleMovements;
+					* (heightLevelActualIntegerSize) * totalPossibleMovements;*/
+			offsetAtLevel[levelNum] = currentOffsetLevel;
 
 			widthLevel /= 2.0f;
 			heightLevel /= 2.0f;
@@ -272,9 +301,9 @@ public:
 			T* dataCostStereoCheckerboard2 =
 					&dataCostDeviceCheckerboard2[prev_level_offset_level];
 			T* dataCostDeviceToWriteToCheckerboard1 =
-					&dataCostDeviceCheckerboard1[offsetLevel];
+					&dataCostDeviceCheckerboard1[currentOffsetLevel];
 			T* dataCostDeviceToWriteToCheckerboard2 =
-					&dataCostDeviceCheckerboard2[offsetLevel];
+					&dataCostDeviceCheckerboard2[currentOffsetLevel];
 
 			//printf("INIT DATA COSTS CURRENT LEVEL\n");
 			initializeDataCurrentLevel(dataCostStereoCheckerboard1,
@@ -286,6 +315,8 @@ public:
 					prevHeightLevelActualIntegerSize);
 			//printf("DONE INIT DATA COSTS CURRENT LEVEL\n");
 		}
+
+		currentOffsetLevel = offsetAtLevel[algSettings.numLevels - 1];
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -332,28 +363,27 @@ public:
 #endif
 
 		dataCostDeviceCurrentLevelCheckerboard1 =
-				&dataCostDeviceCheckerboard1[offsetLevel];
+				&dataCostDeviceCheckerboard1[currentOffsetLevel];
 		dataCostDeviceCurrentLevelCheckerboard2 =
-				&dataCostDeviceCheckerboard2[offsetLevel];
+				&dataCostDeviceCheckerboard2[currentOffsetLevel];
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-		messageUDeviceSet0Checkerboard1 = &messageUDeviceCheckerboard1[offsetLevel];
-		messageDDeviceSet0Checkerboard1 = &messageDDeviceCheckerboard1[offsetLevel];
-		messageLDeviceSet0Checkerboard1 = &messageLDeviceCheckerboard1[offsetLevel];
-		messageRDeviceSet0Checkerboard1 = &messageRDeviceCheckerboard1[offsetLevel];
+		messageUDeviceSet0Checkerboard1 = &messageUDeviceCheckerboard1[currentOffsetLevel];
+		messageDDeviceSet0Checkerboard1 = &messageDDeviceCheckerboard1[currentOffsetLevel];
+		messageLDeviceSet0Checkerboard1 = &messageLDeviceCheckerboard1[currentOffsetLevel];
+		messageRDeviceSet0Checkerboard1 = &messageRDeviceCheckerboard1[currentOffsetLevel];
 
-		messageUDeviceSet0Checkerboard2 = &messageUDeviceCheckerboard2[offsetLevel];
-		messageDDeviceSet0Checkerboard2 = &messageDDeviceCheckerboard2[offsetLevel];
-		messageLDeviceSet0Checkerboard2 = &messageLDeviceCheckerboard2[offsetLevel];
-		messageRDeviceSet0Checkerboard2 = &messageRDeviceCheckerboard2[offsetLevel];
+		messageUDeviceSet0Checkerboard2 = &messageUDeviceCheckerboard2[currentOffsetLevel];
+		messageDDeviceSet0Checkerboard2 = &messageDDeviceCheckerboard2[currentOffsetLevel];
+		messageLDeviceSet0Checkerboard2 = &messageLDeviceCheckerboard2[currentOffsetLevel];
+		messageRDeviceSet0Checkerboard2 = &messageRDeviceCheckerboard2[currentOffsetLevel];
 
 #else
 
 		//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
 		int numDataAndMessageSetInCheckerboardAtLevel =
-				(getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize))
-						* heightLevelActualIntegerSize * totalPossibleMovements;
+				getNumDataForAlignedMemoryAtLevel(widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
 
 		//allocate the space for the message values in the first checkboard set at the current level
 		allocateMemoryOnTargetDevice((void**) &messageUDeviceSet0Checkerboard1,
@@ -487,13 +517,15 @@ public:
 				int widthCheckerboardNextLevel = getCheckerboardWidthTargetDevice(
 						widthLevelActualIntegerSize);
 
-				offsetLevel -= widthCheckerboardNextLevel * heightLevelActualIntegerSize
-						* totalPossibleMovements;
+				//offsetLevel -= widthCheckerboardNextLevel * heightLevelActualIntegerSize
+				//		* totalPossibleMovements;
+				//retrieve offset into allocated memory at next level
+				currentOffsetLevel = offsetAtLevel[levelNum - 1];
 
 				dataCostDeviceCurrentLevelCheckerboard1 =
-						&dataCostDeviceCheckerboard1[offsetLevel];
+						&dataCostDeviceCheckerboard1[currentOffsetLevel];
 				dataCostDeviceCurrentLevelCheckerboard2 =
-						&dataCostDeviceCheckerboard2[offsetLevel];
+						&dataCostDeviceCheckerboard2[currentOffsetLevel];
 
 				T* messageUDeviceCheckerboard1CopyFrom;
 				T* messageDDeviceCheckerboard1CopyFrom;
@@ -541,25 +573,22 @@ public:
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-				messageUDeviceCheckerboard1CopyTo = &messageUDeviceCheckerboard1[offsetLevel];
-				messageDDeviceCheckerboard1CopyTo = &messageDDeviceCheckerboard1[offsetLevel];
-				messageLDeviceCheckerboard1CopyTo = &messageLDeviceCheckerboard1[offsetLevel];
-				messageRDeviceCheckerboard1CopyTo = &messageRDeviceCheckerboard1[offsetLevel];
+				messageUDeviceCheckerboard1CopyTo = &messageUDeviceCheckerboard1[currentOffsetLevel];
+				messageDDeviceCheckerboard1CopyTo = &messageDDeviceCheckerboard1[currentOffsetLevel];
+				messageLDeviceCheckerboard1CopyTo = &messageLDeviceCheckerboard1[currentOffsetLevel];
+				messageRDeviceCheckerboard1CopyTo = &messageRDeviceCheckerboard1[currentOffsetLevel];
 
-				messageUDeviceCheckerboard2CopyTo = &messageUDeviceCheckerboard2[offsetLevel];
-				messageDDeviceCheckerboard2CopyTo = &messageDDeviceCheckerboard2[offsetLevel];
-				messageLDeviceCheckerboard2CopyTo = &messageLDeviceCheckerboard2[offsetLevel];
-				messageRDeviceCheckerboard2CopyTo = &messageRDeviceCheckerboard2[offsetLevel];
+				messageUDeviceCheckerboard2CopyTo = &messageUDeviceCheckerboard2[currentOffsetLevel];
+				messageDDeviceCheckerboard2CopyTo = &messageDDeviceCheckerboard2[currentOffsetLevel];
+				messageLDeviceCheckerboard2CopyTo = &messageLDeviceCheckerboard2[currentOffsetLevel];
+				messageRDeviceCheckerboard2CopyTo = &messageRDeviceCheckerboard2[currentOffsetLevel];
 
 #else
 
 				int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
 
 				//update the number of bytes needed to store each set
-				int numDataAndMessageSetInCheckerboardAtLevel =
-						widthCheckerboardNextLevel
-								* heightLevelActualIntegerSize
-								* totalPossibleMovements;
+				int numDataAndMessageSetInCheckerboardAtLevel = getNumDataForAlignedMemoryAtLevel(widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
 
 				//allocate space in the GPU for the message values in the checkerboard set to copy to
 				allocateMemoryOnTargetDevice((void**) &messageUDeviceCheckerboard1CopyTo, numDataAndMessageSetInCheckerboardAtLevel*sizeof(T));
@@ -744,6 +773,7 @@ public:
 		freeMemoryOnTargetDevice((void*) dataCostDeviceCheckerboard2);
 
 #else
+		delete offsetAtLevel;
 
 		//now free the allocated data space
 		freeMemoryOnTargetDevice(dataCostDeviceCheckerboard1);
