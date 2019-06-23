@@ -61,7 +61,7 @@ if __name__ == "__main__":
 	optimizedMemory = [0, 1]
 	beliefPropDataTypeProcessing = ["0", "2"]
 	indexOptimizationSettings = ["1"]
-	cpuOptimizationSettings = ["0", "1"]
+	cpuOptimizationSettings = ["0", "2"]
 	numOpenMPThreads = ["12", "24", "36", "48"]
 	for imageSet in imageSets:
 		for currNumBpLevelsAndIters in numBpLevelsAndIters:
