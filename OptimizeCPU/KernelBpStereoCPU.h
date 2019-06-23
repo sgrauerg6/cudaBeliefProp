@@ -235,6 +235,16 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 	return (((xValDataStart % numDataInAVXVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
 }
 
+#ifdef COMPILING_FOR_ARM
+
+#include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
+
+#endif
+
+#ifndef COMPILING_FOR_ARM
+
+//needed so that template specializations are used when available
+#include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
@@ -250,11 +260,7 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 
 #endif
 
-#ifndef COMPILING_FOR_ARM
-
-//needed so that template specializations are used when available
-#include "KernelBpStereoCPU_TemplateSpFuncts.h"
-
 #endif
+
 
 #endif //KERNAL_BP_STEREO_CPU_H
