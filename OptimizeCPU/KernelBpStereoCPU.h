@@ -24,9 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpStereoParameters.h"
 #include <math.h>
 #include <omp.h>
-//#include <x86intrin.h>
-
-//#define COMPILING_FOR_ARM
 
 //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 #if OPTIMIZED_INDEXING_SETTING == 1
@@ -239,9 +236,7 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 
 #include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
 
-#endif
-
-#ifndef COMPILING_FOR_ARM
+#else
 
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
@@ -257,8 +252,6 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 #elif CPU_OPTIMIZATION_SETTING == USE_NEON
 
 #include "KernelBpStereoCPU_NEON.h"
-
-#endif
 
 #endif
 

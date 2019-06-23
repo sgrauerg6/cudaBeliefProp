@@ -257,6 +257,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CPU_OPTIMIZATION_SETTING USE_DEFAULT
 #endif //(IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
+//#define COMPILING_FOR_ARM
+
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 typedef float beliefPropProcessingDataType;
@@ -265,7 +267,11 @@ typedef float beliefPropProcessingDataType;
 typedef double beliefPropProcessingDataType;
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+#ifdef COMPILING_FOR_ARM
+typedef float16_t beliefPropProcessingDataType;
+#else
 typedef short beliefPropProcessingDataType;
+#endif
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 typedef short beliefPropProcessingDataType;

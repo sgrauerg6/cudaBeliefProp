@@ -157,4 +157,83 @@ public:
 
 	}
 };
+
+//float16_t data type used for arm (rather than float)
+#ifdef COMPILING_FOR_ARM
+
+template<>
+class RunBpStereoSetOnGPUWithCUDA<float16_t> : public RunBpStereoSet<float16_t>
+{
+public:
+
+	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
+	{
+		//printf("ALLOC_GPU\n");
+		//allocate the space for the disparity map estimation
+		cudaMalloc((void **) arrayToAllocate, numBytes);
+	}
+
+	void freeDataOnCompDevice(void** arrayToFree)
+	{
+		//printf("FREE_GPU\n");
+		cudaFree(*arrayToFree);
+	}
+
+	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
+	{
+		//printf("TRANSFER_GPU\n");
+		cudaMemcpy(destArray,
+					inArray,
+					numBytesTransfer,
+					cudaMemcpyDeviceToHost);
+	}
+
+	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
+	{
+		printf("TRANSFER_GPU\n");
+		cudaMemcpy(destArray,
+					inArray,
+					numBytesTransfer,
+					cudaMemcpyHostToDevice);
+	}
+
+	//if type is specified as short, process as half on GPU
+	//note that half is considered a data type for 16-bit floats in CUDA
+	float operator()(const char* refImagePath, const char* testImagePath,
+			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
+	{
+
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+
+		//printf("Processing as half on GPU\n");
+		RunBpStereoSetOnGPUWithCUDA<half> runCUDABpStereoSet;
+		ProcessCUDABP<half> runCUDABPHalfPrecision;
+		return runCUDABpStereoSet(refImagePath,
+				testImagePath,
+				algSettings,
+				saveDisparityMapImagePath,
+				resultsFile,
+				smoothImage,
+				&runCUDABPHalfPrecision,
+				runBPMemoryMangement);
+
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+
+		//printf("Processing as half2 on GPU\n");
+		RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
+		ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
+		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
+
+#else
+
+		printf("ERROR IN DATA TYPE\n");
+		return 0.0;
+
+#endif
+
+	}
+};
+
+#endif
+
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
