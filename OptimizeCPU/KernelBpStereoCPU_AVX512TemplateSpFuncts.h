@@ -8,6 +8,8 @@
 #ifndef KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_
 
+#include <x86intrin.h>
+
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
 void KernelBpStereoCPU::dtStereoCPU<__m512>(__m512 f[NUM_POSSIBLE_DISPARITY_VALUES])

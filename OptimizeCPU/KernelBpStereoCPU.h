@@ -24,7 +24,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpStereoParameters.h"
 #include <math.h>
 #include <omp.h>
-#include <x86intrin.h>
+//#include <x86intrin.h>
+
+//#define COMPILING_FOR_ARM
 
 //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 #if OPTIMIZED_INDEXING_SETTING == 1
@@ -204,7 +206,23 @@ public:
 	{
 		printf("Data type not currently supported for AVX-512 acceleration in application\n");
 	}
+
+#elif CPU_OPTIMIZATION_SETTING == USE_NEON
+
+	template<typename T>
+	void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNEON(int checkerboardToUpdate, levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp);
+
 #endif
+
 
 };
 
@@ -217,6 +235,7 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 	return (((xValDataStart % numDataInAVXVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
 }
 
+
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
@@ -225,9 +244,17 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 
+#elif CPU_OPTIMIZATION_SETTING == USE_NEON
+
+#include "KernelBpStereoCPU_NEON.h"
+
 #endif
+
+#ifndef COMPILING_FOR_ARM
 
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
+
+#endif
 
 #endif //KERNAL_BP_STEREO_CPU_H

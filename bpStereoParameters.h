@@ -237,6 +237,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define USE_DEFAULT 0
 #define USE_AVX_256 1
 #define USE_AVX_512 2
+#define USE_NEON 3
 
 //If image set parameters from python, then use optimization settings set in current iteration in python script
 //These settings are written to file bpParametersFromPython.h as part of the python script

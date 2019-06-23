@@ -65,7 +65,7 @@ void KernelBpStereoCPU::msgStereoCPU(T messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU(dst);
+	dtStereoCPU<T>(dst);
 
 	// truncate 
 	minimum += disc_k_bp;
@@ -315,16 +315,16 @@ template<typename T>
 void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPU(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
 								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
 {
-	msgStereoCPU(prevUMessage, prevLMessage, prevRMessage, dataMessage,
+	msgStereoCPU<T>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
 			currentUMessage, disc_k_bp);
 
-	msgStereoCPU(prevDMessage, prevLMessage, prevRMessage, dataMessage,
+	msgStereoCPU<T>(prevDMessage, prevLMessage, prevRMessage, dataMessage,
 			currentDMessage, disc_k_bp);
 
-	msgStereoCPU(prevUMessage, prevDMessage, prevRMessage, dataMessage,
+	msgStereoCPU<T>(prevUMessage, prevDMessage, prevRMessage, dataMessage,
 			currentRMessage, disc_k_bp);
 
-	msgStereoCPU(prevUMessage, prevDMessage, prevLMessage, dataMessage,
+	msgStereoCPU<T>(prevUMessage, prevDMessage, prevLMessage, dataMessage,
 			currentLMessage, disc_k_bp);
 }
 

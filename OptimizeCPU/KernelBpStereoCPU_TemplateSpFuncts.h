@@ -3,6 +3,10 @@
 #ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 
+#ifndef COMPILING_FOR_ARM
+
+#include <x86intrin.h>
+
 template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU<short>(int xVal, int yVal, int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
@@ -92,6 +96,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 		}
 	}
 }
+
 
 
 template<> inline
@@ -304,7 +309,6 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<short>(levelProp
 	}
 }
 
-
 template<> inline
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<short>(levelProperties& currentLevelProperties, short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
@@ -389,5 +393,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<sh
 		}
 	}
 }
+
+#endif
 
 #endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
