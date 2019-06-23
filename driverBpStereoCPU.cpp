@@ -117,5 +117,7 @@ int main(int argc, char** argv)
 	fprintf(resultsFile, "LAMBDA_BP: %f\n", LAMBDA_BP);
 	fprintf(resultsFile, "SIGMA_BP: %f\n", SIGMA_BP);
 	fprintf(resultsFile, "CPU_OPTIMIZATION_LEVEL: %d\n", CPU_OPTIMIZATION_SETTING);
+	fprintf(resultsFile, "BYTES_ALIGN_MEMORY: %d\n", BYTES_ALIGN_MEMORY);
+	fprintf(resultsFile, "NUM_DATA_ALIGN_WIDTH: %d\n", NUM_DATA_ALIGN_WIDTH);
 	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);
 }

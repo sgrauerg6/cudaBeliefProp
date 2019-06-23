@@ -286,8 +286,13 @@ typedef short beliefPropProcessingDataType;
 
 #define NO_EXPECTED_STEREO_BP -999.0f
 
+#if (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
+#define BYTES_ALIGN_MEMORY BYTES_ALIGN_MEMORY_FROM_PYTHON
+#define NUM_DATA_ALIGN_WIDTH NUM_DATA_ALIGN_WIDTH_FROM_PYTHON
+#else
 #define BYTES_ALIGN_MEMORY 64
 #define NUM_DATA_ALIGN_WIDTH 16
+#endif
 
 //structure to store the settings for the number of levels and iterations
 typedef struct

@@ -211,9 +211,10 @@ public:
 #define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
 
 //inline function to check if data is aligned at xValDataStart for avx loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector, int paddedCheckerboardWidth)
+inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 {
-	return (((xValDataStart % numDataInAVXVector) == 0) && ((paddedCheckerboardWidth % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+	//assuming that the padded checkerboard width divides evenly by NUM_DATA_ALIGN_WIDTH_FROM_PYTHON (if that's not the case it's a bug)
+	return (((xValDataStart % numDataInAVXVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
 }
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256

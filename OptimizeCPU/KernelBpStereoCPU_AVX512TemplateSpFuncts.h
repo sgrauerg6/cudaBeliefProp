@@ -280,8 +280,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 
 			//check if the memory is aligned for AVX instructions at xValProcess location
 			bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(
-					xValProcess, numDataInAvxVector,
-					currentLevelProperties.paddedWidthCheckerboardLevel);
+					xValProcess, numDataInAvxVector);
 
 			//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
 			//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
@@ -639,8 +638,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 
 			//check if the memory is aligned for AVX instructions at xValProcess location
 			bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(
-					xValProcess, numDataInAvxVector,
-					currentLevelProperties.paddedWidthCheckerboardLevel);
+					xValProcess, numDataInAvxVector);
 
 			//may want to look into (xVal < (widthLevelCheckerboardPart - 1) since it may affect the edges
 			//make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
