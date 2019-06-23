@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include <chrono>
 #include "ProcessBPOnTargetDevice.h"
+#include <stdlib.h>
 
 template<typename T>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T>
@@ -37,7 +38,9 @@ public:
 		void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
 		{
 			//printf("RUN ALLOC: %lu\n", numBytesAllocate);
-			*arrayToAllocate = malloc(numBytesAllocate);
+			//*arrayToAllocate = malloc(numBytesAllocate);
+			//necessary to align for aligned avx load instructions to work as expected
+			*arrayToAllocate = aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
 		}
 
 		void freeMemoryOnTargetDevice(void* arrayToFree)

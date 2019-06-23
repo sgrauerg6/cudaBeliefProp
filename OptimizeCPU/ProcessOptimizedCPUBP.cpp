@@ -150,6 +150,7 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 			checkboardPartUpdate = CHECKERBOARD_PART_1;
 		}
 
+		printf("Start iteration\n");
 
 		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
@@ -158,6 +159,8 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 						algSettings.disc_k_bp);
+
+		printf("Done iteration\n");
 	}
 }
 
