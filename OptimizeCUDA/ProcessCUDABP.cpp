@@ -270,6 +270,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 				algSettings.disc_k_bp);
 
 		(cudaDeviceSynchronize());
+		gpuErrchk( cudaPeekAtLastError() );
 
 #ifdef RUN_DETAILED_TIMING
 
@@ -282,8 +283,6 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 #endif
 
 	}
-
-	gpuErrchk( cudaPeekAtLastError() );
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation

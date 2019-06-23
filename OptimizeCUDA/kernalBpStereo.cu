@@ -811,7 +811,7 @@ __global__ void initializeBottomLevelDataStereo<half2>(levelProperties currentLe
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-__global__ void initializeCurrentLevelDataStereoNoTextures(int checkerboardPart, levelProperties currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
+__global__ void initializeCurrentLevelDataStereoNoTextures(int checkerboardPart, levelProperties currentLevelProperties, levelProperties prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -946,7 +946,7 @@ __device__ void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DI
 //this function uses linear memory bound to textures to access the current data and message values
 template<typename T>
 __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMem(int xVal, int yVal,
-		int checkerboardToUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+		int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
@@ -959,7 +959,6 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 {
 	int indexWriteTo;
 	int checkerboardAdjustment;
-
 	//checkerboardAdjustment used for indexing into current checkerboard to update
 	if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 	{
@@ -1040,7 +1039,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
 __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMem<half2>(int xVal, int yVal,
-		int checkerboardToUpdate, levelProperties currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2,
+		int checkerboardToUpdate, levelProperties& currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2,
 		half2* messageUDeviceCurrentCheckerboard1,
 		half2* messageDDeviceCurrentCheckerboard1,
 		half2* messageLDeviceCurrentCheckerboard1,
@@ -1256,7 +1255,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-__global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(int checkerboardPartUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(int checkerboardPartUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 								T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
