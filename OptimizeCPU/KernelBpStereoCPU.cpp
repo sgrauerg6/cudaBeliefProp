@@ -126,9 +126,9 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(levelProperties& curr
 
 						if (withinImageBoundsCPU(xVal, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
 						{
-							currentPixelImage1 = image1PixelsDevice[yVal * currentLevelProperties.widthCheckerboardLevel
+							currentPixelImage1 = image1PixelsDevice[yVal * currentLevelProperties.widthLevel
 									+ xVal];
-							currentPixelImage2 = image2PixelsDevice[yVal * currentLevelProperties.widthCheckerboardLevel
+							currentPixelImage2 = image2PixelsDevice[yVal * currentLevelProperties.widthLevel
 									+ (xVal - currentDisparity)];
 						}
 
