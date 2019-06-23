@@ -45,30 +45,12 @@ public:
 		return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
 	}
 
-	static int getPaddedCheckerboardWidth(int checkerboardWidth)
-	{
-		if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
-		{
-			return checkerboardWidth;
-		}
-		else
-		{
-			unsigned long paddedCheckerboardWidth = checkerboardWidth
-					+ ((NUM_DATA_ALIGN_WIDTH
-							- checkerboardWidth % NUM_DATA_ALIGN_WIDTH));
-			return paddedCheckerboardWidth;
-		}
-	}
-
 	//retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
 	static int retrieveIndexInDataAndMessageCPU(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
 	{
 		//assuming that width includes padding
 		return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
 	}
-
-	template<typename T>
-	static int getCheckerboardWidthCPU(int imageWidth);
 
 	template<typename T>
 	static T getZeroValCPU();
@@ -168,7 +150,7 @@ public:
 	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice);
 
 	template<typename T>
-	static void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+	static void printDataAndMessageValsAtPointKernelCPU(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1,
@@ -176,11 +158,10 @@ public:
 			T* messageUDeviceCurrentCheckerboard2,
 			T* messageDDeviceCurrentCheckerboard2,
 			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
-			int heightLevel);
+			T* messageRDeviceCurrentCheckerboard2);
 
 	template<typename T>
-	static void printDataAndMessageValsToPointKernelCPU(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+	static void printDataAndMessageValsToPointKernelCPU(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1,
@@ -188,8 +169,7 @@ public:
 			T* messageUDeviceCurrentCheckerboard2,
 			T* messageDDeviceCurrentCheckerboard2,
 			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
-			int heightLevel);
+			T* messageRDeviceCurrentCheckerboard2);
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 

@@ -35,25 +35,6 @@ __device__ int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int 
 }
 
 template<typename T>
-__device__ __host__ int getCheckerboardWidth(int imageWidth)
-{
-	return (int)ceil(((float)imageWidth) / 2.0);
-}
-
-//checkerboard width is half size when using half2 data type
-template <>
-__device__ __host__ int getCheckerboardWidth<half2>(int imageWidth)
-{
-	return (int)ceil(((ceil(((float)imageWidth) / 2.0)) / 2.0));
-}
-
-template <>
-__device__ __host__ int getCheckerboardWidth<half>(int imageWidth)
-{
-	return (getCheckerboardWidth<half2>(imageWidth)) * 2;
-}
-
-template<typename T>
 __device__ T getZeroVal()
 {
 	return (T)0.0;

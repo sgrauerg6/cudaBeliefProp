@@ -34,8 +34,6 @@ template<typename T>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T>
 {
 public:
-		int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize);
-
 		void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
 		{
 			//printf("RUN ALLOC: %lu\n", numBytesAllocate);
@@ -46,8 +44,6 @@ public:
 		{
 			free(arrayToFree);
 		}
-
-		int getPaddedCheckerboardWidth(int checkerboardWidth);
 
 		void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
 						float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
@@ -127,7 +123,7 @@ public:
 				T* messageRDeviceSet1Checkerboard2,
 				float* resultingDisparityMapCompDevice);
 
-		void printDataAndMessageValsToPoint(int xVal, int yVal,
+		void printDataAndMessageValsToPoint(int xVal, int yVal, levelProperties& levelPropertes,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
 				T* messageUDeviceSet0Checkerboard1,
@@ -145,10 +141,9 @@ public:
 				T* messageUDeviceSet1Checkerboard2,
 				T* messageDDeviceSet1Checkerboard2,
 				T* messageLDeviceSet1Checkerboard2,
-				T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
-				int heightLevel, int currentCheckerboardSet);
+				T* messageRDeviceSet1Checkerboard2, int currentCheckerboardSet);
 
-		void printDataAndMessageValsAtPoint(int xVal, int yVal,
+		void printDataAndMessageValsAtPoint(int xVal, int yVal, levelProperties& levelPropertes,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
 				T* messageUDeviceSet0Checkerboard1,
@@ -166,8 +161,7 @@ public:
 				T* messageUDeviceSet1Checkerboard2,
 				T* messageDDeviceSet1Checkerboard2,
 				T* messageLDeviceSet1Checkerboard2,
-				T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
-				int heightLevel, int currentCheckerboardSet);
+				T* messageRDeviceSet1Checkerboard2, int currentCheckerboardSet);
 };
 
 //if not using AVX-256 or AVX-512, process using float if short data type used

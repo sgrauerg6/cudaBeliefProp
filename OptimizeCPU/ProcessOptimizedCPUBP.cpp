@@ -21,34 +21,30 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessOptimizedCPUBP.h"
 #include "KernelBpStereoCPU.cpp"
 
-template<typename T>
-int ProcessOptimizedCPUBP<T>::getCheckerboardWidthTargetDevice(
-		int widthLevelActualIntegerSize)
-{
-	return KernelBpStereoCPU::getCheckerboardWidthCPU<T>(
-			widthLevelActualIntegerSize); // (int)ceil(((float)widthLevelActualIntegerSize) / 2.0);
-}
 
 template<typename T>
-int ProcessOptimizedCPUBP<T>::getPaddedCheckerboardWidth(int checkerboardWidth)
-{
-	return KernelBpStereoCPU::getPaddedCheckerboardWidth(checkerboardWidth);
-}
-
-template<typename T>
-void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
-		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
-		T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1,
-		T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2,
-		T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-		int widthCheckerboard, int heightLevel, int currentCheckerboardSet)
+void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, levelProperties& levelPropertes,
+		T* dataCostDeviceCurrentLevelCheckerboard1,
+		T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1,
+		T* messageDDeviceSet0Checkerboard1,
+		T* messageLDeviceSet0Checkerboard1,
+		T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2,
+		T* messageDDeviceSet0Checkerboard2,
+		T* messageLDeviceSet0Checkerboard2,
+		T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1,
+		T* messageDDeviceSet1Checkerboard1,
+		T* messageLDeviceSet1Checkerboard1,
+		T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2,
+		T* messageDDeviceSet1Checkerboard2,
+		T* messageLDeviceSet1Checkerboard2,
+		T* messageRDeviceSet1Checkerboard2, int currentCheckerboardSet)
 {
 	if (currentCheckerboardSet == 0) {
-		KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU<T>(xVal, yVal,
+		KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU<T>(xVal, yVal, levelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet0Checkerboard1,
@@ -58,10 +54,9 @@ void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal
 				messageUDeviceSet0Checkerboard2,
 				messageDDeviceSet0Checkerboard2,
 				messageLDeviceSet0Checkerboard2,
-				messageRDeviceSet0Checkerboard2, widthCheckerboard,
-				heightLevel);
+				messageRDeviceSet0Checkerboard2);
 	} else {
-		KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU<T>(xVal, yVal,
+		KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU<T>(xVal, yVal, levelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet1Checkerboard1,
@@ -71,26 +66,34 @@ void ProcessOptimizedCPUBP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal
 				messageUDeviceSet1Checkerboard2,
 				messageDDeviceSet1Checkerboard2,
 				messageLDeviceSet1Checkerboard2,
-				messageRDeviceSet1Checkerboard2, widthCheckerboard,
-				heightLevel);
+				messageRDeviceSet1Checkerboard2);
 	}
 }
 
 
 template<typename T>
-void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
-		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
-		T* messageLDeviceSet0Checkerboard1, T* messageRDeviceSet0Checkerboard1,
-		T* messageUDeviceSet0Checkerboard2, T* messageDDeviceSet0Checkerboard2,
-		T* messageLDeviceSet0Checkerboard2, T* messageRDeviceSet0Checkerboard2,
-		T* messageUDeviceSet1Checkerboard1, T* messageDDeviceSet1Checkerboard1,
-		T* messageLDeviceSet1Checkerboard1, T* messageRDeviceSet1Checkerboard1,
-		T* messageUDeviceSet1Checkerboard2, T* messageDDeviceSet1Checkerboard2,
-		T* messageLDeviceSet1Checkerboard2, T* messageRDeviceSet1Checkerboard2,
-		int widthCheckerboard, int heightLevel, int currentCheckerboardSet)
+void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal, levelProperties& levelPropertes,
+		T* dataCostDeviceCurrentLevelCheckerboard1,
+		T* dataCostDeviceCurrentLevelCheckerboard2,
+		T* messageUDeviceSet0Checkerboard1,
+		T* messageDDeviceSet0Checkerboard1,
+		T* messageLDeviceSet0Checkerboard1,
+		T* messageRDeviceSet0Checkerboard1,
+		T* messageUDeviceSet0Checkerboard2,
+		T* messageDDeviceSet0Checkerboard2,
+		T* messageLDeviceSet0Checkerboard2,
+		T* messageRDeviceSet0Checkerboard2,
+		T* messageUDeviceSet1Checkerboard1,
+		T* messageDDeviceSet1Checkerboard1,
+		T* messageLDeviceSet1Checkerboard1,
+		T* messageRDeviceSet1Checkerboard1,
+		T* messageUDeviceSet1Checkerboard2,
+		T* messageDDeviceSet1Checkerboard2,
+		T* messageLDeviceSet1Checkerboard2,
+		T* messageRDeviceSet1Checkerboard2, int currentCheckerboardSet)
 {
 	if (currentCheckerboardSet == 0) {
-		KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU<T>(xVal, yVal,
+		KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU<T>(xVal, yVal, levelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet0Checkerboard1,
@@ -100,10 +103,9 @@ void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal
 				messageUDeviceSet0Checkerboard2,
 				messageDDeviceSet0Checkerboard2,
 				messageLDeviceSet0Checkerboard2,
-				messageRDeviceSet0Checkerboard2, widthCheckerboard,
-				heightLevel);
+				messageRDeviceSet0Checkerboard2);
 	} else {
-		KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU<T>(xVal, yVal,
+		KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU<T>(xVal, yVal, levelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceSet1Checkerboard1,
@@ -113,8 +115,7 @@ void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal
 				messageUDeviceSet1Checkerboard2,
 				messageDDeviceSet1Checkerboard2,
 				messageLDeviceSet1Checkerboard2,
-				messageRDeviceSet1Checkerboard2, widthCheckerboard,
-				heightLevel);
+				messageRDeviceSet1Checkerboard2);
 	}
 }
 

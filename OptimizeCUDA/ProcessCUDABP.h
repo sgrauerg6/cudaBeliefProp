@@ -36,25 +36,6 @@ class ProcessCUDABP : public ProcessBPOnTargetDevice<T>
 {
 public:
 
-	int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
-		return (int) ceil(((float) widthLevelActualIntegerSize) / 2.0);
-	}
-
-	int getPaddedCheckerboardWidth(int checkerboardWidth)
-	{
-		//for now not padding on GPU
-		return checkerboardWidth;
-		/*if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
-		{
-			return checkerboardWidth;
-		}
-		else
-		{
-			unsigned int paddedCheckerboardWidth = checkerboardWidth + ((NUM_DATA_ALIGN_WIDTH - checkerboardWidth % NUM_DATA_ALIGN_WIDTH));
-			return paddedCheckerboardWidth;
-		}*/
-	}
-
 	void allocateMemoryOnTargetDevice(void** arrayToAllocate,
 			unsigned long numBytesAllocate) {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
@@ -191,5 +172,6 @@ public:
 			T* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
 			int heightLevel, int currentCheckerboardSet);
 };
+
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

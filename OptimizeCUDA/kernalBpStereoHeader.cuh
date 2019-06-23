@@ -40,9 +40,6 @@ __device__ bool withinImageBounds(int xVal, int yVal, int width, int height);
 __device__ int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0);
 
 template<typename T>
-__device__ __host__ int getCheckerboardWidth(int imageWidth);
-
-template<typename T>
 __device__ T getZeroVal();
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")

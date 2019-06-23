@@ -22,7 +22,10 @@ public:
 	ProcessBPOnTargetDevice() { }
 	virtual ~ProcessBPOnTargetDevice() { }
 
-		virtual int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) = 0;
+		virtual int getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize)
+		{
+			return (int)ceil(((float)widthLevelActualIntegerSize) / 2.0);
+		}
 
 		virtual void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate) = 0;
 
@@ -106,14 +109,23 @@ public:
 				T* messageRDeviceSet1Checkerboard2,
 				float* resultingDisparityMapCompDevice) = 0;
 
-		virtual int getPaddedCheckerboardWidth(int checkerboardWidth) = 0;
+		virtual int getPaddedCheckerboardWidth(int checkerboardWidth)
+		{
+			if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
+			{
+				return checkerboardWidth;
+			}
+			else
+			{
+				unsigned int paddedCheckerboardWidth = checkerboardWidth + ((NUM_DATA_ALIGN_WIDTH - checkerboardWidth % NUM_DATA_ALIGN_WIDTH));
+				return paddedCheckerboardWidth;
+			}
+		}
 
 		unsigned long getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements)
 		{
 			unsigned long numDataAtLevel = ((unsigned long)getPaddedCheckerboardWidth((int)getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize)))
 								* ((unsigned long)heightLevelActualIntegerSize) * (unsigned long)totalPossibleMovements;
-			//printf("numDataAtLevel: %lu\n", numDataAtLevel);
-
 			unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
 
 			if ((numBytesAtLevel % BYTES_ALIGN_MEMORY) == 0)
@@ -122,12 +134,8 @@ public:
 			}
 			else
 			{
-				printf("%u %u %u\n", getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(
-					widthLevelActualIntegerSize)), heightLevelActualIntegerSize, totalPossibleMovements);
-				printf("numBytesAtLevel: %lu\n", numBytesAtLevel);
-				numBytesAtLevel += ((BYTES_ALIGN_MEMORY - numBytesAtLevel % BYTES_ALIGN_MEMORY));
+				numBytesAtLevel += (BYTES_ALIGN_MEMORY - numBytesAtLevel % BYTES_ALIGN_MEMORY);
 				unsigned long paddedNumDataAtLevel = numBytesAtLevel / sizeof(T);
-				printf("paddedNumDataAtLevel: %lu\n", paddedNumDataAtLevel);
 				return paddedNumDataAtLevel;
 			}
 		}

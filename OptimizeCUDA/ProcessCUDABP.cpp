@@ -36,6 +36,7 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=t
    }
 }
 
+/* May be needed if using half2
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 
 template<>
@@ -45,10 +46,13 @@ int ProcessCUDABP<half2>::getCheckerboardWidthTargetDevice(int widthLevelActualI
 
 template<>
 int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
-		return (getCheckerboardWidth<half2>(widthLevelActualIntegerSize)) * 2;
+	ProcessCUDABP<half2> processCUDABPHalf;
+	return processCUDABPHalf.getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize) * 2;
 }
 
 #endif
+*/
+
 
 template<typename T>
 void ProcessCUDABP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
@@ -614,7 +618,7 @@ template class ProcessCUDABP<double>;
 #elif ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 
 template class ProcessCUDABP<float>;
-template class ProcessCUDABP<half>;
 template class ProcessCUDABP<half2>;
+template class ProcessCUDABP<half>;
 
 #endif
