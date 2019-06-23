@@ -3,8 +3,6 @@
 #ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 
-#ifndef COMPILING_FOR_ARM
-
 #include <x86intrin.h>
 
 template<> inline
