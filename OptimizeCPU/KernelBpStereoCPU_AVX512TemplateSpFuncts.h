@@ -602,7 +602,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		short* messageLDeviceCurrentCheckerboard2,
 		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	int numDataInAvxVector = 8;
+	int numDataInAvxVector = 16;
 	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
 	__m256i disc_k_bp_vector = _mm512_cvtps_ph(_mm512_set1_ps(disc_k_bp), 0);
 
