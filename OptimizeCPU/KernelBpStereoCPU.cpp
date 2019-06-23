@@ -472,17 +472,39 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+	if (currentLevelProperties.widthCheckerboardLevel > 10)
+	{
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, disc_k_bp);
+	}
+	else
+	{
+		printf("1Checkerboard width %d, not using AVX\n", currentLevelProperties.widthCheckerboardLevel);
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+							messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+							messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+							messageRDeviceCurrentCheckerboard2, disc_k_bp);
+	}
 
 #elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+	if (currentLevelProperties.widthCheckerboardLevel > 20)
+	{
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, disc_k_bp);
+	}
+	else
+	{
+		printf("2Checkerboard width %d, not using AVX\n", currentLevelProperties.widthCheckerboardLevel);
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+					messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
+					messageRDeviceCurrentCheckerboard2, disc_k_bp);
+	}
 
 #else
 
