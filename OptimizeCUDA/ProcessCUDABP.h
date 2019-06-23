@@ -65,8 +65,8 @@ public:
 	}
 
 	//initialize the data cost at each pixel for each disparity value
-	void initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
-			float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
+	void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties,
+			float* image1PixelsCompDevice, float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 			T* dataCostDeviceCheckerboard2);
 
 	void initializeDataCurrentLevel(levelProperties& currentLevelPropertes,

@@ -99,16 +99,13 @@ void KernelBpStereoCPU::msgStereoCPU(T messageValsNeighbor1[NUM_POSSIBLE_DISPARI
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T>
-void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
+void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
-	int imageCheckerboardWidth = getCheckerboardWidthCPU<T>(widthImages);
-	int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(imageCheckerboardWidth);
-
 	#pragma omp parallel for
-	for (int val = 0; val < (widthImages*heightImages); val++)
+	for (int val = 0; val < (currentLevelProperties.widthLevel*currentLevelProperties.heightLevel); val++)
 	{
-		int yVal = val / widthImages;
-		int xVal = val % widthImages;
+		int yVal = val / currentLevelProperties.widthLevel;
+		int xVal = val % currentLevelProperties.widthLevel;
 	/*for (int yVal = 0; yVal < heightImages; yVal++)
 	{
 		#pragma omp parallel for
@@ -117,7 +114,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 			int indexVal;
 			int xInCheckerboard = xVal / 2;
 
-			if (withinImageBoundsCPU(xInCheckerboard, yVal, imageCheckerboardWidth, heightImages))
+			if (withinImageBoundsCPU(xInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 			{
 				//make sure that it is possible to check every disparity value
 				if ((xVal - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0)
@@ -127,15 +124,15 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 						float currentPixelImage1 = 0.0f;
 						float currentPixelImage2 = 0.0f;
 
-						if (withinImageBoundsCPU(xVal, yVal, widthImages, heightImages))
+						if (withinImageBoundsCPU(xVal, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
 						{
-							currentPixelImage1 = image1PixelsDevice[yVal * widthImages
+							currentPixelImage1 = image1PixelsDevice[yVal * currentLevelProperties.widthCheckerboardLevel
 									+ xVal];
-							currentPixelImage2 = image2PixelsDevice[yVal * widthImages
+							currentPixelImage2 = image2PixelsDevice[yVal * currentLevelProperties.widthCheckerboardLevel
 									+ (xVal - currentDisparity)];
 						}
 
-						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 						//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 						if (((xVal + yVal) % 2) == 0)
@@ -152,7 +149,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(float* image1PixelsDe
 				{
 					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 					{
-						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 						//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 						if (((xVal + yVal) % 2) == 0)
@@ -357,8 +354,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
 		int offsetData)
 {
-	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthLevelCheckerboardPart);
-
 	int indexWriteTo;
 	int checkerboardAdjustment;
 
@@ -638,9 +633,6 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 template<typename T>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
-	//int widthCheckerboard = getCheckerboardWidthCPU<T>(widthLevel);
-	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboard);
-
 	#pragma omp parallel for
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
 	{

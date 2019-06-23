@@ -28,8 +28,8 @@ public:
 
 		virtual void freeMemoryOnTargetDevice(void* arrayToFree) = 0;
 
-		virtual void initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
-				float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
+		virtual void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties,
+				float* image1PixelsCompDevice, float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 				T* dataCostDeviceCheckerboard2) = 0;
 
 		virtual void initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
@@ -268,7 +268,7 @@ public:
 
 		//printf("INIT DATA COSTS\n");
 		//initialize the data cost at the bottom level
-		initializeDataCosts(algSettings, image1PixelsCompDevice, image2PixelsCompDevice,
+		initializeDataCosts(algSettings, processingLevelProperties[0], image1PixelsCompDevice, image2PixelsCompDevice,
 				dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
 		//printf("DONE INIT DATA COSTS\n");
 

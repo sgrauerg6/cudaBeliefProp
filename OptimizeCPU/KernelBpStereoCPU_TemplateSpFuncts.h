@@ -95,20 +95,17 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 
 
 template<> inline
-void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<short>(float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp)
+void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<short>(levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
-int imageCheckerboardWidth = getCheckerboardWidthCPU<float>(widthImages);
-int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(imageCheckerboardWidth);
-
 	#pragma omp parallel for
-	for (int val = 0; val < (widthImages*heightImages); val++)
+	for (int val = 0; val < (currentLevelProperties.widthLevel*currentLevelProperties.heightLevel); val++)
 	{
-		int yVal = val / widthImages;
-		int xVal = val % widthImages;
-			int indexVal;
-			int xInCheckerboard = xVal / 2;
+		int yVal = val / currentLevelProperties.widthLevel;
+		int xVal = val % currentLevelProperties.widthLevel;
+		int indexVal;
+		int xInCheckerboard = xVal / 2;
 
-			if (withinImageBoundsCPU(xInCheckerboard, yVal, imageCheckerboardWidth, heightImages))
+			if (withinImageBoundsCPU(xInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 			{
 				//make sure that it is possible to check every disparity value
 				if ((xVal - (NUM_POSSIBLE_DISPARITY_VALUES-1)) >= 0)
@@ -118,15 +115,15 @@ int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(imageChecke
 						float currentPixelImage1 = 0.0f;
 						float currentPixelImage2 = 0.0f;
 
-						if (withinImageBoundsCPU(xVal, yVal, widthImages, heightImages))
+						if (withinImageBoundsCPU(xVal, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
 						{
-							currentPixelImage1 = image1PixelsDevice[yVal * widthImages
+							currentPixelImage1 = image1PixelsDevice[yVal * currentLevelProperties.widthLevel
 									+ xVal];
-							currentPixelImage2 = image2PixelsDevice[yVal * widthImages
+							currentPixelImage2 = image2PixelsDevice[yVal * currentLevelProperties.widthLevel
 									+ (xVal - currentDisparity)];
 						}
 
-						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 						//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 						if (((xVal + yVal) % 2) == 0)
@@ -143,7 +140,7 @@ int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(imageChecke
 				{
 					for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 					{
-						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, paddedWidthCheckerboardCurrentLevel, heightImages, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
+						indexVal = retrieveIndexInDataAndMessageCPU(xInCheckerboard, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 
 						//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 						if (((xVal + yVal) % 2) == 0)

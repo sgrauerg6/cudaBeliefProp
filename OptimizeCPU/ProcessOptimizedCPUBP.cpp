@@ -228,15 +228,14 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessOptimizedCPUBP<T>::initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
+void ProcessOptimizedCPUBP<T>::initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
 		float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 		T* dataCostDeviceCheckerboard2)
 {
 	//initialize the data the the "bottom" of the image pyramid
-	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T>(image1PixelsCompDevice,
+	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T>(currentLevelProperties, image1PixelsCompDevice,
 			image2PixelsCompDevice, dataCostDeviceCheckerboard1,
-			dataCostDeviceCheckerboard2, algSettings.widthImages,
-			algSettings.heightImages, algSettings.lambda_bp, algSettings.data_k_bp);
+			dataCostDeviceCheckerboard2, algSettings.lambda_bp, algSettings.data_k_bp);
 }
 
 //initialize the message values with no previous message values...all message values are set to 0

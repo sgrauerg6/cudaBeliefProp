@@ -49,7 +49,7 @@ public:
 
 		int getPaddedCheckerboardWidth(int checkerboardWidth);
 
-		void initializeDataCosts(BPsettings& algSettings, float* image1PixelsCompDevice,
+		void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
 						float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 						T* dataCostDeviceCheckerboard2);
 
