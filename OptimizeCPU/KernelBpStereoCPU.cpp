@@ -472,6 +472,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
+	//only use AVX-256 if width of processing checkerboard is over 20
 	if (currentLevelProperties.widthCheckerboardLevel > 10)
 	{
 		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
@@ -481,7 +482,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 	}
 	else
 	{
-		printf("1Checkerboard width %d, not using AVX\n", currentLevelProperties.widthCheckerboardLevel);
 		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 							messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 							messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
@@ -490,6 +490,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 #elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
+	//only use AVX-512 if width of processing checkerboard is over 20
 	if (currentLevelProperties.widthCheckerboardLevel > 20)
 	{
 		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
@@ -499,7 +500,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 	}
 	else
 	{
-		printf("2Checkerboard width %d, not using AVX\n", currentLevelProperties.widthCheckerboardLevel);
 		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 					messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
