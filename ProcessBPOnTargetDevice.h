@@ -169,12 +169,6 @@ public:
 		int widthLevel = algSettings.widthImages;
 		int heightLevel = algSettings.heightImages;
 
-		//store the "actual" integer size of the width and height of the level since it's not actually
-		//possible to work with level with a decimal sizes...the portion of the last row/column is truncated
-		//if the width/level size has a decimal
-		int widthLevelActualIntegerSize = (int) roundf(widthLevel);
-		int heightLevelActualIntegerSize = (int) roundf(heightLevel);
-
 		unsigned long currentOffsetLevel = 0;
 		unsigned long* offsetAtLevel = new unsigned long[algSettings.numLevels];
 		offsetAtLevel[0] = 0;
@@ -184,14 +178,14 @@ public:
 		for (int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
 		{
 			processingLevelProperties[levelNum].widthLevel =
-					widthLevelActualIntegerSize;
+					widthLevel;
 			processingLevelProperties[levelNum].widthCheckerboardLevel =
 					getCheckerboardWidthTargetDevice(
-							widthLevelActualIntegerSize);
+							widthLevel);
 			processingLevelProperties[levelNum].paddedWidthCheckerboardLevel =
 					getPaddedCheckerboardWidth(processingLevelProperties[levelNum].widthCheckerboardLevel);
 			processingLevelProperties[levelNum].heightLevel =
-					heightLevelActualIntegerSize;
+					heightLevel;
 
 			if (levelNum > 0)
 			{
@@ -204,12 +198,9 @@ public:
 				offsetAtLevel[levelNum] = currentOffsetLevel;
 			}
 
-			halfTotalDataAllLevels += getNumDataForAlignedMemoryAtLevel(widthLevelActualIntegerSize, heightLevelActualIntegerSize, totalPossibleMovements);
-			widthLevel /= 2.0f;
-			heightLevel /= 2.0f;
-
-			widthLevelActualIntegerSize = (int) ceil(widthLevel);
-			heightLevelActualIntegerSize = (int) ceil(heightLevel);
+			halfTotalDataAllLevels += getNumDataForAlignedMemoryAtLevel(widthLevel, heightLevel, totalPossibleMovements);
+			widthLevel = (int) ceil(widthLevel / 2.0);
+			heightLevel = (int) ceil(heightLevel / 2.0);
 		}
 
 		//declare and then allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
@@ -682,6 +673,7 @@ public:
 
 #endif
 
+		//assume in bottom level when retrieving output disparity
 		retrieveOutputDisparity(currentCheckerboardSet,
 				processingLevelProperties[0],
 				dataCostDeviceCurrentLevelCheckerboard1,
