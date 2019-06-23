@@ -225,14 +225,6 @@ void KernelBpStereoCPU::msgStereoCPU<__m256d>(__m256d messageValsNeighbor1[NUM_P
 	}
 }
 
-#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
-
-//inline function to check if data is aligned at xValDataStart for avx loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector, int paddedCheckerboardWidth)
-{
-	return (((xValDataStart % numDataInAVXVector) == 0) && ((paddedCheckerboardWidth % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
-}
-
 template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256<float>(int checkerboardToUpdate, levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,

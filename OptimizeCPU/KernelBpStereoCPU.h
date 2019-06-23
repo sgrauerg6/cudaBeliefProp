@@ -191,23 +191,30 @@ public:
 #elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512(
-				T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-				T* messageUDeviceCurrentCheckerboard1,
-				T* messageDDeviceCurrentCheckerboard1,
-				T* messageLDeviceCurrentCheckerboard1,
-				T* messageRDeviceCurrentCheckerboard1,
-				T* messageUDeviceCurrentCheckerboard2,
-				T* messageDDeviceCurrentCheckerboard2,
-				T* messageLDeviceCurrentCheckerboard2,
-				T* messageRDeviceCurrentCheckerboard2, int widthLevel,
-				int heightLevel, int checkerboardPartUpdate, float disc_k_bp)
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512(int checkerboardToUpdate, levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 	{
 		printf("Data type not currently supported for AVX-512 acceleration in application\n");
 	}
 #endif
 
 };
+
+#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
+
+//inline function to check if data is aligned at xValDataStart for avx loads/stores that require alignment
+inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector, int paddedCheckerboardWidth)
+{
+	return (((xValDataStart % numDataInAVXVector) == 0) && ((paddedCheckerboardWidth % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+}
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
