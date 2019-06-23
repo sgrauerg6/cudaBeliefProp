@@ -613,7 +613,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		int checkerboardAdjustment;
 		if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 			checkerboardAdjustment = ((yVal) % 2);
-		} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
+		}
+		else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 		{
 			checkerboardAdjustment = ((yVal + 1) % 2);
 		}
