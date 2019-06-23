@@ -245,14 +245,9 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		float* messageLDeviceCurrentCheckerboard2,
 		float* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	//int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
-	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
-	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
-	__m256 disc_k_bp_vector = _mm256_set1_ps(disc_k_bp);
-
 	int numDataInAvxVector = 8;
-	printf("%d %d\n", currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel);
+	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
+	__m256 disc_k_bp_vector = _mm256_set1_ps(disc_k_bp);
 
 	#pragma omp parallel for
 	for (int yVal = 1; yVal < currentLevelProperties.heightLevel - 1; yVal++)
@@ -611,12 +606,10 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		short* messageLDeviceCurrentCheckerboard2,
 		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	//int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+	int numDataInAvxVector = 8;
 	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
-	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
 	__m128i disc_k_bp_vector = _mm256_cvtps_ph(_mm256_set1_ps(disc_k_bp), 0);
 
-	int numDataInAvxVector = 8;
 	#pragma omp parallel for
 	for (int yVal = 1; yVal < currentLevelProperties.heightLevel-1; yVal++)
 	{
@@ -973,12 +966,10 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAV
 		double* messageLDeviceCurrentCheckerboard2,
 		double* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-	//int widthCheckerboardCurrentLevel = getCheckerboardWidthCPU<float>(widthLevel);
+	int numDataInAvxVector = 4;
 	int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel / 2;
-	//int paddedWidthCheckerboardCurrentLevel = getPaddedCheckerboardWidth(widthCheckerboardCurrentLevel);
 	__m256d disc_k_bp_vector = _mm256_set1_pd((double)disc_k_bp);
 
-	int numDataInAvxVector = 4;
 	#pragma omp parallel for
 	for (int yVal = 1; yVal < currentLevelProperties.heightLevel-1; yVal++)
 	{
