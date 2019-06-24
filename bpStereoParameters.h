@@ -258,6 +258,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif //(IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
 //#define COMPILING_FOR_ARM
+#ifdef COMPILING_FOR_ARM
+#include <arm_neon.h> //needed for float16_t type
+#endif
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
