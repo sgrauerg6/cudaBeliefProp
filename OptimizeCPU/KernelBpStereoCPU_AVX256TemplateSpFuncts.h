@@ -9,6 +9,7 @@
 #define KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_
 
 #include <x86intrin.h>
+#include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
 template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
@@ -70,7 +71,7 @@ template<> inline __m256 KernelBpStereoCPU::loadPackedDataAligned<float, __m256 
 		int y, int currentDisparity, levelProperties& currentLevelProperties,
 		float* inData) {
 	return _mm256_load_ps(
-			&inData[retrieveIndexInDataAndMessageCPU(x, y,
+			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -80,7 +81,7 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataAligned<short, __m128
 		int y, int currentDisparity, levelProperties& currentLevelProperties,
 		short* inData) {
 	return _mm_load_si128(
-			(__m128i *) &inData[retrieveIndexInDataAndMessageCPU(x, y,
+			(__m128i *) &inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -90,7 +91,7 @@ template<> inline __m256 KernelBpStereoCPU::loadPackedDataUnaligned<float, __m25
 		int y, int currentDisparity, levelProperties& currentLevelProperties,
 		float* inData) {
 	return _mm256_loadu_ps(
-			&inData[retrieveIndexInDataAndMessageCPU(x, y,
+			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -100,7 +101,7 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataUnaligned<short, __m1
 		int y, int currentDisparity, levelProperties& currentLevelProperties,
 		short* inData) {
 	return _mm_loadu_si128(
-			(__m128i *) &inData[retrieveIndexInDataAndMessageCPU(x, y,
+			(__m128i *) &inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -138,7 +139,7 @@ __m128i KernelBpStereoCPU::createSIMDVectorSameData<__m128i>(float data) {
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
-void KernelBpStereoCPU::dtStereoCPU<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALUES])
+void KernelBpStereoCPU::dtStereoSIMD<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	__m256 prev;
 	__m256 vectorAllOneVal = _mm256_set1_ps(1.0f);
@@ -165,7 +166,7 @@ void KernelBpStereoCPU::dtStereoCPU<__m256>(__m256 f[NUM_POSSIBLE_DISPARITY_VALU
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
-void KernelBpStereoCPU::dtStereoCPU<__m256d>(__m256d f[NUM_POSSIBLE_DISPARITY_VALUES])
+void KernelBpStereoCPU::dtStereoSIMD<__m256d>(__m256d f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	__m256d prev;
 	__m256d vectorAllOneVal = _mm256_set1_pd(1.0);
@@ -192,7 +193,7 @@ void KernelBpStereoCPU::dtStereoCPU<__m256d>(__m256d f[NUM_POSSIBLE_DISPARITY_VA
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoCPU<__m128i>(__m128i messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m128i messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<__m128i>(__m128i messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m128i messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m128i messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m128i dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m128i dst[NUM_POSSIBLE_DISPARITY_VALUES], __m128i disc_k_bp)
 {
@@ -214,7 +215,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m128i>(__m128i messageValsNeighbor1[NUM_P
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU<__m256>(dstFloat);
+	dtStereoSIMD<__m256>(dstFloat);
 
 	// truncate
 	//minimum += disc_k_bp;
@@ -249,7 +250,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m128i>(__m128i messageValsNeighbor1[NUM_P
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoCPU<__m256>(__m256 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<__m256>(__m256 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256 dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256 disc_k_bp)
 {
@@ -270,7 +271,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m256>(__m256 messageValsNeighbor1[NUM_POS
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU<__m256>(dst);
+	dtStereoSIMD<__m256>(dst);
 
 	// truncate
 	//minimum += disc_k_bp;
@@ -306,7 +307,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m256>(__m256 messageValsNeighbor1[NUM_POS
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoCPU<__m256d>(__m256d messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256d messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<__m256d>(__m256d messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256d messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256d messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256d dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256d dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256d disc_k_bp)
 {
@@ -327,7 +328,7 @@ void KernelBpStereoCPU::msgStereoCPU<__m256d>(__m256d messageValsNeighbor1[NUM_P
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU<__m256d>(dst);
+	dtStereoSIMD<__m256d>(dst);
 
 	// truncate
 	//minimum += disc_k_bp;

@@ -25,32 +25,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <omp.h>
 
-//indexing is performed in such a way so that the memory accesses as coalesced as much as possible
-#if OPTIMIZED_INDEXING_SETTING == 1
-#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU (yVal*width*totalNumDispVals + width*currentDisparity + xVal)
-#else
-#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
-#endif
-
 class KernelBpStereoCPU
 {
 public:
-
-	//checks if the current point is within the image bounds
-	static bool withinImageBoundsCPU(int xVal, int yVal, int width, int height)
-	{
-		return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
-	}
-
-	//retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
-	static int retrieveIndexInDataAndMessageCPU(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
-	{
-		//assuming that width includes padding
-		return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
-	}
-
-	template<typename T>
-	static T getZeroValCPU();
 
 	//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 	//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
@@ -68,38 +45,13 @@ public:
 
 	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 	template<typename T>
-	static void dtStereoCPU(T f[NUM_POSSIBLE_DISPARITY_VALUES]);
+	static void dtStereoSIMD(T f[NUM_POSSIBLE_DISPARITY_VALUES]);
 
 	// compute current message
 	template<typename T>
-	static void msgStereoCPU(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+	static void msgStereoSIMD(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		T messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], T dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		T dst[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp);
-
-	//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
-	//and the output message values are stored in local memory
-	template<typename T>
-	static void runBPIterationInOutDataInLocalMemCPU(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-									T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp);
-
-	//device portion of the kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the
-	//"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-	//this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
-	//this function uses linear memory bound to textures to access the current data and message values
-	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemCPU(
-			int xVal, int yVal, int checkerboardToUpdate,
-			levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-			T* messageUDeviceCurrentCheckerboard1,
-			T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1,
-			T* messageRDeviceCurrentCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard2,
-			T* messageDDeviceCurrentCheckerboard2,
-			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
-			int offsetData);
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost

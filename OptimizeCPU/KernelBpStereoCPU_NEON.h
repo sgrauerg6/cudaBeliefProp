@@ -69,7 +69,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float,
 		float32x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, float* inData) {
 	return vld1q_f32(
-			&inData[retrieveIndexInDataAndMessageCPU(x, y,
+			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -79,7 +79,7 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<short,
 		float16x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, short* inData) {
 	return vld1_f16(
-			&inData[retrieveIndexInDataAndMessageCPU(x, y,
+			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -89,7 +89,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float,
 		float32x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, float* inData) {
 	return vld1q_f32(
-			&inData[retrieveIndexInDataAndMessageCPU(x, y,
+			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -99,7 +99,7 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<short,
 		float16x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, short* inData) {
 	return vld1_f16(
-			&inData[retrieveIndexInDataAndMessageCPU(x, y,
+			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -140,7 +140,7 @@ template<> inline float16x4_t KernelBpStereoCPU::createSIMDVectorSameData<
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
-void KernelBpStereoCPU::dtStereoCPU<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DISPARITY_VALUES])
+void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	float32x4_t prev;
 	float32x4_t vectorAllOneVal = vdupq_n_f32(1.0f);
@@ -185,7 +185,7 @@ void KernelBpStereoCPU::msgStereoCPU<float32x4_t>(float32x4_t messageValsNeighbo
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU<float32x4_t>(dst);
+	dtStereoSIMD<float32x4_t>(dst);
 
 	// truncate
 	//minimum += disc_k_bp;
@@ -240,7 +240,7 @@ void KernelBpStereoCPU::msgStereoCPU<float16x4_t>(float16x4_t messageValsNeighbo
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereoCPU<float32x4_t>(dstFloat);
+	dtStereoSIMD<float32x4_t>(dstFloat);
 
 	// truncate
 	//minimum += disc_k_bp;
