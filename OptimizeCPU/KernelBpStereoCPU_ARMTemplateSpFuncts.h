@@ -18,7 +18,7 @@
 inline
 float convertFP16ToFloat(float16_t valToConvert)
 {
-	 float32x4_t floatVector = vcvt_high_f32_f16(vdupq_n_f16(valToConvert));
+	 float32x4_t floatVector = vcvt_high_f32_f16((float16x8_t) { valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert}));
 
 	 static float p[4];
 	 vst1q_f32 (p, floatVector);
