@@ -236,6 +236,12 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 
 #include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
 
+if CPU_OPTIMIZATION_SETTING == USE_NEON
+
+#include "KernelBpStereoCPU_NEON.h"
+
+#endif //CPU_OPTIMIZATION_SETTING == USE_NEON
+
 #else
 
 //needed so that template specializations are used when available
@@ -248,10 +254,6 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 #elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
-
-#elif CPU_OPTIMIZATION_SETTING == USE_NEON
-
-#include "KernelBpStereoCPU_NEON.h"
 
 #endif //CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
