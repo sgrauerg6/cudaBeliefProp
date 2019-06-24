@@ -170,67 +170,80 @@ public:
 			T* messageLDeviceCurrentCheckerboard2,
 			T* messageRDeviceCurrentCheckerboard2);
 
-#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
-
-	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX256(int checkerboardToUpdate, levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-			T* messageUDeviceCurrentCheckerboard1,
-			T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1,
-			T* messageRDeviceCurrentCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard2,
-			T* messageDDeviceCurrentCheckerboard2,
-			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
-	{
-		printf("Data type not currently supported for AVX-256 acceleration in application\n");
-	}
-
-#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
-
-	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseAVX512(int checkerboardToUpdate, levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-			T* messageUDeviceCurrentCheckerboard1,
-			T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1,
-			T* messageRDeviceCurrentCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard2,
-			T* messageDDeviceCurrentCheckerboard2,
-			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
-	{
-		printf("Data type not currently supported for AVX-512 acceleration in application\n");
-	}
-
-#elif CPU_OPTIMIZATION_SETTING == USE_NEON
-
-	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNEON(int checkerboardToUpdate, levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-			T* messageUDeviceCurrentCheckerboard1,
-			T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1,
-			T* messageRDeviceCurrentCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard2,
-			T* messageDDeviceCurrentCheckerboard2,
-			T* messageLDeviceCurrentCheckerboard2,
-			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp);
-
-#endif
-
-
-};
-
 #define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
 
-//inline function to check if data is aligned at xValDataStart for avx loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
-{
-	//assuming that the padded checkerboard width divides evenly by NUM_DATA_ALIGN_WIDTH_FROM_PYTHON (if that's not the case it's a bug)
-	return (((xValDataStart % numDataInAVXVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
-}
+	//inline function to check if data is aligned at xValDataStart for avx loads/stores that require alignment
+	static bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
+	{
+		//assuming that the padded checkerboard width divides evenly by NUM_DATA_ALIGN_WIDTH_FROM_PYTHON (if that's not the case it's a bug)
+		return (((xValDataStart % numDataInAVXVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+	}
+
+	template<typename T>
+		static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess(
+				int checkerboardToUpdate, levelProperties& currentLevelProperties,
+				T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+				T* messageUDeviceCurrentCheckerboard1,
+				T* messageDDeviceCurrentCheckerboard1,
+				T* messageLDeviceCurrentCheckerboard1,
+				T* messageRDeviceCurrentCheckerboard1,
+				T* messageUDeviceCurrentCheckerboard2,
+				T* messageDDeviceCurrentCheckerboard2,
+				T* messageLDeviceCurrentCheckerboard2,
+				T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
+	{
+		printf("Data type not supported\n");
+	}
+
+	template<typename T, typename U>
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess(
+			int checkerboardToUpdate, levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* messageUDeviceCurrentCheckerboard1,
+			T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1,
+			T* messageRDeviceCurrentCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard2,
+			T* messageDDeviceCurrentCheckerboard2,
+			T* messageLDeviceCurrentCheckerboard2,
+			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
+			int numDataInSIMDVector);
+
+	template<typename T, typename U>
+	static U loadPackedDataAligned(int x, int y, int currentDisparity, levelProperties& currentLevelProperties, T* inData)
+	{
+		printf("Data type not supported for loading aligned data\n");
+	}
+
+	template<typename T, typename U>
+	static U loadPackedDataUnaligned(int x, int y, int currentDisparity, levelProperties& currentLevelProperties, T* inData)
+	{
+		printf("Data type not supported for loading unaligned data\n");
+	}
+
+	template<typename T, typename U>
+	static void storePackedDataAligned(
+			int indexDataStore, T* locationDataStore, U dataToStore)
+	{
+		printf("Data type not supported for storing aligned data\n");
+	}
+
+	template<typename T, typename U>
+	static void storePackedDataUnaligned(
+			int indexDataStore, T* locationDataStore, U dataToStore)
+	{
+		printf("Data type not supported for storing unaligned data\n");
+	}
+
+	template<typename T>
+	static T createSIMDVectorSameData(float data)
+	{
+		printf("Data type not supported for creating simd vector\n");
+	}
+};
+
+
+
 
 #ifdef COMPILING_FOR_ARM
 
