@@ -307,9 +307,6 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 {
 	if (currentCheckerboardSet == 0)
 	{
-		//template<typename T>
-		//void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
-
 		KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T>(levelPropertes,
 						dataCostDeviceCurrentLevelCheckerboard1,
 						dataCostDeviceCurrentLevelCheckerboard2,
@@ -321,18 +318,6 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 						messageDDeviceSet0Checkerboard2,
 						messageLDeviceSet0Checkerboard2,
 						messageRDeviceSet0Checkerboard2, resultingDisparityMapCompDevice);
-		/*KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<T>(
-				dataCostDeviceCurrentLevelCheckerboard1,
-				dataCostDeviceCurrentLevelCheckerboard2,
-				messageUDeviceSet0Checkerboard1,
-				messageDDeviceSet0Checkerboard1,
-				messageLDeviceSet0Checkerboard1,
-				messageRDeviceSet0Checkerboard1,
-				messageUDeviceSet0Checkerboard2,
-				messageDDeviceSet0Checkerboard2,
-				messageLDeviceSet0Checkerboard2,
-				messageRDeviceSet0Checkerboard2, resultingDisparityMapDevice,
-				widthLevel, heightLevel);*/
 	}
 	else
 	{
@@ -347,18 +332,6 @@ void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
 						messageDDeviceSet1Checkerboard2,
 						messageLDeviceSet1Checkerboard2,
 						messageRDeviceSet1Checkerboard2, resultingDisparityMapCompDevice);
-		/*KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoNoTexturesCPU<T>(
-				dataCostDeviceCurrentLevelCheckerboard1,
-				dataCostDeviceCurrentLevelCheckerboard2,
-				messageUDeviceSet1Checkerboard1,
-				messageDDeviceSet1Checkerboard1,
-				messageLDeviceSet1Checkerboard1,
-				messageRDeviceSet1Checkerboard1,
-				messageUDeviceSet1Checkerboard2,
-				messageDDeviceSet1Checkerboard2,
-				messageLDeviceSet1Checkerboard2,
-				messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
-				widthLevel, heightLevel);*/
 	}
 }
 
