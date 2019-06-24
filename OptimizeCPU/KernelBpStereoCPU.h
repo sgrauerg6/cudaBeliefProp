@@ -207,7 +207,7 @@ public:
 #elif CPU_OPTIMIZATION_SETTING == USE_NEON
 
 	template<typename T>
-	void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNEON(int checkerboardToUpdate, levelProperties& currentLevelProperties,
+	static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNEON(int checkerboardToUpdate, levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
