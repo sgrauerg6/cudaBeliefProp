@@ -18,24 +18,28 @@
 inline
 float convertFP16ToFloat(float16_t valToConvert)
 {
-	 float16x8_t float16x8Vector = (float16x8_t) { valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert};
+	//seems like simple cast function works
+	return (float)valToConvert;
+	 /*float16x8_t float16x8Vector = (float16x8_t) { valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert, valToConvert};
 	 float32x4_t floatVector = vcvt_high_f32_f16(float16x8Vector);
 
 	 static float p[4];
 	 vst1q_f32 (p, floatVector);
 
-	 return p[0];
+	 return p[0];*/
 }
 
 inline
 float16_t convertFloatToFP16(float valToConvert)
 {
-	float16x4_t floatVector = vcvt_f16_f32(vdupq_n_f32(valToConvert));
+	//seems like simple cast function works
+	return (float16_t)valToConvert;
+	/*float16x4_t floatVector = vcvt_f16_f32(vdupq_n_f32(valToConvert));
 
 		 static float16_t p[8];
 		 vst1q_f16 (p, vcombine_f16(floatVector, floatVector));
 
-		 return p[0];
+		 return p[0];*/
 }
 
 template<> inline
