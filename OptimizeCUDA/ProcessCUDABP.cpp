@@ -571,37 +571,6 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(
 				messageRDeviceSet1Checkerboard2, resultingDisparityMapCompDevice);
 	}
 
-	/*if (currentCheckerboardSet == 0)
-		{
-			retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
-					dataCostDeviceCurrentLevelCheckerboard1,
-					dataCostDeviceCurrentLevelCheckerboard2,
-					messageUDeviceSet0Checkerboard1,
-					messageDDeviceSet0Checkerboard1,
-					messageLDeviceSet0Checkerboard1,
-					messageRDeviceSet0Checkerboard1,
-					messageUDeviceSet0Checkerboard2,
-					messageDDeviceSet0Checkerboard2,
-					messageLDeviceSet0Checkerboard2,
-					messageRDeviceSet0Checkerboard2, resultingDisparityMapDevice,
-					widthLevel, heightLevel);
-		}
-		else
-		{
-			retrieveOutputDisparityCheckerboardStereoNoTextures<T> <<<grid, threads>>>(
-					dataCostDeviceCurrentLevelCheckerboard1,
-					dataCostDeviceCurrentLevelCheckerboard2,
-					messageUDeviceSet1Checkerboard1,
-					messageDDeviceSet1Checkerboard1,
-					messageLDeviceSet1Checkerboard1,
-					messageRDeviceSet1Checkerboard1,
-					messageUDeviceSet1Checkerboard2,
-					messageDDeviceSet1Checkerboard2,
-					messageLDeviceSet1Checkerboard2,
-					messageRDeviceSet1Checkerboard2, resultingDisparityMapDevice,
-					widthLevel, heightLevel);
-		}*/
-
 	(cudaDeviceSynchronize());
 	gpuErrchk(cudaPeekAtLastError());
 }
