@@ -3,6 +3,7 @@
 #ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 
+//this is only processed when on x86
 #include <x86intrin.h>
 
 template<> inline
@@ -391,7 +392,5 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<sh
 		}
 	}
 }
-
-#endif
 
 #endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
