@@ -253,7 +253,9 @@ inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
 
 #include "KernelBpStereoCPU_NEON.h"
 
-#endif
+#endif //CPU_OPTIMIZATION_SETTING == USE_AVX_256
+
+#endif //COMPILING_FOR_ARM
 
 
 #endif //KERNAL_BP_STEREO_CPU_H
