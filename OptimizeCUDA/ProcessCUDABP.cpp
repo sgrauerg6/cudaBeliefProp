@@ -606,18 +606,15 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(
 	gpuErrchk(cudaPeekAtLastError());
 }
 
-#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
 
+
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 template class ProcessCUDABP<float>;
-
-#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
-
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
 template class ProcessCUDABP<double>;
-
-#elif ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
-
-template class ProcessCUDABP<float>;
-template class ProcessCUDABP<half2>;
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 template class ProcessCUDABP<half>;
+#endif //CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 
-#endif
+//not currently supporting half2 data type
+//template class ProcessCUDABP<half2>;

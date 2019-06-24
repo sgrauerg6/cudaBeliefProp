@@ -51,7 +51,6 @@ template class RunBpStereoOptimizedCPU<double>;
 
 #elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
 
-template class RunBpStereoOptimizedCPU<float>;
 template class RunBpStereoOptimizedCPU<short>;
 
 #endif

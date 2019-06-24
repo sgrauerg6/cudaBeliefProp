@@ -372,7 +372,10 @@ template class ProcessOptimizedCPUBP<double>;
 
 #elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
 
-template class ProcessOptimizedCPUBP<float>;
+#ifdef COMPILING_FOR_ARM
+template class ProcessOptimizedCPUBP<float16_t>;
+#else
 template class ProcessOptimizedCPUBP<short>;
+#endif //COMPILING_FOR_ARM
 
-#endif
+#endif //(CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

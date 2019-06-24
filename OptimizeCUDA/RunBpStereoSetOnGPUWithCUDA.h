@@ -158,7 +158,7 @@ public:
 	}
 };
 
-//float16_t data type used for arm (rather than float)
+//float16_t data type used for arm (rather than short)
 #ifdef COMPILING_FOR_ARM
 
 template<>

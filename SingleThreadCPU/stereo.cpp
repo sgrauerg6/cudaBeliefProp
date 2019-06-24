@@ -283,6 +283,16 @@ float RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const 
 	return runtime;
 }
 
+
+#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 template class RunBpStereoCPUSingleThread<float>;
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
 template class RunBpStereoCPUSingleThread<double>;
+#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
+//float16_t data type used for arm (rather than short)
+#ifdef COMPILING_FOR_ARM
+template class RunBpStereoCPUSingleThread<float16_t>;
+#else
 template class RunBpStereoCPUSingleThread<short>;
+#endif //COMPILING_FOR_ARM
+#endif //CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
