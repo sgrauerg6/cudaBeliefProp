@@ -743,30 +743,30 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 							currentLevelProperties.heightLevel,
 							currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 					if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
-						vst1_f32(
+						vst1_f16(
 								&messageUDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentUMessage[currentDisparity]));
-						vst1_f32(
+						vst1_f16(
 								&messageDDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentDMessage[currentDisparity]));
-						vst1_f32(
+						vst1_f16(
 								&messageLDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentLMessage[currentDisparity]));
-						vst1_f32(
+						vst1_f16(
 								&messageRDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentRMessage[currentDisparity]));
 					} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 					{
-						vst1_f32(
+						vst1_f16(
 								&messageUDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentUMessage[currentDisparity]));
-						vst1_f32(
+						vst1_f16(
 								&messageDDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentDMessage[currentDisparity]));
-						vst1_f32(
+						vst1_f16(
 								&messageLDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentLMessage[currentDisparity]));
-						vst1_f32(
+						vst1_f16(
 								&messageRDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentRMessage[currentDisparity]));
 					}
