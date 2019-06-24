@@ -524,7 +524,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 						currentDisparity++) {
 					if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 						dataMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValProcess, yVal,
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -532,7 +532,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevUMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal + 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -540,7 +540,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevDMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal - 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -548,7 +548,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevLMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												(xValProcess
 														+ checkerboardAdjustment),
@@ -558,7 +558,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevRMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												((xValProcess - 1)
 														+ checkerboardAdjustment),
@@ -570,7 +570,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 					} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 					{
 						dataMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValProcess, yVal,
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -578,7 +578,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevUMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal + 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -586,7 +586,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevDMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal - 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -594,7 +594,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevLMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												(xValProcess
 														+ checkerboardAdjustment),
@@ -604,7 +604,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevRMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												((xValProcess - 1)
 														+ checkerboardAdjustment),
@@ -621,7 +621,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 						currentDisparity++) {
 					if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
 						dataMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&dataCostStereoCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValProcess, yVal,
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -629,7 +629,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevUMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal + 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -637,7 +637,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevDMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageDDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal - 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -645,7 +645,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevLMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												(xValProcess
 														+ checkerboardAdjustment),
@@ -655,7 +655,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevRMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												((xValProcess - 1)
 														+ checkerboardAdjustment),
@@ -667,7 +667,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 					} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 					{
 						dataMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&dataCostStereoCheckerboard2[retrieveIndexInDataAndMessageCPU(
 												xValProcess, yVal,
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -675,7 +675,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevUMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal + 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -683,7 +683,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevDMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												xValProcess, (yVal - 1),
 												currentLevelProperties.paddedWidthCheckerboardLevel,
@@ -691,7 +691,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevLMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												(xValProcess
 														+ checkerboardAdjustment),
@@ -701,7 +701,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 												currentDisparity,
 												NUM_POSSIBLE_DISPARITY_VALUES)]));
 						prevRMessage[currentDisparity] =
-								vcvt_f32_f16(vld1d_f16(
+								vcvt_f32_f16(vld1_f16(
 										&messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessageCPU(
 												((xValProcess - 1)
 														+ checkerboardAdjustment),
@@ -743,30 +743,30 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseNE
 							currentLevelProperties.heightLevel,
 							currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
 					if (checkerboardToUpdate == CHECKERBOARD_PART_1) {
-						vst1q_f32(
+						vst1_f32(
 								&messageUDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentUMessage[currentDisparity]));
-						vst1q_f32(
+						vst1_f32(
 								&messageDDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentDMessage[currentDisparity]));
-						vst1q_f32(
+						vst1_f32(
 								&messageLDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentLMessage[currentDisparity]));
-						vst1q_f32(
+						vst1_f32(
 								&messageRDeviceCurrentCheckerboard1[indexWriteTo],
 								vcvt_f16_f32(currentRMessage[currentDisparity]));
 					} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 					{
-						vst1q_f32(
+						vst1_f32(
 								&messageUDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentUMessage[currentDisparity]));
-						vst1q_f32(
+						vst1_f32(
 								&messageDDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentDMessage[currentDisparity]));
-						vst1q_f32(
+						vst1_f32(
 								&messageLDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentLMessage[currentDisparity]));
-						vst1q_f32(
+						vst1_f32(
 								&messageRDeviceCurrentCheckerboard2[indexWriteTo],
 								vcvt_f16_f32(currentRMessage[currentDisparity]));
 					}
