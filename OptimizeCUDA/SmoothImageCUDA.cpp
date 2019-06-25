@@ -68,12 +68,12 @@ void SmoothImageCUDA::operator()(unsigned int* inImage, unsigned int widthImages
 									cudaMemcpyHostToDevice);
 
 		//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-		filterUnsignedIntImageAcross <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, widthImages, heightImages, filterDevice, sizeFilter);
+		filterImageAcross<unsigned int> <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, widthImages, heightImages, filterDevice, sizeFilter);
 
 		cudaDeviceSynchronize();
 
 		//now use the vertical filter to complete the smoothing of image on the device
-		filterFloatImageVertical <<< grid, threads >>> (intermediateImageDevice, smoothedImage, widthImages, heightImages, filterDevice, sizeFilter);
+		filterImageVertical<float> <<< grid, threads >>> (intermediateImageDevice, smoothedImage, widthImages, heightImages, filterDevice, sizeFilter);
 
 		cudaDeviceSynchronize();
 
