@@ -41,8 +41,6 @@ inline T getZeroVal()
 	return (T)0.0;
 }
 
-
-
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<typename T>
 inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
@@ -397,7 +395,7 @@ inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPix
 
 		//uses the previous message values and data cost to calculate the current message values and store the results
 		runBPIterationInOutDataInLocalMem<U>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-							currentUMessage, currentDMessage, currentLMessage, currentRMessage, (T)disc_k_bp);
+							currentUMessage, currentDMessage, currentLMessage, currentRMessage, (U)disc_k_bp);
 
 		//write the calculated message values to global memory
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
