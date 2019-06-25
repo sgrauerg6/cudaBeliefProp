@@ -56,8 +56,6 @@ impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereo
 DetailedTimings.o: DetailedTimings.cpp DetailedTimings.h
 	g++ DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-#KernelBpStereoCPU.o: OptimizeCPU/KernelBpStereoCPU.cpp OptimizeCPU/KernelBpStereoCPU.h
-#	g++ OptimizeCPU/KernelBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h imageHelpers.o stereoResultsEval.o stereo.o RunBpStereoOptimizedCPU.o
 	g++ driverBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
