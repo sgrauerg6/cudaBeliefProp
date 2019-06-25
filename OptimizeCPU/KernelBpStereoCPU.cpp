@@ -34,7 +34,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(levelProperties& curr
 		int yVal = val / currentLevelProperties.widthLevel;
 		int xVal = val % currentLevelProperties.widthLevel;
 
-		initializeBottomLevelDataStereoPixel(xVal, yVal,
+		initializeBottomLevelDataStereoPixel<T, T>(xVal, yVal,
 				currentLevelProperties, image1PixelsDevice,
 				image2PixelsDevice, dataCostDeviceStereoCheckerboard1,
 				dataCostDeviceStereoCheckerboard2, lambda_bp,
@@ -53,7 +53,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(int checke
 		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
 		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
-		initializeCurrentLevelDataStereoNoTexturesPixel(
+		initializeCurrentLevelDataStereoNoTexturesPixel<T, T>(
 				xVal, yVal, checkerboardPart,
 				currentLevelProperties,
 				prevLevelProperties, dataCostStereoCheckerboard1,
@@ -104,7 +104,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPac
 		int yVal = val / widthCheckerboardRunProcessing;
 		int xVal = val % widthCheckerboardRunProcessing;
 
-		runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T>(
+		runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T>(
 				xVal, yVal, checkerboardPartUpdate, currentLevelProperties,
 				dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 				messageUDeviceCurrentCheckerboard1,
@@ -442,7 +442,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 #else
 
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T, T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -477,7 +477,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
 		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
-		copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel(xVal, yVal,
+		copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel<T>(xVal, yVal,
 				checkerboardPart, currentLevelProperties,
 				nextLevelProperties,
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
@@ -504,7 +504,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(le
 		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
 		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
-		retrieveOutputDisparityCheckerboardStereoOptimizedPixel(xVal, yVal,
+		retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T>(xVal, yVal,
 				currentLevelProperties, dataCostStereoCheckerboard1,
 				dataCostStereoCheckerboard2, messageUPrevStereoCheckerboard1,
 				messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
