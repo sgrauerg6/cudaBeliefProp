@@ -9,6 +9,7 @@
 #define SHAREDBPPROCESSINGFUNCTS_H_
 
 #include "SharedUtilFuncts.h"
+#include "bpStereoParameters.h"
 
 //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 #if OPTIMIZED_INDEXING_SETTING == 1
