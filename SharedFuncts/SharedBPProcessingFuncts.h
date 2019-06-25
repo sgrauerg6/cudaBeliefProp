@@ -207,33 +207,35 @@ ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
 		for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
-			convertValToDifferentDataTypeIfNeeded<U, T>(dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal, yVal,
+			U dataCostVal = convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+					xValPrev, (yVal * 2),
+					prevLevelProperties.paddedWidthCheckerboardLevel,
+					prevLevelProperties.heightLevel, currentDisparity,
+					NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])
+					+ convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2),
+							prevLevelProperties.paddedWidthCheckerboardLevel,
+							prevLevelProperties.heightLevel,
+							currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])
+					+ convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2 + 1),
+							prevLevelProperties.paddedWidthCheckerboardLevel,
+							prevLevelProperties.heightLevel,
+							currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])
+					+ convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+							xValPrev, (yVal * 2 + 1),
+							prevLevelProperties.paddedWidthCheckerboardLevel,
+							prevLevelProperties.heightLevel,
+							currentDisparity,
+							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)]);
+
+			dataCostDeviceToWriteTo[retrieveIndexInDataAndMessage(xVal, yVal,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
 					NUM_POSSIBLE_DISPARITY_VALUES)] =
-							convertValToDifferentDataTypeIfNeeded<T, U>((dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
-							xValPrev, (yVal * 2),
-							prevLevelProperties.paddedWidthCheckerboardLevel,
-							prevLevelProperties.heightLevel, currentDisparity,
-							NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])
-							+ convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
-									xValPrev, (yVal * 2),
-									prevLevelProperties.paddedWidthCheckerboardLevel,
-									prevLevelProperties.heightLevel,
-									currentDisparity,
-									NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])
-							+ convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(
-									xValPrev, (yVal * 2 + 1),
-									prevLevelProperties.paddedWidthCheckerboardLevel,
-									prevLevelProperties.heightLevel,
-									currentDisparity,
-									NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])
-							+ convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
-									xValPrev, (yVal * 2 + 1),
-									prevLevelProperties.paddedWidthCheckerboardLevel,
-									prevLevelProperties.heightLevel,
-									currentDisparity,
-									NUM_POSSIBLE_DISPARITY_VALUES, offsetNum)])));
+							convertValToDifferentDataTypeIfNeeded<U, T>(dataCostVal);
 		}
 	}
 }
