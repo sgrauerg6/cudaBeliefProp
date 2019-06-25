@@ -45,7 +45,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(levelProperties& curr
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
 {
 	#pragma omp parallel for
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
@@ -53,7 +53,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU(int checke
 		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
 		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
-		initializeCurrentLevelDataStereoNoTexturesPixel<T, T>(
+		initializeCurrentLevelDataStereoPixel<T, T>(
 				xVal, yVal, checkerboardPart,
 				currentLevelProperties,
 				prevLevelProperties, dataCostStereoCheckerboard1,
@@ -83,7 +83,7 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(levelProperties&
 
 
 template<typename T>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions(
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
 		int checkerboardPartUpdate, levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
@@ -119,7 +119,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPac
 }
 
 template<typename T, typename U>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess(
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
 			int checkerboardToUpdate, levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
@@ -382,27 +382,25 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
-
-	printf("Start BP Kernel\n");
 
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 	//only use AVX-256 if width of processing checkerboard is over 20
 	if (currentLevelProperties.widthCheckerboardLevel > 10)
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 				messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 				messageRDeviceCurrentCheckerboard2, disc_k_bp);
 	}
 	else
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 							messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 							messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 							messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -413,14 +411,14 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 	//only use AVX-512 if width of processing checkerboard is over 20
 	if (currentLevelProperties.widthCheckerboardLevel > 20)
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 						messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 						messageRDeviceCurrentCheckerboard2, disc_k_bp);
 	}
 	else
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 					messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 					messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -430,14 +428,14 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 	if (currentLevelProperties.widthCheckerboardLevel > 5)
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 						messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 						messageRDeviceCurrentCheckerboard2, disc_k_bp);
 	}
 	else
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 								messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 								messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 								messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -445,7 +443,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 #else
 
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+	runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -457,7 +455,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
-void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU(
+void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(
 		int checkerboardPart,
 		levelProperties& currentLevelProperties,
 		levelProperties& nextLevelProperties,
@@ -480,7 +478,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCP
 		int yVal = val / currentLevelProperties.widthCheckerboardLevel;
 		int xVal = val % currentLevelProperties.widthCheckerboardLevel;
 
-		copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel<T>(xVal, yVal,
+		copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T>(xVal, yVal,
 				checkerboardPart, currentLevelProperties,
 				nextLevelProperties,
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,

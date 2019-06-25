@@ -261,7 +261,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		auto timeBpItersKernelStart = std::chrono::system_clock::now();
 #endif
 
-		runBPIterationUsingCheckerboardUpdatesNoTextures<T><<<grid, threads>>>(checkboardPartUpdate, currentLevelPropertes,
+		runBPIterationUsingCheckerboardUpdates<T><<<grid, threads>>>(checkboardPartUpdate, currentLevelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 				messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
@@ -327,7 +327,7 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
-	copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures<T> <<< grid, threads >>> (CHECKERBOARD_PART_1, currentLevelPropertes, nextLevelPropertes, messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
+	copyPrevLevelToNextLevelBPCheckerboardStereo<T> <<< grid, threads >>> (CHECKERBOARD_PART_1, currentLevelPropertes, nextLevelPropertes, messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
@@ -337,7 +337,7 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 	( cudaDeviceSynchronize() );
 	gpuErrchk( cudaPeekAtLastError() );
 
-	copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures<T> <<< grid, threads >>> (CHECKERBOARD_PART_2, currentLevelPropertes, nextLevelPropertes, messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
+	copyPrevLevelToNextLevelBPCheckerboardStereo<T> <<< grid, threads >>> (CHECKERBOARD_PART_2, currentLevelPropertes, nextLevelPropertes, messageUDeviceCheckerboard1CopyFrom, messageDDeviceCheckerboard1CopyFrom,
 			messageLDeviceCheckerboard1CopyFrom, messageRDeviceCheckerboard1CopyFrom, messageUDeviceCheckerboard2CopyFrom,
 			messageDDeviceCheckerboard2CopyFrom, messageLDeviceCheckerboard2CopyFrom, messageRDeviceCheckerboard2CopyFrom,
 			messageUDeviceCheckerboard1CopyTo, messageDDeviceCheckerboard1CopyTo, messageLDeviceCheckerboard1CopyTo,
@@ -473,7 +473,7 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(levelProperties& currentLevelP
 
 	size_t offsetNum = 0;
 
-	initializeCurrentLevelDataStereoNoTextures<T> <<<grid, threads>>>(CHECKERBOARD_PART_1,
+	initializeCurrentLevelDataStereo<T> <<<grid, threads>>>(CHECKERBOARD_PART_1,
 			currentLevelPropertes, prevLevelProperties,
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
@@ -483,7 +483,7 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(levelProperties& currentLevelP
 	cudaDeviceSynchronize();
 	gpuErrchk( cudaPeekAtLastError() );
 
-	initializeCurrentLevelDataStereoNoTextures<T> <<<grid, threads>>>(CHECKERBOARD_PART_2,
+	initializeCurrentLevelDataStereo<T> <<<grid, threads>>>(CHECKERBOARD_PART_2,
 			currentLevelPropertes, prevLevelProperties,
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,

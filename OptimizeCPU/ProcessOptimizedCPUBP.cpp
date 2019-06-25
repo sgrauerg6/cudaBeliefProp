@@ -150,7 +150,7 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 			checkboardPartUpdate = CHECKERBOARD_PART_1;
 		}
 
-		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU<T>(checkboardPartUpdate, currentLevelProperties,
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU<T>(checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
 						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
@@ -187,7 +187,7 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(
 {
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 	//storing the current message values
-	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<
+	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<
 			T>(CHECKERBOARD_PART_1, currentLevelPropertes, nextLevelPropertes,
 			messageUDeviceCheckerboard1CopyFrom,
 			messageDDeviceCheckerboard1CopyFrom,
@@ -206,7 +206,7 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(
 			messageLDeviceCheckerboard2CopyTo,
 			messageRDeviceCheckerboard2CopyTo);
 
-	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesCPU<
+	KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<
 			T>(CHECKERBOARD_PART_2, currentLevelPropertes, nextLevelPropertes,
 			messageUDeviceCheckerboard1CopyFrom,
 			messageDDeviceCheckerboard1CopyFrom,
@@ -268,13 +268,13 @@ void ProcessOptimizedCPUBP<T>::initializeDataCurrentLevel(levelProperties& curre
 {
 	size_t offsetNum = 0;
 
-	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(CHECKERBOARD_PART_1, currentLevelPropertes, prevLevelProperties,
+	KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU<T>(CHECKERBOARD_PART_1, currentLevelPropertes, prevLevelProperties,
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard1,
 			((int) offsetNum / sizeof(float)));
 
-	KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesCPU<T>(CHECKERBOARD_PART_2, currentLevelPropertes, prevLevelProperties,
+	KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU<T>(CHECKERBOARD_PART_2, currentLevelPropertes, prevLevelProperties,
 			dataCostStereoCheckerboard1,
 			dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard2,

@@ -12,7 +12,7 @@
 #include <arm_neon.h>
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 		float>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
@@ -25,7 +25,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 		float* messageLDeviceCurrentCheckerboard2,
 		float* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
 	int numDataInSIMDVector = 4;
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
+	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 			float, float32x4_t>(checkerboardToUpdate, currentLevelProperties,
 			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1,
@@ -39,7 +39,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 }
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 		short>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
@@ -52,7 +52,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 		short* messageLDeviceCurrentCheckerboard2,
 		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
 	int numDataInSIMDVector = 4;
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
+	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 			short, float16x4_t>(checkerboardToUpdate, currentLevelProperties,
 			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1,

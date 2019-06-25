@@ -47,10 +47,10 @@ LINK   = -lm
 
 all: impDriver 
 
-impDriver: driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
-	g++ driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+impDriver: driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o
+	g++ driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ma.o
+impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
 	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
 
 DetailedTimings.o: DetailedTimings.cpp DetailedTimings.h

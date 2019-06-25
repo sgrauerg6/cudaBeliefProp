@@ -78,9 +78,9 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoPixel<float16_t>(int xVal
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoNoTexturesPixel<float16_t>(int xVal, int yVal, int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoPixel<float16_t>(int xVal, int yVal, int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
 {
-	initializeCurrentLevelDataStereoNoTexturesPixel<float16_t, float>(
+	initializeCurrentLevelDataStereoPixel<float16_t, float>(
 			xVal, yVal, checkerboardPart,
 			currentLevelProperties,
 			prevLevelProperties, dataCostStereoCheckerboard1,

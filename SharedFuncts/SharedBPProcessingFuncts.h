@@ -199,7 +199,7 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(int xVal,
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T, typename U>
-ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoNoTexturesPixel(
+ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
 		int xVal, int yVal, int checkerboardPart,
 		levelProperties& currentLevelProperties,
 		levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1,
@@ -437,7 +437,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
-ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel(int xVal, int yVal,
+ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPixel(int xVal, int yVal,
 		int checkerboardPart, levelProperties& currentLevelProperties,
 		levelProperties& nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,

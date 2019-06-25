@@ -118,7 +118,7 @@ __global__ void initializeBottomLevelDataStereo(levelProperties currentLevelProp
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-__global__ void initializeCurrentLevelDataStereoNoTextures(int checkerboardPart, levelProperties currentLevelProperties, levelProperties prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
+__global__ void initializeCurrentLevelDataStereo(int checkerboardPart, levelProperties currentLevelProperties, levelProperties prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -133,7 +133,7 @@ __global__ void initializeCurrentLevelDataStereoNoTextures(int checkerboardPart,
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
-		initializeCurrentLevelDataStereoNoTexturesPixel<T, T>(
+		initializeCurrentLevelDataStereoPixel<T, T>(
 				xVal, yVal, checkerboardPart,
 				currentLevelProperties,
 				prevLevelProperties, dataCostStereoCheckerboard1,
@@ -174,7 +174,7 @@ __global__ void initializeMessageValsToDefaultKernel(levelProperties currentLeve
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-__global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(int checkerboardToUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void runBPIterationUsingCheckerboardUpdates(int checkerboardToUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 								T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
@@ -212,7 +212,7 @@ __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(int checkerboar
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
-__global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
+__global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 		int checkerboardPart,
 		levelProperties currentLevelProperties,
 		levelProperties nextLevelProperties,
@@ -242,7 +242,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
-		copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel<T>(xVal, yVal,
+		copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T>(xVal, yVal,
 				checkerboardPart, currentLevelProperties,
 				nextLevelProperties,
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
@@ -977,7 +977,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized<half2>(levelP
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 /*template<typename T>
-__global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+__global__ void retrieveOutputDisparityCheckerboardStereo(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -1061,7 +1061,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostS
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<>
-__global__ void retrieveOutputDisparityCheckerboardStereoNoTextures<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
+__global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
 	// Block index
 	int bx = blockIdx.x;
