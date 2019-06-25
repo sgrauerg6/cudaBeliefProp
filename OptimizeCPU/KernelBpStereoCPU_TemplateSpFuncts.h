@@ -16,13 +16,13 @@ short getZeroVal<short>()
 template<> inline
 float convertValToDifferentDataTypeIfNeeded<short, float>(short data)
 {
-	return _cvtss_sh(data, 0);
+	return _cvtsh_ss(data);
 }
 
 template<> inline
 short convertValToDifferentDataTypeIfNeeded<float, short>(float data)
 {
-	return _cvtsh_ss(data);
+	return _cvtss_sh(data, 0);
 }
 
 template<> inline

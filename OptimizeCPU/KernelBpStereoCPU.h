@@ -130,7 +130,7 @@ public:
 	}
 
 	template<typename T>
-		static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess(
+		static void runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors(
 				int checkerboardToUpdate, levelProperties& currentLevelProperties,
 				T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 				T* messageUDeviceCurrentCheckerboard1,

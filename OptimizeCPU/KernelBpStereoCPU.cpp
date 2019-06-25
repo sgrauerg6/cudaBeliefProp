@@ -130,7 +130,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 			T* messageDDeviceCurrentCheckerboard2,
 			T* messageLDeviceCurrentCheckerboard2,
 			T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
-			int numDataInSIMDVector) {
+			int numDataInSIMDVector)
+{
 		int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel
 				/ 2;
 		U disc_k_bp_vector = createSIMDVectorSameData<U>(disc_k_bp);
@@ -309,27 +310,27 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 									messageUDeviceCurrentCheckerboard1,
 									currentUMessage[currentDisparity]);
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageDDeviceCurrentCheckerboard1[indexWriteTo],
+									messageDDeviceCurrentCheckerboard1,
 									currentDMessage[currentDisparity]);
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageLDeviceCurrentCheckerboard1[indexWriteTo],
+									messageLDeviceCurrentCheckerboard1,
 									currentLMessage[currentDisparity]);
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageRDeviceCurrentCheckerboard1[indexWriteTo],
+									messageRDeviceCurrentCheckerboard1,
 									currentRMessage[currentDisparity]);
 						} else //checkerboardPartUpdate == CHECKERBOARD_PART_2
 						{
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageUDeviceCurrentCheckerboard2[indexWriteTo],
+									messageUDeviceCurrentCheckerboard2,
 									currentUMessage[currentDisparity]);
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageDDeviceCurrentCheckerboard2[indexWriteTo],
+									messageDDeviceCurrentCheckerboard2,
 									currentDMessage[currentDisparity]);
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageLDeviceCurrentCheckerboard2[indexWriteTo],
+									messageLDeviceCurrentCheckerboard2,
 									currentLMessage[currentDisparity]);
 							storePackedDataAligned<T, U>(indexWriteTo,
-									&messageRDeviceCurrentCheckerboard2[indexWriteTo],
+									messageRDeviceCurrentCheckerboard2,
 									currentRMessage[currentDisparity]);
 						}
 					}
@@ -387,12 +388,14 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
 
+	printf("Start BP Kernel\n");
+
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 	//only use AVX-256 if width of processing checkerboard is over 20
 	if (currentLevelProperties.widthCheckerboardLevel > 10)
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 				messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 				messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -410,7 +413,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 	//only use AVX-512 if width of processing checkerboard is over 20
 	if (currentLevelProperties.widthCheckerboardLevel > 20)
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 						messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 						messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -427,7 +430,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 	if (currentLevelProperties.widthCheckerboardLevel > 5)
 	{
-		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+		runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 						messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 						messageRDeviceCurrentCheckerboard2, disc_k_bp);
@@ -442,7 +445,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPU(int 
 
 #else
 
-	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T, T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 			messageUDeviceCurrentCheckerboard2, messageDDeviceCurrentCheckerboard2, messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, disc_k_bp);

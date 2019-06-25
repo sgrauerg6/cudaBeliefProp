@@ -12,7 +12,7 @@
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<
 		float>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
@@ -25,6 +25,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 		float* messageLDeviceCurrentCheckerboard2,
 		float* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
+	printf("Process BP Iteration FLOAT\n");
 	int numDataInSIMDVector = 8;
 	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
 			float, __m256 >(checkerboardToUpdate, currentLevelProperties,
@@ -40,7 +41,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 }
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectors<
 		short>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
@@ -53,6 +54,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSI
 		short* messageLDeviceCurrentCheckerboard2,
 		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
 {
+	printf("Process BP Iteration SHORT\n");
 	int numDataInSIMDVector = 8;
 	runBPIterationUsingCheckerboardUpdatesNoTexturesCPUUseSIMDVectorsProcess<
 			short, __m128i >(checkerboardToUpdate, currentLevelProperties,
@@ -114,7 +116,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, __m256 >
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<short, __m128i >(
 		int indexDataStore, short* locationDataStore, __m128i dataToStore) {
-	return _mm_store_si128((__m128i *) &locationDataStore[indexDataStore], dataToStore);
+	return _mm_store_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float, __m256 >(
@@ -124,7 +126,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float, __m256
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<short, __m128i >(
 		int indexDataStore, short* locationDataStore, __m128i dataToStore) {
-	return _mm_storeu_si128((__m128i *) &locationDataStore[indexDataStore], dataToStore);
+	return _mm_storeu_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
 }
 
 template<> inline
