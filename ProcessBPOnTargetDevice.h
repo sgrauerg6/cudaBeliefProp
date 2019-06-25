@@ -743,17 +743,19 @@ public:
 		freeMemoryOnTargetDevice((void*) dataCostDeviceCheckerboard2);
 
 #else
-		delete offsetAtLevel;
-
 		//now free the allocated data space
 		freeMemoryOnTargetDevice(dataCostDeviceCheckerboard1);
 
 #endif
 
+		delete offsetAtLevel;
+		delete processingLevelProperties;
+
 #ifdef RUN_DETAILED_TIMING
 
 		double timeBpItersKernelTotalTime = 0.0;
 		auto timeFinalFreeEnd = std::chrono::system_clock::now();
+
 		diff = timeFinalFreeEnd - timeFinalFreeStart;
 		double totalTimeFinalFree = diff.count();
 

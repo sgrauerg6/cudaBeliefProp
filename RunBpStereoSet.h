@@ -60,8 +60,10 @@ public:
 	virtual float operator()(const char* refImagePath, const char* testImagePath,
 			BPsettings algSettings,	const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<T>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
 	{
+		bool deleteBPMemoryManagementAtEnd = false;
 		if (runBPMemoryMangement == nullptr)
 		{
+			deleteBPMemoryManagementAtEnd = true;
 			runBPMemoryMangement = new RunBpStereoSetMemoryManagement();
 		}
 
@@ -198,6 +200,11 @@ public:
 			//uncomment to print timings for each part of implementation
 			//timings.PrintMedianTimings();
 			detailedTimingsOverall->PrintMedianTimingsToFile(resultsFile);
+		}
+
+		if (deleteBPMemoryManagementAtEnd)
+		{
+			delete runBPMemoryMangement;
 		}
 
 		return timingsIncludeTransferVector.at(NUM_BP_STEREO_RUNS/2);
