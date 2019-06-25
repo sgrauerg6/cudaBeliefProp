@@ -232,7 +232,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DATA_TYPE_PROCESSING_FLOAT 0
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2
-#define DATA_TYPE_PROCESSING_HALF_TWO 3
+//not currently supporting half2 data type
+//#define DATA_TYPE_PROCESSING_HALF_TWO 3
 
 #define USE_DEFAULT 0
 #define USE_AVX_256 1
@@ -276,9 +277,10 @@ typedef float16_t beliefPropProcessingDataType;
 typedef short beliefPropProcessingDataType;
 #endif
 #define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
-typedef short beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
+//not currently supporting half2 data type
+/*#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+typedef short beliefPropProcessingDataType;*/
+//#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
 #endif
 
 //number of belief propagation stereo runs of same image set
