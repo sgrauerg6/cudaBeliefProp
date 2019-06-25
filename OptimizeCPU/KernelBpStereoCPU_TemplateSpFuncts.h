@@ -59,11 +59,11 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 template<> inline
 void initializeBottomLevelDataStereoPixel<short, short>(int xVal, int yVal, levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
-		initializeBottomLevelDataStereoPixel<short, float>(xVal, yVal,
-				currentLevelProperties, image1PixelsDevice,
-				image2PixelsDevice, dataCostDeviceStereoCheckerboard1,
-				dataCostDeviceStereoCheckerboard2, lambda_bp,
-				data_k_bp);
+	initializeBottomLevelDataStereoPixel<short, float>(xVal, yVal,
+			currentLevelProperties, image1PixelsDevice,
+			image2PixelsDevice, dataCostDeviceStereoCheckerboard1,
+			dataCostDeviceStereoCheckerboard2, lambda_bp,
+			data_k_bp);
 }
 
 
