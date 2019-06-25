@@ -8,6 +8,8 @@
 #ifndef SHAREDBPPROCESSINGFUNCTS_H_
 #define SHAREDBPPROCESSINGFUNCTS_H_
 
+#include "SharedUtilFuncts.h"
+
 //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 #if OPTIMIZED_INDEXING_SETTING == 1
 #define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU (yVal*width*totalNumDispVals + width*currentDisparity + xVal)
@@ -15,31 +17,12 @@
 #define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
 #endif
 
-#ifdef PROCESSING_ON_GPU
-#define ARCHITECTURE_ADDITION __device__
-#else
-#define ARCHITECTURE_ADDITION
-#endif
-
-//checks if the current point is within the image bounds
-template<typename T>
-ARCHITECTURE_ADDITION inline T getMin(T val1, T val2)
-{
-	return ((val1 < val2) ? val1 : val2);
-}
-
 //typename T is input type, typename U is output type
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(T data)
 {
 	//by default assume same data type and just return data
 	return data;
-}
-
-//checks if the current point is within the image bounds
-ARCHITECTURE_ADDITION inline bool withinImageBounds(int xVal, int yVal, int width, int height)
-{
-	return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
 }
 
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data

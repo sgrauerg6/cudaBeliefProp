@@ -25,6 +25,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda.h>
 #include "bpStereoCudaParameters.h"
 
+#define PROCESSING_ON_GPU
+#include "../SharedFuncts/SharedSmoothImageFuncts.h"
+#undef PROCESSING_ON_GPU
+
 //checks if the current point is within the image bounds
 __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int height)
 {
@@ -63,7 +67,8 @@ __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsigned
 //kernal to apply a horizontal filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
+template<typename T>
+__global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -79,15 +84,10 @@ __global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* f
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
-		float filteredPixelVal = imageFilter[0]*imagePixelsFloatToFilter[yVal*widthImages + xVal];
-
-		for (int i = 1; i < sizeFilter; i++)
-		{
-			filteredPixelVal += imageFilter[i] * (imagePixelsFloatToFilter[yVal*widthImages + max(xVal-i, 0)]
-				+ imagePixelsFloatToFilter[yVal*widthImages + min(xVal+i, widthImages-1)]);
-		}
-
-		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
+		filterImageAcrossProcessPixel<T>(xVal, yVal,
+				imagePixelsToFilter,
+				filteredImagePixels, widthImages, heightImages,
+				imageFilter, sizeFilter);
 	}
 }
 
@@ -95,7 +95,8 @@ __global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* f
 //kernal to apply a vertical filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
+template<typename T>
+__global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -111,74 +112,9 @@ __global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float*
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
-		float filteredPixelVal = imageFilter[0]*(imagePixelsFloatToFilter[yVal*widthImages + xVal]);
-
-		for (int i = 1; i < sizeFilter; i++) {
-			filteredPixelVal += imageFilter[i] * (imagePixelsFloatToFilter[max(yVal-i, 0)*widthImages + xVal]
-				+ imagePixelsFloatToFilter[min(yVal+i, heightImages-1)*widthImages + xVal]);
-		}
-
-		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
-	}
-}
-
-//kernal to apply a horizontal filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
-//the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
-{
-	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
-
-	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
-
-	int xVal = bx * BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
-
-	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
-	{
-		float filteredPixelVal = imageFilter[0] * ((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal]);
-
-		for (int i = 1; i < sizeFilter; i++) {
-			filteredPixelVal += imageFilter[i] * (((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + max(xVal-i, 0)])
-				+ ((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + min(xVal+i, widthImages-1)]));
-		}
-
-		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
-	}
-}
-
-
-//kernal to apply a vertical filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
-//the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageVertical(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
-{
-	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
-
-	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
-
-	int xVal = bx * BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
-
-	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
-	{
-		float filteredPixelVal = imageFilter[0] * ((float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal]);
-
-		for (int i = 1; i < sizeFilter; i++) {
-			filteredPixelVal += imageFilter[i] * ((float)(imagePixelsUnsignedIntToFilter[max(yVal-i, 0)*widthImages + xVal])
-				+ ((float)imagePixelsUnsignedIntToFilter[min(yVal+i, heightImages-1)*widthImages + xVal]));
-		}
-
-		filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
+		filterImageVerticalProcessPixel<T>(xVal, yVal,
+				imagePixelsToFilter,
+				filteredImagePixels, widthImages, heightImages,
+				imageFilter, sizeFilter);
 	}
 }

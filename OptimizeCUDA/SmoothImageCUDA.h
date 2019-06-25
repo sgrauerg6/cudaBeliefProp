@@ -14,8 +14,6 @@
 #include "kernalFilterHeader.cuh"
 
 #include <cuda_runtime.h>
-#include <math.h>
-#include <algorithm>
 #include "SmoothImage.h"
 
 class SmoothImageCUDA : public SmoothImage {
