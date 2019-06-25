@@ -47,10 +47,10 @@ LINK   = -lm
 
 all: impDriver 
 
-impDriver: driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o RunBpStereoSetOnGPUWithCUDA.o SmoothImage.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o ProcessOptimizedCPUBP.o
-	g++ driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o SmoothImageCPU.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o ProcessOptimizedCPUBP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+impDriver: driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
+	g++ driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
+impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ma.o
 	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
 
 DetailedTimings.o: DetailedTimings.cpp DetailedTimings.h
@@ -97,7 +97,7 @@ ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 
-driverCudaBp.o: driverCudaBp.cu bpStereoCudaParameters.h bpStereoParameters.h bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o RunBpStereoOptimizedCPU.o stereoResultsEval.o stereo.o
+driverCudaBp.o: driverCudaBp.cu bpStereoCudaParameters.h bpStereoParameters.h bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o stereoResultsEval.o stereo.o
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
 	$(NVCC) -c driverCudaBp.cu $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(COMPILE_FLAGS) 
 make clean:

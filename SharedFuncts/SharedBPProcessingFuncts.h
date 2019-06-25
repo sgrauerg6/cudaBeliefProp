@@ -15,35 +15,49 @@
 #define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
 #endif
 
+#ifdef PROCESSING_ON_GPU
+#define ARCHITECTURE_ADDITION __device__
+#else
+#define ARCHITECTURE_ADDITION
+#endif
+
+//checks if the current point is within the image bounds
+template<typename T>
+ARCHITECTURE_ADDITION inline T getMin(T val1, T val2)
+{
+	return ((val1 < val2) ? val1 : val2);
+}
+
+//typename T is input type, typename U is output type
 template<typename T, typename U>
-inline U convertValToDifferentDataTypeIfNeeded(T data)
+ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(T data)
 {
 	//by default assume same data type and just return data
 	return data;
 }
 
 //checks if the current point is within the image bounds
-inline bool withinImageBounds(int xVal, int yVal, int width, int height)
+ARCHITECTURE_ADDITION inline bool withinImageBounds(int xVal, int yVal, int width, int height)
 {
 	return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
 }
 
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
-inline int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
+ARCHITECTURE_ADDITION inline int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
 {
 	//assuming that width includes padding
 	return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
 }
 
 template<typename T>
-inline T getZeroVal()
+ARCHITECTURE_ADDITION inline T getZeroVal()
 {
 	return (T)0.0;
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<typename T>
-inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
+ARCHITECTURE_ADDITION inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	T prev;
 	for (int currentDisparity = 1; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -63,7 +77,7 @@ inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
 
 
 template<typename T>
-inline void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+ARCHITECTURE_ADDITION inline void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 	T messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], T dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 	T dst[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
 {
@@ -106,7 +120,7 @@ inline void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T m
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T, typename U>
-inline void initializeBottomLevelDataStereoPixel(int xVal, int yVal,
+ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(int xVal, int yVal,
 		levelProperties& currentLevelProperties, float* image1PixelsDevice,
 		float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1,
 		T* dataCostDeviceStereoCheckerboard2, float lambda_bp,
@@ -144,19 +158,19 @@ inline void initializeBottomLevelDataStereoPixel(int xVal, int yVal,
 
 				//data cost is equal to dataWeight value for weighting times the absolute difference in corresponding pixel intensity values capped at dataCostCap
 				if (((xVal + yVal) % 2) == 0) {
-					dataCostDeviceStereoCheckerboard1[indexVal] = convertValToDifferentDataTypeIfNeeded<U, T>((U) (lambda_bp
-							* std::min(
-									((U) abs(
+					dataCostDeviceStereoCheckerboard1[indexVal] = convertValToDifferentDataTypeIfNeeded<float, T>((float) (lambda_bp
+							* getMin<float>(
+									((float) fabs(
 											currentPixelImage1
 													- currentPixelImage2)),
-									(U) data_k_bp)));
+									data_k_bp)));
 				} else {
-					dataCostDeviceStereoCheckerboard2[indexVal] = convertValToDifferentDataTypeIfNeeded<U, T>((U) (lambda_bp
-							* std::min(
-									((U) abs(
+					dataCostDeviceStereoCheckerboard2[indexVal] = convertValToDifferentDataTypeIfNeeded<float, T>((float) (lambda_bp
+							* getMin<float>(
+									((float) abs(
 											currentPixelImage1
 													- currentPixelImage2)),
-									(U) data_k_bp)));
+									data_k_bp)));
 				}
 			}
 		} else {
@@ -185,7 +199,7 @@ inline void initializeBottomLevelDataStereoPixel(int xVal, int yVal,
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T, typename U>
-inline void initializeCurrentLevelDataStereoNoTexturesPixel(
+ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoNoTexturesPixel(
 		int xVal, int yVal, int checkerboardPart,
 		levelProperties& currentLevelProperties,
 		levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1,
@@ -243,7 +257,7 @@ inline void initializeCurrentLevelDataStereoNoTexturesPixel(
 
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
-inline void initializeMessageValsToDefaultKernelPixel(int xValInCheckerboard,  int yVal, levelProperties& currentLevelProperties, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(int xValInCheckerboard,  int yVal, levelProperties& currentLevelProperties, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
 		T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2)
 {
@@ -307,7 +321,7 @@ inline void initializeMessageValsToDefaultKernelPixel(int xValInCheckerboard,  i
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 //and the output message values are stored in local memory
 template<typename T>
-inline void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
 								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
 {
 	msgStereo<T>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
@@ -329,7 +343,7 @@ inline void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DISPAR
 //this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
 //this function uses linear memory bound to textures to access the current data and message values
 template<typename T, typename U>
-inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
+ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
 		int xVal, int yVal, int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
@@ -423,7 +437,7 @@ inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPix
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
-inline void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel(int xVal, int yVal,
+ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel(int xVal, int yVal,
 		int checkerboardPart, levelProperties& currentLevelProperties,
 		levelProperties& nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -517,7 +531,7 @@ inline void copyPrevLevelToNextLevelBPCheckerboardStereoNoTexturesPixel(int xVal
 }
 
 template<typename T, typename U>
-inline void retrieveOutputDisparityCheckerboardStereoOptimizedPixel(int xVal, int yVal,
+ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptimizedPixel(int xVal, int yVal,
 		levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1,
 		T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1,
 		T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1,
@@ -679,7 +693,7 @@ inline void retrieveOutputDisparityCheckerboardStereoOptimizedPixel(int xVal, in
 
 
 template<typename T>
-inline void printDataAndMessageValsAtPointKernel(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
@@ -749,7 +763,7 @@ inline void printDataAndMessageValsAtPointKernel(int xVal, int yVal, levelProper
 }
 
 template<typename T>
-inline void printDataAndMessageValsToPointKernel(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+ARCHITECTURE_ADDITION inline void printDataAndMessageValsToPointKernel(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
