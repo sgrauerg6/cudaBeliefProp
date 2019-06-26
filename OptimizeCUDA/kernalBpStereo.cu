@@ -24,11 +24,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 #undef PROCESSING_ON_GPU
 
+//#define USE_SHARED_MEMORY
+#ifdef USE_SHARED_MEMORY
+#include "KernalBpStereoUseSharedMemory.cu"
+#endif
 
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
-__device__ void msgStereo<half>(int xVal, int yVal,
+__device__ void msgStereo<half, half>(int xVal, int yVal,
 		levelProperties& currentLevelProperties,
 		half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
