@@ -210,7 +210,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, le
 	}
 
 	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
-	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)NUM_POSSIBLE_DISPARITY_VALUES));
+	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel,
