@@ -75,7 +75,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
-template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<short,
+template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<float16_t,
 		float16x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, float16_t* inData) {
 	return vld1_f16(
@@ -95,7 +95,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
-template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<short,
+template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16_t,
 		float16x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, float16_t* inData) {
 	return vld1_f16(
@@ -111,7 +111,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataAligned<float,
 	vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void KernelBpStereoCPU::storePackedDataAligned<short,
+template<> inline void KernelBpStereoCPU::storePackedDataAligned<float16_t,
 		float16x4_t>(int indexDataStore, float16_t* locationDataStore,
 				float16x4_t dataToStore) {
 	vst1_f16(&locationDataStore[indexDataStore], dataToStore);
@@ -123,7 +123,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float,
 	vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<short,
+template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float16_t,
 		float16x4_t>(int indexDataStore, float16_t* locationDataStore,
 				float16x4_t dataToStore) {
 	vst1_f16(&locationDataStore[indexDataStore], dataToStore);
