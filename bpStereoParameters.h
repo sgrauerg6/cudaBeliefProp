@@ -302,9 +302,15 @@ typedef short beliefPropProcessingDataType;*/
 #define BYTES_ALIGN_MEMORY BYTES_ALIGN_MEMORY_FROM_PYTHON
 #define NUM_DATA_ALIGN_WIDTH NUM_DATA_ALIGN_WIDTH_FROM_PYTHON
 #else
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_512
+//avx512 requires data to be aligned on 64 bytes
 #define BYTES_ALIGN_MEMORY 64
 #define NUM_DATA_ALIGN_WIDTH 16
+#else
+#define BYTES_ALIGN_MEMORY 32
+#define NUM_DATA_ALIGN_WIDTH 8
 #endif
+#endif //CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 //structure to store the settings for the number of levels and iterations
 typedef struct
