@@ -109,22 +109,22 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataUnaligned<short, __m1
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, __m256 >(
 		int indexDataStore, float* locationDataStore, __m256 dataToStore) {
-	return _mm256_store_ps(&locationDataStore[indexDataStore], dataToStore);
+	_mm256_store_ps(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<short, __m128i >(
 		int indexDataStore, short* locationDataStore, __m128i dataToStore) {
-	return _mm_store_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
+	_mm_store_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float, __m256 >(
 		int indexDataStore, float* locationDataStore,__m256 dataToStore) {
-	return _mm256_storeu_ps(&locationDataStore[indexDataStore], dataToStore);
+	_mm256_storeu_ps(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<short, __m128i >(
 		int indexDataStore, short* locationDataStore, __m128i dataToStore) {
-	return _mm_storeu_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
+	_mm_storeu_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
 }
 
 template<> inline

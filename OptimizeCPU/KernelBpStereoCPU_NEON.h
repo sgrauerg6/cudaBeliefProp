@@ -108,25 +108,25 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<short,
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float,
 		float32x4_t>(int indexDataStore, float* locationDataStore,
 				float32x4_t dataToStore) {
-	return vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
+	vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<short,
 		float16x4_t>(int indexDataStore, short* locationDataStore,
 				float16x4_t dataToStore) {
-	return vst1_f16(&locationDataStore[indexDataStore], dataToStore);
+	vst1_f16(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float,
 		float32x4_t>(int indexDataStore, float* locationDataStore,
 				float32x4_t dataToStore) {
-	return vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
+	vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<short,
 		float16x4_t>(int indexDataStore, short* locationDataStore,
 				float16x4_t dataToStore) {
-	return vst1_f16(&locationDataStore[indexDataStore], dataToStore);
+	vst1_f16(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline float32x4_t KernelBpStereoCPU::createSIMDVectorSameData<
