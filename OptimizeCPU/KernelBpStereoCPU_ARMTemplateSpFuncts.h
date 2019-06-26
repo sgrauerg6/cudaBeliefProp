@@ -64,10 +64,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 				offsetData, dataAligned);
 }
 
-
-
 template<> inline
-void KernelBpStereoCPU::initializeBottomLevelDataStereoPixel<float16_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, float16_t* dataCostDeviceStereoCheckerboard1, float16_t* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
+void KernelBpStereoCPU::initializeBottomLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, float16_t* dataCostDeviceStereoCheckerboard1, float16_t* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
 	initializeBottomLevelDataStereoPixel<float16_t, float>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
@@ -78,7 +76,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoPixel<float16_t>(int xVal
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoPixel<float16_t>(int xVal, int yVal, int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
 {
 	initializeCurrentLevelDataStereoPixel<float16_t, float>(
 			xVal, yVal, checkerboardPart,
@@ -89,7 +87,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoPixel<float16_t>(int xVa
 }
 
 template<> inline
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1, float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1, float16_t* messageUPrevStereoCheckerboard2, float16_t* messageDPrevStereoCheckerboard2, float16_t* messageLPrevStereoCheckerboard2, float16_t* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1, float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1, float16_t* messageUPrevStereoCheckerboard2, float16_t* messageDPrevStereoCheckerboard2, float16_t* messageLPrevStereoCheckerboard2, float16_t* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
 	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1, messageUPrevStereoCheckerboard2, messageDPrevStereoCheckerboard2, messageLPrevStereoCheckerboard2, messageRPrevStereoCheckerboard2, disparityBetweenImagesDevice);
 }
