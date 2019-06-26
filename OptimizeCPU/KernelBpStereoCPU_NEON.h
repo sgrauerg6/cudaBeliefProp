@@ -12,7 +12,7 @@
 #include <arm_neon.h>
 
 template<> inline
-void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 		float>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
@@ -39,7 +39,7 @@ void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 }
 
 template<> inline
-void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 		short>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
@@ -65,7 +65,7 @@ void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 			messageRDeviceCurrentCheckerboard2, disc_k_bp, numDataInSIMDVector);
 }
 
-template<> inline float32x4_t loadPackedDataAligned<float,
+template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float,
 		float32x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, float* inData) {
 	return vld1q_f32(
@@ -75,7 +75,7 @@ template<> inline float32x4_t loadPackedDataAligned<float,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
-template<> inline float16x4_t loadPackedDataAligned<short,
+template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<short,
 		float16x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, short* inData) {
 	return vld1_f16(
@@ -85,7 +85,7 @@ template<> inline float16x4_t loadPackedDataAligned<short,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
-template<> inline float32x4_t loadPackedDataUnaligned<float,
+template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float,
 		float32x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, float* inData) {
 	return vld1q_f32(
@@ -95,7 +95,7 @@ template<> inline float32x4_t loadPackedDataUnaligned<float,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
-template<> inline float16x4_t loadPackedDataUnaligned<short,
+template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<short,
 		float16x4_t>(int x, int y, int currentDisparity,
 		levelProperties& currentLevelProperties, short* inData) {
 	return vld1_f16(
@@ -105,42 +105,42 @@ template<> inline float16x4_t loadPackedDataUnaligned<short,
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
-template<> inline void storePackedDataAligned<float,
+template<> inline void KernelBpStereoCPU::storePackedDataAligned<float,
 		float32x4_t>(int indexDataStore, float* locationDataStore,
 		__m512 dataToStore) {
 	return vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void storePackedDataAligned<short,
+template<> inline void KernelBpStereoCPU::storePackedDataAligned<short,
 		float16x4_t>(int indexDataStore, short* locationDataStore,
 		__m128i dataToStore) {
 	return vst1_f16(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void storePackedDataUnaligned<float,
+template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float,
 		float32x4_t>(int indexDataStore, float* locationDataStore,
 		__m512 dataToStore) {
 	return vst1q_f32(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void storePackedDataUnaligned<short,
+template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<short,
 		float16x4_t>(int indexDataStore, short* locationDataStore,
 		__m128i dataToStore) {
 	return vst1_f16(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline float32x4_t createSIMDVectorSameData<
+template<> inline float32x4_t KernelBpStereoCPU::createSIMDVectorSameData<
 		float32x4_t>(float data) {
 	return vdupq_n_f32(data);
 }
 
-template<> inline float16x4_t createSIMDVectorSameData<
+template<> inline float16x4_t KernelBpStereoCPU::createSIMDVectorSameData<
 		float16x4_t>(float data) {
 	return __mm512_cvtps_ph(_mm512_set1_ps(disc_k_bp), 0);
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
-void dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DISPARITY_VALUES])
+void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	float32x4_t prev;
 	float32x4_t vectorAllOneVal = vdupq_n_f32(1.0f);
@@ -164,7 +164,7 @@ void dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DISPARITY_VALUES])
 }
 
 template<> inline
-void msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float32x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float32x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		float32x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		float* dstMessageArray, float32x4_t disc_k_bp, bool dataAligned)
 {
@@ -243,7 +243,7 @@ void msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, levelProperties& curr
 
 // compute current message
 template<> inline
-void msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		float16x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 		short* dstMessageArray, float16x4_t disc_k_bp, bool dataAligned)
 {
