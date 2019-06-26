@@ -332,7 +332,7 @@ ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(int 
 //and the output message values are stored in local memory
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, int yVal, levelProperties& currentLevelProperties, U prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], U dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-								T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray, T disc_k_bp, bool dataAligned)
+								T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray, U disc_k_bp, bool dataAligned)
 {
 	msgStereo<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevLMessage, prevRMessage, dataMessage,
 			currentUMessageArray, disc_k_bp, dataAligned);
