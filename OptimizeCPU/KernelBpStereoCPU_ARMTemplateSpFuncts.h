@@ -23,7 +23,7 @@ float16_t getZeroVal<float16_t>()
 }
 
 template<> inline
-float convertValToDifferentDataTypeIfNeeded<float16_t, float>(float16_t)
+float convertValToDifferentDataTypeIfNeeded<float16_t, float>(float16_t valToConvert)
 {
 	return (float)valToConvert;
 }
