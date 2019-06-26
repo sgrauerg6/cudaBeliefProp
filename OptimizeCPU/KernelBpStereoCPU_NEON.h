@@ -40,7 +40,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 
 template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
-		short>(int checkerboardToUpdate,
+float16_t>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
 		short* messageUDeviceCurrentCheckerboard1,
@@ -53,7 +53,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
 	int numDataInSIMDVector = 4;
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<
-			short, float16x4_t>(checkerboardToUpdate, currentLevelProperties,
+			float16_t, float16x4_t>(checkerboardToUpdate, currentLevelProperties,
 			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			messageUDeviceCurrentCheckerboard1,
 			messageDDeviceCurrentCheckerboard1,
