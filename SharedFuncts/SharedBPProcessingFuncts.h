@@ -39,7 +39,12 @@ ARCHITECTURE_ADDITION inline T getZeroVal()
 	return (T)0.0;
 }
 
+//avx512 requires data to be aligned on 64 bytes (16 float values)
+#if CPU_OPTIMIZATION_SETTING == USE_AVX_512
 #define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
+#else
+#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 8
+#endif
 
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
 inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInSIMDVector)

@@ -163,22 +163,23 @@ void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DIS
 	}
 }
 
-// compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoCPU<float32x4_t>(float32x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float32x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		float32x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		float32x4_t dst[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t disc_k_bp)
+		float* dstMessageArray, float32x4_t disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	float32x4_t minimum = vdupq_n_f32(INF_BP);
+	float32x4_t dst[NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
+		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
 		dst[currentDisparity] = vaddq_f32(messageValsNeighbor1[currentDisparity], messageValsNeighbor2[currentDisparity]);
 		dst[currentDisparity] = vaddq_f32(dst[currentDisparity], messageValsNeighbor3[currentDisparity]);
 		dst[currentDisparity] = vaddq_f32(dst[currentDisparity], dataCosts[currentDisparity]);
-		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
+
 		//if (dst[currentDisparity] < minimum)
 		//	minimum = dst[currentDisparity];
 		minimum = vminnmq_f32(minimum, dst[currentDisparity]);
@@ -198,9 +199,9 @@ void KernelBpStereoCPU::msgStereoCPU<float32x4_t>(float32x4_t messageValsNeighbo
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		/*if (minimum < dst[currentDisparity])
-		 {
-		 dst[currentDisparity] = minimum;
-		 }*/
+		{
+			dst[currentDisparity] = minimum;
+		}*/
 		dst[currentDisparity] = vminnmq_f32(minimum, dst[currentDisparity]);
 
 		//valToNormalize += dst[currentDisparity];
@@ -208,20 +209,43 @@ void KernelBpStereoCPU::msgStereoCPU<float32x4_t>(float32x4_t messageValsNeighbo
 	}
 
 	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
-	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)NUM_POSSIBLE_DISPARITY_VALUES));
+	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)NUM_POSSIBLE_DISPARITY_VALUES));
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel,
+				currentLevelProperties.heightLevel, 0,
+				NUM_POSSIBLE_DISPARITY_VALUES);
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
-		dst[currentDisparity] = vsubq_f32(dst[currentDisparity], valToNormalize);
+		dst[currentDisparity] = vsubq_f32(dst[currentDisparity],
+				valToNormalize);
+		if (dataAligned)
+		{
+			storePackedDataAligned<float, float32x4_t >(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		} else
+		{
+			storePackedDataUnaligned<float, float32x4_t >(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+#if OPTIMIZED_INDEXING_SETTING == 1
+		destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+		destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1
 	}
 }
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoCPU<float16x4_t>(float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		float16x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		float16x4_t dst[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t disc_k_bp)
+		short* dstMessageArray, float16x4_t disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
@@ -230,10 +254,11 @@ void KernelBpStereoCPU::msgStereoCPU<float16x4_t>(float16x4_t messageValsNeighbo
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
-		dstFloat[currentDisparity] = vaddq_f32(vcvt_f32_f16(messageValsNeighbor1[currentDisparity]), vcvt_f32_f16(messageValsNeighbor2[currentDisparity]));
-		dstFloat[currentDisparity] = vaddq_f32(dstFloat[currentDisparity]), vcvt_f32_f16(messageValsNeighbor3[currentDisparity]));
-		dstFloat[currentDisparity] = vaddq_f32(dstFloat[currentDisparity]), vcvt_f32_f16(dataCosts[currentDisparity]));
 		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
+		dstFloat[currentDisparity] = vaddq_f32((vcvt_f32_f16(messageValsNeighbor1[currentDisparity])), (vcvt_f32_f16(messageValsNeighbor2[currentDisparity])));
+		dstFloat[currentDisparity] = vaddq_f32(dstFloat[currentDisparity], vcvt_f32_f16(messageValsNeighbor3[currentDisparity]));
+		dstFloat[currentDisparity] = vaddq_f32(dstFloat[currentDisparity], vcvt_f32_f16(dataCosts[currentDisparity]));
+
 		//if (dst[currentDisparity] < minimum)
 		//	minimum = dst[currentDisparity];
 		minimum = vminnmq_f32(minimum, dstFloat[currentDisparity]);
@@ -244,7 +269,7 @@ void KernelBpStereoCPU::msgStereoCPU<float16x4_t>(float16x4_t messageValsNeighbo
 
 	// truncate
 	//minimum += disc_k_bp;
-	minimum = vaddq_f32(minimum, disc_k_bp);
+	minimum = vaddq_f32(minimum, vcvt_f32_f16(disc_k_bp));
 
 	// normalize
 	//T valToNormalize = 0;
@@ -253,9 +278,9 @@ void KernelBpStereoCPU::msgStereoCPU<float16x4_t>(float16x4_t messageValsNeighbo
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		/*if (minimum < dst[currentDisparity])
-		 {
-		 dst[currentDisparity] = minimum;
-		 }*/
+		{
+			dst[currentDisparity] = minimum;
+		}*/
 		dstFloat[currentDisparity] = vminnmq_f32(minimum, dstFloat[currentDisparity]);
 
 		//valToNormalize += dst[currentDisparity];
@@ -265,10 +290,36 @@ void KernelBpStereoCPU::msgStereoCPU<float16x4_t>(float16x4_t messageValsNeighbo
 	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
 	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)NUM_POSSIBLE_DISPARITY_VALUES));
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+			currentLevelProperties.paddedWidthCheckerboardLevel,
+			currentLevelProperties.heightLevel, 0,
+			NUM_POSSIBLE_DISPARITY_VALUES);
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
-		dst[currentDisparity] = vcvt_f16_f32( vsubq_f32(dstFloat[currentDisparity], valToNormalize));
+		dstFloat[currentDisparity] = vsubq_f32(dstFloat[currentDisparity],
+				valToNormalize);
+		if (dataAligned)
+		{
+			storePackedDataAligned<short, __m128i >(destMessageArrayIndex,
+					dstMessageArray,
+					vcvt_f16_f32(dstFloat[currentDisparity], 0));
+		}
+		else
+		{
+			storePackedDataUnaligned<short, __m128i >(destMessageArrayIndex,
+					dstMessageArray,
+					vcvt_f16_f32(dstFloat[currentDisparity], 0));
+		}
+#if OPTIMIZED_INDEXING_SETTING == 1
+		destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+		destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1
 	}
 }
 
