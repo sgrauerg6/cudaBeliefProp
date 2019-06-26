@@ -2,7 +2,7 @@
 //so currently not using except for testing
 
 //#include "kernalBpStereoHeader.cuh"
-#define PROCESSING_ON_GPU
+/*#define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 #undef PROCESSING_ON_GPU
 
@@ -234,9 +234,9 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-/*#if (NUM_POSSIBLE_DISPARITY_VALUES - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
-	dtStereo<float>(dst);
-#else*/
+//#if (NUM_POSSIBLE_DISPARITY_VALUES - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
+//	dtStereo<float>(dst);
+//#else
 	dtStereoSharedMemory<float>(dst, dstSharedMem);
 //#endif
 
@@ -323,4 +323,4 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 		destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
 	}
-}
+}*/
