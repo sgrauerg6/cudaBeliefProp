@@ -307,13 +307,13 @@ void KernelBpStereoCPU::msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, le
 		{
 			storePackedDataAligned<short, float16x4_t >(destMessageArrayIndex,
 					dstMessageArray,
-					vcvt_f16_f32(dstFloat[currentDisparity], 0));
+					vcvt_f16_f32(dstFloat[currentDisparity]));
 		}
 		else
 		{
 			storePackedDataUnaligned<short, float16x4_t >(destMessageArrayIndex,
 					dstMessageArray,
-					vcvt_f16_f32(dstFloat[currentDisparity], 0));
+					vcvt_f16_f32(dstFloat[currentDisparity]));
 		}
 #if OPTIMIZED_INDEXING_SETTING == 1
 		destMessageArrayIndex +=
