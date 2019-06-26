@@ -137,6 +137,7 @@ template<> inline float32x4_t KernelBpStereoCPU::createSIMDVectorSameData<
 template<> inline float16x4_t KernelBpStereoCPU::createSIMDVectorSameData<
 		float16x4_t>(float data) {
 	return __mm512_cvtps_ph(_mm512_set1_ps(disc_k_bp), 0);
+}
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
