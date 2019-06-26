@@ -29,7 +29,7 @@ float convertValToDifferentDataTypeIfNeeded<float16_t, float>(float16_t valToCon
 }
 
 template<> inline
-float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(float data)
+float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(float valToConvert)
 {
 	//seems like simple cast function works
 	return (float16_t)valToConvert;
