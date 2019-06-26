@@ -72,7 +72,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties& currentLevelProperties, U messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 	U messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-	T* dstMessageArray, T disc_k_bp, bool dataAligned)
+	T* dstMessageArray, U disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	U minimum = INF_BP;
@@ -93,7 +93,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties&
 	minimum += disc_k_bp;
 
 	// normalize
-	U valToNormalize = 0;
+	U valToNormalize = (U)0.0;
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
@@ -105,7 +105,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties&
 		valToNormalize += dst[currentDisparity];
 	}
 
-	valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
+	valToNormalize /= ((U)NUM_POSSIBLE_DISPARITY_VALUES);
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 			currentLevelProperties.paddedWidthCheckerboardLevel,
