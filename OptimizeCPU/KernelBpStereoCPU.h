@@ -48,10 +48,10 @@ public:
 	static void dtStereoSIMD(T f[NUM_POSSIBLE_DISPARITY_VALUES]);
 
 	// compute current message
-	template<typename T>
-	static void msgStereoSIMD(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		T messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], T dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		T dst[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp);
+	template<typename T, typename U>
+	static void msgStereoSIMD(int xVal, int yVal, levelProperties& currentLevelProperties, U messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+		U messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+		T* dstMessageArray, U disc_k_bp, bool dataAligned);
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -120,14 +120,18 @@ public:
 			T* messageLDeviceCurrentCheckerboard2,
 			T* messageRDeviceCurrentCheckerboard2);
 
-#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
-
-	//inline function to check if data is aligned at xValDataStart for avx loads/stores that require alignment
-	static bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInAVXVector)
-	{
-		//assuming that the padded checkerboard width divides evenly by NUM_DATA_ALIGN_WIDTH_FROM_PYTHON (if that's not the case it's a bug)
-		return (((xValDataStart % numDataInAVXVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
-	}
+	//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
+	//and the output message values are save to output message arrays
+	template<typename T, typename U>
+	static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(int xValStartProcessing,
+			int yVal, levelProperties& currentLevelProperties,
+			U prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+			U prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+			U prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+			U prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+			U dataMessage[NUM_POSSIBLE_DISPARITY_VALUES], T* currentUMessageArray,
+			T* currentDMessageArray, T* currentLMessageArray,
+			T* currentRMessageArray, U disc_k_bp_vector, bool dataAlignedAtxValStartProcessing);
 
 	template<typename T>
 		static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(

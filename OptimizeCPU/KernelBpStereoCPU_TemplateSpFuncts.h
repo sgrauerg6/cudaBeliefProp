@@ -37,7 +37,7 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 		short* messageDDeviceCurrentCheckerboard2,
 		short* messageLDeviceCurrentCheckerboard2,
 		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
-		int offsetData)
+		int offsetData, bool dataAligned)
 {
 	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, float>(
 			xVal, yVal, checkerboardToUpdate,
@@ -51,7 +51,7 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 			messageDDeviceCurrentCheckerboard2,
 			messageLDeviceCurrentCheckerboard2,
 			messageRDeviceCurrentCheckerboard2, disc_k_bp,
-			offsetData);
+			offsetData, dataAligned);
 }
 
 

@@ -39,6 +39,15 @@ ARCHITECTURE_ADDITION inline T getZeroVal()
 	return (T)0.0;
 }
 
+#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
+
+//inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
+inline bool MemoryAlignedAtDataStart(int xValDataStart, int numDataInSIMDVector)
+{
+	//assuming that the padded checkerboard width divides evenly by NUM_DATA_ALIGN_WIDTH_FROM_PYTHON (if that's not the case it's a bug)
+	return (((xValDataStart % numDataInSIMDVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+}
+
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<typename T>
 ARCHITECTURE_ADDITION inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
@@ -60,13 +69,15 @@ ARCHITECTURE_ADDITION inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
 }
 
 
-template<typename T>
-ARCHITECTURE_ADDITION inline void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], T messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-	T messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], T dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-	T dst[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
+template<typename T, typename U>
+ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties& currentLevelProperties, U messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+	U messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+	T* dstMessageArray, T disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
-	T minimum = INF_BP;
+	U minimum = INF_BP;
+
+	U dst[NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
@@ -76,7 +87,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<T>(dst);
+	dtStereo<U>(dst);
 
 	// truncate
 	minimum += disc_k_bp;
@@ -96,8 +107,21 @@ ARCHITECTURE_ADDITION inline void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_
 
 	valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
 
+	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+			currentLevelProperties.paddedWidthCheckerboardLevel,
+			currentLevelProperties.heightLevel, 0,
+			NUM_POSSIBLE_DISPARITY_VALUES);
+
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	{
 		dst[currentDisparity] -= valToNormalize;
+		dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
+#if OPTIMIZED_INDEXING_SETTING == 1
+		destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+		destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1
+	}
 }
 
 
@@ -306,21 +330,21 @@ ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(int 
 
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 //and the output message values are stored in local memory
-template<typename T>
-ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp)
+template<typename T, typename U>
+ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, int yVal, levelProperties& currentLevelProperties, U prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], U dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+								T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray, T disc_k_bp, bool dataAligned)
 {
-	msgStereo<T>(prevUMessage, prevLMessage, prevRMessage, dataMessage,
-			currentUMessage, disc_k_bp);
+	msgStereo<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevLMessage, prevRMessage, dataMessage,
+			currentUMessageArray, disc_k_bp, dataAligned);
 
-	msgStereo<T>(prevDMessage, prevLMessage, prevRMessage, dataMessage,
-			currentDMessage, disc_k_bp);
+	msgStereo<T, U>(xVal, yVal, currentLevelProperties, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+			currentDMessageArray, disc_k_bp, dataAligned);
 
-	msgStereo<T>(prevUMessage, prevDMessage, prevRMessage, dataMessage,
-			currentRMessage, disc_k_bp);
+	msgStereo<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage, prevRMessage, dataMessage,
+			currentRMessageArray, disc_k_bp, dataAligned);
 
-	msgStereo<T>(prevUMessage, prevDMessage, prevLMessage, dataMessage,
-			currentLMessage, disc_k_bp);
+	msgStereo<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage, prevLMessage, dataMessage,
+			currentLMessageArray, disc_k_bp, dataAligned);
 }
 
 
@@ -341,9 +365,8 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 		T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2,
 		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
-		int offsetData)
+		int offsetData, bool dataAligned)
 {
-	int indexWriteTo;
 	int checkerboardAdjustment;
 
 	//checkerboardAdjustment used for indexing into current checkerboard to update
@@ -388,33 +411,26 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			}
 		}
 
-		U currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES];
-		U currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES];
-		U currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES];
-		U currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES];
-
 		//uses the previous message values and data cost to calculate the current message values and store the results
-		runBPIterationInOutDataInLocalMem<U>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-							currentUMessage, currentDMessage, currentLMessage, currentRMessage, (U)disc_k_bp);
-
-		//write the calculated message values to global memory
-		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+		if (checkerboardToUpdate == CHECKERBOARD_PART_1)
 		{
-			indexWriteTo = retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
-			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
-			{
-				messageUDeviceCurrentCheckerboard1[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentUMessage[currentDisparity]);
-				messageDDeviceCurrentCheckerboard1[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentDMessage[currentDisparity]);
-				messageLDeviceCurrentCheckerboard1[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentLMessage[currentDisparity]);
-				messageRDeviceCurrentCheckerboard1[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentRMessage[currentDisparity]);
-			}
-			else //checkerboardToUpdate == CHECKERBOARD_PART_2
-			{
-				messageUDeviceCurrentCheckerboard2[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentUMessage[currentDisparity]);
-				messageDDeviceCurrentCheckerboard2[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentDMessage[currentDisparity]);
-				messageLDeviceCurrentCheckerboard2[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentLMessage[currentDisparity]);
-				messageRDeviceCurrentCheckerboard2[indexWriteTo] = convertValToDifferentDataTypeIfNeeded<U, T>(currentRMessage[currentDisparity]);
-			}
+			runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage,
+					prevLMessage, prevRMessage, dataMessage,
+					messageUDeviceCurrentCheckerboard1,
+					messageDDeviceCurrentCheckerboard1,
+					messageLDeviceCurrentCheckerboard1,
+					messageRDeviceCurrentCheckerboard1, (U) disc_k_bp,
+					dataAligned);
+		}
+		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		{
+			runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage,
+					prevLMessage, prevRMessage, dataMessage,
+					messageUDeviceCurrentCheckerboard2,
+					messageDDeviceCurrentCheckerboard2,
+					messageLDeviceCurrentCheckerboard2,
+					messageRDeviceCurrentCheckerboard2, (U) disc_k_bp,
+					dataAligned);
 		}
 	}
 }

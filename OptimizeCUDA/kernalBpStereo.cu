@@ -28,22 +28,32 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
-__device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		half messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], half dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		half dst[NUM_POSSIBLE_DISPARITY_VALUES], half disc_k_bp)
+__device__ void msgStereo<half>(int xVal, int yVal,
+		levelProperties& currentLevelProperties,
+		half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
+		half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+		half messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],
+		half dataCosts[NUM_POSSIBLE_DISPARITY_VALUES], half* dstMessageArray,
+		half disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	half minimum = INF_BP;
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
-	{
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
+	half dst[NUM_POSSIBLE_DISPARITY_VALUES];
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++) {
+		dst[currentDisparity] = messageValsNeighbor1[currentDisparity]
+				+ messageValsNeighbor2[currentDisparity]
+				+ messageValsNeighbor3[currentDisparity]
+				+ dataCosts[currentDisparity];
 		if (dst[currentDisparity] < minimum)
 			minimum = dst[currentDisparity];
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half>(dst);
+	dtStereo < half > (dst);
 
 	// truncate
 	minimum += disc_k_bp;
@@ -51,7 +61,9 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 	// normalize
 	half valToNormalize = 0;
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++)
 	{
 		if (minimum < dst[currentDisparity])
 		{
@@ -68,23 +80,34 @@ __device__ void msgStereo<half>(half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY
 	{
 		for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
-				currentDisparity++)
-		{
-			dst[currentDisparity] = (half)0.0;
+				currentDisparity++) {
+			dst[currentDisparity] = (half) 0.0;
 		}
 	}
 	else
 	{
 		valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
 
+		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel,
+				currentLevelProperties.heightLevel, 0,
+				NUM_POSSIBLE_DISPARITY_VALUES);
+
 		for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++)
 		{
 			dst[currentDisparity] -= valToNormalize;
-		}
+			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
+#if OPTIMIZED_INDEXING_SETTING == 1
+			destMessageArrayIndex +=
+					currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+			destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1		}
 	}
 }
+
 
 
 
@@ -177,7 +200,7 @@ template<typename T>
 __global__ void runBPIterationUsingCheckerboardUpdates(int checkerboardToUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-								T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
+								T* messageRDeviceCurrentCheckerboard2, float disc_k_bp, bool dataAligned)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -204,7 +227,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(int checkerboardToUpdate,
 				messageDDeviceCurrentCheckerboard2,
 				messageLDeviceCurrentCheckerboard2,
 				messageRDeviceCurrentCheckerboard2, disc_k_bp,
-				0);
+				0, dataAligned);
 	}
 }
 

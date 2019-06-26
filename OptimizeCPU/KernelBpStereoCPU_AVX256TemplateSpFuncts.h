@@ -193,9 +193,9 @@ void KernelBpStereoCPU::dtStereoSIMD<__m256d>(__m256d f[NUM_POSSIBLE_DISPARITY_V
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<__m128i>(__m128i messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m128i messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<short, __m128i>(int xVal, int yVal, levelProperties& currentLevelProperties, __m128i messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m128i messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m128i messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m128i dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m128i dst[NUM_POSSIBLE_DISPARITY_VALUES], __m128i disc_k_bp)
+		short* dstMessageArray, __m128i disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
@@ -241,22 +241,49 @@ void KernelBpStereoCPU::msgStereoSIMD<__m128i>(__m128i messageValsNeighbor1[NUM_
 	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
 	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)NUM_POSSIBLE_DISPARITY_VALUES));
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+			currentLevelProperties.paddedWidthCheckerboardLevel,
+			currentLevelProperties.heightLevel, 0,
+			NUM_POSSIBLE_DISPARITY_VALUES);
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
-		dst[currentDisparity] = _mm256_cvtps_ph(_mm256_sub_ps(dstFloat[currentDisparity], valToNormalize), 0);
+		dstFloat[currentDisparity] = _mm256_sub_ps(dstFloat[currentDisparity],
+				valToNormalize);
+		if (dataAligned)
+		{
+			storePackedDataAligned<short, __m128i >(destMessageArrayIndex,
+					dstMessageArray,
+					_mm256_cvtps_ph(dstFloat[currentDisparity], 0));
+		}
+		else
+		{
+			storePackedDataUnaligned<short, __m128i >(destMessageArrayIndex,
+					dstMessageArray,
+					_mm256_cvtps_ph(dstFloat[currentDisparity], 0));
+		}
+#if OPTIMIZED_INDEXING_SETTING == 1
+		destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+		destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1
 	}
 }
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<__m256>(__m256 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<float, __m256>(int xVal, int yVal, levelProperties& currentLevelProperties, __m256 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m256 dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256 disc_k_bp)
+		float* dstMessageArray, __m256 disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	__m256 minimum = _mm256_set1_ps(INF_BP);
+	__m256 dst[NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
@@ -297,23 +324,47 @@ void KernelBpStereoCPU::msgStereoSIMD<__m256>(__m256 messageValsNeighbor1[NUM_PO
 	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
 	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)NUM_POSSIBLE_DISPARITY_VALUES));
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel,
+				currentLevelProperties.heightLevel, 0,
+				NUM_POSSIBLE_DISPARITY_VALUES);
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
-		dst[currentDisparity] = _mm256_sub_ps(dst[currentDisparity], valToNormalize);
+		dst[currentDisparity] = _mm256_sub_ps(dst[currentDisparity],
+				valToNormalize);
+		if (dataAligned)
+		{
+			storePackedDataAligned<float, __m256 >(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		} else
+		{
+			storePackedDataUnaligned<float, __m256 >(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+#if OPTIMIZED_INDEXING_SETTING == 1
+		destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+		destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1
 	}
 }
 
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<__m256d>(__m256d messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256d messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<double, __m256d>(int xVal, int yVal, levelProperties& currentLevelProperties, __m256d messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], __m256d messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		__m256d messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], __m256d dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m256d dst[NUM_POSSIBLE_DISPARITY_VALUES], __m256d disc_k_bp)
+		double* dstMessageArray, __m256d disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	__m256d minimum = _mm256_set1_pd(INF_BP);
+	__m256d dst[NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
@@ -352,12 +403,37 @@ void KernelBpStereoCPU::msgStereoSIMD<__m256d>(__m256d messageValsNeighbor1[NUM_
 	}
 
 	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
-	valToNormalize = _mm256_div_pd(valToNormalize, _mm256_set1_pd((double)NUM_POSSIBLE_DISPARITY_VALUES));
+	valToNormalize = _mm256_div_pd(valToNormalize,
+			_mm256_set1_pd((double) NUM_POSSIBLE_DISPARITY_VALUES));
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel,
+				currentLevelProperties.heightLevel, 0,
+				NUM_POSSIBLE_DISPARITY_VALUES);
+
+	for (int currentDisparity = 0;
+			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
-		dst[currentDisparity] = _mm256_sub_pd(dst[currentDisparity], valToNormalize);
+		dst[currentDisparity] = _mm256_sub_pd(dst[currentDisparity],
+				valToNormalize);
+		if (dataAligned)
+		{
+			storePackedDataAligned<double, __m256d >(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+		else
+		{
+			storePackedDataUnaligned<double, __m256d >(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+#if OPTIMIZED_INDEXING_SETTING == 1
+		destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+		destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1
 	}
 }
 

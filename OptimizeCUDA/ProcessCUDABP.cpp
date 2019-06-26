@@ -241,6 +241,10 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 			(float) (currentLevelPropertes.widthCheckerboardLevel) / (float) threads.x); //only updating half at a time
 	grid.y = (unsigned int) ceil((float) currentLevelPropertes.heightLevel / (float) threads.y);
 
+	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
+	//still is a check if start of row is aligned
+	bool dataAligned = MemoryAlignedAtDataStart(0, 1);
+
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
@@ -267,7 +271,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 				messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
 				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
-				algSettings.disc_k_bp);
+				algSettings.disc_k_bp, dataAligned);
 
 		(cudaDeviceSynchronize());
 		gpuErrchk( cudaPeekAtLastError() );

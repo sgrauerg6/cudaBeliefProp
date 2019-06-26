@@ -47,7 +47,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 		float16_t* messageDDeviceCurrentCheckerboard2,
 		float16_t* messageLDeviceCurrentCheckerboard2,
 		float16_t* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
-		int offsetData)
+		int offsetData, bool dataAligned)
 {
 	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float>(
 				xVal, yVal, checkerboardToUpdate,
@@ -61,7 +61,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAn
 				messageDDeviceCurrentCheckerboard2,
 				messageLDeviceCurrentCheckerboard2,
 				messageRDeviceCurrentCheckerboard2, disc_k_bp,
-				offsetData);
+				offsetData, dataAligned);
 }
 
 
