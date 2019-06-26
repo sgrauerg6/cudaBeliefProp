@@ -305,13 +305,13 @@ void KernelBpStereoCPU::msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, le
 				valToNormalize);
 		if (dataAligned)
 		{
-			storePackedDataAligned<short, __m128i >(destMessageArrayIndex,
+			storePackedDataAligned<short, float16x4_t >(destMessageArrayIndex,
 					dstMessageArray,
 					vcvt_f16_f32(dstFloat[currentDisparity], 0));
 		}
 		else
 		{
-			storePackedDataUnaligned<short, __m128i >(destMessageArrayIndex,
+			storePackedDataUnaligned<short, float16x4_t >(destMessageArrayIndex,
 					dstMessageArray,
 					vcvt_f16_f32(dstFloat[currentDisparity], 0));
 		}
