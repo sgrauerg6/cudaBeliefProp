@@ -42,15 +42,15 @@ template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 float16_t>(int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
-		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
-		short* messageUDeviceCurrentCheckerboard1,
-		short* messageDDeviceCurrentCheckerboard1,
-		short* messageLDeviceCurrentCheckerboard1,
-		short* messageRDeviceCurrentCheckerboard1,
-		short* messageUDeviceCurrentCheckerboard2,
-		short* messageDDeviceCurrentCheckerboard2,
-		short* messageLDeviceCurrentCheckerboard2,
-		short* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
+		float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2,
+		float16_t* messageUDeviceCurrentCheckerboard1,
+		float16_t* messageDDeviceCurrentCheckerboard1,
+		float16_t* messageLDeviceCurrentCheckerboard1,
+		float16_t* messageRDeviceCurrentCheckerboard1,
+		float16_t* messageUDeviceCurrentCheckerboard2,
+		float16_t* messageDDeviceCurrentCheckerboard2,
+		float16_t* messageLDeviceCurrentCheckerboard2,
+		float16_t* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
 	int numDataInSIMDVector = 4;
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<
 			float16_t, float16x4_t>(checkerboardToUpdate, currentLevelProperties,
@@ -245,9 +245,9 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, le
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal, levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		float16x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
-		short* dstMessageArray, float16x4_t disc_k_bp, bool dataAligned)
+		float16_t* dstMessageArray, float16x4_t disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
@@ -306,13 +306,13 @@ void KernelBpStereoCPU::msgStereoSIMD<short, float16x4_t>(int xVal, int yVal, le
 				valToNormalize);
 		if (dataAligned)
 		{
-			storePackedDataAligned<short, float16x4_t >(destMessageArrayIndex,
+			storePackedDataAligned<float16_t, float16x4_t >(destMessageArrayIndex,
 					dstMessageArray,
 					vcvt_f16_f32(dstFloat[currentDisparity]));
 		}
 		else
 		{
-			storePackedDataUnaligned<short, float16x4_t >(destMessageArrayIndex,
+			storePackedDataUnaligned<float16_t, float16x4_t >(destMessageArrayIndex,
 					dstMessageArray,
 					vcvt_f16_f32(dstFloat[currentDisparity]));
 		}
