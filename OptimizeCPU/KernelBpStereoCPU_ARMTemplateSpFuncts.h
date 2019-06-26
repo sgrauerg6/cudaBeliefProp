@@ -36,7 +36,7 @@ float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(float valToCon
 }
 
 template<> inline
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t>(int xVal, int yVal, int checkerboardToUpdate,
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t>(int xVal, int yVal, int checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2,
 		float16_t* messageUDeviceCurrentCheckerboard1,
