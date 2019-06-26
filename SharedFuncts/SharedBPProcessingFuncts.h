@@ -93,7 +93,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties&
 	minimum += disc_k_bp;
 
 	// normalize
-	T valToNormalize = 0;
+	U valToNormalize = 0;
 
 	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
