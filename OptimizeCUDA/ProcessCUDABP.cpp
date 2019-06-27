@@ -234,7 +234,6 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		T* messageLDeviceCheckerboard2,
 		T* messageRDeviceCheckerboard2)
 {
-	cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
@@ -288,6 +287,9 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 #endif
 
 	}
+
+	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
+	//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -414,6 +416,9 @@ void ProcessCUDABP<T>::initializeDataCosts(BPsettings& algSettings, levelPropert
 		float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 		T* dataCostDeviceCheckerboard2)
 {
+	//since this is first kernel run in BP, set to prefer L1 cache for now since no shared memory is used by default
+	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
+
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
