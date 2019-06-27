@@ -124,7 +124,7 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 	}
 }
 
-#endif
+//#endif
 
 
 
