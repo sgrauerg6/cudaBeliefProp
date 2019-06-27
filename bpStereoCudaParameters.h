@@ -41,7 +41,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //kernal function in runBpStereoHost.cu, though this could be
 //changed)
 #define BLOCK_SIZE_WIDTH_BP 32
-#define BLOCK_SIZE_HEIGHT_BP 4
+#define BLOCK_SIZE_HEIGHT_BP 1
+
+#define DISP_INDEX_START_REG_LOCAL_MEM 0
 
 
 #endif // BP_STEREO_CUDA_PARAMETERS_H
