@@ -24,14 +24,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 #undef PROCESSING_ON_GPU
 
-#define USE_SHARED_MEMORY
-#ifdef USE_SHARED_MEMORY
+#include "bpStereoCudaParameters.h"
+
+#define USE_SHARED_MEMORY 1
+#if USE_SHARED_MEMORY == 1 && DISP_INDEX_START_REG_LOCAL_MEM > 0
 #include "KernalBpStereoUseSharedMemory.cu"
-#endif
+#else
 
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
-/*template<>
+template<>
 __device__ void msgStereo<half, half>(int xVal, int yVal,
 		levelProperties& currentLevelProperties,
 		half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
@@ -80,13 +82,22 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
 	//set destination vector to 0 for all disparities
 	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
-	{
+	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
+		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel,
+				currentLevelProperties.heightLevel, 0,
+				NUM_POSSIBLE_DISPARITY_VALUES);
+
 		for (int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
-			dst[currentDisparity] = (half) 0.0;
-		}
+			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
+#if OPTIMIZED_INDEXING_SETTING == 1
+			destMessageArrayIndex +=
+					currentLevelProperties.paddedWidthCheckerboardLevel;
+#else
+			destMessageArrayIndex++;
+#endif //OPTIMIZED_INDEXING_SETTING == 1		}
 	}
 	else
 	{
@@ -108,9 +119,14 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 					currentLevelProperties.paddedWidthCheckerboardLevel;
 #else
 			destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1		}
+#endif //OPTIMIZED_INDEXING_SETTING == 1
+		}
 	}
-}*/
+}
+
+#endif
+
+
 
 
 
