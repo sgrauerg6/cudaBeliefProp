@@ -26,10 +26,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoCudaParameters.h"
 
-#define USE_SHARED_MEMORY 1
+/*#define USE_SHARED_MEMORY 1
 #if USE_SHARED_MEMORY == 1 && DISP_INDEX_START_REG_LOCAL_MEM > 0
 #include "KernalBpStereoUseSharedMemory.cu"
-#else
+#else*/
 
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision

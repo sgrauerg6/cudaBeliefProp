@@ -1,6 +1,6 @@
 //code for using shared memory in the belief prop function; seems to work but is generally slower than not using shared memory,
 //so currently not using except for testing
-
+/*
 #define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 #undef PROCESSING_ON_GPU
@@ -725,4 +725,4 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #endif
 }
-
+*/
