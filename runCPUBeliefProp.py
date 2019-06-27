@@ -62,7 +62,7 @@ if __name__ == "__main__":
 	beliefPropDataTypeProcessing = ["0", "2"]
 	indexOptimizationSettings = ["1"]
 	cpuOptimizationSettings = ["0", "1"]
-	numOpenMPThreads = ["2", "4", "6", "8"]
+	numOpenMPThreads = ["8"]
 	memoryAlignmentOptimizations = [0, 1]
 	numRuns = 0
 	for imageSet in imageSets:
@@ -111,11 +111,16 @@ if __name__ == "__main__":
 														file.write("#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON 0\n")
 
 													if (memoryAlignmentOptimization == 1):
-														file.write("#define BYTES_ALIGN_MEMORY_FROM_PYTHON 64\n")
-														file.write("#define NUM_DATA_ALIGN_WIDTH_FROM_PYTHON 16\n");
+														# avx512 requires data to be aligned on 64 bytes
+														if (cpuOptimizationSettings == "2"):
+															file.write("#define BYTES_ALIGN_MEMORY_FROM_PYTHON 64\n")
+															file.write("#define NUM_DATA_ALIGN_WIDTH_FROM_PYTHON 16\n")
+														else:
+															file.write("#define BYTES_ALIGN_MEMORY_FROM_PYTHON 32\n")
+															file.write("#define NUM_DATA_ALIGN_WIDTH_FROM_PYTHON 8\n")
 													else:
 														file.write("#define BYTES_ALIGN_MEMORY_FROM_PYTHON 1\n")
-														file.write("#define NUM_DATA_ALIGN_WIDTH_FROM_PYTHON 1\n");
+														file.write("#define NUM_DATA_ALIGN_WIDTH_FROM_PYTHON 1\n")
 										
 													file.write("#define OPTIMIZED_INDEXING_SETTING_FROM_PYTHON %s\n" % currentIndexOptimizationSettings)
 													
