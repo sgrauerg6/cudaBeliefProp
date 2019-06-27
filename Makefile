@@ -27,9 +27,9 @@ NVCC := $(CUDA_DIR)/bin/nvcc
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX 
 
 # include the optimization level
-COMPILE_FLAGS += -O2 -std=c++11
-ARCHITECTURE_COMPILE_FLAG = -march=native
-#ARCHITECTURE_COMPILE_FLAG = -march=skylake-avx512
+COMPILE_FLAGS += -O3 -std=c++11
+#ARCHITECTURE_COMPILE_FLAG = -march=native
+ARCHITECTURE_COMPILE_FLAG = -O3 -march=skylake-avx512
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
@@ -37,7 +37,7 @@ ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=comput
 
 INCDIR = -I.
 DBG    = -g
-OPT    = -O2
+OPT    = -O3
 CPP    = g++
 CFLAGS = $(DBG) $(OPT) $(INCDIR)
 LINK   = -lm
