@@ -219,6 +219,8 @@ void ProcessCUDABP<half2>::printDataAndMessageValsToPoint(int xVal, int yVal, ha
 
 //functions directed related to running BP to retrieve the movement between the images
 
+//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
+//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
 void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
@@ -287,9 +289,6 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 #endif
 
 	}
-
-	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-	//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
