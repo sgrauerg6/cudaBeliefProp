@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
 													if (memoryAlignmentOptimization == 1):
 														# avx512 requires data to be aligned on 64 bytes
-														if (cpuOptimizationSettings == "2"):
+														if (cpuOptimizationSetting == "2"):
 															file.write("#define BYTES_ALIGN_MEMORY_FROM_PYTHON 64\n")
 															file.write("#define NUM_DATA_ALIGN_WIDTH_FROM_PYTHON 16\n")
 														else:
