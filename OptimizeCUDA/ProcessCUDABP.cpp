@@ -234,6 +234,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		T* messageLDeviceCheckerboard2,
 		T* messageRDeviceCheckerboard2)
 {
+	cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
