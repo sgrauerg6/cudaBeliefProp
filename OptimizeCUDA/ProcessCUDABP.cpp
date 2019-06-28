@@ -101,42 +101,6 @@ void ProcessCUDABP<T>::printDataAndMessageValsAtPoint(int xVal, int yVal, T* dat
 	}
 }
 
-template<>
-void ProcessCUDABP<half2>::printDataAndMessageValsAtPoint(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
-		half2* messageUDeviceSet0Checkerboard1,
-		half2* messageDDeviceSet0Checkerboard1,
-		half2* messageLDeviceSet0Checkerboard1,
-		half2* messageRDeviceSet0Checkerboard1,
-		half2* messageUDeviceSet0Checkerboard2,
-		half2* messageDDeviceSet0Checkerboard2,
-		half2* messageLDeviceSet0Checkerboard2,
-		half2* messageRDeviceSet0Checkerboard2, half2* messageUDeviceSet1Checkerboard1, half2* messageDDeviceSet1Checkerboard1,
-		half2* messageLDeviceSet1Checkerboard1, half2* messageRDeviceSet1Checkerboard1,
-		half2* messageUDeviceSet1Checkerboard2, half2* messageDDeviceSet1Checkerboard2,
-		half2* messageLDeviceSet1Checkerboard2, half2* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
-		int heightLevel, int currentCheckerboardSet)
-{
-	ProcessCUDABP<half> processCUDABPHalf;
-	processCUDABPHalf.printDataAndMessageValsAtPoint(xVal, yVal, (half*)dataCostDeviceCurrentLevelCheckerboard1, (half*)dataCostDeviceCurrentLevelCheckerboard2,
-			(half*) messageUDeviceSet0Checkerboard1,
-			(half*) messageDDeviceSet0Checkerboard1,
-			(half*) messageLDeviceSet0Checkerboard1,
-			(half*) messageRDeviceSet0Checkerboard1,
-			(half*) messageUDeviceSet0Checkerboard2,
-			(half*) messageDDeviceSet0Checkerboard2,
-			(half*) messageLDeviceSet0Checkerboard2,
-			(half*) messageRDeviceSet0Checkerboard2,
-			(half*) messageUDeviceSet1Checkerboard1,
-			(half*) messageDDeviceSet1Checkerboard1,
-			(half*) messageLDeviceSet1Checkerboard1,
-			(half*) messageRDeviceSet1Checkerboard1,
-			(half*) messageUDeviceSet1Checkerboard2,
-			(half*) messageDDeviceSet1Checkerboard2,
-			(half*) messageLDeviceSet1Checkerboard2,
-			(half*) messageRDeviceSet1Checkerboard2, widthCheckerboard * 2,
-			heightLevel, currentCheckerboardSet);
-}
-
 template<typename T>
 void ProcessCUDABP<T>::printDataAndMessageValsToPoint(int xVal, int yVal, T* dataCostDeviceCurrentLevelCheckerboard1, T* dataCostDeviceCurrentLevelCheckerboard2,
 		T* messageUDeviceSet0Checkerboard1, T* messageDDeviceSet0Checkerboard1,
@@ -182,39 +146,6 @@ void ProcessCUDABP<T>::printDataAndMessageValsToPoint(int xVal, int yVal, T* dat
 				messageRDeviceSet1Checkerboard2, widthCheckerboard,
 				heightLevel);
 	}
-}
-
-template<>
-void ProcessCUDABP<half2>::printDataAndMessageValsToPoint(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
-		half2* messageUDeviceSet0Checkerboard1, half2* messageDDeviceSet0Checkerboard1,
-		half2* messageLDeviceSet0Checkerboard1, half2* messageRDeviceSet0Checkerboard1,
-		half2* messageUDeviceSet0Checkerboard2, half2* messageDDeviceSet0Checkerboard2,
-		half2* messageLDeviceSet0Checkerboard2, half2* messageRDeviceSet0Checkerboard2,
-		half2* messageUDeviceSet1Checkerboard1, half2* messageDDeviceSet1Checkerboard1,
-		half2* messageLDeviceSet1Checkerboard1, half2* messageRDeviceSet1Checkerboard1,
-		half2* messageUDeviceSet1Checkerboard2, half2* messageDDeviceSet1Checkerboard2,
-		half2* messageLDeviceSet1Checkerboard2, half2* messageRDeviceSet1Checkerboard2,
-		int widthCheckerboard, int heightLevel, int currentCheckerboardSet)
-{
-	ProcessCUDABP<half> processCUDABPHalf;
-	processCUDABPHalf.printDataAndMessageValsToPoint(xVal, yVal, (half*)dataCostDeviceCurrentLevelCheckerboard1, (half*)dataCostDeviceCurrentLevelCheckerboard2,
-			(half*) messageUDeviceSet0Checkerboard1,
-			(half*) messageDDeviceSet0Checkerboard1,
-			(half*) messageLDeviceSet0Checkerboard1,
-			(half*) messageRDeviceSet0Checkerboard1,
-			(half*) messageUDeviceSet0Checkerboard2,
-			(half*) messageDDeviceSet0Checkerboard2,
-			(half*) messageLDeviceSet0Checkerboard2,
-			(half*) messageRDeviceSet0Checkerboard2,
-			(half*) messageUDeviceSet1Checkerboard1,
-			(half*) messageDDeviceSet1Checkerboard1,
-			(half*) messageLDeviceSet1Checkerboard1,
-			(half*) messageRDeviceSet1Checkerboard1,
-			(half*) messageUDeviceSet1Checkerboard2,
-			(half*) messageDDeviceSet1Checkerboard2,
-			(half*) messageLDeviceSet1Checkerboard2,
-			(half*) messageRDeviceSet1Checkerboard2, widthCheckerboard * 2,
-			heightLevel, currentCheckerboardSet);
 }
 
 //functions directed related to running BP to retrieve the movement between the images
@@ -364,49 +295,7 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 #endif
 }
 
-//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
-template<>
-void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(
-		levelProperties& prevLevelPropertes,
-		levelProperties& currentLevelPropertes,
-		half2* messageUDeviceCheckerboard1CopyFrom,
-		half2* messageDDeviceCheckerboard1CopyFrom,
-		half2* messageLDeviceCheckerboard1CopyFrom,
-		half2* messageRDeviceCheckerboard1CopyFrom,
-		half2* messageUDeviceCheckerboard2CopyFrom,
-		half2* messageDDeviceCheckerboard2CopyFrom,
-		half2* messageLDeviceCheckerboard2CopyFrom,
-		half2* messageRDeviceCheckerboard2CopyFrom,
-		half2* messageUDeviceCheckerboard1CopyTo,
-		half2* messageDDeviceCheckerboard1CopyTo,
-		half2* messageLDeviceCheckerboard1CopyTo,
-		half2* messageRDeviceCheckerboard1CopyTo,
-		half2* messageUDeviceCheckerboard2CopyTo,
-		half2* messageDDeviceCheckerboard2CopyTo,
-		half2* messageLDeviceCheckerboard2CopyTo,
-		half2* messageRDeviceCheckerboard2CopyTo)
-{
-	ProcessCUDABP<half> processCUDABPHalf;
-	processCUDABPHalf.copyMessageValuesToNextLevelDown(
-			prevLevelPropertes,
-			currentLevelPropertes,
-			(half*)messageUDeviceCheckerboard1CopyFrom,
-			(half*)messageDDeviceCheckerboard1CopyFrom,
-			(half*)messageLDeviceCheckerboard1CopyFrom,
-			(half*)messageRDeviceCheckerboard1CopyFrom,
-			(half*)messageUDeviceCheckerboard2CopyFrom,
-			(half*)messageDDeviceCheckerboard2CopyFrom,
-			(half*)messageLDeviceCheckerboard2CopyFrom,
-			(half*)messageRDeviceCheckerboard2CopyFrom,
-			(half*)messageUDeviceCheckerboard1CopyTo,
-			(half*)messageDDeviceCheckerboard1CopyTo,
-			(half*)messageLDeviceCheckerboard1CopyTo,
-			(half*)messageRDeviceCheckerboard1CopyTo,
-			(half*)messageUDeviceCheckerboard2CopyTo,
-			(half*)messageDDeviceCheckerboard2CopyTo,
-			(half*)messageLDeviceCheckerboard2CopyTo,
-			(half*)messageRDeviceCheckerboard2CopyTo);
-}
+
 
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
@@ -503,6 +392,121 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(levelProperties& currentLevelP
 	gpuErrchk( cudaPeekAtLastError() );
 }
 
+#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO)
+
+template<>
+void ProcessCUDABP<half2>::printDataAndMessageValsAtPoint(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
+		half2* messageUDeviceSet0Checkerboard1,
+		half2* messageDDeviceSet0Checkerboard1,
+		half2* messageLDeviceSet0Checkerboard1,
+		half2* messageRDeviceSet0Checkerboard1,
+		half2* messageUDeviceSet0Checkerboard2,
+		half2* messageDDeviceSet0Checkerboard2,
+		half2* messageLDeviceSet0Checkerboard2,
+		half2* messageRDeviceSet0Checkerboard2, half2* messageUDeviceSet1Checkerboard1, half2* messageDDeviceSet1Checkerboard1,
+		half2* messageLDeviceSet1Checkerboard1, half2* messageRDeviceSet1Checkerboard1,
+		half2* messageUDeviceSet1Checkerboard2, half2* messageDDeviceSet1Checkerboard2,
+		half2* messageLDeviceSet1Checkerboard2, half2* messageRDeviceSet1Checkerboard2, int widthCheckerboard,
+		int heightLevel, int currentCheckerboardSet)
+{
+	ProcessCUDABP<half> processCUDABPHalf;
+	processCUDABPHalf.printDataAndMessageValsAtPoint(xVal, yVal, (half*)dataCostDeviceCurrentLevelCheckerboard1, (half*)dataCostDeviceCurrentLevelCheckerboard2,
+			(half*) messageUDeviceSet0Checkerboard1,
+			(half*) messageDDeviceSet0Checkerboard1,
+			(half*) messageLDeviceSet0Checkerboard1,
+			(half*) messageRDeviceSet0Checkerboard1,
+			(half*) messageUDeviceSet0Checkerboard2,
+			(half*) messageDDeviceSet0Checkerboard2,
+			(half*) messageLDeviceSet0Checkerboard2,
+			(half*) messageRDeviceSet0Checkerboard2,
+			(half*) messageUDeviceSet1Checkerboard1,
+			(half*) messageDDeviceSet1Checkerboard1,
+			(half*) messageLDeviceSet1Checkerboard1,
+			(half*) messageRDeviceSet1Checkerboard1,
+			(half*) messageUDeviceSet1Checkerboard2,
+			(half*) messageDDeviceSet1Checkerboard2,
+			(half*) messageLDeviceSet1Checkerboard2,
+			(half*) messageRDeviceSet1Checkerboard2, widthCheckerboard * 2,
+			heightLevel, currentCheckerboardSet);
+}
+
+template<>
+void ProcessCUDABP<half2>::printDataAndMessageValsToPoint(int xVal, int yVal, half2* dataCostDeviceCurrentLevelCheckerboard1, half2* dataCostDeviceCurrentLevelCheckerboard2,
+		half2* messageUDeviceSet0Checkerboard1, half2* messageDDeviceSet0Checkerboard1,
+		half2* messageLDeviceSet0Checkerboard1, half2* messageRDeviceSet0Checkerboard1,
+		half2* messageUDeviceSet0Checkerboard2, half2* messageDDeviceSet0Checkerboard2,
+		half2* messageLDeviceSet0Checkerboard2, half2* messageRDeviceSet0Checkerboard2,
+		half2* messageUDeviceSet1Checkerboard1, half2* messageDDeviceSet1Checkerboard1,
+		half2* messageLDeviceSet1Checkerboard1, half2* messageRDeviceSet1Checkerboard1,
+		half2* messageUDeviceSet1Checkerboard2, half2* messageDDeviceSet1Checkerboard2,
+		half2* messageLDeviceSet1Checkerboard2, half2* messageRDeviceSet1Checkerboard2,
+		int widthCheckerboard, int heightLevel, int currentCheckerboardSet)
+{
+	ProcessCUDABP<half> processCUDABPHalf;
+	processCUDABPHalf.printDataAndMessageValsToPoint(xVal, yVal, (half*)dataCostDeviceCurrentLevelCheckerboard1, (half*)dataCostDeviceCurrentLevelCheckerboard2,
+			(half*) messageUDeviceSet0Checkerboard1,
+			(half*) messageDDeviceSet0Checkerboard1,
+			(half*) messageLDeviceSet0Checkerboard1,
+			(half*) messageRDeviceSet0Checkerboard1,
+			(half*) messageUDeviceSet0Checkerboard2,
+			(half*) messageDDeviceSet0Checkerboard2,
+			(half*) messageLDeviceSet0Checkerboard2,
+			(half*) messageRDeviceSet0Checkerboard2,
+			(half*) messageUDeviceSet1Checkerboard1,
+			(half*) messageDDeviceSet1Checkerboard1,
+			(half*) messageLDeviceSet1Checkerboard1,
+			(half*) messageRDeviceSet1Checkerboard1,
+			(half*) messageUDeviceSet1Checkerboard2,
+			(half*) messageDDeviceSet1Checkerboard2,
+			(half*) messageLDeviceSet1Checkerboard2,
+			(half*) messageRDeviceSet1Checkerboard2, widthCheckerboard * 2,
+			heightLevel, currentCheckerboardSet);
+}
+
+//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
+template<>
+void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(
+		levelProperties& prevLevelPropertes,
+		levelProperties& currentLevelPropertes,
+		half2* messageUDeviceCheckerboard1CopyFrom,
+		half2* messageDDeviceCheckerboard1CopyFrom,
+		half2* messageLDeviceCheckerboard1CopyFrom,
+		half2* messageRDeviceCheckerboard1CopyFrom,
+		half2* messageUDeviceCheckerboard2CopyFrom,
+		half2* messageDDeviceCheckerboard2CopyFrom,
+		half2* messageLDeviceCheckerboard2CopyFrom,
+		half2* messageRDeviceCheckerboard2CopyFrom,
+		half2* messageUDeviceCheckerboard1CopyTo,
+		half2* messageDDeviceCheckerboard1CopyTo,
+		half2* messageLDeviceCheckerboard1CopyTo,
+		half2* messageRDeviceCheckerboard1CopyTo,
+		half2* messageUDeviceCheckerboard2CopyTo,
+		half2* messageDDeviceCheckerboard2CopyTo,
+		half2* messageLDeviceCheckerboard2CopyTo,
+		half2* messageRDeviceCheckerboard2CopyTo)
+{
+	ProcessCUDABP<half> processCUDABPHalf;
+	processCUDABPHalf.copyMessageValuesToNextLevelDown(
+			prevLevelPropertes,
+			currentLevelPropertes,
+			(half*)messageUDeviceCheckerboard1CopyFrom,
+			(half*)messageDDeviceCheckerboard1CopyFrom,
+			(half*)messageLDeviceCheckerboard1CopyFrom,
+			(half*)messageRDeviceCheckerboard1CopyFrom,
+			(half*)messageUDeviceCheckerboard2CopyFrom,
+			(half*)messageDDeviceCheckerboard2CopyFrom,
+			(half*)messageLDeviceCheckerboard2CopyFrom,
+			(half*)messageRDeviceCheckerboard2CopyFrom,
+			(half*)messageUDeviceCheckerboard1CopyTo,
+			(half*)messageDDeviceCheckerboard1CopyTo,
+			(half*)messageLDeviceCheckerboard1CopyTo,
+			(half*)messageRDeviceCheckerboard1CopyTo,
+			(half*)messageUDeviceCheckerboard2CopyTo,
+			(half*)messageDDeviceCheckerboard2CopyTo,
+			(half*)messageLDeviceCheckerboard2CopyTo,
+			(half*)messageRDeviceCheckerboard2CopyTo);
+}
+
 //due to indexing, need to convert to half* and use half arrays for this function
 template<>
 void ProcessCUDABP<half2>::initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
@@ -520,6 +524,8 @@ void ProcessCUDABP<half2>::initializeDataCurrentLevel(levelProperties& currentLe
 			(half*)dataCostDeviceToWriteToCheckerboard1,
 			(half*)dataCostDeviceToWriteToCheckerboard2);
 }
+
+#endif
 
 template<typename T>
 void ProcessCUDABP<T>::retrieveOutputDisparity(

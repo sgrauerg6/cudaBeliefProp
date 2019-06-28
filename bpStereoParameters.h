@@ -233,7 +233,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2
 //not currently supporting half2 data type
-//#define DATA_TYPE_PROCESSING_HALF_TWO 3
+#define DATA_TYPE_PROCESSING_HALF_TWO 3
 
 #define USE_DEFAULT 0
 #define USE_AVX_256 1
