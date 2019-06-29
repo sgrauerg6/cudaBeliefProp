@@ -29,7 +29,7 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++11
 #ARCHITECTURE_COMPILE_FLAG = -march=native
-ARCHITECTURE_COMPILE_FLAG = -O3 -march=skylake-avx512
+ARCHITECTURE_COMPILE_FLAG = -O3 -march=skylake
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
@@ -90,7 +90,7 @@ RunBpStereoSetOnGPUWithCUDA.o: OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp Opti
 	g++ OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
-	$(NVCC) -x cu -c OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -o ProcessCUDABP.o $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(NVCC) -x cu -c OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
