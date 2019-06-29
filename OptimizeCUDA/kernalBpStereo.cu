@@ -26,10 +26,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpStereoCudaParameters.h"
 
-/*#define USE_SHARED_MEMORY 1
-#if USE_SHARED_MEMORY == 1 && DISP_INDEX_START_REG_LOCAL_MEM > 0
+
+#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 #include "KernalBpStereoUseSharedMemory.cu"
-#else*/
+#else
 
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 
@@ -126,13 +126,9 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 	}
 }
 
-#endif
+#endif //((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 
-//#endif
-
-
-
-
+#endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)

@@ -1,8 +1,9 @@
 //code for using shared memory in the belief prop function; seems to work but is generally slower than not using shared memory,
 //so currently not using except for testing
-/*
+
 #define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
+#include "../bpStereoCudaParameters.h"
 #undef PROCESSING_ON_GPU
 
 
@@ -451,7 +452,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	half* dstSharedMem = nullptr;
 #else
 	__shared__ half dstSharedMem[BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
-			* (NUM_POSSIBLE_DISPARITY_VALUES - (NUM_POSSIBLE_DISPARITY_VALUES - DISP_INDEX_START_REG_LOCAL_MEM))];
+			* (NUM_POSSIBLE_DISPARITY_VALUES - (NUM_POSSIBLE_DISPARITY_VALUES - DISP_INDEX_START_REG_LOCAL_MEM) + ((NUM_POSSIBLE_DISPARITY_VALUES - DISP_INDEX_START_REG_LOCAL_MEM) % 2))];
 #endif
 
 	int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
@@ -725,4 +726,4 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #endif
 }
-*/
+
