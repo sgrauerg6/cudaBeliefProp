@@ -153,6 +153,7 @@ int main(int argc, char** argv)
 	fprintf(resultsFile, "CPU_OPTIMIZATION_LEVEL: %d\n", CPU_OPTIMIZATION_SETTING);
 	fprintf(resultsFile, "BYTES_ALIGN_MEMORY: %d\n", BYTES_ALIGN_MEMORY);
 	fprintf(resultsFile, "NUM_DATA_ALIGN_WIDTH: %d\n", NUM_DATA_ALIGN_WIDTH);
+	fprintf(resultsFile, "USE_SHARED_MEMORY: %d\n", USE_SHARED_MEMORY);
 	fprintf(resultsFile, "DISP_INDEX_START_REG_LOCAL_MEM: %d\n", DISP_INDEX_START_REG_LOCAL_MEM);
 	retrieveDeviceProperties(0, resultsFile);
 	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);

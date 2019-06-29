@@ -202,6 +202,7 @@ __device__ inline void dtStereoSharedAndRegLocalMemory<half>(half* dstShared, ha
 #endif
 }
 
+
 template<>
 __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 		levelProperties& currentLevelProperties,
@@ -726,4 +727,6 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #endif
 }
+
+
 
