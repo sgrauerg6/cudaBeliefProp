@@ -202,8 +202,15 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 #if (((USE_SHARED_MEMORY == 3) || (USE_SHARED_MEMORY == 4))  && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 		int numDataSharedMemory = BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
 					* (DISP_INDEX_START_REG_LOCAL_MEM);
+		int numBytesSharedMemory = numDataSharedMemory * sizeof(T);
 
-		int maxbytes = 98304; // 96 KB
+#if (USE_SHARED_MEMORY == 4)
+
+		numBytesSharedMemory *= 5;
+
+#endif //(USE_SHARED_MEMORY == 4)
+
+		int maxbytes = numBytesSharedMemory; // 96 KB
 		cudaFuncSetAttribute(runBPIterationUsingCheckerboardUpdates<T>, cudaFuncAttributeMaxDynamicSharedMemorySize, maxbytes);
 
 		//printf("numDataSharedMemory: %d\n", numDataSharedMemory);
