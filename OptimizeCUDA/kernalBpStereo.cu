@@ -31,6 +31,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernalBpStereoUseSharedMemory.cu"
 #elif ((USE_SHARED_MEMORY == 2) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 #include "KernalBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu"
+#elif ((USE_SHARED_MEMORY == 3) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
+#include "KernelBpStereoUseDynamicSharedMemory.cu"
+#elif ((USE_SHARED_MEMORY == 4) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
+#include "KernelBpStereoDataAndMessageInDynamicSharedMemory.cu"
 #else
 
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))

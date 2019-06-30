@@ -167,6 +167,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		T* messageLDeviceCheckerboard2,
 		T* messageRDeviceCheckerboard2)
 {
+	cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
@@ -198,6 +199,23 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		auto timeBpItersKernelStart = std::chrono::system_clock::now();
 #endif
 
+#if (((USE_SHARED_MEMORY == 3) || (USE_SHARED_MEMORY == 4))  && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
+		int numDataSharedMemory = BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
+					* (DISP_INDEX_START_REG_LOCAL_MEM);
+
+		int maxbytes = 98304; // 96 KB
+		cudaFuncSetAttribute(runBPIterationUsingCheckerboardUpdates<T>, cudaFuncAttributeMaxDynamicSharedMemorySize, maxbytes);
+
+		//printf("numDataSharedMemory: %d\n", numDataSharedMemory);
+		runBPIterationUsingCheckerboardUpdates<T><<<grid, threads, 5*numDataSharedMemory*sizeof(T)>>>(checkboardPartUpdate, currentLevelPropertes,
+						dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
+						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
+						messageLDeviceCheckerboard1, messageRDeviceCheckerboard1,
+						messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
+						messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
+						algSettings.disc_k_bp, dataAligned);
+
+#else
 		runBPIterationUsingCheckerboardUpdates<T><<<grid, threads>>>(checkboardPartUpdate, currentLevelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 				messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,
@@ -205,6 +223,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 				messageUDeviceCheckerboard2, messageDDeviceCheckerboard2,
 				messageLDeviceCheckerboard2, messageRDeviceCheckerboard2,
 				algSettings.disc_k_bp, dataAligned);
+#endif
 
 		(cudaDeviceSynchronize());
 		gpuErrchk( cudaPeekAtLastError() );
@@ -218,7 +237,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
 		timeBpItersKernelTotalTime += diff.count();
 
 #endif
-
+		cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	}
 }
 
