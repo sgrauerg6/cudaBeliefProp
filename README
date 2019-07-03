@@ -27,7 +27,7 @@ work if using any of this code as part of a research paper or other work.
 Will note that there have been changes from the initial implementation as presented in the paper, both for optimization
 and to work on the latest NVIDIA GPUs with the latest CUDA toolkits.  Also, the motion estimation portion of the code
 was removed to narrow the focus of this work (though could certainly be added back in the future).  The additional
-optimizations are described in http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf.  The original code 
+optimizations are described in http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.  The original code 
 is available at http://scottgg.net/beliefPropCodePost.zip.
 
 This code is distributed using the GNU General Public License, so any derivative work which 
