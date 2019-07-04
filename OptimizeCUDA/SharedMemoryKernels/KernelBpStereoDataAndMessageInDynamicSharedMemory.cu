@@ -1,6 +1,6 @@
 #define PROCESSING_ON_GPU
-#include "../SharedFuncts/SharedBPProcessingFuncts.h"
-#include "../bpStereoCudaParameters.h"
+#include "../../SharedFuncts/SharedBPProcessingFuncts.h"
+#include "../../bpStereoCudaParameters.h"
 #undef PROCESSING_ON_GPU
 
 template<typename T, typename U>
