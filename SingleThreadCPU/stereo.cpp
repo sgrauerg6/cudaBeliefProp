@@ -261,7 +261,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 }
 
 template<typename T>
-float RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
+float RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 

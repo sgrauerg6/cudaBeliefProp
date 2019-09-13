@@ -19,9 +19,7 @@ RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
 template<typename T>
 float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath,
 		const char* testImagePath, BPsettings algSettings,
-		const char* saveDisparityMapImagePath, FILE* resultsFile,
-		SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo,
-		RunBpStereoSetMemoryManagement* runBPMemoryMangement)
+		const char* saveDisparityMapImagePath, FILE* resultsFile)
 {
 	fprintf(resultsFile, "CURRENT RUN: OPTIMIZED CPU\n");
 	int nthreads = 0;
@@ -35,8 +33,7 @@ float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath,
 	fprintf(resultsFile, "Number of OMP threads: %d\n", nthreads);
 	SmoothImageCPU smoothImageCPU;
 	ProcessOptimizedCPUBP<T> processImageCPU;
-	RunBpStereoSet<T> runStereoSet;
-	return runStereoSet(refImagePath, testImagePath, algSettings,
+	return this->processStereoSet(refImagePath, testImagePath, algSettings,
 			saveDisparityMapImagePath, resultsFile, &smoothImageCPU,
 			&processImageCPU);
 }

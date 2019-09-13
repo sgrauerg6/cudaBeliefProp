@@ -33,7 +33,7 @@ template<typename T>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<T>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr);
+	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile);
 
 private:
 	// compute message
