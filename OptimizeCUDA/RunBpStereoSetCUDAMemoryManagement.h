@@ -41,4 +41,3 @@ public:
 };
 
 #endif //RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
-
