@@ -26,10 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "imageHelpers.h"
 
 //needed to evaluate the disparity/Stereo found
-#include "stereoResultsEval.h"
+#include "OutputEvaluation/stereoResultsEval.h"
 
 //needed to run the implementation a stereo set using CUDA
 #include "OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+#include "OutputEvaluation/DisparityMap.h"
+#include "OutputEvaluation/OutputEvaluationParameters.h"
+#include "OutputEvaluation/OutputEvaluationResults.h"
 //#include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
@@ -44,12 +47,17 @@ void compareDispMaps(const char* dispMap1File, float scaleComputedDispMap, const
 	unsigned int* compDispMapUnsignedInts = ImageHelperFunctions::loadImageFromPGM(dispMap1File, widthDispMap, heightDispMap);
 	unsigned int* groundTruthDispMapUnsignedInts = ImageHelperFunctions::loadImageFromPGM(dispMap2File, widthDispMap, heightDispMap);
 
+	DisparityMap<float> outputDisparityMap(dispMap1File, (unsigned int)scaleComputedDispMap);
+	DisparityMap<float> groundTruthDisparityMap(dispMap2File, (unsigned int)scaleGroundTruthDispMap);
+	OutputEvaluationResults<float> outputEvalResults = outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
+	outputEvalResults.writeOutputEvaluationResultsToFile(resultsFile);
+
 	//retrieve the evaluation between the two disparity maps according to the parameters in stereoResultsEvalParameters.cuh
-	StereoResultsEvaluation runStereoEvaluation;
+	/*StereoResultsEvaluation runStereoEvaluation;
 	stereoEvaluationResults* stereoEvaluation =
 			runStereoEvaluation.runStereoResultsEvaluationUsedUnsignedIntScaledDispMap(compDispMapUnsignedInts, groundTruthDispMapUnsignedInts, scaleComputedDispMap, scaleGroundTruthDispMap, widthDispMap, heightDispMap);
 
-	runStereoEvaluation.writeStereoEvaluationResultsToFile(stereoEvaluation, resultsFile);
+	runStereoEvaluation.writeStereoEvaluationResultsToFile(stereoEvaluation, resultsFile);*/
 }
 
 

@@ -10,6 +10,7 @@
 
 #include "OutputEvaluationParameters.h"
 #include <map>
+#include <iostream>
 
 template<class T>
 class OutputEvaluationResults {
@@ -36,7 +37,7 @@ public:
 	void initializeWithEvalParams(OutputEvaluationParameters<T> evalParams)
 	{
 		disparityErrorCap = evalParams.max_diff_cap_;
-		for (auto output_diff_threshold : evalParams.output_diff_thresholds)
+		for (auto output_diff_threshold : evalParams.output_diff_thresholds_)
 		{
 			numSigDiffPixelsAtThresholds[output_diff_threshold] = 0;
 		}
@@ -52,6 +53,23 @@ public:
 			fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", propBadPixelsAtThreshold.first, propBadPixelsAtThreshold.second);
 		}
 	}
+
+	template<class U>
+	friend std::ostream& operator<<(std::ostream& os, const OutputEvaluationResults<U>& results);
 };
+
+template<class T>
+std::ostream& operator<<(std::ostream& os, const OutputEvaluationResults<T>& results)
+{
+	os << "Average RMS error: " << results.averageDispAbsDiffNoMax << std::endl;
+	os << "Average RMS error (with disparity error cap at " << results.disparityErrorCap << "): " <<  results.averageDispAbsDiffWithMax << std::endl;
+
+	for (auto propBadPixelsAtThreshold : results.propSigDiffPixelsAtThresholds)
+	{
+		os << "Proportion bad pixels (error less than " << propBadPixelsAtThreshold.first << "): " << propBadPixelsAtThreshold.second << std::endl;
+	}
+
+	return os;
+}
 
 #endif /* OUTPUTEVALUATIONRESULTS_H_ */
