@@ -110,14 +110,11 @@ public:
 		output_evaluation.averageDispAbsDiffWithMax = output_evaluation.totalDispAbsDiffWithMax / (width_*height_);
 
 		//need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
+		//typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type needed to get data type for each mapping; for c++14 can be changed to auto
 		std::for_each(output_evaluation.numSigDiffPixelsAtThresholds.begin(), output_evaluation.numSigDiffPixelsAtThresholds.end(),
-				[this, &output_evaluation](std::pair<float, unsigned int> sigDiffPixelAtThresholdMap)
+				[this, &output_evaluation](typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type sigDiffPixelAtThresholdMap)
 				{output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] = ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->width_*this->height_));
 				});
-		/*for (const auto& sigDiffPixelAtThresholdMap : output_evaluation.numSigDiffPixelsAtThresholds)
-		{
-			output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] = ((float)sigDiffPixelAtThresholdMap.second) / ((float)(width_*height_));
-		}*/
 
 		return output_evaluation;
 	}
