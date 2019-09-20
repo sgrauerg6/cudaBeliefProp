@@ -27,7 +27,7 @@ NVCC := $(CUDA_DIR)/bin/nvcc
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX 
 
 # include the optimization level
-COMPILE_FLAGS += -O3 -std=c++11
+COMPILE_FLAGS += -O3 -std=c++14
 #ARCHITECTURE_COMPILE_FLAG = -march=native
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1

@@ -6,15 +6,20 @@
  */
 
 #include "RunBpStereoSet.h"
+#include <unordered_map>
 
 enum Runtime_Type { SMOOTHING, TOTAL_BP, TOTAL_NO_TRANSFER, TOTAL_WITH_TRANSFER };
+typedef std::chrono::time_point<std::chrono::system_clock> timingType;
+using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
 template<typename T>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImagePath, const char* testImagePath,
 	const BPsettings& algSettings, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
 {
-	const std::map<int, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
+	const std::map<Runtime_Type, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
 			{TOTAL_WITH_TRANSFER, "Total runtime including data transfer time"}};
+	std::unordered_map<Runtime_Type, std::pair<timingType, timingType>> runtime_start_end_timings;
+
 	bool deleteBPMemoryManagementAtEnd = false;
 	if (runBPMemoryMangement == nullptr)
 	{
@@ -25,12 +30,11 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	unsigned int heightImages = 0;
 	unsigned int widthImages = 0;
 
-	std::map<int, std::vector<double>> timings;
-	std::for_each(timingNames.begin(), timingNames.end(), [&timings](std::pair<int, std::string> timingName) { timings[timingName.first] = std::vector<double>(); });
+	std::map<Runtime_Type, std::vector<double>> timings;
+	std::for_each(timingNames.begin(), timingNames.end(), [&timings](std::pair<Runtime_Type, std::string> timingName) { timings[timingName.first] = std::vector<double>(); });
 	DetailedTimings* detailedTimingsOverall = nullptr;
 	float* dispValsHost;
 
-	printf("Start stereo runs\n");
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
 		//first run Stereo estimation on the first two images
@@ -47,8 +51,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runBPMemoryMangement->allocateDataOnCompDevice((void**)& smoothedImage2, widthImages * heightImages * sizeof(float));
 		dispValsHost = new float[widthImages*heightImages];
 
-		//get timer at time before smoothing images
-		auto timeBeforeSmoothImages = std::chrono::system_clock::now();
+		//set start timer for specified runtime segments at time before smoothing images
+		runtime_start_end_timings[SMOOTHING].first = runtime_start_end_timings[TOTAL_NO_TRANSFER].first = runtime_start_end_timings[TOTAL_WITH_TRANSFER].first = std::chrono::system_clock::now();
 
 		//first smooth the images using the Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
@@ -58,7 +62,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 			widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2);
 
 		//end timer for image smoothing and add to image smoothing timings
-		auto endSmoothingTime = std::chrono::system_clock::now();
+		runtime_start_end_timings[SMOOTHING].second = std::chrono::system_clock::now();
 
 		//free the host memory allocated to original image 1 and image 2 on the host
 		delete[] image1AsUnsignedIntArrayHost;
@@ -69,26 +73,26 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		//allocate the space for the disparity map estimation
 		runBPMemoryMangement->allocateDataOnCompDevice((void**)& disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
-		//start bp processing time timer
-		auto bpTotalTimeStart = std::chrono::system_clock::now();
+		//get runtime before bp processing
+		runtime_start_end_timings[TOTAL_BP].first = std::chrono::system_clock::now();
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		DetailedTimings* currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
 			disparityMapFromImage1To2CompDevice, algSettings, widthImages, heightImages);
 
-		auto timeAfterBpDoneBeforeTransfer = std::chrono::system_clock::now();
+		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
 		//transfer the disparity map estimation on the device to the host for output
 		runBPMemoryMangement->transferDataFromCompDeviceToHost(dispValsHost, disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
-		auto timeAfterBpDoneWithTransfer = std::chrono::system_clock::now();
-
 		//compute timings for each portion of interest and add to vector timings
-		using timingInSecondsDoublePrecision = std::chrono::duration<double>;
-		timings[SMOOTHING].push_back((timingInSecondsDoublePrecision(endSmoothingTime - timeBeforeSmoothImages)).count());
-		timings[TOTAL_BP].push_back((timingInSecondsDoublePrecision(timeAfterBpDoneBeforeTransfer - bpTotalTimeStart)).count());
-		timings[TOTAL_NO_TRANSFER].push_back((timingInSecondsDoublePrecision(timeAfterBpDoneBeforeTransfer - timeBeforeSmoothImages)).count());
-		timings[TOTAL_WITH_TRANSFER].push_back((timingInSecondsDoublePrecision(timeAfterBpDoneWithTransfer - timeBeforeSmoothImages)).count());
+		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
+
+		//retrieve the timing for each runtime segment and add to vector in timings map
+		std::for_each(timings.begin(), timings.end(),
+				[&runtime_start_end_timings] (auto& currentTiming) {
+			currentTiming.second.push_back((timingInSecondsDoublePrecision(runtime_start_end_timings[currentTiming.first].second - runtime_start_end_timings[currentTiming.first].first)).count());
+		});
 
 		//free memory for disparity if not in last run (where used to create disparity map)
 		if (numRun < (NUM_BP_STEREO_RUNS - 1))
@@ -116,8 +120,6 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		}
 	}
 
-	printf("End stereo runs\n");
-
 	//generate output disparity map object
 	DisparityMap<float> output_disparity_map(widthImages, heightImages, dispValsHost);
 	delete [] dispValsHost;
@@ -126,11 +128,11 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	fprintf(resultsFile, "Image Height: %d\n", heightImages);
 
 	std::for_each(timings.begin(), timings.end(),
-			[&timingNames, resultsFile](std::pair<int, std::vector<double>> currentTiming)
-			{
-				std::sort(currentTiming.second.begin(), currentTiming.second.end());
-				fprintf(resultsFile, "Median %s: %f\n", timingNames.at(currentTiming.first).c_str(), currentTiming.second.at(NUM_BP_STEREO_RUNS / 2));
-			});
+				[&timingNames, resultsFile](auto& currentTiming)
+				{
+					std::sort(currentTiming.second.begin(), currentTiming.second.end());
+					fprintf(resultsFile, "Median %s: %f\n", timingNames.at(currentTiming.first).c_str(), currentTiming.second.at(NUM_BP_STEREO_RUNS / 2));
+				});
 
 	if (detailedTimingsOverall != nullptr)
 	{
