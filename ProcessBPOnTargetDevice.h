@@ -13,9 +13,6 @@
 #include <math.h>
 #include <chrono>
 
-#define RUN_DETAILED_TIMING
-
-
 template<typename T>
 class ProcessBPOnTargetDevice {
 public:
@@ -116,7 +113,7 @@ public:
 		//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 		//input is images image1Pixels and image1Pixels
 		//output is resultingDisparityMap
-		DetailedTimings* operator()(float* image1PixelsCompDevice,
+		DetailedTimings operator()(float* image1PixelsCompDevice,
 			float* image2PixelsCompDevice,
 			float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages);
 };

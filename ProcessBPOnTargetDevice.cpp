@@ -6,6 +6,13 @@
  */
 
 #include "ProcessBPOnTargetDevice.h"
+#include <unordered_map>
+
+enum Runtime_Type_BP { INIT_SETTINGS_MALLOC, DATA_COSTS_BOTTOM_LEVEL, DATA_COSTS_HIGHER_LEVEL, INIT_MESSAGES, INIT_MESSAGES_KERNEL, BP_ITERS, COPY_DATA, COPY_DATA_KERNEL, COPY_DATA_MEM_MANAGEMENT, OUTPUT_DISPARITY, FINAL_FREE, TOTAL_TIMED };
+const std::unordered_map<unsigned int, std::string> timingNames_BP = {{INIT_SETTINGS_MALLOC, "Time init settings malloc"}, {DATA_COSTS_BOTTOM_LEVEL, "Time get data costs bottom level"}, {DATA_COSTS_HIGHER_LEVEL, "Time get data costs higher levels"},
+			{INIT_MESSAGES, "Time to init message values"}, {INIT_MESSAGES_KERNEL, "Time to init message values (kernel portion only)"}, {BP_ITERS, "Total time BP Iters"}, {COPY_DATA, "Total time Copy Data"},
+			{COPY_DATA_KERNEL, "Total time Copy Data (kernel portion only)"}, {COPY_DATA_MEM_MANAGEMENT, "Total time Copy Data (memory management portion only)"}, {OUTPUT_DISPARITY, "Time get output disparity"},
+			{FINAL_FREE, "Time final free:"}, {TOTAL_TIMED, "Total timed"}};
 
 template<typename T>
 int ProcessBPOnTargetDevice<T>::getPaddedCheckerboardWidth(int checkerboardWidth)
@@ -44,20 +51,16 @@ unsigned long ProcessBPOnTargetDevice<T>::getNumDataForAlignedMemoryAtLevel(unsi
 	 //input is images image1Pixels and image1Pixels
 	 //output is resultingDisparityMap
 template<typename T>
-DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompDevice,
+DetailedTimings ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompDevice,
 	float* image2PixelsCompDevice,
 	float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
 
-#ifdef RUN_DETAILED_TIMING
-
-	DetailedTimings* timingsPointer = new DetailedTimings;
+	DetailedTimings segmentTimings;
 	double totalTimeBpIters = 0.0;
 	double totalTimeCopyData = 0.0;
 	double totalTimeCopyDataKernel = 0.0;
 	std::chrono::duration<double> diff;
-
-#endif
 
 	//retrieve the total number of possible movements; this is equal to the number of disparity values
 	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
@@ -118,11 +121,7 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 	T* messageLDeviceCheckerboard2;
 	T* messageRDeviceCheckerboard2;
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeInitSettingsMallocStart = std::chrono::system_clock::now();
-
-#endif
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
@@ -154,16 +153,13 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 
 #endif
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeInitSettingsMallocEnd = std::chrono::system_clock::now();
 
 	diff = timeInitSettingsMallocEnd - timeInitSettingsMallocStart;
 	double totalTimeInitSettingsMallocStart = diff.count();
+	segmentTimings.addTiming(std::make_pair(std::make_pair(INIT_SETTINGS_MALLOC, timingNames_BP.at(INIT_SETTINGS_MALLOC)), totalTimeInitSettingsMallocStart));
 
 	auto timeInitDataCostsStart = std::chrono::system_clock::now();
-
-#endif
 
 	//printf("INIT DATA COSTS\n");
 	//initialize the data cost at the bottom level
@@ -171,16 +167,13 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 		dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
 	//printf("DONE INIT DATA COSTS\n");
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeInitDataCostsEnd = std::chrono::system_clock::now();
 	diff = timeInitDataCostsEnd - timeInitDataCostsStart;
-
 	double totalTimeGetDataCostsBottomLevel = diff.count();
+	segmentTimings.addTiming(std::make_pair(std::make_pair(DATA_COSTS_BOTTOM_LEVEL, timingNames_BP.at(DATA_COSTS_BOTTOM_LEVEL)), totalTimeGetDataCostsBottomLevel));
+
 	auto timeInitDataCostsHigherLevelsStart =
 		std::chrono::system_clock::now();
-
-#endif
 
 	//set the data costs at each level from the bottom level "up"
 	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
@@ -205,16 +198,13 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 
 	currentOffsetLevel = offsetAtLevel[algSettings.numLevels - 1];
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeInitDataCostsHigherLevelsEnd =
 		std::chrono::system_clock::now();
 	diff = timeInitDataCostsHigherLevelsEnd
 		- timeInitDataCostsHigherLevelsStart;
 
 	double totalTimeGetDataCostsHigherLevels = diff.count();
-
-#endif
+	segmentTimings.addTiming(std::make_pair(std::make_pair(DATA_COSTS_HIGHER_LEVEL, timingNames_BP.at(DATA_COSTS_HIGHER_LEVEL)), totalTimeGetDataCostsHigherLevels));
 
 	//declare the space to pass the BP messages
 	//need to have two "sets" of checkerboards because
@@ -243,11 +233,7 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 	T* messageLDeviceSet1Checkerboard2;
 	T* messageRDeviceSet1Checkerboard2;
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
-
-#endif
 
 	dataCostDeviceCurrentLevelCheckerboard1 =
 		&dataCostDeviceCheckerboard1[currentOffsetLevel];
@@ -293,12 +279,8 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 
 #endif
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeInitMessageValuesKernelTimeStart =
 		std::chrono::system_clock::now();
-
-#endif
 
 	//printf("initializeMessageValsToDefault\n");
 	//initialize all the BP message values at every pixel for every disparity to 0
@@ -314,21 +296,17 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 		messageRDeviceSet0Checkerboard2);
 	//printf("DONE initializeMessageValsToDefault\n");
 
-#ifdef RUN_DETAILED_TIMING
-
-	auto timeInitMessageValuesKernelTimeEnd =
+	auto timeInitMessageValuesTimeEnd =
 		std::chrono::system_clock::now();
-	diff = timeInitMessageValuesKernelTimeEnd
+	diff = timeInitMessageValuesTimeEnd
 		- timeInitMessageValuesKernelTimeStart;
 
 	double totalTimeInitMessageValuesKernelTime = diff.count();
+	segmentTimings.addTiming(std::make_pair(std::make_pair(INIT_MESSAGES_KERNEL, timingNames_BP.at(INIT_MESSAGES_KERNEL)), totalTimeInitMessageValuesKernelTime));
 
-	auto timeInitMessageValuesEnd = std::chrono::system_clock::now();
-	diff = timeInitMessageValuesEnd - timeInitMessageValuesStart;
-
+	diff = timeInitMessageValuesTimeEnd - timeInitMessageValuesStart;
 	double totalTimeInitMessageVals = diff.count();
-
-#endif
+	segmentTimings.addTiming(std::make_pair(std::make_pair(INIT_MESSAGES, timingNames_BP.at(INIT_MESSAGES)), totalTimeInitMessageVals));
 
 	//alternate between checkerboard sets 0 and 1
 	int currentCheckerboardSet = 0;
@@ -341,11 +319,7 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 		levelNum--)
 	{
 
-#ifdef RUN_DETAILED_TIMING
-
 		auto timeBpIterStart = std::chrono::system_clock::now();
-
-#endif
 
 		//printf("LEVEL: %d\n", levelNum);
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
@@ -376,15 +350,11 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 				messageRDeviceSet1Checkerboard2);
 		}
 
-#ifdef RUN_DETAILED_TIMING
-
 		auto timeBpIterEnd = std::chrono::system_clock::now();
 		diff = timeBpIterEnd - timeBpIterStart;
 		totalTimeBpIters += diff.count();
 
 		auto timeCopyMessageValuesStart = std::chrono::system_clock::now();
-
-#endif
 
 		//printf("DONE BP RUN\n");
 
@@ -558,21 +528,13 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 			currentCheckerboardSet = (currentCheckerboardSet + 1) % 2;
 		}
 
-#ifdef RUN_DETAILED_TIMING
-
 		auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
 		diff = timeCopyMessageValuesEnd - timeCopyMessageValuesStart;
 
 		totalTimeCopyData += diff.count();
-
-#endif
 	}
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeGetOutputDisparityStart = std::chrono::system_clock::now();
-
-#endif
 
 	//assume in bottom level when retrieving output disparity
 	retrieveOutputDisparity(currentCheckerboardSet,
@@ -597,15 +559,12 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 		messageRDeviceSet1Checkerboard2,
 		resultingDisparityMapCompDevice);
 
-#ifdef RUN_DETAILED_TIMING
-
 	auto timeGetOutputDisparityEnd = std::chrono::system_clock::now();
 	diff = timeGetOutputDisparityEnd - timeGetOutputDisparityStart;
 	double totalTimeGetOutputDisparity = diff.count();
+	segmentTimings.addTiming(std::make_pair(std::make_pair(OUTPUT_DISPARITY, timingNames_BP.at(OUTPUT_DISPARITY)), totalTimeGetOutputDisparity));
 
 	auto timeFinalFreeStart = std::chrono::system_clock::now();
-
-#endif
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
@@ -652,60 +611,25 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 	delete offsetAtLevel;
 	delete processingLevelProperties;
 
-#ifdef RUN_DETAILED_TIMING
-
 	double timeBpItersKernelTotalTime = 0.0;
 	auto timeFinalFreeEnd = std::chrono::system_clock::now();
 
 	diff = timeFinalFreeEnd - timeFinalFreeStart;
 	double totalTimeFinalFree = diff.count();
+	segmentTimings.addTiming(std::make_pair(std::make_pair(FINAL_FREE, timingNames_BP.at(FINAL_FREE)), totalTimeFinalFree));
 
-	double totalMemoryProcessingTime = 0.0;/*totalTimeInitSettingsMallocStart + totalTimeFinalUnbindFree
-	 + (totalTimeInitMessageVals - totalTimeInitMessageValuesKernelTime);
-	 //+ (totalTimeCopyData - timeCopyDataKernelTotalTime)
-	 //+ (timeBpItersKernelTotalTime - timeBpItersKernelTotalTime);*/
-	double totalComputationProcessing = 0.0;/*totalTimeGetDataCostsBottomLevel
-	 + totalTimeGetDataCostsHigherLevels
-	 + totalTimeInitMessageValuesKernelTime + totalTimeCopyData
-	 + timeBpItersKernelTotalTime + totalTimeGetOutputDisparity;*/
+	segmentTimings.addTiming(std::make_pair(std::make_pair(BP_ITERS, timingNames_BP.at(BP_ITERS)), totalTimeBpIters));
+	segmentTimings.addTiming(std::make_pair(std::make_pair(COPY_DATA, timingNames_BP.at(COPY_DATA)), totalTimeCopyData));
+	segmentTimings.addTiming(std::make_pair(std::make_pair(COPY_DATA_KERNEL, timingNames_BP.at(COPY_DATA_KERNEL)), totalTimeCopyDataKernel));
+
 	double totalTimed = totalTimeInitSettingsMallocStart
-		+ totalTimeGetDataCostsBottomLevel
-		+ totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals
-		+ totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity
-		+ totalTimeFinalFree;
-	timingsPointer->totalTimeInitSettingsMallocStart.push_back(
-		totalTimeInitSettingsMallocStart);
-	timingsPointer->totalTimeGetDataCostsBottomLevel.push_back(
-		totalTimeGetDataCostsBottomLevel);
-	timingsPointer->totalTimeGetDataCostsHigherLevels.push_back(
-		totalTimeGetDataCostsHigherLevels);
-	timingsPointer->totalTimeInitMessageVals.push_back(
-		totalTimeInitMessageVals);
-	timingsPointer->totalTimeInitMessageValuesKernelTime.push_back(
-		totalTimeInitMessageValuesKernelTime);
-	timingsPointer->totalTimeBpIters.push_back(totalTimeBpIters);
-	timingsPointer->timeBpItersKernelTotalTime.push_back(
-		timeBpItersKernelTotalTime);
-	timingsPointer->totalTimeCopyData.push_back(totalTimeCopyData);
-	timingsPointer->timeCopyDataKernelTotalTime.push_back(
-		totalTimeCopyDataKernel);
-	timingsPointer->timeCopyDataMemoryManagementTotalTime.push_back(
-		totalTimeCopyData - totalTimeCopyDataKernel);
-	timingsPointer->totalTimeGetOutputDisparity.push_back(
-		totalTimeGetOutputDisparity);
-	timingsPointer->totalTimeFinalFree.push_back(totalTimeFinalFree);
-	timingsPointer->totalTimed.push_back(totalTimed);
-	timingsPointer->totalMemoryProcessingTime.push_back(
-		totalMemoryProcessingTime);
-	timingsPointer->totalComputationProcessing.push_back(
-		totalComputationProcessing);
-	return timingsPointer;
+			+ totalTimeGetDataCostsBottomLevel
+			+ totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals
+			+ totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity
+			+ totalTimeFinalFree;
+	segmentTimings.addTiming(std::make_pair(std::make_pair(TOTAL_TIMED, timingNames_BP.at(TOTAL_TIMED)), totalTimed));
 
-#else
-
-	return nullptr;
-
-#endif
+	return segmentTimings;
 }
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

@@ -11,126 +11,106 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
+#include <map>
+#include <iostream>
 
 class DetailedTimings {
 public:
 
-	std::vector<double> totalTimeInitSettingsMallocStart;
-		std::vector<double> totalTimeGetDataCostsBottomLevel;
-		std::vector<double> totalTimeGetDataCostsHigherLevels;
-		std::vector<double> totalTimeInitMessageVals;
-		std::vector<double> totalTimeBpIters;
-		std::vector<double> timeBpItersKernelTotalTime;
-		std::vector<double> totalTimeCopyData;
-		std::vector<double> timeCopyDataMemoryManagementTotalTime;
-		std::vector<double> timeCopyDataKernelTotalTime;
-		std::vector<double> totalTimeGetOutputDisparity;
-		std::vector<double> totalTimeFinalFree;
-		std::vector<double> totalTimed;
-		std::vector<double> totalTimeInitMessageValuesKernelTime;
-		std::vector<double> totalMemoryProcessingTime;
-		std::vector<double> totalComputationProcessing;
+		std::map<std::pair<unsigned int, std::string>, std::vector<double>> timings;
+
 		int totNumTimings = 0;
 
 		DetailedTimings();
 			virtual ~DetailedTimings();
 
-			virtual void addTimings(DetailedTimings* timingsToAdd)
-		{
-			//Can assume that timingsToAdd is of same type as current class
-			totalTimeInitSettingsMallocStart.push_back(timingsToAdd->totalTimeInitSettingsMallocStart.at(0));
-			totalTimeGetDataCostsBottomLevel.push_back(timingsToAdd->totalTimeGetDataCostsBottomLevel.at(0));
-			totalTimeGetDataCostsHigherLevels.push_back(timingsToAdd->totalTimeGetDataCostsHigherLevels.at(0));
-			totalTimeInitMessageVals.push_back(timingsToAdd->totalTimeInitMessageVals.at(0));
-			totalTimeBpIters.push_back(timingsToAdd->totalTimeBpIters.at(0));
-			timeBpItersKernelTotalTime.push_back(timingsToAdd->timeBpItersKernelTotalTime.at(0));
-			totalTimeCopyData.push_back(timingsToAdd->totalTimeCopyData.at(0));
-			timeCopyDataKernelTotalTime.push_back(timingsToAdd->timeCopyDataKernelTotalTime.at(0));
-			timeCopyDataMemoryManagementTotalTime.push_back(timingsToAdd->totalComputationProcessing.at(0));
-			totalTimeGetOutputDisparity.push_back(timingsToAdd->totalTimeGetOutputDisparity.at(0));
-			totalTimeFinalFree.push_back(timingsToAdd->totalTimeFinalFree.at(0));
-			totalTimed.push_back(timingsToAdd->totalTimed.at(0));
-			totalTimeInitMessageValuesKernelTime.push_back(timingsToAdd->totalTimeInitMessageValuesKernelTime.at(0));
-			totalMemoryProcessingTime.push_back(timingsToAdd->totalMemoryProcessingTime.at(0));
-			totalComputationProcessing.push_back(timingsToAdd->totalComputationProcessing.at(0));
-			totNumTimings = totalTimeInitSettingsMallocStart.size();
-		}
+			void addToCurrentTimings(DetailedTimings& inDetailedTimings)
+			{
+				std::for_each(inDetailedTimings.timings.begin(), inDetailedTimings.timings.end(), [this](const auto& currentTiming) {
+					auto iter = this->timings.find(currentTiming.first);
+									if (iter != this->timings.end())
+									{
+										iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
+									}
+									else
+									{
+										this->timings[currentTiming.first] = currentTiming.second;
+									}
+				} );
+			}
 
-			virtual void SortTimings()
-		{
-			std::sort(totalTimeInitSettingsMallocStart.begin(), totalTimeInitSettingsMallocStart.end());
-			std::sort(totalTimeGetDataCostsBottomLevel.begin(), totalTimeGetDataCostsBottomLevel.end());
-			std::sort(totalTimeGetDataCostsHigherLevels.begin(), totalTimeGetDataCostsHigherLevels.end());
-			std::sort(totalTimeInitMessageVals.begin(), totalTimeInitMessageVals.end());
-			std::sort(totalTimeBpIters.begin(), totalTimeBpIters.end());
-			std::sort(timeBpItersKernelTotalTime.begin(), timeBpItersKernelTotalTime.end());
-			std::sort(totalTimeCopyData.begin(), totalTimeCopyData.end());
-			std::sort(timeCopyDataKernelTotalTime.begin(), timeCopyDataKernelTotalTime.end());
-			std::sort(timeCopyDataMemoryManagementTotalTime.begin(), timeCopyDataMemoryManagementTotalTime.end());
-			std::sort(totalTimeGetOutputDisparity.begin(), totalTimeGetOutputDisparity.end());
-			std::sort(totalTimeFinalFree.begin(), totalTimeFinalFree.end());
-			std::sort(totalTimed.begin(), totalTimed.end());
-			std::sort(totalTimeInitMessageValuesKernelTime.begin(), totalTimeInitMessageValuesKernelTime.end());
-			std::sort(totalMemoryProcessingTime.begin(), totalMemoryProcessingTime.end());
-			std::sort(totalComputationProcessing.begin(), totalComputationProcessing.end());
-		}
+			void addTiming(std::pair<std::pair<unsigned int, std::string>, double> inTiming)
+			{
+				auto iter = timings.find(inTiming.first);
+				if (iter != timings.end())
+				{
+					iter->second.push_back(inTiming.second);
+				}
+				else
+				{
+					timings[inTiming.first] = std::vector<double>(1, inTiming.second);
+				}
+			}
 
-			virtual void PrintMedianTimings()
-		{
-			SortTimings();
-			printf("Median Timings\n");
-			printf("Time init settings malloc: %f\n", totalTimeInitSettingsMallocStart.at(totNumTimings/2));
-			printf("Time get data costs bottom level: %f\n", totalTimeGetDataCostsBottomLevel.at(totNumTimings/2));
-			printf("Time get data costs higher levels: %f\n", totalTimeGetDataCostsHigherLevels.at(totNumTimings/2));
-			printf("Time to init message values: %f\n", totalTimeInitMessageVals.at(totNumTimings/2));
-			printf("Time to init message values (kernel portion only): %f\n", totalTimeInitMessageValuesKernelTime.at(totNumTimings/2));
-			printf("Total time BP Iters: %f\n", totalTimeBpIters.at(totNumTimings/2));
-			//printf("Total time BP Iters (kernel portion only): %f\n", timeBpItersKernelTotalTime.at(totNumTimings/2));
-			printf("Total time Copy Data: %f\n", totalTimeCopyData.at(totNumTimings/2));
-			printf("Total time Copy Data (kernel portion only): %f\n", timeCopyDataKernelTotalTime.at(totNumTimings/2));
-			printf("Total time Copy Data (memory management portion only): %f\n", timeCopyDataMemoryManagementTotalTime.at(totNumTimings/2));
-			printf("Time get output disparity: %f\n", totalTimeGetOutputDisparity.at(totNumTimings/2));
-			printf("Time final free: %f\n", totalTimeFinalFree.at(totNumTimings/2));
-			printf("Total timed: %f\n", totalTimed.at(totNumTimings/2));
-			//printf("Total memory processing time: %f\n", totalMemoryProcessingTime.at(totNumTimings/2));
-			//printf("Total computation processing time: %f\n", totalComputationProcessing.at(totNumTimings/2));
-		}
+			void sortCurrentTimings()
+			{
+				std::for_each(timings.begin(), timings.end(), [](auto& currentTiming) { std::sort(currentTiming.second.begin(), currentTiming.second.end()); });
+			}
 
-		virtual void PrintMedianTimingsToFile(FILE* pFile) {
-			SortTimings();
-			fprintf(pFile, "Median Timings\n");
-			fprintf(pFile, "Time init settings malloc: %f\n",
-					totalTimeInitSettingsMallocStart.at(totNumTimings / 2));
-			fprintf(pFile, "Time get data costs bottom level: %f\n",
-					totalTimeGetDataCostsBottomLevel.at(totNumTimings / 2));
-			fprintf(pFile, "Time get data costs higher levels: %f\n",
-					totalTimeGetDataCostsHigherLevels.at(totNumTimings / 2));
-			fprintf(pFile, "Time to init message values: %f\n",
-					totalTimeInitMessageVals.at(totNumTimings / 2));
-			fprintf(pFile,
-					"Time to init message values (kernel portion only): %f\n",
-					totalTimeInitMessageValuesKernelTime.at(totNumTimings / 2));
-			fprintf(pFile, "Total time BP Iters: %f\n",
-					totalTimeBpIters.at(totNumTimings / 2));
-			//fprintf(pFile, "Total time BP Iters (kernel portion only): %f\n",
-			//		timeBpItersKernelTotalTime.at(totNumTimings / 2));
-			fprintf(pFile, "Total time Copy Data: %f\n",
-					totalTimeCopyData.at(totNumTimings / 2));
-			fprintf(pFile, "Total time Copy Data (kernel portion only): %f\n",
-					timeCopyDataKernelTotalTime.at(totNumTimings / 2));
-			fprintf(pFile,
-					"Total time Copy Data (memory management portion only): %f\n",
-					timeCopyDataMemoryManagementTotalTime.at(totNumTimings / 2));
-			fprintf(pFile, "Time get output disparity: %f\n",
-					totalTimeGetOutputDisparity.at(totNumTimings / 2));
-			fprintf(pFile, "Time final free: %f\n",
-					totalTimeFinalFree.at(totNumTimings / 2));
-			fprintf(pFile, "Total timed: %f\n", totalTimed.at(totNumTimings / 2));
-			/*fprintf(pFile, "Total memory processing time: %f\n",
-					totalMemoryProcessingTime.at(totNumTimings / 2));
-			fprintf(pFile, "Total computation processing time: %f\n",
-					totalComputationProcessing.at(totNumTimings / 2));*/
-		}
+			void printCurrentTimings() const
+			{
+				printf("Median Timings\n");
+				(timings.size() > 0) ?	printf("Number of timings: %d\n", timings.begin()->second.size()) : printf("No timings recorded\n");
+				//sort current timings, then print
+				std::for_each(timings.begin(), timings.end(), [](auto currentTiming) {
+					std::sort(currentTiming.second.begin(), currentTiming.second.end());
+					printf("%s : %f\n", currentTiming.first.second.c_str(), currentTiming.second[currentTiming.second.size() / 2]); });
+			}
+
+			double getMedianTiming(const unsigned int runSegmentNum) const
+			{
+				//find first element with input runSegmentNum
+				for (const auto& timingMapElement : timings)
+				{
+					if (timingMapElement.first.first == runSegmentNum)
+					{
+						return getMedianTiming(timingMapElement.first);
+					}
+				}
+
+				return 0.0;
+			}
+
+			double getMedianTiming(const std::string& runSegmentString) const
+			{
+				//find first element with input runSegmentString
+				for (const auto& timingMapElement : timings)
+				{
+					if (timingMapElement.first.second == runSegmentString)
+					{
+						return getMedianTiming(timingMapElement.first);
+					}
+				}
+
+				return 0.0;
+			}
+
+			double getMedianTiming(std::pair<unsigned int, std::string> runSegment) const
+			{
+				auto iter = timings.find(runSegment);
+				if (iter != timings.end())
+				{
+					std::vector<double> timingVectorCopy(iter->second);
+					std::sort(timingVectorCopy.begin(), timingVectorCopy.end());
+					return (timingVectorCopy[timingVectorCopy.size() / 2]);
+				}
+				else
+				{
+					return 0.0;
+				}
+			}
+
+		friend std::ostream& operator<<(std::ostream& os, const DetailedTimings& timing);
 };
 
 #endif /* DETAILEDTIMINGS_H_ */

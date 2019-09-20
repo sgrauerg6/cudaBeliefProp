@@ -7,14 +7,16 @@
 
 #include "RunBpStereoSet.h"
 #include <unordered_map>
+#include "DetailedTimings.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
 enum Runtime_Type { SMOOTHING, TOTAL_BP, TOTAL_NO_TRANSFER, TOTAL_WITH_TRANSFER };
-const std::map<Runtime_Type, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
+const std::unordered_map<unsigned int, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
 			{TOTAL_WITH_TRANSFER, "Total runtime including data transfer time"}};
 
+//std::pair<std::pair<unsigned int, std::string>, double>
 template<typename T>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImagePath, const char* testImagePath,
 	const BPsettings& algSettings, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
@@ -29,12 +31,11 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	unsigned int heightImages = 0;
 	unsigned int widthImages = 0;
 
-	std::unordered_map<Runtime_Type, std::pair<timingType, timingType>> runtime_start_end_timings;
-	std::map<Runtime_Type, std::vector<double>> timings;
-	std::for_each(timingNames.begin(), timingNames.end(), [&timings](std::pair<Runtime_Type, std::string> timingName) { timings[timingName.first] = std::vector<double>(); });
+	std::unordered_map<unsigned int, std::pair<timingType, timingType>> runtime_start_end_timings;
 
-	DetailedTimings* detailedTimingsOverall = nullptr;
+	DetailedTimings detailedTimingsOverall;
 	float* dispValsHost;
+	DetailedTimings segmentTimings;
 
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
@@ -78,7 +79,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runtime_start_end_timings[TOTAL_BP].first = std::chrono::system_clock::now();
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
-		DetailedTimings* currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
+		DetailedTimings currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
 			disparityMapFromImage1To2CompDevice, algSettings, widthImages, heightImages);
 
 		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
@@ -90,9 +91,10 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
 
 		//retrieve the timing for each runtime segment and add to vector in timings map
-		std::for_each(timings.begin(), timings.end(),
-				[&runtime_start_end_timings] (auto& currentTiming) {
-			currentTiming.second.push_back((timingInSecondsDoublePrecision(runtime_start_end_timings[currentTiming.first].second - runtime_start_end_timings[currentTiming.first].first)).count());
+		std::for_each(timingNames.begin(), timingNames.end(),
+				[&runtime_start_end_timings, &segmentTimings] (auto& currentRuntimeSegmentAndName) {
+			segmentTimings.addTiming(std::make_pair(currentRuntimeSegmentAndName,
+					(timingInSecondsDoublePrecision(runtime_start_end_timings[currentRuntimeSegmentAndName.first].second - runtime_start_end_timings[currentRuntimeSegmentAndName.first].first)).count()));
 		});
 
 		//free memory for disparity if not in last run (where used to create disparity map)
@@ -106,19 +108,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& smoothedImage1);
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& smoothedImage2);
 
-		//check if detailed timings are returned; if so, add to overall detailed timings
-		if (currentDetailedTimings != nullptr)
-		{
-			if (detailedTimingsOverall == nullptr)
-			{
-				detailedTimingsOverall = currentDetailedTimings;
-			}
-			else
-			{
-				//add timings for run to overall set
-				detailedTimingsOverall->addTimings(currentDetailedTimings);
-			}
-		}
+		detailedTimingsOverall.addToCurrentTimings(currentDetailedTimings);
 	}
 
 	//generate output disparity map object
@@ -126,20 +116,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	delete [] dispValsHost;
 
 	fprintf(resultsFile, "Image Width: %d\nImage Height: %d\n", widthImages, heightImages);
-
-	std::for_each(timings.begin(), timings.end(),
-				[resultsFile](auto& currentTiming)
-				{
-					std::sort(currentTiming.second.begin(), currentTiming.second.end());
-					fprintf(resultsFile, "Median %s: %f\n", timingNames.at(currentTiming.first).c_str(), currentTiming.second.at(NUM_BP_STEREO_RUNS / 2));
-				});
-
-	if (detailedTimingsOverall != nullptr)
-	{
-		//uncomment to print timings for each part of implementation
-		//timings.PrintMedianTimings();
-		detailedTimingsOverall->PrintMedianTimingsToFile(resultsFile);
-	}
+	segmentTimings.printCurrentTimings();
+	detailedTimingsOverall.printCurrentTimings();
 
 	if (deleteBPMemoryManagementAtEnd)
 	{
@@ -147,7 +125,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	}
 
 	ProcessStereoSetOutput output;
-	output.runTime = timings[TOTAL_WITH_TRANSFER].at(NUM_BP_STEREO_RUNS / 2);
+	output.runTime = segmentTimings.getMedianTiming(TOTAL_WITH_TRANSFER);
 	output.outDisparityMap = output_disparity_map;
 
 	return output;
