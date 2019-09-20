@@ -123,7 +123,7 @@ void ProcessOptimizedCPUBP<T>::printDataAndMessageValsToPoint(int xVal, int yVal
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
+void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		levelProperties& currentLevelProperties,
 		T* dataCostDeviceCurrentLevelCheckerboard1,
 		T* dataCostDeviceCurrentLevelCheckerboard2,
@@ -228,7 +228,7 @@ void ProcessOptimizedCPUBP<T>::copyMessageValuesToNextLevelDown(
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessOptimizedCPUBP<T>::initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
+void ProcessOptimizedCPUBP<T>::initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
 		float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 		T* dataCostDeviceCheckerboard2)
 {

@@ -31,7 +31,7 @@ public:
 
 		virtual void freeMemoryOnTargetDevice(void* arrayToFree) = 0;
 
-		virtual void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties,
+		virtual void initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties,
 				float* image1PixelsCompDevice, float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 				T* dataCostDeviceCheckerboard2) = 0;
 
@@ -53,7 +53,7 @@ public:
 				T* messageLDeviceCheckerboard2,
 				T* messageRDeviceCheckerboard2) = 0;
 
-		virtual void runBPAtCurrentLevel(BPsettings& algSettings,
+		virtual void runBPAtCurrentLevel(const BPsettings& algSettings,
 				levelProperties& currentLevelPropertes,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
@@ -118,7 +118,7 @@ public:
 		//output is resultingDisparityMap
 		DetailedTimings* operator()(float* image1PixelsCompDevice,
 			float* image2PixelsCompDevice,
-			float* resultingDisparityMapCompDevice, BPsettings& algSettings);
+			float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages);
 };
 
 #endif /* PROCESSBPONTARGETDEVICE_H_ */

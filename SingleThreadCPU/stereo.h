@@ -33,11 +33,11 @@ template<typename T>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	float operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile);
+	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, FILE* resultsFile);
 
 private:
 	// compute message
-	image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings);
+	image<float[VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings);
 	void msg(float s1[VALUES], float s2[VALUES], float s3[VALUES], float s4[VALUES],
 			float dst[VALUES], float disc_k_bp);
 	image<uchar> *output(image<float[VALUES]> *u, image<float[VALUES]> *d,
@@ -46,6 +46,6 @@ private:
 	void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 			image<float[VALUES]> *l, image<float[VALUES]> *r,
 			image<float[VALUES]> *data, int iter, float disc_k_bp);
-	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile, float& runtime);
+	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, FILE* resultsFile, float& runtime);
 };
 #endif /* STEREO_H_ */

@@ -1,63 +1,65 @@
-Ref Image: conesH/im2.ppm
-Test Image: conesH/im6.ppm
+Ref Image: refImageTsukuba.pgm
+Test Image: testImageTsukuba.pgm
 Memory Optimization Level: 1
 Indexing Optimization Level: 1
-BP Processing Data Type: HALF
-Num Possible Disparity Values: 128
-Num BP Levels: 2
-Num BP Iterations: 7
-DISC_K_BP: 17.066667
+BP Processing Data Type: FLOAT
+Num Possible Disparity Values: 15
+Num BP Levels: 5
+Num BP Iterations: 10
+DISC_K_BP: 1.700000
 DATA_K_BP: 15.000000
-LAMBDA_BP: 0.100000
+LAMBDA_BP: 0.070000
 SIGMA_BP: 0.000000
-CPU_OPTIMIZATION_LEVEL: 1
-BYTES_ALIGN_MEMORY: 64
-NUM_DATA_ALIGN_WIDTH: 16
-Device 0: GeForce RTX 2060 with 30 multiprocessors
+CPU_OPTIMIZATION_LEVEL: 0
+BYTES_ALIGN_MEMORY: 32
+NUM_DATA_ALIGN_WIDTH: 8
+USE_SHARED_MEMORY: 0
+DISP_INDEX_START_REG_LOCAL_MEM: 0
+Device 0: GeForce GTX TITAN Black with 15 multiprocessors
 Cuda version: 10010
 CURRENT RUN: GPU WITH CUDA
-Image Width: 900
-Image Height: 750
-Median Smoothing Runtime: 0.005161
-Median Total BP Runtime: 0.286088
-MEDIAN RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): 0.291023
-MEDIAN RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): 0.291504
+Image Width: 384
+Image Height: 288
+Median Smoothing Runtime: 0.000428
+Median Total BP Runtime: 0.004324
+Median RUNTIME (NOT INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): 0.004846
+Median RUNTIME (INCLUDING TRANSFER TIME OF DATA TO/FROM comp device MEMORY): 0.008422
 Median Timings
-Time init settings malloc: 0.001061
-Time get data costs bottom level: 0.003227
-Time get data costs higher levels: 0.001943
-Time to init message values: 0.001841
-Time to init message values (kernel portion only): 0.001841
-Total time BP Iters: 0.248184
-Total time Copy Data: 0.022405
-Total time Copy Data (kernel portion only): 0.022405
+Time init settings malloc: 0.000099
+Time get data costs bottom level: 0.000055
+Time get data costs higher levels: 0.000186
+Time to init message values: 0.000014
+Time to init message values (kernel portion only): 0.000014
+Total time BP Iters: 0.003095
+Total time Copy Data: 0.000622
+Total time Copy Data (kernel portion only): 0.000621
 Total time Copy Data (memory management portion only): 0.000000
-Time get output disparity: 0.006360
-Time final free: 0.001048
-Total timed: 0.286086
-AVERAGE CPU RUN TIME: 8.6568774750
+Time get output disparity: 0.000145
+Time final free: 0.000069
+Total timed: 0.004322
+AVERAGE CPU RUN TIME: 0.1276908290
 
 CPU output vs. Ground Truth result:
-Average RMS error: 12.233755 
-Average RMS error (with disparity error cap at 10.010000): 2.973679 
-Proportion bad pixels (error less than 0.010000): 0.722436 
-Proportion bad pixels (error less than 2.010000): 0.309147 
-Proportion bad pixels (error less than 5.010000): 0.261400 
-Proportion bad pixels (error less than 10.010000): 0.223837 
+Average RMS error: 1.450864 
+Average RMS error (with disparity error cap at 10.010000): 1.419268 
+Proportion bad pixels (error less than 0.001000): 0.388392 
+Proportion bad pixels (error less than 2.010000): 0.225541 
+Proportion bad pixels (error less than 5.010000): 0.057364 
+Proportion bad pixels (error less than 10.010000): 0.022859 
 
 GPU output vs. Ground Truth result:
-Average RMS error: 12.235585 
-Average RMS error (with disparity error cap at 10.010000): 2.973889 
-Proportion bad pixels (error less than 0.010000): 0.722416 
-Proportion bad pixels (error less than 2.010000): 0.309191 
-Proportion bad pixels (error less than 5.010000): 0.261385 
-Proportion bad pixels (error less than 10.010000): 0.223890 
+Average RMS error: 1.450864 
+Average RMS error (with disparity error cap at 10.010000): 1.419268 
+Proportion bad pixels (error less than 0.001000): 0.388392 
+Proportion bad pixels (error less than 2.010000): 0.225541 
+Proportion bad pixels (error less than 5.010000): 0.057364 
+Proportion bad pixels (error less than 10.010000): 0.022859 
 
 GPU output vs. CPU output:
-Average RMS error: 0.020781 
-Average RMS error (with disparity error cap at 10.010000): 0.014557 
-Proportion bad pixels (error less than 0.010000): 0.009296 
-Proportion bad pixels (error less than 2.010000): 0.000932 
-Proportion bad pixels (error less than 5.010000): 0.000379 
-Proportion bad pixels (error less than 10.010000): 0.000253 
+Average RMS error: 0.000000 
+Average RMS error (with disparity error cap at 10.010000): 0.000000 
+Proportion bad pixels (error less than 0.001000): 0.000000 
+Proportion bad pixels (error less than 2.010000): 0.000000 
+Proportion bad pixels (error less than 5.010000): 0.000000 
+Proportion bad pixels (error less than 10.010000): 0.000000 
 Cuda Runtime Version: 10010

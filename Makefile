@@ -29,11 +29,11 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++11
 #ARCHITECTURE_COMPILE_FLAG = -march=native
-ARCHITECTURE_COMPILE_FLAG = -O3 -march=skylake
+ARCHITECTURE_COMPILE_FLAG = -O3 -march=native
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
-ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60
+ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60, -gencode arch=compute_35,code=sm_35
 
 INCDIR = -I.
 DBG    = -g
@@ -47,16 +47,16 @@ LINK   = -lm
 
 all: impDriver 
 
-impDriver: driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o
-	g++ driverCudaBp.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+impDriver: driverCudaBp.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o
+	g++ driverCudaBp.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-impDriveCPU: driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
-	g++ driverBpStereoCPU.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
+impDriveCPU: driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
+	g++ driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o imageHelpers.o stereoResultsEval.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
 
 DetailedTimings.o: DetailedTimings.cpp DetailedTimings.h
 	g++ DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h imageHelpers.o stereoResultsEval.o stereo.o RunBpStereoOptimizedCPU.o
+driverBpStereoCPU.o: driverBpStereoCPU.cpp bpStereoParameters.h bpParametersFromPython.h imageHelpers.o stereoResultsEval.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
 	g++ driverBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessBPOnTargetDevice.o : ProcessBPOnTargetDevice.cpp ProcessBPOnTargetDevice.h DetailedTimings.o
@@ -71,8 +71,17 @@ RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h bpStereoParameters.h Smoot
 imageHelpers.o: imageHelpers.cpp imageHelpers.h
 	g++ imageHelpers.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereoResultsEval.o: stereoResultsEval.cpp stereoResultsEval.h stereoResultsEvalParameters.h
-	g++ stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+stereoResultsEval.o: OutputEvaluation/stereoResultsEval.cpp OutputEvaluation/stereoResultsEval.h OutputEvaluation/stereoResultsEvalParameters.h
+	g++ OutputEvaluation/stereoResultsEval.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+OutputEvaluationParameters.o: OutputEvaluation/OutputEvaluationParameters.cpp OutputEvaluation/OutputEvaluationParameters.h
+	g++ OutputEvaluation/OutputEvaluationParameters.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+OutputEvaluationResults.o: OutputEvaluation/OutputEvaluationResults.cpp OutputEvaluation/OutputEvaluationResults.h
+	g++ OutputEvaluation/OutputEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+		
+DisparityMap.o: OutputEvaluation/DisparityMap.cpp OutputEvaluation/DisparityMap.h OutputEvaluationParameters.o OutputEvaluationResults.o
+	g++ OutputEvaluation/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h bpStereoCudaParameters.h bpParametersFromPython.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	g++ SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -95,7 +104,7 @@ ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 
-driverCudaBp.o: driverCudaBp.cu bpStereoCudaParameters.h bpStereoParameters.h bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o stereoResultsEval.o stereo.o
+driverCudaBp.o: driverCudaBp.cu bpStereoCudaParameters.h bpStereoParameters.h bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o stereoResultsEval.o stereo.o DisparityMap.o
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
 	$(NVCC) -c driverCudaBp.cu $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(COMPILE_FLAGS) 
 make clean:

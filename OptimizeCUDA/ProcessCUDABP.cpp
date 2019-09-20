@@ -154,7 +154,7 @@ void ProcessCUDABP<T>::printDataAndMessageValsToPoint(int xVal, int yVal, T* dat
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T>
-void ProcessCUDABP<T>::runBPAtCurrentLevel(BPsettings& algSettings,
+void ProcessCUDABP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		levelProperties& currentLevelPropertes,
 		T* dataCostDeviceCurrentLevelCheckerboard1,
 		T* dataCostDeviceCurrentLevelCheckerboard2,
@@ -326,7 +326,7 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T>
-void ProcessCUDABP<T>::initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
+void ProcessCUDABP<T>::initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
 		float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 		T* dataCostDeviceCheckerboard2)
 {
@@ -339,8 +339,8 @@ void ProcessCUDABP<T>::initializeDataCosts(BPsettings& algSettings, levelPropert
 	dim3 grid;
 
 	//kernal run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
-	grid.x = (unsigned int)ceil((float)algSettings.widthImages / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)algSettings.heightImages / (float)threads.y);
+	grid.x = (unsigned int)ceil((float)currentLevelProperties.widthLevel / (float)threads.x);
+	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel / (float)threads.y);
 
 	//initialize the data the the "bottom" of the image pyramid
 	initializeBottomLevelDataStereo<T><<<grid, threads>>>(currentLevelProperties, image1PixelsCompDevice,

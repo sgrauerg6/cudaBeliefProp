@@ -46,7 +46,7 @@ unsigned long ProcessBPOnTargetDevice<T>::getNumDataForAlignedMemoryAtLevel(unsi
 template<typename T>
 DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompDevice,
 	float* image2PixelsCompDevice,
-	float* resultingDisparityMapCompDevice, BPsettings& algSettings)
+	float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
 
 #ifdef RUN_DETAILED_TIMING
@@ -66,8 +66,8 @@ DetailedTimings* ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompD
 	levelProperties* processingLevelProperties = new levelProperties[algSettings.numLevels];
 
 	//start at the "bottom level" and work way up to determine amount of space needed to store data costs
-	int widthLevel = algSettings.widthImages;
-	int heightLevel = algSettings.heightImages;
+	int widthLevel = widthImages;
+	int heightLevel = heightImages;
 
 	unsigned long currentOffsetLevel = 0;
 	unsigned long* offsetAtLevel = new unsigned long[algSettings.numLevels];

@@ -72,10 +72,6 @@ BPsettings initializeAndReturnBPSettings()
 	startBPSettings.data_k_bp = DATA_K_BP;
 	startBPSettings.disc_k_bp = DISC_K_BP;
 
-	//height/width determined when image read from file
-	startBPSettings.widthImages = 0;
-	startBPSettings.heightImages = 0;
-
 	return startBPSettings;
 }
 
@@ -93,20 +89,22 @@ void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
 	RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType> runBpStereoSetCUDA;
 	//RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;
 	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
-	float cudaRunTime = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH,
-			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_1,
+	ProcessStereoSetOutput cudaRunTimeAndDispImage = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH,
+			DEFAULT_TEST_IMAGE_PATH, algSettings, /*SAVE_DISPARITY_IMAGE_PATH_1,*/
 			resultsFile);
-	float singleThreadCpuRunTime = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH,
-			DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
+	cudaRunTimeAndDispImage.outDisparityMap.saveDisparityMap(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP);
+	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH,
+			DEFAULT_TEST_IMAGE_PATH, algSettings, /*SAVE_DISPARITY_IMAGE_PATH_2,*/
 			resultsFile);
+	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(SAVE_DISPARITY_IMAGE_PATH_2, SCALE_BP);
 	//printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTime);
 	//float cpuRunTime = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH,
 	//		DEFAULT_TEST_IMAGE_PATH, algSettings, SAVE_DISPARITY_IMAGE_PATH_2,
 	//		resultsFile);
 
-	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTime);
+	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTimeAndDispImage.runTime);
 	//printf("Optimized CPU runtime: %f\n", cpuRunTime);
-	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTime);
+	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTimeAndDispImage.runTime);
 	printf("Output disparity map from final GPU run at %s\n",
 			SAVE_DISPARITY_IMAGE_PATH_1);
 	/*printf("Output disparity map from CPU run at %s\n",

@@ -17,9 +17,8 @@ RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
 }
 
 template<typename T>
-float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath,
-		const char* testImagePath, BPsettings algSettings,
-		const char* saveDisparityMapImagePath, FILE* resultsFile)
+ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath,
+		const char* testImagePath, const BPsettings& algSettings, FILE* resultsFile)
 {
 	fprintf(resultsFile, "CURRENT RUN: OPTIMIZED CPU\n");
 	int nthreads = 0;
@@ -34,8 +33,7 @@ float RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath,
 	SmoothImageCPU smoothImageCPU;
 	ProcessOptimizedCPUBP<T> processImageCPU;
 	return this->processStereoSet(refImagePath, testImagePath, algSettings,
-			saveDisparityMapImagePath, resultsFile, &smoothImageCPU,
-			&processImageCPU);
+			resultsFile, &smoothImageCPU, &processImageCPU);
 }
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

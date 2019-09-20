@@ -67,7 +67,7 @@ void RunBpStereoCPUSingleThread<T>::msg(float s1[VALUES], float s2[VALUES], floa
 
 // computation of data costs
 template<typename T>
-image<float[VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings) {
+image<float[VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings) {
 	int width = img1->width();
 	int height = img1->height();
 	image<float[VALUES]> *data = new image<float[VALUES]>(width, height);
@@ -162,7 +162,7 @@ void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[VALUES]> *u, image<float[V
 
 // multiscale belief propagation for image restoration
 template<typename T>
-image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2, BPsettings algSettings, FILE* resultsFile, float& runtime) {
+image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, FILE* resultsFile, float& runtime) {
 	image<float[VALUES]> *u[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *d[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *l[MAX_ALLOWED_LEVELS];
@@ -261,7 +261,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 }
 
 template<typename T>
-float RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, BPsettings algSettings, const char* saveDisparityImagePath, FILE* resultsFile)
+ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, FILE* resultsFile)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
@@ -273,14 +273,26 @@ float RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const 
 	// compute disparities
 	out = stereo_ms(img1, img2, algSettings, resultsFile, runtime);
 
-	// save output
-	savePGM(out, saveDisparityImagePath);
+	float* outputDisparities = new float[img1->width() * img1->height()];
+	for (int y = 0; y < img1->height(); y++)
+	{
+			for (int x = 0; x < img1->width(); x++)
+			{
+				outputDisparities[y * img1->width() + x] = (float)imRef(out, x, y);
+			}
+	}
+
+	ProcessStereoSetOutput output;
+	output.runTime = runtime;
+	DisparityMap<float> outDispMap(img1->width(), img1->height(), outputDisparities, SCALE);
+	output.outDisparityMap = outDispMap;
 
 	delete img1;
 	delete img2;
 	delete out;
+	delete [] outputDisparities;
 
-	return runtime;
+	return output;
 }
 
 

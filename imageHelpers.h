@@ -49,7 +49,7 @@ public:
 
 	//save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
 	//0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
-	static void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage);
+	static void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, const float* calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage);
 
 	static int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 			 unsigned char* image,char* comment_string);

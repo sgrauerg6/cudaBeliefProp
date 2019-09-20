@@ -22,24 +22,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //functions used to load input images/save resulting movment images
 
-//function to retrieve the disparity values from a disparity map with a known scale factor
-float* ImageHelperFunctions::retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor)
-{
-	unsigned int* imageData = new unsigned int[widthImage*heightImage];
-
-	float* disparityVals = new float[widthImage*heightImage];
-
-	//go through every pixel and retrieve the Stereo value using the pixel value and the scale factor
-	for (unsigned int pixelNum = 0; pixelNum < (widthImage*heightImage); pixelNum++)
-	{
-		disparityVals[pixelNum] = imageData[pixelNum] / scaleFactor;
-	}
-
-	delete [] imageData;
-
-	return disparityVals;
-}
-
 unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	char pgmExtension[] = "pgm";
@@ -401,7 +383,7 @@ int ImageHelperFunctions::pgmWrite(const char* filename, unsigned int cols, unsi
 
 //save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
 //0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
-void ImageHelperFunctions::saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, float*& calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage)
+void ImageHelperFunctions::saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, const float* calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage)
 {
 	//declare and allocate the space for the movement image to save
 	unsigned char* movementImageToSave = new unsigned char[widthImage*heightImage];

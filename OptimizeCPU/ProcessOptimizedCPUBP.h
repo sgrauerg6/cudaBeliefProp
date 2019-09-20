@@ -48,7 +48,7 @@ public:
 			free(arrayToFree);
 		}
 
-		void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
+		void initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
 						float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 						T* dataCostDeviceCheckerboard2);
 
@@ -70,7 +70,7 @@ public:
 				T* messageLDeviceCheckerboard2,
 				T* messageRDeviceCheckerboard2);
 
-		void runBPAtCurrentLevel(BPsettings& algSettings,
+		void runBPAtCurrentLevel(const BPsettings& algSettings,
 				levelProperties& currentLevelPropertes,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,

@@ -46,7 +46,7 @@ public:
 	}
 
 	//initialize the data cost at each pixel for each disparity value
-	void initializeDataCosts(BPsettings& algSettings, levelProperties& currentLevelProperties,
+	void initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties,
 			float* image1PixelsCompDevice, float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 			T* dataCostDeviceCheckerboard2);
 
@@ -70,7 +70,7 @@ public:
 			T* messageRDeviceCheckerboard2);
 
 	//run the given number of iterations of BP at the current level using the given message values in global device memory
-	void runBPAtCurrentLevel(BPsettings& algSettings,
+	void runBPAtCurrentLevel(const BPsettings& algSettings,
 			levelProperties& currentLevelPropertes,
 			T* dataCostDeviceCurrentLevelCheckerboard1,
 			T* dataCostDeviceCurrentLevelCheckerboard2,

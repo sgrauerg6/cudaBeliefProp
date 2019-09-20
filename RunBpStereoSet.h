@@ -15,6 +15,13 @@
 #include "imageHelpers.h"
 #include "DetailedTimings.h"
 #include "RunBpStereoSetMemoryManagement.h"
+#include "OutputEvaluation/DisparityMap.h"
+
+struct ProcessStereoSetOutput
+{
+	float runTime = 0.0;
+	DisparityMap<float> outDisparityMap;
+};
 
 template <typename T>
 class RunBpStereoSet {
@@ -26,12 +33,12 @@ public:
 	}
 
 	//pure abstract overloaded operator that must be defined in child class
-	virtual float operator()(const char* refImagePath, const char* testImagePath,
-		BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile) = 0;
+	virtual ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
+		const BPsettings& algSettings, FILE* resultsFile) = 0;
 
 protected:
-	float processStereoSet(const char* refImagePath, const char* testImagePath,
-		BPsettings algSettings, const char* saveDisparityMapImagePath, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr);
+	ProcessStereoSetOutput processStereoSet(const char* refImagePath, const char* testImagePath,
+		const BPsettings& algSettings, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr);
 
 };
 

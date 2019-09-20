@@ -20,6 +20,9 @@
 template<class T>
 class DisparityMap {
 public:
+	DisparityMap() : width_(0), height_(0), disparity_values_(nullptr)
+{}
+
 	DisparityMap(unsigned int width, unsigned int height) : width_(width), height_(height), disparity_values_(new T[width*height])
 {}
 
@@ -72,11 +75,10 @@ public:
 		{
 			delete [] disparity_values_;
 
-			T* new_disparity_values_ = new T[in_disp_map.width_*in_disp_map.height_];
+			disparity_values_ = new T[in_disp_map.width_*in_disp_map.height_];
 			width_ = in_disp_map.width_;
 			height_ = in_disp_map.height_;
-
-			disparity_values_ = new_disparity_values_;
+			std::copy(in_disp_map.disparity_values_, in_disp_map.disparity_values_ + (width_*height_), disparity_values_);
 		}
 
 		return *this;
@@ -119,7 +121,20 @@ public:
 		return output_evaluation;
 	}
 
-	T* getDisparityValues()
+	void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const
+	{
+		float* float_disp_vals = new float[width_*height_];
+		for (int i=0; i < (width_*height_); i++)
+		{
+			float_disp_vals[i] = (float)disparity_values_[i];
+		}
+
+		ImageHelperFunctions::saveDisparityImageToPGM(disparity_map_file_path.c_str(), scale_factor, float_disp_vals, width_, height_);
+
+		delete [] float_disp_vals;
+	}
+
+	T*& getDisparityValues()
 	{
 		return disparity_values_;
 	}
@@ -139,5 +154,13 @@ private:
 	unsigned int width_;
 	unsigned int height_;
 };
+
+//no need to convert disparity value type if disparity map is of type float
+template <>
+inline void DisparityMap<float>::saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor) const
+{
+	ImageHelperFunctions::saveDisparityImageToPGM(disparity_map_file_path.c_str(), scale_factor, disparity_values_, width_, height_);
+
+}
 
 #endif /* DISPARITYMAP_H_ */
