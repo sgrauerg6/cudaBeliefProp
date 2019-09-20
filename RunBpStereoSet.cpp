@@ -8,18 +8,17 @@
 #include "RunBpStereoSet.h"
 #include <unordered_map>
 
-enum Runtime_Type { SMOOTHING, TOTAL_BP, TOTAL_NO_TRANSFER, TOTAL_WITH_TRANSFER };
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
+
+enum Runtime_Type { SMOOTHING, TOTAL_BP, TOTAL_NO_TRANSFER, TOTAL_WITH_TRANSFER };
+const std::map<Runtime_Type, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
+			{TOTAL_WITH_TRANSFER, "Total runtime including data transfer time"}};
 
 template<typename T>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImagePath, const char* testImagePath,
 	const BPsettings& algSettings, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
 {
-	const std::map<Runtime_Type, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
-			{TOTAL_WITH_TRANSFER, "Total runtime including data transfer time"}};
-	std::unordered_map<Runtime_Type, std::pair<timingType, timingType>> runtime_start_end_timings;
-
 	bool deleteBPMemoryManagementAtEnd = false;
 	if (runBPMemoryMangement == nullptr)
 	{
@@ -30,8 +29,10 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	unsigned int heightImages = 0;
 	unsigned int widthImages = 0;
 
+	std::unordered_map<Runtime_Type, std::pair<timingType, timingType>> runtime_start_end_timings;
 	std::map<Runtime_Type, std::vector<double>> timings;
 	std::for_each(timingNames.begin(), timingNames.end(), [&timings](std::pair<Runtime_Type, std::string> timingName) { timings[timingName.first] = std::vector<double>(); });
+
 	DetailedTimings* detailedTimingsOverall = nullptr;
 	float* dispValsHost;
 
@@ -124,11 +125,10 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	DisparityMap<float> output_disparity_map(widthImages, heightImages, dispValsHost);
 	delete [] dispValsHost;
 
-	fprintf(resultsFile, "Image Width: %d\n", widthImages);
-	fprintf(resultsFile, "Image Height: %d\n", heightImages);
+	fprintf(resultsFile, "Image Width: %d\nImage Height: %d\n", widthImages, heightImages);
 
 	std::for_each(timings.begin(), timings.end(),
-				[&timingNames, resultsFile](auto& currentTiming)
+				[resultsFile](auto& currentTiming)
 				{
 					std::sort(currentTiming.second.begin(), currentTiming.second.end());
 					fprintf(resultsFile, "Median %s: %f\n", timingNames.at(currentTiming.first).c_str(), currentTiming.second.at(NUM_BP_STEREO_RUNS / 2));
