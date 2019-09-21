@@ -72,7 +72,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string ref
 		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
 		//transfer the disparity map estimation on the device to the host for output
-		runBPMemoryMangement->transferDataFromCompDeviceToHost(&(output_disparity_map.getDisparityValuesUniquePointer()[0]), disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
+		runBPMemoryMangement->transferDataFromCompDeviceToHost(output_disparity_map.getPointerToDispMapStart(), disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 		//compute timings for each portion of interest and add to vector timings
 		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();

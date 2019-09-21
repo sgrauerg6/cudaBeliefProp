@@ -25,12 +25,12 @@ public:
 		free(*arrayToFree);
 	}
 
-	virtual void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
+	virtual void transferDataFromCompDeviceToHost(void* destArray, const void* inArray, int numBytesTransfer)
 	{
 		memcpy(destArray, inArray, numBytesTransfer);
 	}
 
-	virtual void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
+	virtual void transferDataFromCompHostToDevice(void* destArray, const void* inArray, int numBytesTransfer)
 	{
 		memcpy(destArray, inArray, numBytesTransfer);
 	}

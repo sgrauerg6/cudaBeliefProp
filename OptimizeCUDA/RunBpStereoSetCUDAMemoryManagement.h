@@ -21,7 +21,7 @@ public:
 		cudaFree(*arrayToFree);
 	}
 
-	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
+	void transferDataFromCompDeviceToHost(void* destArray, const void* inArray, int numBytesTransfer)
 	{
 		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
@@ -30,7 +30,7 @@ public:
 				cudaMemcpyDeviceToHost);
 	}
 
-	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
+	void transferDataFromCompHostToDevice(void* destArray, const void* inArray, int numBytesTransfer)
 	{
 		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,

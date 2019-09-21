@@ -104,9 +104,9 @@ public:
 		delete [] float_disp_vals;
 	}
 
-	const std::unique_ptr<T[]>& getDisparityValuesUniquePointer() const
+	T* getPointerToDispMapStart() const
 	{
-		return disparity_values_;
+		return &(disparity_values_[0]);
 	}
 
 	const T getDisparityValuesAtPoint(const int x, const int y) const
