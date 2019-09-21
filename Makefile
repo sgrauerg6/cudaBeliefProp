@@ -101,8 +101,8 @@ ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 
-driverCudaBp.o: driverCudaBp.cu bpStereoCudaParameters.h bpStereoParameters.h bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverCudaBp.o: driverCudaBp.cpp bpStereoCudaParameters.h bpStereoParameters.h bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
-	$(NVCC) -c driverCudaBp.cu $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(COMPILE_FLAGS) 
+	$(NVCC) -x cu -c driverCudaBp.cpp $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(COMPILE_FLAGS) 
 make clean:
 	rm *.o driverCudaBp driverCPUBp

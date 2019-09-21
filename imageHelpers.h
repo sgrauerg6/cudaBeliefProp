@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define MAXLENGTH 256
 #define MAXVALUE 255
 const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
+#define BUF_SIZE_IMAGE_HELPERS 256
 
 #include <chrono>
 #include <math.h>
@@ -39,10 +40,6 @@ class ImageHelperFunctions
 {
 public:
 	//functions used to load input images/save resulting movment images
-
-	//function to retrieve the disparity values from a disparity map with a known scale factor
-	static float* retrieveDisparityValsFromStereoPGM(const char* filePathPgmImage, unsigned int widthImage, unsigned int heightImage, float scaleFactor);
-
 	static unsigned int* loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage);
 
 	//load the PGM image and return as an array of unsigned int (between values 0 and 255 assuming image is 8-bit grayscale)
@@ -54,14 +51,18 @@ public:
 	//0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
 	static void saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, const float* calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage);
 
+private:
+
+	static void pnm_read(std::ifstream &file, char *buf);
+
 	static int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
-			 unsigned char* image,char* comment_string);
+				 unsigned char* image,char* comment_string);
 
-	static int pgmRead(const char *fileName, unsigned int *cols, unsigned int *rows,
-			 unsigned char*& image);
+	static int pgmRead(const char *fileName, unsigned int& cols, unsigned int& rows,
+				 unsigned char*& image);
 
-	static int ppmReadReturnGrayScale(const char *fileName, unsigned int *cols, unsigned int *rows,
-			 unsigned char*& image, bool weightedRGBConversion);
+	static int ppmReadReturnGrayScale(const char *fileName, unsigned int& cols, unsigned int& rows,
+				 unsigned char*& image, bool weightedRGBConversion);
 };
 
 

@@ -22,23 +22,23 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //functions used to load input images/save resulting movment images
 
-#define BUF_SIZE 75
 /* read PNM field, skipping comments */
-void pnm_read(std::ifstream &file, char *buf) {
-  char doc[BUF_SIZE];
-  char c;
+void ImageHelperFunctions::pnm_read(std::ifstream &file, char *buf) {
+	  char doc[BUF_SIZE_IMAGE_HELPERS];
+	  char c;
 
-  file >> c;
-  while (c == '#') {
-    file.getline(doc, BUF_SIZE);
-    file >> c;
-  }
-  file.putback(c);
+	  file >> c;
+	  while (c == '#') {
+	    file.getline(doc, BUF_SIZE_IMAGE_HELPERS);
+	    file >> c;
+	  }
+	  file.putback(c);
 
-  file.width(BUF_SIZE);
-  file >> buf;
-  file.ignore();
-}
+	  file.width(BUF_SIZE_IMAGE_HELPERS);
+	  file >> buf;
+	  file.ignore();
+	}
+
 
 unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
 {
@@ -85,7 +85,7 @@ unsigned int* ImageHelperFunctions::loadImageFromPGM(const char* filePathPgmImag
 
 	unsigned char *dataRead;
 
-	pgmRead (filePathPgmImage, &widthImage, &heightImage,
+	pgmRead (filePathPgmImage, widthImage, heightImage,
 	     dataRead);
 
 	imageData = new unsigned int[widthImage*heightImage];
@@ -105,7 +105,7 @@ unsigned int* ImageHelperFunctions::loadImageFromPPM(const char* filePathPpmImag
 	unsigned int* imageData;
 	unsigned char *dataRead;
 
-	ppmReadReturnGrayScale(filePathPpmImage, &widthImage, &heightImage,
+	ppmReadReturnGrayScale(filePathPpmImage, widthImage, heightImage,
 	     dataRead, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
 
 	imageData = new unsigned int[widthImage*heightImage];
@@ -131,9 +131,9 @@ unsigned int* ImageHelperFunctions::loadImageFromPPM(const char* filePathPpmImag
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int *cols, unsigned int *rows,
+int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int& cols, unsigned int& rows,
 	     unsigned char*& image) {
-	  char buf[BUF_SIZE];
+	  char buf[BUF_SIZE_IMAGE_HELPERS];
 
 	/* read header */
 	  std::ifstream file(fileName, std::ios::in | std::ios::binary);
@@ -142,18 +142,18 @@ int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int *cols, unsi
 	    std::cout << "ERROR READING FILE\n";
 
 	  pnm_read(file, buf);
-	  *cols = (unsigned int)atoi(buf);
+	  cols = (unsigned int)atoi(buf);
 	  pnm_read(file, buf);
-	  *rows = (unsigned int)atoi(buf);
+	  rows = (unsigned int)atoi(buf);
 
 	  pnm_read(file, buf);
 	  if (atoi(buf) > UCHAR_MAX)
 	    std::cout << "ERROR READING FILE\n";
 
-	  image = new unsigned char[(*cols) * (*rows)];
+	  image = new unsigned char[(cols * rows)];
 
 	  /* read data */
-	  file.read((char*)image, *cols * *rows * sizeof(char));
+	  file.read((char*)image, (cols * rows * sizeof(char)));
 	  file.close();
 
 	  return 1;
@@ -170,10 +170,10 @@ int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int *cols, unsi
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
+int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned int& cols, unsigned int& rows,
 	     unsigned char*& image, bool weightedRGBConversion)
 {
-  char buf[BUF_SIZE];
+	char buf[BUF_SIZE_IMAGE_HELPERS];
 
 	/* read header */
 	std::ifstream file(fileName, std::ios::in | std::ios::binary);
@@ -182,23 +182,23 @@ int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned
 		std::cout << "ERROR READING FILE\n";
 
 	pnm_read(file, buf);
-	*cols = (unsigned int) atoi(buf);
+	cols = (unsigned int) atoi(buf);
 	pnm_read(file, buf);
-	*rows = (unsigned int) atoi(buf);
+	rows = (unsigned int) atoi(buf);
 
 	pnm_read(file, buf);
 	if (atoi(buf) > UCHAR_MAX)
 		std::cout << "ERROR READING FILE\n";
 
-	image = new unsigned char[(*cols) * (*rows)];
-	unsigned char* rgbImage = new unsigned char[3 * (*cols) * (*rows)];
+	image = new unsigned char[(cols) * (rows)];
+	unsigned char* rgbImage = new unsigned char[3 * (cols) * (rows)];
 
 	/* read data */
-	file.read((char*) rgbImage, 3 * *cols * *rows * sizeof(char));
+	file.read((char*) rgbImage, 3 * cols * rows * sizeof(char));
 	file.close();
 
 	//convert the RGB image to grayscale
-	for (int i = 0; i < (*rows) * (*cols); i++) {
+	for (int i = 0; i < (rows * cols); i++) {
 		float rChannelWeight = 1.0f / 3.0f;
 		float bChannelWeight = 1.0f / 3.0f;
 		float gChannelWeight = 1.0f / 3.0f;

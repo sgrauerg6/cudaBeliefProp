@@ -596,6 +596,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	freeMemoryOnTargetDevice((void*)dataCostDeviceCheckerboard2);
 
 #else
+
 	//now free the allocated data space
 	freeMemoryOnTargetDevice(dataCostDeviceCheckerboard1);
 
