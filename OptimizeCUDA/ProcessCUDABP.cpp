@@ -21,9 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include "kernalBpStereo.cu"
 
-double timeCopyDataKernelTotalTime = 0.0;
-double timeBpItersKernelTotalTime = 0.0;
-
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
 {
@@ -193,8 +190,6 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 
 		(cudaDeviceSynchronize());
 
-		auto timeBpItersKernelStart = std::chrono::system_clock::now();
-
 #if (((USE_SHARED_MEMORY == 3) || (USE_SHARED_MEMORY == 4))  && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 		int numDataSharedMemory = BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
 					* (DISP_INDEX_START_REG_LOCAL_MEM);
@@ -230,12 +225,6 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 
 		(cudaDeviceSynchronize());
 		gpuErrchk( cudaPeekAtLastError() );
-
-		auto timeBpItersKernelEnd = std::chrono::system_clock::now();
-		std::chrono::duration<double> diff = timeBpItersKernelEnd
-				- timeBpItersKernelStart;
-
-		timeBpItersKernelTotalTime += diff.count();
 
 		cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	}
@@ -274,8 +263,6 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 
 	( cudaDeviceSynchronize() );
 
-	auto timeCopyDataKernelStart = std::chrono::system_clock::now();
-
 	gpuErrchk( cudaPeekAtLastError() );
 
 	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
@@ -300,11 +287,6 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 	( cudaDeviceSynchronize() );
 
 	gpuErrchk( cudaPeekAtLastError() );
-
-	auto timeCopyDataKernelEnd = std::chrono::system_clock::now();
-	std::chrono::duration<double> diff = timeCopyDataKernelEnd-timeCopyDataKernelStart;
-
-	timeCopyDataKernelTotalTime += diff.count();
 }
 
 

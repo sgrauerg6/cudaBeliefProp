@@ -146,7 +146,7 @@ static void savePGM(image<uchar> *im, const char *name) {
 }
 
 static image<rgb> *loadPPM(const char *name) {
-  char buf[BUF_SIZE], doc[BUF_SIZE];
+  char buf[BUF_SIZE];
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
@@ -171,7 +171,7 @@ static image<rgb> *loadPPM(const char *name) {
 }
 
 static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
-  char buf[BUF_SIZE], doc[BUF_SIZE];
+  char buf[BUF_SIZE];
 
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);

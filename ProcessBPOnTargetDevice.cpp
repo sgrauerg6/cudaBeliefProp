@@ -604,7 +604,6 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	delete offsetAtLevel;
 	delete processingLevelProperties;
 
-	double timeBpItersKernelTotalTime = 0.0;
 	auto timeFinalFreeEnd = std::chrono::system_clock::now();
 
 	diff = timeFinalFreeEnd - timeFinalFreeStart;

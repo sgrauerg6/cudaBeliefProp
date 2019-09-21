@@ -94,8 +94,9 @@ public:
 
 		for (unsigned int i=0; i<width_*height_; i++)
 		{
-			int x = i % width_;
-			int y = i / width_;
+			//TODO: use x and y with border parameters
+			//int x = i % width_;
+			//int y = i / width_;
 			const T dispMapVal = disparity_values_[i];
 			const T dispMapCompareVal = disparity_map_to_compare.getDisparityValuesAtPoint(i);
 			const T absDiff = std::abs(dispMapVal - dispMapCompareVal);

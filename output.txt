@@ -21,25 +21,25 @@ CURRENT RUN: GPU WITH CUDA
 Image Width: 384
 Image Height: 288
 Median Timings
-Time init settings malloc (15 timings) : 9.5319e-05
-Time get data costs bottom level (15 timings) : 5.5024e-05
-Time get data costs higher levels (15 timings) : 0.0001864
-Time to init message values (15 timings) : 1.3776e-05
-Time to init message values (kernel portion only) (15 timings) : 1.3746e-05
-Total time BP Iters (15 timings) : 0.00298742
-Total time Copy Data (15 timings) : 0.0006131
-Total time Copy Data (kernel portion only) (15 timings) : 0.00061278
+Time init settings malloc (15 timings) : 9.5209e-05
+Time get data costs bottom level (15 timings) : 5.5043e-05
+Time get data costs higher levels (15 timings) : 0.00018631
+Time to init message values (15 timings) : 1.3585e-05
+Time to init message values (kernel portion only) (15 timings) : 1.3555e-05
+Total time BP Iters (15 timings) : 0.00298595
+Total time Copy Data (15 timings) : 0.000613183
+Total time Copy Data (kernel portion only) (15 timings) : 0.000612872
 Total time Copy Data (memory management portion only) (No timings) : No timings
-Time get output disparity (15 timings) : 0.000145283
-Time final free: (15 timings) : 6.953e-05
-Total timed (15 timings) : 0.0041657
-Smoothing Runtime (15 timings) : 0.000428404
-Total BP Runtime (15 timings) : 0.00416989
-Total Runtime not including data transfer time (15 timings) : 0.00468901
-Total runtime including data transfer time (15 timings) : 0.00826539
-AVERAGE CPU RUN TIME: 0.127686
-Median CUDA runtime (including transfer time): 0.00826539
-Single Thread CPU runtime: 0.127686
+Time get output disparity (15 timings) : 0.000144652
+Time final free: (15 timings) : 6.8839e-05
+Total timed (15 timings) : 0.00416374
+Smoothing Runtime (15 timings) : 0.000427994
+Total BP Runtime (15 timings) : 0.00416794
+Total Runtime not including data transfer time (15 timings) : 0.00468872
+Total runtime including data transfer time (15 timings) : 0.00826446
+AVERAGE CPU RUN TIME: 0.132211
+Median CUDA runtime (including transfer time): 0.00826446
+Single Thread CPU runtime: 0.132211
 
 CPU output vs. Ground Truth result:
 Average RMS error: 1.45086
