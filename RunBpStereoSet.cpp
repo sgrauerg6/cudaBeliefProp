@@ -25,26 +25,29 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	unsigned int heightImages = 0;
 	unsigned int widthImages = 0;
 
-	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
+	//retrieve the images as well as the width and height
+	unsigned int* image1AsUnsignedIntArrayHost = ImageHelperFunctions::loadImageAsGrayScale(
+				refImagePath, widthImages, heightImages);
+	unsigned int* image2AsUnsignedIntArrayHost = ImageHelperFunctions::loadImageAsGrayScale(
+				testImagePath, widthImages, heightImages);
 
+	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
 	DetailedTimings<Runtime_Type_BP> detailedBPTimings(timingNames_BP);
-	float* dispValsHost;
+
+	//generate output disparity map object
+	DisparityMap<float> output_disparity_map(widthImages, heightImages);
+
+	//get shared pointer to disparity map data
+	std::shared_ptr<float> dispValsSharedPtr = output_disparity_map.getDisparityValuesSharedPointer();
 
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
-		//first run Stereo estimation on the first two images
-		unsigned int* image1AsUnsignedIntArrayHost = ImageHelperFunctions::loadImageAsGrayScale(
-			refImagePath, widthImages, heightImages);
-		unsigned int* image2AsUnsignedIntArrayHost = ImageHelperFunctions::loadImageAsGrayScale(
-			testImagePath, widthImages, heightImages);
-
 		float* smoothedImage1;
 		float* smoothedImage2;
 
 		//allocate the device memory to store and x and y smoothed images
 		runBPMemoryMangement->allocateDataOnCompDevice((void**)& smoothedImage1, widthImages * heightImages * sizeof(float));
 		runBPMemoryMangement->allocateDataOnCompDevice((void**)& smoothedImage2, widthImages * heightImages * sizeof(float));
-		dispValsHost = new float[widthImages*heightImages];
 
 		//set start timer for specified runtime segments at time before smoothing images
 		runtime_start_end_timings[SMOOTHING].first = runtime_start_end_timings[TOTAL_NO_TRANSFER].first = runtime_start_end_timings[TOTAL_WITH_TRANSFER].first = std::chrono::system_clock::now();
@@ -58,10 +61,6 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 
 		//end timer for image smoothing and add to image smoothing timings
 		runtime_start_end_timings[SMOOTHING].second = std::chrono::system_clock::now();
-
-		//free the host memory allocated to original image 1 and image 2 on the host
-		delete[] image1AsUnsignedIntArrayHost;
-		delete[] image2AsUnsignedIntArrayHost;
 
 		float* disparityMapFromImage1To2CompDevice;
 
@@ -79,7 +78,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
 		//transfer the disparity map estimation on the device to the host for output
-		runBPMemoryMangement->transferDataFromCompDeviceToHost(dispValsHost, disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
+		runBPMemoryMangement->transferDataFromCompDeviceToHost(dispValsSharedPtr.get(), disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 		//compute timings for each portion of interest and add to vector timings
 		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
@@ -94,21 +93,15 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		//add bp timings from current run to overall timings
 		detailedBPTimings.addToCurrentTimings(currentDetailedTimings);
 
-		//free memory for disparity if not in last run (where used to create disparity map)
-		if (numRun < (NUM_BP_STEREO_RUNS - 1))
-		{
-			delete [] dispValsHost;
-		}
-
 		//free the space allocated to the resulting disparity map and smoothed images on the computation device
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& disparityMapFromImage1To2CompDevice);
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& smoothedImage1);
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& smoothedImage2);
 	}
 
-	//generate output disparity map object
-	DisparityMap<float> output_disparity_map(widthImages, heightImages, dispValsHost);
-	delete [] dispValsHost;
+	//free the host memory allocated to original image 1 and image 2 on the host
+	delete[] image1AsUnsignedIntArrayHost;
+	delete[] image2AsUnsignedIntArrayHost;
 
 	resultsStream << "Image Width: " << widthImages << "\nImage Height: " << heightImages << "\n";
 	resultsStream << detailedBPTimings;

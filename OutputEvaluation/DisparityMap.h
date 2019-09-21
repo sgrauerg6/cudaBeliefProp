@@ -20,15 +20,15 @@
 template<class T>
 class DisparityMap {
 public:
-	DisparityMap() : width_(0), height_(0), disparity_values_(nullptr)
+	DisparityMap() : width_(0), height_(0)
 {}
 
-	DisparityMap(unsigned int width, unsigned int height) : width_(width), height_(height), disparity_values_(new T[width*height])
+	DisparityMap(const unsigned int width, const unsigned int height) : width_(width), height_(height), disparity_values_(new T[width*height], std::default_delete<T[]>())
 {}
 
-	DisparityMap(unsigned int width, unsigned int height, T* input_disparity_map_vals, unsigned int disparity_map_vals_scale = 1) : width_(width), height_(height), disparity_values_(new T[width*height])
+	DisparityMap(const unsigned int width, const unsigned int height, const T* input_disparity_map_vals, const unsigned int disparity_map_vals_scale = 1) : width_(width), height_(height), disparity_values_(new T[width*height], std::default_delete<T[]>())
 	{
-		std::copy(input_disparity_map_vals, input_disparity_map_vals + (width*height), disparity_values_);
+		std::copy(input_disparity_map_vals, input_disparity_map_vals + (width*height), disparity_values_.get());
 
 		if (disparity_map_vals_scale > 1)
 		{
@@ -36,14 +36,14 @@ public:
 		}
 	}
 
-	DisparityMap(std::string file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : width_(0), height_(0)
+	DisparityMap(const std::string& file_path_disparity_map, const unsigned int disparity_map_vals_scale = 1) : width_(0), height_(0)
 	{
 		unsigned int* disparity_values_from_file = ImageHelperFunctions::loadImageFromPGM(file_path_disparity_map.c_str(), width_, height_);
 
-		disparity_values_ = new T[width_*height_];
+		disparity_values_ = std::shared_ptr<T>(new T[width_*height_], std::default_delete<T[]>());;
 		for (int i=0; i < (width_*height_); i++)
 		{
-			disparity_values_[i] = (T)disparity_values_from_file[i];
+			(disparity_values_.get())[i] = (T)disparity_values_from_file[i];
 		}
 		delete [] disparity_values_from_file;
 
@@ -51,37 +51,6 @@ public:
 		{
 			removeScaleFromDisparityVals(disparity_map_vals_scale);
 		}
-	}
-
-	//destructor
-	~DisparityMap()
-	{
-		delete [] disparity_values_;
-	}
-
-	//copy constructor
-	DisparityMap(const DisparityMap& in_disp_map)
-	{
-		width_ = in_disp_map.width_;
-		height_ = in_disp_map.height_;
-		disparity_values_ = new T[width_*height_];
-		std::copy(in_disp_map.disparity_values_, in_disp_map.disparity_values_ + (width_*height_), disparity_values_);
-	}
-
-	//copy assignment operator
-	DisparityMap& operator=(const DisparityMap& in_disp_map)
-	{
-		if (this != &in_disp_map)
-		{
-			delete [] disparity_values_;
-
-			disparity_values_ = new T[in_disp_map.width_*in_disp_map.height_];
-			width_ = in_disp_map.width_;
-			height_ = in_disp_map.height_;
-			std::copy(in_disp_map.disparity_values_, in_disp_map.disparity_values_ + (width_*height_), disparity_values_);
-		}
-
-		return *this;
 	}
 
 	template<class U>
@@ -97,7 +66,7 @@ public:
 			//TODO: use x and y with border parameters
 			//int x = i % width_;
 			//int y = i / width_;
-			const T dispMapVal = disparity_values_[i];
+			const T dispMapVal = (disparity_values_.get())[i];
 			const T dispMapCompareVal = disparity_map_to_compare.getDisparityValuesAtPoint(i);
 			const T absDiff = std::abs(dispMapVal - dispMapCompareVal);
 
@@ -127,7 +96,7 @@ public:
 		float* float_disp_vals = new float[width_*height_];
 		for (int i=0; i < (width_*height_); i++)
 		{
-			float_disp_vals[i] = (float)disparity_values_[i];
+			float_disp_vals[i] = (float)((disparity_values_.get())[i]);
 		}
 
 		ImageHelperFunctions::saveDisparityImageToPGM(disparity_map_file_path.c_str(), scale_factor, float_disp_vals, width_, height_);
@@ -135,19 +104,29 @@ public:
 		delete [] float_disp_vals;
 	}
 
-	T*& getDisparityValues()
+	std::shared_ptr<T> getDisparityValuesSharedPointer() const
 	{
 		return disparity_values_;
 	}
 
-	const T getDisparityValuesAtPoint(int x, int y) const
+	const T getDisparityValuesAtPoint(const int x, const int y) const
 	{
-		return disparity_values_[y*width_ + x];
+		return (disparity_values_.get())[y*width_ + x];
 	}
 
-	const T getDisparityValuesAtPoint(int i) const
+	const T getDisparityValuesAtPoint(const int i) const
 	{
-		return disparity_values_[i];
+		return (disparity_values_.get())[i];
+	}
+
+	void setDisparityAtPoint(const int x, const int y, const T val)
+	{
+		(disparity_values_.get())[y*width_ + x] = val;
+	}
+
+	void setDisparityAtPoint(const int i, const T val)
+	{
+		(disparity_values_.get())[i] = val;
 	}
 
 private:
@@ -157,20 +136,20 @@ private:
 		if (disparity_map_vals_scale > 1)
 		{
 			//divide each disparity value by disparity_map_vals_scale
-			std::for_each(disparity_values_, disparity_values_ + (width_* height_), [disparity_map_vals_scale](T& disp_val) { disp_val /= disparity_map_vals_scale; });
+			std::for_each(disparity_values_.get(), disparity_values_.get() + (width_* height_), [disparity_map_vals_scale](T& disp_val) { disp_val /= disparity_map_vals_scale; });
 		}
 	}
 
-	T* disparity_values_;
 	unsigned int width_;
 	unsigned int height_;
+	std::shared_ptr<T> disparity_values_;
 };
 
 //no need to convert disparity value type if disparity map is of type float
 template <>
 inline void DisparityMap<float>::saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor) const
 {
-	ImageHelperFunctions::saveDisparityImageToPGM(disparity_map_file_path.c_str(), scale_factor, disparity_values_, width_, height_);
+	ImageHelperFunctions::saveDisparityImageToPGM(disparity_map_file_path.c_str(), scale_factor, disparity_values_.get(), width_, height_);
 
 }
 

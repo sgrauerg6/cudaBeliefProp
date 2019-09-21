@@ -24,7 +24,7 @@ LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER)
 NVCC := $(CUDA_DIR)/bin/nvcc
 
 # have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX 
+COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -Wall
 
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++14

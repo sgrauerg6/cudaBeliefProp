@@ -122,7 +122,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[VALUES]> *u, im
 					best = value;
 				}
 			}
-			imRef(out, x, y) = best * SCALE;
+			imRef(out, x, y) = best;
 		}
 	}
 
@@ -271,24 +271,24 @@ ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const char* ref
 	// compute disparities
 	out = stereo_ms(img1, img2, algSettings, resultsStream, runtime);
 
-	float* outputDisparities = new float[img1->width() * img1->height()];
+	DisparityMap<float> outDispMap(img1->width(), img1->height());
+
+	//set disparity at each point in disparity map
 	for (int y = 0; y < img1->height(); y++)
 	{
 			for (int x = 0; x < img1->width(); x++)
 			{
-				outputDisparities[y * img1->width() + x] = (float)imRef(out, x, y);
+				outDispMap.setDisparityAtPoint(x, y, (float)imRef(out, x, y));
 			}
 	}
 
 	ProcessStereoSetOutput output;
 	output.runTime = runtime;
-	DisparityMap<float> outDispMap(img1->width(), img1->height(), outputDisparities, SCALE);
-	output.outDisparityMap = outDispMap;
+	output.outDisparityMap = std::move(outDispMap);
 
 	delete img1;
 	delete img2;
 	delete out;
-	delete [] outputDisparities;
 
 	return output;
 }

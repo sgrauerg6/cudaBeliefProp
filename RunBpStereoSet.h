@@ -20,6 +20,7 @@
 #include <iostream>
 #include <unordered_map>
 #include "RuntimeTiming/DetailedTimings.h"
+#include <memory>
 
 struct ProcessStereoSetOutput
 {
