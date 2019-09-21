@@ -22,6 +22,24 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //functions used to load input images/save resulting movment images
 
+#define BUF_SIZE 75
+/* read PNM field, skipping comments */
+void pnm_read(std::ifstream &file, char *buf) {
+  char doc[BUF_SIZE];
+  char c;
+
+  file >> c;
+  while (c == '#') {
+    file.getline(doc, BUF_SIZE);
+    file >> c;
+  }
+  file.putback(c);
+
+  file.width(BUF_SIZE);
+  file >> buf;
+  file.ignore();
+}
+
 unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	char pgmExtension[] = "pgm";
@@ -45,13 +63,11 @@ unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const char* filePathIma
 	if (strcmp(lastToken, pgmExtension) == 0)
 	{
 		delete [] filePathImageCopy;
-		//printf("PGM IMAGE\n");
 		return loadImageFromPGM(filePathImage, widthImage, heightImage);
 	}
 	else if (strcmp(lastToken, ppmExtension) == 0)
 	{
 		delete [] filePathImageCopy;
-		//printf("PPM IMAGE\n");
 		return loadImageFromPPM(filePathImage, widthImage, heightImage);
 	}
 	else
@@ -115,100 +131,32 @@ unsigned int* ImageHelperFunctions::loadImageFromPPM(const char* filePathPpmImag
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int ImageHelperFunctions::pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
+int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int *cols, unsigned int *rows,
 	     unsigned char*& image) {
-      FILE *filePointer;    /* for file buffer */
-      char line[MAXLENGTH]; /* for character input from file */
-      int maximumValue = 0; /* max value from header */
-      int binary;           /* flag to indicate if file is binary (P5)*/
-      long numberRead = 0;  /* counter for number of pixels read */
-      long i,j;             /* (i,j) for loops */
-      int test,temp;        /* for detecting EOF(test) and temp storage */
+	  char buf[BUF_SIZE];
 
-      /* Open the file, return an error if necessary. */
-      if ((filePointer = fopen(fileName,"r")) == NULL) {
-	   printf ("ERROR: cannot open file\n\n");
-	   fclose (filePointer);
-	   return (0);
-      }
-    
-      /* Initialize columnsidth, and height */
-      *cols = *rows =0;
+	/* read header */
+	  std::ifstream file(fileName, std::ios::in | std::ios::binary);
+	  pnm_read(file, buf);
+	  if (strncmp(buf, "P5", 2))
+	    std::cout << "ERROR READING FILE\n";
 
-      /* Check the file signature ("Magic Numbers" P2 and P5); skip comments
-       * and blank lines (CR with no spaces before it).*/
-      fgets (line,MAXLENGTH,filePointer);
-      while (line[0]=='#' || line[0]=='\n') fgets (line,MAXLENGTH,filePointer);
-      if (line[0]=='P' && (line[1]=='2')) {
-	   binary = 0;
-	 /*   printf ("\nFile Format: P2\n"); */
-      }
-      else if (line[0]=='P' && (line[1]=='5')) {
-	   binary = 1;
-	  /*  printf ("\nFORMAT: P5\n"); */
-      }
-      else {
-	   printf ("ERROR: incorrect file format\n\n");
-	   fclose (filePointer);
-	   return (0);
-      }          
+	  pnm_read(file, buf);
+	  *cols = (unsigned int)atoi(buf);
+	  pnm_read(file, buf);
+	  *rows = (unsigned int)atoi(buf);
 
-      /* Input the width, height and maximum value, skip comments and blank
-       * lines. */
-      fgets (line,MAXLENGTH,filePointer);
-      while (line[0]=='#' || line[0]=='\n') fgets (line,MAXLENGTH,filePointer);
-      sscanf (line,"%u %u",cols,rows);
+	  pnm_read(file, buf);
+	  if (atoi(buf) > UCHAR_MAX)
+	    std::cout << "ERROR READING FILE\n";
 
-      fgets (line,MAXLENGTH,filePointer);
-      while (line[0]=='#' || line[0]=='\n') fgets(line,MAXLENGTH,filePointer);
-      sscanf (line,"%d",&maximumValue);
+	  image = new unsigned char[(*cols) * (*rows)];
 
-      /* Check specifications and return an error if h,w, or
-      *  maximum value is illegal.*/
-      if ((*cols)<1 ||(*rows)<1 || maximumValue<0 || maximumValue>MAXVALUE){
-	   printf ("ERROR: invalid file specifications (cols/rows/max value)\n\n");
-	   fclose (filePointer);
-	   return (0);
-      }
-      else if ((*cols) > MAXCOLS || (*rows) > MAXROWS) {
-	   printf ("ERROR: increase MAXROWS/MAXCOLS in PGM.h");
-	   fclose (filePointer);
-	   return (0);
-      } 
+	  /* read data */
+	  file.read((char*)image, *cols * *rows * sizeof(char));
+	  file.close();
 
-      image = new unsigned char[(*cols)*(*rows)];
-
-      /* Read in the data for binary (P5) or ascii (P2) PGM formats   */
-      if (binary) {
-	   for (i = 0; i < (*rows); i++) {
-	        numberRead += fread((void *)&(image[i*(*cols) + 0]),
-		  sizeof(unsigned char), (*cols), filePointer); 
-		if (feof(filePointer)) break;
-	   }
-      }
-      else {
-	   for (i= 0; i < (*rows); i++) {
-	        for (j =0; j < (*cols); j++) { 
-	             test = fscanf (filePointer,"%d",&temp);
-		     if (test == EOF) break;
-		     image[i*(*cols) + j] = (unsigned char)temp;
-
-		     numberRead++;
-		}
-		if (test == EOF) break;
-	   }
-      } 
- 
-      /* Insure the number of pixels read is at least the
-       *   number indicated by w*h.
-       * If not, return an error message, but proceed */
-      if (numberRead < ((*rows)*(*cols))) {
-	   printf ("ERROR: fewer pixels than rows*cols indicates\n\n");
-      }
-     
-      /* close the file and return 1 indicating success */
-      fclose (filePointer);
-      return (1);
+	  return 1;
 }
 
 /* INPUT: a filename (char*),row and column dimension variables (long), and
@@ -223,117 +171,53 @@ int ImageHelperFunctions::pgmRead (const char *fileName, unsigned int *cols, uns
  * NOTE: The case where too many pixels are in a file is not detected.
  */
 int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
-	     unsigned char*& image, bool weightedRGBConversion) {
-      FILE *filePointer;    /* for file buffer */
-      char line[MAXLENGTH]; /* for character input from file */
-      int maximumValue = 0; /* max value from header */
-      int binary;           /* flag to indicate if file is binary (P5)*/
-      long numberRead = 0;  /* counter for number of pixels read */
-      long i,j;             /* (i,j) for loops */
-      int test,temp;        /* for detecting EOF(test) and temp storage */
+	     unsigned char*& image, bool weightedRGBConversion)
+{
+  char buf[BUF_SIZE];
 
-      /* Open the file, return an error if necessary. */
-      if ((filePointer = fopen(fileName,"r")) == NULL) {
-	   printf ("ERROR: cannot open file\n\n");
-	   fclose (filePointer);
-	   return (0);
-      }
+	/* read header */
+	std::ifstream file(fileName, std::ios::in | std::ios::binary);
+	pnm_read(file, buf);
+	if (strncmp(buf, "P5", 2))
+		std::cout << "ERROR READING FILE\n";
 
-      /* Initialize columnsidth, and height */
-      *cols = *rows =0;
+	pnm_read(file, buf);
+	*cols = (unsigned int) atoi(buf);
+	pnm_read(file, buf);
+	*rows = (unsigned int) atoi(buf);
 
-      /* Check the file signature ("Magic Numbers" P2 and P5); skip comments
-       * and blank lines (CR with no spaces before it).*/
-      fgets (line,MAXLENGTH,filePointer);
-      while (line[0]=='#' || line[0]=='\n') fgets (line,MAXLENGTH,filePointer);
-      if (line[0]=='P' && (line[1]=='3')) {
-	   binary = 0;
-	 /*   printf ("\nFile Format: P2\n"); */
-      }
-      else if (line[0]=='P' && (line[1]=='6')) {
-	   binary = 1;
-	  /*  printf ("\nFORMAT: P5\n"); */
-      }
-      else {
-	   printf ("ERROR: incorrect file format\n\n");
-	   fclose (filePointer);
-	   return (0);
-      }
+	pnm_read(file, buf);
+	if (atoi(buf) > UCHAR_MAX)
+		std::cout << "ERROR READING FILE\n";
 
-      /* Input the width, height and maximum value, skip comments and blank
-       * lines. */
-      fgets (line,MAXLENGTH,filePointer);
-      while (line[0]=='#' || line[0]=='\n') fgets (line,MAXLENGTH,filePointer);
-      sscanf (line,"%u %u",cols,rows);
+	image = new unsigned char[(*cols) * (*rows)];
+	unsigned char* rgbImage = new unsigned char[3 * (*cols) * (*rows)];
 
-      fgets (line,MAXLENGTH,filePointer);
-      while (line[0]=='#' || line[0]=='\n') fgets(line,MAXLENGTH,filePointer);
-      sscanf (line,"%d",&maximumValue);
+	/* read data */
+	file.read((char*) rgbImage, 3 * *cols * *rows * sizeof(char));
+	file.close();
 
-      /* Check specifications and return an error if h,w, or
-      *  maximum value is illegal.*/
-      if ((*cols)<1 ||(*rows)<1 || maximumValue<0 || maximumValue>MAXVALUE){
-	   printf ("ERROR: invalid file specifications (cols/rows/max value)\n\n");
-	   fclose (filePointer);
-	   return (0);
-      }
-      else if ((*cols) > MAXCOLS || (*rows) > MAXROWS) {
-	   printf ("ERROR: increase MAXROWS/MAXCOLS in PGM.h");
-	   fclose (filePointer);
-	   return (0);
-      }
+	//convert the RGB image to grayscale
+	for (int i = 0; i < (*rows) * (*cols); i++) {
+		float rChannelWeight = 1.0f / 3.0f;
+		float bChannelWeight = 1.0f / 3.0f;
+		float gChannelWeight = 1.0f / 3.0f;
+		if (weightedRGBConversion) {
+			rChannelWeight = 0.299f;
+			bChannelWeight = 0.587f;
+			gChannelWeight = 0.114f;
+		}
+		image[i] = (unsigned char) floor(
+				rChannelWeight * ((float) rgbImage[i * 3])
+						+ gChannelWeight * ((float) rgbImage[i * 3 + 1])
+						+ bChannelWeight * ((float) rgbImage[i * 3 + 2])
+						+ 0.5f);
+	}
 
-      unsigned char* rgbImage = new unsigned char[3*(*cols)*(*rows)];
-      image = new unsigned char[(*cols)*(*rows)];
+	//free memory used for storing rgb image (since using grayscale image)
+	delete[] rgbImage;
 
-      /* Read in the data for binary (P5) or ascii (P2) PGM formats   */
-      if (binary) {
-	   for (i = 0; i < (*rows); i++) {
-	        numberRead += fread((void *)&(rgbImage[(3*i)*(*cols) + 0]),
-		  sizeof(unsigned char), 3*(*cols), filePointer);
-		if (feof(filePointer)) break;
-	   }
-      }
-      else {
-	   for (i= 0; i < (*rows); i++) {
-	        for (j =0; j < (3*(*cols)); j++) {
-	             test = fscanf (filePointer,"%d",&temp);
-	             if (test == EOF) break;
-	             rgbImage[i*(*cols) + j] = (unsigned char)temp;
-	             numberRead++;
-	        }
-		if (test == EOF) break;
-	   }
-      }
-
-      /* Insure the number of pixels read is at least the
-       *   number indicated by w*h.
-       * If not, return an error message, but proceed */
-      if (numberRead < (3*(*rows)*(*cols))) {
-	   printf ("ERROR: fewer pixels than rows*cols indicates\n\n");
-      }
-
-      //convert the RGB image to grayscale
-      for (i = 0; i < (*rows)*(*cols); i++)
-      {
-    	  float rChannelWeight = 1.0f / 3.0f;
-    	  float bChannelWeight = 1.0f / 3.0f;
-    	  float gChannelWeight = 1.0f / 3.0f;
-    	  if (weightedRGBConversion)
-    	  {
-    		  rChannelWeight = 0.299f;
-    		  bChannelWeight = 0.587f;
-    		  gChannelWeight = 0.114f;
-    	  }
-    	  image[i] = (unsigned char)floor(rChannelWeight*((float)rgbImage[i*3]) + gChannelWeight*((float)rgbImage[i*3 + 1]) + bChannelWeight*((float)rgbImage[i*3 + 2]) + 0.5f);
-      }
-
-      //free memory used for storing rgb image (since using grayscale image)
-      delete [] rgbImage;
-
-      /* close the file and return 1 indicating success */
-      fclose (filePointer);
-      return (1);
+	return (1);
 }
 
     
@@ -346,38 +230,13 @@ int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned
  *   properly opened.  
  */ 
 int ImageHelperFunctions::pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
-	     unsigned char* image,char* comment_string) {
-      FILE* file;        /* pointer to the file buffer */
-      //int maxval;        /* maximum value in the image array */
-      long nwritten = 0; /* counter for the number of pixels written */
-      long i;//,j;          /* for loop counters */
+	     unsigned char* image,char* comment_string)
+{
+	  std::ofstream file(filename, std::ios::out | std::ios::binary);
 
-      /* open the file; write header and comments specified by the user. */
-      if ((file = fopen(filename, "w")) == NULL)	{
-           printf("ERROR: file open failed\n");
-	   return(0);
-      }
-      fprintf(file,"P5\n");
-
-      if (comment_string != NULL) fprintf(file,"# %s \n", comment_string);
-    
-      /* write the dimensions of the image */	
-      fprintf(file,"%ld %ld \n", cols, rows);
-
-      /* NOTE: MAXIMUM VALUE IS WHITE; COLOURS ARE SCALED FROM 0 - */
-      /* MAXVALUE IN A .PGM FILE. */
-      
-      /* WRITE MAXIMUM VALUE TO FILE */
-      fprintf(file, "%d\n", (int)255);
-
-      /* Write data */
-
-      for (i=0; i < rows; i++) {
-          nwritten += fwrite((void*)&(image[i*cols]),sizeof(unsigned char),
-	  		   cols, file);
-      }	
-
-      fclose(file);
+	  file << "P5\n" << cols << " " << rows << "\n" << UCHAR_MAX << "\n";
+	  file.write((char*)image, cols * rows * sizeof(char));
+	  file.close();
       return(1);
 }
 

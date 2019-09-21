@@ -31,6 +31,9 @@ const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 #include <math.h>
 #include <cstring>
 #include <stdio.h>
+#include <fstream>
+#include <iostream>
+#include <climits>
 
 class ImageHelperFunctions
 {
@@ -54,10 +57,10 @@ public:
 	static int pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
 			 unsigned char* image,char* comment_string);
 
-	static int pgmRead (const char *fileName, unsigned int *cols, unsigned int *rows,
+	static int pgmRead(const char *fileName, unsigned int *cols, unsigned int *rows,
 			 unsigned char*& image);
 
-	static int ppmReadReturnGrayScale (const char *fileName, unsigned int *cols, unsigned int *rows,
+	static int ppmReadReturnGrayScale(const char *fileName, unsigned int *cols, unsigned int *rows,
 			 unsigned char*& image, bool weightedRGBConversion);
 };
 

@@ -43,17 +43,6 @@ public:
 		}
 	}
 
-	void writeOutputEvaluationResultsToFile(FILE* resultsFile) const
-	{
-		fprintf(resultsFile, "Average RMS error: %f \n", averageDispAbsDiffNoMax);
-		fprintf(resultsFile, "Average RMS error (with disparity error cap at %f): %f \n", disparityErrorCap, averageDispAbsDiffWithMax);
-
-		for (auto propBadPixelsAtThreshold : propSigDiffPixelsAtThresholds)
-		{
-			fprintf(resultsFile, "Proportion bad pixels (error less than %f): %f \n", propBadPixelsAtThreshold.first, propBadPixelsAtThreshold.second);
-		}
-	}
-
 	template<class U>
 	friend std::ostream& operator<<(std::ostream& os, const OutputEvaluationResults<U>& results);
 };
