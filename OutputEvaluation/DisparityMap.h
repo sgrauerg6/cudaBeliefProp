@@ -41,7 +41,7 @@ public:
 		unsigned int* disparity_values_from_file = ImageHelperFunctions::loadImageFromPGM(file_path_disparity_map.c_str(), width_, height_);
 
 		disparity_values_ = std::shared_ptr<T>(new T[width_*height_], std::default_delete<T[]>());;
-		for (int i=0; i < (width_*height_); i++)
+		for (unsigned int i=0; i < (width_*height_); i++)
 		{
 			(disparity_values_.get())[i] = (T)disparity_values_from_file[i];
 		}

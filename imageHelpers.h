@@ -37,6 +37,7 @@ const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <memory>
 
 class ImageHelperFunctions
 {

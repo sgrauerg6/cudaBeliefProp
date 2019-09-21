@@ -178,15 +178,17 @@ int ImageHelperFunctions::ppmReadReturnGrayScale (const std::string& fileName, u
 	if (std::stoul(buf) > UCHAR_MAX)
 		std::cout << "ERROR READING FILE\n";
 
+	//std::unique_ptr<char[]> imagePtr(new char[cols*rows]);
+	std::unique_ptr<char[]> rgbImagePtr(new char[3*cols*rows]);
 	image = new unsigned char[(cols) * (rows)];
-	unsigned char* rgbImage = new unsigned char[3 * (cols) * (rows)];
+	//unsigned char* rgbImage = new unsigned char[3 * (cols) * (rows)];
 
 	/* read data */
-	file.read((char*) rgbImage, 3 * cols * rows * sizeof(char));
+	file.read(&(rgbImagePtr[0]), 3 * cols * rows * sizeof(char));
 	file.close();
 
 	//convert the RGB image to grayscale
-	for (int i = 0; i < (rows * cols); i++) {
+	for (unsigned int i = 0; i < (rows * cols); i++) {
 		float rChannelWeight = 1.0f / 3.0f;
 		float bChannelWeight = 1.0f / 3.0f;
 		float gChannelWeight = 1.0f / 3.0f;
@@ -196,14 +198,11 @@ int ImageHelperFunctions::ppmReadReturnGrayScale (const std::string& fileName, u
 			gChannelWeight = 0.114f;
 		}
 		image[i] = (unsigned char) floor(
-				rChannelWeight * ((float) rgbImage[i * 3])
-						+ gChannelWeight * ((float) rgbImage[i * 3 + 1])
-						+ bChannelWeight * ((float) rgbImage[i * 3 + 2])
+				rChannelWeight * ((float) rgbImagePtr[i * 3])
+						+ gChannelWeight * ((float) rgbImagePtr[i * 3 + 1])
+						+ bChannelWeight * ((float) rgbImagePtr[i * 3 + 2])
 						+ 0.5f);
 	}
-
-	//free memory used for storing rgb image (since using grayscale image)
-	delete[] rgbImage;
 
 	return (1);
 }
