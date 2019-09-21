@@ -162,7 +162,7 @@ void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[VALUES]> *u, image<float[V
 
 // multiscale belief propagation for image restoration
 template<typename T>
-image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, FILE* resultsFile, float& runtime) {
+image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
 	image<float[VALUES]> *u[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *d[MAX_ALLOWED_LEVELS];
 	image<float[VALUES]> *l[MAX_ALLOWED_LEVELS];
@@ -245,8 +245,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 	auto timeEnd = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = timeEnd-timeStart;
 
-	fprintf(resultsFile, "AVERAGE CPU RUN TIME: %.10lf\n",
-			diff.count());
+	resultsFile << "AVERAGE CPU RUN TIME: " << diff.count() << "\n";
 	/*printf("CPU RUN TIME: %.10lf\n",
 				diff.count());*/
 	runtime = diff.count();
@@ -261,7 +260,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 }
 
 template<typename T>
-ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, FILE* resultsFile)
+ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 
@@ -271,7 +270,7 @@ ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const char* ref
 	float runtime = 0.0f;
 
 	// compute disparities
-	out = stereo_ms(img1, img2, algSettings, resultsFile, runtime);
+	out = stereo_ms(img1, img2, algSettings, resultsStream, runtime);
 
 	float* outputDisparities = new float[img1->width() * img1->height()];
 	for (int y = 0; y < img1->height(); y++)

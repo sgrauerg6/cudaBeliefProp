@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include <cuda_runtime.h>
 #include "RunBpStereoSetCUDAMemoryManagement.h"
+#include <iostream>
 
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 #include <cuda_fp16.h>
@@ -39,13 +40,13 @@ class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
 public:
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
 	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
-				const BPsettings& algSettings, FILE* resultsFile)
+				const BPsettings& algSettings, std::ostream& resultsStream)
 	{
 		SmoothImageCUDA smoothImageCUDA;
 		ProcessCUDABP<T> processImageCUDA;
 		RunBpStereoSetCUDMemoryManagement runBPCUDAMemoryManagement;
-		fprintf(resultsFile, "CURRENT RUN: GPU WITH CUDA\n");
-		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsFile, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
+		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
+		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
 	}
 };
 
@@ -88,7 +89,7 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
-					const BPsettings& algSettings,	FILE* resultsFile)
+					const BPsettings& algSettings, std::ostream& resultsStream)
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
@@ -97,8 +98,8 @@ public:
 		SmoothImageCUDA smoothImageCUDA;
 			ProcessCUDABP<half> processImageCUDA;
 			RunBpStereoSetCUDMemoryManagement runBPCUDAMemoryManagement;
-			fprintf(resultsFile, "CURRENT RUN: GPU WITH CUDA\n");
-			return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
+			resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
+			return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
@@ -159,7 +160,7 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
-			const BPsettings& algSettings,	FILE* resultsFile, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
+			const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
@@ -171,7 +172,7 @@ public:
 				testImagePath,
 				algSettings,
 				saveDisparityMapImagePath,
-				resultsFile,
+				resultsStream,
 				smoothImage,
 				&runCUDABPHalfPrecision,
 				runBPMemoryMangement);
@@ -181,7 +182,7 @@ public:
 		//printf("Processing as half2 on GPU\n");
 		RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
 		ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
-		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
+		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
 
 #else
 

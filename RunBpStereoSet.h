@@ -13,10 +13,13 @@
 #include "ProcessBPOnTargetDevice.h"
 #include <cstring>
 #include "imageHelpers.h"
-#include "DetailedTimings.h"
+#include "RuntimeTiming/DetailedTimings.h"
 #include "RunBpStereoSetMemoryManagement.h"
 #include "OutputEvaluation/DisparityMap.h"
-#include "DetailedTimingBPConsts.h"
+#include "RuntimeTiming/DetailedTimingBPConsts.h"
+#include <iostream>
+#include <unordered_map>
+#include "RuntimeTiming/DetailedTimings.h"
 
 struct ProcessStereoSetOutput
 {
@@ -35,11 +38,11 @@ public:
 
 	//pure abstract overloaded operator that must be defined in child class
 	virtual ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
-		const BPsettings& algSettings, FILE* resultsFile) = 0;
+		const BPsettings& algSettings, std::ostream& resultsStream) = 0;
 
 protected:
 	ProcessStereoSetOutput processStereoSet(const char* refImagePath, const char* testImagePath,
-		const BPsettings& algSettings, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr);
+		const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr);
 
 };
 

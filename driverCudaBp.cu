@@ -31,13 +31,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "OutputEvaluation/OutputEvaluationParameters.h"
 #include "OutputEvaluation/OutputEvaluationResults.h"
 
+#include <fstream>
+
 //compare resulting disparity map with a ground truth (or some other disparity map...)
 //this function takes as input the file names of a two disparity maps and the factor
 //that each disparity was scaled by in the generation of the disparity map image
-void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap, FILE* resultsFile)
+void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap, std::ostream& resultsStream)
 {
 	const OutputEvaluationResults<float> outputEvalResults = outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
-	outputEvalResults.writeOutputEvaluationResultsToFile(resultsFile);
+	resultsStream << outputEvalResults;
 }
 
 BPsettings initializeAndReturnBPSettings()
@@ -56,78 +58,76 @@ BPsettings initializeAndReturnBPSettings()
 
 //run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 //saved disparity map file as defined in bpStereoCudaParameters.cuh
-void runStereoOnDefaultImagesUsingDefaultSettings(FILE* resultsFile)
+void runStereoOnDefaultImagesUsingDefaultSettings(std::ostream& outStream)
 {
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings = initializeAndReturnBPSettings();
 
-	printf(
-			"Running belief propagation on reference image %s and test image %s on GPU and CPU\n",
-			DEFAULT_REF_IMAGE_PATH, DEFAULT_TEST_IMAGE_PATH);
+	std::cout << "Running belief propagation on reference image " << DEFAULT_REF_IMAGE_PATH << " and test image " << DEFAULT_TEST_IMAGE_PATH << " on GPU and CPU\n";
 	RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType> runBpStereoSetCUDA;
 	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
 	ProcessStereoSetOutput cudaRunTimeAndDispImage = runBpStereoSetCUDA(DEFAULT_REF_IMAGE_PATH,
-			DEFAULT_TEST_IMAGE_PATH, algSettings, resultsFile);
+			DEFAULT_TEST_IMAGE_PATH, algSettings, outStream);
 	cudaRunTimeAndDispImage.outDisparityMap.saveDisparityMap(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP);
 	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH,
-			DEFAULT_TEST_IMAGE_PATH, algSettings, resultsFile);
+			DEFAULT_TEST_IMAGE_PATH, algSettings, outStream);
 	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(SAVE_DISPARITY_IMAGE_PATH_2, SCALE_BP);
 
 	DisparityMap<float> groundTruthDisparityMap(DEFAULT_GROUND_TRUTH_DISPARITY_FILE, (unsigned int)SCALE_BP);
 
-	printf("Median CUDA runtime (including transfer time): %f\n", cudaRunTimeAndDispImage.runTime);
-	printf("Single Thread CPU runtime: %f\n", singleThreadCpuRunTimeAndDispImage.runTime);
-	printf("Output disparity map from final GPU run at %s\n", SAVE_DISPARITY_IMAGE_PATH_1);
-	printf("Output disparity map from CPU run at %s\n",	SAVE_DISPARITY_IMAGE_PATH_2);
+	outStream << "Median CUDA runtime (including transfer time): " << cudaRunTimeAndDispImage.runTime << std::endl;
+	outStream << "Single Thread CPU runtime: " << singleThreadCpuRunTimeAndDispImage.runTime << std::endl;
+	std::cout << "Output disparity map from final GPU run at " << SAVE_DISPARITY_IMAGE_PATH_1 << std::endl;
+	std::cout << "Output disparity map from CPU run at " << SAVE_DISPARITY_IMAGE_PATH_2 << std::endl;
 
-	fprintf(resultsFile, "\nCPU output vs. Ground Truth result:\n");
-	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, resultsFile);
-	fprintf(resultsFile, "\nGPU output vs. Ground Truth result:\n");
-	compareDispMaps(cudaRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, resultsFile);
-	fprintf(resultsFile, "\nGPU output vs. CPU output:\n");
-	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, cudaRunTimeAndDispImage.outDisparityMap, resultsFile);
+	outStream << "\nCPU output vs. Ground Truth result:\n";
+	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, outStream);
+	outStream << "\nGPU output vs. Ground Truth result:\n";
+	compareDispMaps(cudaRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, outStream);
+	outStream << "\nGPU output vs. CPU output:\n";
+	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, cudaRunTimeAndDispImage.outDisparityMap, outStream);
 
-	printf("More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n");
+	std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";
 }
 
 
-void retrieveDeviceProperties(int numDevice, FILE* resultsFile)
+void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 {
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties( &prop, numDevice);
 	int cudaDriverVersion;
 	cudaDriverGetVersion(&cudaDriverVersion);
 
-	fprintf(resultsFile, "Device %d: %s with %d multiprocessors\n", numDevice, prop.name, prop.multiProcessorCount);
-	fprintf(resultsFile, "Cuda version: %d\n", cudaDriverVersion);
+	resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
+	resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
 }
 
 
 int main(int argc, char** argv)
 {
-	//FILE* resultsFile = stdout;
-	FILE* resultsFile = fopen("output.txt", "w");
+	std::ofstream resultsStream("output.txt", std::ofstream::out);
+	//std::ostream resultsStream(std::cout.rdbuf());
 	int optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON;
-	fprintf(resultsFile, "Ref Image: %s\n", DEFAULT_REF_IMAGE_PATH);
-	fprintf(resultsFile, "Test Image: %s\n", DEFAULT_TEST_IMAGE_PATH);
-	fprintf(resultsFile, "Memory Optimization Level: %d\n", optLevel);
-	fprintf(resultsFile, "Indexing Optimization Level: %d\n", OPTIMIZED_INDEXING_SETTING);
-	fprintf(resultsFile, "BP Processing Data Type: %s\n", BELIEF_PROP_PROCESSING_DATA_TYPE_STRING);
-	fprintf(resultsFile, "Num Possible Disparity Values: %d\n", NUM_POSSIBLE_DISPARITY_VALUES);
-	fprintf(resultsFile, "Num BP Levels: %d\n", LEVELS_BP);
-	fprintf(resultsFile, "Num BP Iterations: %d\n", ITER_BP);
-	fprintf(resultsFile, "DISC_K_BP: %f\n", DISC_K_BP);
-	fprintf(resultsFile, "DATA_K_BP: %f\n", DATA_K_BP);
-	fprintf(resultsFile, "LAMBDA_BP: %f\n", LAMBDA_BP);
-	fprintf(resultsFile, "SIGMA_BP: %f\n", SIGMA_BP);
-	fprintf(resultsFile, "CPU_OPTIMIZATION_LEVEL: %d\n", CPU_OPTIMIZATION_SETTING);
-	fprintf(resultsFile, "BYTES_ALIGN_MEMORY: %d\n", BYTES_ALIGN_MEMORY);
-	fprintf(resultsFile, "NUM_DATA_ALIGN_WIDTH: %d\n", NUM_DATA_ALIGN_WIDTH);
-	fprintf(resultsFile, "USE_SHARED_MEMORY: %d\n", USE_SHARED_MEMORY);
-	fprintf(resultsFile, "DISP_INDEX_START_REG_LOCAL_MEM: %d\n", DISP_INDEX_START_REG_LOCAL_MEM);
-	retrieveDeviceProperties(0, resultsFile);
-	runStereoOnDefaultImagesUsingDefaultSettings(resultsFile);
+	resultsStream << "Ref Image: " << DEFAULT_REF_IMAGE_PATH << "\n";
+	resultsStream << "Test Image: " << DEFAULT_TEST_IMAGE_PATH << "\n";
+	resultsStream << "Memory Optimization Level: " << optLevel << "\n";
+	resultsStream << "Indexing Optimization Level: " << OPTIMIZED_INDEXING_SETTING << "\n";
+	resultsStream << "BP Processing Data Type: " << BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
+	resultsStream << "Num Possible Disparity Values: " << NUM_POSSIBLE_DISPARITY_VALUES << "\n";
+	resultsStream << "Num BP Levels: " << LEVELS_BP << "\n";
+	resultsStream << "Num BP Iterations: " << ITER_BP << "\n";
+	resultsStream << "DISC_K_BP: " << DISC_K_BP << "\n";
+	resultsStream << "DATA_K_BP: " << DATA_K_BP << "\n";
+	resultsStream << "LAMBDA_BP: " << LAMBDA_BP << "\n";
+	resultsStream << "SIGMA_BP: " << SIGMA_BP << "\n";
+	resultsStream << "CPU_OPTIMIZATION_LEVEL: " << CPU_OPTIMIZATION_SETTING << "\n";
+	resultsStream << "BYTES_ALIGN_MEMORY: " << BYTES_ALIGN_MEMORY << "\n";
+	resultsStream << "NUM_DATA_ALIGN_WIDTH: " << NUM_DATA_ALIGN_WIDTH << "\n";
+	resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
+	resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
+	retrieveDeviceProperties(0, resultsStream);
+	runStereoOnDefaultImagesUsingDefaultSettings(resultsStream);
 	int cudaRuntimeVersion;
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
-	fprintf(resultsFile, "Cuda Runtime Version: %d\n", cudaRuntimeVersion);
+	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 }

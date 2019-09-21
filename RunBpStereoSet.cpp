@@ -6,8 +6,6 @@
  */
 
 #include "RunBpStereoSet.h"
-#include <unordered_map>
-#include "DetailedTimings.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
@@ -15,7 +13,7 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 //std::pair<std::pair<unsigned int, std::string>, double>
 template<typename T>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImagePath, const char* testImagePath,
-	const BPsettings& algSettings, FILE* resultsFile, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
+	const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
 {
 	bool deleteBPMemoryManagementAtEnd = false;
 	if (runBPMemoryMangement == nullptr)
@@ -112,8 +110,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	DisparityMap<float> output_disparity_map(widthImages, heightImages, dispValsHost);
 	delete [] dispValsHost;
 
-	fprintf(resultsFile, "Image Width: %d\nImage Height: %d\n", widthImages, heightImages);
-	detailedBPTimings.printCurrentTimings();
+	resultsStream << "Image Width: " << widthImages << "\nImage Height: " << heightImages << "\n";
+	resultsStream << detailedBPTimings;
 
 	if (deleteBPMemoryManagementAtEnd)
 	{

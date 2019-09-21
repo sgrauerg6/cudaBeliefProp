@@ -23,6 +23,7 @@
 #include <chrono>
 #include "SmoothImage.h"
 #include "ProcessBPOnTargetDevice.h"
+#include <iostream>
 
 #define MAX_ALLOWED_LEVELS 10
 #define INF 1E20     // large cost
@@ -33,7 +34,7 @@ template<typename T>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, FILE* resultsFile);
+	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
 
 private:
 	// compute message
@@ -46,6 +47,6 @@ private:
 	void bp_cb(image<float[VALUES]> *u, image<float[VALUES]> *d,
 			image<float[VALUES]> *l, image<float[VALUES]> *r,
 			image<float[VALUES]> *data, int iter, float disc_k_bp);
-	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, FILE* resultsFile, float& runtime);
+	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
 };
 #endif /* STEREO_H_ */

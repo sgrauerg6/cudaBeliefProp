@@ -18,9 +18,9 @@ RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
 
 template<typename T>
 ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const char* refImagePath,
-		const char* testImagePath, const BPsettings& algSettings, FILE* resultsFile)
+		const char* testImagePath, const BPsettings& algSettings, std::ostream& resultsFile)
 {
-	fprintf(resultsFile, "CURRENT RUN: OPTIMIZED CPU\n");
+	resultsFile << "CURRENT RUN: OPTIMIZED CPU\n";
 	int nthreads = 0;
 
 	#pragma omp parallel
@@ -28,8 +28,7 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const char* refIma
 		nthreads = omp_get_num_threads();
 	}
 
-	printf("Number of OMP threads: %d\n", nthreads);
-	fprintf(resultsFile, "Number of OMP threads: %d\n", nthreads);
+	resultsFile << "Number of OMP threads: " << nthreads << "\n";
 	SmoothImageCPU smoothImageCPU;
 	ProcessOptimizedCPUBP<T> processImageCPU;
 	return this->processStereoSet(refImagePath, testImagePath, algSettings,
