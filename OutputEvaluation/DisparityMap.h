@@ -85,7 +85,7 @@ public:
 	}
 
 	template<class U>
-	const OutputEvaluationResults<T> getOuputComparison(DisparityMap& disparity_map_to_compare, OutputEvaluationParameters<U> evaluation_parameters) const
+	const OutputEvaluationResults<T> getOuputComparison(const DisparityMap& disparity_map_to_compare, OutputEvaluationParameters<U> evaluation_parameters) const
 	{
 		OutputEvaluationResults<T> output_evaluation;
 
@@ -97,7 +97,7 @@ public:
 			int x = i % width_;
 			int y = i / width_;
 			const T dispMapVal = disparity_values_[i];
-			const T dispMapCompareVal = disparity_map_to_compare.getDisparityValues()[i];
+			const T dispMapCompareVal = disparity_map_to_compare.getDisparityValuesAtPoint(i);
 			const T absDiff = std::abs(dispMapVal - dispMapCompareVal);
 
 			output_evaluation.totalDispAbsDiffNoMax += absDiff;
@@ -137,6 +137,16 @@ public:
 	T*& getDisparityValues()
 	{
 		return disparity_values_;
+	}
+
+	const T getDisparityValuesAtPoint(int x, int y) const
+	{
+		return disparity_values_[y*width_ + x];
+	}
+
+	const T getDisparityValuesAtPoint(int i) const
+	{
+		return disparity_values_[i];
 	}
 
 private:

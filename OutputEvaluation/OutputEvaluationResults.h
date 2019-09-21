@@ -43,7 +43,7 @@ public:
 		}
 	}
 
-	void writeOutputEvaluationResultsToFile(FILE* resultsFile)
+	void writeOutputEvaluationResultsToFile(FILE* resultsFile) const
 	{
 		fprintf(resultsFile, "Average RMS error: %f \n", averageDispAbsDiffNoMax);
 		fprintf(resultsFile, "Average RMS error (with disparity error cap at %f): %f \n", disparityErrorCap, averageDispAbsDiffWithMax);

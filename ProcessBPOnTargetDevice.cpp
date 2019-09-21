@@ -44,12 +44,12 @@ unsigned long ProcessBPOnTargetDevice<T>::getNumDataForAlignedMemoryAtLevel(unsi
 	 //input is images image1Pixels and image1Pixels
 	 //output is resultingDisparityMap
 template<typename T>
-DetailedTimings ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompDevice,
+DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompDevice,
 	float* image2PixelsCompDevice,
 	float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
 
-	DetailedTimings segmentTimings(timingNames_BP);
+	DetailedTimings<Runtime_Type_BP> segmentTimings(timingNames_BP);
 	double totalTimeBpIters = 0.0;
 	double totalTimeCopyData = 0.0;
 	double totalTimeCopyDataKernel = 0.0;

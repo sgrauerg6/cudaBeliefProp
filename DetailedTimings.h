@@ -16,13 +16,15 @@
 #include <iostream>
 
 //Class to store timings
-//Not that there is currently no check that the input segment number for timing is valid; currently is assumed
+//Not that there is currently no check that the input segment index for timing is valid; currently is assumed
 //that only valid segment numbers (added in the constructor) will be used when adding timings and retrieving median timing
+//If enum is used as T and every enum value is mapped with a string in the constructor parameter input, then no issue with invalid index
+template <class T>
 class DetailedTimings {
 public:
 
 	//initialize each timing segment
-	DetailedTimings(const std::unordered_map<unsigned int, std::string>& timingSegments) : numToString(timingSegments)
+	DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : numToString(timingSegments)
 	{
 		for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment.first] = std::vector<double>(); });
 	}
@@ -49,22 +51,22 @@ public:
 				});
 	}
 
-	//add timing by segment number
+	//add timing by segment index
 	//required that all timing segment numbers/names be initialized from constructor
-	void addTiming(const unsigned int numTiming, double segmentTime)
+	void addTiming(const T timingIndex, double segmentTime)
 	{
-		timings[numTiming].push_back(segmentTime);
+		timings[timingIndex].push_back(segmentTime);
 	}
 
 	void printCurrentTimings() const {
 		std::cout << *this;
 	}
 
-	double getMedianTiming(const unsigned int runSegmentNum) const
+	double getMedianTiming(const T runSegmentIndex) const
 	{
-		if (timings.at(runSegmentNum).size() > 0)
+		if (timings.at(runSegmentIndex).size() > 0)
 		{
-			std::vector<double> segmentTimingVectCopy(timings.at(runSegmentNum));
+			std::vector<double> segmentTimingVectCopy(timings.at(runSegmentIndex));
 			std::sort(segmentTimingVectCopy.begin(), segmentTimingVectCopy.end());
 			return (segmentTimingVectCopy[segmentTimingVectCopy.size() / 2]);
 		}
@@ -77,11 +79,23 @@ public:
 	}
 
 	friend std::ostream& operator<<(std::ostream& os,
-			const DetailedTimings& timing);
+			const DetailedTimings& inTimingObj)
+	{
+		os << "Median Timings\n";
+		std::for_each(inTimingObj.timings.begin(), inTimingObj.timings.end(), [&os, &inTimingObj](auto currentTiming) {
+			std::sort(currentTiming.second.begin(), currentTiming.second.end());
+			os << inTimingObj.numToString.at(currentTiming.first);
+			if (currentTiming.second.size() > 0) {
+				os << " (" << currentTiming.second.size() << " timings) : " << currentTiming.second[currentTiming.second.size() / 2] << std::endl; }
+			else {
+				os << " (No timings) : No timings" << std::endl; }
+			});
+		return os;
+	}
 
 private:
-	std::map<unsigned int, std::vector<double>> timings;
-	std::unordered_map<unsigned int, std::string> numToString;
+	std::map<T, std::vector<double>> timings;
+	std::unordered_map<T, std::string> numToString;
 };
 
 #endif /* DETAILEDTIMINGS_H_ */
