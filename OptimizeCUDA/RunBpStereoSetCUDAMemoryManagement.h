@@ -10,20 +10,20 @@ public:
 
 	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
-		//printf("ALLOC_GPU\n");
+		//std::cout << "ALLOC_GPU\n";
 		//allocate the space for the disparity map estimation
 		cudaMalloc((void **) arrayToAllocate, numBytes);
 	}
 
 	void freeDataOnCompDevice(void** arrayToFree)
 	{
-		//printf("FREE_GPU\n");
+		//std::cout << "FREE_GPU\n";
 		cudaFree(*arrayToFree);
 	}
 
 	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		//printf("TRANSFER_GPU\n");
+		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 				inArray,
 				numBytesTransfer,
@@ -32,11 +32,11 @@ public:
 
 	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		//printf("TRANSFER_GPU\n");
-			cudaMemcpy(destArray,
-					inArray,
-					numBytesTransfer,
-					cudaMemcpyHostToDevice);
+		//std::cout << "TRANSFER_GPU\n";
+		cudaMemcpy(destArray,
+				inArray,
+				numBytesTransfer,
+				cudaMemcpyHostToDevice);
 	}
 };
 

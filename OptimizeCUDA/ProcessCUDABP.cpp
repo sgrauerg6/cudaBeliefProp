@@ -209,7 +209,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		int maxbytes = numBytesSharedMemory; // 96 KB
 		cudaFuncSetAttribute(runBPIterationUsingCheckerboardUpdates<T>, cudaFuncAttributeMaxDynamicSharedMemorySize, maxbytes);
 
-		//printf("numDataSharedMemory: %d\n", numDataSharedMemory);
+		//std::cout << "numDataSharedMemory: " << numDataSharedMemory << std::endl;
 		runBPIterationUsingCheckerboardUpdates<T><<<grid, threads, maxbytes>>>(checkboardPartUpdate, currentLevelPropertes,
 						dataCostDeviceCurrentLevelCheckerboard1, dataCostDeviceCurrentLevelCheckerboard2,
 						messageUDeviceCheckerboard1, messageDDeviceCheckerboard1,

@@ -57,20 +57,20 @@ public:
 
 	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
-		//printf("ALLOC_GPU\n");
+		//std::cout << "ALLOC_GPU\n";
 		//allocate the space for the disparity map estimation
 		cudaMalloc((void **) arrayToAllocate, numBytes);
 	}
 
 	void freeDataOnCompDevice(void** arrayToFree)
 	{
-		//printf("FREE_GPU\n");
+		//std::cout << "FREE_GPU\n";
 		cudaFree(*arrayToFree);
 	}
 
 	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		//printf("TRANSFER_GPU\n");
+		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 					inArray,
 					numBytesTransfer,
@@ -79,7 +79,7 @@ public:
 
 	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		printf("TRANSFER_GPU\n");
+		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 					inArray,
 					numBytesTransfer,
@@ -94,7 +94,7 @@ public:
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
-		//printf("Processing as half on GPU\n");
+		//std::cout << "Processing as half on GPU\n";
 		SmoothImageCUDA smoothImageCUDA;
 			ProcessCUDABP<half> processImageCUDA;
 			RunBpStereoSetCUDMemoryManagement runBPCUDAMemoryManagement;
@@ -103,14 +103,14 @@ public:
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
-		//printf("Processing as half2 on GPU\n");
+		//std::cout << "Processing as half2 on GPU\n";
 		//RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
 		//ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
 		return ProcessStereoSetOutput();//runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
 
 #else
 
-		printf("ERROR IN DATA TYPE\n");
+		std::cout << "ERROR IN DATA TYPE\n";
 		return ProcessStereoSetOutput();
 
 #endif
@@ -128,20 +128,20 @@ public:
 
 	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
-		//printf("ALLOC_GPU\n");
+		//std::cout << "ALLOC_GPU\n";
 		//allocate the space for the disparity map estimation
 		cudaMalloc((void **) arrayToAllocate, numBytes);
 	}
 
 	void freeDataOnCompDevice(void** arrayToFree)
 	{
-		//printf("FREE_GPU\n");
+		//std::cout << "FREE_GPU\n";
 		cudaFree(*arrayToFree);
 	}
 
 	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		//printf("TRANSFER_GPU\n");
+		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 					inArray,
 					numBytesTransfer,
@@ -150,7 +150,7 @@ public:
 
 	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
 	{
-		printf("TRANSFER_GPU\n");
+		std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 					inArray,
 					numBytesTransfer,
@@ -165,7 +165,7 @@ public:
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
-		//printf("Processing as half on GPU\n");
+		//std::cout << "Processing as half on GPU\n";
 		RunBpStereoSetOnGPUWithCUDA<half> runCUDABpStereoSet;
 		ProcessCUDABP<half> runCUDABPHalfPrecision;
 		return runCUDABpStereoSet(refImagePath,
@@ -179,14 +179,14 @@ public:
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
-		//printf("Processing as half2 on GPU\n");
+		//std::cout << "Processing as half2 on GPU\n";
 		RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
 		ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
 		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
 
 #else
 
-		printf("ERROR IN DATA TYPE\n");
+		std::cout << "ERROR IN DATA TYPE\n";
 		return ProcessStereoSetOutput();
 
 #endif

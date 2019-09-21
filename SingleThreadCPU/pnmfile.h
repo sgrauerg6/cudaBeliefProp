@@ -247,7 +247,6 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 	if (strcmp(lastToken, pgmExtension) == 0)
 	{
 		delete [] filePathImageCopy;
-		//printf("CPU PGM IMAGE\n");
 
 		// load input pgm image
 		return loadPGM(name);
@@ -255,7 +254,6 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 	else if (strcmp(lastToken, ppmExtension) == 0)
 	{
 		delete [] filePathImageCopy;
-		//printf("CPU PPM IMAGE\n");
 
 		// load input ppm image
 		return loadPPMAndConvertToGrayScale(name);
@@ -263,7 +261,7 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 	else
 	{
 		delete [] filePathImageCopy;
-		printf("CPU ERROR, IMAGE FILE %s NOT SUPPORTED\n", name);
+		std::cout << "CPU ERROR, IMAGE FILE " << name << " NOT SUPPORTED\n";
 		return NULL;
 	}
 }

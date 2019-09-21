@@ -37,7 +37,7 @@ class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T>
 public:
 		void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
 		{
-			//printf("RUN ALLOC: %lu\n", numBytesAllocate);
+			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
 			//*arrayToAllocate = malloc(numBytesAllocate);
 			//necessary to align for aligned avx load instructions to work as expected
 			*arrayToAllocate = aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);

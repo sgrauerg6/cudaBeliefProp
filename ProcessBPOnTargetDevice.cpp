@@ -118,11 +118,11 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	//printf("ALLOC ALL MEMORY\n");
+	//std::cout << "ALLOC ALL MEMORY\n";
 	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard1, 10 * halfTotalDataAllLevels * sizeof(T));
 	if (dataCostDeviceCheckerboard1 == nullptr)
 	{
-		printf("Memory alloc failed\n");
+		std::cout << "Memory alloc failed\n";
 	}
 
 	dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1 * (halfTotalDataAllLevels)]);
@@ -154,11 +154,11 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 	auto timeInitDataCostsStart = std::chrono::system_clock::now();
 
-	//printf("INIT DATA COSTS\n");
+	//std::cout << "INIT DATA COSTS\n";
 	//initialize the data cost at the bottom level
 	initializeDataCosts(algSettings, processingLevelProperties[0], image1PixelsCompDevice, image2PixelsCompDevice,
 		dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
-	//printf("DONE INIT DATA COSTS\n");
+	//std::cout << "DONE INIT DATA COSTS\n";
 
 	auto timeInitDataCostsEnd = std::chrono::system_clock::now();
 	diff = timeInitDataCostsEnd - timeInitDataCostsStart;
@@ -180,13 +180,13 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 		T* dataCostDeviceToWriteToCheckerboard2 =
 			&dataCostDeviceCheckerboard2[offsetAtLevel[levelNum]];
 
-		//printf("INIT DATA COSTS CURRENT LEVEL\n");
+		//std::cout << "INIT DATA COSTS CURRENT LEVEL\n";
 		initializeDataCurrentLevel(processingLevelProperties[levelNum],
 			processingLevelProperties[levelNum - 1],
 			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
 			dataCostDeviceToWriteToCheckerboard1,
 			dataCostDeviceToWriteToCheckerboard2);
-		//printf("DONE INIT DATA COSTS CURRENT LEVEL\n");
+		//std::cout << "DONE INIT DATA COSTS CURRENT LEVEL\n";
 	}
 
 	currentOffsetLevel = offsetAtLevel[algSettings.numLevels - 1];
@@ -275,7 +275,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	auto timeInitMessageValuesKernelTimeStart =
 		std::chrono::system_clock::now();
 
-	//printf("initializeMessageValsToDefault\n");
+	//std::cout << "initializeMessageValsToDefault\n";
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(
 		processingLevelProperties[algSettings.numLevels - 1],
@@ -287,7 +287,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 		messageDDeviceSet0Checkerboard2,
 		messageLDeviceSet0Checkerboard2,
 		messageRDeviceSet0Checkerboard2);
-	//printf("DONE initializeMessageValsToDefault\n");
+	//std::cout << "DONE initializeMessageValsToDefault\n";
 
 	auto timeInitMessageValuesTimeEnd =
 		std::chrono::system_clock::now();
@@ -311,10 +311,9 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	for (int levelNum = algSettings.numLevels - 1; levelNum >= 0;
 		levelNum--)
 	{
-
 		auto timeBpIterStart = std::chrono::system_clock::now();
 
-		//printf("LEVEL: %d\n", levelNum);
+		//std::cout << "LEVEL: " << levelNum << std::endl;
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == 0) {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
@@ -349,7 +348,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 		auto timeCopyMessageValuesStart = std::chrono::system_clock::now();
 
-		//printf("DONE BP RUN\n");
+		//std::cout << "DONE BP RUN\n";
 
 		//if not at the "bottom level" copy the current message values at the current level to the corresponding slots next level
 		if (levelNum > 0)
@@ -561,7 +560,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	//printf("ALLOC MULT MEM SEGMENTS\n");
+	//std::cout << "ALLOC MULT MEM SEGMENTS\n";
 
 	//free the device storage for the message values used to retrieve the output movement values
 	if (currentCheckerboardSet == 0)

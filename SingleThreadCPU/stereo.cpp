@@ -246,8 +246,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 	std::chrono::duration<double> diff = timeEnd-timeStart;
 
 	resultsFile << "AVERAGE CPU RUN TIME: " << diff.count() << "\n";
-	/*printf("CPU RUN TIME: %.10lf\n",
-				diff.count());*/
+	//std::cout << "CPU RUN TIME: << diff.count() << std::endl;
 	runtime = diff.count();
 
 	delete u[0];
