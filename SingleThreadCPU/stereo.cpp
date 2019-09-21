@@ -278,7 +278,7 @@ ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::stri
 	{
 			for (int x = 0; x < img1->width(); x++)
 			{
-				outDispMap.setDisparityAtPoint(x, y, (float)imRef(out, x, y));
+				(outDispMap.getPointerToPixelsStart())[y*img1->width() + x] = (float)imRef(out, x, y);;
 			}
 	}
 

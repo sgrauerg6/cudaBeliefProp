@@ -12,7 +12,6 @@
 #include "SmoothImage.h"
 #include "ProcessBPOnTargetDevice.h"
 #include <cstring>
-#include "imageHelpers.h"
 #include "RuntimeTiming/DetailedTimings.h"
 #include "RunBpStereoSetMemoryManagement.h"
 #include "OutputEvaluation/DisparityMap.h"
@@ -21,6 +20,7 @@
 #include <unordered_map>
 #include "RuntimeTiming/DetailedTimings.h"
 #include <memory>
+#include "ImageDataAndProcessing/BpImage.h"
 
 struct ProcessStereoSetOutput
 {

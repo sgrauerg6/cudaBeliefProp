@@ -22,9 +22,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ParameterFiles/bpStereoParameters.h"
 #include "SingleThreadCPU/stereo.h"
 
-//needed for functions to load input images/store resulting disp/movement image
-#include "imageHelpers.h"
-
 //needed to run the optimized implementation a stereo set using CPU
 #include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
 
