@@ -23,97 +23,84 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //functions used to load input images/save resulting movment images
 
 /* read PNM field, skipping comments */
-void ImageHelperFunctions::pnm_read(std::ifstream &file, char *buf) {
-	  char doc[BUF_SIZE_IMAGE_HELPERS];
+void ImageHelperFunctions::pnm_read(std::ifstream &file, std::string& buf) {
+	  std::string doc;
 	  char c;
 
 	  file >> c;
 	  while (c == '#') {
-	    file.getline(doc, BUF_SIZE_IMAGE_HELPERS);
+	    std::getline(file, doc);
 	    file >> c;
 	  }
 	  file.putback(c);
 
-	  file.width(BUF_SIZE_IMAGE_HELPERS);
 	  file >> buf;
 	  file.ignore();
 	}
 
 
-unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const char* filePathImage, unsigned int& widthImage, unsigned int& heightImage)
+unsigned int* ImageHelperFunctions::loadImageAsGrayScale(const std::string& filePathImage, unsigned int& widthImage, unsigned int& heightImage)
 {
-	char pgmExtension[] = "pgm";
-	char ppmExtension[] = "ppm";
-	char* filePathImageCopy = new char[strlen(filePathImage) + 1];
-	strcpy(filePathImageCopy, filePathImage);
+	std::string pgmExtension("pgm");
+	std::string ppmExtension("ppm");
+	std::string filePathImageCopy(filePathImage);
 
 	//check if PGM or PPM image (types currently supported)
-	char* token = strtok(filePathImageCopy, ".");
-	char* lastToken = new char[strlen(token) + 1];;
-	strcpy(lastToken, token);
-	while( token != NULL )
+	std::istringstream iss(filePathImageCopy);
+	std::string token;
+	while (std::getline(iss, token, '.'))
 	{
-		delete [] lastToken;
-		lastToken = new char[strlen(token) + 1];
-		strcpy(lastToken, token);
-	    token = strtok(NULL, ".");
+		//continue to get last token with the file extension
 	}
 
 	//last token after "." is file extension
-	if (strcmp(lastToken, pgmExtension) == 0)
+	//use extension to check if image is pgm or ppm
+	if (token == pgmExtension)
 	{
-		delete [] filePathImageCopy;
 		return loadImageFromPGM(filePathImage, widthImage, heightImage);
 	}
-	else if (strcmp(lastToken, ppmExtension) == 0)
+	else if (token == ppmExtension)
 	{
-		delete [] filePathImageCopy;
 		return loadImageFromPPM(filePathImage, widthImage, heightImage);
 	}
 	else
 	{
-		delete [] filePathImageCopy;
-		printf("ERROR, IMAGE FILE %s NOT SUPPORTED\n", filePathImage);
-		return NULL;
+		std::cout << "ERROR, IMAGE FILE " << filePathImage << " NOT SUPPORTED\n";
+		return nullptr;
 	}
 }
 
 //load the PGM image and return as an array of floats
-unsigned int* ImageHelperFunctions::loadImageFromPGM(const char* filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
+unsigned int* ImageHelperFunctions::loadImageFromPGM(const std::string& filePathPgmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	unsigned int* imageData;
+	unsigned char* dataRead;
 
-	unsigned char *dataRead;
-
-	pgmRead (filePathPgmImage, widthImage, heightImage,
+	pgmRead(filePathPgmImage, widthImage, heightImage,
 	     dataRead);
 
 	imageData = new unsigned int[widthImage*heightImage];
 
-	for (int numPixel = 0; numPixel < (widthImage*heightImage); numPixel++)
-	{
-		imageData[numPixel] = (unsigned int)(dataRead[numPixel]);	
-	}
+	//convert each pixel in dataRead to unsigned int and place in imageData array in same location
+	std::transform(dataRead, dataRead + (widthImage*heightImage), imageData, [] (const unsigned char i) -> unsigned int { return (unsigned int)i; });
 
 	delete [] dataRead;
 	return imageData;
 }
 
 //load the PPM image, convert to grayscale, and return as an array of floats
-unsigned int* ImageHelperFunctions::loadImageFromPPM(const char* filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage)
+unsigned int* ImageHelperFunctions::loadImageFromPPM(const std::string& filePathPpmImage, unsigned int& widthImage, unsigned int& heightImage)
 {
 	unsigned int* imageData;
-	unsigned char *dataRead;
+	unsigned char* dataRead;
 
 	ppmReadReturnGrayScale(filePathPpmImage, widthImage, heightImage,
 	     dataRead, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
 
 	imageData = new unsigned int[widthImage*heightImage];
 
-	for (int numPixel = 0; numPixel < (widthImage*heightImage); numPixel++)
-	{
-		imageData[numPixel] = (unsigned int)(dataRead[numPixel]);
-	}
+	//convert each pixel in dataRead to unsigned int and place in imageData array in same location
+	std::transform(dataRead, dataRead + (widthImage*heightImage), imageData, [] (const unsigned char i) -> unsigned int { return (unsigned int)i; });
 
 	delete [] dataRead;
 	return imageData;
@@ -131,23 +118,24 @@ unsigned int* ImageHelperFunctions::loadImageFromPPM(const char* filePathPpmImag
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int& cols, unsigned int& rows,
-	     unsigned char*& image) {
-	  char buf[BUF_SIZE_IMAGE_HELPERS];
+int ImageHelperFunctions::pgmRead(const std::string& fileName, unsigned int& cols, unsigned int& rows,
+	     unsigned char*& image)
+{
+	  std::string buf;
 
-	/* read header */
+	  /* read header */
 	  std::ifstream file(fileName, std::ios::in | std::ios::binary);
 	  pnm_read(file, buf);
-	  if (strncmp(buf, "P5", 2))
+	  if (buf != "P5")
 	    std::cout << "ERROR READING FILE\n";
 
 	  pnm_read(file, buf);
-	  cols = (unsigned int)atoi(buf);
+	  cols = std::stoul(buf);
 	  pnm_read(file, buf);
-	  rows = (unsigned int)atoi(buf);
+	  rows = std::stoul(buf);
 
 	  pnm_read(file, buf);
-	  if (atoi(buf) > UCHAR_MAX)
+	  if (std::stoul(buf) > UCHAR_MAX)
 	    std::cout << "ERROR READING FILE\n";
 
 	  image = new unsigned char[(cols * rows)];
@@ -170,24 +158,24 @@ int ImageHelperFunctions::pgmRead(const char *fileName, unsigned int& cols, unsi
  *   or if the specifications of the file are invalid.
  * NOTE: The case where too many pixels are in a file is not detected.
  */
-int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned int& cols, unsigned int& rows,
-	     unsigned char*& image, bool weightedRGBConversion)
+int ImageHelperFunctions::ppmReadReturnGrayScale (const std::string& fileName, unsigned int& cols, unsigned int& rows,
+	     unsigned char*& image, const bool weightedRGBConversion)
 {
-	char buf[BUF_SIZE_IMAGE_HELPERS];
+	std::string buf;
 
 	/* read header */
 	std::ifstream file(fileName, std::ios::in | std::ios::binary);
 	pnm_read(file, buf);
-	if (strncmp(buf, "P5", 2))
+	if (buf != "P5")
 		std::cout << "ERROR READING FILE\n";
 
 	pnm_read(file, buf);
-	cols = (unsigned int) atoi(buf);
+	cols = std::stoul(buf);
 	pnm_read(file, buf);
-	rows = (unsigned int) atoi(buf);
+	rows = std::stoul(buf);
 
 	pnm_read(file, buf);
-	if (atoi(buf) > UCHAR_MAX)
+	if (std::stoul(buf) > UCHAR_MAX)
 		std::cout << "ERROR READING FILE\n";
 
 	image = new unsigned char[(cols) * (rows)];
@@ -229,8 +217,8 @@ int ImageHelperFunctions::ppmReadReturnGrayScale (const char *fileName, unsigned
  *   and 0 if it was not.  An error message is returned if the file is not
  *   properly opened.  
  */ 
-int ImageHelperFunctions::pgmWrite(const char* filename, unsigned int cols, unsigned int rows,
-	     unsigned char* image,char* comment_string)
+int ImageHelperFunctions::pgmWrite(const std::string& filename, const unsigned int cols, const unsigned int rows,
+	     unsigned char* image)
 {
 	  std::ofstream file(filename, std::ios::out | std::ios::binary);
 
@@ -242,7 +230,7 @@ int ImageHelperFunctions::pgmWrite(const char* filename, unsigned int cols, unsi
 
 //save the calculated disparity map from image 1 to image 2 as a grayscale image using the SCALE_MOVEMENT factor with
 //0 representing "zero" intensity and the intensity linearly increasing from there using SCALE_MOVEMENT
-void ImageHelperFunctions::saveDisparityImageToPGM(const char* filePathSaveImage, float scaleMovement, const float* calcDisparityBetweenImages, unsigned int widthImage, unsigned int heightImage)
+void ImageHelperFunctions::saveDisparityImageToPGM(const std::string& filePathSaveImage, const float scaleMovement, const float* calcDisparityBetweenImages, const unsigned int widthImage, const unsigned int heightImage)
 {
 	//declare and allocate the space for the movement image to save
 	unsigned char* movementImageToSave = new unsigned char[widthImage*heightImage];
@@ -256,5 +244,5 @@ void ImageHelperFunctions::saveDisparityImageToPGM(const char* filePathSaveImage
 	}
 
 	pgmWrite(filePathSaveImage, widthImage, heightImage,
-	     movementImageToSave, "blah");
+	     movementImageToSave);
 }
