@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_runtime.h>
 #include <cuda.h>
-#include "bpStereoCudaParameters.h"
+#include "ParameterFiles/bpStereoCudaParameters.h"
 
 #define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"

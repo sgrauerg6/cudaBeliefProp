@@ -8,7 +8,7 @@
 #ifndef PROCESSBPONTARGETDEVICE_H_
 #define PROCESSBPONTARGETDEVICE_H_
 
-#include "bpStereoParameters.h"
+#include "ParameterFiles/bpStereoParameters.h"
 #include <math.h>
 #include <chrono>
 #include <unordered_map>

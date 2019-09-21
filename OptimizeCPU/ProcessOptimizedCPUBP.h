@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 #define BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 
-#include "bpStereoParameters.h"
+#include "ParameterFiles/bpStereoParameters.h"
 
 //include for the kernal functions to be run on the GPU
 #include "KernelBpStereoCPU.h"

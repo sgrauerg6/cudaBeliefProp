@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 #undef PROCESSING_ON_GPU
 
-#include "bpStereoCudaParameters.h"
+#include "ParameterFiles/bpStereoCudaParameters.h"
 
 
 #if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))

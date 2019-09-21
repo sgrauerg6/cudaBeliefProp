@@ -19,7 +19,7 @@
 #include "filter.h"
 #include "imconv.h"
 #include <string>
-#include "bpStereoParameters.h"
+#include "ParameterFiles/bpStereoParameters.h"
 #include <chrono>
 #include "SmoothImage.h"
 #include "ProcessBPOnTargetDevice.h"

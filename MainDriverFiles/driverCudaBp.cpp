@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file contains the "main" function that drives the CUDA BP implementation
 
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
-#include "bpStereoCudaParameters.h"
+#include "ParameterFiles/bpStereoCudaParameters.h"
 #include "SingleThreadCPU/stereo.h"
 
 //needed for functions to load input images/store resulting disp/movement image
