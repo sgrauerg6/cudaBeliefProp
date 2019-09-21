@@ -20,7 +20,7 @@ public:
 	virtual ~RunBpStereoOptimizedCPU();
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
+	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
 };
 
 #endif /* RUNBPSTEREOOPTIMIZEDCPU_H_ */

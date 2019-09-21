@@ -12,16 +12,10 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
 //std::pair<std::pair<unsigned int, std::string>, double>
 template<typename T>
-ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImagePath, const char* testImagePath,
-	const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage, ProcessBPOnTargetDevice<T>* runBpStereo, RunBpStereoSetMemoryManagement* runBPMemoryMangement)
+ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string refImagePath, const std::string testImagePath,
+	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage, const std::unique_ptr<ProcessBPOnTargetDevice<T>>& runBpStereo,
+	const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement)
 {
-	bool deleteBPMemoryManagementAtEnd = false;
-	if (runBPMemoryMangement == nullptr)
-	{
-		deleteBPMemoryManagementAtEnd = true;
-		runBPMemoryMangement = new RunBpStereoSetMemoryManagement();
-	}
-
 	unsigned int heightImages = 0;
 	unsigned int widthImages = 0;
 
@@ -38,7 +32,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	DisparityMap<float> output_disparity_map(widthImages, heightImages);
 
 	//get shared pointer to disparity map data
-	std::shared_ptr<float> dispValsSharedPtr = output_disparity_map.getDisparityValuesSharedPointer();
+	//std::unique_ptr<float[]> dispValsSharedPtr = std::move(output_disparity_map.getDisparityValuesSharedPointer());
 
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
@@ -78,7 +72,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
 		//transfer the disparity map estimation on the device to the host for output
-		runBPMemoryMangement->transferDataFromCompDeviceToHost(dispValsSharedPtr.get(), disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
+		runBPMemoryMangement->transferDataFromCompDeviceToHost(&(output_disparity_map.getDisparityValuesUniquePointer()[0]), disparityMapFromImage1To2CompDevice, widthImages * heightImages * sizeof(float));
 
 		//compute timings for each portion of interest and add to vector timings
 		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
@@ -106,14 +100,9 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	resultsStream << "Image Width: " << widthImages << "\nImage Height: " << heightImages << "\n";
 	resultsStream << detailedBPTimings;
 
-	if (deleteBPMemoryManagementAtEnd)
-	{
-		delete runBPMemoryMangement;
-	}
-
 	ProcessStereoSetOutput output;
 	output.runTime = detailedBPTimings.getMedianTiming(TOTAL_WITH_TRANSFER);
-	output.outDisparityMap = output_disparity_map;
+	output.outDisparityMap = std::move(output_disparity_map);
 
 	return output;
 }

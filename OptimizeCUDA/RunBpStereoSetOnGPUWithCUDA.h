@@ -39,14 +39,14 @@ class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
 {
 public:
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
-	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
+	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
 				const BPsettings& algSettings, std::ostream& resultsStream)
 	{
-		SmoothImageCUDA smoothImageCUDA;
-		ProcessCUDABP<T> processImageCUDA;
-		RunBpStereoSetCUDMemoryManagement runBPCUDAMemoryManagement;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
+		std::unique_ptr<SmoothImage> smoothImageCUDA(new SmoothImageCUDA());
+		std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCUDA(new ProcessCUDABP<T>());
+		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement(new RunBpStereoSetCUDAMemoryManagement());
+		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 };
 
@@ -88,25 +88,26 @@ public:
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
+	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
 					const BPsettings& algSettings, std::ostream& resultsStream)
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
 		//std::cout << "Processing as half on GPU\n";
-		SmoothImageCUDA smoothImageCUDA;
-			ProcessCUDABP<half> processImageCUDA;
-			RunBpStereoSetCUDMemoryManagement runBPCUDAMemoryManagement;
-			resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-			return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, &smoothImageCUDA, &processImageCUDA, &runBPCUDAMemoryManagement);
+		std::unique_ptr<SmoothImage> smoothImageCUDA(new SmoothImageCUDA());
+		std::unique_ptr<ProcessBPOnTargetDevice<half>> processImageCUDA(new ProcessCUDABP<T>());
+		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement(new RunBpStereoSetCUDAMemoryManagement());
+		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
+		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
 		//std::cout << "Processing as half2 on GPU\n";
-		//RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
-		//ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
-		return ProcessStereoSetOutput();//runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
+		std::unique_ptr<SmoothImage> smoothImageCUDA(new SmoothImageCUDA());
+		std::unique_ptr<ProcessBPOnTargetDevice<half2>> processImageCUDA(new ProcessCUDABP<T>());
+		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement(new RunBpStereoSetCUDAMemoryManagement());
+		return ProcessStereoSetOutput();//runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #else
 
@@ -119,6 +120,7 @@ public:
 };
 
 //float16_t data type used for arm (rather than short)
+//TODO: needs to be updated with other code changes
 #ifdef COMPILING_FOR_ARM
 
 template<>
@@ -159,7 +161,7 @@ public:
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator()(const char* refImagePath, const char* testImagePath,
+	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
 			const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
 	{
 

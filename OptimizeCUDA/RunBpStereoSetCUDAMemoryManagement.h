@@ -4,7 +4,7 @@
 #include "RunBpStereoSetMemoryManagement.h"
 #include <cuda_runtime.h>
 
-class RunBpStereoSetCUDMemoryManagement : public RunBpStereoSetMemoryManagement
+class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement
 {
 public:
 

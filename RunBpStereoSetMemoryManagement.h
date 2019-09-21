@@ -15,6 +15,7 @@ public:
 
 	virtual void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
+		//printf("ALLOCATE\n");
 		//allocate the space for the disparity map estimation
 		*arrayToAllocate = malloc(numBytes);
 	}

@@ -23,10 +23,10 @@ public:
 	DisparityMap() : width_(0), height_(0)
 {}
 
-	DisparityMap(const unsigned int width, const unsigned int height) : width_(width), height_(height), disparity_values_(new T[width*height], std::default_delete<T[]>())
+	DisparityMap(const unsigned int width, const unsigned int height) : width_(width), height_(height), disparity_values_(new T[width*height])
 {}
 
-	DisparityMap(const unsigned int width, const unsigned int height, const T* input_disparity_map_vals, const unsigned int disparity_map_vals_scale = 1) : width_(width), height_(height), disparity_values_(new T[width*height], std::default_delete<T[]>())
+	DisparityMap(const unsigned int width, const unsigned int height, const T* input_disparity_map_vals, const unsigned int disparity_map_vals_scale = 1) : width_(width), height_(height), disparity_values_(new T[width*height])
 	{
 		std::copy(input_disparity_map_vals, input_disparity_map_vals + (width*height), disparity_values_.get());
 
@@ -40,7 +40,7 @@ public:
 	{
 		unsigned int* disparity_values_from_file = ImageHelperFunctions::loadImageFromPGM(file_path_disparity_map.c_str(), width_, height_);
 
-		disparity_values_ = std::shared_ptr<T>(new T[width_*height_], std::default_delete<T[]>());;
+		disparity_values_ = std::make_unique<T[]>(width_*height_);
 		for (unsigned int i=0; i < (width_*height_); i++)
 		{
 			(disparity_values_.get())[i] = (T)disparity_values_from_file[i];
@@ -104,7 +104,7 @@ public:
 		delete [] float_disp_vals;
 	}
 
-	std::shared_ptr<T> getDisparityValuesSharedPointer() const
+	const std::unique_ptr<T[]>& getDisparityValuesUniquePointer() const
 	{
 		return disparity_values_;
 	}
@@ -142,7 +142,7 @@ private:
 
 	unsigned int width_;
 	unsigned int height_;
-	std::shared_ptr<T> disparity_values_;
+	std::unique_ptr<T[]> disparity_values_;
 };
 
 //no need to convert disparity value type if disparity map is of type float
