@@ -16,6 +16,7 @@
 #include "DetailedTimings.h"
 #include "RunBpStereoSetMemoryManagement.h"
 #include "OutputEvaluation/DisparityMap.h"
+#include "DetailedTimingBPConsts.h"
 
 struct ProcessStereoSetOutput
 {

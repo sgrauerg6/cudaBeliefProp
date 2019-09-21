@@ -12,6 +12,8 @@
 #include "bpStereoParameters.h"
 #include <math.h>
 #include <chrono>
+#include <unordered_map>
+#include "DetailedTimingBPConsts.h"
 
 template<typename T>
 class ProcessBPOnTargetDevice {

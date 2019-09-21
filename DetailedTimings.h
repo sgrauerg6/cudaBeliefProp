@@ -11,106 +11,86 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
+#include <unordered_map>
 #include <map>
 #include <iostream>
 
 class DetailedTimings {
 public:
 
-		std::map<std::pair<unsigned int, std::string>, std::vector<double>> timings;
+	//initialize each timing segment
+	DetailedTimings(const std::unordered_map<unsigned int, std::string>& timingSegments)
+	{
+		for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment] = std::vector<double>(); });
+	}
 
-		int totNumTimings = 0;
+	void resetTiming()
+	{
+		timings.clear();
+	}
 
-		DetailedTimings();
-			virtual ~DetailedTimings();
-
-			void addToCurrentTimings(DetailedTimings& inDetailedTimings)
-			{
-				std::for_each(inDetailedTimings.timings.begin(), inDetailedTimings.timings.end(), [this](const auto& currentTiming) {
+	void addToCurrentTimings(const DetailedTimings& inDetailedTimings)
+	{
+		std::for_each(inDetailedTimings.timings.begin(),
+				inDetailedTimings.timings.end(),
+				[this](const auto& currentTiming) {
 					auto iter = this->timings.find(currentTiming.first);
-									if (iter != this->timings.end())
-									{
-										iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
-									}
-									else
-									{
-										this->timings[currentTiming.first] = currentTiming.second;
-									}
-				} );
-			}
-
-			void addTiming(std::pair<std::pair<unsigned int, std::string>, double> inTiming)
-			{
-				auto iter = timings.find(inTiming.first);
-				if (iter != timings.end())
-				{
-					iter->second.push_back(inTiming.second);
-				}
-				else
-				{
-					timings[inTiming.first] = std::vector<double>(1, inTiming.second);
-				}
-			}
-
-			void sortCurrentTimings()
-			{
-				std::for_each(timings.begin(), timings.end(), [](auto& currentTiming) { std::sort(currentTiming.second.begin(), currentTiming.second.end()); });
-			}
-
-			void printCurrentTimings() const
-			{
-				printf("Median Timings\n");
-				(timings.size() > 0) ?	printf("Number of timings: %d\n", timings.begin()->second.size()) : printf("No timings recorded\n");
-				//sort current timings, then print
-				std::for_each(timings.begin(), timings.end(), [](auto currentTiming) {
-					std::sort(currentTiming.second.begin(), currentTiming.second.end());
-					printf("%s : %f\n", currentTiming.first.second.c_str(), currentTiming.second[currentTiming.second.size() / 2]); });
-			}
-
-			double getMedianTiming(const unsigned int runSegmentNum) const
-			{
-				//find first element with input runSegmentNum
-				for (const auto& timingMapElement : timings)
-				{
-					if (timingMapElement.first.first == runSegmentNum)
+					if (iter != this->timings.end())
 					{
-						return getMedianTiming(timingMapElement.first);
+						iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
 					}
-				}
-
-				return 0.0;
-			}
-
-			double getMedianTiming(const std::string& runSegmentString) const
-			{
-				//find first element with input runSegmentString
-				for (const auto& timingMapElement : timings)
-				{
-					if (timingMapElement.first.second == runSegmentString)
+					else
 					{
-						return getMedianTiming(timingMapElement.first);
+						this->timings[currentTiming.first] = currentTiming.second;
 					}
-				}
+				});
+	}
 
-				return 0.0;
-			}
+	//add timing by segment number
+	//required that all timing segment numbers/names be initialized from constructor
+	void addTiming(const unsigned int numTiming, double segmentTime)
+	{
+		for (auto& timingMapElement : timings) {
+					if (timingMapElement.first.first == numTiming) {
+						timingMapElement.second.push_back(segmentTime);
+					}
+		}
+	}
 
-			double getMedianTiming(std::pair<unsigned int, std::string> runSegment) const
+	void sortCurrentTimings() {
+		std::for_each(timings.begin(), timings.end(),
+				[](auto& currentTiming) {std::sort(currentTiming.second.begin(), currentTiming.second.end());});
+	}
+
+	void printCurrentTimings() const {
+		std::cout << *this;
+	}
+
+	double getMedianTiming(const unsigned int runSegmentNum) const {
+		//find first element with input runSegmentNum
+		for (auto timingMapElement : timings) {
+			if (timingMapElement.first.first == runSegmentNum)
 			{
-				auto iter = timings.find(runSegment);
-				if (iter != timings.end())
+				if (timingMapElement.second.size() > 0)
 				{
-					std::vector<double> timingVectorCopy(iter->second);
-					std::sort(timingVectorCopy.begin(), timingVectorCopy.end());
-					return (timingVectorCopy[timingVectorCopy.size() / 2]);
+					std::sort(timingMapElement.second.begin(), timingMapElement.second.end());
+					return (timingMapElement.second[timingMapElement.second.size() / 2]);
 				}
 				else
 				{
 					return 0.0;
 				}
 			}
+		}
 
-		friend std::ostream& operator<<(std::ostream& os, const DetailedTimings& timing);
+		return 0.0;
+	}
+
+	friend std::ostream& operator<<(std::ostream& os,
+			const DetailedTimings& timing);
+
+private:
+	std::map<std::pair<unsigned int, std::string>, std::vector<double>> timings;
 };
 
 #endif /* DETAILEDTIMINGS_H_ */

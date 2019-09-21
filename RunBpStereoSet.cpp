@@ -12,10 +12,6 @@
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
-enum Runtime_Type { SMOOTHING, TOTAL_BP, TOTAL_NO_TRANSFER, TOTAL_WITH_TRANSFER };
-const std::unordered_map<unsigned int, std::string> timingNames = {{SMOOTHING, "Smoothing Runtime"}, {TOTAL_BP, "Total BP Runtime"}, {TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time)"},
-			{TOTAL_WITH_TRANSFER, "Total runtime including data transfer time"}};
-
 //std::pair<std::pair<unsigned int, std::string>, double>
 template<typename T>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImagePath, const char* testImagePath,
@@ -33,9 +29,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 
 	std::unordered_map<unsigned int, std::pair<timingType, timingType>> runtime_start_end_timings;
 
-	DetailedTimings detailedTimingsOverall;
+	DetailedTimings detailedBPTimings(timingNames_BP);
 	float* dispValsHost;
-	DetailedTimings segmentTimings;
 
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
@@ -79,6 +74,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runtime_start_end_timings[TOTAL_BP].first = std::chrono::system_clock::now();
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
+		//returns detailed timings for bp run
 		DetailedTimings currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
 			disparityMapFromImage1To2CompDevice, algSettings, widthImages, heightImages);
 
@@ -91,11 +87,14 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
 
 		//retrieve the timing for each runtime segment and add to vector in timings map
-		std::for_each(timingNames.begin(), timingNames.end(),
-				[&runtime_start_end_timings, &segmentTimings] (auto& currentRuntimeSegmentAndName) {
-			segmentTimings.addTiming(std::make_pair(currentRuntimeSegmentAndName,
-					(timingInSecondsDoublePrecision(runtime_start_end_timings[currentRuntimeSegmentAndName.first].second - runtime_start_end_timings[currentRuntimeSegmentAndName.first].first)).count()));
+		std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
+				[&detailedBPTimings] (auto& currentRuntimeNameAndTiming) {
+			detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
+					(timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
 		});
+
+		//add bp timings from current run to overall timings
+		detailedBPTimings.addToCurrentTimings(currentDetailedTimings);
 
 		//free memory for disparity if not in last run (where used to create disparity map)
 		if (numRun < (NUM_BP_STEREO_RUNS - 1))
@@ -107,8 +106,6 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& disparityMapFromImage1To2CompDevice);
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& smoothedImage1);
 		runBPMemoryMangement->freeDataOnCompDevice((void**)& smoothedImage2);
-
-		detailedTimingsOverall.addToCurrentTimings(currentDetailedTimings);
 	}
 
 	//generate output disparity map object
@@ -116,8 +113,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	delete [] dispValsHost;
 
 	fprintf(resultsFile, "Image Width: %d\nImage Height: %d\n", widthImages, heightImages);
-	segmentTimings.printCurrentTimings();
-	detailedTimingsOverall.printCurrentTimings();
+	detailedBPTimings.printCurrentTimings();
 
 	if (deleteBPMemoryManagementAtEnd)
 	{
@@ -125,7 +121,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const char* refImageP
 	}
 
 	ProcessStereoSetOutput output;
-	output.runTime = segmentTimings.getMedianTiming(TOTAL_WITH_TRANSFER);
+	output.runTime = detailedBPTimings.getMedianTiming(TOTAL_WITH_TRANSFER);
 	output.outDisparityMap = output_disparity_map;
 
 	return output;
