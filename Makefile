@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h
+FILE_DEPENDENCIES = ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStructsAndEnums.h
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -56,16 +56,16 @@ impDriveCPU: driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o Output
 DetailedTimings.o: RuntimeTiming/DetailedTimings.cpp RuntimeTiming/DetailedTimings.h
 	g++ RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverBpStereoCPU.o: MainDriverFiles/driverBpStereoCPU.cpp ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
+driverBpStereoCPU.o: MainDriverFiles/driverBpStereoCPU.cpp ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
 	g++ MainDriverFiles/driverBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessBPOnTargetDevice.o : ProcessBPOnTargetDevice.cpp ProcessBPOnTargetDevice.h DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStereoParameters.h
+ProcessBPOnTargetDevice.o : ProcessBPOnTargetDevice.cpp ProcessBPOnTargetDevice.h DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpStructsAndEnums.h
 	g++ ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessOptimizedCPUBP.o : OptimizeCPU/ProcessOptimizedCPUBP.cpp OptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/KernelBpStereoCPU.cpp
 	g++ OptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h
+RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStructsAndEnums.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h
 	g++ RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpImage.o: ImageDataAndProcessing/BpImage.cpp ImageDataAndProcessing/BpImage.h
@@ -80,7 +80,7 @@ OutputEvaluationResults.o: OutputEvaluation/OutputEvaluationResults.cpp OutputEv
 DisparityMap.o: OutputEvaluation/DisparityMap.cpp OutputEvaluation/DisparityMap.h OutputEvaluationParameters.o OutputEvaluationResults.o
 	g++ OutputEvaluation/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpParametersFromPython.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
+stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	g++ SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 SmoothImage.o: SmoothImage.cpp SmoothImage.h 
@@ -101,7 +101,7 @@ ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
 
-driverCudaBp.o: MainDriverFiles/driverCudaBp.cpp ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverCudaBp.o: MainDriverFiles/driverCudaBp.cpp ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
 	$(NVCC) -x cu -c MainDriverFiles/driverCudaBp.cpp $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(COMPILE_FLAGS) 
 make clean:

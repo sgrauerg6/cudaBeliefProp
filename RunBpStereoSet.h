@@ -10,6 +10,7 @@
 
 #include "ParameterFiles/bpStereoParameters.h"
 #include "ParameterFiles/bpRunSettings.h"
+#include "ParameterFiles/bpStructsAndEnums.h"
 #include "SmoothImage.h"
 #include "ProcessBPOnTargetDevice.h"
 #include <cstring>

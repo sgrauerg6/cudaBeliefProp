@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define KERNAL_BP_STEREO_CPU_H
 
 #include "ParameterFiles/bpStereoParameters.h"
+#include "ParameterFiles/bpStructsAndEnums.h"
 #include <math.h>
 #include <omp.h>
 

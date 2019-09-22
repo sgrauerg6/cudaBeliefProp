@@ -20,6 +20,7 @@
 #include "imconv.h"
 #include <string>
 #include "ParameterFiles/bpStereoParameters.h"
+#include "ParameterFiles/bpStructsAndEnums.h"
 #include <chrono>
 #include "SmoothImage.h"
 #include "ProcessBPOnTargetDevice.h"
