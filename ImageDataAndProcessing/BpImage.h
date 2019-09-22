@@ -49,7 +49,7 @@ public:
 
 	const T getPixelAtPoint(const int x, const int y) const
 	{
-		return (pixels_.get())[y*width_ + x];
+		return getPixelAtPoint(y*width_ + x);
 	}
 
 	const T getPixelAtPoint(const int i) const
@@ -59,7 +59,7 @@ public:
 
 	void setPixelAtPoint(const int x, const int y, const T val)
 	{
-		(pixels_.get())[y*width_ + x] = val;
+		setPixelAtPoint((y*width_ + x), val);
 	}
 
 	void setPixelAtPoint(const int i, const T val)
@@ -78,7 +78,6 @@ public:
 		  file.write((char*)(&pixels_[0]), width_ * height_ * sizeof(char));
 		  file.close();
 	}
-
 
 protected:
 
