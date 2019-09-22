@@ -259,7 +259,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 }
 
 template<typename T>
-ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::string refImagePath, const std::string testImagePath, const BPsettings& algSettings, std::ostream& resultsStream)
+ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	image<uchar> *img1, *img2, *out, *edges;
 

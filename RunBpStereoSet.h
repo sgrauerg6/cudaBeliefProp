@@ -40,11 +40,11 @@ public:
 	}
 
 	//pure abstract overloaded operator that must be defined in child class
-	virtual ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
+	virtual ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream) = 0;
 
 protected:
-	ProcessStereoSetOutput processStereoSet(const std::string refImagePath, const std::string testImagePath,
+	ProcessStereoSetOutput processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage,
 		const std::unique_ptr<ProcessBPOnTargetDevice<T>>& runBpStereo, const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement = std::unique_ptr<RunBpStereoSetMemoryManagement>(new RunBpStereoSetMemoryManagement) );
 

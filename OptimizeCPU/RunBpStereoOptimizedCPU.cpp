@@ -17,10 +17,10 @@ RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
 }
 
 template<typename T>
-ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string refImagePath, const std::string testImagePath,
-		const BPsettings& algSettings, std::ostream& resultsFile)
+ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string& refImagePath, const std::string& testImagePath,
+		const BPsettings& algSettings, std::ostream& resultsStream)
 {
-	resultsFile << "CURRENT RUN: OPTIMIZED CPU\n";
+	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
 	int nthreads = 0;
 
 	#pragma omp parallel
@@ -28,11 +28,11 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string 
 		nthreads = omp_get_num_threads();
 	}
 
-	resultsFile << "Number of OMP threads: " << nthreads << "\n";
+	resultsStream << "Number of OMP threads: " << nthreads << "\n";
 	std::unique_ptr<SmoothImage> smoothImageCPU(new SmoothImageCPU());
 	std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCPU(new ProcessOptimizedCPUBP<T>());
 	return this->processStereoSet(refImagePath, testImagePath, algSettings,
-			resultsFile, smoothImageCPU, processImageCPU);
+			resultsStream, smoothImageCPU, processImageCPU);
 }
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

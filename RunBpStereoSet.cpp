@@ -12,7 +12,7 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
 //std::pair<std::pair<unsigned int, std::string>, double>
 template<typename T>
-ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string refImagePath, const std::string testImagePath,
+ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
 	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage, const std::unique_ptr<ProcessBPOnTargetDevice<T>>& runBpStereo,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement)
 {

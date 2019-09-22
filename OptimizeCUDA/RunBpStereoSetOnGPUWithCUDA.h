@@ -39,7 +39,7 @@ class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
 {
 public:
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
-	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
+	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 				const BPsettings& algSettings, std::ostream& resultsStream)
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
@@ -88,7 +88,7 @@ public:
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
+	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 					const BPsettings& algSettings, std::ostream& resultsStream)
 	{
 
@@ -161,7 +161,7 @@ public:
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath,
+	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 			const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
 	{
 

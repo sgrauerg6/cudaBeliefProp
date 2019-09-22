@@ -30,7 +30,7 @@ template<typename T>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	ProcessStereoSetOutput operator()(const std::string refImagePath, const std::string testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
+	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
 
 private:
 	// compute message
