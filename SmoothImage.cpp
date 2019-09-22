@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //functions relating to smoothing the images before running BP
 
 //normalize filter mask so it integrates to one
-void SmoothImage::normalizeFilter(float*& filter, int sizeFilter)
+void SmoothImage::normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter)
 {
 	float sum = 0;
 	for (int i = 1; i < sizeFilter; i++) 
@@ -38,16 +38,20 @@ void SmoothImage::normalizeFilter(float*& filter, int sizeFilter)
 }
 
 //this function creates a Gaussian filter given a sigma value
-float* SmoothImage::makeFilter(float sigma, int& sizeFilter)
+std::pair<std::unique_ptr<float[]>, unsigned int> SmoothImage::makeFilter(const float sigma)
 {
-	sigma = std::max(sigma, 0.01f);
-	sizeFilter = (int)ceil(sigma * WIDTH_SIGMA_1) + 1;
-	float* mask = new float[sizeFilter];
+	float sigmaUse = std::max(sigma, 0.01f);
+	unsigned int sizeFilter = (unsigned int)std::ceil(sigmaUse * WIDTH_SIGMA_1) + 1;
+	std::unique_ptr<float[]> mask = std::make_unique<float[]>(sizeFilter);
 	for (int i = 0; i < sizeFilter; i++) 
 	{
-		mask[i] = exp(-0.5*((i/sigma) * (i/sigma)));
+		mask[i] = std::exp(-0.5*((i/sigmaUse) * (i/sigmaUse)));
 	}
 	normalizeFilter(mask, sizeFilter);
 
-	return mask;
+	std::pair<std::unique_ptr<float[]>, unsigned int> outPair;
+	outPair.first = std::move(mask);
+	outPair.second = sizeFilter;
+
+	return outPair;
 }

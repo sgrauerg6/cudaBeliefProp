@@ -24,6 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <algorithm>
 #include "ImageDataAndProcessing/BpImage.h"
+#include <memory>
+#include <utility>
 
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
 
@@ -39,10 +41,10 @@ public:
 	virtual ~SmoothImage() {};
 
 	//normalize filter mask so it integrates to one
-	void normalizeFilter(float*& filter, int sizeFilter);
+	void normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter);
 
 	//this function creates a Gaussian filter given a sigma value
-	float* makeFilter(float sigma, int& sizeFilter);
+	std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma);
 
 	//function to use the image filter to apply a guassian filter to the a single images
 	//input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)

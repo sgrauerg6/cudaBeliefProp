@@ -46,14 +46,15 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sig
 	//otherwise apply a Guassian filter to the images
 	else
 	{
-		//sizeFilter set in makeFilter based on sigmaVal
-		int sizeFilter;
-		float* filter = makeFilter(sigmaVal, sizeFilter);
+		//retrieve output filter (float array in unique_ptr) and size
+		auto outFilterAndSize = makeFilter(sigmaVal);
+		auto filter = std::move(outFilterAndSize.first);
+		unsigned int sizeFilter = outFilterAndSize.second;
 
 		//copy the image filter to the GPU
 		float* filterDevice;
 		cudaMalloc((void**) &filterDevice, (sizeFilter*sizeof(float)));
-		cudaMemcpy(filterDevice, filter, (sizeFilter*sizeof(float)), cudaMemcpyHostToDevice);
+		cudaMemcpy(filterDevice, &(filter[0]), (sizeFilter*sizeof(float)), cudaMemcpyHostToDevice);
 
 		//allocate the GPU global memory for the original, intermediate (when the image has been filtered horizontally but not vertically), and final image
 		unsigned int* originalImageDevice;
@@ -81,7 +82,5 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sig
 		cudaFree(originalImageDevice);
 		cudaFree(intermediateImageDevice);
 		cudaFree(filterDevice);
-
-		delete [] filter;
 	}
 }
