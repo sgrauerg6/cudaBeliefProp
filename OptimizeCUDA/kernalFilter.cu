@@ -50,8 +50,8 @@ __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsigned
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
@@ -78,8 +78,8 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
@@ -106,8 +106,8 @@ __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImage
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))

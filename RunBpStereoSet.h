@@ -9,6 +9,7 @@
 #define RUNBPSTEREOSET_H_
 
 #include "ParameterFiles/bpStereoParameters.h"
+#include "ParameterFiles/bpRunSettings.h"
 #include "SmoothImage.h"
 #include "ProcessBPOnTargetDevice.h"
 #include <cstring>

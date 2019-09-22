@@ -30,18 +30,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif
 #include <cuda_fp16.h>
 
-//defines the width and height of the thread block used for
-//image filtering (applying the Guassian filter in smoothImageHost)
-#define BLOCK_SIZE_WIDTH_FILTER_IMAGES 16
-#define BLOCK_SIZE_HEIGHT_FILTER_IMAGES 16
+namespace bp_cuda_params
+{
+	//defines the width and height of the thread block used for
+	//image filtering (applying the Guassian filter in smoothImageHost)
+	const unsigned int BLOCK_SIZE_WIDTH_FILTER_IMAGES = 16;
+	const unsigned int BLOCK_SIZE_HEIGHT_FILTER_IMAGES = 16;
 
-//defines the width and height of the thread block used for
-//each kernal function when running BP (right now same thread
-//block dimensions are used for each kernal function when running
-//kernal function in runBpStereoHost.cu, though this could be
-//changed)
-#define BLOCK_SIZE_WIDTH_BP 32
-#define BLOCK_SIZE_HEIGHT_BP 4
+	//defines the width and height of the thread block used for
+	//each kernal function when running BP (right now same thread
+	//block dimensions are used for each kernal function when running
+	//kernal function in runBpStereoHost.cu, though this could be
+	//changed)
+	const unsigned int BLOCK_SIZE_WIDTH_BP = 32;
+	const unsigned int BLOCK_SIZE_HEIGHT_BP = 4;
+}
 
 #ifdef USE_SHARED_MEMORY_FROM_PYTHON
 #define USE_SHARED_MEMORY USE_SHARED_MEMORY_FROM_PYTHON

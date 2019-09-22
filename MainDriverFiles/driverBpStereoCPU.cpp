@@ -46,22 +46,22 @@ void runStereoOnDefaultImagesUsingDefaultSettings(std::ostream& resultsStream)
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings;
 
-	std::cout << "Running belief propagation on reference image " << DEFAULT_REF_IMAGE_PATH << " and test image " << DEFAULT_TEST_IMAGE_PATH << " on GPU and CPU\n";
+	std::cout << "Running belief propagation on reference image " << bp_params::DEFAULT_REF_IMAGE_PATH << " and test image " << bp_params::DEFAULT_TEST_IMAGE_PATH << " on GPU and CPU\n";
 	RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;
 	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
-	ProcessStereoSetOutput optCPURunTimeAndDispImage = runBpStereoOptCPU(DEFAULT_REF_IMAGE_PATH,
-			DEFAULT_TEST_IMAGE_PATH, algSettings, resultsStream);
-	optCPURunTimeAndDispImage.outDisparityMap.saveDisparityMap(SAVE_DISPARITY_IMAGE_PATH_1, SCALE_BP);
-	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(DEFAULT_REF_IMAGE_PATH,
-			DEFAULT_TEST_IMAGE_PATH, algSettings, resultsStream);
-	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(SAVE_DISPARITY_IMAGE_PATH_2, SCALE_BP);
+	ProcessStereoSetOutput optCPURunTimeAndDispImage = runBpStereoOptCPU(bp_params::DEFAULT_REF_IMAGE_PATH,
+			bp_params::DEFAULT_TEST_IMAGE_PATH, algSettings, resultsStream);
+	optCPURunTimeAndDispImage.outDisparityMap.saveDisparityMap(bp_params::SAVE_DISPARITY_IMAGE_PATH_1, bp_params::SCALE_BP);
+	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(bp_params::DEFAULT_REF_IMAGE_PATH,
+			bp_params::DEFAULT_TEST_IMAGE_PATH, algSettings, resultsStream);
+	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(bp_params::SAVE_DISPARITY_IMAGE_PATH_2, bp_params::SCALE_BP);
 
-	DisparityMap<float> groundTruthDisparityMap(DEFAULT_GROUND_TRUTH_DISPARITY_FILE, (unsigned int)SCALE_BP);
+	DisparityMap<float> groundTruthDisparityMap(bp_params::DEFAULT_GROUND_TRUTH_DISPARITY_FILE, bp_params::SCALE_BP);
 
 	resultsStream << "Median opt CPU runtime (including transfer time): " << optCPURunTimeAndDispImage.runTime << "\n";
 	resultsStream << "Single Thread CPU runtime: " << singleThreadCpuRunTimeAndDispImage.runTime << "\n";
-	std::cout << "Output disparity map from final GPU run at " << SAVE_DISPARITY_IMAGE_PATH_1 << "\n";
-	std::cout << "Output disparity map from CPU run at " << SAVE_DISPARITY_IMAGE_PATH_2 << "\n";
+	std::cout << "Output disparity map from final GPU run at " << bp_params::SAVE_DISPARITY_IMAGE_PATH_1 << "\n";
+	std::cout << "Output disparity map from CPU run at " << bp_params::SAVE_DISPARITY_IMAGE_PATH_2 << "\n";
 
 	resultsStream << "\nCPU output vs. Ground Truth result:\n";
 	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, resultsStream);
@@ -79,19 +79,24 @@ int main(int argc, char** argv)
 	//std::ofstream resultsStream("output.txt", std::ofstream::out);
 	std::ostream resultsStream(std::cout.rdbuf());
 	int optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON;
-	resultsStream << "Ref Image: " << DEFAULT_REF_IMAGE_PATH << "\n";
-	resultsStream << "Test Image: " << DEFAULT_TEST_IMAGE_PATH << "\n";
+	resultsStream << "Ref Image: " << bp_params::DEFAULT_REF_IMAGE_PATH << "\n";
+	resultsStream << "Test Image: " << bp_params::DEFAULT_TEST_IMAGE_PATH
+			<< "\n";
 	resultsStream << "Memory Optimization Level: " << optLevel << "\n";
-	resultsStream << "Indexing Optimization Level: " << OPTIMIZED_INDEXING_SETTING << "\n";
-	resultsStream << "BP Processing Data Type: " << BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
-	resultsStream << "Num Possible Disparity Values: " << NUM_POSSIBLE_DISPARITY_VALUES << "\n";
-	resultsStream << "Num BP Levels: " << LEVELS_BP << "\n";
-	resultsStream << "Num BP Iterations: " << ITER_BP << "\n";
-	resultsStream << "DISC_K_BP: " << DISC_K_BP << "\n";
-	resultsStream << "DATA_K_BP: " << DATA_K_BP << "\n";
-	resultsStream << "LAMBDA_BP: " << LAMBDA_BP << "\n";
-	resultsStream << "SIGMA_BP: " << SIGMA_BP << "\n";
-	resultsStream << "CPU_OPTIMIZATION_LEVEL: " << CPU_OPTIMIZATION_SETTING << "\n";
+	resultsStream << "Indexing Optimization Level: "
+			<< OPTIMIZED_INDEXING_SETTING << "\n";
+	resultsStream << "BP Processing Data Type: "
+			<< BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
+	resultsStream << "Num Possible Disparity Values: "
+			<< NUM_POSSIBLE_DISPARITY_VALUES << "\n";
+	resultsStream << "Num BP Levels: " << bp_params::LEVELS_BP << "\n";
+	resultsStream << "Num BP Iterations: " << bp_params::ITER_BP << "\n";
+	resultsStream << "DISC_K_BP: " << bp_params::DISC_K_BP << "\n";
+	resultsStream << "DATA_K_BP: " << bp_params::DATA_K_BP << "\n";
+	resultsStream << "LAMBDA_BP: " << bp_params::LAMBDA_BP << "\n";
+	resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
+	resultsStream << "CPU_OPTIMIZATION_LEVEL: " << CPU_OPTIMIZATION_SETTING
+			<< "\n";
 	resultsStream << "BYTES_ALIGN_MEMORY: " << BYTES_ALIGN_MEMORY << "\n";
 	resultsStream << "NUM_DATA_ALIGN_WIDTH: " << NUM_DATA_ALIGN_WIDTH << "\n";
 	runStereoOnDefaultImagesUsingDefaultSettings(resultsStream);

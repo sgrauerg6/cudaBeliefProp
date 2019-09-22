@@ -9,6 +9,7 @@
 #define PROCESSBPONTARGETDEVICE_H_
 
 #include "ParameterFiles/bpStereoParameters.h"
+#include "ParameterFiles/bpRunSettings.h"
 #include <math.h>
 #include <chrono>
 #include <unordered_map>

@@ -20,7 +20,7 @@ SmoothImageCUDA::~SmoothImageCUDA()
 void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage)
 {
 	// setup execution parameters
-	dim3 threads(BLOCK_SIZE_WIDTH_FILTER_IMAGES, BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES, bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
 	dim3 grid((unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)), (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y)));
 
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image

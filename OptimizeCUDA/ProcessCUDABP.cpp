@@ -163,7 +163,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		T* messageRDeviceCheckerboard2)
 {
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	grid.x = (unsigned int) ceil(
@@ -255,7 +255,7 @@ void ProcessCUDABP<T>::copyMessageValuesToNextLevelDown(
 		T* messageLDeviceCheckerboard2CopyTo,
 		T* messageRDeviceCheckerboard2CopyTo)
 {
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	grid.x = (unsigned int)ceil((float)(currentLevelPropertes.widthCheckerboardLevel) / (float)threads.x);
@@ -303,7 +303,7 @@ void ProcessCUDABP<T>::initializeDataCosts(const BPsettings& algSettings, levelP
 
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	//kernal run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
@@ -331,7 +331,7 @@ void ProcessCUDABP<T>::initializeMessageValsToDefault(
 		T* messageLDeviceCheckerboard2,
 		T* messageRDeviceCheckerboard2)
 {
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid((unsigned int)ceil((float)currentLevelPropertes.widthCheckerboardLevel / (float)threads.x), (unsigned int)ceil((float)currentLevelPropertes.heightLevel / (float)threads.y));
 
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
@@ -351,7 +351,7 @@ void ProcessCUDABP<T>::initializeDataCurrentLevel(levelProperties& currentLevelP
 		T* dataCostDeviceToWriteToCheckerboard1,
 		T* dataCostDeviceToWriteToCheckerboard2)
 {
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
@@ -545,7 +545,7 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(
 		T* messageRDeviceSet1Checkerboard2,
 		float* resultingDisparityMapCompDevice)
 {
-	dim3 threads(BLOCK_SIZE_WIDTH_BP, BLOCK_SIZE_HEIGHT_BP);
+	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	grid.x = (unsigned int) ceil((float) levelPropertes.widthCheckerboardLevel / (float) threads.x);

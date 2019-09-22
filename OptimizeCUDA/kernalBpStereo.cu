@@ -150,8 +150,8 @@ __global__ void initializeBottomLevelDataStereo(levelProperties currentLevelProp
     int tx = threadIdx.x;
     int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	int xInCheckerboard = xVal / 2;
 
@@ -177,8 +177,8 @@ __global__ void initializeCurrentLevelDataStereo(int checkerboardPart, levelProp
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -206,8 +206,8 @@ __global__ void initializeMessageValsToDefaultKernel(levelProperties currentLeve
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xValInCheckerboard = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int xValInCheckerboard = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -236,8 +236,8 @@ __global__ void runBPIterationUsingCheckerboardUpdates(int checkerboardToUpdate,
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel/2, currentLevelProperties.heightLevel))
 	{
@@ -286,8 +286,8 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -322,8 +322,8 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(levelProperti
 	int tx = threadIdx.x;
 	int ty = threadIdx.y;
 
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
