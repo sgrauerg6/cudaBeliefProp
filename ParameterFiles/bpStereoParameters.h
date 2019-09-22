@@ -28,14 +28,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BPSTEREOPARAMETERS_H_
 #define BPSTEREOPARAMETERS_H_
 
-#include <stdio.h>
 #include "bpParametersFromPython.h"
-#include <vector>
-#include <algorithm>
 #include <string>
 
 const float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
 const float SMALL_VAL_BP = .01f;
+
+#define NO_EXPECTED_STEREO_BP -999.0f
+
+#define TSUKUBA_IMAGES 1
+#define CONES_IMAGES_QUARTER_SIZE 2
+#define CONES_IMAGES_HALF_SIZE 3
+#define CONES_IMAGES_FULL_SIZE 4
+#define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
+#define IMAGE_SET_TO_PROCESS CONES_IMAGES_QUARTER_SIZE
 
 namespace bp_params
 {
@@ -44,15 +50,6 @@ namespace bp_params
 
 	//define the default message value...
 	const float DEFAULT_INITIAL_MESSAGE_VAL = 0.0f;
-
-	#define NO_EXPECTED_STEREO_BP -999.0f
-
-	#define TSUKUBA_IMAGES 1
-	#define CONES_IMAGES_QUARTER_SIZE 2
-	#define CONES_IMAGES_HALF_SIZE 3
-	#define CONES_IMAGES_FULL_SIZE 4
-	#define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
-	#define IMAGE_SET_TO_PROCESS TSUKUBA_IMAGES
 
 	// number of BP iterations at each scale/level
 	const unsigned int ITER_BP = 10;
@@ -102,10 +99,10 @@ namespace bp_params
 	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = "computedDisparityConesQuarter2.pgm";
 
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	const unsigned int NUM_POSSIBLE_DISPARITY_VALUES = 63;
+	#define NUM_POSSIBLE_DISPARITY_VALUES 63
 
 	// scaling from computed disparity to graylevel in output
-	const float SCALE_BP = 4.0f;
+	const unsigned int SCALE_BP = 4;
 
 	//info about a default ground truth
 	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "conesQuarterGroundTruth.pgm";
@@ -121,10 +118,10 @@ namespace bp_params
 	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = "computedDisparityConesHalf2.pgm";
 
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	const unsigned int NUM_POSSIBLE_DISPARITY_VALUES = 127;
+	#define NUM_POSSIBLE_DISPARITY_VALUES 127
 
 	// scaling from computed disparity to graylevel in output
-	const float SCALE_BP = 2.0f;
+	const unsigned int SCALE_BP = 2;
 
 	//info about a default ground truth
 	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "conesHalfGroundTruth.pgm";
@@ -143,7 +140,7 @@ namespace bp_params
 	const unsigned int NUM_POSSIBLE_DISPARITY_VALUES = 255;
 
 	// scaling from computed disparity to graylevel in output
-	const float SCALE_BP = 1.0f;
+	const unsigned int SCALE_BP = 1;
 
 	//info about a default ground truth
 	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "conesFullGroundTruth.pgm";
@@ -161,7 +158,7 @@ namespace bp_params
 	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = SAVE_DISPARITY_IMAGE_PATH_CPU_FROM_PYTHON;
 
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	const unsigned int NUM_POSSIBLE_DISPARITY_VALUES = NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON;
+	#define NUM_POSSIBLE_DISPARITY_VALUES NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON
 
 	// scaling from computed disparity to graylevel in output
 	const float SCALE_BP = SCALE_BP_FROM_PYTHON;
@@ -182,7 +179,7 @@ namespace bp_params
 	const float LAMBDA_BP = LAMBDA_BP_FROM_PYTHON;
 
 	// amount to smooth the input images
-	const float SIGMA_BP = SIGMA_BP_FROM_PYTHON;
+	const unsigned int SIGMA_BP = SIGMA_BP_FROM_PYTHON;
 
 	//info about a default ground truth
 	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = DEFAULT_GROUND_TRUTH_DISPARITY_FILE_FROM_PYTHON;
