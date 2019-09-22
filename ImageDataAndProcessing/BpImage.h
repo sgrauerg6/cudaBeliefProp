@@ -87,10 +87,10 @@ protected:
 
 	void loadImageAsGrayScale(const std::string& filePathImage);
 
-	void pnm_read(std::ifstream &file, std::string& buf);
+	void pnm_read(std::ifstream &file, std::string& buf) const;
 
 	BpImage<unsigned char> imageRead(const std::string& fileName,
-			image_type imageType, bool weightedRGBConversion = true);
+			image_type imageType, bool weightedRGBConversion = true) const;
 };
 
 #endif /* BPIMAGE_H_ */

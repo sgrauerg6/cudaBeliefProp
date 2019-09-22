@@ -45,7 +45,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
 }
 
 template<class T>
-void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) {
+void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 	std::string doc;
 	char c;
 
@@ -62,7 +62,7 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) {
 
 template<class T>
 BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
-		image_type imageType, bool weightedRGBConversion) {
+		image_type imageType, bool weightedRGBConversion) const {
 	std::string buf;
 
 	/* read header */
