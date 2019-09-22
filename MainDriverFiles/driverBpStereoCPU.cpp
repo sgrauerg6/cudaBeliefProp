@@ -39,26 +39,12 @@ void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const Dispar
 	resultsStream << outputEvalResults;
 }
 
-BPsettings initializeAndReturnBPSettings()
-{
-	BPsettings startBPSettings;
-
-	startBPSettings.smoothingSigma = SIGMA_BP;
-	startBPSettings.numLevels = LEVELS_BP;
-	startBPSettings.numIterations = ITER_BP;
-	startBPSettings.lambda_bp = LAMBDA_BP;
-	startBPSettings.data_k_bp = DATA_K_BP;
-	startBPSettings.disc_k_bp = DISC_K_BP;
-
-	return startBPSettings;
-}
-
 //run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 //saved disparity map file as defined in bpStereoCudaParameters.cuh
 void runStereoOnDefaultImagesUsingDefaultSettings(std::ostream& resultsStream)
 {
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
-	BPsettings algSettings = initializeAndReturnBPSettings();
+	BPsettings algSettings;
 
 	std::cout << "Running belief propagation on reference image " << DEFAULT_REF_IMAGE_PATH << " and test image " << DEFAULT_TEST_IMAGE_PATH << " on GPU and CPU\n";
 	RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;

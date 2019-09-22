@@ -313,7 +313,7 @@ typedef short beliefPropProcessingDataType;*/
 #endif //CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 //structure to store the settings for the number of levels and iterations
-typedef struct
+struct BPsettings
 {
 	int numLevels;
 	int numIterations;
@@ -322,7 +322,20 @@ typedef struct
 	float lambda_bp;
 	float data_k_bp;
 	float disc_k_bp;
-}BPsettings;
+
+	//default constructor setting BPsettings
+	//to default values
+	BPsettings()
+	{
+		smoothingSigma = SIGMA_BP;
+		numLevels = LEVELS_BP;
+		numIterations = ITER_BP;
+		lambda_bp = LAMBDA_BP;
+		data_k_bp = DATA_K_BP;
+		disc_k_bp = DISC_K_BP;
+	}
+};
+
 
 //structure to store the properties of the current level
 typedef struct
