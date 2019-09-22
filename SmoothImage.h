@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <math.h>
 #include <algorithm>
+#include "ImageDataAndProcessing/BpImage.h"
 
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
 
@@ -47,7 +48,7 @@ public:
 	//input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
 	//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
 	//normalize mask so it integrates to one
-	virtual void operator()(unsigned int* inImage, unsigned int widthImages, unsigned int heightImages, float sigmaVal, float* smoothedImage) = 0;
+	virtual void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage) = 0;
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

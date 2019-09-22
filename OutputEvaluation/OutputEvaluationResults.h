@@ -61,4 +61,6 @@ std::ostream& operator<<(std::ostream& os, const OutputEvaluationResults<T>& res
 	return os;
 }
 
+template class OutputEvaluationResults<float>;
+
 #endif /* OUTPUTEVALUATIONRESULTS_H_ */

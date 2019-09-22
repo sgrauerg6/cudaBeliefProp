@@ -16,22 +16,18 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string ref
 	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage, const std::unique_ptr<ProcessBPOnTargetDevice<T>>& runBpStereo,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement)
 {
-
 	//retrieve the images as well as the width and height
 	BpImage<unsigned int> image1AsUnsignedIntArrayHost(refImagePath);
 	BpImage<unsigned int> image2AsUnsignedIntArrayHost(testImagePath);
 
-	unsigned int heightImages = image1AsUnsignedIntArrayHost.getHeight();
-	unsigned int widthImages = image1AsUnsignedIntArrayHost.getWidth();
+	const unsigned int heightImages = image1AsUnsignedIntArrayHost.getHeight();
+	const unsigned int widthImages = image1AsUnsignedIntArrayHost.getWidth();
 
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
 	DetailedTimings<Runtime_Type_BP> detailedBPTimings(timingNames_BP);
 
 	//generate output disparity map object
 	DisparityMap<float> output_disparity_map(widthImages, heightImages);
-
-	//get shared pointer to disparity map data
-	//std::unique_ptr<float[]> dispValsSharedPtr = std::move(output_disparity_map.getDisparityValuesSharedPointer());
 
 	for (int numRun = 0; numRun < NUM_BP_STEREO_RUNS; numRun++)
 	{
@@ -47,10 +43,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string ref
 
 		//first smooth the images using the Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
-		(*smoothImage)(image1AsUnsignedIntArrayHost.getPointerToPixelsStart(),
-			widthImages, heightImages, algSettings.smoothingSigma, smoothedImage1);
-		(*smoothImage)(image2AsUnsignedIntArrayHost.getPointerToPixelsStart(),
-			widthImages, heightImages, algSettings.smoothingSigma, smoothedImage2);
+		(*smoothImage)(image1AsUnsignedIntArrayHost, algSettings.smoothingSigma, smoothedImage1);
+		(*smoothImage)(image2AsUnsignedIntArrayHost, algSettings.smoothingSigma, smoothedImage2);
 
 		//end timer for image smoothing and add to image smoothing timings
 		runtime_start_end_timings[SMOOTHING].second = std::chrono::system_clock::now();

@@ -45,59 +45,9 @@ public:
 	}
 
 	template<class U>
-	const OutputEvaluationResults<T> getOuputComparison(const DisparityMap& disparity_map_to_compare, const OutputEvaluationParameters<U>& evaluation_parameters) const
-	{
-		OutputEvaluationResults<T> output_evaluation;
+	const OutputEvaluationResults<T> getOuputComparison(const DisparityMap& disparity_map_to_compare, const OutputEvaluationParameters<U>& evaluation_parameters) const;
 
-		//initials output evaluation with evaluation parameters
-		output_evaluation.initializeWithEvalParams(evaluation_parameters);
-
-		for (unsigned int i=0; i<this->width_*this->height_; i++)
-		{
-			//TODO: use x and y with border parameters
-			//int x = i % width_;
-			//int y = i / width_;
-			const T dispMapVal = (this->pixels_.get())[i];
-			const T dispMapCompareVal = disparity_map_to_compare.getPixelAtPoint(i);
-			const T absDiff = std::abs(dispMapVal - dispMapCompareVal);
-
-			output_evaluation.totalDispAbsDiffNoMax += absDiff;
-			output_evaluation.totalDispAbsDiffWithMax += std::min(absDiff, evaluation_parameters.max_diff_cap_);
-
-			//increment number of pixels that differ greater than threshold for each threshold
-			std::for_each(evaluation_parameters.output_diff_thresholds_.begin(), evaluation_parameters.output_diff_thresholds_.end(), [absDiff, &output_evaluation](float threshold)
-					{ if (absDiff > threshold) { output_evaluation.numSigDiffPixelsAtThresholds[threshold]++; }	});
-		}
-
-		output_evaluation.averageDispAbsDiffNoMax = output_evaluation.totalDispAbsDiffNoMax / (this->width_*this->height_);
-		output_evaluation.averageDispAbsDiffWithMax = output_evaluation.totalDispAbsDiffWithMax / (this->width_*this->height_);
-
-		//need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
-		//typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type needed to get data type for each mapping; for c++14 can be changed to auto
-		std::for_each(output_evaluation.numSigDiffPixelsAtThresholds.begin(), output_evaluation.numSigDiffPixelsAtThresholds.end(),
-				[this, &output_evaluation](typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type sigDiffPixelAtThresholdMap)
-				{output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] = ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->width_*this->height_));
-				});
-
-		return output_evaluation;
-	}
-
-	void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const
-	{
-		//declare and allocate the space for the movement image to save
-		BpImage<char> movementImageToSave(this->width_, this->height_);
-
-		//go though every value in the movementBetweenImages data and retrieve the intensity value to use in the resulting "movement image" where minMovementDirection
-		//represents 0 intensity and the intensity increases linearly using scaleMovement from minMovementDirection
-		std::transform(this->getPointerToPixelsStart(), this->getPointerToPixelsStart() + (this->width_*this->height_), movementImageToSave.getPointerToPixelsStart(),
-				[this, scale_factor](const T& currentPixel) -> char {
-			return (char)(((float)currentPixel)*(float)scale_factor + .5f);
-		});
-
-		printf("%s\n", disparity_map_file_path.c_str());
-
-		movementImageToSave.saveImageAsPgm(disparity_map_file_path);
-	}
+	void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const;
 
 
 private:
@@ -111,5 +61,52 @@ private:
 		}
 	}
 };
+
+template<class T>
+template<class U>
+const OutputEvaluationResults<T> DisparityMap<T>::getOuputComparison(
+		const DisparityMap& disparity_map_to_compare,
+		const OutputEvaluationParameters<U>& evaluation_parameters) const {
+	OutputEvaluationResults<T> output_evaluation;
+
+	//initials output evaluation with evaluation parameters
+	output_evaluation.initializeWithEvalParams(evaluation_parameters);
+
+	for (unsigned int i = 0; i < this->width_ * this->height_; i++) {
+		//TODO: use x and y with border parameters
+		//int x = i % width_;
+		//int y = i / width_;
+		const T dispMapVal = (this->pixels_.get())[i];
+		const T dispMapCompareVal = disparity_map_to_compare.getPixelAtPoint(i);
+		const T absDiff = std::abs(dispMapVal - dispMapCompareVal);
+
+		output_evaluation.totalDispAbsDiffNoMax += absDiff;
+		output_evaluation.totalDispAbsDiffWithMax += std::min(absDiff,
+				evaluation_parameters.max_diff_cap_);
+
+		//increment number of pixels that differ greater than threshold for each threshold
+		std::for_each(evaluation_parameters.output_diff_thresholds_.begin(),
+				evaluation_parameters.output_diff_thresholds_.end(),
+				[absDiff, &output_evaluation](float threshold)
+				{	if (absDiff > threshold) {output_evaluation.numSigDiffPixelsAtThresholds[threshold]++;}});
+	}
+
+	output_evaluation.averageDispAbsDiffNoMax =
+			output_evaluation.totalDispAbsDiffNoMax
+					/ (this->width_ * this->height_);
+	output_evaluation.averageDispAbsDiffWithMax =
+			output_evaluation.totalDispAbsDiffWithMax
+					/ (this->width_ * this->height_);
+
+	//need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
+	//typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type needed to get data type for each mapping; for c++14 can be changed to auto
+	std::for_each(output_evaluation.numSigDiffPixelsAtThresholds.begin(),
+			output_evaluation.numSigDiffPixelsAtThresholds.end(),
+			[this, &output_evaluation](typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type sigDiffPixelAtThresholdMap)
+			{	output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] = ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->width_*this->height_));
+			});
+
+	return output_evaluation;
+}
 
 #endif /* DISPARITYMAP_H_ */

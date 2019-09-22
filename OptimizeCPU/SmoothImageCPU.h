@@ -19,8 +19,7 @@ public:
 	SmoothImageCPU();
 	virtual ~SmoothImageCPU();
 
-	void operator()(unsigned int* inImage, unsigned int widthImages,
-			unsigned int heightImages, float sigmaVal, float* smoothedImage);
+	void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage);
 
 private:
 

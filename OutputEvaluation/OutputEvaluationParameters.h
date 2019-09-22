@@ -47,4 +47,6 @@ struct OutputEvaluationParameters {
 	{ };
 };
 
+template class OutputEvaluationParameters<float>;
+
 #endif /* OUTPUTEVALUATIONPARAMETERS_H_ */
