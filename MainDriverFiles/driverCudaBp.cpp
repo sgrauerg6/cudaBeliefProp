@@ -20,25 +20,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "ParameterFiles/bpStereoCudaParameters.h"
-#include "ParameterFiles/bpStructsAndEnums.h"
 #include "SingleThreadCPU/stereo.h"
 
 //needed to run the implementation a stereo set using CUDA
 #include "OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
-#include "OutputEvaluation/DisparityMap.h"
-#include "OutputEvaluation/OutputEvaluationParameters.h"
-#include "OutputEvaluation/OutputEvaluationResults.h"
-#include "../FileProcessing/BpFileHandling.h"
 #include "RunAndEvaluateBpResults.h"
 #include <memory>
 #include <fstream>
-
-#ifdef USE_FILESYSTEM
-#include <filesystem>
-typedef std::filesystem::path filepathtype;
-#else
-typedef std::string filepathtype;
-#endif //USE_FILESYSTEM
 
 void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 {
