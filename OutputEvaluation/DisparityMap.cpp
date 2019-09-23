@@ -23,8 +23,6 @@ void DisparityMap<T>::saveDisparityMap(
 				return (char)(((float)currentPixel)*(float)scale_factor + .5f);
 			});
 
-	printf("%s\n", disparity_map_file_path.c_str());
-
 	movementImageToSave.saveImageAsPgm(disparity_map_file_path);
 }
 

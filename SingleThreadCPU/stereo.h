@@ -31,6 +31,7 @@ class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
+	std::string getBpRunDescription() { return "Single-Thread CPU"; }
 
 private:
 	// compute message

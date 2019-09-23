@@ -28,52 +28,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "OutputEvaluation/DisparityMap.h"
 #include "OutputEvaluation/OutputEvaluationParameters.h"
 #include "OutputEvaluation/OutputEvaluationResults.h"
-
+#include "../FileProcessing/BpFileHandling.h"
+#include "RunAndEvaluateBpResults.h"
+#include <memory>
 #include <fstream>
 
-//compare resulting disparity map with a ground truth (or some other disparity map...)
-//this function takes as input the file names of a two disparity maps and the factor
-//that each disparity was scaled by in the generation of the disparity map image
-void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap, std::ostream& resultsStream)
-{
-	const OutputEvaluationResults<float> outputEvalResults = outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
-	resultsStream << outputEvalResults;
-}
-
-//run the CUDA stereo implementation on the default reference and test images with the result saved to the default
-//saved disparity map file as defined in bpStereoCudaParameters.cuh
-void runStereoOnDefaultImagesUsingDefaultSettings(std::ostream& outStream)
-{
-	//load all the BP default settings as set in bpStereoParameters.h
-	BPsettings algSettings;
-
-	std::cout << "Running belief propagation on reference image " << bp_params::DEFAULT_REF_IMAGE_PATH << " and test image " << bp_params::DEFAULT_TEST_IMAGE_PATH << " on GPU and CPU\n";
-	RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType> runBpStereoSetCUDA;
-	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
-	ProcessStereoSetOutput cudaRunTimeAndDispImage = runBpStereoSetCUDA(bp_params::DEFAULT_REF_IMAGE_PATH,
-			bp_params::DEFAULT_TEST_IMAGE_PATH, algSettings, outStream);
-	cudaRunTimeAndDispImage.outDisparityMap.saveDisparityMap(bp_params::SAVE_DISPARITY_IMAGE_PATH_1, bp_params::SCALE_BP);
-	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(bp_params::DEFAULT_REF_IMAGE_PATH,
-			bp_params::DEFAULT_TEST_IMAGE_PATH, algSettings, outStream);
-	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(bp_params::SAVE_DISPARITY_IMAGE_PATH_2, bp_params::SCALE_BP);
-
-	DisparityMap<float> groundTruthDisparityMap(bp_params::DEFAULT_GROUND_TRUTH_DISPARITY_FILE, bp_params::SCALE_BP);
-
-	outStream << "Median CUDA runtime (including transfer time): " << cudaRunTimeAndDispImage.runTime << std::endl;
-	outStream << "Single Thread CPU runtime: " << singleThreadCpuRunTimeAndDispImage.runTime << std::endl;
-	std::cout << "Output disparity map from final GPU run at " << bp_params::SAVE_DISPARITY_IMAGE_PATH_1 << std::endl;
-	std::cout << "Output disparity map from CPU run at " << bp_params::SAVE_DISPARITY_IMAGE_PATH_2 << std::endl;
-
-	outStream << "\nCPU output vs. Ground Truth result:\n";
-	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, outStream);
-	outStream << "\nGPU output vs. Ground Truth result:\n";
-	compareDispMaps(cudaRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, outStream);
-	outStream << "\nGPU output vs. CPU output:\n";
-	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, cudaRunTimeAndDispImage.outDisparityMap, outStream);
-
-	std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";
-}
-
+#ifdef USE_FILESYSTEM
+#include <filesystem>
+typedef std::filesystem::path filepathtype;
+#else
+typedef std::string filepathtype;
+#endif //USE_FILESYSTEM
 
 void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 {
@@ -89,29 +54,22 @@ void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 
 int main(int argc, char** argv)
 {
-	std::ofstream resultsStream("output.txt", std::ofstream::out);
-	//std::ostream resultsStream(std::cout.rdbuf());
-	int optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON;
-	resultsStream << "Ref Image: " << bp_params::DEFAULT_REF_IMAGE_PATH << "\n";
-	resultsStream << "Test Image: " << bp_params::DEFAULT_TEST_IMAGE_PATH << "\n";
-	resultsStream << "Memory Optimization Level: " << optLevel << "\n";
-	resultsStream << "Indexing Optimization Level: " << OPTIMIZED_INDEXING_SETTING << "\n";
-	resultsStream << "BP Processing Data Type: " << BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
-	resultsStream << "Num Possible Disparity Values: " << NUM_POSSIBLE_DISPARITY_VALUES << "\n";
-	resultsStream << "Num BP Levels: " << bp_params::LEVELS_BP << "\n";
-	resultsStream << "Num BP Iterations: " << bp_params::ITER_BP << "\n";
-	resultsStream << "DISC_K_BP: " << bp_params::DISC_K_BP << "\n";
-	resultsStream << "DATA_K_BP: " << bp_params::DATA_K_BP << "\n";
-	resultsStream << "LAMBDA_BP: " << bp_params::LAMBDA_BP << "\n";
-	resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
-	resultsStream << "CPU_OPTIMIZATION_LEVEL: " << CPU_OPTIMIZATION_SETTING << "\n";
-	resultsStream << "BYTES_ALIGN_MEMORY: " << BYTES_ALIGN_MEMORY << "\n";
-	resultsStream << "NUM_DATA_ALIGN_WIDTH: " << NUM_DATA_ALIGN_WIDTH << "\n";
+	//std::ofstream resultsStream("output.txt", std::ofstream::out);
+	std::ostream resultsStream(std::cout.rdbuf());
+
+	RunAndEvaluateBpResults::printParameters(resultsStream);
 	resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
 	resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
 	retrieveDeviceProperties(0, resultsStream);
-	runStereoOnDefaultImagesUsingDefaultSettings(resultsStream);
+
 	int cudaRuntimeVersion;
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+	std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>, 2> bpProcessingImps = {
+				std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>(new RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType>()),
+				std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>(new RunBpStereoCPUSingleThread<beliefPropProcessingDataType>())
+	};
+
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare(resultsStream, bpProcessingImps);
 }

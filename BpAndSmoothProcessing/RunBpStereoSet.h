@@ -39,6 +39,8 @@ public:
 	virtual ~RunBpStereoSet() {
 	}
 
+	virtual std::string getBpRunDescription() = 0;
+
 	//pure abstract overloaded operator that must be defined in child class
 	virtual ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream) = 0;

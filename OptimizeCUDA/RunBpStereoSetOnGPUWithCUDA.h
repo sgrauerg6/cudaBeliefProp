@@ -38,6 +38,9 @@ template <typename T>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
 {
 public:
+
+	std::string getBpRunDescription() { return "CUDA"; }
+
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 				const BPsettings& algSettings, std::ostream& resultsStream)
@@ -54,6 +57,8 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<short> : public RunBpStereoSet<short>
 {
 public:
+
+	std::string getBpRunDescription() { return "CUDA"; }
 
 	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
@@ -127,6 +132,8 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<float16_t> : public RunBpStereoSet<float16_t>
 {
 public:
+
+	std::string getBpRunDescription() { return "CUDA"; }
 
 	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
 	{
