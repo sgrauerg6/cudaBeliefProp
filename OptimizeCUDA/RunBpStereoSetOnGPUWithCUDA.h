@@ -22,9 +22,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
 #include "ParameterFiles/bpStereoCudaParameters.h"
-#include "RunBpStereoSet.h"
+#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "SmoothImageCUDA.h"
-#include "ProcessBPOnTargetDevice.h"
+#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "ProcessCUDABP.h"
 #include <cuda_runtime.h>
 #include "RunBpStereoSetCUDAMemoryManagement.h"

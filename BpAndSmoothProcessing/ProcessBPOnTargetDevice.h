@@ -8,14 +8,14 @@
 #ifndef PROCESSBPONTARGETDEVICE_H_
 #define PROCESSBPONTARGETDEVICE_H_
 
-#include "ParameterFiles/bpStereoParameters.h"
-#include "ParameterFiles/bpRunSettings.h"
-#include "ParameterFiles/bpStructsAndEnums.h"
+#include "../ParameterFiles/bpStereoParameters.h"
+#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/bpStructsAndEnums.h"
 #include <math.h>
 #include <chrono>
 #include <unordered_map>
-#include "RuntimeTiming/DetailedTimings.h"
-#include "RuntimeTiming/DetailedTimingBPConsts.h"
+#include "../RuntimeTiming/DetailedTimings.h"
+#include "../RuntimeTiming/DetailedTimingBPConsts.h"
 
 template<typename T>
 class ProcessBPOnTargetDevice {

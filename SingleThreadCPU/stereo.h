@@ -8,7 +8,7 @@
 #ifndef STEREO_H_
 #define STEREO_H_
 
-#include "RunBpStereoSet.h"
+#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
@@ -22,8 +22,8 @@
 #include "ParameterFiles/bpStereoParameters.h"
 #include "ParameterFiles/bpStructsAndEnums.h"
 #include <chrono>
-#include "SmoothImage.h"
-#include "ProcessBPOnTargetDevice.h"
+#include "../BpAndSmoothProcessing/SmoothImage.h"
+#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <iostream>
 
 template<typename T>

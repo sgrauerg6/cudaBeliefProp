@@ -59,14 +59,14 @@ DetailedTimings.o: RuntimeTiming/DetailedTimings.cpp RuntimeTiming/DetailedTimin
 driverBpStereoCPU.o: MainDriverFiles/driverBpStereoCPU.cpp ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
 	g++ MainDriverFiles/driverBpStereoCPU.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessBPOnTargetDevice.o : ProcessBPOnTargetDevice.cpp ProcessBPOnTargetDevice.h DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpStructsAndEnums.h
-	g++ ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessBPOnTargetDevice.o : BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp BpAndSmoothProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpStructsAndEnums.h
+	g++ BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessOptimizedCPUBP.o : OptimizeCPU/ProcessOptimizedCPUBP.cpp OptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o OptimizeCPU/KernelBpStereoCPU.h OptimizeCPU/KernelBpStereoCPU.cpp
 	g++ OptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSet.o: RunBpStereoSet.cpp RunBpStereoSet.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStructsAndEnums.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h
-	g++ RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+RunBpStereoSet.o: BpAndSmoothProcessing/RunBpStereoSet.cpp BpAndSmoothProcessing/RunBpStereoSet.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStructsAndEnums.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o RuntimeTiming/DetailedTimingBPConsts.h
+	g++ BpAndSmoothProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpImage.o: ImageDataAndProcessing/BpImage.cpp ImageDataAndProcessing/BpImage.h
 	g++ ImageDataAndProcessing/BpImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -83,8 +83,8 @@ DisparityMap.o: OutputEvaluation/DisparityMap.cpp OutputEvaluation/DisparityMap.
 stereo.o: SingleThreadCPU/stereo.cpp SingleThreadCPU/stereo.h ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	g++ SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-SmoothImage.o: SmoothImage.cpp SmoothImage.h 
-	g++ SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+SmoothImage.o: BpAndSmoothProcessing/SmoothImage.cpp BpAndSmoothProcessing/SmoothImage.h 
+	g++ BpAndSmoothProcessing/SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 SmoothImageCPU.o: OptimizeCPU/SmoothImageCPU.cpp OptimizeCPU/SmoothImageCPU.h SmoothImage.o
 	g++ OptimizeCPU/SmoothImageCPU.cpp -c -fopenmp $(INCLUDE_DIRS) $(COMPILE_FLAGS)

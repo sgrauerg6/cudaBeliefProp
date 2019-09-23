@@ -9,8 +9,8 @@
 #define RUNBPSTEREOOPTIMIZEDCPU_H_
 
 #include "SmoothImageCPU.h"
-#include "RunBpStereoSet.h"
-#include "ProcessBPOnTargetDevice.h"
+#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <iostream>
 
 template <typename T>

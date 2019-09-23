@@ -8,7 +8,7 @@
 #ifndef SMOOTHIMAGECPU_H_
 #define SMOOTHIMAGECPU_H_
 
-#include "SmoothImage.h"
+#include "../BpAndSmoothProcessing/SmoothImage.h"
 #include <algorithm>
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"
 

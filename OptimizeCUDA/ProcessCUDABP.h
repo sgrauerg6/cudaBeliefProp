@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //include for the kernal functions to be run on the GPU
 #include <cuda_runtime.h>
-#include "ProcessBPOnTargetDevice.h"
+#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 #include <cuda_fp16.h>
