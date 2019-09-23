@@ -27,7 +27,7 @@ NVCC := $(CUDA_DIR)/bin/nvcc
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
-COMPILE_FLAGS += -O3 -std=c++14
+COMPILE_FLAGS += -O3 -std=c++17
 #ARCHITECTURE_COMPILE_FLAG = -march=native
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
@@ -47,12 +47,15 @@ LINK   = -lm
 
 all: impDriver 
 
-impDriver: driverCudaBp.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o
-	g++ driverCudaBp.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+impDriver: driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o
+	g++ driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-impDriveCPU: driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
-	g++ driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
+impDriveCPU: driverBpStereoCPU.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
+	g++ BpFileHandling.o driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
 
+BpFileHandling.o: FileProcessing/BpFileHandling.h FileProcessing/BpFileHandling.cpp FileProcessing/BpFileHandlingConsts.h
+	g++ FileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	
 DetailedTimings.o: RuntimeTiming/DetailedTimings.cpp RuntimeTiming/DetailedTimings.h
 	g++ RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
