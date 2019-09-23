@@ -41,7 +41,7 @@ const float SMALL_VAL_BP = .01f;
 #define CONES_IMAGES_HALF_SIZE 3
 #define CONES_IMAGES_FULL_SIZE 4
 #define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
-#define IMAGE_SET_TO_PROCESS CONES_IMAGES_QUARTER_SIZE
+#define IMAGE_SET_TO_PROCESS TSUKUBA_IMAGES
 
 namespace bp_params
 {
@@ -71,6 +71,8 @@ namespace bp_params
 
 	#if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
 
+	const std::string STEREO_SET = "tsukubaSet";
+
 	//define the path for the 'default' reference and test images and the output "movement" images (can easily run
 	//on other images using runBpStereoImageSeries on any number of images)
 	const std::string DEFAULT_REF_IMAGE_PATH = "refImageTsukuba.pgm";
@@ -90,32 +92,16 @@ namespace bp_params
 
 	#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
 
-	//define the path for the 'default' reference and test images and the output "movement" images (can easily run
-	//on other images using runBpStereoImageSeries on any number of images)
-	const std::string DEFAULT_REF_IMAGE_PATH = "conesQuarter2.pgm";
-	const std::string DEFAULT_TEST_IMAGE_PATH = "conesQuarter6.pgm";
+	const std::string STEREO_SET = "conesQuarterSize";
 
-	const std::string SAVE_DISPARITY_IMAGE_PATH_1 = "computedDisparityConesQuarter1.pgm";
-	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = "computedDisparityConesQuarter2.pgm";
-
-	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 	#define NUM_POSSIBLE_DISPARITY_VALUES 63
 
 	// scaling from computed disparity to graylevel in output
 	const unsigned int SCALE_BP = 4;
 
-	//info about a default ground truth
-	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "conesQuarterGroundTruth.pgm";
-
 	#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_HALF_SIZE)
 
-	//define the path for the 'default' reference and test images and the output "movement" images (can easily run
-	//on other images using runBpStereoImageSeries on any number of images)
-	const std::string DEFAULT_REF_IMAGE_PATH = "conesHalf2.pgm";
-	const std::string DEFAULT_TEST_IMAGE_PATH = "conesHalf6.pgm";
-
-	const std::string SAVE_DISPARITY_IMAGE_PATH_1 = "computedDisparityConesHalf1.pgm";
-	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = "computedDisparityConesHalf2.pgm";
+	const std::string STEREO_SET = "conesHalfSize";
 
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 	#define NUM_POSSIBLE_DISPARITY_VALUES 127
@@ -123,18 +109,9 @@ namespace bp_params
 	// scaling from computed disparity to graylevel in output
 	const unsigned int SCALE_BP = 2;
 
-	//info about a default ground truth
-	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "conesHalfGroundTruth.pgm";
-
 	#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_FULL_SIZE)
 
-	//define the path for the 'default' reference and test images and the output "movement" images (can easily run
-	//on other images using runBpStereoImageSeries on any number of images)
-	const std::string DEFAULT_REF_IMAGE_PATH = "conesFull2.pgm";
-	const std::string DEFAULT_TEST_IMAGE_PATH = "conesFull2.pgm";
-
-	const std::string SAVE_DISPARITY_IMAGE_PATH_1 = "computedDisparityConesFull1.pgm";
-	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = "computedDisparityConesFull2.pgm";
+	const std::string STEREO_SET = "cones";
 
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 	const unsigned int NUM_POSSIBLE_DISPARITY_VALUES = 255;
@@ -142,20 +119,11 @@ namespace bp_params
 	// scaling from computed disparity to graylevel in output
 	const unsigned int SCALE_BP = 1;
 
-	//info about a default ground truth
-	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "conesFullGroundTruth.pgm";
-
 	//If image set parameters from python, then use settings in current iteration in python script
 	//These settings are written to file bpParametersFromPython.h as part of the python script
 	#elif (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
-	//define the path for the 'default' reference and test images and the output "movement" images (can easily run
-	//on other images using runBpStereoImageSeries on any number of images)
-	const std::string DEFAULT_REF_IMAGE_PATH = REF_IMAGE_FROM_PYTHON;
-	const std::string DEFAULT_TEST_IMAGE_PATH = TEST_IMAGE_FROM_PYTHON;
-
-	const std::string SAVE_DISPARITY_IMAGE_PATH_1 = SAVE_DISPARITY_IMAGE_PATH_GPU_FROM_PYTHON;
-	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = SAVE_DISPARITY_IMAGE_PATH_CPU_FROM_PYTHON;
+	const std::string STEREO_SET = STEREO_SET_FROM_PYTHON;
 
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 	#define NUM_POSSIBLE_DISPARITY_VALUES NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON
@@ -180,12 +148,6 @@ namespace bp_params
 
 	// amount to smooth the input images
 	const unsigned int SIGMA_BP = SIGMA_BP_FROM_PYTHON;
-
-	//info about a default ground truth
-	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = DEFAULT_GROUND_TRUTH_DISPARITY_FILE_FROM_PYTHON;
-
-	//scaling from ground truth disparity to ground truth disparity map image
-	const float DEFAULT_SCALE_GROUND_TRUTH_DISPARITY = DEFAULT_GROUND_TRUTH_DISPARITY_SCALE_FROM_PYTHON;
 
 	#if USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON == 1
 		#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT

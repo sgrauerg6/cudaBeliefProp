@@ -18,7 +18,7 @@ INCLUDE_DIRS := -I. -I./ -I$(CUDA_DIR)/include -I$(COMMONDIR)/inc -I$(SHAREDDIR)
 
 # contains the library files needed for linking
 LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart
-LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER)
+LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lstdc++fs
 
 # define the path for the nvcc cuda compiler
 NVCC := $(CUDA_DIR)/bin/nvcc
@@ -30,7 +30,7 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 COMPILE_FLAGS += -O3 -std=c++17
 CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3
 #ARCHITECTURE_COMPILE_FLAG = -march=native
-ARCHITECTURE_COMPILE_FLAG = -O3 -march=native
+ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
 
 # need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
@@ -52,7 +52,7 @@ impDriver: driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResult
 	g++ driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o SmoothImageCPU.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
 impDriveCPU: driverBpStereoCPU.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
-	g++ BpFileHandling.o driverBpStereoCPU.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
+	g++ driverBpStereoCPU.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(ARCHITECTURE_COMPILE_FLAG) $(LIB_CPU) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCPUBp -O
 
 BpFileHandling.o: FileProcessing/BpFileHandling.h FileProcessing/BpFileHandling.cpp FileProcessing/BpFileHandlingConsts.h
 	g++ FileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

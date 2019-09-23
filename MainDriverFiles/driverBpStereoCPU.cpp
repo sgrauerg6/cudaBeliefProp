@@ -30,6 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "OutputEvaluation/DisparityMap.h"
 #include "OutputEvaluation/OutputEvaluationParameters.h"
 #include "OutputEvaluation/OutputEvaluationResults.h"
+#include "../FileProcessing/BpFileHandling.h"
+#include <filesystem>
 
 //compare resulting disparity map with a ground truth (or some other disparity map...)
 //this function takes as input the file names of a two disparity maps and the factor
@@ -44,25 +46,32 @@ void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const Dispar
 //saved disparity map file as defined in bpStereoCudaParameters.cuh
 void runStereoOnDefaultImagesUsingDefaultSettings(std::ostream& resultsStream)
 {
+	BpFileHandling bpFileSettings(bp_params::STEREO_SET);
+	std::filesystem::path refImagePath = bpFileSettings.getRefImagePath();
+	std::filesystem::path testImagePath = bpFileSettings.getTestImagePath();
+	std::filesystem::path outputDisp1 = bpFileSettings.getCurrentOutputDisparityFilePathAndIncrement();
+	std::filesystem::path outputDisp2 = bpFileSettings.getCurrentOutputDisparityFilePathAndIncrement();
+	std::filesystem::path groundTruthDisp = bpFileSettings.getGroundTruthDisparityFilePath();
+
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings;
 
-	std::cout << "Running belief propagation on reference image " << bp_params::DEFAULT_REF_IMAGE_PATH << " and test image " << bp_params::DEFAULT_TEST_IMAGE_PATH << " on GPU and CPU\n";
-	RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;
+	std::cout << "Running belief propagation on reference image " << refImagePath << " and test image " << testImagePath << " on GPU and CPU\n";
+	std::cout << "Output disparity map from final GPU run at " << outputDisp1 << "\n";
+	std::cout << "Output disparity map from CPU run at " << outputDisp2 << "\n";	RunBpStereoOptimizedCPU<beliefPropProcessingDataType> runBpStereoOptCPU;
 	RunBpStereoCPUSingleThread<beliefPropProcessingDataType> runBpStereoSetCPU;
-	ProcessStereoSetOutput optCPURunTimeAndDispImage = runBpStereoOptCPU(bp_params::DEFAULT_REF_IMAGE_PATH,
-			bp_params::DEFAULT_TEST_IMAGE_PATH, algSettings, resultsStream);
-	optCPURunTimeAndDispImage.outDisparityMap.saveDisparityMap(bp_params::SAVE_DISPARITY_IMAGE_PATH_1, bp_params::SCALE_BP);
-	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(bp_params::DEFAULT_REF_IMAGE_PATH,
-			bp_params::DEFAULT_TEST_IMAGE_PATH, algSettings, resultsStream);
-	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(bp_params::SAVE_DISPARITY_IMAGE_PATH_2, bp_params::SCALE_BP);
+	ProcessStereoSetOutput optCPURunTimeAndDispImage = runBpStereoOptCPU(refImagePath,
+			testImagePath, algSettings, resultsStream);
+	optCPURunTimeAndDispImage.outDisparityMap.saveDisparityMap(outputDisp1, bp_params::SCALE_BP);
+	ProcessStereoSetOutput singleThreadCpuRunTimeAndDispImage = runBpStereoSetCPU(refImagePath,
+			testImagePath, algSettings, resultsStream);
+	singleThreadCpuRunTimeAndDispImage.outDisparityMap.saveDisparityMap(outputDisp2, bp_params::SCALE_BP);
 
-	DisparityMap<float> groundTruthDisparityMap(bp_params::DEFAULT_GROUND_TRUTH_DISPARITY_FILE, bp_params::SCALE_BP);
+	DisparityMap<float> groundTruthDisparityMap(groundTruthDisp, bp_params::SCALE_BP);
 
 	resultsStream << "Median opt CPU runtime (including transfer time): " << optCPURunTimeAndDispImage.runTime << "\n";
 	resultsStream << "Single Thread CPU runtime: " << singleThreadCpuRunTimeAndDispImage.runTime << "\n";
-	std::cout << "Output disparity map from final GPU run at " << bp_params::SAVE_DISPARITY_IMAGE_PATH_1 << "\n";
-	std::cout << "Output disparity map from CPU run at " << bp_params::SAVE_DISPARITY_IMAGE_PATH_2 << "\n";
+
 
 	resultsStream << "\nCPU output vs. Ground Truth result:\n";
 	compareDispMaps(singleThreadCpuRunTimeAndDispImage.outDisparityMap, groundTruthDisparityMap, resultsStream);
