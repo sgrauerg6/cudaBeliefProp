@@ -28,6 +28,7 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++17
+CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3
 #ARCHITECTURE_COMPILE_FLAG = -march=native
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native
 #ARCHITECTURE_COMPILE_FLAG = -march=znver1
@@ -99,13 +100,13 @@ RunBpStereoSetOnGPUWithCUDA.o: OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp Opti
 	g++ OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessCUDABP.o: OptimizeCUDA/ProcessCUDABP.cpp OptimizeCUDA/ProcessCUDABP.h
-	$(NVCC) -x cu -c OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(NVCC) -x cu -c OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
 
 SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA.h OptimizeCUDA/kernalFilter.cu OptimizeCUDA/kernalFilterHeader.cuh
-	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(COMPILE_FLAGS)
+	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
 
 driverCudaBp.o: MainDriverFiles/driverCudaBp.cpp ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
-	$(NVCC) -x cu -c MainDriverFiles/driverCudaBp.cpp $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(COMPILE_FLAGS) 
+	$(NVCC) -x cu -c MainDriverFiles/driverCudaBp.cpp $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(CUDA_COMPILE_FLAGS) 
 make clean:
 	rm *.o driverCudaBp driverCPUBp
