@@ -21,10 +21,8 @@ namespace bp_file_handling
 	const std::string OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
 
 #ifdef USE_FILESYSTEM
-
 	const std::filesystem::path EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
 	const std::filesystem::path STEREO_SETS_PATH = EXE_PATH_PATH / "StereoSets";
-
 #else
 	const std::string EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";

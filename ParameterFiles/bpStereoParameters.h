@@ -73,14 +73,6 @@ namespace bp_params
 
 	const std::string STEREO_SET = "tsukubaSet";
 
-	//define the path for the 'default' reference and test images and the output "movement" images (can easily run
-	//on other images using runBpStereoImageSeries on any number of images)
-	const std::string DEFAULT_REF_IMAGE_PATH = "refImageTsukuba.pgm";
-	const std::string DEFAULT_TEST_IMAGE_PATH = "testImageTsukuba.pgm";
-
-	const std::string SAVE_DISPARITY_IMAGE_PATH_1 = "computedDisparityMapTsukuba1.pgm";
-	const std::string SAVE_DISPARITY_IMAGE_PATH_2 = "computedDisparityMapTsukuba2.pgm";
-
 	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
 	#define NUM_POSSIBLE_DISPARITY_VALUES 15
 

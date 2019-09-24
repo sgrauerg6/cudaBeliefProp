@@ -42,6 +42,11 @@ public:
 		loadImageAsGrayScale(fileName);
 	}
 
+	const std::unique_ptr<T[]>& getUniquePtrToPixelData()
+	{
+		return pixels_;
+	}
+
 	T* getPointerToPixelsStart() const
 	{
 		return &(pixels_[0]);
