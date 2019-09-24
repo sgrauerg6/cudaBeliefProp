@@ -24,6 +24,7 @@
 #include <memory>
 #include "../ImageDataAndProcessing/BpImage.h"
 
+//stereo processing output
 struct ProcessStereoSetOutput
 {
 	float runTime = 0.0;
@@ -46,9 +47,11 @@ public:
 		const BPsettings& algSettings, std::ostream& resultsStream) = 0;
 
 protected:
+
+	//protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
 	ProcessStereoSetOutput processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage,
-		const std::unique_ptr<ProcessBPOnTargetDevice<T>>& runBpStereo, const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement = std::unique_ptr<RunBpStereoSetMemoryManagement>(new RunBpStereoSetMemoryManagement) );
+		const std::unique_ptr<ProcessBPOnTargetDevice<T>>& runBpStereo, const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement = std::make_unique<RunBpStereoSetMemoryManagement>() );
 
 };
 

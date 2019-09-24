@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include "RunBpStereoSetCUDAMemoryManagement.h"
 #include <iostream>
+#include <memory>
 
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 #include <cuda_fp16.h>
@@ -45,10 +46,11 @@ public:
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 				const BPsettings& algSettings, std::ostream& resultsStream)
 	{
+		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-		std::unique_ptr<SmoothImage> smoothImageCUDA(new SmoothImageCUDA());
-		std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCUDA(new ProcessCUDABP<T>());
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement(new RunBpStereoSetCUDAMemoryManagement());
+		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
+		std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCUDA = std::make_unique<ProcessCUDABP<T>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
 		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 };

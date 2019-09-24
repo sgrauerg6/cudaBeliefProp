@@ -29,8 +29,8 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string&
 	}
 
 	resultsStream << "Number of OMP threads: " << nthreads << "\n";
-	std::unique_ptr<SmoothImage> smoothImageCPU(new SmoothImageCPU());
-	std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCPU(new ProcessOptimizedCPUBP<T>());
+	std::unique_ptr<SmoothImage> smoothImageCPU = std::make_unique<SmoothImageCPU>();
+	std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCPU = std::make_unique<ProcessOptimizedCPUBP<T>>();
 	return this->processStereoSet(refImagePath, testImagePath, algSettings,
 			resultsStream, smoothImageCPU, processImageCPU);
 }
