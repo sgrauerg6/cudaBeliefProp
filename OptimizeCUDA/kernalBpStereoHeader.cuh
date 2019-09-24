@@ -75,7 +75,7 @@ __global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-__global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, int checkerboardPart, int offsetNum);
+__global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, Checkerboard_Parts checkerboardPart, int offsetNum);
 
 
 //initialize the message values at each pixel of the current level to the default value
@@ -112,7 +112,7 @@ template<typename T>
 __global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, int checkerboardPartUpdate, float disc_k_bp);
+								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, Checkerboard_Parts checkerboardPartUpdate, float disc_k_bp);
 
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
@@ -132,7 +132,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
 		T* messageLDeviceCurrentCheckerboard2,
 		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
 		int heightLevelCurrent, int widthCheckerboardNextLevel,
-		int heightCheckerboardNextLevel, int checkerboardPart);
+		int heightCheckerboardNextLevel, Checkerboard_Parts checkerboardPart);
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<typename T>

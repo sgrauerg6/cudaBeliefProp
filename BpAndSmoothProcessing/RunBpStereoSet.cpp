@@ -29,7 +29,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 	//generate output disparity map object
 	DisparityMap<float> output_disparity_map(widthImages, heightImages);
 
-	for (int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
+	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
 	{
 		float* smoothedImage1;
 		float* smoothedImage2;

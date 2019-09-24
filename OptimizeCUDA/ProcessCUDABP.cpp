@@ -177,7 +177,7 @@ void ProcessCUDABP<T>::runBPAtCurrentLevel(const BPsettings& algSettings,
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
-		int checkboardPartUpdate = CHECKERBOARD_PART_2;
+		Checkerboard_Parts checkboardPartUpdate = CHECKERBOARD_PART_2;
 
 		if ((iterationNum % 2) == 0)
 		{
@@ -523,7 +523,7 @@ void ProcessCUDABP<half2>::initializeDataCurrentLevel(levelProperties& currentLe
 
 template<typename T>
 void ProcessCUDABP<T>::retrieveOutputDisparity(
-		int currentCheckerboardSet,
+		Checkerboard_Parts currentCheckerboardSet,
 		levelProperties& levelPropertes,
 		T* dataCostDeviceCurrentLevelCheckerboard1,
 		T* dataCostDeviceCurrentLevelCheckerboard2,
@@ -551,7 +551,7 @@ void ProcessCUDABP<T>::retrieveOutputDisparity(
 	grid.x = (unsigned int) ceil((float) levelPropertes.widthCheckerboardLevel / (float) threads.x);
 	grid.y = (unsigned int) ceil((float) levelPropertes.heightLevel / (float) threads.y);
 
-	if (currentCheckerboardSet == 0)
+	if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1)
 	{
 		retrieveOutputDisparityCheckerboardStereoOptimized<T> <<<grid, threads>>>(levelPropertes,
 				dataCostDeviceCurrentLevelCheckerboard1,

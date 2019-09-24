@@ -214,7 +214,7 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(int xVal,
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
-		int xVal, int yVal, int checkerboardPart,
+		int xVal, int yVal, Checkerboard_Parts checkerboardPart,
 		levelProperties& currentLevelProperties,
 		levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1,
 		T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo,
@@ -225,7 +225,7 @@ ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
 
 	if (checkerboardPart == CHECKERBOARD_PART_1) {
 		checkerboardPartAdjustment = (yVal % 2);
-	} else if (checkerboardPart == CHECKERBOARD_PART_2) {
+	} else /*(checkerboardPart == CHECKERBOARD_PART_2)*/ {
 		checkerboardPartAdjustment = ((yVal + 1) % 2);
 	}
 
@@ -360,7 +360,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, in
 //this function uses linear memory bound to textures to access the current data and message values
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
-		int xVal, int yVal, int checkerboardToUpdate,
+		int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
@@ -446,7 +446,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPixel(int xVal, int yVal,
-		int checkerboardPart, levelProperties& currentLevelProperties,
+		Checkerboard_Parts checkerboardPart, levelProperties& currentLevelProperties,
 		levelProperties& nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
@@ -472,7 +472,7 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 
 	if (checkerboardPart == CHECKERBOARD_PART_1) {
 		checkerboardPartAdjustment = (yVal % 2);
-	} else if (checkerboardPart == CHECKERBOARD_PART_2) {
+	} else /*(checkerboardPart == CHECKERBOARD_PART_2)*/ {
 		checkerboardPartAdjustment = ((yVal + 1) % 2);
 	}
 
@@ -489,7 +489,7 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 			prevValD = messageDPrevStereoCheckerboard1[indexCopyFrom];
 			prevValL = messageLPrevStereoCheckerboard1[indexCopyFrom];
 			prevValR = messageRPrevStereoCheckerboard1[indexCopyFrom];
-		} else if (checkerboardPart == CHECKERBOARD_PART_2) {
+		} else /*(checkerboardPart == CHECKERBOARD_PART_2)*/ {
 			prevValU = messageUPrevStereoCheckerboard2[indexCopyFrom];
 			prevValD = messageDPrevStereoCheckerboard2[indexCopyFrom];
 			prevValL = messageLPrevStereoCheckerboard2[indexCopyFrom];

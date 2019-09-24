@@ -167,7 +167,7 @@ __global__ void initializeBottomLevelDataStereo(levelProperties currentLevelProp
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-__global__ void initializeCurrentLevelDataStereo(int checkerboardPart, levelProperties currentLevelProperties, levelProperties prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
+__global__ void initializeCurrentLevelDataStereo(Checkerboard_Parts checkerboardPart, levelProperties currentLevelProperties, levelProperties prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
 {
 	// Block index
 	int bx = blockIdx.x;
@@ -223,7 +223,7 @@ __global__ void initializeMessageValsToDefaultKernel(levelProperties currentLeve
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-__global__ void runBPIterationUsingCheckerboardUpdates(int checkerboardToUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void runBPIterationUsingCheckerboardUpdates(Checkerboard_Parts checkerboardToUpdate, levelProperties currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 								T* messageRDeviceCurrentCheckerboard2, float disc_k_bp, bool dataAligned)
@@ -262,7 +262,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(int checkerboardToUpdate,
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
-		int checkerboardPart,
+		Checkerboard_Parts checkerboardPart,
 		levelProperties currentLevelProperties,
 		levelProperties nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,

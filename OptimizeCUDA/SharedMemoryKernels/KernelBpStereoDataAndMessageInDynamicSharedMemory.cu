@@ -249,7 +249,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, in
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float, float>(
-		int xVal, int yVal, int checkerboardToUpdate,
+		int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
 		float* messageUDeviceCurrentCheckerboard1,
@@ -387,7 +387,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<half, half>(
-		int xVal, int yVal, int checkerboardToUpdate,
+		int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		half* dataCostStereoCheckerboard1, half* dataCostStereoCheckerboard2,
 		half* messageUDeviceCurrentCheckerboard1,

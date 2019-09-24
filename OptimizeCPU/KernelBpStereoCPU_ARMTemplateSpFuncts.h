@@ -36,7 +36,7 @@ float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(float valToCon
 }
 
 template<> inline
-void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t>(int xVal, int yVal, int checkerboardToUpdate,
+void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t>(int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
 		levelProperties& currentLevelProperties,
 		float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2,
 		float16_t* messageUDeviceCurrentCheckerboard1,
@@ -76,7 +76,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yV
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
+void initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, Checkerboard_Parts checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
 {
 	initializeCurrentLevelDataStereoPixel<float16_t, float>(
 			xVal, yVal, checkerboardPart,

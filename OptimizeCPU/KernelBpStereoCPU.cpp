@@ -45,7 +45,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(levelProperties& curr
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
+void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(Checkerboard_Parts checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum)
 {
 	#pragma omp parallel for
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel*currentLevelProperties.heightLevel); val++)
@@ -84,7 +84,7 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(levelProperties&
 
 template<typename T>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
-		int checkerboardPartUpdate, levelProperties& currentLevelProperties,
+		Checkerboard_Parts checkerboardPartUpdate, levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
@@ -152,7 +152,7 @@ void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(int x
 
 template<typename T, typename U>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
-		int checkerboardToUpdate, levelProperties& currentLevelProperties,
+		Checkerboard_Parts checkerboardToUpdate, levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
@@ -366,7 +366,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(Checkerboard_Parts checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 		T* messageRDeviceCurrentCheckerboard2, float disc_k_bp)
@@ -440,7 +440,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(int checkerboa
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(
-		int checkerboardPart,
+		Checkerboard_Parts checkerboardPart,
 		levelProperties& currentLevelProperties,
 		levelProperties& nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,

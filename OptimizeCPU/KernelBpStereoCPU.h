@@ -36,7 +36,7 @@ public:
 	static void initializeBottomLevelDataStereoCPU(levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp);
 
 	template<typename T>
-	static void initializeCurrentLevelDataStereoCPU(int checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum);
+	static void initializeCurrentLevelDataStereoCPU(Checkerboard_Parts checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int offsetNum);
 
 	//initialize the message values at each pixel of the current level to the default value
 	template<typename T>
@@ -57,14 +57,14 @@ public:
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 	template<typename T>
-	static void runBPIterationUsingCheckerboardUpdatesCPU(int checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+	static void runBPIterationUsingCheckerboardUpdatesCPU(Checkerboard_Parts checkerboardToUpdate, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 									T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 									T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
 									T* messageRDeviceCurrentCheckerboard2, float disc_k_bp);
 
 	template<typename T>
 	static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
-			int checkerboardPartUpdate, levelProperties& currentLevelProperties,
+			Checkerboard_Parts checkerboardPartUpdate, levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,
@@ -79,7 +79,7 @@ public:
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 	template<typename T>
 		static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(
-				int checkerboardPart,
+				Checkerboard_Parts checkerboardPart,
 				levelProperties& currentLevelProperties,
 				levelProperties& nextLevelProperties,
 				T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -136,7 +136,7 @@ public:
 
 	template<typename T>
 		static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-				int checkerboardToUpdate, levelProperties& currentLevelProperties,
+				Checkerboard_Parts checkerboardToUpdate, levelProperties& currentLevelProperties,
 				T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 				T* messageUDeviceCurrentCheckerboard1,
 				T* messageDDeviceCurrentCheckerboard1,
@@ -152,7 +152,7 @@ public:
 
 	template<typename T, typename U>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
-			int checkerboardToUpdate, levelProperties& currentLevelProperties,
+			Checkerboard_Parts checkerboardToUpdate, levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUDeviceCurrentCheckerboard1,
 			T* messageDDeviceCurrentCheckerboard1,

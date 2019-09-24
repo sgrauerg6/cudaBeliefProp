@@ -139,7 +139,7 @@ void ProcessOptimizedCPUBP<T>::runBPAtCurrentLevel(const BPsettings& algSettings
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
-		int checkboardPartUpdate = CHECKERBOARD_PART_2;
+		Checkerboard_Parts checkboardPartUpdate = CHECKERBOARD_PART_2;
 
 		if ((iterationNum % 2) == 0)
 		{
@@ -283,7 +283,7 @@ void ProcessOptimizedCPUBP<T>::initializeDataCurrentLevel(levelProperties& curre
 
 template<typename T>
 void ProcessOptimizedCPUBP<T>::retrieveOutputDisparity(
-		int currentCheckerboardSet,
+		Checkerboard_Parts currentCheckerboardSet,
 		levelProperties& levelPropertes,
 		T* dataCostDeviceCurrentLevelCheckerboard1,
 		T* dataCostDeviceCurrentLevelCheckerboard2,

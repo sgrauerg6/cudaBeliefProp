@@ -302,7 +302,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	segmentTimings.addTiming(INIT_MESSAGES, totalTimeInitMessageVals);
 
 	//alternate between checkerboard sets 0 and 1
-	int currentCheckerboardSet = 0;
+	Checkerboard_Parts currentCheckerboardSet = Checkerboard_Parts::CHECKERBOARD_PART_1;
 
 	//run BP at each level in the "pyramid" starting on top and continuing to the bottom
 	//where the final movement values are computed...the message values are passed from
@@ -315,7 +315,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 		//std::cout << "LEVEL: " << levelNum << std::endl;
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
-		if (currentCheckerboardSet == 0) {
+		if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1) {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
 				dataCostDeviceCurrentLevelCheckerboard1,
 				dataCostDeviceCurrentLevelCheckerboard2,
@@ -370,7 +370,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 			T* messageLDeviceCheckerboard2CopyFrom;
 			T* messageRDeviceCheckerboard2CopyFrom;
 
-			if (currentCheckerboardSet == 0)
+			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1)
 			{
 				messageUDeviceCheckerboard1CopyFrom = messageUDeviceSet0Checkerboard1;
 				messageDDeviceCheckerboard1CopyFrom = messageDDeviceSet0Checkerboard1;
@@ -462,7 +462,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
 			totalTimeCopyDataKernel += diff.count();
 
-			if (currentCheckerboardSet == 0)
+			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1)
 			{
 				messageUDeviceSet1Checkerboard1 =
 					messageUDeviceCheckerboard1CopyTo;
@@ -517,7 +517,9 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 			freeMemoryOnTargetDevice(messageRDeviceCheckerboard2CopyFrom);
 
 #endif
-			currentCheckerboardSet = (currentCheckerboardSet + 1) % 2;
+
+			//alternate between checkerboard parts 1 and 2
+			currentCheckerboardSet = (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1) ? Checkerboard_Parts::CHECKERBOARD_PART_2 : Checkerboard_Parts::CHECKERBOARD_PART_1;
 		}
 
 		auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();

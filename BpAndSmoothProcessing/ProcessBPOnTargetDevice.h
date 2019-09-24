@@ -89,7 +89,7 @@ public:
 				T* messageRDeviceCheckerboard2CopyTo) = 0;
 
 		virtual void retrieveOutputDisparity(
-				int currentCheckerboardSet,
+				Checkerboard_Parts currentCheckerboardSet,
 				levelProperties& levelPropertes,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
