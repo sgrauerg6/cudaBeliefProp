@@ -29,10 +29,10 @@ public:
 	BpImage() : width_(0), height_(0)
 {}
 
-	BpImage(const unsigned int width, const unsigned int height) : width_(width), height_(height), pixels_(new T[width*height])
+	BpImage(const unsigned int width, const unsigned int height) : width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height))
 {}
 
-	BpImage(const unsigned int width, const unsigned int height, const T* input_pixel_vals) : width_(width), height_(height), pixels_(new T[width*height])
+	BpImage(const unsigned int width, const unsigned int height, const T* input_pixel_vals) : width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height))
 	{
 		std::copy(input_pixel_vals, input_pixel_vals + (width*height), pixels_.get());
 	}

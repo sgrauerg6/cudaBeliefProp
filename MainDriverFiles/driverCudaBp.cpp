@@ -55,8 +55,8 @@ int main(int argc, char** argv)
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 
 	std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>, 2> bpProcessingImps = {
-				std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>(new RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType>()),
-				std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>(new RunBpStereoCPUSingleThread<beliefPropProcessingDataType>())
+				std::make_unique<RunBpStereoSetOnGPUWithCUDA<beliefPropProcessingDataType>>(),
+				std::make_unique<RunBpStereoCPUSingleThread<beliefPropProcessingDataType>>()
 	};
 
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare(resultsStream, bpProcessingImps);

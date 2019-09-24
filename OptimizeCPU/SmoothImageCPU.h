@@ -11,6 +11,7 @@
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 #include <algorithm>
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"
+#include <memory>
 
 
 class SmoothImageCPU : public SmoothImage {

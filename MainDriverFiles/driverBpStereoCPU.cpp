@@ -35,8 +35,9 @@ int main(int argc, char** argv)
 	RunAndEvaluateBpResults::printParameters(resultsStream);
 
 	std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>, 2> bpProcessingImps = {
-			std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>(new RunBpStereoOptimizedCPU<beliefPropProcessingDataType>()),
-			std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>(new RunBpStereoCPUSingleThread<beliefPropProcessingDataType>())
+			std::make_unique<RunBpStereoOptimizedCPU<beliefPropProcessingDataType>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<beliefPropProcessingDataType>>()
 	};
+
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare(resultsStream, bpProcessingImps);
 }

@@ -102,19 +102,19 @@ public:
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
 		//std::cout << "Processing as half on GPU\n";
-		std::unique_ptr<SmoothImage> smoothImageCUDA(new SmoothImageCUDA());
-		std::unique_ptr<ProcessBPOnTargetDevice<half>> processImageCUDA(new ProcessCUDABP<T>());
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement(new RunBpStereoSetCUDAMemoryManagement());
+		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half>> processImageCUDA = std::make_unique<ProcessCUDABP<half>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
 		//std::cout << "Processing as half2 on GPU\n";
-		std::unique_ptr<SmoothImage> smoothImageCUDA(new SmoothImageCUDA());
-		std::unique_ptr<ProcessBPOnTargetDevice<half2>> processImageCUDA(new ProcessCUDABP<T>());
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement(new RunBpStereoSetCUDAMemoryManagement());
-		return ProcessStereoSetOutput();//runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsFile, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half2>> processImageCUDA = std::make_unique<ProcessCUDABP<half2>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
+		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #else
 

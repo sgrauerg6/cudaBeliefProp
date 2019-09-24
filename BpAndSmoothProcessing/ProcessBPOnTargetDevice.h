@@ -16,6 +16,7 @@
 #include <unordered_map>
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
+#include <memory>
 
 template<typename T>
 class ProcessBPOnTargetDevice {

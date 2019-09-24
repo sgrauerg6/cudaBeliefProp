@@ -59,14 +59,14 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
 
 	unsigned long halfTotalDataAllLevels = 0;
-	levelProperties* processingLevelProperties = new levelProperties[algSettings.numLevels];
+	std::unique_ptr<levelProperties[]> processingLevelProperties = std::make_unique<levelProperties[]>(algSettings.numLevels);
 
 	//start at the "bottom level" and work way up to determine amount of space needed to store data costs
 	int widthLevel = widthImages;
 	int heightLevel = heightImages;
 
 	unsigned long currentOffsetLevel = 0;
-	unsigned long* offsetAtLevel = new unsigned long[algSettings.numLevels];
+	std::unique_ptr<unsigned long[]> offsetAtLevel = std::make_unique<unsigned long[]>(algSettings.numLevels);
 	offsetAtLevel[0] = 0;
 
 	//compute "half" the total number of pixels in including every level of the "pyramid"
@@ -600,9 +600,6 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	freeMemoryOnTargetDevice(dataCostDeviceCheckerboard1);
 
 #endif
-
-	delete offsetAtLevel;
-	delete processingLevelProperties;
 
 	auto timeFinalFreeEnd = std::chrono::system_clock::now();
 
