@@ -44,6 +44,15 @@ struct levelProperties
 };
 
 //used to define the two checkerboard "parts" that the image is divided into
-enum Checkerboard_Parts {CHECKERBOARD_PART_1, CHECKERBOARD_PART_2 };
+enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
+
+template <class T>
+struct checkerboardMessages
+{
+	T* messagesU;
+	T* messagesD;
+	T* messagesL;
+	T* messagesR;
+};
 
 #endif /* BPSTRUCTSANDENUMS_H_ */

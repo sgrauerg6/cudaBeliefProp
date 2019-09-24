@@ -76,7 +76,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T f[NUM_POSSIBLE_DISPARITY_VALUES])
 
 
 template<typename T, typename U>
-ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties& currentLevelProperties, U messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
+ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, const levelProperties& currentLevelProperties, U messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 	U messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 	T* dstMessageArray, U disc_k_bp, bool dataAligned)
 {
@@ -135,7 +135,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, levelProperties&
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(int xVal, int yVal,
-		levelProperties& currentLevelProperties, float* image1PixelsDevice,
+		const levelProperties& currentLevelProperties, float* image1PixelsDevice,
 		float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1,
 		T* dataCostDeviceStereoCheckerboard2, float lambda_bp,
 		float data_k_bp)
@@ -214,18 +214,18 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(int xVal,
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
-		int xVal, int yVal, Checkerboard_Parts checkerboardPart,
-		levelProperties& currentLevelProperties,
-		levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1,
+		int xVal, int yVal, const Checkerboard_Parts checkerboardPart,
+		const levelProperties& currentLevelProperties,
+		const levelProperties& prevLevelProperties, T* dataCostStereoCheckerboard1,
 		T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo,
 		int offsetNum) {
-	//add 1 or 0 to the x-value depending on checkerboard part and row adding to; CHECKERBOARD_PART_1 with slot at (0, 0) has adjustment of 0 in row 0,
-	//while CHECKERBOARD_PART_2 with slot at (0, 1) has adjustment of 1 in row 0
+	//add 1 or 0 to the x-value depending on checkerboard part and row adding to; CHECKERBOARD_PART_0 with slot at (0, 0) has adjustment of 0 in row 0,
+	//while CHECKERBOARD_PART_1 with slot at (0, 1) has adjustment of 1 in row 0
 	int checkerboardPartAdjustment = 0;
 
-	if (checkerboardPart == CHECKERBOARD_PART_1) {
+	if (checkerboardPart == CHECKERBOARD_PART_0) {
 		checkerboardPartAdjustment = (yVal % 2);
-	} else /*(checkerboardPart == CHECKERBOARD_PART_2)*/ {
+	} else /*(checkerboardPart == CHECKERBOARD_PART_1)*/ {
 		checkerboardPartAdjustment = ((yVal + 1) % 2);
 	}
 
@@ -273,7 +273,7 @@ ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
 
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
-ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(int xValInCheckerboard,  int yVal, levelProperties& currentLevelProperties, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
+ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(int xValInCheckerboard,  int yVal, const levelProperties& currentLevelProperties, T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
 		T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
 		T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2)
 {
@@ -337,7 +337,7 @@ ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(int 
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 //and the output message values are stored in local memory
 template<typename T, typename U>
-ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, int yVal, levelProperties& currentLevelProperties, U prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], U dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
+ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, int yVal, const levelProperties& currentLevelProperties, U prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], U prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], U dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
 								T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray, U disc_k_bp, bool dataAligned)
 {
 	msgStereo<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevLMessage, prevRMessage, dataMessage,
@@ -360,8 +360,8 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, in
 //this function uses linear memory bound to textures to access the current data and message values
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
-		int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
-		levelProperties& currentLevelProperties,
+		int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
@@ -376,11 +376,11 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 	int checkerboardAdjustment;
 
 	//checkerboardAdjustment used for indexing into current checkerboard to update
-	if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+	if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-	else //checkerboardToUpdate == CHECKERBOARD_PART_2
+	else //checkerboardToUpdate == CHECKERBOARD_PART_1
 	{
 		checkerboardAdjustment = ((yVal+1)%2);
 	}
@@ -399,7 +399,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
-			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 			{
 				dataMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 				prevUMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -407,7 +407,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 				prevLMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 				prevRMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
 			}
-			else //checkerboardToUpdate == CHECKERBOARD_PART_2
+			else //checkerboardToUpdate == CHECKERBOARD_PART_1
 			{
 				dataMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 				prevUMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel, currentLevelProperties.heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -418,7 +418,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 		}
 
 		//uses the previous message values and data cost to calculate the current message values and store the results
-		if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+		if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 		{
 			runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage,
 					prevLMessage, prevRMessage, dataMessage,
@@ -428,7 +428,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 					messageRDeviceCurrentCheckerboard1, (U) disc_k_bp,
 					dataAligned);
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		else //checkerboardToUpdate == CHECKERBOARD_PART_1
 		{
 			runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage,
 					prevLMessage, prevRMessage, dataMessage,
@@ -446,8 +446,8 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPixel(int xVal, int yVal,
-		Checkerboard_Parts checkerboardPart, levelProperties& currentLevelProperties,
-		levelProperties& nextLevelProperties,
+		const Checkerboard_Parts checkerboardPart, const levelProperties& currentLevelProperties,
+		const levelProperties& nextLevelProperties,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
 		T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
@@ -470,9 +470,9 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 	T prevValL;
 	T prevValR;
 
-	if (checkerboardPart == CHECKERBOARD_PART_1) {
+	if (checkerboardPart == CHECKERBOARD_PART_0) {
 		checkerboardPartAdjustment = (yVal % 2);
-	} else /*(checkerboardPart == CHECKERBOARD_PART_2)*/ {
+	} else /*(checkerboardPart == CHECKERBOARD_PART_1)*/ {
 		checkerboardPartAdjustment = ((yVal + 1) % 2);
 	}
 
@@ -484,12 +484,12 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 				currentLevelProperties.heightLevel, currentDisparity,
 				NUM_POSSIBLE_DISPARITY_VALUES);
 
-		if (checkerboardPart == CHECKERBOARD_PART_1) {
+		if (checkerboardPart == CHECKERBOARD_PART_0) {
 			prevValU = messageUPrevStereoCheckerboard1[indexCopyFrom];
 			prevValD = messageDPrevStereoCheckerboard1[indexCopyFrom];
 			prevValL = messageLPrevStereoCheckerboard1[indexCopyFrom];
 			prevValR = messageRPrevStereoCheckerboard1[indexCopyFrom];
-		} else /*(checkerboardPart == CHECKERBOARD_PART_2)*/ {
+		} else /*(checkerboardPart == CHECKERBOARD_PART_1)*/ {
 			prevValU = messageUPrevStereoCheckerboard2[indexCopyFrom];
 			prevValD = messageDPrevStereoCheckerboard2[indexCopyFrom];
 			prevValL = messageLPrevStereoCheckerboard2[indexCopyFrom];
@@ -540,7 +540,7 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptimizedPixel(int xVal, int yVal,
-		levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1,
+		const levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1,
 		T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1,
 		T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1,
 		T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2,
@@ -701,7 +701,7 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptim
 
 
 template<typename T>
-ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(int xVal, int yVal, const levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
@@ -771,7 +771,7 @@ ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(int xVal,
 }
 
 template<typename T>
-ARCHITECTURE_ADDITION inline void printDataAndMessageValsToPointKernel(int xVal, int yVal, levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+ARCHITECTURE_ADDITION inline void printDataAndMessageValsToPointKernel(int xVal, int yVal, const levelProperties& currentLevelProperties, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
@@ -786,7 +786,7 @@ ARCHITECTURE_ADDITION inline void printDataAndMessageValsToPointKernel(int xVal,
 		{
 			checkerboardAdjustment = ((yVal)%2);
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		else //checkerboardToUpdate == CHECKERBOARD_PART_1
 		{
 			checkerboardAdjustment = ((yVal+1)%2);
 		}

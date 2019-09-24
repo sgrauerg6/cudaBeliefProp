@@ -101,47 +101,40 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 	//declare and then allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
 	//each checkboard holds half of the data
-	T* dataCostDeviceCheckerboard1; //checkerboard 1 includes the pixel in slot (0, 0)
-	T* dataCostDeviceCheckerboard2;
+	T* dataCostDeviceCheckerboard0; //checkerboard 1 includes the pixel in slot (0, 0)
+	T* dataCostDeviceCheckerboard1;
 
-	T* messageUDeviceCheckerboard1;
-	T* messageDDeviceCheckerboard1;
-	T* messageLDeviceCheckerboard1;
-	T* messageRDeviceCheckerboard1;
-
-	T* messageUDeviceCheckerboard2;
-	T* messageDDeviceCheckerboard2;
-	T* messageLDeviceCheckerboard2;
-	T* messageRDeviceCheckerboard2;
+	checkerboardMessages<T> messagesDeviceCheckerboard0;
+	checkerboardMessages<T> messagesDeviceCheckerboard1;
 
 	auto timeInitSettingsMallocStart = std::chrono::system_clock::now();
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	//std::cout << "ALLOC ALL MEMORY\n";
-	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard1, 10 * halfTotalDataAllLevels * sizeof(T));
-	if (dataCostDeviceCheckerboard1 == nullptr)
+	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard0, 10 * halfTotalDataAllLevels * sizeof(T));
+	if (dataCostDeviceCheckerboard0 == nullptr)
 	{
 		std::cout << "Memory alloc failed\n";
 	}
 
-	dataCostDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[1 * (halfTotalDataAllLevels)]);
+	dataCostDeviceCheckerboard1 = &(dataCostDeviceCheckerboard0[1 * (halfTotalDataAllLevels)]);
 
-	messageUDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[2 * (halfTotalDataAllLevels)]);
-	messageDDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[3 * (halfTotalDataAllLevels)]);
-	messageLDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[4 * (halfTotalDataAllLevels)]);
-	messageRDeviceCheckerboard1 = &(dataCostDeviceCheckerboard1[5 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard0.messagesU = &(dataCostDeviceCheckerboard0[2 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard0.messagesD = &(dataCostDeviceCheckerboard0[3 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard0.messagesL = &(dataCostDeviceCheckerboard0[4 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard0.messagesR = &(dataCostDeviceCheckerboard0[5 * (halfTotalDataAllLevels)]);
 
-	messageUDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[6 * (halfTotalDataAllLevels)]);
-	messageDDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[7 * (halfTotalDataAllLevels)]);
-	messageLDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[8 * (halfTotalDataAllLevels)]);
-	messageRDeviceCheckerboard2 = &(dataCostDeviceCheckerboard1[9 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard1.messagesU = &(dataCostDeviceCheckerboard0[6 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard1.messagesD = &(dataCostDeviceCheckerboard0[7 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard1.messagesL = &(dataCostDeviceCheckerboard0[8 * (halfTotalDataAllLevels)]);
+	messagesDeviceCheckerboard1.messagesR = &(dataCostDeviceCheckerboard0[9 * (halfTotalDataAllLevels)]);
 
 #else
 
-	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard1,
+	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard0,
 		halfTotalDataAllLevels * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard2,
+	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard1,
 		halfTotalDataAllLevels * sizeof(T));
 
 #endif
@@ -157,7 +150,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//std::cout << "INIT DATA COSTS\n";
 	//initialize the data cost at the bottom level
 	initializeDataCosts(algSettings, processingLevelProperties[0], image1PixelsCompDevice, image2PixelsCompDevice,
-		dataCostDeviceCheckerboard1, dataCostDeviceCheckerboard2);
+		dataCostDeviceCheckerboard0, dataCostDeviceCheckerboard1);
 	//std::cout << "DONE INIT DATA COSTS\n";
 
 	auto timeInitDataCostsEnd = std::chrono::system_clock::now();
@@ -172,13 +165,13 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
 	{
 		T* dataCostStereoCheckerboard1 =
-			&dataCostDeviceCheckerboard1[offsetAtLevel[levelNum - 1]];
+			&dataCostDeviceCheckerboard0[offsetAtLevel[levelNum - 1]];
 		T* dataCostStereoCheckerboard2 =
-			&dataCostDeviceCheckerboard2[offsetAtLevel[levelNum - 1]];
+			&dataCostDeviceCheckerboard1[offsetAtLevel[levelNum - 1]];
 		T* dataCostDeviceToWriteToCheckerboard1 =
-			&dataCostDeviceCheckerboard1[offsetAtLevel[levelNum]];
+			&dataCostDeviceCheckerboard0[offsetAtLevel[levelNum]];
 		T* dataCostDeviceToWriteToCheckerboard2 =
-			&dataCostDeviceCheckerboard2[offsetAtLevel[levelNum]];
+			&dataCostDeviceCheckerboard1[offsetAtLevel[levelNum]];
 
 		//std::cout << "INIT DATA COSTS CURRENT LEVEL\n";
 		initializeDataCurrentLevel(processingLevelProperties[levelNum],
@@ -204,46 +197,24 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//the message values at the "higher" level in the image
 	//pyramid need copied to a lower level without overwriting
 	//values
+	T* dataCostDeviceCurrentLevelCheckerboard0;
 	T* dataCostDeviceCurrentLevelCheckerboard1;
-	T* dataCostDeviceCurrentLevelCheckerboard2;
-	T* messageUDeviceSet0Checkerboard1;
-	T* messageDDeviceSet0Checkerboard1;
-	T* messageLDeviceSet0Checkerboard1;
-	T* messageRDeviceSet0Checkerboard1;
-
-	T* messageUDeviceSet0Checkerboard2;
-	T* messageDDeviceSet0Checkerboard2;
-	T* messageLDeviceSet0Checkerboard2;
-	T* messageRDeviceSet0Checkerboard2;
-
-	T* messageUDeviceSet1Checkerboard1;
-	T* messageDDeviceSet1Checkerboard1;
-	T* messageLDeviceSet1Checkerboard1;
-	T* messageRDeviceSet1Checkerboard1;
-
-	T* messageUDeviceSet1Checkerboard2;
-	T* messageDDeviceSet1Checkerboard2;
-	T* messageLDeviceSet1Checkerboard2;
-	T* messageRDeviceSet1Checkerboard2;
+	checkerboardMessages<T> messagesDeviceSet0Checkerboard0;
+	checkerboardMessages<T> messagesDeviceSet0Checkerboard1;
+	checkerboardMessages<T> messagesDeviceSet1Checkerboard0;
+	checkerboardMessages<T> messagesDeviceSet1Checkerboard1;
 
 	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
 
+	dataCostDeviceCurrentLevelCheckerboard0 =
+		&dataCostDeviceCheckerboard0[currentOffsetLevel];
 	dataCostDeviceCurrentLevelCheckerboard1 =
 		&dataCostDeviceCheckerboard1[currentOffsetLevel];
-	dataCostDeviceCurrentLevelCheckerboard2 =
-		&dataCostDeviceCheckerboard2[currentOffsetLevel];
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	messageUDeviceSet0Checkerboard1 = &messageUDeviceCheckerboard1[currentOffsetLevel];
-	messageDDeviceSet0Checkerboard1 = &messageDDeviceCheckerboard1[currentOffsetLevel];
-	messageLDeviceSet0Checkerboard1 = &messageLDeviceCheckerboard1[currentOffsetLevel];
-	messageRDeviceSet0Checkerboard1 = &messageRDeviceCheckerboard1[currentOffsetLevel];
-
-	messageUDeviceSet0Checkerboard2 = &messageUDeviceCheckerboard2[currentOffsetLevel];
-	messageDDeviceSet0Checkerboard2 = &messageDDeviceCheckerboard2[currentOffsetLevel];
-	messageLDeviceSet0Checkerboard2 = &messageLDeviceCheckerboard2[currentOffsetLevel];
-	messageRDeviceSet0Checkerboard2 = &messageRDeviceCheckerboard2[currentOffsetLevel];
+	messagesDeviceSet0Checkerboard0 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0, currentOffsetLevel);
+	messagesDeviceSet0Checkerboard1 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1, currentOffsetLevel);
 
 #else
 
@@ -252,23 +223,8 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 		getNumDataForAlignedMemoryAtLevel(processingLevelProperties[algSettings.numLevels - 1].widthLevel, processingLevelProperties[algSettings.numLevels - 1].heightLevel, totalPossibleMovements);
 
 	//allocate the space for the message values in the first checkboard set at the current level
-	allocateMemoryOnTargetDevice((void**)& messageUDeviceSet0Checkerboard1,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& messageDDeviceSet0Checkerboard1,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& messageLDeviceSet0Checkerboard1,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& messageRDeviceSet0Checkerboard1,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-
-	allocateMemoryOnTargetDevice((void**)& messageUDeviceSet0Checkerboard2,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& messageDDeviceSet0Checkerboard2,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& messageLDeviceSet0Checkerboard2,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& messageRDeviceSet0Checkerboard2,
-		numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
+	messagesDeviceSet0Checkerboard0 = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
+	messagesDeviceSet0Checkerboard1 = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
 
 #endif
 
@@ -279,14 +235,8 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(
 		processingLevelProperties[algSettings.numLevels - 1],
-		messageUDeviceSet0Checkerboard1,
-		messageDDeviceSet0Checkerboard1,
-		messageLDeviceSet0Checkerboard1,
-		messageRDeviceSet0Checkerboard1,
-		messageUDeviceSet0Checkerboard2,
-		messageDDeviceSet0Checkerboard2,
-		messageLDeviceSet0Checkerboard2,
-		messageRDeviceSet0Checkerboard2);
+		messagesDeviceSet0Checkerboard0,
+		messagesDeviceSet0Checkerboard1);
 	//std::cout << "DONE initializeMessageValsToDefault\n";
 
 	auto timeInitMessageValuesTimeEnd =
@@ -302,7 +252,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	segmentTimings.addTiming(INIT_MESSAGES, totalTimeInitMessageVals);
 
 	//alternate between checkerboard sets 0 and 1
-	Checkerboard_Parts currentCheckerboardSet = Checkerboard_Parts::CHECKERBOARD_PART_1;
+	Checkerboard_Parts currentCheckerboardSet = Checkerboard_Parts::CHECKERBOARD_PART_0;
 
 	//run BP at each level in the "pyramid" starting on top and continuing to the bottom
 	//where the final movement values are computed...the message values are passed from
@@ -315,31 +265,19 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 		//std::cout << "LEVEL: " << levelNum << std::endl;
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
-		if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1) {
+		if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0) {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
+				dataCostDeviceCurrentLevelCheckerboard0,
 				dataCostDeviceCurrentLevelCheckerboard1,
-				dataCostDeviceCurrentLevelCheckerboard2,
-				messageUDeviceSet0Checkerboard1,
-				messageDDeviceSet0Checkerboard1,
-				messageLDeviceSet0Checkerboard1,
-				messageRDeviceSet0Checkerboard1,
-				messageUDeviceSet0Checkerboard2,
-				messageDDeviceSet0Checkerboard2,
-				messageLDeviceSet0Checkerboard2,
-				messageRDeviceSet0Checkerboard2);
+				messagesDeviceSet0Checkerboard0,
+				messagesDeviceSet0Checkerboard1);
 		}
 		else {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
+				dataCostDeviceCurrentLevelCheckerboard0,
 				dataCostDeviceCurrentLevelCheckerboard1,
-				dataCostDeviceCurrentLevelCheckerboard2,
-				messageUDeviceSet1Checkerboard1,
-				messageDDeviceSet1Checkerboard1,
-				messageLDeviceSet1Checkerboard1,
-				messageRDeviceSet1Checkerboard1,
-				messageUDeviceSet1Checkerboard2,
-				messageDDeviceSet1Checkerboard2,
-				messageLDeviceSet1Checkerboard2,
-				messageRDeviceSet1Checkerboard2);
+				messagesDeviceSet1Checkerboard0,
+				messagesDeviceSet1Checkerboard1);
 		}
 
 		auto timeBpIterEnd = std::chrono::system_clock::now();
@@ -356,66 +294,32 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 			//retrieve offset into allocated memory at next level
 			currentOffsetLevel = offsetAtLevel[levelNum - 1];
 
+			dataCostDeviceCurrentLevelCheckerboard0 =
+				&dataCostDeviceCheckerboard0[currentOffsetLevel];
 			dataCostDeviceCurrentLevelCheckerboard1 =
 				&dataCostDeviceCheckerboard1[currentOffsetLevel];
-			dataCostDeviceCurrentLevelCheckerboard2 =
-				&dataCostDeviceCheckerboard2[currentOffsetLevel];
 
-			T* messageUDeviceCheckerboard1CopyFrom;
-			T* messageDDeviceCheckerboard1CopyFrom;
-			T* messageLDeviceCheckerboard1CopyFrom;
-			T* messageRDeviceCheckerboard1CopyFrom;
-			T* messageUDeviceCheckerboard2CopyFrom;
-			T* messageDDeviceCheckerboard2CopyFrom;
-			T* messageLDeviceCheckerboard2CopyFrom;
-			T* messageRDeviceCheckerboard2CopyFrom;
+			checkerboardMessages<T> messagesDeviceCheckerboard0CopyFrom;
+			checkerboardMessages<T> messagesDeviceCheckerboard1CopyFrom;
 
-			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1)
+			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
-				messageUDeviceCheckerboard1CopyFrom = messageUDeviceSet0Checkerboard1;
-				messageDDeviceCheckerboard1CopyFrom = messageDDeviceSet0Checkerboard1;
-				messageLDeviceCheckerboard1CopyFrom = messageLDeviceSet0Checkerboard1;
-				messageRDeviceCheckerboard1CopyFrom = messageRDeviceSet0Checkerboard1;
-
-				messageUDeviceCheckerboard2CopyFrom = messageUDeviceSet0Checkerboard2;
-				messageDDeviceCheckerboard2CopyFrom = messageDDeviceSet0Checkerboard2;
-				messageLDeviceCheckerboard2CopyFrom = messageLDeviceSet0Checkerboard2;
-				messageRDeviceCheckerboard2CopyFrom = messageRDeviceSet0Checkerboard2;
+				messagesDeviceCheckerboard0CopyFrom = messagesDeviceSet0Checkerboard0;
+				messagesDeviceCheckerboard1CopyFrom = messagesDeviceSet0Checkerboard1;
 			}
 			else
 			{
-				messageUDeviceCheckerboard1CopyFrom = messageUDeviceSet1Checkerboard1;
-				messageDDeviceCheckerboard1CopyFrom = messageDDeviceSet1Checkerboard1;
-				messageLDeviceCheckerboard1CopyFrom = messageLDeviceSet1Checkerboard1;
-				messageRDeviceCheckerboard1CopyFrom = messageRDeviceSet1Checkerboard1;
-
-				messageUDeviceCheckerboard2CopyFrom = messageUDeviceSet1Checkerboard2;
-				messageDDeviceCheckerboard2CopyFrom = messageDDeviceSet1Checkerboard2;
-				messageLDeviceCheckerboard2CopyFrom = messageLDeviceSet1Checkerboard2;
-				messageRDeviceCheckerboard2CopyFrom = messageRDeviceSet1Checkerboard2;
+				messagesDeviceCheckerboard0CopyFrom = messagesDeviceSet1Checkerboard0;
+				messagesDeviceCheckerboard1CopyFrom = messagesDeviceSet1Checkerboard1;
 			}
 
-			T* messageUDeviceCheckerboard1CopyTo;
-			T* messageDDeviceCheckerboard1CopyTo;
-			T* messageLDeviceCheckerboard1CopyTo;
-			T* messageRDeviceCheckerboard1CopyTo;
-
-			T* messageUDeviceCheckerboard2CopyTo;
-			T* messageDDeviceCheckerboard2CopyTo;
-			T* messageLDeviceCheckerboard2CopyTo;
-			T* messageRDeviceCheckerboard2CopyTo;
+			checkerboardMessages<T> messagesDeviceCheckerboard0CopyTo;
+			checkerboardMessages<T> messagesDeviceCheckerboard1CopyTo;
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-			messageUDeviceCheckerboard1CopyTo = &messageUDeviceCheckerboard1[currentOffsetLevel];
-			messageDDeviceCheckerboard1CopyTo = &messageDDeviceCheckerboard1[currentOffsetLevel];
-			messageLDeviceCheckerboard1CopyTo = &messageLDeviceCheckerboard1[currentOffsetLevel];
-			messageRDeviceCheckerboard1CopyTo = &messageRDeviceCheckerboard1[currentOffsetLevel];
-
-			messageUDeviceCheckerboard2CopyTo = &messageUDeviceCheckerboard2[currentOffsetLevel];
-			messageDDeviceCheckerboard2CopyTo = &messageDDeviceCheckerboard2[currentOffsetLevel];
-			messageLDeviceCheckerboard2CopyTo = &messageLDeviceCheckerboard2[currentOffsetLevel];
-			messageRDeviceCheckerboard2CopyTo = &messageRDeviceCheckerboard2[currentOffsetLevel];
+			messagesDeviceCheckerboard0CopyTo = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0, currentOffsetLevel);
+			messagesDeviceCheckerboard1CopyTo = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1, currentOffsetLevel);
 
 #else
 
@@ -425,15 +329,8 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 			int numDataAndMessageSetInCheckerboardAtLevel = getNumDataForAlignedMemoryAtLevel(processingLevelProperties[levelNum - 1].widthLevel, processingLevelProperties[levelNum - 1].heightLevel, totalPossibleMovements);
 
 			//allocate space in the GPU for the message values in the checkerboard set to copy to
-			allocateMemoryOnTargetDevice((void**)& messageUDeviceCheckerboard1CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-			allocateMemoryOnTargetDevice((void**)& messageDDeviceCheckerboard1CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-			allocateMemoryOnTargetDevice((void**)& messageLDeviceCheckerboard1CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-			allocateMemoryOnTargetDevice((void**)& messageRDeviceCheckerboard1CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-
-			allocateMemoryOnTargetDevice((void**)& messageUDeviceCheckerboard2CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-			allocateMemoryOnTargetDevice((void**)& messageDDeviceCheckerboard2CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-			allocateMemoryOnTargetDevice((void**)& messageLDeviceCheckerboard2CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
-			allocateMemoryOnTargetDevice((void**)& messageRDeviceCheckerboard2CopyTo, numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
+			messagesDeviceCheckerboard0CopyTo = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
+			messagesDeviceCheckerboard1CopyTo = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel * sizeof(T));
 
 #endif
 
@@ -441,85 +338,36 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 			copyMessageValuesToNextLevelDown(processingLevelProperties[levelNum],
 				processingLevelProperties[levelNum - 1],
-				messageUDeviceCheckerboard1CopyFrom,
-				messageDDeviceCheckerboard1CopyFrom,
-				messageLDeviceCheckerboard1CopyFrom,
-				messageRDeviceCheckerboard1CopyFrom,
-				messageUDeviceCheckerboard2CopyFrom,
-				messageDDeviceCheckerboard2CopyFrom,
-				messageLDeviceCheckerboard2CopyFrom,
-				messageRDeviceCheckerboard2CopyFrom,
-				messageUDeviceCheckerboard1CopyTo,
-				messageDDeviceCheckerboard1CopyTo,
-				messageLDeviceCheckerboard1CopyTo,
-				messageRDeviceCheckerboard1CopyTo,
-				messageUDeviceCheckerboard2CopyTo,
-				messageDDeviceCheckerboard2CopyTo,
-				messageLDeviceCheckerboard2CopyTo,
-				messageRDeviceCheckerboard2CopyTo);
+				messagesDeviceCheckerboard0CopyFrom,
+				messagesDeviceCheckerboard1CopyFrom,
+				messagesDeviceCheckerboard0CopyTo,
+				messagesDeviceCheckerboard1CopyTo);
 
 			auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
 			totalTimeCopyDataKernel += diff.count();
 
-			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1)
+			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
-				messageUDeviceSet1Checkerboard1 =
-					messageUDeviceCheckerboard1CopyTo;
-				messageDDeviceSet1Checkerboard1 =
-					messageDDeviceCheckerboard1CopyTo;
-				messageLDeviceSet1Checkerboard1 =
-					messageLDeviceCheckerboard1CopyTo;
-				messageRDeviceSet1Checkerboard1 =
-					messageRDeviceCheckerboard1CopyTo;
-
-				messageUDeviceSet1Checkerboard2 =
-					messageUDeviceCheckerboard2CopyTo;
-				messageDDeviceSet1Checkerboard2 =
-					messageDDeviceCheckerboard2CopyTo;
-				messageLDeviceSet1Checkerboard2 =
-					messageLDeviceCheckerboard2CopyTo;
-				messageRDeviceSet1Checkerboard2 =
-					messageRDeviceCheckerboard2CopyTo;
+				messagesDeviceSet1Checkerboard0 = messagesDeviceCheckerboard0CopyTo;
+				messagesDeviceSet1Checkerboard1 = messagesDeviceCheckerboard1CopyTo;
 			}
 			else
 			{
-				messageUDeviceSet0Checkerboard1 =
-					messageUDeviceCheckerboard1CopyTo;
-				messageDDeviceSet0Checkerboard1 =
-					messageDDeviceCheckerboard1CopyTo;
-				messageLDeviceSet0Checkerboard1 =
-					messageLDeviceCheckerboard1CopyTo;
-				messageRDeviceSet0Checkerboard1 =
-					messageRDeviceCheckerboard1CopyTo;
-
-				messageUDeviceSet0Checkerboard2 =
-					messageUDeviceCheckerboard2CopyTo;
-				messageDDeviceSet0Checkerboard2 =
-					messageDDeviceCheckerboard2CopyTo;
-				messageLDeviceSet0Checkerboard2 =
-					messageLDeviceCheckerboard2CopyTo;
-				messageRDeviceSet0Checkerboard2 =
-					messageRDeviceCheckerboard2CopyTo;
+				messagesDeviceSet0Checkerboard0 = messagesDeviceCheckerboard0CopyTo;
+				messagesDeviceSet0Checkerboard1 = messagesDeviceCheckerboard1CopyTo;
 			}
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 			//free the now-copied from computed data of the completed level
-			freeMemoryOnTargetDevice(messageUDeviceCheckerboard1CopyFrom);
-			freeMemoryOnTargetDevice(messageDDeviceCheckerboard1CopyFrom);
-			freeMemoryOnTargetDevice(messageLDeviceCheckerboard1CopyFrom);
-			freeMemoryOnTargetDevice(messageRDeviceCheckerboard1CopyFrom);
-
-			freeMemoryOnTargetDevice(messageUDeviceCheckerboard2CopyFrom);
-			freeMemoryOnTargetDevice(messageDDeviceCheckerboard2CopyFrom);
-			freeMemoryOnTargetDevice(messageLDeviceCheckerboard2CopyFrom);
-			freeMemoryOnTargetDevice(messageRDeviceCheckerboard2CopyFrom);
+			freeCheckerboardMessagesMemory(messagesDeviceCheckerboard0CopyFrom);
+			freeCheckerboardMessagesMemory(messagesDeviceCheckerboard1CopyFrom);
 
 #endif
 
 			//alternate between checkerboard parts 1 and 2
-			currentCheckerboardSet = (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_1) ? Checkerboard_Parts::CHECKERBOARD_PART_2 : Checkerboard_Parts::CHECKERBOARD_PART_1;
+			currentCheckerboardSet = (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0) ? Checkerboard_Parts::CHECKERBOARD_PART_1 : Checkerboard_Parts::CHECKERBOARD_PART_0;
 		}
 
 		auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
@@ -533,24 +381,12 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//assume in bottom level when retrieving output disparity
 	retrieveOutputDisparity(currentCheckerboardSet,
 		processingLevelProperties[0],
+		dataCostDeviceCurrentLevelCheckerboard0,
 		dataCostDeviceCurrentLevelCheckerboard1,
-		dataCostDeviceCurrentLevelCheckerboard2,
-		messageUDeviceSet0Checkerboard1,
-		messageDDeviceSet0Checkerboard1,
-		messageLDeviceSet0Checkerboard1,
-		messageRDeviceSet0Checkerboard1,
-		messageUDeviceSet0Checkerboard2,
-		messageDDeviceSet0Checkerboard2,
-		messageLDeviceSet0Checkerboard2,
-		messageRDeviceSet0Checkerboard2,
-		messageUDeviceSet1Checkerboard1,
-		messageDDeviceSet1Checkerboard1,
-		messageLDeviceSet1Checkerboard1,
-		messageRDeviceSet1Checkerboard1,
-		messageUDeviceSet1Checkerboard2,
-		messageDDeviceSet1Checkerboard2,
-		messageLDeviceSet1Checkerboard2,
-		messageRDeviceSet1Checkerboard2,
+		messagesDeviceSet0Checkerboard0,
+		messagesDeviceSet0Checkerboard1,
+		messagesDeviceSet1Checkerboard0,
+		messagesDeviceSet1Checkerboard1,
 		resultingDisparityMapCompDevice);
 
 	auto timeGetOutputDisparityEnd = std::chrono::system_clock::now();
@@ -568,38 +404,24 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	if (currentCheckerboardSet == 0)
 	{
 		//free device space allocated to message values
-		freeMemoryOnTargetDevice((void*)messageUDeviceSet0Checkerboard1);
-		freeMemoryOnTargetDevice((void*)messageDDeviceSet0Checkerboard1);
-		freeMemoryOnTargetDevice((void*)messageLDeviceSet0Checkerboard1);
-		freeMemoryOnTargetDevice((void*)messageRDeviceSet0Checkerboard1);
-
-		freeMemoryOnTargetDevice((void*)messageUDeviceSet0Checkerboard2);
-		freeMemoryOnTargetDevice((void*)messageDDeviceSet0Checkerboard2);
-		freeMemoryOnTargetDevice((void*)messageLDeviceSet0Checkerboard2);
-		freeMemoryOnTargetDevice((void*)messageRDeviceSet0Checkerboard2);
+		freeCheckerboardMessagesMemory(messagesDeviceSet0Checkerboard0);
+		freeCheckerboardMessagesMemory(messagesDeviceSet0Checkerboard1);
 	}
 	else
 	{
 		//free device space allocated to message values
-		freeMemoryOnTargetDevice((void*)messageUDeviceSet1Checkerboard1);
-		freeMemoryOnTargetDevice((void*)messageDDeviceSet1Checkerboard1);
-		freeMemoryOnTargetDevice((void*)messageLDeviceSet1Checkerboard1);
-		freeMemoryOnTargetDevice((void*)messageRDeviceSet1Checkerboard1);
-
-		freeMemoryOnTargetDevice((void*)messageUDeviceSet1Checkerboard2);
-		freeMemoryOnTargetDevice((void*)messageDDeviceSet1Checkerboard2);
-		freeMemoryOnTargetDevice((void*)messageLDeviceSet1Checkerboard2);
-		freeMemoryOnTargetDevice((void*)messageRDeviceSet1Checkerboard2);
+		freeCheckerboardMessagesMemory(messagesDeviceSet1Checkerboard0);
+		freeCheckerboardMessagesMemory(messagesDeviceSet1Checkerboard1);
 	}
 
 	//now free the allocated data space
+	freeMemoryOnTargetDevice((void*)dataCostDeviceCheckerboard0);
 	freeMemoryOnTargetDevice((void*)dataCostDeviceCheckerboard1);
-	freeMemoryOnTargetDevice((void*)dataCostDeviceCheckerboard2);
 
 #else
 
 	//now free the allocated data space
-	freeMemoryOnTargetDevice(dataCostDeviceCheckerboard1);
+	freeMemoryOnTargetDevice(dataCostDeviceCheckerboard0);
 
 #endif
 

@@ -33,87 +33,83 @@ public:
 
 		virtual void freeMemoryOnTargetDevice(void* arrayToFree) = 0;
 
-		virtual void initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties,
+		virtual void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
 				float* image1PixelsCompDevice, float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
 				T* dataCostDeviceCheckerboard2) = 0;
 
-		virtual void initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
-				levelProperties& prevLevelProperties,
+		virtual void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
+				const levelProperties& prevLevelProperties,
 				T* dataCostStereoCheckerboard1,
 				T* dataCostStereoCheckerboard2,
 				T* dataCostDeviceToWriteToCheckerboard1,
 				T* dataCostDeviceToWriteToCheckerboard2) = 0;
 
 		virtual void initializeMessageValsToDefault(
-				levelProperties& currentLevelPropertes,
-				T* messageUDeviceCheckerboard1,
-				T* messageDDeviceCheckerboard1,
-				T* messageLDeviceCheckerboard1,
-				T* messageRDeviceCheckerboard1,
-				T* messageUDeviceCheckerboard2,
-				T* messageDDeviceCheckerboard2,
-				T* messageLDeviceCheckerboard2,
-				T* messageRDeviceCheckerboard2) = 0;
+				const levelProperties& currentLevelProperties,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1) = 0;
 
 		virtual void runBPAtCurrentLevel(const BPsettings& algSettings,
-				levelProperties& currentLevelPropertes,
+				const levelProperties& currentLevelProperties,
+				T* dataCostDeviceCurrentLevelCheckerboard0,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
-				T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceCheckerboard1,
-				T* messageDDeviceCheckerboard1,
-				T* messageLDeviceCheckerboard1,
-				T* messageRDeviceCheckerboard1,
-				T* messageUDeviceCheckerboard2,
-				T* messageDDeviceCheckerboard2,
-				T* messageLDeviceCheckerboard2,
-				T* messageRDeviceCheckerboard2) = 0;
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1) = 0;
 
 		virtual void copyMessageValuesToNextLevelDown(
-				levelProperties& currentLevelPropertes,
-				levelProperties& nextLevelPropertes,
-				T* messageUDeviceCheckerboard1CopyFrom,
-				T* messageDDeviceCheckerboard1CopyFrom,
-				T* messageLDeviceCheckerboard1CopyFrom,
-				T* messageRDeviceCheckerboard1CopyFrom,
-				T* messageUDeviceCheckerboard2CopyFrom,
-				T* messageDDeviceCheckerboard2CopyFrom,
-				T* messageLDeviceCheckerboard2CopyFrom,
-				T* messageRDeviceCheckerboard2CopyFrom,
-				T* messageUDeviceCheckerboard1CopyTo,
-				T* messageDDeviceCheckerboard1CopyTo,
-				T* messageLDeviceCheckerboard1CopyTo,
-				T* messageRDeviceCheckerboard1CopyTo,
-				T* messageUDeviceCheckerboard2CopyTo,
-				T* messageDDeviceCheckerboard2CopyTo,
-				T* messageLDeviceCheckerboard2CopyTo,
-				T* messageRDeviceCheckerboard2CopyTo) = 0;
+				const levelProperties& currentLevelProperties,
+				const levelProperties& nextlevelProperties,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0CopyFrom,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1CopyFrom,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0CopyTo,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1CopyTo) = 0;
 
 		virtual void retrieveOutputDisparity(
-				Checkerboard_Parts currentCheckerboardSet,
-				levelProperties& levelPropertes,
+				const Checkerboard_Parts currentCheckerboardSet,
+				const levelProperties& levelProperties,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1,
-				T* messageDDeviceSet0Checkerboard1,
-				T* messageLDeviceSet0Checkerboard1,
-				T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2,
-				T* messageDDeviceSet0Checkerboard2,
-				T* messageLDeviceSet0Checkerboard2,
-				T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1,
-				T* messageDDeviceSet1Checkerboard1,
-				T* messageLDeviceSet1Checkerboard1,
-				T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2,
-				T* messageDDeviceSet1Checkerboard2,
-				T* messageLDeviceSet1Checkerboard2,
-				T* messageRDeviceSet1Checkerboard2,
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard1,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard1,
 				float* resultingDisparityMapCompDevice) = 0;
 
 		virtual int getPaddedCheckerboardWidth(int checkerboardWidth);
 
 		unsigned long getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements);
+
+		void freeCheckerboardMessagesMemory(const checkerboardMessages<T>& checkerboardMessagesToFree)
+		{
+			freeMemoryOnTargetDevice((void*)checkerboardMessagesToFree.messagesU);
+			freeMemoryOnTargetDevice((void*)checkerboardMessagesToFree.messagesD);
+			freeMemoryOnTargetDevice((void*)checkerboardMessagesToFree.messagesL);
+			freeMemoryOnTargetDevice((void*)checkerboardMessagesToFree.messagesR);
+		}
+
+		checkerboardMessages<T> allocateMemoryForCheckerboardMessages(unsigned long numBytesAllocatePerMessage)
+		{
+			checkerboardMessages<T> outputCheckerboardMessages;
+
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesU, numBytesAllocatePerMessage);
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesD, numBytesAllocatePerMessage);
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesL, numBytesAllocatePerMessage);
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesR, numBytesAllocatePerMessage);
+
+			return outputCheckerboardMessages;
+		}
+
+		checkerboardMessages<T> retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(const checkerboardMessages<T>& allCheckerboardMessages, unsigned long offsetIntoAllCheckerboardMessages)
+		{
+			checkerboardMessages<T> outputCheckerboardMessages;
+
+			outputCheckerboardMessages.messagesU = &(allCheckerboardMessages.messagesU[offsetIntoAllCheckerboardMessages]);
+			outputCheckerboardMessages.messagesD = &(allCheckerboardMessages.messagesD[offsetIntoAllCheckerboardMessages]);
+			outputCheckerboardMessages.messagesL = &(allCheckerboardMessages.messagesL[offsetIntoAllCheckerboardMessages]);
+			outputCheckerboardMessages.messagesR = &(allCheckerboardMessages.messagesR[offsetIntoAllCheckerboardMessages]);
+
+			return outputCheckerboardMessages;
+		}
 
 		//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 		//input is images image1Pixels and image1Pixels

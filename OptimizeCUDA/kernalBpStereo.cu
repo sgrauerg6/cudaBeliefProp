@@ -499,7 +499,7 @@ __global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* data
 		{
 			checkerboardAdjustment = ((yVal)%2);
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		else //checkerboardToUpdate == CHECKERBOARD_PART_1
 		{
 			checkerboardAdjustment = ((yVal+1)%2);
 		}
@@ -580,7 +580,7 @@ __device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* data
 		{
 			checkerboardAdjustment = ((yVal)%2);
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		else //checkerboardToUpdate == CHECKERBOARD_PART_1
 		{
 			checkerboardAdjustment = ((yVal+1)%2);
 		}
@@ -821,11 +821,11 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 	int checkerboardAdjustment;
 
 	//checkerboardAdjustment used for indexing into current checkerboard to update
-	if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+	if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-	else //checkerboardToUpdate == CHECKERBOARD_PART_2
+	else //checkerboardToUpdate == CHECKERBOARD_PART_1
 	{
 		checkerboardAdjustment = ((yVal+1)%2);
 	}
@@ -842,7 +842,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 
 		half2 dataMessage[NUM_POSSIBLE_DISPARITY_VALUES];
 
-		if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+		if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 		{
 			half* messageLDeviceCurrentCheckerboard2Half = (half*)messageLDeviceCurrentCheckerboard2;
 			half* messageRDeviceCurrentCheckerboard2Half = (half*)messageRDeviceCurrentCheckerboard2;
@@ -912,7 +912,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 				}*//*
 			}
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_2
+		else //checkerboardToUpdate == CHECKERBOARD_PART_1
 		{
 			half* messageLDeviceCurrentCheckerboard1Half = (half*)messageLDeviceCurrentCheckerboard1;
 			half* messageRDeviceCurrentCheckerboard1Half = (half*)messageRDeviceCurrentCheckerboard1;
@@ -998,14 +998,14 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 		for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
 			indexWriteTo = retrieveIndexInDataAndMessage(xVal, yVal, widthLevelCheckerboardPart, heightLevel, currentDisparity, NUM_POSSIBLE_DISPARITY_VALUES);
-			if (checkerboardToUpdate == CHECKERBOARD_PART_1)
+			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 			{
 				messageUDeviceCurrentCheckerboard1[indexWriteTo] = currentUMessage[currentDisparity];
 				messageDDeviceCurrentCheckerboard1[indexWriteTo] = currentDMessage[currentDisparity];
 				messageLDeviceCurrentCheckerboard1[indexWriteTo] = currentLMessage[currentDisparity];
 				messageRDeviceCurrentCheckerboard1[indexWriteTo] = currentRMessage[currentDisparity];
 			}
-			else //checkerboardToUpdate == CHECKERBOARD_PART_2
+			else //checkerboardToUpdate == CHECKERBOARD_PART_1
 			{
 				messageUDeviceCurrentCheckerboard2[indexWriteTo] = currentUMessage[currentDisparity];
 				messageDDeviceCurrentCheckerboard2[indexWriteTo] = currentDMessage[currentDisparity];

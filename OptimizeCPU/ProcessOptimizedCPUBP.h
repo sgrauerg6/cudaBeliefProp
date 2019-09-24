@@ -49,123 +49,65 @@ public:
 			free(arrayToFree);
 		}
 
-		void initializeDataCosts(const BPsettings& algSettings, levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
-						float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
-						T* dataCostDeviceCheckerboard2);
+		void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties, float* image1PixelsCompDevice,
+				float* image2PixelsCompDevice, T* dataCostDeviceCheckerboard1,
+				T* dataCostDeviceCheckerboard2);
 
-		void initializeDataCurrentLevel(levelProperties& currentLevelPropertes,
-				levelProperties& prevLevelProperties,
+		void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
+				const levelProperties& prevLevelProperties,
 				T* dataCostStereoCheckerboard1,
 				T* dataCostStereoCheckerboard2,
 				T* dataCostDeviceToWriteToCheckerboard1,
 				T* dataCostDeviceToWriteToCheckerboard2);
 
 		void initializeMessageValsToDefault(
-				levelProperties& currentLevelPropertes,
-				T* messageUDeviceCheckerboard1,
-				T* messageDDeviceCheckerboard1,
-				T* messageLDeviceCheckerboard1,
-				T* messageRDeviceCheckerboard1,
-				T* messageUDeviceCheckerboard2,
-				T* messageDDeviceCheckerboard2,
-				T* messageLDeviceCheckerboard2,
-				T* messageRDeviceCheckerboard2);
+				const levelProperties& currentLevelProperties,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1);
 
 		void runBPAtCurrentLevel(const BPsettings& algSettings,
-				levelProperties& currentLevelPropertes,
+				const levelProperties& currentLevelProperties,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceCheckerboard1,
-				T* messageDDeviceCheckerboard1,
-				T* messageLDeviceCheckerboard1,
-				T* messageRDeviceCheckerboard1,
-				T* messageUDeviceCheckerboard2,
-				T* messageDDeviceCheckerboard2,
-				T* messageLDeviceCheckerboard2,
-				T* messageRDeviceCheckerboard2);
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1);
 
 		void copyMessageValuesToNextLevelDown(
-				levelProperties& currentLevelPropertes,
-				levelProperties& nextLevelPropertes,
-				T* messageUDeviceCheckerboard1CopyFrom,
-				T* messageDDeviceCheckerboard1CopyFrom,
-				T* messageLDeviceCheckerboard1CopyFrom,
-				T* messageRDeviceCheckerboard1CopyFrom,
-				T* messageUDeviceCheckerboard2CopyFrom,
-				T* messageDDeviceCheckerboard2CopyFrom,
-				T* messageLDeviceCheckerboard2CopyFrom,
-				T* messageRDeviceCheckerboard2CopyFrom,
-				T* messageUDeviceCheckerboard1CopyTo,
-				T* messageDDeviceCheckerboard1CopyTo,
-				T* messageLDeviceCheckerboard1CopyTo,
-				T* messageRDeviceCheckerboard1CopyTo,
-				T* messageUDeviceCheckerboard2CopyTo,
-				T* messageDDeviceCheckerboard2CopyTo,
-				T* messageLDeviceCheckerboard2CopyTo,
-				T* messageRDeviceCheckerboard2CopyTo);
+				const levelProperties& currentLevelProperties,
+				const levelProperties& nextlevelProperties,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0CopyFrom,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1CopyFrom,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard0CopyTo,
+				const checkerboardMessages<T>& messagesDeviceCheckerboard1CopyTo);
 
 		void retrieveOutputDisparity(
-				Checkerboard_Parts currentCheckerboardSet,
-				levelProperties& levelPropertes,
+				const Checkerboard_Parts currentCheckerboardSet,
+				const levelProperties& levelProperties,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1,
-				T* messageDDeviceSet0Checkerboard1,
-				T* messageLDeviceSet0Checkerboard1,
-				T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2,
-				T* messageDDeviceSet0Checkerboard2,
-				T* messageLDeviceSet0Checkerboard2,
-				T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1,
-				T* messageDDeviceSet1Checkerboard1,
-				T* messageLDeviceSet1Checkerboard1,
-				T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2,
-				T* messageDDeviceSet1Checkerboard2,
-				T* messageLDeviceSet1Checkerboard2,
-				T* messageRDeviceSet1Checkerboard2,
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard1,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard1,
 				float* resultingDisparityMapCompDevice);
 
-		void printDataAndMessageValsToPoint(int xVal, int yVal, levelProperties& levelPropertes,
+		void printDataAndMessageValsToPoint(int xVal, int yVal, levelProperties& currentLevelProperties,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1,
-				T* messageDDeviceSet0Checkerboard1,
-				T* messageLDeviceSet0Checkerboard1,
-				T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2,
-				T* messageDDeviceSet0Checkerboard2,
-				T* messageLDeviceSet0Checkerboard2,
-				T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1,
-				T* messageDDeviceSet1Checkerboard1,
-				T* messageLDeviceSet1Checkerboard1,
-				T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2,
-				T* messageDDeviceSet1Checkerboard2,
-				T* messageLDeviceSet1Checkerboard2,
-				T* messageRDeviceSet1Checkerboard2, int currentCheckerboardSet);
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard1,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard1,
+				const Checkerboard_Parts currentCheckerboardSet);
 
-		void printDataAndMessageValsAtPoint(int xVal, int yVal, levelProperties& levelPropertes,
+		void printDataAndMessageValsAtPoint(int xVal, int yVal, levelProperties& currentLevelProperties,
 				T* dataCostDeviceCurrentLevelCheckerboard1,
 				T* dataCostDeviceCurrentLevelCheckerboard2,
-				T* messageUDeviceSet0Checkerboard1,
-				T* messageDDeviceSet0Checkerboard1,
-				T* messageLDeviceSet0Checkerboard1,
-				T* messageRDeviceSet0Checkerboard1,
-				T* messageUDeviceSet0Checkerboard2,
-				T* messageDDeviceSet0Checkerboard2,
-				T* messageLDeviceSet0Checkerboard2,
-				T* messageRDeviceSet0Checkerboard2,
-				T* messageUDeviceSet1Checkerboard1,
-				T* messageDDeviceSet1Checkerboard1,
-				T* messageLDeviceSet1Checkerboard1,
-				T* messageRDeviceSet1Checkerboard1,
-				T* messageUDeviceSet1Checkerboard2,
-				T* messageDDeviceSet1Checkerboard2,
-				T* messageLDeviceSet1Checkerboard2,
-				T* messageRDeviceSet1Checkerboard2, int currentCheckerboardSet);
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet0Checkerboard1,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard0,
+				const checkerboardMessages<T>& messagesDeviceSet1Checkerboard1,
+				const Checkerboard_Parts currentCheckerboardSet);
 };
 
 //if not using AVX-256 or AVX-512, process using float if short data type used

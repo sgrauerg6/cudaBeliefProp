@@ -26,8 +26,8 @@ short convertValToDifferentDataTypeIfNeeded<float, short>(float data)
 }
 
 template<> inline
-void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
-		levelProperties& currentLevelProperties,
+void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2,
 		short* messageUDeviceCurrentCheckerboard1,
 		short* messageDDeviceCurrentCheckerboard1,
@@ -57,7 +57,7 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<short, short>(int xVal, int yVal, levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
+void initializeBottomLevelDataStereoPixel<short, short>(int xVal, int yVal, const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard1, short* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
 	initializeBottomLevelDataStereoPixel<short, float>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
@@ -69,7 +69,7 @@ void initializeBottomLevelDataStereoPixel<short, short>(int xVal, int yVal, leve
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void initializeCurrentLevelDataStereoPixel<short, short>(int xVal, int yVal, Checkerboard_Parts checkerboardPart, levelProperties& currentLevelProperties, levelProperties& prevLevelProperties, short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* dataCostDeviceToWriteTo, int offsetNum)
+void initializeCurrentLevelDataStereoPixel<short, short>(int xVal, int yVal, const Checkerboard_Parts checkerboardPart, const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties, short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* dataCostDeviceToWriteTo, int offsetNum)
 {
 	initializeCurrentLevelDataStereoPixel<short, float>(
 					xVal, yVal, checkerboardPart,
@@ -80,7 +80,7 @@ void initializeCurrentLevelDataStereoPixel<short, short>(int xVal, int yVal, Che
 }
 
 template<> inline
-void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<short, short>(int xVal, int yVal, levelProperties& currentLevelProperties, short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
+void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<short, short>(int xVal, int yVal, const levelProperties& currentLevelProperties, short* dataCostStereoCheckerboard1, short* dataCostStereoCheckerboard2, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1, short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, short* messageUPrevStereoCheckerboard2, short* messageDPrevStereoCheckerboard2, short* messageLPrevStereoCheckerboard2, short* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
 	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<short, float>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1, messageUPrevStereoCheckerboard2, messageDPrevStereoCheckerboard2, messageLPrevStereoCheckerboard2, messageRPrevStereoCheckerboard2, disparityBetweenImagesDevice);
 }
