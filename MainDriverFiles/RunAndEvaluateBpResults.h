@@ -97,7 +97,7 @@ public:
 
 		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp, bp_params::SCALE_BP);
 		for (int i = 0; i < 2; i++) {
-			outStream << std::endl << bpProcessingImps[0]->getBpRunDescription()
+			outStream << std::endl << bpProcessingImps[i]->getBpRunDescription()
 					<< " output vs. Ground Truth result:\n";
 			compareDispMaps(run_output[i].outDisparityMap,
 					groundTruthDisparityMap, outStream);
