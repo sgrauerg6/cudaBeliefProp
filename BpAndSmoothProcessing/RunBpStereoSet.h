@@ -69,11 +69,10 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<V, W>>& runBPMemoryMangement)
 {
 	//retrieve the images as well as the width and height
-	BpImage<unsigned int> image1AsUnsignedIntArrayHost(refImagePath);
-	BpImage<unsigned int> image2AsUnsignedIntArrayHost(testImagePath);
+	std::array<BpImage<unsigned int>, 2> inputImages = { BpImage<unsigned int>(refImagePath), BpImage<unsigned int>(testImagePath) };
 
-	const unsigned int heightImages = image1AsUnsignedIntArrayHost.getHeight();
-	const unsigned int widthImages = image1AsUnsignedIntArrayHost.getWidth();
+	const unsigned int heightImages = inputImages[0].getHeight();
+	const unsigned int widthImages = inputImages[0].getWidth();
 
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
 	DetailedTimings<Runtime_Type_BP> detailedBPTimings(timingNames_BP);
@@ -84,16 +83,17 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
 	{
 		//allocate the device memory to store and x and y smoothed images
-		W smoothedImage1 = runBPMemoryMangement->allocateDataOnCompDevice(widthImages * heightImages);
-		W smoothedImage2 = runBPMemoryMangement->allocateDataOnCompDevice(widthImages * heightImages);
+		std::array<W, 2> smoothedImages = {runBPMemoryMangement->allocateDataOnCompDevice(widthImages * heightImages), runBPMemoryMangement->allocateDataOnCompDevice(widthImages * heightImages) };
 
 		//set start timer for specified runtime segments at time before smoothing images
 		runtime_start_end_timings[SMOOTHING].first = runtime_start_end_timings[TOTAL_NO_TRANSFER].first = runtime_start_end_timings[TOTAL_WITH_TRANSFER].first = std::chrono::system_clock::now();
 
 		//first smooth the images using the Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
-		(*smoothImage)(image1AsUnsignedIntArrayHost, algSettings.smoothingSigma, smoothedImage1);
-		(*smoothImage)(image2AsUnsignedIntArrayHost, algSettings.smoothingSigma, smoothedImage2);
+		for (unsigned int i = 0; i < 2; i++)
+		{
+			(*smoothImage)(inputImages[i], algSettings.smoothingSigma, smoothedImages[i]);
+		}
 
 		//end timer for image smoothing and add to image smoothing timings
 		runtime_start_end_timings[SMOOTHING].second = std::chrono::system_clock::now();
@@ -103,7 +103,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		//returns detailed timings for bp run
-		std::pair<W, DetailedTimings<Runtime_Type_BP>> rpBpStereoOutput = (*runBpStereo)(smoothedImage1, smoothedImage2,
+		std::pair<W, DetailedTimings<Runtime_Type_BP>> rpBpStereoOutput = (*runBpStereo)(smoothedImages,
 			algSettings, widthImages, heightImages);
 
 		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
@@ -126,8 +126,10 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 
 		//free the space allocated to the resulting disparity map and smoothed images on the computation device
 		runBPMemoryMangement->freeDataOnCompDevice(rpBpStereoOutput.first);
-		runBPMemoryMangement->freeDataOnCompDevice(smoothedImage1);
-		runBPMemoryMangement->freeDataOnCompDevice(smoothedImage2);
+		for (auto& smoothedImage : smoothedImages)
+		{
+			runBPMemoryMangement->freeDataOnCompDevice(smoothedImage);
+		}
 	}
 
 	resultsStream << "Image Width: " << widthImages << "\nImage Height: " << heightImages << "\n";

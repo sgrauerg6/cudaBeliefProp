@@ -49,10 +49,15 @@ enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 template <class T>
 struct checkerboardMessages
 {
-	T messagesU;
-	T messagesD;
-	T messagesL;
-	T messagesR;
+	T messagesU_Checkerboard0;
+	T messagesD_Checkerboard0;
+	T messagesL_Checkerboard0;
+	T messagesR_Checkerboard0;
+
+	T messagesU_Checkerboard1;
+	T messagesD_Checkerboard1;
+	T messagesL_Checkerboard1;
+	T messagesR_Checkerboard1;
 };
 
 template <class T>
