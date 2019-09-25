@@ -95,7 +95,7 @@ public:
 					const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1,
 					const Checkerboard_Parts currentCheckerboardSet);
 
-			void printDataAndMessageValsAtPoint(int xVal, int yVal,
+		void printDataAndMessageValsAtPoint(int xVal, int yVal,
 					const levelProperties& levelProperties,
 					const dataCostData<U>& dataCostDeviceCheckerboard,
 					const checkerboardMessages<U>& messagesDeviceSet0Checkerboard0,

@@ -50,140 +50,129 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 	T messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], T dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 	T dst[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp);
 
-//device portion of the kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the 
-//"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-//this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
-//this function uses linear memory bound to textures to access the current data and message values
-__device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMem(
-		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
-		float* messageUDeviceCurrentCheckerboard1,
-		float* messageDDeviceCurrentCheckerboard1,
-		float* messageLDeviceCurrentCheckerboard1,
-		float* messageRDeviceCurrentCheckerboard1,
-		float* messageUDeviceCurrentCheckerboard2,
-		float* messageDDeviceCurrentCheckerboard2,
-		float* messageLDeviceCurrentCheckerboard2,
-		float* messageRDeviceCurrentCheckerboard2,
-		int widthLevelCheckerboardPart, int heightLevel,
-		int checkerboardToUpdate, int xVal, int yVal, int offsetData);
-
-//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
-//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
+//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
+//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
-__global__ void initializeBottomLevelDataStereo(float* image1PixelsDevice, float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard1, T* dataCostDeviceStereoCheckerboard2, int widthImages, int heightImages, float lambda_bp, float data_k_bp);
-
-
-//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
-template<typename T>
-__global__ void initializeCurrentLevelDataStereoNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* dataCostDeviceToWriteTo, int widthCurrentLevel, int heightCurrentLevel, int widthPrevLevel, int heightPrevLevel, Checkerboard_Parts checkerboardPart, int offsetNum);
-
-
-//initialize the message values at each pixel of the current level to the default value
-template<typename T>
-__global__ void initializeMessageValsToDefaultKernel(T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1,
-												T* messageRDeviceCurrentCheckerboard1, T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2,
-												T* messageLDeviceCurrentCheckerboard2, T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardAtLevel, int heightLevel);
-
-//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
-//and the output message values are stored in local memory template<typename T>
-__device__ void runBPIterationInOutDataInLocalMem(T prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T dataMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-								T currentUMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentDMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentLMessage[NUM_POSSIBLE_DISPARITY_VALUES], T currentRMessage[NUM_POSSIBLE_DISPARITY_VALUES], T disc_k_bp);
-
-template<typename T>
-__device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMem(
-		T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void runBPIterationUsingCheckerboardUpdates(
+		Checkerboard_Parts checkerboardToUpdate,
+		levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
+		T* dataCostStereoCheckerboard1, T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1,
-		T* messageUDeviceCurrentCheckerboard2,
-		T* messageDDeviceCurrentCheckerboard2,
-		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2,
-		int widthLevelCheckerboardPart, int heightLevel,
-		int checkerboardToUpdate, int xVal, int yVal, int offsetData, float disc_k_bp);
-
-template<typename T>
-__global__ void retrieveOutputDisparityCheckerboardStereoOptimized(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel);
-
-//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" 
-//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-template<typename T>
-__global__ void runBPIterationUsingCheckerboardUpdatesNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
-								T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1, T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-								T* messageUDeviceCurrentCheckerboard2, T* messageDDeviceCurrentCheckerboard2, T* messageLDeviceCurrentCheckerboard2,
-								T* messageRDeviceCurrentCheckerboard2, int widthLevel, int heightLevel, Checkerboard_Parts checkerboardPartUpdate, float disc_k_bp);
-
+		T* messageRDeviceCurrentCheckerboard1, float disc_k_bp,
+		bool dataAligned);
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
-__global__ void copyPrevLevelToNextLevelBPCheckerboardStereoNoTextures(
+__global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
+		Checkerboard_Parts checkerboardPart,
+		levelProperties currentLevelProperties,
+		levelProperties nextLevelProperties,
+		T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
+		T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
-		T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
-		T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
+		T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1,
-		T* messageUDeviceCurrentCheckerboard2,
-		T* messageDDeviceCurrentCheckerboard2,
-		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthCheckerboardCurrentLevel,
-		int heightLevelCurrent, int widthCheckerboardNextLevel,
-		int heightCheckerboardNextLevel, Checkerboard_Parts checkerboardPart);
+		T* messageRDeviceCurrentCheckerboard1);
 
-//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
+//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
+//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T>
-__global__ void retrieveOutputDisparityCheckerboardStereoNoTextures(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel);
+__global__ void initializeBottomLevelDataStereo(levelProperties currentLevelProperties, float* image1PixelsDevice,
+		float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard0,
+		T* dataCostDeviceStereoCheckerboard1, float lambda_bp,
+		float data_k_bp);
 
+//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
-__device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void initializeCurrentLevelDataStereo(
+		Checkerboard_Parts checkerboardPart,
+		levelProperties currentLevelProperties,
+		levelProperties prevLevelProperties, T* dataCostStereoCheckerboard0,
+		T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
+		int offsetNum);
+
+//initialize the message values at each pixel of the current level to the default value
+template<typename T>
+__global__ void initializeMessageValsToDefaultKernel(
+		levelProperties currentLevelProperties,
+		T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1,
-		T* messageUDeviceCurrentCheckerboard2,
-		T* messageDDeviceCurrentCheckerboard2,
-		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
+		T* messageRDeviceCurrentCheckerboard1);
+
+
+template<typename T>
+__global__ void retrieveOutputDisparityCheckerboardStereoOptimized(levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
+		T* dataCostStereoCheckerboard1, T* messageUPrevStereoCheckerboard0,
+		T* messageDPrevStereoCheckerboard0, T* messageLPrevStereoCheckerboard0,
+		T* messageRPrevStereoCheckerboard0, T* messageUPrevStereoCheckerboard1,
+		T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1,
+		T* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice);
+
+
+template<typename T>
+__device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+		T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
+		T* messageUDeviceCurrentCheckerboard1,
+		T* messageDDeviceCurrentCheckerboard1,
+		T* messageLDeviceCurrentCheckerboard1,
+		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
 		int heightLevel);
 
 template<typename T>
-__global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+		T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1,
-		T* messageUDeviceCurrentCheckerboard2,
-		T* messageDDeviceCurrentCheckerboard2,
-		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
+		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
 		int heightLevel);
 
 template<typename T>
-__device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+		T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1,
-		T* messageUDeviceCurrentCheckerboard2,
-		T* messageDDeviceCurrentCheckerboard2,
-		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
+		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
 		int heightLevel);
 
 template<typename T>
-__global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+__global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+		T* messageUDeviceCurrentCheckerboard0,
+		T* messageDDeviceCurrentCheckerboard0,
+		T* messageLDeviceCurrentCheckerboard0,
+		T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1,
-		T* messageUDeviceCurrentCheckerboard2,
-		T* messageDDeviceCurrentCheckerboard2,
-		T* messageLDeviceCurrentCheckerboard2,
-		T* messageRDeviceCurrentCheckerboard2, int widthLevelCheckerboardPart,
+		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
 		int heightLevel);
 
 #endif //KERNAL_BP_H
