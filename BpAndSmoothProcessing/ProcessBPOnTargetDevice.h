@@ -83,14 +83,14 @@ public:
 			freeMemoryOnTargetDevice((void*)checkerboardMessagesToFree.messagesR);
 		}
 
-		virtual checkerboardMessages<U> allocateMemoryForCheckerboardMessages(unsigned long numBytesAllocatePerMessage)
+		virtual checkerboardMessages<U> allocateMemoryForCheckerboardMessages(unsigned long numDataAllocatePerMessage)
 		{
 			checkerboardMessages<U> outputCheckerboardMessages;
 
-			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesU, numBytesAllocatePerMessage);
-			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesD, numBytesAllocatePerMessage);
-			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesL, numBytesAllocatePerMessage);
-			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesR, numBytesAllocatePerMessage);
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesU, numDataAllocatePerMessage * sizeof(T));
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesD, numDataAllocatePerMessage * sizeof(T));
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesL, numDataAllocatePerMessage * sizeof(T));
+			allocateMemoryOnTargetDevice((void**)&outputCheckerboardMessages.messagesR, numDataAllocatePerMessage * sizeof(T));
 
 			return outputCheckerboardMessages;
 		}
@@ -113,36 +113,41 @@ public:
 			freeMemoryOnTargetDevice((void*)dataCostsToFree.dataCostCheckerboard1);
 		}
 
-		virtual dataCostData<U> allocateMemoryForDataCosts(unsigned long numBytesAllocatePerDataCostsCheckerboard)
+		virtual dataCostData<U> allocateMemoryForDataCosts(unsigned long numDataAllocatePerDataCostsCheckerboard)
 		{
 			dataCostData<U> outputDataCosts;
 
-			allocateMemoryOnTargetDevice((void**)&outputDataCosts.dataCostCheckerboard0, numBytesAllocatePerDataCostsCheckerboard);
-			allocateMemoryOnTargetDevice((void**)&outputDataCosts.dataCostCheckerboard1, numBytesAllocatePerDataCostsCheckerboard);
+			allocateMemoryOnTargetDevice((void**)&outputDataCosts.dataCostCheckerboard0, numDataAllocatePerDataCostsCheckerboard * sizeof(T));
+			allocateMemoryOnTargetDevice((void**)&outputDataCosts.dataCostCheckerboard1, numDataAllocatePerDataCostsCheckerboard * sizeof(T));
 
 			return outputDataCosts;
 		}
 
-		virtual std::tuple<dataCostData<U>, checkerboardMessages<U>, checkerboardMessages<U>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(unsigned long numBytesAllocatePerDataMessageCosts)
+		virtual std::tuple<dataCostData<U>, checkerboardMessages<U>, checkerboardMessages<U>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(unsigned long numDataAllocatePerDataCostsMessageDataArray)
 		{
 			dataCostData<U> dataCostsDeviceCheckerboardAllLevels;
 			checkerboardMessages<U> messagesDeviceCheckerboard0AllLevels;
 			checkerboardMessages<U> messagesDeviceCheckerboard1AllLevels;
 
-			allocateMemoryOnTargetDevice((void**)&dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0, 10*numBytesAllocatePerDataMessageCosts);
-			dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[1 * (numBytesAllocatePerDataMessageCosts)]);
+			allocateMemoryOnTargetDevice((void**)&dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0, 10*numDataAllocatePerDataCostsMessageDataArray*sizeof(T));
+			dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[1 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
-			messagesDeviceCheckerboard0AllLevels.messagesU = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[2 * (numBytesAllocatePerDataMessageCosts)]);
-			messagesDeviceCheckerboard0AllLevels.messagesD = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[3 * (numBytesAllocatePerDataMessageCosts)]);
-			messagesDeviceCheckerboard0AllLevels.messagesL = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[4 * (numBytesAllocatePerDataMessageCosts)]);
-			messagesDeviceCheckerboard0AllLevels.messagesR = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[5 * (numBytesAllocatePerDataMessageCosts)]);
+			messagesDeviceCheckerboard0AllLevels.messagesU = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[2 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			messagesDeviceCheckerboard0AllLevels.messagesD = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[3 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			messagesDeviceCheckerboard0AllLevels.messagesL = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[4 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			messagesDeviceCheckerboard0AllLevels.messagesR = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[5 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
-			messagesDeviceCheckerboard1AllLevels.messagesU = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[6 * (numBytesAllocatePerDataMessageCosts)]);
-			messagesDeviceCheckerboard1AllLevels.messagesD = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[7 * (numBytesAllocatePerDataMessageCosts)]);
-			messagesDeviceCheckerboard1AllLevels.messagesL = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[8 * (numBytesAllocatePerDataMessageCosts)]);
-			messagesDeviceCheckerboard1AllLevels.messagesR = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[9 * (numBytesAllocatePerDataMessageCosts)]);
+			messagesDeviceCheckerboard1AllLevels.messagesU = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[6 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			messagesDeviceCheckerboard1AllLevels.messagesD = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[7 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			messagesDeviceCheckerboard1AllLevels.messagesL = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[8 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			messagesDeviceCheckerboard1AllLevels.messagesR = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[9 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
 			return std::make_tuple(dataCostsDeviceCheckerboardAllLevels, messagesDeviceCheckerboard0AllLevels, messagesDeviceCheckerboard1AllLevels);
+		}
+
+		virtual void freeDataCostsAllDataInSingleArray(const dataCostData<U>& dataCostsToFree)
+		{
+			freeMemoryOnTargetDevice((void*)dataCostsToFree.dataCostCheckerboard0);
 		}
 
 		virtual dataCostData<U> retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(const dataCostData<U>& allDataCosts, unsigned long offsetIntoAllDataCosts)
