@@ -231,16 +231,16 @@ void ProcessOptimizedCPUBP<T, U>::initializeDataCurrentLevel(const levelProperti
 }
 
 template<typename T, typename U>
-void ProcessOptimizedCPUBP<T, U>::retrieveOutputDisparity(
+float* ProcessOptimizedCPUBP<T, U>::retrieveOutputDisparity(
 		const Checkerboard_Parts currentCheckerboardSet,
 		const levelProperties& levelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
 		const checkerboardMessages<U>& messagesDeviceSet0Checkerboard0,
 		const checkerboardMessages<U>& messagesDeviceSet0Checkerboard1,
 		const checkerboardMessages<U>& messagesDeviceSet1Checkerboard0,
-		const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1,
-		float* resultingDisparityMapCompDevice)
+		const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1)
 {
+	float* resultingDisparityMapCompDevice = new float[levelProperties.widthLevel * levelProperties.heightLevel];
 	if (currentCheckerboardSet == 0)
 	{
 		KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<
@@ -271,6 +271,8 @@ void ProcessOptimizedCPUBP<T, U>::retrieveOutputDisparity(
 				messagesDeviceSet1Checkerboard1.messagesR,
 				resultingDisparityMapCompDevice);
 	}
+
+	return resultingDisparityMapCompDevice;
 }
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

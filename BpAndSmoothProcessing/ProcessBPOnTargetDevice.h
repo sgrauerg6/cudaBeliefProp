@@ -61,15 +61,14 @@ public:
 				const checkerboardMessages<U>& messagesDeviceCheckerboard0CopyTo,
 				const checkerboardMessages<U>& messagesDeviceCheckerboard1CopyTo) = 0;
 
-		virtual void retrieveOutputDisparity(
+		virtual V retrieveOutputDisparity(
 				const Checkerboard_Parts currentCheckerboardSet,
 				const levelProperties& levelProperties,
 				const dataCostData<U>& dataCostDeviceCheckerboard,
 				const checkerboardMessages<U>& messagesDeviceSet0Checkerboard0,
 				const checkerboardMessages<U>& messagesDeviceSet0Checkerboard1,
 				const checkerboardMessages<U>& messagesDeviceSet1Checkerboard0,
-				const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1,
-				V resultingDisparityMapCompDevice) = 0;
+				const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1) = 0;
 
 		virtual int getPaddedCheckerboardWidth(int checkerboardWidth);
 
@@ -163,9 +162,8 @@ public:
 		//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 		//input is images image1Pixels and image1Pixels
 		//output is resultingDisparityMap
-		DetailedTimings<Runtime_Type_BP> operator()(V image1PixelsCompDevice,
-			V image2PixelsCompDevice,
-			V resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages);
+		std::pair<V, DetailedTimings<Runtime_Type_BP>> operator()(V image1PixelsCompDevice,
+			V image2PixelsCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages);
 };
 
 #endif /* PROCESSBPONTARGETDEVICE_H_ */

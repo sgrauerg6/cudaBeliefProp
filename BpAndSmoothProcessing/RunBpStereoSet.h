@@ -98,37 +98,34 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 		//end timer for image smoothing and add to image smoothing timings
 		runtime_start_end_timings[SMOOTHING].second = std::chrono::system_clock::now();
 
-		//allocate the space for the disparity map estimation
-		W disparityMapFromImage1To2CompDevice = runBPMemoryMangement->allocateDataOnCompDevice(widthImages * heightImages);
-
 		//get runtime before bp processing
 		runtime_start_end_timings[TOTAL_BP].first = std::chrono::system_clock::now();
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		//returns detailed timings for bp run
-		DetailedTimings<Runtime_Type_BP> currentDetailedTimings = (*runBpStereo)(smoothedImage1, smoothedImage2,
-			disparityMapFromImage1To2CompDevice, algSettings, widthImages, heightImages);
+		std::pair<W, DetailedTimings<Runtime_Type_BP>> rpBpStereoOutput = (*runBpStereo)(smoothedImage1, smoothedImage2,
+			algSettings, widthImages, heightImages);
 
 		runtime_start_end_timings[TOTAL_BP].second = runtime_start_end_timings[TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
 		//transfer the disparity map estimation on the device to the host for output
-		runBPMemoryMangement->transferDataFromCompDeviceToHost(output_disparity_map.getPointerToPixelsStart(), disparityMapFromImage1To2CompDevice, widthImages * heightImages);
+		runBPMemoryMangement->transferDataFromCompDeviceToHost(output_disparity_map.getPointerToPixelsStart(), rpBpStereoOutput.first, widthImages * heightImages);
 
 		//compute timings for each portion of interest and add to vector timings
 		runtime_start_end_timings[TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
 
 		//retrieve the timing for each runtime segment and add to vector in timings map
 		std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
-				[&detailedBPTimings] (auto& currentRuntimeNameAndTiming) {
+				[&detailedBPTimings] (const auto& currentRuntimeNameAndTiming) {
 			detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
 					(timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
 		});
 
 		//add bp timings from current run to overall timings
-		detailedBPTimings.addToCurrentTimings(currentDetailedTimings);
+		detailedBPTimings.addToCurrentTimings(rpBpStereoOutput.second);
 
 		//free the space allocated to the resulting disparity map and smoothed images on the computation device
-		runBPMemoryMangement->freeDataOnCompDevice(disparityMapFromImage1To2CompDevice);
+		runBPMemoryMangement->freeDataOnCompDevice(rpBpStereoOutput.first);
 		runBPMemoryMangement->freeDataOnCompDevice(smoothedImage1);
 		runBPMemoryMangement->freeDataOnCompDevice(smoothedImage2);
 	}

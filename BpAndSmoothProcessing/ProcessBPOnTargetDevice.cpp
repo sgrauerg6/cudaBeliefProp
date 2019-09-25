@@ -44,9 +44,8 @@ unsigned long ProcessBPOnTargetDevice<T, U, V>::getNumDataForAlignedMemoryAtLeve
 //input is images image1Pixels and image1Pixels
 //output is resultingDisparityMap
 template<typename T, typename U, typename V>
-DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U, V>::operator()(V image1PixelsCompDevice,
-	V image2PixelsCompDevice,
-	V resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
+std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>::operator()(V image1PixelsCompDevice,
+	V image2PixelsCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
 	DetailedTimings<Runtime_Type_BP> segmentTimings(timingNames_BP);
 	double totalTimeBpIters = 0.0;
@@ -337,14 +336,13 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U, V>::operator()(V 
 	auto timeGetOutputDisparityStart = std::chrono::system_clock::now();
 
 	//assume in bottom level when retrieving output disparity
-	retrieveOutputDisparity(currentCheckerboardSet,
+	V resultingDisparityMapCompDevice = retrieveOutputDisparity(currentCheckerboardSet,
 		processingLevelProperties[0],
 		dataCostsDeviceCheckerboardCurrentLevel,
 		messagesDeviceSet0Checkerboard0,
 		messagesDeviceSet0Checkerboard1,
 		messagesDeviceSet1Checkerboard0,
-		messagesDeviceSet1Checkerboard1,
-		resultingDisparityMapCompDevice);
+		messagesDeviceSet1Checkerboard1);
 
 	auto timeGetOutputDisparityEnd = std::chrono::system_clock::now();
 	diff = timeGetOutputDisparityEnd - timeGetOutputDisparityStart;
@@ -397,7 +395,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U, V>::operator()(V 
 			+ totalTimeFinalFree;
 	segmentTimings.addTiming(TOTAL_TIMED, totalTimed);
 
-	return segmentTimings;
+	return std::make_pair(resultingDisparityMapCompDevice, segmentTimings);
 }
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

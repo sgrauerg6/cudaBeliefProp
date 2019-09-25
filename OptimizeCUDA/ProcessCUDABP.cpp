@@ -472,15 +472,17 @@ void ProcessCUDABP<half2>::initializeDataCurrentLevel(const levelProperties& cur
 #endif
 
 template<typename T, typename U>
-void ProcessCUDABP<T, U>::retrieveOutputDisparity(const Checkerboard_Parts currentCheckerboardSet,
+float* ProcessCUDABP<T, U>::retrieveOutputDisparity(const Checkerboard_Parts currentCheckerboardSet,
 		const levelProperties& levelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
 		const checkerboardMessages<U>& messagesDeviceSet0Checkerboard0,
 		const checkerboardMessages<U>& messagesDeviceSet0Checkerboard1,
 		const checkerboardMessages<U>& messagesDeviceSet1Checkerboard0,
-		const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1,
-		float* resultingDisparityMapCompDevice)
+		const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1)
 {
+	float* resultingDisparityMapCompDevice;
+	cudaMalloc((void**)&resultingDisparityMapCompDevice, levelProperties.widthLevel * levelProperties.heightLevel * sizeof(float));
+
 	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
@@ -518,6 +520,8 @@ void ProcessCUDABP<T, U>::retrieveOutputDisparity(const Checkerboard_Parts curre
 
 	(cudaDeviceSynchronize());
 	gpuErrchk(cudaPeekAtLastError());
+
+	return resultingDisparityMapCompDevice;
 }
 
 

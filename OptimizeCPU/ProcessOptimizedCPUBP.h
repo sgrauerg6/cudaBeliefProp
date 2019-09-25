@@ -76,15 +76,14 @@ public:
 					const checkerboardMessages<U>& messagesDeviceCheckerboard0CopyTo,
 					const checkerboardMessages<U>& messagesDeviceCheckerboard1CopyTo);
 
-		void retrieveOutputDisparity(
+		float* retrieveOutputDisparity(
 					const Checkerboard_Parts currentCheckerboardSet,
 					const levelProperties& currentLevelProperties,
 					const dataCostData<U>& dataCostDeviceCheckerboard,
 					const checkerboardMessages<U>& messagesDeviceSet0Checkerboard0,
 					const checkerboardMessages<U>& messagesDeviceSet0Checkerboard1,
 					const checkerboardMessages<U>& messagesDeviceSet1Checkerboard0,
-					const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1,
-					float* resultingDisparityMapCompDevice);
+					const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1);
 
 		void printDataAndMessageValsToPoint(int xVal, int yVal,
 					const levelProperties& currentLevelProperties,

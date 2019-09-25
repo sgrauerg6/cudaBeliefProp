@@ -14,6 +14,7 @@
 #include <unordered_map>
 #include <map>
 #include <iostream>
+#include "DetailedTimingBPConsts.h"
 
 //Class to store timings
 //Not that there is currently no check that the input segment index for timing is valid; currently is assumed
@@ -24,7 +25,7 @@ class DetailedTimings {
 public:
 
 	//initialize each timing segment
-	DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : numToString(timingSegments)
+	DetailedTimings(const std::unordered_map<T, std::string>& timingSegments = timingNames_BP) : numToString(timingSegments)
 	{
 		for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment.first] = std::vector<double>(); });
 	}
