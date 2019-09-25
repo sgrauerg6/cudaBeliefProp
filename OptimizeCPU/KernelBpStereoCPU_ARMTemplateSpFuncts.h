@@ -38,58 +38,65 @@ float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(float valToCon
 template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t>(int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
-		float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2,
+		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* messageUDeviceCurrentCheckerboard0,
+		float16_t* messageDDeviceCurrentCheckerboard0,
+		float16_t* messageLDeviceCurrentCheckerboard0,
+		float16_t* messageRDeviceCurrentCheckerboard0,
 		float16_t* messageUDeviceCurrentCheckerboard1,
 		float16_t* messageDDeviceCurrentCheckerboard1,
 		float16_t* messageLDeviceCurrentCheckerboard1,
-		float16_t* messageRDeviceCurrentCheckerboard1,
-		float16_t* messageUDeviceCurrentCheckerboard2,
-		float16_t* messageDDeviceCurrentCheckerboard2,
-		float16_t* messageLDeviceCurrentCheckerboard2,
-		float16_t* messageRDeviceCurrentCheckerboard2, float disc_k_bp,
+		float16_t* messageRDeviceCurrentCheckerboard1, float disc_k_bp,
 		int offsetData, bool dataAligned)
 {
 	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float>(
 				xVal, yVal, checkerboardToUpdate,
 				currentLevelProperties,
-				dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0,
+				messageDDeviceCurrentCheckerboard0,
+				messageLDeviceCurrentCheckerboard0,
+				messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1,
 				messageDDeviceCurrentCheckerboard1,
 				messageLDeviceCurrentCheckerboard1,
-				messageRDeviceCurrentCheckerboard1,
-				messageUDeviceCurrentCheckerboard2,
-				messageDDeviceCurrentCheckerboard2,
-				messageLDeviceCurrentCheckerboard2,
-				messageRDeviceCurrentCheckerboard2, disc_k_bp,
+				messageRDeviceCurrentCheckerboard1, disc_k_bp,
 				offsetData, dataAligned);
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, float16_t* dataCostDeviceStereoCheckerboard1, float16_t* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
+void initializeBottomLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float* image1PixelsDevice,
+		float* image2PixelsDevice, float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
 	initializeBottomLevelDataStereoPixel<float16_t, float>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard1,
-			dataCostDeviceStereoCheckerboard2, lambda_bp,
+			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
+			dataCostDeviceStereoCheckerboard1, lambda_bp,
 			data_k_bp);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, const Checkerboard_Parts checkerboardPart, const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* dataCostDeviceToWriteTo, int offsetNum)
+void initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, const Checkerboard_Parts checkerboardPart, const levelProperties& currentLevelProperties,
+		const levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostDeviceToWriteTo, int offsetNum)
 {
 	initializeCurrentLevelDataStereoPixel<float16_t, float>(
 			xVal, yVal, checkerboardPart,
 			currentLevelProperties,
-			prevLevelProperties, dataCostStereoCheckerboard1,
-			dataCostStereoCheckerboard2, dataCostDeviceToWriteTo,
+			prevLevelProperties, dataCostStereoCheckerboard0,
+			dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
 			offsetNum);
 }
 
 template<> inline
-void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2, float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1, float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1, float16_t* messageUPrevStereoCheckerboard2, float16_t* messageDPrevStereoCheckerboard2, float16_t* messageLPrevStereoCheckerboard2, float16_t* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
+void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard0,
+		float16_t* dataCostStereoCheckerboard1, float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0, float16_t* messageLPrevStereoCheckerboard0,
+		float16_t* messageRPrevStereoCheckerboard0, float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1, float16_t* messageLPrevStereoCheckerboard1,
+		float16_t* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice)
 {
-	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard1, dataCostStereoCheckerboard2, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1, messageUPrevStereoCheckerboard2, messageDPrevStereoCheckerboard2, messageLPrevStereoCheckerboard2, messageRPrevStereoCheckerboard2, disparityBetweenImagesDevice);
+	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0,
+			messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
+			messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice);
 }
 
 #endif

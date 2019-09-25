@@ -15,54 +15,54 @@ template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 		float>(const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
-		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
+		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+		float* messageUDeviceCurrentCheckerboard0,
+		float* messageDDeviceCurrentCheckerboard0,
+		float* messageLDeviceCurrentCheckerboard0,
+		float* messageRDeviceCurrentCheckerboard0,
 		float* messageUDeviceCurrentCheckerboard1,
 		float* messageDDeviceCurrentCheckerboard1,
 		float* messageLDeviceCurrentCheckerboard1,
-		float* messageRDeviceCurrentCheckerboard1,
-		float* messageUDeviceCurrentCheckerboard2,
-		float* messageDDeviceCurrentCheckerboard2,
-		float* messageLDeviceCurrentCheckerboard2,
-		float* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
+		float* messageRDeviceCurrentCheckerboard1, float disc_k_bp) {
 	int numDataInSIMDVector = 4;
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<
 			float, float32x4_t>(checkerboardToUpdate, currentLevelProperties,
-			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+			messageUDeviceCurrentCheckerboard0,
+			messageDDeviceCurrentCheckerboard0,
+			messageLDeviceCurrentCheckerboard0,
+			messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1,
 			messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1,
-			messageRDeviceCurrentCheckerboard1,
-			messageUDeviceCurrentCheckerboard2,
-			messageDDeviceCurrentCheckerboard2,
-			messageLDeviceCurrentCheckerboard2,
-			messageRDeviceCurrentCheckerboard2, disc_k_bp, numDataInSIMDVector);
+			messageRDeviceCurrentCheckerboard1, disc_k_bp, numDataInSIMDVector);
 }
 
 template<> inline
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 float16_t>(const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
-		float16_t* dataCostStereoCheckerboard1, float16_t* dataCostStereoCheckerboard2,
+		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* messageUDeviceCurrentCheckerboard0,
+		float16_t* messageDDeviceCurrentCheckerboard0,
+		float16_t* messageLDeviceCurrentCheckerboard0,
+		float16_t* messageRDeviceCurrentCheckerboard0,
 		float16_t* messageUDeviceCurrentCheckerboard1,
 		float16_t* messageDDeviceCurrentCheckerboard1,
 		float16_t* messageLDeviceCurrentCheckerboard1,
-		float16_t* messageRDeviceCurrentCheckerboard1,
-		float16_t* messageUDeviceCurrentCheckerboard2,
-		float16_t* messageDDeviceCurrentCheckerboard2,
-		float16_t* messageLDeviceCurrentCheckerboard2,
-		float16_t* messageRDeviceCurrentCheckerboard2, float disc_k_bp) {
+		float16_t* messageRDeviceCurrentCheckerboard1, float disc_k_bp) {
 	int numDataInSIMDVector = 4;
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<
 			float16_t, float16x4_t>(checkerboardToUpdate, currentLevelProperties,
-			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+			messageUDeviceCurrentCheckerboard0,
+			messageDDeviceCurrentCheckerboard0,
+			messageLDeviceCurrentCheckerboard0,
+			messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1,
 			messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1,
-			messageRDeviceCurrentCheckerboard1,
-			messageUDeviceCurrentCheckerboard2,
-			messageDDeviceCurrentCheckerboard2,
-			messageLDeviceCurrentCheckerboard2,
-			messageRDeviceCurrentCheckerboard2, disc_k_bp, numDataInSIMDVector);
+			messageRDeviceCurrentCheckerboard1, disc_k_bp, numDataInSIMDVector);
 }
 
 template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float,
