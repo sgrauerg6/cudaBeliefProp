@@ -49,7 +49,7 @@ public:
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
-		std::unique_ptr<ProcessBPOnTargetDevice<T>> processImageCUDA = std::make_unique<ProcessCUDABP<T>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
 		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
@@ -103,7 +103,7 @@ public:
 
 		//std::cout << "Processing as half on GPU\n";
 		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half>> processImageCUDA = std::make_unique<ProcessCUDABP<half>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
@@ -112,7 +112,7 @@ public:
 
 		//std::cout << "Processing as half2 on GPU\n";
 		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half2>> processImageCUDA = std::make_unique<ProcessCUDABP<half2>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half2, half2*>> processImageCUDA = std::make_unique<ProcessCUDABP<half2, half2*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
 		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
@@ -131,7 +131,7 @@ public:
 #ifdef COMPILING_FOR_ARM
 
 template<>
-class RunBpStereoSetOnGPUWithCUDA<float16_t> : public RunBpStereoSet<float16_t>
+class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
 {
 public:
 

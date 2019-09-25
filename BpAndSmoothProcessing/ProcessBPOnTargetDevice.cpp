@@ -7,8 +7,8 @@
 
 #include "ProcessBPOnTargetDevice.h"
 
-template<typename T>
-int ProcessBPOnTargetDevice<T>::getPaddedCheckerboardWidth(int checkerboardWidth)
+template<typename T, typename U>
+int ProcessBPOnTargetDevice<T, U>::getPaddedCheckerboardWidth(int checkerboardWidth)
 {
 	if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
 	{
@@ -21,8 +21,8 @@ int ProcessBPOnTargetDevice<T>::getPaddedCheckerboardWidth(int checkerboardWidth
 	}
 }
 
-template<typename T>
-unsigned long ProcessBPOnTargetDevice<T>::getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements)
+template<typename T, typename U>
+unsigned long ProcessBPOnTargetDevice<T, U>::getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements)
 {
 	unsigned long numDataAtLevel = ((unsigned long)getPaddedCheckerboardWidth((int)getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize)))
 		* ((unsigned long)heightLevelActualIntegerSize) * (unsigned long)totalPossibleMovements;
@@ -43,8 +43,8 @@ unsigned long ProcessBPOnTargetDevice<T>::getNumDataForAlignedMemoryAtLevel(unsi
  //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 	 //input is images image1Pixels and image1Pixels
 	 //output is resultingDisparityMap
-template<typename T>
-DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* image1PixelsCompDevice,
+template<typename T, typename U>
+DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U>::operator()(float* image1PixelsCompDevice,
 	float* image2PixelsCompDevice,
 	float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
@@ -99,43 +99,24 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 		heightLevel = (int)ceil(heightLevel / 2.0);
 	}
 
+	auto timeInitSettingsMallocStart = std::chrono::system_clock::now();
+
 	//declare and then allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
 	//each checkboard holds half of the data
-	T* dataCostDeviceCheckerboard0; //checkerboard 1 includes the pixel in slot (0, 0)
-	T* dataCostDeviceCheckerboard1;
-
-	checkerboardMessages<T> messagesDeviceCheckerboard0;
-	checkerboardMessages<T> messagesDeviceCheckerboard1;
-
-	auto timeInitSettingsMallocStart = std::chrono::system_clock::now();
+	dataCostData<U> dataCostsDeviceCheckerboardAllLevels; //checkerboard 0 includes the pixel in slot (0, 0)
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
 	//std::cout << "ALLOC ALL MEMORY\n";
-	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard0, 10 * halfTotalDataAllLevels * sizeof(T));
-	if (dataCostDeviceCheckerboard0 == nullptr)
-	{
-		std::cout << "Memory alloc failed\n";
-	}
+	checkerboardMessages<U> messagesDeviceCheckerboard0AllLevels;
+	checkerboardMessages<U> messagesDeviceCheckerboard1AllLevels;
 
-	dataCostDeviceCheckerboard1 = &(dataCostDeviceCheckerboard0[1 * (halfTotalDataAllLevels)]);
-
-	messagesDeviceCheckerboard0.messagesU = &(dataCostDeviceCheckerboard0[2 * (halfTotalDataAllLevels)]);
-	messagesDeviceCheckerboard0.messagesD = &(dataCostDeviceCheckerboard0[3 * (halfTotalDataAllLevels)]);
-	messagesDeviceCheckerboard0.messagesL = &(dataCostDeviceCheckerboard0[4 * (halfTotalDataAllLevels)]);
-	messagesDeviceCheckerboard0.messagesR = &(dataCostDeviceCheckerboard0[5 * (halfTotalDataAllLevels)]);
-
-	messagesDeviceCheckerboard1.messagesU = &(dataCostDeviceCheckerboard0[6 * (halfTotalDataAllLevels)]);
-	messagesDeviceCheckerboard1.messagesD = &(dataCostDeviceCheckerboard0[7 * (halfTotalDataAllLevels)]);
-	messagesDeviceCheckerboard1.messagesL = &(dataCostDeviceCheckerboard0[8 * (halfTotalDataAllLevels)]);
-	messagesDeviceCheckerboard1.messagesR = &(dataCostDeviceCheckerboard0[9 * (halfTotalDataAllLevels)]);
+	std::tie(dataCostsDeviceCheckerboardAllLevels, messagesDeviceCheckerboard0AllLevels, messagesDeviceCheckerboard1AllLevels) =
+			allocateAndOrganizeDataCostsAndMessageDataAllLevels(halfTotalDataAllLevels * sizeof(T));
 
 #else
 
-	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard0,
-		halfTotalDataAllLevels * sizeof(T));
-	allocateMemoryOnTargetDevice((void**)& dataCostDeviceCheckerboard1,
-		halfTotalDataAllLevels * sizeof(T));
+	dataCostsDeviceCheckerboardAllLevels = allocateMemoryForDataCosts(halfTotalDataAllLevels * sizeof(T));
 
 #endif
 
@@ -150,7 +131,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//std::cout << "INIT DATA COSTS\n";
 	//initialize the data cost at the bottom level
 	initializeDataCosts(algSettings, processingLevelProperties[0], image1PixelsCompDevice, image2PixelsCompDevice,
-		dataCostDeviceCheckerboard0, dataCostDeviceCheckerboard1);
+			dataCostsDeviceCheckerboardAllLevels);
 	//std::cout << "DONE INIT DATA COSTS\n";
 
 	auto timeInitDataCostsEnd = std::chrono::system_clock::now();
@@ -164,21 +145,16 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//set the data costs at each level from the bottom level "up"
 	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
 	{
-		T* dataCostStereoCheckerboard1 =
-			&dataCostDeviceCheckerboard0[offsetAtLevel[levelNum - 1]];
-		T* dataCostStereoCheckerboard2 =
-			&dataCostDeviceCheckerboard1[offsetAtLevel[levelNum - 1]];
-		T* dataCostDeviceToWriteToCheckerboard1 =
-			&dataCostDeviceCheckerboard0[offsetAtLevel[levelNum]];
-		T* dataCostDeviceToWriteToCheckerboard2 =
-			&dataCostDeviceCheckerboard1[offsetAtLevel[levelNum]];
+		dataCostData<U> dataCostsDeviceCheckerboardPrevLevel =
+				retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[levelNum - 1]);
+		dataCostData<U> dataCostsDeviceCheckerboardWriteTo =
+				retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[levelNum]);
 
 		//std::cout << "INIT DATA COSTS CURRENT LEVEL\n";
 		initializeDataCurrentLevel(processingLevelProperties[levelNum],
 			processingLevelProperties[levelNum - 1],
-			dataCostStereoCheckerboard1, dataCostStereoCheckerboard2,
-			dataCostDeviceToWriteToCheckerboard1,
-			dataCostDeviceToWriteToCheckerboard2);
+			dataCostsDeviceCheckerboardPrevLevel,
+			dataCostsDeviceCheckerboardWriteTo);
 		//std::cout << "DONE INIT DATA COSTS CURRENT LEVEL\n";
 	}
 
@@ -197,24 +173,20 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//the message values at the "higher" level in the image
 	//pyramid need copied to a lower level without overwriting
 	//values
-	T* dataCostDeviceCurrentLevelCheckerboard0;
-	T* dataCostDeviceCurrentLevelCheckerboard1;
-	checkerboardMessages<T> messagesDeviceSet0Checkerboard0;
-	checkerboardMessages<T> messagesDeviceSet0Checkerboard1;
-	checkerboardMessages<T> messagesDeviceSet1Checkerboard0;
-	checkerboardMessages<T> messagesDeviceSet1Checkerboard1;
+	checkerboardMessages<U> messagesDeviceSet0Checkerboard0;
+	checkerboardMessages<U> messagesDeviceSet0Checkerboard1;
+	checkerboardMessages<U> messagesDeviceSet1Checkerboard0;
+	checkerboardMessages<U> messagesDeviceSet1Checkerboard1;
 
 	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
 
-	dataCostDeviceCurrentLevelCheckerboard0 =
-		&dataCostDeviceCheckerboard0[currentOffsetLevel];
-	dataCostDeviceCurrentLevelCheckerboard1 =
-		&dataCostDeviceCheckerboard1[currentOffsetLevel];
+	dataCostData<U> dataCostsDeviceCheckerboardCurrentLevel =
+			retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	messagesDeviceSet0Checkerboard0 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0, currentOffsetLevel);
-	messagesDeviceSet0Checkerboard1 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1, currentOffsetLevel);
+	messagesDeviceSet0Checkerboard0 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0AllLevels, currentOffsetLevel);
+	messagesDeviceSet0Checkerboard1 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1AllLevels, currentOffsetLevel);
 
 #else
 
@@ -267,15 +239,13 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0) {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
-				dataCostDeviceCurrentLevelCheckerboard0,
-				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostsDeviceCheckerboardCurrentLevel,
 				messagesDeviceSet0Checkerboard0,
 				messagesDeviceSet0Checkerboard1);
 		}
 		else {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
-				dataCostDeviceCurrentLevelCheckerboard0,
-				dataCostDeviceCurrentLevelCheckerboard1,
+				dataCostsDeviceCheckerboardCurrentLevel,
 				messagesDeviceSet1Checkerboard0,
 				messagesDeviceSet1Checkerboard1);
 		}
@@ -294,13 +264,11 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 			//retrieve offset into allocated memory at next level
 			currentOffsetLevel = offsetAtLevel[levelNum - 1];
 
-			dataCostDeviceCurrentLevelCheckerboard0 =
-				&dataCostDeviceCheckerboard0[currentOffsetLevel];
-			dataCostDeviceCurrentLevelCheckerboard1 =
-				&dataCostDeviceCheckerboard1[currentOffsetLevel];
+			dataCostsDeviceCheckerboardCurrentLevel =
+						retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
 
-			checkerboardMessages<T> messagesDeviceCheckerboard0CopyFrom;
-			checkerboardMessages<T> messagesDeviceCheckerboard1CopyFrom;
+			checkerboardMessages<U> messagesDeviceCheckerboard0CopyFrom;
+			checkerboardMessages<U> messagesDeviceCheckerboard1CopyFrom;
 
 			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
@@ -313,13 +281,13 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 				messagesDeviceCheckerboard1CopyFrom = messagesDeviceSet1Checkerboard1;
 			}
 
-			checkerboardMessages<T> messagesDeviceCheckerboard0CopyTo;
-			checkerboardMessages<T> messagesDeviceCheckerboard1CopyTo;
+			checkerboardMessages<U> messagesDeviceCheckerboard0CopyTo;
+			checkerboardMessages<U> messagesDeviceCheckerboard1CopyTo;
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-			messagesDeviceCheckerboard0CopyTo = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0, currentOffsetLevel);
-			messagesDeviceCheckerboard1CopyTo = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1, currentOffsetLevel);
+			messagesDeviceCheckerboard0CopyTo = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0AllLevels, currentOffsetLevel);
+			messagesDeviceCheckerboard1CopyTo = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1AllLevels, currentOffsetLevel);
 
 #else
 
@@ -381,8 +349,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	//assume in bottom level when retrieving output disparity
 	retrieveOutputDisparity(currentCheckerboardSet,
 		processingLevelProperties[0],
-		dataCostDeviceCurrentLevelCheckerboard0,
-		dataCostDeviceCurrentLevelCheckerboard1,
+		dataCostsDeviceCheckerboardCurrentLevel,
 		messagesDeviceSet0Checkerboard0,
 		messagesDeviceSet0Checkerboard1,
 		messagesDeviceSet1Checkerboard0,
@@ -415,8 +382,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 	}
 
 	//now free the allocated data space
-	freeMemoryOnTargetDevice((void*)dataCostDeviceCheckerboard0);
-	freeMemoryOnTargetDevice((void*)dataCostDeviceCheckerboard1);
+	freeDataCostsMemory(dataCostsDeviceCheckerboardCurrentLevel);
 
 #else
 
@@ -447,18 +413,18 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T>::operator()(float* i
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
 
-template class ProcessBPOnTargetDevice<float>;
+template class ProcessBPOnTargetDevice<float, float*>;
 
 #elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
 
-template class ProcessBPOnTargetDevice<double>;
+template class ProcessBPOnTargetDevice<double, double*>;
 
 #elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
 
 #ifdef COMPILING_FOR_ARM
-template class ProcessBPOnTargetDevice<float16_t>;
+template class ProcessBPOnTargetDevice<float16_t, float16_t*>;
 #else
-template class ProcessBPOnTargetDevice<short>;
+template class ProcessBPOnTargetDevice<short, short*>;
 #endif //COMPILING_FOR_ARM
 
 #endif

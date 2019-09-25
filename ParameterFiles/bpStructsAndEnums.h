@@ -49,10 +49,17 @@ enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 template <class T>
 struct checkerboardMessages
 {
-	T* messagesU;
-	T* messagesD;
-	T* messagesL;
-	T* messagesR;
+	T messagesU;
+	T messagesD;
+	T messagesL;
+	T messagesR;
+};
+
+template <class T>
+struct dataCostData
+{
+	T dataCostCheckerboard0;
+	T dataCostCheckerboard1;
 };
 
 #endif /* BPSTRUCTSANDENUMS_H_ */
