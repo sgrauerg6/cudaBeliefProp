@@ -20,6 +20,9 @@
 #include <tuple>
 #include <array>
 
+typedef std::chrono::time_point<std::chrono::system_clock> timingType;
+using timingInSecondsDoublePrecision = std::chrono::duration<double>;
+
 template<typename T, typename U, typename V=float*>
 class ProcessBPOnTargetDevice {
 public:

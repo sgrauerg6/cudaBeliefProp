@@ -57,11 +57,6 @@ protected:
 };
 
 
-
-typedef std::chrono::time_point<std::chrono::system_clock> timingType;
-using timingInSecondsDoublePrecision = std::chrono::duration<double>;
-
-//std::pair<std::pair<unsigned int, std::string>, double>
 template<typename T>
 template<typename U, typename V, typename W>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& refImagePath, const std::string& testImagePath,

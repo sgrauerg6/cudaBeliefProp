@@ -40,9 +40,6 @@ unsigned long ProcessBPOnTargetDevice<T, U, V>::getNumDataForAlignedMemoryAtLeve
 	}
 }
 
-typedef std::chrono::time_point<std::chrono::system_clock> timingType;
-using timingInSecondsDoublePrecision = std::chrono::duration<double>;
-
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //input is images image1Pixels and image1Pixels
 //output is resultingDisparityMap
