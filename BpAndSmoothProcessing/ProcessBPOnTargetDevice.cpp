@@ -40,6 +40,9 @@ unsigned long ProcessBPOnTargetDevice<T, U, V>::getNumDataForAlignedMemoryAtLeve
 	}
 }
 
+typedef std::chrono::time_point<std::chrono::system_clock> timingType;
+using timingInSecondsDoublePrecision = std::chrono::duration<double>;
+
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //input is images image1Pixels and image1Pixels
 //output is resultingDisparityMap
@@ -48,10 +51,10 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
 	DetailedTimings<Runtime_Type_BP> segmentTimings(timingNames_BP);
+	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
 	double totalTimeBpIters = 0.0;
 	double totalTimeCopyData = 0.0;
 	double totalTimeCopyDataKernel = 0.0;
-	std::chrono::duration<double> diff;
 
 	//retrieve the total number of possible movements; this is equal to the number of disparity values
 	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
@@ -97,7 +100,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		heightLevel = (int)ceil(heightLevel / 2.0);
 	}
 
-	auto timeInitSettingsMallocStart = std::chrono::system_clock::now();
+	runtime_start_end_timings[INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
 
 	//declare and then allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
 	//each checkboard holds half of the data
@@ -117,25 +120,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #endif
 
-	auto timeInitSettingsMallocEnd = std::chrono::system_clock::now();
-
-	diff = timeInitSettingsMallocEnd - timeInitSettingsMallocStart;
-	double totalTimeInitSettingsMallocStart = diff.count();
-	segmentTimings.addTiming(INIT_SETTINGS_MALLOC, totalTimeInitSettingsMallocStart);
-
-	auto timeInitDataCostsStart = std::chrono::system_clock::now();
+	runtime_start_end_timings[INIT_SETTINGS_MALLOC].second = runtime_start_end_timings[DATA_COSTS_BOTTOM_LEVEL].first = std::chrono::system_clock::now();
 
 	//initialize the data cost at the bottom level
 	initializeDataCosts(algSettings, processingLevelProperties[0], imagesOnTargetDevice,
 			dataCostsDeviceCheckerboardAllLevels);
 
-	auto timeInitDataCostsEnd = std::chrono::system_clock::now();
-	diff = timeInitDataCostsEnd - timeInitDataCostsStart;
-	double totalTimeGetDataCostsBottomLevel = diff.count();
-	segmentTimings.addTiming(DATA_COSTS_BOTTOM_LEVEL, totalTimeGetDataCostsBottomLevel);
-
-	auto timeInitDataCostsHigherLevelsStart =
-		std::chrono::system_clock::now();
+	runtime_start_end_timings[DATA_COSTS_BOTTOM_LEVEL].second = runtime_start_end_timings[DATA_COSTS_HIGHER_LEVEL].first = std::chrono::system_clock::now();
 
 	//set the data costs at each level from the bottom level "up"
 	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
@@ -151,24 +142,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			dataCostsDeviceCheckerboardWriteTo);
 	}
 
+	runtime_start_end_timings[DATA_COSTS_HIGHER_LEVEL].second = runtime_start_end_timings[INIT_MESSAGES].first = std::chrono::system_clock::now();
+
 	currentOffsetLevel = offsetAtLevel[algSettings.numLevels - 1];
 
-	auto timeInitDataCostsHigherLevelsEnd =
-		std::chrono::system_clock::now();
-	diff = timeInitDataCostsHigherLevelsEnd
-		- timeInitDataCostsHigherLevelsStart;
-
-	double totalTimeGetDataCostsHigherLevels = diff.count();
-	segmentTimings.addTiming(DATA_COSTS_HIGHER_LEVEL, totalTimeGetDataCostsHigherLevels);
-
-	//declare the space to pass the BP messages
-	//need to have two "sets" of checkerboards because
-	//the message values at the "higher" level in the image
-	//pyramid need copied to a lower level without overwriting
-	//values
+	//declare the space to pass the BP messages; need to have two "sets" of checkerboards because the message
+	//data at the "higher" level in the image pyramid need copied to a lower level without overwriting values
 	std::array<checkerboardMessages<U>, 2> messagesDevice;
-
-	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
 
 	dataCostData<U> dataCostsDeviceCheckerboardCurrentLevel =
 			retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
@@ -188,25 +168,14 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #endif
 
-	auto timeInitMessageValuesKernelTimeStart =
-		std::chrono::system_clock::now();
+	runtime_start_end_timings[INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
 
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(
 		processingLevelProperties[algSettings.numLevels - 1],
 		messagesDevice[0]);
 
-	auto timeInitMessageValuesTimeEnd =
-		std::chrono::system_clock::now();
-	diff = timeInitMessageValuesTimeEnd
-		- timeInitMessageValuesKernelTimeStart;
-
-	double totalTimeInitMessageValuesKernelTime = diff.count();
-	segmentTimings.addTiming(INIT_MESSAGES_KERNEL, totalTimeInitMessageValuesKernelTime);
-
-	diff = timeInitMessageValuesTimeEnd - timeInitMessageValuesStart;
-	double totalTimeInitMessageVals = diff.count();
-	segmentTimings.addTiming(INIT_MESSAGES, totalTimeInitMessageVals);
+	runtime_start_end_timings[INIT_MESSAGES_KERNEL].second = runtime_start_end_timings[INIT_MESSAGES].second = std::chrono::system_clock::now();
 
 	//alternate between checkerboard sets 0 and 1
 	enum Checkerboard_Num { CHECKERBOARD_ZERO = 0, CHECKERBOARD_ONE = 1 };
@@ -219,6 +188,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	for (int levelNum = algSettings.numLevels - 1; levelNum >= 0;
 		levelNum--)
 	{
+		std::chrono::duration<double> diff;
 		auto timeBpIterStart = std::chrono::system_clock::now();
 
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
@@ -287,7 +257,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		totalTimeCopyData += diff.count();
 	}
 
-	auto timeGetOutputDisparityStart = std::chrono::system_clock::now();
+	runtime_start_end_timings[OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
 
 	//assume in bottom level when retrieving output disparity
 	V resultingDisparityMapCompDevice = retrieveOutputDisparity(
@@ -295,12 +265,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		dataCostsDeviceCheckerboardCurrentLevel,
 		messagesDevice[currentCheckerboardSet]);
 
-	auto timeGetOutputDisparityEnd = std::chrono::system_clock::now();
-	diff = timeGetOutputDisparityEnd - timeGetOutputDisparityStart;
-	double totalTimeGetOutputDisparity = diff.count();
-	segmentTimings.addTiming(OUTPUT_DISPARITY, totalTimeGetOutputDisparity);
-
-	auto timeFinalFreeStart = std::chrono::system_clock::now();
+	runtime_start_end_timings[OUTPUT_DISPARITY].second = runtime_start_end_timings[FINAL_FREE].first = std::chrono::system_clock::now();
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
@@ -327,21 +292,25 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #endif
 
-	auto timeFinalFreeEnd = std::chrono::system_clock::now();
+	runtime_start_end_timings[FINAL_FREE].second = std::chrono::system_clock::now();
 
-	diff = timeFinalFreeEnd - timeFinalFreeStart;
-	double totalTimeFinalFree = diff.count();
-	segmentTimings.addTiming(FINAL_FREE, totalTimeFinalFree);
+	//retrieve the timing for each runtime segment and add to vector in timings map
+	std::for_each(runtime_start_end_timings.begin(),
+			runtime_start_end_timings.end(),
+			[&segmentTimings] (const auto& currentRuntimeNameAndTiming) {
+				segmentTimings.addTiming(currentRuntimeNameAndTiming.first,
+						(timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
+			});
 
 	segmentTimings.addTiming(BP_ITERS, totalTimeBpIters);
 	segmentTimings.addTiming(COPY_DATA, totalTimeCopyData);
 	segmentTimings.addTiming(COPY_DATA_KERNEL, totalTimeCopyDataKernel);
 
-	double totalTimed = totalTimeInitSettingsMallocStart
-			+ totalTimeGetDataCostsBottomLevel
-			+ totalTimeGetDataCostsHigherLevels + totalTimeInitMessageVals
-			+ totalTimeBpIters + totalTimeCopyData + totalTimeGetOutputDisparity
-			+ totalTimeFinalFree;
+	double totalTimed = segmentTimings.getMedianTiming(INIT_SETTINGS_MALLOC)
+			+ segmentTimings.getMedianTiming(DATA_COSTS_BOTTOM_LEVEL)
+			+ segmentTimings.getMedianTiming(DATA_COSTS_HIGHER_LEVEL) + segmentTimings.getMedianTiming(INIT_MESSAGES)
+			+ totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(OUTPUT_DISPARITY)
+			+ segmentTimings.getMedianTiming(FINAL_FREE);
 	segmentTimings.addTiming(TOTAL_TIMED, totalTimed);
 
 	return std::make_pair(resultingDisparityMapCompDevice, segmentTimings);
