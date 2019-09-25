@@ -167,10 +167,10 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	//the message values at the "higher" level in the image
 	//pyramid need copied to a lower level without overwriting
 	//values
-	checkerboardMessages<U> messagesDeviceSet0Checkerboard0;
-	checkerboardMessages<U> messagesDeviceSet0Checkerboard1;
-	checkerboardMessages<U> messagesDeviceSet1Checkerboard0;
-	checkerboardMessages<U> messagesDeviceSet1Checkerboard1;
+	checkerboardMessages<U> messagesDeviceCheckerboard0_0;
+	checkerboardMessages<U> messagesDeviceCheckerboard1_0;
+	checkerboardMessages<U> messagesDeviceCheckerboard0_1;
+	checkerboardMessages<U> messagesDeviceCheckerboard1_1;
 
 	auto timeInitMessageValuesStart = std::chrono::system_clock::now();
 
@@ -179,8 +179,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 
-	messagesDeviceSet0Checkerboard0 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0AllLevels, currentOffsetLevel);
-	messagesDeviceSet0Checkerboard1 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1AllLevels, currentOffsetLevel);
+	messagesDeviceCheckerboard0_0 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard0AllLevels, currentOffsetLevel);
+	messagesDeviceCheckerboard1_0 = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceCheckerboard1AllLevels, currentOffsetLevel);
 
 #else
 
@@ -189,8 +189,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		getNumDataForAlignedMemoryAtLevel(processingLevelProperties[algSettings.numLevels - 1].widthLevel, processingLevelProperties[algSettings.numLevels - 1].heightLevel, totalPossibleMovements);
 
 	//allocate the space for the message values in the first checkboard set at the current level
-	messagesDeviceSet0Checkerboard0 = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
-	messagesDeviceSet0Checkerboard1 = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
+	messagesDeviceCheckerboard0_0 = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
+	messagesDeviceCheckerboard1_0 = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
 
 #endif
 
@@ -200,8 +200,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(
 		processingLevelProperties[algSettings.numLevels - 1],
-		messagesDeviceSet0Checkerboard0,
-		messagesDeviceSet0Checkerboard1);
+		messagesDeviceCheckerboard0_0,
+		messagesDeviceCheckerboard1_0);
 
 	auto timeInitMessageValuesTimeEnd =
 		std::chrono::system_clock::now();
@@ -231,14 +231,14 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0) {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
 				dataCostsDeviceCheckerboardCurrentLevel,
-				messagesDeviceSet0Checkerboard0,
-				messagesDeviceSet0Checkerboard1);
+				messagesDeviceCheckerboard0_0,
+				messagesDeviceCheckerboard1_0);
 		}
 		else {
 			runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
 				dataCostsDeviceCheckerboardCurrentLevel,
-				messagesDeviceSet1Checkerboard0,
-				messagesDeviceSet1Checkerboard1);
+				messagesDeviceCheckerboard0_1,
+				messagesDeviceCheckerboard1_1);
 		}
 
 		auto timeBpIterEnd = std::chrono::system_clock::now();
@@ -261,13 +261,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
-				messagesDeviceCheckerboard0CopyFrom = messagesDeviceSet0Checkerboard0;
-				messagesDeviceCheckerboard1CopyFrom = messagesDeviceSet0Checkerboard1;
+				messagesDeviceCheckerboard0CopyFrom = messagesDeviceCheckerboard0_0;
+				messagesDeviceCheckerboard1CopyFrom = messagesDeviceCheckerboard1_0;
 			}
 			else
 			{
-				messagesDeviceCheckerboard0CopyFrom = messagesDeviceSet1Checkerboard0;
-				messagesDeviceCheckerboard1CopyFrom = messagesDeviceSet1Checkerboard1;
+				messagesDeviceCheckerboard0CopyFrom = messagesDeviceCheckerboard0_1;
+				messagesDeviceCheckerboard1CopyFrom = messagesDeviceCheckerboard1_1;
 			}
 
 			checkerboardMessages<U> messagesDeviceCheckerboard0CopyTo;
@@ -306,13 +306,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 			if (currentCheckerboardSet == Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
-				messagesDeviceSet1Checkerboard0 = messagesDeviceCheckerboard0CopyTo;
-				messagesDeviceSet1Checkerboard1 = messagesDeviceCheckerboard1CopyTo;
+				messagesDeviceCheckerboard0_1 = messagesDeviceCheckerboard0CopyTo;
+				messagesDeviceCheckerboard1_1 = messagesDeviceCheckerboard1CopyTo;
 			}
 			else
 			{
-				messagesDeviceSet0Checkerboard0 = messagesDeviceCheckerboard0CopyTo;
-				messagesDeviceSet0Checkerboard1 = messagesDeviceCheckerboard1CopyTo;
+				messagesDeviceCheckerboard0_0 = messagesDeviceCheckerboard0CopyTo;
+				messagesDeviceCheckerboard1_0 = messagesDeviceCheckerboard1CopyTo;
 			}
 
 #ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
@@ -339,10 +339,10 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	V resultingDisparityMapCompDevice = retrieveOutputDisparity(currentCheckerboardSet,
 		processingLevelProperties[0],
 		dataCostsDeviceCheckerboardCurrentLevel,
-		messagesDeviceSet0Checkerboard0,
-		messagesDeviceSet0Checkerboard1,
-		messagesDeviceSet1Checkerboard0,
-		messagesDeviceSet1Checkerboard1);
+		messagesDeviceCheckerboard0_0,
+		messagesDeviceCheckerboard1_0,
+		messagesDeviceCheckerboard0_1,
+		messagesDeviceCheckerboard1_1);
 
 	auto timeGetOutputDisparityEnd = std::chrono::system_clock::now();
 	diff = timeGetOutputDisparityEnd - timeGetOutputDisparityStart;
@@ -357,14 +357,14 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	if (currentCheckerboardSet == 0)
 	{
 		//free device space allocated to message values
-		freeCheckerboardMessagesMemory(messagesDeviceSet0Checkerboard0);
-		freeCheckerboardMessagesMemory(messagesDeviceSet0Checkerboard1);
+		freeCheckerboardMessagesMemory(messagesDeviceCheckerboard0_0);
+		freeCheckerboardMessagesMemory(messagesDeviceCheckerboard1_0);
 	}
 	else
 	{
 		//free device space allocated to message values
-		freeCheckerboardMessagesMemory(messagesDeviceSet1Checkerboard0);
-		freeCheckerboardMessagesMemory(messagesDeviceSet1Checkerboard1);
+		freeCheckerboardMessagesMemory(messagesDeviceCheckerboard0_1);
+		freeCheckerboardMessagesMemory(messagesDeviceCheckerboard1_1);
 	}
 
 	//now free the allocated data space
