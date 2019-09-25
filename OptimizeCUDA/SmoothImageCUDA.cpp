@@ -8,16 +8,9 @@
 #include "SmoothImageCUDA.h"
 #include "kernalFilter.cu"
 
-SmoothImageCUDA::SmoothImageCUDA()
-{
-}
-
-SmoothImageCUDA::~SmoothImageCUDA()
-{
-}
-
 //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage)
+template <typename T>
+void SmoothImageCUDA<T>::operator()(const BpImage<unsigned int>& inImage, float sigmaVal, T smoothedImage)
 {
 	// setup execution parameters
 	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES, bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
@@ -47,7 +40,7 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sig
 	else
 	{
 		//retrieve output filter (float array in unique_ptr) and size
-		auto outFilterAndSize = makeFilter(sigmaVal);
+		auto outFilterAndSize = this->makeFilter(sigmaVal);
 		auto filter = std::move(outFilterAndSize.first);
 		unsigned int sizeFilter = outFilterAndSize.second;
 
@@ -84,3 +77,5 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sig
 		cudaFree(filterDevice);
 	}
 }
+
+template class SmoothImageCUDA<>;

@@ -16,13 +16,14 @@
 #include <cuda_runtime.h>
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 
-class SmoothImageCUDA : public SmoothImage {
+template <typename T=float*>
+class SmoothImageCUDA : public SmoothImage<T> {
 public:
-	SmoothImageCUDA();
-	virtual ~SmoothImageCUDA();
+	SmoothImageCUDA() {}
+	virtual ~SmoothImageCUDA() {}
 
 	//for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-	void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedDevice);
+	void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, T smoothedImage);
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */

@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define MAX_SIZE_FILTER 25
 
 //functions relating to smoothing the images before running BP
+template <typename T=float*>
 class SmoothImage
 {
 public:
@@ -41,16 +42,44 @@ public:
 	virtual ~SmoothImage() {};
 
 	//normalize filter mask so it integrates to one
-	void normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter);
+	void normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter)
+	{
+		float sum = 0;
+		for (unsigned int i = 1; i < sizeFilter; i++)
+		{
+			sum += fabs(filter[i]);
+		}
+		sum = 2*sum + fabs(filter[0]);
+		for (unsigned int i = 0; i < sizeFilter; i++)
+		{
+			filter[i] /= sum;
+		}
+	}
 
 	//this function creates a Gaussian filter given a sigma value
-	std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma);
+	std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma)
+		{
+			float sigmaUse = std::max(sigma, 0.01f);
+			unsigned int sizeFilter = (unsigned int)std::ceil(sigmaUse * WIDTH_SIGMA_1) + 1;
+			std::unique_ptr<float[]> mask = std::make_unique<float[]>(sizeFilter);
+			for (unsigned int i = 0; i < sizeFilter; i++)
+			{
+				mask[i] = std::exp(-0.5*((i/sigmaUse) * (i/sigmaUse)));
+			}
+			normalizeFilter(mask, sizeFilter);
+
+			std::pair<std::unique_ptr<float[]>, unsigned int> outPair;
+			outPair.first = std::move(mask);
+			outPair.second = sizeFilter;
+
+			return outPair;
+		}
 
 	//function to use the image filter to apply a guassian filter to the a single images
 	//input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
 	//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
 	//normalize mask so it integrates to one
-	virtual void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage) = 0;
+	virtual void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, T smoothedImage) = 0;
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

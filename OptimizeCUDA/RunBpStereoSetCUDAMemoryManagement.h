@@ -4,38 +4,41 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
 #include <cuda_runtime.h>
 
-class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement
+template <typename T = float, typename U = float*>
+class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement<T, U>
 {
 public:
 
-	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
+	U allocateDataOnCompDevice(int numData)
 	{
 		//std::cout << "ALLOC_GPU\n";
 		//allocate the space for the disparity map estimation
-		cudaMalloc((void **) arrayToAllocate, numBytes);
+		U arrayToAllocate;
+		cudaMalloc((void **) &arrayToAllocate, numData * sizeof(T));
+		return arrayToAllocate;
 	}
 
-	void freeDataOnCompDevice(void** arrayToFree)
+	void freeDataOnCompDevice(U arrayToFree)
 	{
 		//std::cout << "FREE_GPU\n";
-		cudaFree(*arrayToFree);
+		cudaFree(arrayToFree);
 	}
 
-	void transferDataFromCompDeviceToHost(void* destArray, const void* inArray, int numBytesTransfer)
+	void transferDataFromCompDeviceToHost(T* destArray, const U inArray, int numDataTransfer)
 	{
 		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 				inArray,
-				numBytesTransfer,
+				numDataTransfer * sizeof(T),
 				cudaMemcpyDeviceToHost);
 	}
 
-	void transferDataFromCompHostToDevice(void* destArray, const void* inArray, int numBytesTransfer)
+	void transferDataFromCompHostToDevice(U destArray, const T* inArray, int numDataTransfer)
 	{
 		//std::cout << "TRANSFER_GPU\n";
 		cudaMemcpy(destArray,
 				inArray,
-				numBytesTransfer,
+				numDataTransfer * sizeof(T),
 				cudaMemcpyHostToDevice);
 	}
 };

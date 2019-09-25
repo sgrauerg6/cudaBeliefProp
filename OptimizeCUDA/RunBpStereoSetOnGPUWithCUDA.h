@@ -48,9 +48,9 @@ public:
 	{
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 };
@@ -62,37 +62,6 @@ public:
 
 	std::string getBpRunDescription() { return "CUDA"; }
 
-	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
-	{
-		//std::cout << "ALLOC_GPU\n";
-		//allocate the space for the disparity map estimation
-		cudaMalloc((void **) arrayToAllocate, numBytes);
-	}
-
-	void freeDataOnCompDevice(void** arrayToFree)
-	{
-		//std::cout << "FREE_GPU\n";
-		cudaFree(*arrayToFree);
-	}
-
-	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
-	{
-		//std::cout << "TRANSFER_GPU\n";
-		cudaMemcpy(destArray,
-					inArray,
-					numBytesTransfer,
-					cudaMemcpyDeviceToHost);
-	}
-
-	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
-	{
-		//std::cout << "TRANSFER_GPU\n";
-		cudaMemcpy(destArray,
-					inArray,
-					numBytesTransfer,
-					cudaMemcpyHostToDevice);
-	}
-
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
@@ -101,20 +70,19 @@ public:
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
-		//std::cout << "Processing as half on GPU\n";
-		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half, half*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
-		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		std::cout << "Processing as half on GPU\n";
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
+		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
-		//std::cout << "Processing as half2 on GPU\n";
-		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half2, half2*>> processImageCUDA = std::make_unique<ProcessCUDABP<half2, half2*>>();
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
-		return processStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		std::cout << "Processing as half2 on GPU\n";
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half2, half2*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
+		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #else
 
@@ -136,37 +104,6 @@ class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet
 public:
 
 	std::string getBpRunDescription() { return "CUDA"; }
-
-	void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
-	{
-		//std::cout << "ALLOC_GPU\n";
-		//allocate the space for the disparity map estimation
-		cudaMalloc((void **) arrayToAllocate, numBytes);
-	}
-
-	void freeDataOnCompDevice(void** arrayToFree)
-	{
-		//std::cout << "FREE_GPU\n";
-		cudaFree(*arrayToFree);
-	}
-
-	void transferDataFromCompDeviceToHost(void* destArray, void* inArray, int numBytesTransfer)
-	{
-		//std::cout << "TRANSFER_GPU\n";
-		cudaMemcpy(destArray,
-					inArray,
-					numBytesTransfer,
-					cudaMemcpyDeviceToHost);
-	}
-
-	void transferDataFromCompHostToDevice(void* destArray, void* inArray, int numBytesTransfer)
-	{
-		std::cout << "TRANSFER_GPU\n";
-		cudaMemcpy(destArray,
-					inArray,
-					numBytesTransfer,
-					cudaMemcpyHostToDevice);
-	}
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA

@@ -3,7 +3,9 @@
 
 #include <stdlib.h>
 #include <cstring>
+#include <cstddef>
 
+template <typename T = float, typename U = float*>
 class RunBpStereoSetMemoryManagement
 {
 public:
@@ -13,26 +15,24 @@ public:
 	virtual ~RunBpStereoSetMemoryManagement() {
 	}
 
-	virtual void allocateDataOnCompDevice(void** arrayToAllocate, int numBytes)
+	virtual U allocateDataOnCompDevice(int numData)
 	{
-		//printf("ALLOCATE\n");
-		//allocate the space for the disparity map estimation
-		*arrayToAllocate = malloc(numBytes);
+		return (new T[numData]);
 	}
 
-	virtual void freeDataOnCompDevice(void** arrayToFree)
+	virtual void freeDataOnCompDevice(U arrayToFree)
 	{
-		free(*arrayToFree);
+		delete [] arrayToFree;
 	}
 
-	virtual void transferDataFromCompDeviceToHost(void* destArray, const void* inArray, int numBytesTransfer)
+	virtual void transferDataFromCompDeviceToHost(T* destArray, const U inArray, int numDataTransfer)
 	{
-		memcpy(destArray, inArray, numBytesTransfer);
+		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 
-	virtual void transferDataFromCompHostToDevice(void* destArray, const void* inArray, int numBytesTransfer)
+	virtual void transferDataFromCompHostToDevice(U destArray, const T* inArray, int numDataTransfer)
 	{
-		memcpy(destArray, inArray, numBytesTransfer);
+		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 };
 

@@ -33,23 +33,15 @@ __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int heigh
 __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels, int widthImages, int heightImages);
 
 //kernal to apply a horizontal filter on each pixel of the image in parallel
-//input image stored in texture imagePixelsFloatToFilterTexture
-//output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageAcross(float* imagePixelsFloatToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter);
-
-//kernal to apply a vertical filter on each pixel of the image in parallel
-//input image stored in texture imagePixelsFloatToFilterTexture
-//output filtered image stored in filteredImagePixels
-__global__ void filterFloatImageVertical(float* imagePixelsFloatToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter);
-
-//kernal to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageAcross(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter);
+template<typename T>
+__global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter);
 
 //kernal to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-__global__ void filterUnsignedIntImageVertical(unsigned int* imagePixelsUnsignedIntToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter);
+template<typename T>
+__global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter);
 
 #endif //KERNAL_FILTER_HEADER_CUH

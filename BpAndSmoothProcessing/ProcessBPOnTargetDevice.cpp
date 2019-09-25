@@ -7,8 +7,8 @@
 
 #include "ProcessBPOnTargetDevice.h"
 
-template<typename T, typename U>
-int ProcessBPOnTargetDevice<T, U>::getPaddedCheckerboardWidth(int checkerboardWidth)
+template<typename T, typename U, typename V>
+int ProcessBPOnTargetDevice<T, U, V>::getPaddedCheckerboardWidth(int checkerboardWidth)
 {
 	if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
 	{
@@ -21,8 +21,8 @@ int ProcessBPOnTargetDevice<T, U>::getPaddedCheckerboardWidth(int checkerboardWi
 	}
 }
 
-template<typename T, typename U>
-unsigned long ProcessBPOnTargetDevice<T, U>::getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements)
+template<typename T, typename U, typename V>
+unsigned long ProcessBPOnTargetDevice<T, U, V>::getNumDataForAlignedMemoryAtLevel(unsigned int widthLevelActualIntegerSize, unsigned int heightLevelActualIntegerSize, unsigned int totalPossibleMovements)
 {
 	unsigned long numDataAtLevel = ((unsigned long)getPaddedCheckerboardWidth((int)getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize)))
 		* ((unsigned long)heightLevelActualIntegerSize) * (unsigned long)totalPossibleMovements;
@@ -43,10 +43,10 @@ unsigned long ProcessBPOnTargetDevice<T, U>::getNumDataForAlignedMemoryAtLevel(u
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //input is images image1Pixels and image1Pixels
 //output is resultingDisparityMap
-template<typename T, typename U>
-DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U>::operator()(float* image1PixelsCompDevice,
-	float* image2PixelsCompDevice,
-	float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
+template<typename T, typename U, typename V>
+DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U, V>::operator()(V image1PixelsCompDevice,
+	V image2PixelsCompDevice,
+	V resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages)
 {
 	DetailedTimings<Runtime_Type_BP> segmentTimings(timingNames_BP);
 	double totalTimeBpIters = 0.0;
@@ -402,7 +402,7 @@ DetailedTimings<Runtime_Type_BP> ProcessBPOnTargetDevice<T, U>::operator()(float
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
 
-template class ProcessBPOnTargetDevice<float, float*>;
+template class ProcessBPOnTargetDevice<float, float*, float*>;
 
 #elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
 

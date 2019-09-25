@@ -19,7 +19,7 @@
 #include <memory>
 #include <tuple>
 
-template<typename T, typename U>
+template<typename T, typename U, typename V=float*>
 class ProcessBPOnTargetDevice {
 public:
 	ProcessBPOnTargetDevice() { }
@@ -35,7 +35,7 @@ public:
 		virtual void freeMemoryOnTargetDevice(void* arrayToFree) = 0;
 
 		virtual void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
-				float* image1PixelsCompDevice, float* image2PixelsCompDevice, const dataCostData<U>& dataCostDeviceCheckerboard) = 0;
+				V image1PixelsCompDevice, V image2PixelsCompDevice, const dataCostData<U>& dataCostDeviceCheckerboard) = 0;
 
 		virtual void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 				const levelProperties& prevLevelProperties,
@@ -69,7 +69,7 @@ public:
 				const checkerboardMessages<U>& messagesDeviceSet0Checkerboard1,
 				const checkerboardMessages<U>& messagesDeviceSet1Checkerboard0,
 				const checkerboardMessages<U>& messagesDeviceSet1Checkerboard1,
-				float* resultingDisparityMapCompDevice) = 0;
+				V resultingDisparityMapCompDevice) = 0;
 
 		virtual int getPaddedCheckerboardWidth(int checkerboardWidth);
 
@@ -163,9 +163,9 @@ public:
 		//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 		//input is images image1Pixels and image1Pixels
 		//output is resultingDisparityMap
-		DetailedTimings<Runtime_Type_BP> operator()(float* image1PixelsCompDevice,
-			float* image2PixelsCompDevice,
-			float* resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages);
+		DetailedTimings<Runtime_Type_BP> operator()(V image1PixelsCompDevice,
+			V image2PixelsCompDevice,
+			V resultingDisparityMapCompDevice, const BPsettings& algSettings, unsigned int widthImages, unsigned int heightImages);
 };
 
 #endif /* PROCESSBPONTARGETDEVICE_H_ */
