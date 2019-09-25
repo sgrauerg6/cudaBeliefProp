@@ -31,7 +31,7 @@ struct ProcessStereoSetOutput
 	DisparityMap<float> outDisparityMap;
 };
 
-template <typename T>
+template <typename T = float>
 class RunBpStereoSet {
 public:
 	RunBpStereoSet() {

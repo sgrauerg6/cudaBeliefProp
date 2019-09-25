@@ -26,7 +26,7 @@
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <iostream>
 
-template<typename T>
+template<typename T = float>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:

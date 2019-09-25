@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-template <typename T>
+template <typename T = float>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T> {
 public:
 	RunBpStereoOptimizedCPU();
