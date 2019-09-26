@@ -9,13 +9,13 @@
 #define DISPARITYMAP_H_
 
 #include <memory>
-#include "OutputEvaluationResults.h"
-#include "OutputEvaluationParameters.h"
 #include <algorithm>
 #include <string>
 #include <iterator>
 #include <iostream>
 #include "../ImageDataAndProcessing/BpImage.h"
+#include "OutputEvaluationResults.h"
+#include "OutputEvaluationParameters.h"
 
 template<class T>
 class DisparityMap : public BpImage<T> {

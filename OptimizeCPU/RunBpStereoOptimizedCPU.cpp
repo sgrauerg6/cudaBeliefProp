@@ -6,7 +6,6 @@
  */
 
 #include "RunBpStereoOptimizedCPU.h"
-#include "ProcessOptimizedCPUBP.h"
 
 template <typename T>
 RunBpStereoOptimizedCPU<T>::RunBpStereoOptimizedCPU() {

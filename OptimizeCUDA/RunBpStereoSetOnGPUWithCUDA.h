@@ -21,19 +21,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
+#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
+#include <cuda_fp16.h>
+#endif
+
+#include <cuda_runtime.h>
+#include "ProcessCUDABP.h"
+#include <iostream>
+#include <memory>
 #include "ParameterFiles/bpStereoCudaParameters.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "SmoothImageCUDA.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include "ProcessCUDABP.h"
-#include <cuda_runtime.h>
 #include "RunBpStereoSetCUDAMemoryManagement.h"
-#include <iostream>
-#include <memory>
-
-#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
-#include <cuda_fp16.h>
-#endif
 
 template <typename T = float>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>

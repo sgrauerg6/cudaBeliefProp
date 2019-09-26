@@ -21,16 +21,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 #define BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 
-#include "ParameterFiles/bpStereoParameters.h"
-#include "ParameterFiles/bpStructsAndEnums.h"
-
-//include for the kernal functions to be run on the GPU
-#include "KernelBpStereoCPU.h"
 #include <vector>
 #include <algorithm>
 #include <chrono>
-#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <stdlib.h>
+#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
+#include "ParameterFiles/bpStereoParameters.h"
+#include "ParameterFiles/bpStructsAndEnums.h"
+#include "ParameterFiles/bpRunSettings.h"
+
+//include for the kernal functions to be run on the GPU
+#include "KernelBpStereoCPU.h"
 
 template<typename T, typename U>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>

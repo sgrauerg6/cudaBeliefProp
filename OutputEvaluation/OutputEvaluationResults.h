@@ -8,9 +8,9 @@
 #ifndef OUTPUTEVALUATIONRESULTS_H_
 #define OUTPUTEVALUATIONRESULTS_H_
 
-#include "OutputEvaluationParameters.h"
 #include <map>
 #include <iostream>
+#include "OutputEvaluationParameters.h"
 
 template<class T>
 class OutputEvaluationResults {

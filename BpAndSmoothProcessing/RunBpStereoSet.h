@@ -8,20 +8,20 @@
 #ifndef RUNBPSTEREOSET_H_
 #define RUNBPSTEREOSET_H_
 
+#include <cstring>
+#include <iostream>
+#include <unordered_map>
+#include <memory>
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpRunSettings.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "SmoothImage.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include <cstring>
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
 #include "../OutputEvaluation/DisparityMap.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
-#include <iostream>
-#include <unordered_map>
 #include "../RuntimeTiming/DetailedTimings.h"
-#include <memory>
 #include "../ImageDataAndProcessing/BpImage.h"
 
 //stereo processing output

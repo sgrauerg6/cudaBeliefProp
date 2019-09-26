@@ -1,9 +1,8 @@
 #ifndef RUN_BP_STEREO_SET_MEMORY_MANAGEMENT_H_
 #define RUN_BP_STEREO_SET_MEMORY_MANAGEMENT_H_
 
-#include <stdlib.h>
-#include <cstring>
-#include <cstddef>
+#include <new>
+#include <algorithm>
 
 template <typename T = float, typename U = float*>
 class RunBpStereoSetMemoryManagement

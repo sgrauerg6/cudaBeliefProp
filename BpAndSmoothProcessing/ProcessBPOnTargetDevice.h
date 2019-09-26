@@ -17,8 +17,8 @@
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
 #include <memory>
-#include <tuple>
 #include <array>
+#include <utility>
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;

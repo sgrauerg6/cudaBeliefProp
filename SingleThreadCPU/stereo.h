@@ -8,23 +8,24 @@
 #ifndef STEREO_H_
 #define STEREO_H_
 
-#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include <cstdio>
 #include <iostream>
 #include <algorithm>
 #include <assert.h>
+#include <string>
+#include <chrono>
+#include <iostream>
 #include "image.h"
 #include "misc.h"
 #include "pnmfile.h"
 #include "filter.h"
 #include "imconv.h"
-#include <string>
-#include "ParameterFiles/bpStereoParameters.h"
-#include "ParameterFiles/bpStructsAndEnums.h"
-#include <chrono>
+#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include <iostream>
+#include "ParameterFiles/bpStereoParameters.h"
+#include "ParameterFiles/bpStructsAndEnums.h"
+#include "ParameterFiles/bpRunSettings.h"
 
 template<typename T = float>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>

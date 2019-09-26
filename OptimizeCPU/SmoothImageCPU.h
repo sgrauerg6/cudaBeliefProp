@@ -8,10 +8,10 @@
 #ifndef SMOOTHIMAGECPU_H_
 #define SMOOTHIMAGECPU_H_
 
-#include "../BpAndSmoothProcessing/SmoothImage.h"
 #include <algorithm>
-#include "../SharedFuncts/SharedSmoothImageFuncts.h"
 #include <memory>
+#include "../SharedFuncts/SharedSmoothImageFuncts.h"
+#include "../BpAndSmoothProcessing/SmoothImage.h"
 
 
 template <typename T=float*>

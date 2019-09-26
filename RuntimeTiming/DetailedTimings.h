@@ -9,7 +9,6 @@
 #define DETAILEDTIMINGS_H_
 
 #include <vector>
-#include <stdio.h>
 #include <algorithm>
 #include <unordered_map>
 #include <map>

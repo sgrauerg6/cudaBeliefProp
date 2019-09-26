@@ -8,11 +8,13 @@
 #ifndef RUNBPSTEREOOPTIMIZEDCPU_H_
 #define RUNBPSTEREOOPTIMIZEDCPU_H_
 
-#include "SmoothImageCPU.h"
-#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
-#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <iostream>
 #include <string>
+#include <memory>
+#include "SmoothImageCPU.h"
+#include "ProcessOptimizedCPUBP.h"
+#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 
 template <typename T = float>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T> {

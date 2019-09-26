@@ -22,10 +22,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define SMOOTH_IMAGE_HOST_HEADER_CUH
 
 #include <math.h>
-#include <algorithm>
-#include "../ImageDataAndProcessing/BpImage.h"
 #include <memory>
 #include <utility>
+#include "../ImageDataAndProcessing/BpImage.h"
 
 #define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
 
