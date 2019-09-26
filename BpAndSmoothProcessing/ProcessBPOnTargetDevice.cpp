@@ -97,6 +97,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		heightLevel = (int)ceil(heightLevel / 2.0);
 	}
 
+	//std::cout << "INIT_SETTINGS_MALLOC" << std::endl;
 	runtime_start_end_timings[INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
 
 	//declare and then allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
@@ -118,12 +119,14 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 #endif
 
 	runtime_start_end_timings[INIT_SETTINGS_MALLOC].second = runtime_start_end_timings[DATA_COSTS_BOTTOM_LEVEL].first = std::chrono::system_clock::now();
+	//std::cout << "DATA_COSTS_BOTTOM_LEVEL" << std::endl;
 
 	//initialize the data cost at the bottom level
 	initializeDataCosts(algSettings, processingLevelProperties[0], imagesOnTargetDevice,
 			dataCostsDeviceCheckerboardAllLevels);
 
 	runtime_start_end_timings[DATA_COSTS_BOTTOM_LEVEL].second = runtime_start_end_timings[DATA_COSTS_HIGHER_LEVEL].first = std::chrono::system_clock::now();
+	//std::cout << "DATA_COSTS_HIGHER_LEVEL" << std::endl;
 
 	//set the data costs at each level from the bottom level "up"
 	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
@@ -140,6 +143,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	}
 
 	runtime_start_end_timings[DATA_COSTS_HIGHER_LEVEL].second = runtime_start_end_timings[INIT_MESSAGES].first = std::chrono::system_clock::now();
+	//std::cout << "INIT_MESSAGES" << std::endl;
 
 	currentOffsetLevel = offsetAtLevel[algSettings.numLevels - 1];
 
@@ -166,6 +170,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 #endif
 
 	runtime_start_end_timings[INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
+	//std::cout << "INIT_MESSAGES_KERNEL" << std::endl;
 
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(
@@ -188,10 +193,12 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		std::chrono::duration<double> diff;
 		auto timeBpIterStart = std::chrono::system_clock::now();
 
+		//std::cout << "RUN_BP" << std::endl;
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
 		runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
 						dataCostsDeviceCheckerboardCurrentLevel,
 						messagesDevice[currentCheckerboardSet]);
+		//std::cout << "RUN_BP2" << std::endl;
 
 		auto timeBpIterEnd = std::chrono::system_clock::now();
 		diff = timeBpIterEnd - timeBpIterStart;
@@ -255,6 +262,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	}
 
 	runtime_start_end_timings[OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
+	//std::cout << "OUTPUT_DISPARITY" << std::endl;
 
 	//assume in bottom level when retrieving output disparity
 	V resultingDisparityMapCompDevice = retrieveOutputDisparity(
@@ -290,6 +298,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 #endif
 
 	runtime_start_end_timings[FINAL_FREE].second = std::chrono::system_clock::now();
+	//std::cout << "FINAL_FREE" << std::endl;
 
 	//retrieve the timing for each runtime segment and add to vector in timings map
 	std::for_each(runtime_start_end_timings.begin(),

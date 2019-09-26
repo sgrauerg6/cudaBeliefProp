@@ -36,7 +36,7 @@ template<typename T, typename U>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>
 {
 public:
-		void allocateMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
+		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
 		{
 			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
 			//*arrayToAllocate = malloc(numBytesAllocate);
@@ -44,9 +44,20 @@ public:
 			*arrayToAllocate = aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
 		}
 
-		void freeMemoryOnTargetDevice(void* arrayToFree)
+		void freeRawMemoryOnTargetDevice(void* arrayToFree)
 		{
 			free(arrayToFree);
+		}
+
+		U allocateMemoryOnTargetDevice(unsigned long numData)
+		{
+			U memoryData = static_cast<U>(std::aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
+			return memoryData;
+		}
+
+		void freeMemoryOnTargetDevice(U memoryToFree)
+		{
+			free(memoryToFree);
 		}
 
 		void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,

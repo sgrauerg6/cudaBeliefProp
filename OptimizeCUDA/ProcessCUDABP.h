@@ -36,13 +36,26 @@ class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U>
 {
 public:
 
-	void allocateMemoryOnTargetDevice(void** arrayToAllocate,
+	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate,
 			unsigned long numBytesAllocate) {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
 	}
 
-	void freeMemoryOnTargetDevice(void* arrayToFree) {
+	void freeRawMemoryOnTargetDevice(void* arrayToFree) {
 		cudaFree(arrayToFree);
+	}
+
+	U allocateMemoryOnTargetDevice(unsigned long numData)
+	{
+		//alignment in this case may not be guaranteed like with aligned_alloc, so may want to look into that
+		U arrayToAllocate;
+		cudaMalloc((void**)&arrayToAllocate, numData*sizeof(T));
+		return arrayToAllocate;
+	}
+
+	void freeMemoryOnTargetDevice(U memoryToFree)
+	{
+		cudaFree(memoryToFree);
 	}
 
 	//initialize the data cost at each pixel for each disparity value
