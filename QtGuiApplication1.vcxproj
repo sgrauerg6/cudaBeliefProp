@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
+    <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
+    <Import Project="$(QtMsBuild)\qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.1.props" />
+  </ImportGroup>
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>cudart_static.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtMoc>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>compute_61,sm_61</CodeGeneration>
+    </CudaCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <PreprocessorDefinitions>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>cudart_static.lib;qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <QtMoc>
+      <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
+      <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
+      <IncludePath>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;%(AdditionalIncludeDirectories)</IncludePath>
+      <Define>UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;%(PreprocessorDefinitions)</Define>
+    </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
+    <QtRcc>
+      <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\qrc_%(Filename).cpp</OutputFile>
+    </QtRcc>
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CodeGeneration>compute_61,sm_61</CodeGeneration>
+    </CudaCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BpAndSmoothProcessing\ProcessBPOnTargetDevice.cpp" />
+    <ClCompile Include="BpAndSmoothProcessing\RunBpStereoSet.cpp" />
+    <ClCompile Include="BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.cpp" />
+    <ClCompile Include="BpAndSmoothProcessing\SmoothImage.cpp" />
+    <ClCompile Include="FileProcessing\BpFileHandling.cpp" />
+    <ClCompile Include="GuiProcessStereoSet.cpp" />
+    <ClCompile Include="ImageDataAndProcessing\BpImage.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="OptimizeCPU\KernelBpStereoCPU.cpp" />
+    <ClCompile Include="OptimizeCPU\ProcessOptimizedCPUBP.cpp" />
+    <ClCompile Include="OptimizeCPU\RunBpStereoOptimizedCPU.cpp" />
+    <ClCompile Include="OptimizeCPU\SmoothImageCPU.cpp" />
+    <CudaCompile Include="OptimizeCUDA\ProcessCUDABP.cpp" />
+    <ClCompile Include="OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp" />
+    <CudaCompile Include="OptimizeCUDA\SmoothImageCUDA.cpp" />
+    <ClCompile Include="OutputEvaluation\DisparityMap.cpp" />
+    <ClCompile Include="OutputEvaluation\OutputEvaluationParameters.cpp" />
+    <ClCompile Include="OutputEvaluation\OutputEvaluationResults.cpp" />
+    <ClCompile Include="QtGuiApplication1.cpp" />
+    <ClCompile Include="RuntimeTiming\DetailedTimings.cpp" />
+    <ClCompile Include="SingleThreadCPU\stereo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QtGuiApplication1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="QtGuiApplication1.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="QtGuiApplication1.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BpAndSmoothProcessing\ProcessBPOnTargetDevice.h" />
+    <ClInclude Include="BpAndSmoothProcessing\RunBpStereoSet.h" />
+    <ClInclude Include="BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.h" />
+    <ClInclude Include="BpAndSmoothProcessing\SmoothImage.h" />
+    <ClInclude Include="FileProcessing\BpFileHandling.h" />
+    <ClInclude Include="FileProcessing\BpFileHandlingConsts.h" />
+    <ClInclude Include="GuiProcessStereoSet.h" />
+    <ClInclude Include="ImageDataAndProcessing\BpImage.h" />
+    <ClInclude Include="OptimizeCPU\KernelBpStereoCPU.h" />
+    <ClInclude Include="OptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h" />
+    <ClInclude Include="OptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h" />
+    <ClInclude Include="OptimizeCPU\KernelBpStereoCPU_AVX512TemplateSpFuncts.h" />
+    <ClInclude Include="OptimizeCPU\KernelBpStereoCPU_NEON.h" />
+    <ClInclude Include="OptimizeCPU\KernelBpStereoCPU_TemplateSpFuncts.h" />
+    <ClInclude Include="OptimizeCPU\ProcessOptimizedCPUBP.h" />
+    <ClInclude Include="OptimizeCPU\RunBpStereoOptimizedCPU.h" />
+    <ClInclude Include="OptimizeCPU\SmoothImageCPU.h" />
+    <CudaCompile Include="OptimizeCUDA\ProcessCUDABP.h" />
+    <ClInclude Include="OptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h" />
+    <ClInclude Include="OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h" />
+    <CudaCompile Include="OptimizeCUDA\SmoothImageCUDA.h" />
+    <ClInclude Include="OutputEvaluation\DisparityMap.h" />
+    <ClInclude Include="OutputEvaluation\OutputEvaluationParameters.h" />
+    <ClInclude Include="OutputEvaluation\OutputEvaluationResults.h" />
+    <ClInclude Include="ParameterFiles\bpParametersFromPython.h" />
+    <ClInclude Include="ParameterFiles\bpRunSettings.h" />
+    <ClInclude Include="ParameterFiles\bpStereoCudaParameters.h" />
+    <ClInclude Include="ParameterFiles\bpStereoParameters.h" />
+    <ClInclude Include="ParameterFiles\bpStructsAndEnums.h" />
+    <ClInclude Include="RuntimeTiming\DetailedTimingBPConsts.h" />
+    <ClInclude Include="RuntimeTiming\DetailedTimings.h" />
+    <ClInclude Include="SharedFuncts\SharedBPProcessingFuncts.h" />
+    <ClInclude Include="SharedFuncts\SharedSmoothImageFuncts.h" />
+    <ClInclude Include="SharedFuncts\SharedUtilFuncts.h" />
+    <ClInclude Include="SingleThreadCPU\convolve.h" />
+    <ClInclude Include="SingleThreadCPU\filter.h" />
+    <ClInclude Include="SingleThreadCPU\image.h" />
+    <ClInclude Include="SingleThreadCPU\imconv.h" />
+    <ClInclude Include="SingleThreadCPU\imutil.h" />
+    <ClInclude Include="SingleThreadCPU\misc.h" />
+    <ClInclude Include="SingleThreadCPU\pnmfile.h" />
+    <ClInclude Include="SingleThreadCPU\stereo.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(VCTargetsPath)\BuildCustomizations\CUDA 10.1.targets" />
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="QT" MocOptions="" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
