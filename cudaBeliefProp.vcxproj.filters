@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="bpandsmoothprocessing\ProcessBPOnTargetDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bpandsmoothprocessing\RunBpStereoSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bpandsmoothprocessing\RunBpStereoSetMemoryManagement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bpandsmoothprocessing\SmoothImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fileprocessing\BpFileHandling.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imagedataandprocessing\BpImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="maindriverfiles\driverBpStereoCPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="maindriverfiles\RunAndEvaluateBpResults.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimizecpu\KernelBpStereoCPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimizecpu\ProcessOptimizedCPUBP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimizecpu\RunBpStereoOptimizedCPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimizecpu\SmoothImageCPU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="outputevaluation\DisparityMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="outputevaluation\OutputEvaluationParameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="outputevaluation\OutputEvaluationResults.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="runtimetiming\DetailedTimings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="singlethreadcpu\stereo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bpandsmoothprocessing\ProcessBPOnTargetDevice.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bpandsmoothprocessing\RunBpStereoSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bpandsmoothprocessing\RunBpStereoSetMemoryManagement.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bpandsmoothprocessing\SmoothImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileprocessing\BpFileHandling.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileprocessing\BpFileHandlingConsts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="imagedataandprocessing\BpImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="maindriverfiles\RunAndEvaluateBpResults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\KernelBpStereoCPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\KernelBpStereoCPU_ARMTemplateSpFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\KernelBpStereoCPU_AVX256TemplateSpFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\KernelBpStereoCPU_AVX512TemplateSpFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\KernelBpStereoCPU_NEON.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\KernelBpStereoCPU_TemplateSpFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\ProcessOptimizedCPUBP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\RunBpStereoOptimizedCPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimizecpu\SmoothImageCPU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="outputevaluation\DisparityMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="outputevaluation\OutputEvaluationParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="outputevaluation\OutputEvaluationResults.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parameterfiles\bpParametersFromPython.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parameterfiles\bpRunSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parameterfiles\bpStereoCudaParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parameterfiles\bpStereoParameters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parameterfiles\bpStructsAndEnums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="runtimetiming\DetailedTimingBPConsts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="runtimetiming\DetailedTimings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedfuncts\SharedBPProcessingFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedfuncts\SharedSmoothImageFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sharedfuncts\SharedUtilFuncts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\convolve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\filter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\imconv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\imutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\misc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\pnmfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="singlethreadcpu\stereo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="optimizecuda\ProcessCUDABP.h">
+      <Filter>Header Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="optimizecuda\ProcessCUDABP.cpp">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.cpp">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.h">
+      <Filter>Header Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="optimizecuda\RunBpStereoSetCUDAMemoryManagement.h">
+      <Filter>Header Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="optimizecuda\SmoothImageCUDA.cpp">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="optimizecuda\SmoothImageCUDA.h">
+      <Filter>Header Files</Filter>
+    </CudaCompile>
+  </ItemGroup>
+</Project>

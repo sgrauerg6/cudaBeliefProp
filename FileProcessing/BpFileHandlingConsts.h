@@ -24,8 +24,13 @@ namespace bp_file_handling
 	const std::filesystem::path EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
 	const std::filesystem::path STEREO_SETS_PATH = EXE_PATH_PATH / "StereoSets";
 #else
+#ifdef _WIN32
+	const std::string EXE_PATH_PATH = "C:/Users/sgrau/Documents/GitHub/cudaBeliefProp";
+	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
+#else
 	const std::string EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
+#endif
 #endif //USE_FILESYSTEM
 }
 

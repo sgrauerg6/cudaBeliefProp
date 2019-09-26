@@ -7,8 +7,11 @@
 
 #ifndef KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_
-
+#ifdef _WIN32
+#include <intrin.h>
+#else
 #include <x86intrin.h>
+#endif
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
 template<> inline

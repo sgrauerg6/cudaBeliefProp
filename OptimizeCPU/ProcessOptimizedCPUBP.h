@@ -26,12 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <chrono>
 #include <stdlib.h>
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include "ParameterFiles/bpStereoParameters.h"
-#include "ParameterFiles/bpStructsAndEnums.h"
-#include "ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/bpStereoParameters.h"
+#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../ParameterFiles/bpRunSettings.h"
 
 //include for the kernal functions to be run on the GPU
 #include "KernelBpStereoCPU.h"
+#include <malloc.h>
 
 template<typename T, typename U>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>
@@ -42,23 +43,41 @@ public:
 			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
 			//*arrayToAllocate = malloc(numBytesAllocate);
 			//necessary to align for aligned avx load instructions to work as expected
+#ifdef _WIN32
+			*arrayToAllocate = _aligned_malloc(numBytesAllocate, NUM_DATA_ALIGN_WIDTH * sizeof(T));
+#else
 			*arrayToAllocate = aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
+#endif
 		}
 
 		void freeRawMemoryOnTargetDevice(void* arrayToFree)
 		{
+#ifdef _WIN32
+			_aligned_free(arrayToFree);
+#else
 			free(arrayToFree);
+#endif
+
 		}
 
 		U allocateMemoryOnTargetDevice(unsigned long numData)
 		{
+#ifdef _WIN32
+			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), NUM_DATA_ALIGN_WIDTH * sizeof(T)));
+			return memoryData;
+#else
 			U memoryData = static_cast<U>(std::aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
 			return memoryData;
+#endif
 		}
 
 		void freeMemoryOnTargetDevice(U memoryToFree)
 		{
+#ifdef _WIN32
+			_aligned_free(memoryToFree);
+#else
 			free(memoryToFree);
+#endif
 		}
 
 		void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,

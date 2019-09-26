@@ -4,9 +4,14 @@
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
 
 //this is only processed when on x86
+#ifdef _WIN32
+#include <intrin.h>
+#else
 #include <x86intrin.h>
+#endif
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
+#ifndef _WIN32
 template<> inline
 short getZeroVal<short>()
 {
@@ -24,6 +29,7 @@ short convertValToDifferentDataTypeIfNeeded<float, short>(float data)
 {
 	return _cvtss_sh(data, 0);
 }
+#endif
 
 template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,

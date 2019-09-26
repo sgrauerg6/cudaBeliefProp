@@ -49,10 +49,19 @@ public:
 protected:
 
 	//protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
+	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
 	template <typename U, typename V = float, typename W = float*>
 	ProcessStereoSetOutput processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<W>>& smoothImage,
-		const std::unique_ptr<ProcessBPOnTargetDevice<T, U>>& runBpStereo, const std::unique_ptr<RunBpStereoSetMemoryManagement<V, W>>& runBPMemoryMangement = std::make_unique<RunBpStereoSetMemoryManagement<V, W>>() );
+		const std::unique_ptr<ProcessBPOnTargetDevice<T, U>>& runBpStereo, 
+		const std::unique_ptr<RunBpStereoSetMemoryManagement<V, W>>& runBPMemoryMangement = 
+		std::make_unique<RunBpStereoSetMemoryManagement<
+		#ifdef _WIN32
+		float, float*
+		#else
+		V, W
+		#endif
+		>>() );
 
 };
 

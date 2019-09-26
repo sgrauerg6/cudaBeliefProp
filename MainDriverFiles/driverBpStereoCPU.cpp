@@ -18,10 +18,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the CUDA BP implementation
 
-#include "SingleThreadCPU/stereo.h"
+#include "../SingleThreadCPU/stereo.h"
 
 //needed to run the optimized implementation a stereo set using CPU
-#include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
+#include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
 
 #include "RunAndEvaluateBpResults.h"
 #include <memory>
@@ -29,8 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-	//std::ofstream resultsStream("output.txt", std::ofstream::out);
-	std::ostream resultsStream(std::cout.rdbuf());
+	std::ofstream resultsStream("output.txt", std::ofstream::out);
+	//std::ostream resultsStream(std::cout.rdbuf());
 
 	RunAndEvaluateBpResults::printParameters(resultsStream);
 

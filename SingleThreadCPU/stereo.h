@@ -23,9 +23,9 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include "ParameterFiles/bpStereoParameters.h"
-#include "ParameterFiles/bpStructsAndEnums.h"
-#include "ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/bpStereoParameters.h"
+#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../ParameterFiles/bpRunSettings.h"
 
 template<typename T = float>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>

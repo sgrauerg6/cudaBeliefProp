@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BP_STEREO_HOST_HEADER_CUH
 #define RUN_BP_STEREO_HOST_HEADER_CUH
 
-#include "ParameterFiles/bpStereoCudaParameters.h"
+#include "../ParameterFiles/bpStereoCudaParameters.h"
 
 //include for the kernal functions to be run on the GPU
 #include <cuda_runtime.h>
