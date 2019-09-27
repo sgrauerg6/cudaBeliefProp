@@ -1,11 +1,7 @@
 #include "QtGuiApplication1.h"
 
-#ifdef USE_FILESYSTEM
 #include <filesystem>
 typedef std::filesystem::path filepathtype;
-#else
-typedef std::string filepathtype;
-#endif //USE_FILESYSTEM
 #include <iostream>
 
 QtGuiApplication1::QtGuiApplication1(QWidget *parent)

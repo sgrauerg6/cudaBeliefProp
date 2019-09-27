@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <string>
+#include <filesystem>
 
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "./ParameterFiles/bpStereoParameters.h"
@@ -16,17 +17,10 @@
 #include "./ParameterFiles/bpRunSettings.h"
 #include "./BpAndSmoothProcessing/RunBpStereoSet.h"
 
-
-#ifdef USE_FILESYSTEM
-#include <filesystem>
-typedef std::filesystem::path filepathtype;
-#else
-typedef std::string filepathtype;
-#endif //USE_FILESYSTEM
-
 //needed to set number of threads for OpenMP
 #include <omp.h>
 
+typedef std::filesystem::path filepathtype;
 enum bpImplementation { NAIVE_CPU, OPTIMIZED_CPU, OPTIMIZED_CUDA };
 
 class GuiProcessStereoSet
