@@ -33,9 +33,6 @@
     <ClCompile Include="imagedataandprocessing\BpImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="maindriverfiles\driverBpStereoCPU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="maindriverfiles\RunAndEvaluateBpResults.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -64,6 +61,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="singlethreadcpu\stereo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainDriverFiles\driverCudaBp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -189,12 +195,6 @@
     </CudaCompile>
     <CudaCompile Include="optimizecuda\ProcessCUDABP.cpp">
       <Filter>Source Files</Filter>
-    </CudaCompile>
-    <CudaCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.cpp">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
-    <CudaCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.h">
-      <Filter>Header Files</Filter>
     </CudaCompile>
     <CudaCompile Include="optimizecuda\RunBpStereoSetCUDAMemoryManagement.h">
       <Filter>Header Files</Filter>

@@ -10,7 +10,6 @@
 
 #include "BpFileHandlingConsts.h"
 
-#ifdef USE_FILESYSTEM
 #include <filesystem>
 class BpFileHandling {
 public:
@@ -70,46 +69,5 @@ private:
 	std::filesystem::path stereo_set_path_;
 	unsigned int num_out_disp_map_;
 };
-
-#else
-class BpFileHandling {
-public:
-
-	//constructor takes stereo set name as input, which must match the directory name of the stereo set
-	BpFileHandling(const std::string& stereo_set_name) : stereo_set_path_(bp_file_handling::STEREO_SETS_PATH + "/" + stereo_set_name), num_out_disp_map_(1) {}
-	virtual ~BpFileHandling();
-
-	//return path to reference image with valid extension if found, otherwise returns empty path
-	const std::string getRefImagePath()
-	{
-		//assume file with pgm extension exists
-		return stereo_set_path_ + "/" + bp_file_handling::REF_IMAGE_NAME + ".pgm";
-	}
-
-	//return path to test image with valid extension if found, otherwise returns empty path
-	const std::string getTestImagePath()
-	{
-		//assume file with pgm extension exists
-		return stereo_set_path_ + "/" + bp_file_handling::TEST_IMAGE_NAME + ".pgm";
-	}
-
-	//return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
-	const std::string getCurrentOutputDisparityFilePathAndIncrement()
-	{
-		return stereo_set_path_ + "/" + (bp_file_handling::OUT_DISP_IMAGE_NAME_BASE + std::to_string(num_out_disp_map_++) + ".pgm");
-
-	}
-
-	//get file path to ground truth disparity map
-	const std::string getGroundTruthDisparityFilePath()
-	{
-		return stereo_set_path_ + "/" + (bp_file_handling::GROUND_TRUTH_DISP_FILE);
-	}
-
-private:
-	std::string stereo_set_path_;
-	unsigned int num_out_disp_map_;
-};
-#endif //USE_FILESYSTEM
 
 #endif /* BPFILEHANDLING_H_ */

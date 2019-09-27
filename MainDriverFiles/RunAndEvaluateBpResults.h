@@ -14,12 +14,7 @@
 #include "../FileProcessing/BpFileHandling.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-#ifdef USE_FILESYSTEM
-#include <filesystem>
 typedef std::filesystem::path filepathtype;
-#else
-typedef std::string filepathtype;
-#endif //USE_FILESYSTEM
 
 class RunAndEvaluateBpResults {
 public:
@@ -80,9 +75,9 @@ public:
 		std::array<ProcessStereoSetOutput, 2> run_output;
 
 		for (int i = 0; i < 2; i++) {
-			run_output[i] = bpProcessingImps[i]->operator()(refImagePath,
-					testImagePath, algSettings, outStream);
-			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i],
+			run_output[i] = bpProcessingImps[i]->operator()(refImagePath.string(),
+					testImagePath.string(), algSettings, outStream);
+			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i].string(),
 					bp_params::SCALE_BP);
 			outStream << "Median " << bpProcessingImps[i]->getBpRunDescription()
 					<< " runtime (including transfer time): "
@@ -95,7 +90,7 @@ public:
 
 		}
 
-		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp, bp_params::SCALE_BP);
+		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP);
 		for (int i = 0; i < 2; i++) {
 			outStream << std::endl << bpProcessingImps[i]->getBpRunDescription()
 					<< " output vs. Ground Truth result:\n";
