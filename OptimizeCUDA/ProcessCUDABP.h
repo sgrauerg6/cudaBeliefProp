@@ -37,15 +37,15 @@ class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U>
 public:
 
 	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate,
-			unsigned long numBytesAllocate) {
+			unsigned long numBytesAllocate) override {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
 	}
 
-	void freeRawMemoryOnTargetDevice(void* arrayToFree) {
+	void freeRawMemoryOnTargetDevice(void* arrayToFree) override {
 		cudaFree(arrayToFree);
 	}
 
-	U allocateMemoryOnTargetDevice(unsigned long numData)
+	U allocateMemoryOnTargetDevice(unsigned long numData) override
 	{
 		//alignment in this case may not be guaranteed like with aligned_alloc, so may want to look into that
 		U arrayToAllocate;
@@ -53,30 +53,30 @@ public:
 		return arrayToAllocate;
 	}
 
-	void freeMemoryOnTargetDevice(U memoryToFree)
+	void freeMemoryOnTargetDevice(U memoryToFree) override
 	{
 		cudaFree(memoryToFree);
 	}
 
 	//initialize the data cost at each pixel for each disparity value
 	void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
-			const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard);
+			const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard) override;
 
 	void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 			const levelProperties& prevLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo);
+			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo) override;
 
 	//initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
 	void initializeMessageValsToDefault(
 			const levelProperties& currentLevelProperties,
-			const checkerboardMessages<U>& messagesDevice);
+			const checkerboardMessages<U>& messagesDevice) override;
 
 	//run the given number of iterations of BP at the current level using the given message values in global device memory
 	void runBPAtCurrentLevel(const BPsettings& algSettings,
 			const levelProperties& currentLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice);
+			const checkerboardMessages<U>& messagesDevice) override;
 
 	//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
 	//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
@@ -86,12 +86,12 @@ public:
 			const levelProperties& currentLevelProperties,
 			const levelProperties& nextlevelProperties,
 			const checkerboardMessages<U>& messagesDeviceCopyFrom,
-			const checkerboardMessages<U>& messagesDeviceCopyTo);
+			const checkerboardMessages<U>& messagesDeviceCopyTo) override;
 
 	float* retrieveOutputDisparity(
 			const levelProperties& currentLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice);
+			const checkerboardMessages<U>& messagesDevice) override;
 
 };
 

@@ -40,11 +40,11 @@ class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
 {
 public:
 
-	std::string getBpRunDescription() { return "CUDA"; }
+	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
-				const BPsettings& algSettings, std::ostream& resultsStream)
+				const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
@@ -60,12 +60,12 @@ class RunBpStereoSetOnGPUWithCUDA<short> : public RunBpStereoSet<short>
 {
 public:
 
-	std::string getBpRunDescription() { return "CUDA"; }
+	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
-					const BPsettings& algSettings, std::ostream& resultsStream)
+					const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
@@ -103,12 +103,12 @@ class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet
 {
 public:
 
-	std::string getBpRunDescription() { return "CUDA"; }
+	std::string getBpRunDescription() override  { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
-			const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr)
+	ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
+			const BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr) override
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF

@@ -38,7 +38,7 @@ template<typename T, typename U>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>
 {
 public:
-		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate)
+		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate) override
 		{
 			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
 			//*arrayToAllocate = malloc(numBytesAllocate);
@@ -50,7 +50,7 @@ public:
 #endif
 		}
 
-		void freeRawMemoryOnTargetDevice(void* arrayToFree)
+		void freeRawMemoryOnTargetDevice(void* arrayToFree) override
 		{
 #ifdef _WIN32
 			_aligned_free(arrayToFree);
@@ -60,7 +60,7 @@ public:
 
 		}
 
-		U allocateMemoryOnTargetDevice(unsigned long numData)
+		U allocateMemoryOnTargetDevice(unsigned long numData) override
 		{
 #ifdef _WIN32
 			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), NUM_DATA_ALIGN_WIDTH * sizeof(T)));
@@ -71,7 +71,7 @@ public:
 #endif
 		}
 
-		void freeMemoryOnTargetDevice(U memoryToFree)
+		void freeMemoryOnTargetDevice(U memoryToFree) override
 		{
 #ifdef _WIN32
 			_aligned_free(memoryToFree);
@@ -81,32 +81,32 @@ public:
 		}
 
 		void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
-				const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard);
+				const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard) override;
 
 		void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 					const levelProperties& prevLevelProperties,
 					const dataCostData<U>& dataCostDeviceCheckerboard,
-					const dataCostData<U>& dataCostDeviceCheckerboardWriteTo);
+					const dataCostData<U>& dataCostDeviceCheckerboardWriteTo) override;
 
 		void initializeMessageValsToDefault(
 					const levelProperties& currentLevelProperties,
-					const checkerboardMessages<U>& messagesDevice);
+					const checkerboardMessages<U>& messagesDevice) override;
 
 		void runBPAtCurrentLevel(const BPsettings& algSettings,
 					const levelProperties& currentLevelProperties,
 					const dataCostData<U>& dataCostDeviceCheckerboard,
-					const checkerboardMessages<U>& messagesDevice);
+					const checkerboardMessages<U>& messagesDevice) override;
 
 		void copyMessageValuesToNextLevelDown(
 					const levelProperties& currentLevelProperties,
 					const levelProperties& nextlevelProperties,
 					const checkerboardMessages<U>& messagesDeviceCopyFrom,
-					const checkerboardMessages<U>& messagesDeviceCopyTo);
+					const checkerboardMessages<U>& messagesDeviceCopyTo) override;
 
 		float* retrieveOutputDisparity(
 					const levelProperties& currentLevelProperties,
 					const dataCostData<U>& dataCostDeviceCheckerboard,
-					const checkerboardMessages<U>& messagesDevice);
+					const checkerboardMessages<U>& messagesDevice) override;
 };
 
 //if not using AVX-256 or AVX-512, process using float if short data type used

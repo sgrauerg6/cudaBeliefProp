@@ -31,8 +31,8 @@ template<typename T = float>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsFile);
-	std::string getBpRunDescription() { return "Single-Thread CPU"; }
+	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsFile) override;
+	std::string getBpRunDescription() override { return "Single-Thread CPU"; }
 
 private:
 	// compute message

@@ -23,7 +23,7 @@ public:
 	virtual ~SmoothImageCUDA() {}
 
 	//for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-	void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, T smoothedImage);
+	void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, T smoothedImage) override;
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */

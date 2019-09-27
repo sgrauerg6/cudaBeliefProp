@@ -30,7 +30,7 @@ public:
 			}
 		}
 
-		return std::filesystem::path();
+		throw std::filesystem::filesystem_error("Reference image not found", std::error_code());
 	}
 
 	//return path to test image with valid extension if found, otherwise returns empty path
@@ -49,7 +49,7 @@ public:
 			}
 		}
 
-		return std::filesystem::path();
+		throw std::filesystem::filesystem_error("Test image not found", std::error_code());
 	}
 
 	//return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
