@@ -26,16 +26,10 @@ enum bpImplementation { NAIVE_CPU, OPTIMIZED_CPU, OPTIMIZED_CUDA };
 class GuiProcessStereoSet
 {
 public:
-	static BPsettings initializeAndReturnBPSettings()
-	{
-		BPsettings startBPSettings;
-
-		return startBPSettings;
-	}
 
 	//process stereo set using input implementationToRun; return pair with runtime first
 	//and file path of computed disparity map second
-	static std::pair<float, std::string> processStereoSet(bpImplementation implementationToRun)
+	static std::pair<float, std::string> processStereoSet(const bpImplementation implementationToRun, const BPsettings& currentBPSettings = BPsettings())
 	{
 		std::ofstream resultsStream("output.txt", std::ofstream::out);
 		//std::ostream resultsStream(std::cout.rdbuf());
@@ -62,7 +56,7 @@ public:
 			runBp = new RunBpStereoSetOnGPUWithCUDA<float>();
 		}
 
-		ProcessStereoSetOutput processStereoOutput = (*runBp)(refImagePath.string(), testImagePath.string(), initializeAndReturnBPSettings(), resultsStream);
+		ProcessStereoSetOutput processStereoOutput = (*runBp)(refImagePath.string(), testImagePath.string(), currentBPSettings, resultsStream);
 		processStereoOutput.outDisparityMap.saveDisparityMap(outputDisparityMapFile.string(), bp_params::SCALE_BP);
 		delete runBp;
 
