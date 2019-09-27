@@ -18,7 +18,7 @@ INCLUDE_DIRS := -I. -I./ -I$(CUDA_DIR)/include -I$(COMMONDIR)/inc -I$(SHAREDDIR)
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work
-LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart
+LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart -lstdc++fs
 LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lstdc++fs
 
 # define the path for the nvcc cuda compiler
@@ -110,7 +110,7 @@ SmoothImageCUDA.o: OptimizeCUDA/SmoothImageCUDA.cpp OptimizeCUDA/SmoothImageCUDA
 	$(NVCC) -x cu -c OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
 
 driverCudaBp.o: MainDriverFiles/driverCudaBp.cpp ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o RunAndEvaluateBpResults.o
-	# need to adjust ARCHITECTURES_GENCODE to allow support for compute capability under 6.0 (can't use half precision before compute capability 5.3)
-	$(NVCC) -x cu -c MainDriverFiles/driverCudaBp.cpp $(ARCHITECTURES_GENCODE) -o driverCudaBp.o $(CUDA_COMPILE_FLAGS) 
+	g++ MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	
 make clean:
 	rm *.o driverCudaBp driverCPUBp

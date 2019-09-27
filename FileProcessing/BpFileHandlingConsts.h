@@ -22,19 +22,18 @@ namespace bp_file_handling
 
 #ifdef USE_FILESYSTEM
 #ifdef _WIN32
-	//const std::string EXE_PATH_PATH = "C:/Users/sgrau/Documents/GitHub/cudaBeliefProp";
-	//SOLUTION_DIR is defined in preprocessor of Visual Studio Project
-	const std::string EXE_PATH_PATH = SOLUTION_DIR;// "C:/Users/sgrau/source/repos/beliefProp";
+	//SOLUTION_DIR is set to $(SolutionDir) in preprocessor of Visual Studio Project
+	const std::string EXE_PATH_PATH = SOLUTION_DIR;
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
 #else
+	//assuming that executable is created in main cudaBeliefProp directory when using g++
 	const std::filesystem::path EXE_PATH_PATH = std::filesystem::current_path();
 	const std::filesystem::path STEREO_SETS_PATH = EXE_PATH_PATH / "StereoSets";
 #endif //USE_FILESYSTEM
 #else
 #ifdef _WIN32
-	//const std::string EXE_PATH_PATH = "C:/Users/sgrau/Documents/GitHub/cudaBeliefProp";
-	//SOLUTION_DIR is defined in preprocessor of Visual Studio Project
-	const std::string EXE_PATH_PATH = SOLUTION_DIR;// "C:/Users/sgrau/source/repos/beliefProp";
+	//SOLUTION_DIR is set to $(SolutionDir) in preprocessor of Visual Studio Project
+	const std::string EXE_PATH_PATH = SOLUTION_DIR;
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
 #else
 	const std::string EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
