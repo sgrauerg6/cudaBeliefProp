@@ -68,11 +68,11 @@ public:
 			runBp = new RunBpStereoSetOnGPUWithCUDA<float>();
 		}
 
-		ProcessStereoSetOutput processStereoOutput = (*runBp)(refImagePath, testImagePath, initializeAndReturnBPSettings(), resultsStream);
-		processStereoOutput.outDisparityMap.saveDisparityMap(outputDisparityMapFile, bp_params::SCALE_BP);
+		ProcessStereoSetOutput processStereoOutput = (*runBp)(refImagePath.string(), testImagePath.string(), initializeAndReturnBPSettings(), resultsStream);
+		processStereoOutput.outDisparityMap.saveDisparityMap(outputDisparityMapFile.string(), bp_params::SCALE_BP);
 		delete runBp;
 
 		//initialize and return output pair of implementation runtime and file path of output disparity map
-		return std::pair<float, std::string>(processStereoOutput.runTime, outputDisparityMapFile);
+		return std::pair<float, std::string>(processStereoOutput.runTime, outputDisparityMapFile.string());
 	}
 };

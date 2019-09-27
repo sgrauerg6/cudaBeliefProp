@@ -15,8 +15,7 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	filepathtype refImagePath = bpFileSettings.getRefImagePath();
 
 	ui.setupUi(this);
-	QPixmap newImage(refImagePath.c_str());
-	std::cout << refImagePath.c_str() << std::endl;
+	QPixmap newImage(refImagePath.string().c_str());
 	ui.targetImage->setPixmap(newImage);
 	connect(ui.pushButton_2, &QPushButton::clicked, this, &QtGuiApplication1::processButtonPress);
 }
@@ -63,7 +62,7 @@ void QtGuiApplication1::processButtonPress()
 		}
 		else
 		{
-			updatedImageFilePath = refImagePath;
+			updatedImageFilePath = refImagePath.string();
 			updatedButtonText = "Run Stereo Processing";
 			updatedLabelText = "Reference Image of Stereo Set";
 		}

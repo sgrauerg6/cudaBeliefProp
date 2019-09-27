@@ -10,7 +10,7 @@
 #include <filesystem>
 #include <string>
 
-//#define USE_FILESYSTEM
+#define USE_FILESYSTEM
 
 namespace bp_file_handling
 {
@@ -21,11 +21,20 @@ namespace bp_file_handling
 	const std::string OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
 
 #ifdef USE_FILESYSTEM
-	const std::filesystem::path EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
+#ifdef _WIN32
+	//const std::string EXE_PATH_PATH = "C:/Users/sgrau/Documents/GitHub/cudaBeliefProp";
+	//SOLUTION_DIR is defined in preprocessor of Visual Studio Project
+	const std::string EXE_PATH_PATH = SOLUTION_DIR;// "C:/Users/sgrau/source/repos/beliefProp";
+	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
+#else
+	const std::filesystem::path EXE_PATH_PATH = std::filesystem::current_path();
 	const std::filesystem::path STEREO_SETS_PATH = EXE_PATH_PATH / "StereoSets";
+#endif //USE_FILESYSTEM
 #else
 #ifdef _WIN32
-	const std::string EXE_PATH_PATH = "C:/Users/sgrau/Documents/GitHub/cudaBeliefProp";
+	//const std::string EXE_PATH_PATH = "C:/Users/sgrau/Documents/GitHub/cudaBeliefProp";
+	//SOLUTION_DIR is defined in preprocessor of Visual Studio Project
+	const std::string EXE_PATH_PATH = SOLUTION_DIR;// "C:/Users/sgrau/source/repos/beliefProp";
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
 #else
 	const std::string EXE_PATH_PATH = "/home/scott/cudaBeliefProp";
