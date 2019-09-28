@@ -245,13 +245,13 @@ void ProcessCUDABP<T, U>::initializeDataCurrentLevel(const levelProperties& curr
 
 //due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
 template<>
-void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(
-		const levelProperties& currentLevelProperties,
-		const levelProperties& nextlevelProperties,
-		const checkerboardMessages<half2>& messagesDeviceCopyFrom,
-		const checkerboardMessages<half2>& messagesDeviceCopyTo)
+void ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
+	const levelProperties& currentLevelProperties,
+	const levelProperties& nextlevelProperties,
+	const checkerboardMessages<half2*>& messagesDeviceCopyFrom,
+	const checkerboardMessages<half2*>& messagesDeviceCopyTo)
 {
-	ProcessCUDABP<half> processCUDABPHalf;
+	/*ProcessCUDABP<half> processCUDABPHalf;
 	processCUDABPHalf.copyMessageValuesToNextLevelDown(
 			prevlevelProperties,
 			currentLevelProperties,
@@ -270,25 +270,23 @@ void ProcessCUDABP<half2>::copyMessageValuesToNextLevelDown(
 			(half*)messagesDeviceCopyTo.messagesU_Checkerboard1,
 			(half*)messagesDeviceCopyTo.messagesD_Checkerboard1,
 			(half*)messagesDeviceCopyTo.messagesL_Checkerboard1,
-			(half*)messagesDeviceCopyTo.messagesR_Checkerboard1);
+			(half*)messagesDeviceCopyTo.messagesR_Checkerboard1);*/
 }
 
 //due to indexing, need to convert to half* and use half arrays for this function
 template<>
-void ProcessCUDABP<half2>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
-		const levelProperties& prevLevelProperties,
-		half2* dataCostStereoCheckerboard1,
-		half2* dataCostStereoCheckerboard2,
-		half2* dataCostDeviceToWriteToCheckerboard1,
-		half2* dataCostDeviceToWriteToCheckerboard2)
+void ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
+	const levelProperties& prevLevelProperties,
+	const dataCostData<half2*>& dataCostDeviceCheckerboard,
+	const dataCostData<half2*>& dataCostDeviceCheckerboardWriteTo)
 {
-	ProcessCUDABP<half> processCUDABPHalf;
+	/*ProcessCUDABP<half> processCUDABPHalf;
 	processCUDABPHalf.initializeDataCurrentLevel(currentLevelProperties,
 			prevLevelProperties,
 			(half*)dataCostStereoCheckerboard1,
 			(half*)dataCostStereoCheckerboard2,
 			(half*)dataCostDeviceToWriteToCheckerboard1,
-			(half*)dataCostDeviceToWriteToCheckerboard2);
+			(half*)dataCostDeviceToWriteToCheckerboard2);*/
 }
 
 #endif

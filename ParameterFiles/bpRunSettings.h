@@ -16,7 +16,7 @@
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2
 //not currently supporting half2 data type
-//#define DATA_TYPE_PROCESSING_HALF_TWO 3
+#define DATA_TYPE_PROCESSING_HALF_TWO 3
 
 enum class cpu_vectorization_setting
 {
@@ -62,17 +62,17 @@ constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_OPTIMIZAT
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 typedef float beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "FLOAT"
+const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "FLOAT";
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
 typedef double beliefPropProcessingDataType;
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "DOUBLE"
+const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "DOUBLE";
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 #ifdef COMPILING_FOR_ARM
 typedef float16_t beliefPropProcessingDataType;
 #else
 typedef short beliefPropProcessingDataType;
 #endif
-#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF"
+const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF";
 //not currently supporting half2 data type
 /*#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 typedef short beliefPropProcessingDataType;*/
