@@ -11,25 +11,43 @@
 #endif
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
-#ifndef _WIN32
 template<> inline
 short getZeroVal<short>()
 {
+#ifdef _WIN32
+	float dataArray[8] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+	__m128i convertedData = _mm256_cvtps_ph(_mm256_load_ps(dataArray), 0);
+	return ((short*)& convertedData)[0];
+#else
 	return _cvtss_sh(0.0f, 0);
+#endif
 }
 
 template<> inline
 float convertValToDifferentDataTypeIfNeeded<short, float>(short data)
 {
+#ifdef _WIN32
+	short dataArray[8] = { data, data, data, data, data, data, data, data };
+	__m128i* dataPacked = (__m128i*) & dataArray;
+	__m256 convertedData = _mm256_cvtph_ps(dataPacked[0]);
+	return ((float*)&convertedData)[0];
+#else
 	return _cvtsh_ss(data);
+#endif
 }
 
 template<> inline
 short convertValToDifferentDataTypeIfNeeded<float, short>(float data)
 {
+#ifdef _WIN32
+	float dataArray[8] = { data, data, data, data, data, data, data, data };
+	__m256* dataPacked = (__m256*) & dataArray;
+	__m128i convertedData = _mm256_cvtps_ph(dataPacked[0], 0);
+	return ((short*)&convertedData)[0];
+#else
 	return _cvtss_sh(data, 0);
-}
 #endif
+}
 
 template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,
