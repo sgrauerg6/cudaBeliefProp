@@ -72,9 +72,9 @@ public:
 
 		std::cout << "Processing as half on GPU\n";
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half, half*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, float*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
-		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		return this->processStereoSet<half, half*, float, float*>(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 

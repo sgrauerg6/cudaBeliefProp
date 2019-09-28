@@ -59,7 +59,7 @@ protected:
 		#ifdef _WIN32
 		float, float*
 		#else
-		V, W
+		W, X
 		#endif
 		>>() );
 
@@ -67,7 +67,7 @@ protected:
 
 
 template<typename T>
-template <typename U, typename V, typename W, typename X>
+template<typename U, typename V, typename W, typename X>
 ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
 	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
 	const std::unique_ptr<ProcessBPOnTargetDevice<U, V>>& runBpStereo,

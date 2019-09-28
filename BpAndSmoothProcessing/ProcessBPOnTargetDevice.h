@@ -20,6 +20,10 @@
 #include <array>
 #include <utility>
 
+#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
+#include <cuda_fp16.h>
+#endif
+
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 

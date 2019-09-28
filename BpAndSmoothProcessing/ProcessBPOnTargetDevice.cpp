@@ -336,6 +336,7 @@ template class ProcessBPOnTargetDevice<double, double*>;
 template class ProcessBPOnTargetDevice<float16_t, float16_t*>;
 #else
 template class ProcessBPOnTargetDevice<short, short*>;
+template class ProcessBPOnTargetDevice<half, half*>;
 #endif //COMPILING_FOR_ARM
 
 #endif
