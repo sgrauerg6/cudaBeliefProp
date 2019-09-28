@@ -76,7 +76,7 @@ const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF";
 //not currently supporting half2 data type
 /*#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 typedef short beliefPropProcessingDataType;*/
-//#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
+//const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF2";
 #endif
 
 #endif /* BPRUNSETTINGS_H_ */
