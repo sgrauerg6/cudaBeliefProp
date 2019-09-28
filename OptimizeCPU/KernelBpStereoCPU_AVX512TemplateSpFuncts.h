@@ -7,8 +7,11 @@
 
 #ifndef KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_
-
+#ifdef _WIN32
+#include <intrin.h>
+#else
 #include <x86intrin.h>
+#endif
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
 template<> inline
@@ -274,12 +277,15 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m512 >(int xVal, int yVal,
 			storePackedDataUnaligned<float, __m512 >(destMessageArrayIndex,
 					dstMessageArray, dst[currentDisparity]);
 		}
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex +=
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex +=
 				currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 
@@ -367,12 +373,15 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m512d >(int xVal, int yVal,
 						dstMessageArray,
 						dst[currentDisparity]);
 			}
-	#if OPTIMIZED_INDEXING_SETTING == 1
-			destMessageArrayIndex +=
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
+			{
+				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel;
-	#else
-			destMessageArrayIndex++;
-	#endif //OPTIMIZED_INDEXING_SETTING == 1
+			}
+			else
+			{
+				destMessageArrayIndex++;
+			}
 		}
 }
 
@@ -457,12 +466,15 @@ void KernelBpStereoCPU::msgStereoSIMD<short, __m256i >(int xVal, int yVal,
 					dstMessageArray,
 					_mm512_cvtps_ph(dstFloat[currentDisparity], 0));
 		}
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex +=
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex +=
 				currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 

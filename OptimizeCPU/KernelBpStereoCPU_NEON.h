@@ -234,12 +234,15 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, co
 			storePackedDataUnaligned<float, float32x4_t >(destMessageArrayIndex,
 					dstMessageArray, dst[currentDisparity]);
 		}
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex +=
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex +=
 				currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 
@@ -316,12 +319,15 @@ void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal
 					dstMessageArray,
 					vcvt_f16_f32(dstFloat[currentDisparity]));
 		}
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex +=
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex +=
 				currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 

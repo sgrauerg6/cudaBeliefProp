@@ -226,20 +226,11 @@ public:
 
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
-
-#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
-
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-
-#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
-
-#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
-
-#else
+//uncomment to enable AVX512 (need to then comment out AVX256)
+//#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 
 //do nothing
-
-#endif //CPU_OPTIMIZATION_SETTING == USE_AVX_256
 
 #endif //COMPILING_FOR_ARM
 

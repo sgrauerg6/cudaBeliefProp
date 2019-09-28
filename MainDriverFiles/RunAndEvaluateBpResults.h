@@ -22,7 +22,7 @@ public:
 
 	static void printParameters(std::ostream& resultsStream)
 	{
-		int optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON;
+		bool optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT;
 		resultsStream << "Stereo Set: " << bp_params::STEREO_SET << "\n";
 		resultsStream << "Memory Optimization Level: " << optLevel << "\n";
 		resultsStream << "Indexing Optimization Level: "
@@ -37,7 +37,7 @@ public:
 		resultsStream << "DATA_K_BP: " << bp_params::DATA_K_BP << "\n";
 		resultsStream << "LAMBDA_BP: " << bp_params::LAMBDA_BP << "\n";
 		resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
-		resultsStream << "CPU_OPTIMIZATION_LEVEL: " << CPU_OPTIMIZATION_SETTING
+		resultsStream << "CPU_OPTIMIZATION_LEVEL: " << static_cast<int>(CPU_OPTIMIZATION_SETTING)
 					<< "\n";
 		resultsStream << "BYTES_ALIGN_MEMORY: " << BYTES_ALIGN_MEMORY << "\n";
 		resultsStream << "NUM_DATA_ALIGN_WIDTH: " << NUM_DATA_ALIGN_WIDTH << "\n";

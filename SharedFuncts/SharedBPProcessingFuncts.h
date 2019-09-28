@@ -13,13 +13,6 @@
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-//indexing is performed in such a way so that the memory accesses as coalesced as much as possible
-#if OPTIMIZED_INDEXING_SETTING == 1
-#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU (yVal*width*totalNumDispVals + width*currentDisparity + xVal)
-#else
-#define RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU ((yVal*width + xVal)*totalNumDispVals + currentDisparity)
-#endif
-
 //typename T is input type, typename U is output type
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(T data)
@@ -32,7 +25,15 @@ ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(T data)
 ARCHITECTURE_ADDITION inline int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
 {
 	//assuming that width includes padding
-	return RETRIEVE_INDEX_IN_DATA_OR_MESSAGE_ARRAY_EQUATION_CPU + offsetData;
+	if constexpr (OPTIMIZED_INDEXING_SETTING)
+	{
+		//indexing is performed in such a way so that the memory accesses as coalesced as much as possible
+		return (yVal * width * totalNumDispVals + width * currentDisparity + xVal) + offsetData;
+	}
+	else
+	{
+		return ((yVal * width + xVal) * totalNumDispVals + currentDisparity);
+	}
 }
 
 template<typename T>
@@ -123,11 +124,14 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, const levelPrope
 	{
 		dst[currentDisparity] -= valToNormalize;
 		dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 

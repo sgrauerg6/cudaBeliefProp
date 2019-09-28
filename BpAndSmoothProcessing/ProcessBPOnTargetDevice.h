@@ -276,20 +276,18 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	//declare and then allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
 	//each checkboard holds half of the data
 	dataCostData<U> dataCostsDeviceCheckerboardAllLevels; //checkerboard 0 includes the pixel in slot (0, 0)
-
-#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
 	checkerboardMessages<U> messagesDeviceAllLevels;
 
-	//call function that allocates all data in single array and then set offsets in array for data costs and message data locations
-	std::tie(dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels) =
-		allocateAndOrganizeDataCostsAndMessageDataAllLevels(halfTotalDataAllLevels);
-
-#else
-
-	dataCostsDeviceCheckerboardAllLevels = allocateMemoryForDataCosts(halfTotalDataAllLevels);
-
-#endif
+	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+	{
+		//call function that allocates all data in single array and then set offsets in array for data costs and message data locations
+		std::tie(dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels) =
+			allocateAndOrganizeDataCostsAndMessageDataAllLevels(halfTotalDataAllLevels);
+	}
+	else
+	{
+		dataCostsDeviceCheckerboardAllLevels = allocateMemoryForDataCosts(halfTotalDataAllLevels);
+	}
 
 	runtime_start_end_timings[Runtime_Type_BP::INIT_SETTINGS_MALLOC].second = runtime_start_end_timings[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].first = std::chrono::system_clock::now();
 	//std::cout << "DATA_COSTS_BOTTOM_LEVEL" << std::endl;
@@ -327,20 +325,19 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	dataCostData<U> dataCostsDeviceCheckerboardCurrentLevel =
 		retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
 
-#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
+	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+	{
+		messagesDevice[0] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, currentOffsetLevel);
+	}
+	else
+	{
+		//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
+		int numDataAndMessageSetInCheckerboardAtLevel =
+			getNumDataForAlignedMemoryAtLevel(processingLevelProperties[algSettings.numLevels - 1].widthLevel, processingLevelProperties[algSettings.numLevels - 1].heightLevel, totalPossibleMovements);
 
-	messagesDevice[0] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, currentOffsetLevel);
-
-#else
-
-	//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
-	int numDataAndMessageSetInCheckerboardAtLevel =
-		getNumDataForAlignedMemoryAtLevel(processingLevelProperties[algSettings.numLevels - 1].widthLevel, processingLevelProperties[algSettings.numLevels - 1].heightLevel, totalPossibleMovements);
-
-	//allocate the space for the message values in the first checkboard set at the current level
-	messagesDevice[0] = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
-
-#endif
+		//allocate the space for the message values in the first checkboard set at the current level
+		messagesDevice[0] = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
+	}
 
 	runtime_start_end_timings[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
 	//std::cout << "INIT_MESSAGES_KERNEL" << std::endl;
@@ -388,21 +385,21 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			dataCostsDeviceCheckerboardCurrentLevel =
 				retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
 
-#ifdef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
+			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+			{
+				messagesDevice[(currentCheckerboardSet + 1) % 2] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, currentOffsetLevel);
+			}
+			else
+			{
 
-			messagesDevice[(currentCheckerboardSet + 1) % 2] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, currentOffsetLevel);
+				int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
 
-#else
+				//update the number of bytes needed to store each set
+				int numDataAndMessageSetInCheckerboardAtLevel = getNumDataForAlignedMemoryAtLevel(processingLevelProperties[levelNum - 1].widthLevel, processingLevelProperties[levelNum - 1].heightLevel, totalPossibleMovements);
 
-			int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
-
-			//update the number of bytes needed to store each set
-			int numDataAndMessageSetInCheckerboardAtLevel = getNumDataForAlignedMemoryAtLevel(processingLevelProperties[levelNum - 1].widthLevel, processingLevelProperties[levelNum - 1].heightLevel, totalPossibleMovements);
-
-			//allocate space in the GPU for the message values in the checkerboard set to copy to
-			messagesDevice[(currentCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
-
-#endif
+				//allocate space in the GPU for the message values in the checkerboard set to copy to
+				messagesDevice[(currentCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
+			}
 
 			auto timeCopyMessageValuesKernelStart = std::chrono::system_clock::now();
 
@@ -417,12 +414,11 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
 			totalTimeCopyDataKernel += diff.count();
 
-#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
-			//free the now-copied from computed data of the completed level
-			freeCheckerboardMessagesMemory(messagesDevice[currentCheckerboardSet]);
-
-#endif
+			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+			{
+				//free the now-copied from computed data of the completed level
+				freeCheckerboardMessagesMemory(messagesDevice[currentCheckerboardSet]);
+			}
 
 			//alternate between checkerboard parts 1 and 2
 			currentCheckerboardSet = (currentCheckerboardSet == Checkerboard_Num::CHECKERBOARD_ZERO) ? Checkerboard_Num::CHECKERBOARD_ONE : Checkerboard_Num::CHECKERBOARD_ZERO;
@@ -445,30 +441,29 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 	runtime_start_end_timings[Runtime_Type_BP::OUTPUT_DISPARITY].second = runtime_start_end_timings[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
 
-#ifndef USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-
-	//free the device storage for the message values used to retrieve the output movement values
-	if (currentCheckerboardSet == 0)
+	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 	{
-		//free device space allocated to message values
-		freeCheckerboardMessagesMemory(messagesDevice[0]);
+		//now free the allocated data space; all data in single array when
+		//USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
+		freeDataCostsAllDataInSingleArray(dataCostsDeviceCheckerboardAllLevels);
 	}
 	else
 	{
-		//free device space allocated to message values
-		freeCheckerboardMessagesMemory(messagesDevice[1]);
+		//free the device storage for the message values used to retrieve the output movement values
+		if (currentCheckerboardSet == 0)
+		{
+			//free device space allocated to message values
+			freeCheckerboardMessagesMemory(messagesDevice[0]);
+		}
+		else
+		{
+			//free device space allocated to message values
+			freeCheckerboardMessagesMemory(messagesDevice[1]);
+		}
+
+		//now free the allocated data space
+		freeDataCostsMemory(dataCostsDeviceCheckerboardAllLevels);
 	}
-
-	//now free the allocated data space
-	freeDataCostsMemory(dataCostsDeviceCheckerboardAllLevels);
-
-#else
-
-	//now free the allocated data space; all data in single array when
-	//USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT selected
-	freeDataCostsAllDataInSingleArray(dataCostsDeviceCheckerboardAllLevels);
-
-#endif
 
 	runtime_start_end_timings[Runtime_Type_BP::FINAL_FREE].second = std::chrono::system_clock::now();
 	//std::cout << "FINAL_FREE" << std::endl;

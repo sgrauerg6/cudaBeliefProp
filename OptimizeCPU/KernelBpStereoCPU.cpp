@@ -382,67 +382,66 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(const Checkerb
 		T* messageRDeviceCurrentCheckerboard1, float disc_k_bp)
 {
 
-#if CPU_OPTIMIZATION_SETTING == USE_AVX_256
-
-	//only use AVX-256 if width of processing checkerboard is over 20
-	if (currentLevelProperties.widthCheckerboardLevel > 10)
+	if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_256)
 	{
-		runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+		//only use AVX-256 if width of processing checkerboard is over 20
+		if (currentLevelProperties.widthCheckerboardLevel > 10)
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
 				messageRDeviceCurrentCheckerboard1, disc_k_bp);
+		}
+		else
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
+				messageRDeviceCurrentCheckerboard1, disc_k_bp);
+		}
+	}
+	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_512)
+	{
+		//only use AVX-512 if width of processing checkerboard is over 20
+		if (currentLevelProperties.widthCheckerboardLevel > 20)
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
+				messageRDeviceCurrentCheckerboard1, disc_k_bp);
+		}
+		else
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
+				messageRDeviceCurrentCheckerboard1, disc_k_bp);
+		}
+	}
+	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_NEON)
+	{
+		if (currentLevelProperties.widthCheckerboardLevel > 5)
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
+				messageRDeviceCurrentCheckerboard1, disc_k_bp);
+		}
+		else
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
+				messageRDeviceCurrentCheckerboard1, disc_k_bp);
+		}
 	}
 	else
 	{
 		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-							messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-							messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
-							messageRDeviceCurrentCheckerboard1, disc_k_bp);
-	}
-
-#elif CPU_OPTIMIZATION_SETTING == USE_AVX_512
-
-	//only use AVX-512 if width of processing checkerboard is over 20
-	if (currentLevelProperties.widthCheckerboardLevel > 20)
-	{
-		runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
-				messageRDeviceCurrentCheckerboard1, disc_k_bp);
-	}
-	else
-	{
-		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
-				messageRDeviceCurrentCheckerboard1, disc_k_bp);
-	}
-
-#elif CPU_OPTIMIZATION_SETTING == USE_NEON
-
-	if (currentLevelProperties.widthCheckerboardLevel > 5)
-	{
-		runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
-				messageRDeviceCurrentCheckerboard1, disc_k_bp);
-	}
-	else
-	{
-		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
-				messageRDeviceCurrentCheckerboard1, disc_k_bp);
-	}
-
-#else
-
-	runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T>(checkerboardToUpdate, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 			messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0, messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1, messageLDeviceCurrentCheckerboard1,
 			messageRDeviceCurrentCheckerboard1, disc_k_bp);
-
-#endif
+	}
 }
 
 

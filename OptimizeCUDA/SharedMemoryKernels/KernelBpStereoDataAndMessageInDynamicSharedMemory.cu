@@ -109,12 +109,15 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 				valToNormalize;
 		dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
 
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex +=
-		currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 
@@ -209,12 +212,15 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 				valToNormalize;
 		dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
 
-#if OPTIMIZED_INDEXING_SETTING == 1
-		destMessageArrayIndex +=
-		currentLevelProperties.paddedWidthCheckerboardLevel;
-#else
-		destMessageArrayIndex++;
-#endif //OPTIMIZED_INDEXING_SETTING == 1
+		if constexpr (OPTIMIZED_INDEXING_SETTING)
+		{
+			destMessageArrayIndex +=
+				currentLevelProperties.paddedWidthCheckerboardLevel;
+		}
+		else
+		{
+			destMessageArrayIndex++;
+		}
 	}
 }
 
