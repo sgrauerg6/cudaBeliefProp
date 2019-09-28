@@ -70,6 +70,44 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
 			messageRDeviceCurrentCheckerboard1, disc_k_bp, numDataInSIMDVector);
 }
 
+template<> inline
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<
+	double>(const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties& currentLevelProperties,
+		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+		double* messageUDeviceCurrentCheckerboard0,
+		double* messageDDeviceCurrentCheckerboard0,
+		double* messageLDeviceCurrentCheckerboard0,
+		double* messageRDeviceCurrentCheckerboard0,
+		double* messageUDeviceCurrentCheckerboard1,
+		double* messageDDeviceCurrentCheckerboard1,
+		double* messageLDeviceCurrentCheckerboard1,
+		double* messageRDeviceCurrentCheckerboard1, float disc_k_bp)
+{
+	int numDataInSIMDVector = 4;
+	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<double,
+		__m256d >(checkerboardToUpdate, currentLevelProperties,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+			messageUDeviceCurrentCheckerboard0,
+			messageDDeviceCurrentCheckerboard0,
+			messageLDeviceCurrentCheckerboard0,
+			messageRDeviceCurrentCheckerboard0,
+			messageUDeviceCurrentCheckerboard1,
+			messageDDeviceCurrentCheckerboard1,
+			messageLDeviceCurrentCheckerboard1,
+			messageRDeviceCurrentCheckerboard1, disc_k_bp, numDataInSIMDVector);
+}
+
+template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m256d >(int x,
+	int y, int currentDisparity, const levelProperties& currentLevelProperties,
+	double* inData) {
+	return _mm256_load_pd(
+		&inData[retrieveIndexInDataAndMessage(x, y,
+			currentLevelProperties.paddedWidthCheckerboardLevel,
+			currentLevelProperties.heightLevel, currentDisparity,
+			NUM_POSSIBLE_DISPARITY_VALUES)]);
+}
+
 template<> inline __m256 KernelBpStereoCPU::loadPackedDataAligned<float, __m256 >(int x,
 		int y, int currentDisparity, const levelProperties& currentLevelProperties,
 		float* inData) {
@@ -110,6 +148,16 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataUnaligned<short, __m1
 					NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
+template<> inline __m256d KernelBpStereoCPU::loadPackedDataUnaligned<double, __m256d >(int x,
+	int y, int currentDisparity, const levelProperties& currentLevelProperties,
+	double* inData) {
+	return _mm256_loadu_pd(
+		&inData[retrieveIndexInDataAndMessage(x, y,
+			currentLevelProperties.paddedWidthCheckerboardLevel,
+			currentLevelProperties.heightLevel, currentDisparity,
+			NUM_POSSIBLE_DISPARITY_VALUES)]);
+}
+
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, __m256 >(
 		int indexDataStore, float* locationDataStore, __m256 dataToStore) {
 	_mm256_store_ps(&locationDataStore[indexDataStore], dataToStore);
@@ -118,6 +166,11 @@ template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, __m256 >
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<short, __m128i >(
 		int indexDataStore, short* locationDataStore, __m128i dataToStore) {
 	_mm_store_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
+}
+
+template<> inline void KernelBpStereoCPU::storePackedDataAligned<double, __m256d >(
+	int indexDataStore, double* locationDataStore, __m256d dataToStore) {
+	_mm256_store_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float, __m256 >(
@@ -130,6 +183,11 @@ template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<short, __m128
 	_mm_storeu_si128((__m128i *) (&locationDataStore[indexDataStore]), dataToStore);
 }
 
+template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<double, __m256d >(
+	int indexDataStore, double* locationDataStore, __m256d dataToStore) {
+	_mm256_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
+}
+
 template<> inline
 __m256 KernelBpStereoCPU::createSIMDVectorSameData<__m256>(float data) {
 	return _mm256_set1_ps(data);
@@ -138,6 +196,11 @@ __m256 KernelBpStereoCPU::createSIMDVectorSameData<__m256>(float data) {
 template<> inline
 __m128i KernelBpStereoCPU::createSIMDVectorSameData<__m128i>(float data) {
 	return _mm256_cvtps_ph(_mm256_set1_ps(data), 0);
+}
+
+template<> inline
+__m256d KernelBpStereoCPU::createSIMDVectorSameData<__m256d>(float data) {
+	return _mm256_set1_pd(data);
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
