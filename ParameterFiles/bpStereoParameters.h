@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpParametersFromPython.h"
 #include <string>
 
-const float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
+constexpr float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
 const float SMALL_VAL_BP = .01f;
 
 #define NO_EXPECTED_STEREO_BP -999.0f

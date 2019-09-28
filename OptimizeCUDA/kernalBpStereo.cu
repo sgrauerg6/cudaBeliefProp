@@ -49,8 +49,6 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 		half dataCosts[NUM_POSSIBLE_DISPARITY_VALUES], half* dstMessageArray,
 		half disc_k_bp, bool dataAligned)
 {
-	const float INF_BP = 65504.0f;
-
 	// aggregate and find min
 	half minimum = INF_BP;
 

@@ -81,8 +81,6 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, const levelPrope
 	U messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
 	T* dstMessageArray, U disc_k_bp, bool dataAligned)
 {
-	float INF_BP = 65504.0f;
-
 	// aggregate and find min
 	U minimum = INF_BP;
 
@@ -560,7 +558,6 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptim
 		float* disparityBetweenImagesDevice) {
 
 	int xValInCheckerboardPart = xVal;
-	float INF_BP = 65504.0f;
 
 	//first processing from first part of checkerboard
 	{
