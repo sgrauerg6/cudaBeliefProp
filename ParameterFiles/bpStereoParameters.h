@@ -36,15 +36,89 @@ const float SMALL_VAL_BP = .01f;
 
 #define NO_EXPECTED_STEREO_BP -999.0f
 
-#define TSUKUBA_IMAGES 1
-#define CONES_IMAGES_QUARTER_SIZE 2
-#define CONES_IMAGES_HALF_SIZE 3
-#define CONES_IMAGES_FULL_SIZE 4
-#define IMAGE_SET_PARAMETERS_FROM_PYTHON 5
-#define IMAGE_SET_TO_PROCESS CONES_IMAGES_HALF_SIZE
+enum class image_set_options
+{
+	TSUKUBA_IMAGES_E,
+	CONES_IMAGES_QUARTER_SIZE_E,
+	CONES_IMAGES_HALF_SIZE_E,
+	CONES_IMAGES_FULL_SIZE_E,
+	//IMAGE_SET_PARAMETERS_FROM_PYTHON_E
+};
+
+constexpr image_set_options IMAGE_SET_TO_PROCESS_E = image_set_options::TSUKUBA_IMAGES_E;
+
+constexpr unsigned int getNumDispVals(const image_set_options imageSet)
+{
+	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
+	{
+		return 15;
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
+	{
+		return 63;
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
+	{
+		return 127;
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
+	{
+		return 255;
+	}
+
+	return 0;
+};
+
+constexpr unsigned int getScaleFactor(const image_set_options imageSet)
+{
+	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
+	{
+		return 16;
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
+	{
+		return 4;
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
+	{
+		return 2;
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
+	{
+		return 1;
+	}
+
+	return 0;
+};
+
+constexpr char* getStereoSetString(const image_set_options imageSet)
+{
+	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
+	{
+		return "tsukubaSet";
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
+	{
+		return "conesQuarterSize";
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
+	{
+		return "conesHalfSize";
+	}
+	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
+	{
+		return "cones";
+	}
+
+	return nullptr;
+};
+constexpr unsigned int NUM_POSSIBLE_DISPARITY_VALUES = getNumDispVals(IMAGE_SET_TO_PROCESS_E);
 
 namespace bp_params
 {
+	constexpr unsigned int SCALE_BP = getScaleFactor(IMAGE_SET_TO_PROCESS_E);
+	constexpr char* STEREO_SET = getStereoSetString(IMAGE_SET_TO_PROCESS_E);
+
 	//number of belief propagation stereo runs of same image set
 	const unsigned int NUM_BP_STEREO_RUNS = 15;
 
@@ -68,84 +142,6 @@ namespace bp_params
 
 	// amount to smooth the input images
 	const float SIGMA_BP = 0.0f;
-
-	#if (IMAGE_SET_TO_PROCESS == TSUKUBA_IMAGES)
-
-	const std::string STEREO_SET = "tsukubaSet";
-
-	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	#define NUM_POSSIBLE_DISPARITY_VALUES 15
-
-	// scaling from computed disparity to graylevel in output
-	const unsigned int SCALE_BP = 16;
-
-	//info about a default ground truth
-	const std::string DEFAULT_GROUND_TRUTH_DISPARITY_FILE = "groundTruthDispTsukuba.pgm";
-
-	#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_QUARTER_SIZE)
-
-	const std::string STEREO_SET = "conesQuarterSize";
-
-	#define NUM_POSSIBLE_DISPARITY_VALUES 63
-
-	// scaling from computed disparity to graylevel in output
-	const unsigned int SCALE_BP = 4;
-
-	#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_HALF_SIZE)
-
-	const std::string STEREO_SET = "conesHalfSize";
-
-	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	#define NUM_POSSIBLE_DISPARITY_VALUES 127
-
-	// scaling from computed disparity to graylevel in output
-	const unsigned int SCALE_BP = 2;
-
-	#elif (IMAGE_SET_TO_PROCESS == CONES_IMAGES_FULL_SIZE)
-
-	const std::string STEREO_SET = "cones";
-
-	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	const unsigned int NUM_POSSIBLE_DISPARITY_VALUES = 255;
-
-	// scaling from computed disparity to graylevel in output
-	const unsigned int SCALE_BP = 1;
-
-	//If image set parameters from python, then use settings in current iteration in python script
-	//These settings are written to file bpParametersFromPython.h as part of the python script
-	#elif (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
-
-	const std::string STEREO_SET = STEREO_SET_FROM_PYTHON;
-
-	//defines the possible number of disparity values (range is from 0 to (NUM_POSSIBLE_DISPARITY_VALUES - 1) in increments of 1)
-	#define NUM_POSSIBLE_DISPARITY_VALUES NUM_POSSIBLE_DISPARITY_VALUES_FROM_PYTHON
-
-	// scaling from computed disparity to graylevel in output
-	const float SCALE_BP = SCALE_BP_FROM_PYTHON;
-
-	// number of BP iterations at each scale/level
-	const unsigned int ITER_BP = ITER_BP_FROM_PYTHON;
-
-	// number of scales/levels in the pyramid to run BP
-	const unsigned int LEVELS_BP = LEVELS_BP_FROM_PYTHON;
-
-	//truncation of discontinuity cost
-	const float DISC_K_BP = DISC_K_BP_FROM_PYTHON;
-
-	// truncation of data cost
-	const float DATA_K_BP = DATA_K_BP_FROM_PYTHON;
-
-	// weighing of data cost
-	const float LAMBDA_BP = LAMBDA_BP_FROM_PYTHON;
-
-	// amount to smooth the input images
-	const unsigned int SIGMA_BP = SIGMA_BP_FROM_PYTHON;
-
-	#if USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT_FROM_PYTHON == 1
-		#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
-	#endif
-
-	#endif //IMAGE_SET_TO_PROCESS
 }
 
 #endif /* BPSTEREOPARAMETERS_H_ */

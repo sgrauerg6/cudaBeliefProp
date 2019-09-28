@@ -24,11 +24,7 @@
 
 //If image set parameters from python, then use optimization settings set in current iteration in python script
 //These settings are written to file bpParametersFromPython.h as part of the python script
-#if (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
-#define CURRENT_DATA_TYPE_PROCESSING CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON
-#define OPTIMIZED_INDEXING_SETTING OPTIMIZED_INDEXING_SETTING_FROM_PYTHON
-#define CPU_OPTIMIZATION_SETTING CPU_OPTIMIZATION_SETTING_FROM_PYTHON
-#else
+
 //by default, 32-bit float data is used with optimized GPU memory management and optimized indexing
 //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these optimizations (note that the optimized indexing was present in the initial implementation)
 //Can remove optimized GPU memory management (making the processing more similar to the initial work) by commenting out the "#define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT" line
@@ -38,7 +34,6 @@
 #define OPTIMIZED_INDEXING_SETTING 1
 #define USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT
 #define CPU_OPTIMIZATION_SETTING USE_AVX_256
-#endif //(IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
 
 //#define COMPILING_FOR_ARM
 #ifdef COMPILING_FOR_ARM
@@ -65,10 +60,6 @@ typedef short beliefPropProcessingDataType;*/
 //#define BELIEF_PROP_PROCESSING_DATA_TYPE_STRING "HALF2"
 #endif
 
-#if (IMAGE_SET_TO_PROCESS == IMAGE_SET_PARAMETERS_FROM_PYTHON)
-#define BYTES_ALIGN_MEMORY BYTES_ALIGN_MEMORY_FROM_PYTHON
-#define NUM_DATA_ALIGN_WIDTH NUM_DATA_ALIGN_WIDTH_FROM_PYTHON
-#else
 #if CPU_OPTIMIZATION_SETTING == USE_AVX_512
 //avx512 requires data to be aligned on 64 bytes
 #define BYTES_ALIGN_MEMORY 64
@@ -76,7 +67,6 @@ typedef short beliefPropProcessingDataType;*/
 #else
 #define BYTES_ALIGN_MEMORY 32
 #define NUM_DATA_ALIGN_WIDTH 8
-#endif
 #endif //CPU_OPTIMIZATION_SETTING == USE_AVX_512
 
 #endif /* BPRUNSETTINGS_H_ */

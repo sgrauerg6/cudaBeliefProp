@@ -72,6 +72,9 @@
     <ClCompile Include="MainDriverFiles\driverBpStereoCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainDriverFiles\driverCudaBp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bpandsmoothprocessing\ProcessBPOnTargetDevice.h">

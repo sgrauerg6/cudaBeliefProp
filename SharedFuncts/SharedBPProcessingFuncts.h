@@ -148,7 +148,9 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(int xVal,
 			currentLevelProperties.widthCheckerboardLevel,
 			currentLevelProperties.heightLevel)) {
 		//make sure that it is possible to check every disparity value
-		if ((xVal - (NUM_POSSIBLE_DISPARITY_VALUES - 1)) >= 0) {
+		//need to cast NUM_POSSIBLE_DISPARITY_VALUES from unsigned int to int
+		//for conditional to work as expected
+		if ((xVal - ((int)NUM_POSSIBLE_DISPARITY_VALUES - 1)) >= 0) {
 			for (int currentDisparity = 0;
 					currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 					currentDisparity++) {
