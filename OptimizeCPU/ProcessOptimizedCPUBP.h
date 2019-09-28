@@ -109,12 +109,4 @@ public:
 					const checkerboardMessages<U>& messagesDevice) override;
 };
 
-//if not using AVX-256 or AVX-512, process using float if short data type used
-//Processing with short data type has been implemented when using AVX-256
-//NOTE: THIS HAS BEEN REMOVED AND JUST PRINTS AN ERROR THAT NOT SUPPORTED
-#if (CPU_OPTIMIZATION_SETTING != USE_AVX_256) && (CPU_OPTIMIZATION_SETTING != USE_AVX_512)
-
-#endif
-
-
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH
