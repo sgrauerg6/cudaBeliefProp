@@ -31,10 +31,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpParametersFromPython.h"
 #include <string>
 
-constexpr float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
-const float SMALL_VAL_BP = .01f;
-
-#define NO_EXPECTED_STEREO_BP -999.0f
+namespace bp_consts
+{
+	constexpr float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
+}
 
 enum class image_set_options
 {
@@ -112,10 +112,10 @@ constexpr char* getStereoSetString(const image_set_options imageSet)
 
 	return nullptr;
 };
-constexpr unsigned int NUM_POSSIBLE_DISPARITY_VALUES = getNumDispVals(IMAGE_SET_TO_PROCESS_E);
 
 namespace bp_params
 {
+	constexpr unsigned int NUM_POSSIBLE_DISPARITY_VALUES = getNumDispVals(IMAGE_SET_TO_PROCESS_E);
 	constexpr unsigned int SCALE_BP = getScaleFactor(IMAGE_SET_TO_PROCESS_E);
 	constexpr char* STEREO_SET = getStereoSetString(IMAGE_SET_TO_PROCESS_E);
 

@@ -57,12 +57,12 @@ public:
 
 	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 	template<typename T>
-	static void dtStereoSIMD(T f[NUM_POSSIBLE_DISPARITY_VALUES]);
+	static void dtStereoSIMD(T f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]);
 
 	// compute current message
 	template<typename T, typename U>
-	static void msgStereoSIMD(int xVal, int yVal, const levelProperties& currentLevelProperties, U messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		U messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+	static void msgStereoSIMD(int xVal, int yVal, const levelProperties& currentLevelProperties, U messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], U messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		U messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], U dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		T* dstMessageArray, U disc_k_bp, bool dataAligned);
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
@@ -141,11 +141,11 @@ public:
 	template<typename T, typename U>
 	static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(int xValStartProcessing,
 			int yVal, const levelProperties& currentLevelProperties,
-			U prevUMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-			U prevDMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-			U prevLMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-			U prevRMessage[NUM_POSSIBLE_DISPARITY_VALUES],
-			U dataMessage[NUM_POSSIBLE_DISPARITY_VALUES], T* currentUMessageArray,
+			U prevUMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+			U prevDMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+			U prevLMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+			U prevRMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+			U dataMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], T* currentUMessageArray,
 			T* currentDMessageArray, T* currentLMessageArray,
 			T* currentRMessageArray, U disc_k_bp_vector, bool dataAlignedAtxValStartProcessing);
 

@@ -30,7 +30,7 @@ public:
 		resultsStream << "BP Processing Data Type: "
 					<< BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
 		resultsStream << "Num Possible Disparity Values: "
-					<< NUM_POSSIBLE_DISPARITY_VALUES << "\n";
+					<< bp_params::NUM_POSSIBLE_DISPARITY_VALUES << "\n";
 		resultsStream << "Num BP Levels: " << bp_params::LEVELS_BP << "\n";
 		resultsStream << "Num BP Iterations: " << bp_params::ITER_BP << "\n";
 		resultsStream << "DISC_K_BP: " << bp_params::DISC_K_BP << "\n";
@@ -39,8 +39,8 @@ public:
 		resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
 		resultsStream << "CPU_OPTIMIZATION_LEVEL: " << static_cast<int>(CPU_OPTIMIZATION_SETTING)
 					<< "\n";
-		resultsStream << "BYTES_ALIGN_MEMORY: " << BYTES_ALIGN_MEMORY << "\n";
-		resultsStream << "NUM_DATA_ALIGN_WIDTH: " << NUM_DATA_ALIGN_WIDTH << "\n";
+		resultsStream << "BYTES_ALIGN_MEMORY: " << bp_params::BYTES_ALIGN_MEMORY << "\n";
+		resultsStream << "NUM_DATA_ALIGN_WIDTH: " << bp_params::NUM_DATA_ALIGN_WIDTH << "\n";
 	}
 
 	//compare resulting disparity map with a ground truth (or some other disparity map...)

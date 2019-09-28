@@ -183,13 +183,13 @@ public:
 template<typename T, typename U, typename V>
 int ProcessBPOnTargetDevice<T, U, V>::getPaddedCheckerboardWidth(int checkerboardWidth)
 {
-	if ((checkerboardWidth % NUM_DATA_ALIGN_WIDTH) == 0)
+	if ((checkerboardWidth % bp_params::NUM_DATA_ALIGN_WIDTH) == 0)
 	{
 		return checkerboardWidth;
 	}
 	else
 	{
-		unsigned int paddedCheckerboardWidth = checkerboardWidth + ((NUM_DATA_ALIGN_WIDTH - checkerboardWidth % NUM_DATA_ALIGN_WIDTH));
+		unsigned int paddedCheckerboardWidth = checkerboardWidth + ((bp_params::NUM_DATA_ALIGN_WIDTH - checkerboardWidth % bp_params::NUM_DATA_ALIGN_WIDTH));
 		return paddedCheckerboardWidth;
 	}
 }
@@ -201,13 +201,13 @@ unsigned long ProcessBPOnTargetDevice<T, U, V>::getNumDataForAlignedMemoryAtLeve
 		* ((unsigned long)heightLevelActualIntegerSize) * (unsigned long)totalPossibleMovements;
 	unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
 
-	if ((numBytesAtLevel % BYTES_ALIGN_MEMORY) == 0)
+	if ((numBytesAtLevel % bp_params::BYTES_ALIGN_MEMORY) == 0)
 	{
 		return numDataAtLevel;
 	}
 	else
 	{
-		numBytesAtLevel += (BYTES_ALIGN_MEMORY - numBytesAtLevel % BYTES_ALIGN_MEMORY);
+		numBytesAtLevel += (bp_params::BYTES_ALIGN_MEMORY - numBytesAtLevel % bp_params::BYTES_ALIGN_MEMORY);
 		unsigned long paddedNumDataAtLevel = numBytesAtLevel / sizeof(T);
 		return paddedNumDataAtLevel;
 	}
@@ -227,7 +227,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	double totalTimeCopyDataKernel = 0.0;
 
 	//retrieve the total number of possible movements; this is equal to the number of disparity values
-	int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
+	int totalPossibleMovements = bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 
 	unsigned long halfTotalDataAllLevels = 0;
 	std::unique_ptr<levelProperties[]> processingLevelProperties = std::make_unique<levelProperties[]>(algSettings.numLevels);
@@ -392,7 +392,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			else
 			{
 
-				int totalPossibleMovements = NUM_POSSIBLE_DISPARITY_VALUES;
+				int totalPossibleMovements = bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 
 				//update the number of bytes needed to store each set
 				int numDataAndMessageSetInCheckerboardAtLevel = getNumDataForAlignedMemoryAtLevel(processingLevelProperties[levelNum - 1].widthLevel, processingLevelProperties[levelNum - 1].heightLevel, totalPossibleMovements);

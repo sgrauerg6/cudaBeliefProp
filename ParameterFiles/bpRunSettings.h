@@ -51,8 +51,11 @@ constexpr unsigned int getNumDataAlignWidth(cpu_vectorization_setting inVectSett
 	return (inVectSetting == cpu_vectorization_setting::USE_AVX_512) ? 16 : 8;
 }
 
-constexpr unsigned int BYTES_ALIGN_MEMORY = getBytesAlignMemory(CPU_OPTIMIZATION_SETTING);
-constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_OPTIMIZATION_SETTING);
+namespace bp_params
+{
+	constexpr unsigned int BYTES_ALIGN_MEMORY = getBytesAlignMemory(CPU_OPTIMIZATION_SETTING);
+	constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_OPTIMIZATION_SETTING);
+}
 
 //#define COMPILING_FOR_ARM
 #ifdef COMPILING_FOR_ARM

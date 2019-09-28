@@ -77,7 +77,7 @@ template<> inline __m512 KernelBpStereoCPU::loadPackedDataAligned<float, __m512 
 			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline __m256i KernelBpStereoCPU::loadPackedDataAligned<short,
@@ -87,7 +87,7 @@ template<> inline __m256i KernelBpStereoCPU::loadPackedDataAligned<short,
 			(__m256i *) &inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline __m512 KernelBpStereoCPU::loadPackedDataUnaligned<float,
@@ -97,7 +97,7 @@ template<> inline __m512 KernelBpStereoCPU::loadPackedDataUnaligned<float,
 			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline __m256i KernelBpStereoCPU::loadPackedDataUnaligned<short,
@@ -107,7 +107,7 @@ template<> inline __m256i KernelBpStereoCPU::loadPackedDataUnaligned<short,
 			(__m256i *) &inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, __m512 >(
@@ -146,11 +146,11 @@ template<> inline __m256i KernelBpStereoCPU::createSIMDVectorSameData<__m256i >(
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
 void KernelBpStereoCPU::dtStereoSIMD<__m512 >(
-		__m512 f[NUM_POSSIBLE_DISPARITY_VALUES]) {
+		__m512 f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]) {
 	__m512 prev;
 	__m512 vectorAllOneVal = _mm512_set1_ps(1.0f);
 	for (int currentDisparity = 1;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//prev = f[currentDisparity-1] + (T)1.0;
 		prev = _mm512_add_ps(f[currentDisparity - 1], vectorAllOneVal);
@@ -160,7 +160,7 @@ void KernelBpStereoCPU::dtStereoSIMD<__m512 >(
 		f[currentDisparity] = _mm512_min_ps(prev, f[currentDisparity]);
 	}
 
-	for (int currentDisparity = NUM_POSSIBLE_DISPARITY_VALUES - 2;
+	for (int currentDisparity = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 2;
 			currentDisparity >= 0; currentDisparity--) {
 		//prev = f[currentDisparity+1] + (T)1.0;
 		prev = _mm512_add_ps(f[currentDisparity + 1], vectorAllOneVal);
@@ -174,11 +174,11 @@ void KernelBpStereoCPU::dtStereoSIMD<__m512 >(
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
 void KernelBpStereoCPU::dtStereoSIMD<__m512d >(
-		__m512d f[NUM_POSSIBLE_DISPARITY_VALUES]) {
+		__m512d f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]) {
 	__m512d prev;
 	__m512d vectorAllOneVal = _mm512_set1_pd(1.0);
 	for (int currentDisparity = 1;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//prev = f[currentDisparity-1] + (T)1.0;
 		prev = _mm512_add_pd(f[currentDisparity - 1], vectorAllOneVal);
@@ -188,7 +188,7 @@ void KernelBpStereoCPU::dtStereoSIMD<__m512d >(
 		f[currentDisparity] = _mm512_min_pd(prev, f[currentDisparity]);
 	}
 
-	for (int currentDisparity = NUM_POSSIBLE_DISPARITY_VALUES - 2;
+	for (int currentDisparity = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 2;
 			currentDisparity >= 0; currentDisparity--) {
 		//prev = f[currentDisparity+1] + (T)1.0;
 		prev = _mm512_add_pd(f[currentDisparity + 1], vectorAllOneVal);
@@ -203,19 +203,19 @@ void KernelBpStereoCPU::dtStereoSIMD<__m512d >(
 template<> inline
 void KernelBpStereoCPU::msgStereoSIMD<float, __m512 >(int xVal, int yVal,
 		const levelProperties& currentLevelProperties,
-		__m512 messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m512 messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m512 messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m512 dataCosts[NUM_POSSIBLE_DISPARITY_VALUES], float* dstMessageArray,
+		__m512 messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512 messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512 messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512 dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float* dstMessageArray,
 		__m512 disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	__m512 minimum = _mm512_set1_ps(INF_BP);
-	__m512 dst[NUM_POSSIBLE_DISPARITY_VALUES];
+	__m512 dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
 		dst[currentDisparity] = _mm512_add_ps(
@@ -243,7 +243,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m512 >(int xVal, int yVal,
 	__m512 valToNormalize = _mm512_set1_ps(0.0f);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		/*if (minimum < dst[currentDisparity])
 		 {
@@ -255,17 +255,17 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m512 >(int xVal, int yVal,
 		valToNormalize = _mm512_add_ps(valToNormalize, dst[currentDisparity]);
 	}
 
-	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
+	//valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 	valToNormalize = _mm512_div_ps(valToNormalize,
-			_mm512_set1_ps((float) NUM_POSSIBLE_DISPARITY_VALUES));
+			_mm512_set1_ps((float) bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 			currentLevelProperties.paddedWidthCheckerboardLevel,
 			currentLevelProperties.heightLevel, 0,
-			NUM_POSSIBLE_DISPARITY_VALUES);
+			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//dst[currentDisparity] -= valToNormalize;
 		dst[currentDisparity] = _mm512_sub_ps(dst[currentDisparity],
@@ -293,19 +293,19 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m512 >(int xVal, int yVal,
 template<> inline
 void KernelBpStereoCPU::msgStereoSIMD<double, __m512d >(int xVal, int yVal,
 		const levelProperties& currentLevelProperties,
-		__m512d messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m512d messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m512d messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m512d dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512d messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512d messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512d messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m512d dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		double* dstMessageArray, __m512d disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	__m512d minimum = _mm512_set1_pd(INF_BP);
-	__m512d dst[NUM_POSSIBLE_DISPARITY_VALUES];
+	__m512d dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
 		dst[currentDisparity] = _mm512_add_pd(
@@ -333,7 +333,7 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m512d >(int xVal, int yVal,
 	__m512d valToNormalize = _mm512_set1_pd(0.0);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		/*if (minimum < dst[currentDisparity])
 		 {
@@ -345,17 +345,17 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m512d >(int xVal, int yVal,
 		valToNormalize = _mm512_add_pd(valToNormalize, dst[currentDisparity]);
 	}
 
-	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
+	//valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 	valToNormalize = _mm512_div_pd(valToNormalize,
-			_mm512_set1_pd((double) NUM_POSSIBLE_DISPARITY_VALUES));
+			_mm512_set1_pd((double) bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel,
 				currentLevelProperties.heightLevel, 0,
-				NUM_POSSIBLE_DISPARITY_VALUES);
+				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 		for (int currentDisparity = 0;
-				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+				currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++)
 		{
 			//dst[currentDisparity] -= valToNormalize;
@@ -389,18 +389,18 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m512d >(int xVal, int yVal,
 template<> inline
 void KernelBpStereoCPU::msgStereoSIMD<short, __m256i >(int xVal, int yVal,
 		const levelProperties& currentLevelProperties,
-		__m256i messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m256i messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m256i messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],
-		__m256i dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+		__m256i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m256i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m256i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		__m256i dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		short* dstMessageArray, __m256i disc_k_bp, bool dataAligned) {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	__m512 minimum = _mm512_set1_ps(INF_BP);
-	__m512 dstFloat[NUM_POSSIBLE_DISPARITY_VALUES];
+	__m512 dstFloat[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
 		dstFloat[currentDisparity] = _mm512_add_ps(
@@ -428,7 +428,7 @@ void KernelBpStereoCPU::msgStereoSIMD<short, __m256i >(int xVal, int yVal,
 	__m512 valToNormalize = _mm512_set1_ps(0.0f);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		/*if (minimum < dst[currentDisparity])
 		 {
@@ -442,17 +442,17 @@ void KernelBpStereoCPU::msgStereoSIMD<short, __m256i >(int xVal, int yVal,
 				dstFloat[currentDisparity]);
 	}
 
-	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
+	//valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 	valToNormalize = _mm512_div_ps(valToNormalize,
-			_mm512_set1_ps((float) NUM_POSSIBLE_DISPARITY_VALUES));
+			_mm512_set1_ps((float) bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 			currentLevelProperties.paddedWidthCheckerboardLevel,
 			currentLevelProperties.heightLevel, 0,
-			NUM_POSSIBLE_DISPARITY_VALUES);
+			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		//dst[currentDisparity] -= valToNormalize;
 		dstFloat[currentDisparity] = _mm512_sub_ps(dstFloat[currentDisparity],

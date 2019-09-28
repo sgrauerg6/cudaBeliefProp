@@ -72,7 +72,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float,
 			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<float16_t,
@@ -82,7 +82,7 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<float16_t
 			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float,
@@ -92,7 +92,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float,
 			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16_t,
@@ -102,7 +102,7 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16
 			&inData[retrieveIndexInDataAndMessage(x, y,
 					currentLevelProperties.paddedWidthCheckerboardLevel,
 					currentLevelProperties.heightLevel, currentDisparity,
-					NUM_POSSIBLE_DISPARITY_VALUES)]);
+					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float,
@@ -142,11 +142,11 @@ template<> inline float16x4_t KernelBpStereoCPU::createSIMDVectorSameData<
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<> inline
-void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DISPARITY_VALUES])
+void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES])
 {
 	float32x4_t prev;
 	float32x4_t vectorAllOneVal = vdupq_n_f32(1.0f);
-	for (int currentDisparity = 1; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	for (int currentDisparity = 1; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		prev = vaddq_f32(f[currentDisparity-1], vectorAllOneVal);
 		//prev = f[currentDisparity-1] + (T)1.0;
@@ -155,7 +155,7 @@ void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DIS
 		f[currentDisparity] = vminnmq_f32(prev, f[currentDisparity]);
 	}
 
-	for (int currentDisparity = NUM_POSSIBLE_DISPARITY_VALUES-2; currentDisparity >= 0; currentDisparity--)
+	for (int currentDisparity = bp_params::NUM_POSSIBLE_DISPARITY_VALUES-2; currentDisparity >= 0; currentDisparity--)
 	{
 		//prev = f[currentDisparity+1] + (T)1.0;
 		prev = vaddq_f32(f[currentDisparity+1], vectorAllOneVal);
@@ -166,16 +166,16 @@ void KernelBpStereoCPU::dtStereoSIMD<float32x4_t>(float32x4_t f[NUM_POSSIBLE_DIS
 }
 
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float32x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		float32x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float32x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		float32x4_t messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float32x4_t dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		float* dstMessageArray, float32x4_t disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	float32x4_t minimum = vdupq_n_f32(INF_BP);
-	float32x4_t dst[NUM_POSSIBLE_DISPARITY_VALUES];
+	float32x4_t dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	for (int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
 		dst[currentDisparity] = vaddq_f32(messageValsNeighbor1[currentDisparity], messageValsNeighbor2[currentDisparity]);
@@ -198,7 +198,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, co
 	//T valToNormalize = 0;
 	float32x4_t valToNormalize = vdupq_n_f32(0.0f);
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	for (int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		/*if (minimum < dst[currentDisparity])
 		{
@@ -210,16 +210,16 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, co
 		valToNormalize = vaddq_f32(valToNormalize, dst[currentDisparity]);
 	}
 
-	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
-	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)NUM_POSSIBLE_DISPARITY_VALUES));
+	//valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
+	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel,
 				currentLevelProperties.heightLevel, 0,
-				NUM_POSSIBLE_DISPARITY_VALUES);
+				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
@@ -248,16 +248,16 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, co
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
-		float16x4_t messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t dataCosts[NUM_POSSIBLE_DISPARITY_VALUES],
+void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		float16x4_t messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float16x4_t dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		float16_t* dstMessageArray, float16x4_t disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
 	float32x4_t minimum = vdupq_n_f32(INF_BP);
-	float32x4_t dstFloat[NUM_POSSIBLE_DISPARITY_VALUES];
+	float32x4_t dstFloat[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	for (int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
 		dstFloat[currentDisparity] = vaddq_f32((vcvt_f32_f16(messageValsNeighbor1[currentDisparity])), (vcvt_f32_f16(messageValsNeighbor2[currentDisparity])));
@@ -280,7 +280,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal
 	//T valToNormalize = 0;
 	float32x4_t valToNormalize = vdupq_n_f32(0.0f);
 
-	for (int currentDisparity = 0; currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+	for (int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 	{
 		/*if (minimum < dst[currentDisparity])
 		{
@@ -292,16 +292,16 @@ void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal
 		valToNormalize = vaddq_f32(valToNormalize, dstFloat[currentDisparity]);
 	}
 
-	//valToNormalize /= NUM_POSSIBLE_DISPARITY_VALUES;
-	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)NUM_POSSIBLE_DISPARITY_VALUES));
+	//valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
+	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 			currentLevelProperties.paddedWidthCheckerboardLevel,
 			currentLevelProperties.heightLevel, 0,
-			NUM_POSSIBLE_DISPARITY_VALUES);
+			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (int currentDisparity = 0;
-			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
+			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++)
 	{
 		//dst[currentDisparity] -= valToNormalize;
