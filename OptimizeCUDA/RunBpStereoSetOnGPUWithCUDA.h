@@ -72,7 +72,7 @@ public:
 
 		std::cout << "Processing as half on GPU\n";
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half, half*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
@@ -80,7 +80,7 @@ public:
 
 		std::cout << "Processing as half2 on GPU\n";
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half2, half2*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half2, half2*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 

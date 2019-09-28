@@ -133,9 +133,19 @@
     <ClCompile Include="optimizecpu\ProcessOptimizedCPUBP.cpp" />
     <ClCompile Include="optimizecpu\RunBpStereoOptimizedCPU.cpp" />
     <ClCompile Include="optimizecpu\SmoothImageCPU.cpp" />
-    <CudaCompile Include="optimizecuda\ProcessCUDABP.cpp" />
+    <CudaCompile Include="optimizecuda\ProcessCUDABP.cpp">
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
+    </CudaCompile>
     <ClCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.cpp" />
-    <CudaCompile Include="optimizecuda\SmoothImageCUDA.cpp" />
+    <CudaCompile Include="optimizecuda\SmoothImageCUDA.cpp">
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
+    </CudaCompile>
     <ClCompile Include="outputevaluation\DisparityMap.cpp" />
     <ClCompile Include="outputevaluation\OutputEvaluationParameters.cpp" />
     <ClCompile Include="outputevaluation\OutputEvaluationResults.cpp" />
@@ -160,10 +170,20 @@
     <ClInclude Include="optimizecpu\ProcessOptimizedCPUBP.h" />
     <ClInclude Include="optimizecpu\RunBpStereoOptimizedCPU.h" />
     <ClInclude Include="optimizecpu\SmoothImageCPU.h" />
-    <CudaCompile Include="optimizecuda\ProcessCUDABP.h" />
+    <CudaCompile Include="optimizecuda\ProcessCUDABP.h">
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
+    </CudaCompile>
     <CudaCompile Include="optimizecuda\RunBpStereoSetCUDAMemoryManagement.h" />
     <ClCompile Include="optimizecuda\RunBpStereoSetOnGPUWithCUDA.h" />
-    <CudaCompile Include="optimizecuda\SmoothImageCUDA.h" />
+    <CudaCompile Include="optimizecuda\SmoothImageCUDA.h">
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
+      <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
+    </CudaCompile>
     <ClInclude Include="outputevaluation\DisparityMap.h" />
     <ClInclude Include="outputevaluation\OutputEvaluationParameters.h" />
     <ClInclude Include="outputevaluation\OutputEvaluationResults.h" />

@@ -26,7 +26,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 
-
 #if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 #include "SharedMemoryKernels/KernalBpStereoUseSharedMemory.cu"
 #elif ((USE_SHARED_MEMORY == 2) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
@@ -43,13 +42,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
 __device__ void msgStereo<half, half>(int xVal, int yVal,
-		levelProperties& currentLevelProperties,
+		const levelProperties& currentLevelProperties,
 		half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],
 		half dataCosts[NUM_POSSIBLE_DISPARITY_VALUES], half* dstMessageArray,
 		half disc_k_bp, bool dataAligned)
 {
+	const float INF_BP = 65504.0f;
+
 	// aggregate and find min
 	half minimum = INF_BP;
 
