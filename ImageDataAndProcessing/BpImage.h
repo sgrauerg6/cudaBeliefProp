@@ -18,7 +18,7 @@
 #include <sstream>
 #include <cmath>
 
-enum image_type { PGM_IMAGE, PPM_IMAGE };
+enum class image_type { PGM_IMAGE, PPM_IMAGE };
 const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
 const std::string PGM_EXTENSION = "pgm";
 const std::string PPM_EXTENSION = "ppm";
