@@ -76,30 +76,18 @@ public:
 
 		virtual void freeCheckerboardMessagesMemory(const checkerboardMessages<U>& checkerboardMessagesToFree)
 		{
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesU_Checkerboard0);
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesD_Checkerboard0);
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesL_Checkerboard0);
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesR_Checkerboard0);
-
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesU_Checkerboard1);
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesD_Checkerboard1);
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesL_Checkerboard1);
-			freeMemoryOnTargetDevice(checkerboardMessagesToFree.messagesR_Checkerboard1);
+			std::for_each(checkerboardMessagesToFree.checkerboardMessagesAtLevel.begin(), checkerboardMessagesToFree.checkerboardMessagesAtLevel.end(),
+				[this](auto& checkerboardMessagesSet) { 
+				this->freeMemoryOnTargetDevice(checkerboardMessagesSet); });
 		}
 
 		virtual checkerboardMessages<U> allocateMemoryForCheckerboardMessages(unsigned long numDataAllocatePerMessage)
 		{
 			checkerboardMessages<U> outputCheckerboardMessages;
 
-			outputCheckerboardMessages.messagesU_Checkerboard0 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-			outputCheckerboardMessages.messagesD_Checkerboard0 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-			outputCheckerboardMessages.messagesL_Checkerboard0 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-			outputCheckerboardMessages.messagesR_Checkerboard0 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-
-			outputCheckerboardMessages.messagesU_Checkerboard1 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-			outputCheckerboardMessages.messagesD_Checkerboard1 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-			outputCheckerboardMessages.messagesL_Checkerboard1 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
-			outputCheckerboardMessages.messagesR_Checkerboard1 = allocateMemoryOnTargetDevice(numDataAllocatePerMessage);
+			std::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel.begin(), outputCheckerboardMessages.checkerboardMessagesAtLevel.end(),
+				[this, numDataAllocatePerMessage](auto& checkerboardMessagesSet) {
+				checkerboardMessagesSet = this->allocateMemoryOnTargetDevice(numDataAllocatePerMessage); });
 
 			return outputCheckerboardMessages;
 		}
@@ -108,15 +96,11 @@ public:
 		{
 			checkerboardMessages<U> outputCheckerboardMessages;
 
-			outputCheckerboardMessages.messagesU_Checkerboard0 = &(allCheckerboardMessages.messagesU_Checkerboard0[offsetIntoAllCheckerboardMessages]);
-			outputCheckerboardMessages.messagesD_Checkerboard0 = &(allCheckerboardMessages.messagesD_Checkerboard0[offsetIntoAllCheckerboardMessages]);
-			outputCheckerboardMessages.messagesL_Checkerboard0 = &(allCheckerboardMessages.messagesL_Checkerboard0[offsetIntoAllCheckerboardMessages]);
-			outputCheckerboardMessages.messagesR_Checkerboard0 = &(allCheckerboardMessages.messagesR_Checkerboard0[offsetIntoAllCheckerboardMessages]);
-
-			outputCheckerboardMessages.messagesU_Checkerboard1 = &(allCheckerboardMessages.messagesU_Checkerboard1[offsetIntoAllCheckerboardMessages]);
-			outputCheckerboardMessages.messagesD_Checkerboard1 = &(allCheckerboardMessages.messagesD_Checkerboard1[offsetIntoAllCheckerboardMessages]);
-			outputCheckerboardMessages.messagesL_Checkerboard1 = &(allCheckerboardMessages.messagesL_Checkerboard1[offsetIntoAllCheckerboardMessages]);
-			outputCheckerboardMessages.messagesR_Checkerboard1 = &(allCheckerboardMessages.messagesR_Checkerboard1[offsetIntoAllCheckerboardMessages]);
+			for (int i = 0; i < outputCheckerboardMessages.checkerboardMessagesAtLevel.size(); i++)
+			{
+				outputCheckerboardMessages.checkerboardMessagesAtLevel[i] =
+					&((allCheckerboardMessages.checkerboardMessagesAtLevel[i])[offsetIntoAllCheckerboardMessages]);
+			}
 
 			return outputCheckerboardMessages;
 		}
@@ -145,15 +129,11 @@ public:
 			dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0 = allocateMemoryOnTargetDevice(10*numDataAllocatePerDataCostsMessageDataArray);
 			dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[1 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
-			messagesDeviceAllLevels.messagesU_Checkerboard0 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[2 * (numDataAllocatePerDataCostsMessageDataArray)]);
-			messagesDeviceAllLevels.messagesD_Checkerboard0 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[3 * (numDataAllocatePerDataCostsMessageDataArray)]);
-			messagesDeviceAllLevels.messagesL_Checkerboard0 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[4 * (numDataAllocatePerDataCostsMessageDataArray)]);
-			messagesDeviceAllLevels.messagesR_Checkerboard0 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[5 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			for (int i = 0; i < messagesDeviceAllLevels.checkerboardMessagesAtLevel.size(); i++)
+			{
+				messagesDeviceAllLevels.checkerboardMessagesAtLevel[i] = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
 
-			messagesDeviceAllLevels.messagesU_Checkerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[6 * (numDataAllocatePerDataCostsMessageDataArray)]);
-			messagesDeviceAllLevels.messagesD_Checkerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[7 * (numDataAllocatePerDataCostsMessageDataArray)]);
-			messagesDeviceAllLevels.messagesL_Checkerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[8 * (numDataAllocatePerDataCostsMessageDataArray)]);
-			messagesDeviceAllLevels.messagesR_Checkerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[9 * (numDataAllocatePerDataCostsMessageDataArray)]);
+			}
 
 			return std::make_pair(dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels);
 		}

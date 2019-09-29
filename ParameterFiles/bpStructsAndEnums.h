@@ -45,19 +45,13 @@ struct levelProperties
 
 //used to define the two checkerboard "parts" that the image is divided into
 enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
+enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
+	MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 
 template <class T>
 struct checkerboardMessages
 {
-	T messagesU_Checkerboard0;
-	T messagesD_Checkerboard0;
-	T messagesL_Checkerboard0;
-	T messagesR_Checkerboard0;
-
-	T messagesU_Checkerboard1;
-	T messagesD_Checkerboard1;
-	T messagesL_Checkerboard1;
-	T messagesR_Checkerboard1;
+	std::array<T, 8> checkerboardMessagesAtLevel;
 };
 
 template <class T>

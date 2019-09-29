@@ -39,14 +39,11 @@ void ProcessOptimizedCPUBP<T, U>::runBPAtCurrentLevel(const BPsettings& algSetti
 				checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1,
-				messagesDevice.messagesU_Checkerboard0,
-				messagesDevice.messagesD_Checkerboard0,
-				messagesDevice.messagesL_Checkerboard0,
-				messagesDevice.messagesR_Checkerboard0,
-				messagesDevice.messagesU_Checkerboard1,
-				messagesDevice.messagesD_Checkerboard1,
-				messagesDevice.messagesL_Checkerboard1,
-				messagesDevice.messagesR_Checkerboard1, algSettings.disc_k_bp);
+				messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0],
+				messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0],
+				messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
+				messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1],
+				algSettings.disc_k_bp);
 	}
 }
 
@@ -67,22 +64,14 @@ void ProcessOptimizedCPUBP<T, U>::copyMessageValuesToNextLevelDown(
 		//storing the current message values
 		KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<T>(
 				checkerboard_part, currentLevelProperties, nextlevelProperties,
-				messagesDeviceCopyFrom.messagesU_Checkerboard0,
-				messagesDeviceCopyFrom.messagesD_Checkerboard0,
-				messagesDeviceCopyFrom.messagesL_Checkerboard0,
-				messagesDeviceCopyFrom.messagesR_Checkerboard0,
-				messagesDeviceCopyFrom.messagesU_Checkerboard1,
-				messagesDeviceCopyFrom.messagesD_Checkerboard1,
-				messagesDeviceCopyFrom.messagesL_Checkerboard1,
-				messagesDeviceCopyFrom.messagesR_Checkerboard1,
-				messagesDeviceCopyTo.messagesU_Checkerboard0,
-				messagesDeviceCopyTo.messagesD_Checkerboard0,
-				messagesDeviceCopyTo.messagesL_Checkerboard0,
-				messagesDeviceCopyTo.messagesR_Checkerboard0,
-				messagesDeviceCopyTo.messagesU_Checkerboard1,
-				messagesDeviceCopyTo.messagesD_Checkerboard1,
-				messagesDeviceCopyTo.messagesL_Checkerboard1,
-				messagesDeviceCopyTo.messagesR_Checkerboard1);
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0], 
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1], 
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1], 
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0], 
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0], 
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1]);
 	}
 }
 
@@ -105,15 +94,11 @@ void ProcessOptimizedCPUBP<T, U>::initializeMessageValsToDefault(
 {
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
 	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T>(
-			currentLevelProperties,
-			messagesDevice.messagesU_Checkerboard0,
-			messagesDevice.messagesD_Checkerboard0,
-			messagesDevice.messagesL_Checkerboard0,
-			messagesDevice.messagesR_Checkerboard0,
-			messagesDevice.messagesU_Checkerboard1,
-			messagesDevice.messagesD_Checkerboard1,
-			messagesDevice.messagesL_Checkerboard1,
-			messagesDevice.messagesR_Checkerboard1);
+			currentLevelProperties, 
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1]);
 }
 
 
@@ -152,14 +137,10 @@ float* ProcessOptimizedCPUBP<T, U>::retrieveOutputDisparity(
 			currentLevelProperties,
 			dataCostDeviceCheckerboard.dataCostCheckerboard0,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1,
-			messagesDevice.messagesU_Checkerboard0,
-			messagesDevice.messagesD_Checkerboard0,
-			messagesDevice.messagesL_Checkerboard0,
-			messagesDevice.messagesR_Checkerboard0,
-			messagesDevice.messagesU_Checkerboard1,
-			messagesDevice.messagesD_Checkerboard1,
-			messagesDevice.messagesL_Checkerboard1,
-			messagesDevice.messagesR_Checkerboard1,
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1],
 			resultingDisparityMapCompDevice);
 
 	return resultingDisparityMapCompDevice;
