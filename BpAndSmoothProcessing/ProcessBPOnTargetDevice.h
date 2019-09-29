@@ -258,7 +258,12 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	dataCostData<U> dataCostsDeviceCheckerboardAllLevels; //checkerboard 0 includes the pixel in slot (0, 0)
 	checkerboardMessages<U> messagesDeviceAllLevels;
 
+#ifdef _WIN32
+	//assuming that width includes padding
 	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#else
+	if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#endif
 	{
 		//call function that allocates all data in single array and then set offsets in array for data costs and message data locations
 		std::tie(dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels) =
@@ -305,7 +310,12 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	dataCostData<U> dataCostsDeviceCheckerboardCurrentLevel =
 		retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
 
+#ifdef _WIN32
+	//assuming that width includes padding
 	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#else
+	if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#endif
 	{
 		messagesDevice[0] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, currentOffsetLevel);
 	}
@@ -365,7 +375,12 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			dataCostsDeviceCheckerboardCurrentLevel =
 				retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, currentOffsetLevel);
 
+#ifdef _WIN32
+			//assuming that width includes padding
 			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#else
+			if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#endif
 			{
 				messagesDevice[(currentCheckerboardSet + 1) % 2] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, currentOffsetLevel);
 			}
@@ -394,7 +409,12 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
 			totalTimeCopyDataKernel += diff.count();
 
+#ifdef _WIN32
+			//assuming that width includes padding
 			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#else
+			if (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#endif
 			{
 				//free the now-copied from computed data of the completed level
 				freeCheckerboardMessagesMemory(messagesDevice[currentCheckerboardSet]);
@@ -421,7 +441,12 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 	runtime_start_end_timings[Runtime_Type_BP::OUTPUT_DISPARITY].second = runtime_start_end_timings[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
 
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#ifdef _WIN32
+			//assuming that width includes padding
+			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#else
+			if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+#endif
 	{
 		//now free the allocated data space; all data in single array when
 		//USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true

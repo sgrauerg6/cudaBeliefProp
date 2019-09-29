@@ -9,6 +9,7 @@
 #define BPSTRUCTSANDENUMS_H_
 
 #include "bpStereoParameters.h"
+#include <array>
 
 //structure to store the settings for the number of levels and iterations
 struct BPsettings

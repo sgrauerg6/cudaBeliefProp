@@ -24,8 +24,12 @@ ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(T data)
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
 ARCHITECTURE_ADDITION inline int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0)
 {
+#ifdef _WIN32
 	//assuming that width includes padding
 	if constexpr (OPTIMIZED_INDEXING_SETTING)
+#else
+	if (OPTIMIZED_INDEXING_SETTING)
+#endif
 	{
 		//indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 		return (yVal * width * totalNumDispVals + width * currentDisparity + xVal) + offsetData;
@@ -124,7 +128,12 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, const levelPrope
 	{
 		dst[currentDisparity] -= valToNormalize;
 		dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-		if constexpr (OPTIMIZED_INDEXING_SETTING)
+#ifdef _WIN32
+	//assuming that width includes padding
+	if constexpr (OPTIMIZED_INDEXING_SETTING)
+#else
+	if (OPTIMIZED_INDEXING_SETTING)
+#endif
 		{
 			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
 		}

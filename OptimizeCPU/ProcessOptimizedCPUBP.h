@@ -46,7 +46,7 @@ public:
 #ifdef _WIN32
 			*arrayToAllocate = _aligned_malloc(numBytesAllocate, bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T));
 #else
-			*arrayToAllocate = aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
+			*arrayToAllocate = aligned_alloc(bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
 #endif
 		}
 
@@ -66,7 +66,7 @@ public:
 			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T)));
 			return memoryData;
 #else
-			U memoryData = static_cast<U>(std::aligned_alloc(NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
+			U memoryData = static_cast<U>(std::aligned_alloc(bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
 			return memoryData;
 #endif
 		}
