@@ -18,8 +18,6 @@ typedef std::filesystem::path filepathtype;
 
 class RunAndEvaluateBpResults {
 public:
-	RunAndEvaluateBpResults();
-
 	static void printParameters(std::ostream& resultsStream)
 	{
 		bool optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT;
@@ -103,8 +101,6 @@ public:
 
 		std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";
 	}
-
-	virtual ~RunAndEvaluateBpResults();
 };
 
 #endif /* RUNANDEVALUATEBPRESULTS_H_ */
