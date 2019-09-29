@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 #define BP_STEREO_PROCESSING_OPTIMIZED_CPU_H
 
+#include <malloc.h>
 #include <vector>
 #include <algorithm>
 #include <chrono>
@@ -30,9 +31,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-//include for the kernal functions to be run on the GPU
+//include for the "kernal" functions to be run on the CPU
 #include "KernelBpStereoCPU.h"
-#include <malloc.h>
 
 template<typename T, typename U>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>

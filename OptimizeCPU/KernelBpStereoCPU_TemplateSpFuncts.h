@@ -11,6 +11,8 @@
 #endif
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
+//used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
+//for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio
 template<> inline
 short getZeroVal<short>()
 {
@@ -23,8 +25,6 @@ short getZeroVal<short>()
 #endif
 }
 
-//used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
-//for the windows convert values since _cvtsh_ss and _cvtss_sh not supported on Windows
 template<> inline
 float convertValToDifferentDataTypeIfNeeded<short, float>(short data)
 {
