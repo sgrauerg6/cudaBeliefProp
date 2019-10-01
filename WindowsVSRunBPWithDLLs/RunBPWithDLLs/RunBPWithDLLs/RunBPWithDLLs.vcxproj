@@ -120,6 +120,8 @@
     </Link>
     <CudaCompile>
       <CodeGeneration>compute_75,sm_75</CodeGeneration>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CudaRuntime>Shared</CudaRuntime>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -165,6 +167,8 @@
     </Link>
     <CudaCompile>
       <CodeGeneration>compute_75,sm_75</CodeGeneration>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <CudaRuntime>Shared</CudaRuntime>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -176,6 +180,7 @@
     <ClCompile Include="..\..\..\OutputEvaluation\OutputEvaluationResults.cpp" />
     <ClCompile Include="..\..\..\RuntimeTiming\DetailedTimings.cpp" />
     <ClCompile Include="RunBpWithDLLs.cpp" />
+    <ClCompile Include="RunBpWithDLLsHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\FileProcessing\BpFileHandling.h" />
@@ -192,6 +197,7 @@
     <ClInclude Include="..\..\..\ParameterFiles\bpStructsAndEnums.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h" />
+    <ClInclude Include="RunBpWithDLLsHelpers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
