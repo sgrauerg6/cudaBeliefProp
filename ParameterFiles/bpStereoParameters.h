@@ -95,19 +95,19 @@ constexpr char* getStereoSetString(const image_set_options imageSet)
 {
 	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
 	{
-		return "tsukubaSet";
+		return (char*)"tsukubaSet";
 	}
 	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
 	{
-		return "conesQuarterSize";
+		return (char*)"conesQuarterSize";
 	}
 	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
 	{
-		return "conesHalfSize";
+		return (char*)"conesHalfSize";
 	}
 	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
 	{
-		return "cones";
+		return (char*)"cones";
 	}
 
 	return nullptr;

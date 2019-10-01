@@ -21,8 +21,6 @@
 #include "filter.h"
 #include "imconv.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
-#include "../BpAndSmoothProcessing/SmoothImage.h"
-#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
@@ -47,4 +45,13 @@ private:
 			image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data, int iter, float disc_k_bp);
 	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
 };
+
+#if _WIN32
+
+extern "C" __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoCPUSingleThreadFloat();
+extern "C" __declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoCPUSingleThreadDouble();
+extern "C" __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoCPUSingleThreadShort();
+
+#endif //_WIN32
+
 #endif /* STEREO_H_ */

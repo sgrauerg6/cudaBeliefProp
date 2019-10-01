@@ -293,16 +293,27 @@ ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::stri
 	return output;
 }
 
+__declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoCPUSingleThreadFloat()
+{
+	return new RunBpStereoCPUSingleThread<float>();
+}
 
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
+__declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoCPUSingleThreadDouble()
+{
+	return new RunBpStereoCPUSingleThread<double>();
+}
+
+__declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoCPUSingleThreadShort()
+{
+	return new RunBpStereoCPUSingleThread<short>();
+}
+
+
 template class RunBpStereoCPUSingleThread<float>;
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
 template class RunBpStereoCPUSingleThread<double>;
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 //float16_t data type used for arm (rather than short)
 #ifdef COMPILING_FOR_ARM
 template class RunBpStereoCPUSingleThread<float16_t>;
 #else
 template class RunBpStereoCPUSingleThread<short>;
 #endif //COMPILING_FOR_ARM
-#endif //CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT

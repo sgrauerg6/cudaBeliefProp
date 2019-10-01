@@ -19,3 +19,18 @@
 //Defines the methods to run BP Stereo implementation on a series of images using various options
 
 #include "RunBpStereoSetOnGPUWithCUDA.h"
+
+__declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat()
+{
+	return new RunBpStereoSetOnGPUWithCUDA<float>();
+}
+
+__declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble()
+{
+	return new RunBpStereoSetOnGPUWithCUDA<double>();
+}
+
+__declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort()
+{
+	return new RunBpStereoSetOnGPUWithCUDA<short>();
+}

@@ -327,15 +327,8 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 	return resultingDisparityMapCompDevice;
 }
 
-
-
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 template class ProcessCUDABP<float, float*>;
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
 template class ProcessCUDABP<double, double*>;
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 template class ProcessCUDABP<half, half*>;
-#endif //CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
-
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

@@ -36,8 +36,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "SharedMemoryKernels/KernelBpStereoDataAndMessageInDynamicSharedMemory.cu"
 #else
 
-#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
-
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
@@ -50,7 +48,7 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 		half disc_k_bp, bool dataAligned)
 {
 	// aggregate and find min
-	half minimum = INF_BP;
+	half minimum = bp_consts::INF_BP;
 
 	half dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
@@ -137,8 +135,6 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 		}
 	}
 }
-
-#endif //((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
 
 #endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 

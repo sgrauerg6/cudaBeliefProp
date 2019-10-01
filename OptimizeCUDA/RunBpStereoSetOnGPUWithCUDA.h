@@ -67,16 +67,13 @@ public:
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 					const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
-
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
-
 		std::cout << "Processing as half on GPU\n";
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, float*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
+/* If processing using half2, not currently supported
 
 		std::cout << "Processing as half2 on GPU\n";
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
@@ -84,12 +81,7 @@ public:
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
-#else
-
-		std::cout << "ERROR IN DATA TYPE\n";
-		return ProcessStereoSetOutput();
-
-#endif
+*/
 
 	}
 };
@@ -143,5 +135,13 @@ public:
 };
 
 #endif
+
+#if _WIN32
+
+extern "C" __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat();
+extern "C" __declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble();
+extern "C" __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort();
+
+#endif //_WIN32
 
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH

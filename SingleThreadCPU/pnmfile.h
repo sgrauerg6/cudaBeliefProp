@@ -228,19 +228,28 @@ static void savePPM(image<rgb> *im, const char *name) {
 static image<uchar> *loadPGMOrPPMImage(const char *name) {
 	char pgmExtension[] = "pgm";
 	char ppmExtension[] = "ppm";
-	char* filePathImageCopy = new char[strlen(name) + 1];
-	strcpy(filePathImageCopy, name);
+	char* filePathImageCopy = new char[strlen(name) + 1]{};
+	std::copy(name, name + strlen(name), filePathImageCopy);
 
 	//check if PGM or PPM image (types currently supported)
+#if _WIN32
+	char* token;
+	strtok_s(filePathImageCopy, ".", &token);
+#else
 	char* token = strtok(filePathImageCopy, ".");
-	char* lastToken = new char[strlen(token) + 1];;
-	strcpy(lastToken, token);
+#endif //_WIN32
+	char* lastToken = new char[strlen(token) + 1]{};
+	std::copy(token, token + strlen(token), lastToken);
 	while( token != NULL )
 	{
 		delete [] lastToken;
-		lastToken = new char[strlen(token) + 1];
-		strcpy(lastToken, token);
-	    token = strtok(NULL, ".");
+		lastToken = new char[strlen(token) + 1]{};
+		std::copy(token, token + strlen(token), lastToken);
+#if _WIN32
+		strtok_s(NULL, ".", &token);
+#else
+		token = strtok(NULL, ".");
+#endif //_WIN32
 	}
 
 	//last token after "." is file extension

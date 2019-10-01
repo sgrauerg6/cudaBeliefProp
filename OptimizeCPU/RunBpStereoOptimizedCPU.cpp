@@ -37,20 +37,25 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string&
 			resultsStream, smoothImageCPU, processImageCPU);
 }
 
-#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
+__declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoOptimizedCPUFloat()
+{
+	return new RunBpStereoOptimizedCPU<float>();
+}
+
+__declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoOptimizedCPUDouble()
+{
+	return new RunBpStereoOptimizedCPU<double>();
+}
+
+__declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoOptimizedCPUShort()
+{
+	return new RunBpStereoOptimizedCPU<short>();
+}
 
 template class RunBpStereoOptimizedCPU<float>;
-
-#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
-
 template class RunBpStereoOptimizedCPU<double>;
-
-#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
-
 #ifdef COMPILING_FOR_ARM
 template class RunBpStereoOptimizedCPU<float16_t>;
 #else
 template class RunBpStereoOptimizedCPU<short>;
 #endif //COMPILING_FOR_ARM
-
-#endif

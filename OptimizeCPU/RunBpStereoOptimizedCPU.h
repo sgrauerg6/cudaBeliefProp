@@ -28,4 +28,8 @@ public:
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsStream) override;
 };
 
+extern "C" __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoOptimizedCPUFloat();
+extern "C" __declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoOptimizedCPUDouble();
+extern "C" __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoOptimizedCPUShort();
+
 #endif /* RUNBPSTEREOOPTIMIZEDCPU_H_ */

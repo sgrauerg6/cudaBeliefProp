@@ -146,20 +146,10 @@ float* ProcessOptimizedCPUBP<T, U>::retrieveOutputDisparity(
 	return resultingDisparityMapCompDevice;
 }
 
-#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)
-
 template class ProcessOptimizedCPUBP<float, float*>;
-
-#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE)
-
 template class ProcessOptimizedCPUBP<double, double*>;
-
-#elif (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF)
-
 #ifdef COMPILING_FOR_ARM
 template class ProcessOptimizedCPUBP<float16_t, float16_t*>;
 #else
 template class ProcessOptimizedCPUBP<short, short*>;
 #endif //COMPILING_FOR_ARM
-
-#endif //(CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT)

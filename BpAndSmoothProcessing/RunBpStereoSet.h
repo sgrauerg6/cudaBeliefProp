@@ -34,8 +34,6 @@ struct ProcessStereoSetOutput
 template <typename T = float>
 class RunBpStereoSet {
 public:
-	RunBpStereoSet() {
-	}
 
 	virtual ~RunBpStereoSet() {
 	}
