@@ -40,6 +40,23 @@ class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
 {
 public:
 
+	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
+	{
+		cudaDeviceProp prop;
+		cudaGetDeviceProperties(&prop, numDevice);
+		int cudaDriverVersion;
+		cudaDriverGetVersion(&cudaDriverVersion);
+
+		resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
+		resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
+		int cudaRuntimeVersion;
+		cudaRuntimeGetVersion(&cudaRuntimeVersion);
+		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+		resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
+		resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
+	}
+
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
@@ -48,6 +65,7 @@ public:
 	{
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
+		retrieveDeviceProperties(0, resultsStream);
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
@@ -60,14 +78,32 @@ class RunBpStereoSetOnGPUWithCUDA<short> : public RunBpStereoSet<short>
 {
 public:
 
-	std::string getBpRunDescription() override { return "CUDA"; }
+	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
+	{
+		cudaDeviceProp prop;
+		cudaGetDeviceProperties(&prop, numDevice);
+		int cudaDriverVersion;
+		cudaDriverGetVersion(&cudaDriverVersion);
+
+		resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
+		resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
+		int cudaRuntimeVersion;
+		cudaRuntimeGetVersion(&cudaRuntimeVersion);
+		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+		resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
+		resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
+	}
+
+	std::string getBpRunDescription() override { return "CUDA (half-precision)"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
 					const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
-		std::cout << "Processing as half on GPU\n";
+		resultsStream << "CURRENT RUN: GPU WITH CUDA (half-precision)\n";
+		retrieveDeviceProperties(0, resultsStream);
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, float*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();

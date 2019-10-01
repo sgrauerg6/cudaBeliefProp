@@ -69,7 +69,7 @@ public:
 		//load all the BP default settings as set in bpStereoCudaParameters.cuh
 		BPsettings algSettings;
 
-		std::cout << "Running belief propagation on reference image " << refImagePath << " and test image " << testImagePath << " on " << bpProcessingImps[0]->getBpRunDescription() << " and " << bpProcessingImps[0]->getBpRunDescription() << std::endl;
+		std::cout << "Running belief propagation on reference image " << refImagePath << " and test image " << testImagePath << " on " << bpProcessingImps[0]->getBpRunDescription() << " and " << bpProcessingImps[1]->getBpRunDescription() << std::endl;
 		std::array<ProcessStereoSetOutput, 2> run_output;
 
 		for (int i = 0; i < 2; i++) {

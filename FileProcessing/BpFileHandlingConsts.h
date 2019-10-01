@@ -19,8 +19,8 @@ namespace bp_file_handling
 	const std::string OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
 
 #ifdef _WIN32
-	//SOLUTION_DIR is set to $(SolutionDir) in preprocessor of Visual Studio Project
-	const std::string EXE_PATH_PATH = SOLUTION_DIR;
+	//OUT_EXE_DIR is set to $(OutDir) in preprocessor of Visual Studio Project
+	const std::string EXE_PATH_PATH = std::string(SOLUTION_DIR) + "../..";
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
 #else
 	//assuming that executable is created in main cudaBeliefProp directory when using g++

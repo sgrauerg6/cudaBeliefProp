@@ -233,8 +233,9 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 
 	//check if PGM or PPM image (types currently supported)
 #if _WIN32
+	char* next_token;
 	char* token;
-	strtok_s(filePathImageCopy, ".", &token);
+	token = strtok_s(filePathImageCopy, ".", &next_token);
 #else
 	char* token = strtok(filePathImageCopy, ".");
 #endif //_WIN32
@@ -246,7 +247,7 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 		lastToken = new char[strlen(token) + 1]{};
 		std::copy(token, token + strlen(token), lastToken);
 #if _WIN32
-		strtok_s(NULL, ".", &token);
+		token = strtok_s(NULL, ".", &next_token);
 #else
 		token = strtok(NULL, ".");
 #endif //_WIN32
