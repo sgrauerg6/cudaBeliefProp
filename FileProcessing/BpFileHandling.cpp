@@ -6,8 +6,3 @@
  */
 
 #include "BpFileHandling.h"
-
-BpFileHandling::~BpFileHandling() {
-	// TODO Auto-generated destructor stub
-}
-
