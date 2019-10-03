@@ -39,37 +39,47 @@ Please email comments and bug reports to: sgrauerg@gmail.com
 
 Usage:
 
-This code runs belief propagation for stereo vision on the GPU using CUDA on Linux-based systems (and the code 
-can be modified to work on Windows/Macs).
+This code runs belief propagation for stereo vision on the CPU and GPU using CUDA on Windows and Linux-based systems.
 
-The parameters are defined in the file bpStereoCudaParameters.cuh and are documented in that file and the paper.  
-In order to compile/re-compile the program, navigate to the directory with the files (this one...) and run "make clean" and 
-"make".  Note that the cuda installation must have a symbolic link to /usr/local/cuda/ for the Makefile to work as is.
+The parameters are defined in ParameterFiles/bpStereoParameters.h and are documented in that file and the paper.  
+In order to compile/re-compile the program, navigate to the directory LinuxMakeAndRunBPOptimizedCPU (for optimized GPU
+implementation or LinuxMakeAndRunBPCUDA (for CUDA implementation; currently this get compilation error due to use of C++17
+with NVCC) and run "make clean" and "make".  To run the CUDA code, the CUDA installation must have a symbolic link to /usr/local/cuda/
+for the Makefile to work as is.
 
 The Tsukuba stereo set is included as part of this folder as a sample program.  In order to test the implementation on this 
-stereo set using the initial parameters as defined in bpStereoCudaParameters.cuh, perform the following steps:
+stereo set using the initial parameters as defined in ParameterFiles/bpStereoParameters.h, perform the following steps:
 
-1.  If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs (usually PATH is appended
+LINUX:
+
+1.  (CUDA ONLY) If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs (usually PATH is appended
 with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64).
 
-2.  Navigate to the folder with all the implementation files (including this README...)
+2.  Navigate to the folder with the optimized CPU implementation or CUDA implementation Makefile (LinuxMakeAndRunBPOptimizedCPU / 
+LinuxMakeAndRunBPCUDA).
 
-3.  Execute the commands "make clean" and "make" on the command line (Note that the current Makefile compiles specifically for compute
-capabilities 6.0, 6.1, 7.0, and 7.5, which correspond to Pascal, Volta, and Turing architecture discrete GPUs.  May need to make
+3.  Execute the commands "make clean" and "make" on the command line (Note that the current Makefile for CUDA compiles specifically for
+compute capabilities 6.0, 6.1, 7.0, and 7.5, which correspond to Pascal, Volta, and Turing architecture discrete GPUs.  May need to make
 adjustments to run on other NVIDIA GPUs or to run on SOCs such as the Jetson TX1/2).
 
-4.  The executable named "driverCudaBp" should now be created, so call ./driverCudaBp to run the implementation on the Tsukuba sets.
-The implementation is run multiple times to more accuracy guage the runtime, with the median GPU runtime given.  The CPU
-implementation code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run with the runtime given.
+4.  The executable named "driverCPUBp" or "driverCudaBp" should now be created, so call executable to run the implementation on the
+Tsukuba set. The implementation is run multiple times to more accuracy guage the runtime, with the median optimized CPU or GPU runtime given.
+The single-thread CPU implementation code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run with the runtime given.
 
 5.  The GPU and CPU runtimes are output in the terminal also with the location of the output disparity maps.  More detailed info
 including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file (in the
 same folder as the driverCudaBp executable).
 
 6.  In order to adjust the parameters to run on different input or different parameters, adjust the desired parameters in 
-bpStereoCudaParameters.cuh, run "make clean" and "make" to compile to the program with the adjusted parameters, then call
-./driverCudaBp to run the program with the adjusted parameters.
+ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile to the program with the adjusted parameters, then call
+the executable to run the program with the adjusted parameters.
 
-7.  The runCudaBeliefProp.py script can be used to run many tests with different parameters, including running the implementation with
-different stereo sets and/or the same stereo set with different input parameters and/or optimization settings.  If using this script,
-set the #define IMAGE_SET_TO_PROCESS in bpStereoCudaParameters.cuh to IMAGE_SET_PARAMETERS_FROM_PYTHON (defined in file).
+WINDOWS:
+
+1. Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
+
+2. Select to compile then run the application.  The solution will first compile the single-thread CPU, optimized CPU, 
+and CUDA implementations into DLLs, then the main program in the solution will load the DLLs and run the program.  The
+program output shows the optimized CPU and CUDA implementation results compared to the single-thread CPU implementation results.
+Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and will need to re-compile to see results with
+adjusted parameters.
