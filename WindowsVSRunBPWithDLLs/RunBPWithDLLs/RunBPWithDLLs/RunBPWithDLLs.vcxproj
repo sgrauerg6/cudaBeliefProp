@@ -177,6 +177,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\FileProcessing\BpFileHandling.cpp" />
+    <ClCompile Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.cpp" />
     <ClCompile Include="..\..\..\ImageDataAndProcessing\BpImage.cpp" />
     <ClCompile Include="..\..\..\MainDriverFiles\RunAndEvaluateBpResults.cpp" />
     <ClCompile Include="..\..\..\OutputEvaluation\DisparityMap.cpp" />
@@ -184,11 +185,11 @@
     <ClCompile Include="..\..\..\OutputEvaluation\OutputEvaluationResults.cpp" />
     <ClCompile Include="..\..\..\RuntimeTiming\DetailedTimings.cpp" />
     <ClCompile Include="RunBpWithDLLs.cpp" />
-    <ClCompile Include="RunBpWithDLLsHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\FileProcessing\BpFileHandling.h" />
     <ClInclude Include="..\..\..\FileProcessing\BpFileHandlingConsts.h" />
+    <ClInclude Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.h" />
     <ClInclude Include="..\..\..\ImageDataAndProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\MainDriverFiles\RunAndEvaluateBpResults.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h" />
@@ -201,7 +202,6 @@
     <ClInclude Include="..\..\..\ParameterFiles\bpStructsAndEnums.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h" />
-    <ClInclude Include="RunBpWithDLLsHelpers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

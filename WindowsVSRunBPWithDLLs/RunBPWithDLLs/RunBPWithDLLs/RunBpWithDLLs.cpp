@@ -9,7 +9,7 @@
 #include <iostream>
 
 //needed for consts and functions for running bp using DLLs
-#include "RunBpWithDLLsHelpers.h"
+#include "GetDllFuncts/RunBpWithDLLsHelpers.h"
 
 //needed to run the implementation a stereo set using CUDA
 #include "MainDriverFiles/RunAndEvaluateBpResults.h"

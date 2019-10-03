@@ -39,7 +39,7 @@
     <ClCompile Include="RunBpWithDLLs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RunBpWithDLLsHelpers.cpp">
+    <ClCompile Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,7 +86,7 @@
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RunBpWithDLLsHelpers.h">
+    <ClInclude Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
