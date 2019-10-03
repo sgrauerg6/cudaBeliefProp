@@ -23,8 +23,8 @@ namespace bp_file_handling
 	const std::string EXE_PATH_PATH = std::string(SOLUTION_DIR) + "../..";
 	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
 #else
-	//assuming that executable is created in main cudaBeliefProp directory when using g++
-	const std::filesystem::path EXE_PATH_PATH = std::filesystem::current_path();
+	//assuming that executable is created one folder in from main cudaBeliefProp directory when using Linux
+	const std::filesystem::path EXE_PATH_PATH = (std::filesystem::current_path()).parent_path();
 	const std::filesystem::path STEREO_SETS_PATH = EXE_PATH_PATH / "StereoSets";
 #endif //_WIN32
 }
