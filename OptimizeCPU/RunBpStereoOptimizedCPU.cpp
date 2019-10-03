@@ -37,6 +37,8 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string&
 			resultsStream, smoothImageCPU, processImageCPU);
 }
 
+#if _WIN32
+
 __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoOptimizedCPUFloat()
 {
 	return new RunBpStereoOptimizedCPU<float>();
@@ -51,6 +53,8 @@ __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoOptimizedC
 {
 	return new RunBpStereoOptimizedCPU<short>();
 }
+
+#endif //_WIN32
 
 template class RunBpStereoOptimizedCPU<float>;
 template class RunBpStereoOptimizedCPU<double>;

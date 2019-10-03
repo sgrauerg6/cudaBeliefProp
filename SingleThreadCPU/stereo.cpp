@@ -293,6 +293,8 @@ ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::stri
 	return output;
 }
 
+#if _WIN32
+
 __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoCPUSingleThreadFloat()
 {
 	return new RunBpStereoCPUSingleThread<float>();
@@ -308,6 +310,7 @@ __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoCPUSingleT
 	return new RunBpStereoCPUSingleThread<short>();
 }
 
+#endif //_WIN32
 
 template class RunBpStereoCPUSingleThread<float>;
 template class RunBpStereoCPUSingleThread<double>;
