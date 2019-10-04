@@ -97,7 +97,7 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 				currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING)
+			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel;
@@ -123,7 +123,7 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING)
+			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel;

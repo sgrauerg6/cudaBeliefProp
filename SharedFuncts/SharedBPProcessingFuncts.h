@@ -26,7 +26,7 @@ ARCHITECTURE_ADDITION inline int retrieveIndexInDataAndMessage(int xVal, int yVa
 {
 #ifdef _WIN32
 	//assuming that width includes padding
-	if constexpr (OPTIMIZED_INDEXING_SETTING)
+	if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
 #else
 	if (OPTIMIZED_INDEXING_SETTING)
 #endif
@@ -130,7 +130,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(int xVal, int yVal, const levelPrope
 		dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
 #ifdef _WIN32
 	//assuming that width includes padding
-	if constexpr (OPTIMIZED_INDEXING_SETTING)
+	if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
 #else
 	if (OPTIMIZED_INDEXING_SETTING)
 #endif

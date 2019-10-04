@@ -1,10 +1,10 @@
-#include "QtGuiApplication1.h"
+#include "BeliefPropQtGUI.h"
 #include <QtWidgets/QApplication>
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	QtGuiApplication1 w;
+	BeliefPropQtGUI w;
 	w.show();
 	return a.exec();
 }

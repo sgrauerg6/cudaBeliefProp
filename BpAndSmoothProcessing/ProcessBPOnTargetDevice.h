@@ -260,7 +260,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #ifdef _WIN32
 	//assuming that width includes padding
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+	if /*constexpr*/ (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #else
 	if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif
@@ -312,7 +312,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #ifdef _WIN32
 	//assuming that width includes padding
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+	if /*constexpr*/ (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #else
 	if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif
@@ -377,7 +377,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #ifdef _WIN32
 			//assuming that width includes padding
-			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+			if /*constexpr*/ (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #else
 			if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif
@@ -411,7 +411,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #ifdef _WIN32
 			//assuming that width includes padding
-			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+			if /*constexpr*/ (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #else
 			if (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif
@@ -443,7 +443,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 #ifdef _WIN32
 			//assuming that width includes padding
-			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
+			if /*constexpr*/ (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #else
 			if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif

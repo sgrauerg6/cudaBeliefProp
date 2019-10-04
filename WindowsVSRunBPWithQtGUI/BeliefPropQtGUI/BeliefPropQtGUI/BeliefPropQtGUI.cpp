@@ -1,10 +1,10 @@
-#include "QtGuiApplication1.h"
+#include "BeliefPropQtGUI.h"
 
 #include <filesystem>
 typedef std::filesystem::path filepathtype;
 #include <iostream>
 
-QtGuiApplication1::QtGuiApplication1(QWidget *parent)
+BeliefPropQtGUI::BeliefPropQtGUI(QWidget* parent)
 	: QMainWindow(parent), stereo_processing_run_(false)
 {
 	BpFileHandling bpFileSettings(bp_params::STEREO_SET);
@@ -13,11 +13,11 @@ QtGuiApplication1::QtGuiApplication1(QWidget *parent)
 	ui.setupUi(this);
 	QPixmap newImage(refImagePath.string().c_str());
 	ui.targetImage->setPixmap(newImage);
-	connect(ui.pushButton_2, &QPushButton::clicked, this, &QtGuiApplication1::processButtonPress);
+	connect(ui.pushButton_2, &QPushButton::clicked, this, &BeliefPropQtGUI::processButtonPress);
 }
 
 //funtion to process button press in GUI
-void QtGuiApplication1::processButtonPress()
+void BeliefPropQtGUI::processButtonPress()
 {
 	QObject* button = QObject::sender();
 	BpFileHandling bpFileSettings(bp_params::STEREO_SET);
@@ -75,3 +75,13 @@ void QtGuiApplication1::processButtonPress()
 		repaint();
 	}
 }
+
+
+/*#include "BeliefPropQtGUI.h"
+
+BeliefPropQtGUI::BeliefPropQtGUI(QWidget *parent)
+	: QMainWindow(parent)
+{
+	ui.setupUi(this);
+}
+*/
