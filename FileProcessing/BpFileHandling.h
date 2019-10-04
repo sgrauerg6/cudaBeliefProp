@@ -26,9 +26,8 @@ public:
 	const std::filesystem::path getStereoSetsPath()
 	{
 		std::filesystem::path currentPath = std::filesystem::current_path();
-		bool pathFound = false;
 
-		while (!pathFound)
+		while (true)
 		{
 			//create directory iterator corresponding to current path
 			std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator(currentPath);
@@ -42,9 +41,13 @@ public:
 			//check if return from find_if at iterator end and therefore didn't find stereo sets directory;
 			//if that's the case continue to outer directory
 			//for now assuming stereo sets directory exists in some outer directory and program won't work without it
-			//TODO: add exception and exception handling if directory doesn't exist
 			if (it == std::filesystem::end(dirIt))
 			{
+				//if current path same as parent path, then can't continue and throw error
+				if (currentPath == currentPath.parent_path())
+				{
+					throw std::filesystem::filesystem_error("Stereo set directory not found", std::error_code());
+				}
 				currentPath = currentPath.parent_path();
 			}
 			else
