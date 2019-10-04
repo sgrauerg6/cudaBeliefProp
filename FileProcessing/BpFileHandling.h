@@ -57,7 +57,7 @@ public:
 		return std::filesystem::path();
 	}
 
-	//return path to reference image with valid extension if found, otherwise returns empty path
+	//return path to reference image with valid extension if found, otherwise throw filesystem error
 	const std::filesystem::path getRefImagePath()
 	{
 		//check if ref image exists for each possible extension (currently pgm and ppm) and return path if so
@@ -72,7 +72,7 @@ public:
 		throw std::filesystem::filesystem_error("Reference image not found", std::error_code());
 	}
 
-	//return path to test image with valid extension if found, otherwise returns empty path
+	//return path to test image with valid extension if found, otherwise throw filesystem error
 	const std::filesystem::path getTestImagePath()
 	{
 		//check if test image exists for each possible extension (currently pgm and ppm) and return path if so
