@@ -10,6 +10,7 @@
 
 #include <filesystem>
 #include "BpFileHandlingConsts.h"
+#include <algorithm>
 
 class BpFileHandling {
 public:
@@ -29,18 +30,28 @@ public:
 
 		while (!pathFound)
 		{
-			for (const auto& p : std::filesystem::directory_iterator(currentPath))
-			{
-				if (p.path().stem() == bp_file_handling::STEREO_SETS_DIRECTORY_NAME)
-				{
-					std::filesystem::path stereoSetPath = p.path();
-					return stereoSetPath;
-				}
-			}
+			//create directory iterator corresponding to current path
+			std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator(currentPath);
 
-			//continue to outer directories until finding StereoSets directory
-			//for now assuming it exists and program won't work without it
-			currentPath = currentPath.parent_path();
+			//check if any of the directories in the current path correspond to the stereo sets directory;
+			//if so return iterator to directory; otherwise return iterator to end indicating that directory not
+			//found in current path
+			std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dirIt), std::filesystem::end(dirIt), 
+				[](const auto &p) { return p.path().stem() == bp_file_handling::STEREO_SETS_DIRECTORY_NAME; });
+
+			//check if return from find_if at iterator end and therefore didn't find stereo sets directory;
+			//if that's the case continue to outer directory
+			//for now assuming stereo sets directory exists in some outer directory and program won't work without it
+			//TODO: add exception and exception handling if directory doesn't exist
+			if (it == std::filesystem::end(dirIt))
+			{
+				currentPath = currentPath.parent_path();
+			}
+			else
+			{
+				std::filesystem::path stereoSetPath = it->path();
+				return stereoSetPath;
+			}
 		}
 
 		return std::filesystem::path();
