@@ -46,7 +46,7 @@ private:
 	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
 };
 
-#if _WIN32
+#ifdef _WIN32
 
 extern "C" __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoCPUSingleThreadFloat();
 extern "C" __declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoCPUSingleThreadDouble();

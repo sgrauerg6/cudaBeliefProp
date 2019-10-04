@@ -172,7 +172,7 @@ public:
 
 #endif
 
-#if _WIN32
+#ifdef _WIN32
 
 extern "C" __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat();
 extern "C" __declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble();

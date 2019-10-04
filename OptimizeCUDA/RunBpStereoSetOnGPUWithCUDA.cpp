@@ -20,6 +20,8 @@
 
 #include "RunBpStereoSetOnGPUWithCUDA.h"
 
+#ifdef _WIN32
+
 __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat()
 {
 	return new RunBpStereoSetOnGPUWithCUDA<float>();
@@ -34,3 +36,5 @@ __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoSetOnGPUWi
 {
 	return new RunBpStereoSetOnGPUWithCUDA<short>();
 }
+
+#endif //_WIN32

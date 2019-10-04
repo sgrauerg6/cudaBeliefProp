@@ -49,7 +49,7 @@ RunAndEvaluateBpResults.o: ../MainDriverFiles/RunAndEvaluateBpResults.h ../MainD
 BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHandling.cpp ../FileProcessing/BpFileHandlingConsts.h
 	$(CC) ../FileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-DetailedTimings.o: RuntimeTiming/DetailedTimings.cpp RuntimeTiming/DetailedTimings.h
+DetailedTimings.o: ../RuntimeTiming/DetailedTimings.cpp ../RuntimeTiming/DetailedTimings.h
 	$(CC) ../RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessBPOnTargetDevice.o : ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o ../RuntimeTiming/DetailedTimingBPConsts.h ../ParameterFiles/bpRunSettings.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h
