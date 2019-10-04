@@ -44,7 +44,7 @@ driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../ParameterFiles/bpStereoCu
 	$(CC) ../MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunAndEvaluateBpResults.o: ../MainDriverFiles/RunAndEvaluateBpResults.h ../MainDriverFiles/RunAndEvaluateBpResults.cpp
-	$(CC) MainDriverFiles/RunAndEvaluateBpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ../MainDriverFiles/RunAndEvaluateBpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
 BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHandling.cpp ../FileProcessing/BpFileHandlingConsts.h
 	$(CC) ../FileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
