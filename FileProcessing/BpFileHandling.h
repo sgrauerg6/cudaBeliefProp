@@ -10,15 +10,41 @@
 
 #include <filesystem>
 #include "BpFileHandlingConsts.h"
-#include <iostream>
 
 class BpFileHandling {
 public:
 
 	//constructor takes stereo set name as input, which must match the directory name of the stereo set
-	BpFileHandling(const std::string& stereo_set_name) : stereo_set_path_(std::filesystem::path(bp_file_handling::STEREO_SETS_PATH) / stereo_set_name), num_out_disp_map_(1)
-	{ }
+	BpFileHandling(const std::string& stereo_set_name) : num_out_disp_map_(1)
+	{
+		stereo_set_path_ = getStereoSetsPath() / stereo_set_name;
+	}
+
 	//virtual ~BpFileHandling();
+
+	const std::filesystem::path getStereoSetsPath()
+	{
+		std::filesystem::path currentPath = std::filesystem::current_path();
+		bool pathFound = false;
+
+		while (!pathFound)
+		{
+			for (const auto& p : std::filesystem::directory_iterator(currentPath))
+			{
+				if (p.path().stem() == bp_file_handling::STEREO_SETS_DIRECTORY_NAME)
+				{
+					std::filesystem::path stereoSetPath = p.path();
+					return stereoSetPath;
+				}
+			}
+
+			//continue to outer directories until finding StereoSets directory
+			//for now assuming it exists and program won't work without it
+			currentPath = currentPath.parent_path();
+		}
+
+		return std::filesystem::path();
+	}
 
 	//return path to reference image with valid extension if found, otherwise returns empty path
 	const std::filesystem::path getRefImagePath()

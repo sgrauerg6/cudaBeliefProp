@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_BeliefPropQtGUI.h"
 #include <QPixmap>
-#include "WindowsVSRunBPWithQtGUI/GuiProcessStereoSet.h"
+#include "GuiProcessStereoSet.h"
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "./ParameterFiles/bpStereoParameters.h"
 #include "./ParameterFiles/bpRunSettings.h"

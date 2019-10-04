@@ -17,16 +17,7 @@ namespace bp_file_handling
 	const std::string IN_IMAGE_POSS_EXTENSIONS[] = {"pgm", "ppm"};
 	const std::string GROUND_TRUTH_DISP_FILE = "groundTruthDisparity.pgm";
 	const std::string OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
-
-#ifdef _WIN32
-	//OUT_EXE_DIR is set to $(OutDir) in preprocessor of Visual Studio Project
-	const std::string EXE_PATH_PATH = std::string(SOLUTION_DIR) + "../..";
-	const std::string STEREO_SETS_PATH = EXE_PATH_PATH + "/StereoSets";
-#else
-	//assuming that executable is created one folder in from main cudaBeliefProp directory when using Linux
-	const std::filesystem::path EXE_PATH_PATH = (std::filesystem::current_path()).parent_path();
-	const std::filesystem::path STEREO_SETS_PATH = EXE_PATH_PATH / "StereoSets";
-#endif //_WIN32
+	const std::string STEREO_SETS_DIRECTORY_NAME = "StereoSets";
 }
 
 #endif /* BPFILEHANDLINGCONSTS_H_ */
