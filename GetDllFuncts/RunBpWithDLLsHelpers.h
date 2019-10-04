@@ -44,9 +44,9 @@ public:
 	template <typename T>
 	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames()
 	{
-		return std::map< run_bp_dlls::device_run, std::string> { {device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadFloat"},
-		{ device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUFloat" },
-		{ device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDAFloat" } };
+		return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadFloat"},
+		{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUFloat" },
+		{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDAFloat" } };
 	}
 
 	template <>
