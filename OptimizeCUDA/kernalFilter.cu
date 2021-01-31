@@ -30,9 +30,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #undef PROCESSING_ON_GPU
 
 //checks if the current point is within the image bounds
-__device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int height)
+__device__ bool withinImageBoundsFilter(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height)
 {
-	return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
+	//xVal and yVal unsigned so no need to compare with zero
+	return (/*(xVal >= 0) &&*/ (xVal < width) && /*(yVal >= 0) &&*/ (yVal < height));
 }
 
 
@@ -40,24 +41,26 @@ __device__ bool withinImageBoundsFilter(int xVal, int yVal, int width, int heigh
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //output filtered image stored in floatImagePixels
-__global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels, int widthImages, int heightImages)
+__global__ void convertUnsignedIntImageToFloat(
+		unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
+		const unsigned int widthImages, const unsigned int heightImages)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
 	{
 		//retrieve the float-value of the unsigned int pixel value at the current location
-		float floatPixelVal = 1.0f * imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];
+		const float floatPixelVal = 1.0f * imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];
 
 		floatImagePixels[yVal*widthImages + xVal] = floatPixelVal;
 	}
@@ -68,18 +71,20 @@ __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsigned
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
 template<typename T>
-__global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
+__global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels,
+		const unsigned int widthImages, const unsigned int heightImages,
+		float* imageFilter, const unsigned int sizeFilter)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
@@ -96,18 +101,19 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
 template<typename T>
-__global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels, int widthImages, int heightImages, float* imageFilter, int sizeFilter)
+__global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels,
+		const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))

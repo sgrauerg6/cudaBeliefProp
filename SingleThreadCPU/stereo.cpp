@@ -20,12 +20,12 @@
 
 // dt of 1d function
 static void dt(float f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]) {
-	for (int q = 1; q < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; q++) {
+	for (unsigned int q = 1; q < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; q++) {
 		float prev = f[q - 1] + 1.0F;
 		if (prev < f[q])
 			f[q] = prev;
 	}
-	for (int q = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 2; q >= 0; q--) {
+	for (int q = (int)bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 2; q >= 0; q--) {
 		float prev = f[q + 1] + 1.0F;
 		if (prev < f[q])
 			f[q] = prev;
@@ -40,7 +40,7 @@ void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARI
 
 	// aggregate and find min
 	float minimum = bp_consts::INF_BP;
-	for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
 		dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
 		if (dst[value] < minimum)
 			minimum = dst[value];
@@ -51,25 +51,25 @@ void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARI
 
 	// truncate
 	minimum += disc_k_bp;
-	for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
+	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
 		if (minimum < dst[value])
 			dst[value] = minimum;
 
 	// normalize
 	val = 0;
-	for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
+	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
 		val += dst[value];
 
 	val /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
-	for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
+	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
 		dst[value] -= val;
 }
 
 // computation of data costs
 template<typename T>
 image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings) {
-	int width = img1->width();
-	int height = img1->height();
+	unsigned int width = (unsigned int)img1->width();
+	unsigned int height = (unsigned int)img1->height();
 	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
 
 	image<float> *sm1, *sm2;
@@ -81,10 +81,10 @@ image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThr
 		sm2 = imageUCHARtoFLOAT(img2);
 	}
 
-	for (int y = 0; y < height; y++) {
-		for (int x = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 1; x < width; x++) {
-			for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
-				float val = abs(imRef(sm1, x, y) - imRef(sm2, x - value, y));
+	for (unsigned int y = 0; y < height; y++) {
+		for (unsigned int x = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 1; x < width; x++) {
+			for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+				const float val = abs(imRef(sm1, x, y) - imRef(sm2, x - value, y));
 				imRef(data, x, y)[value] = algSettings.lambda_bp * std::min(val, algSettings.data_k_bp);
 			}
 		}
@@ -109,8 +109,8 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_
 			// keep track of best value for current pixel
 			int best = 0;
 			float best_val = bp_consts::INF_BP;
-			for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
-				float val =
+			for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+				const float val =
 				imRef(u, x, y+1)[value] +
 				imRef(d, x, y-1)[value] +
 				imRef(l, x+1, y)[value] +
@@ -175,19 +175,19 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 	data[0] = comp_data(img1, img2, algSettings);
 
 	// data pyramid
-	for (int i = 1; i < algSettings.numLevels; i++) {
-		int old_width = data[i - 1]->width();
-		int old_height = data[i - 1]->height();
-		int new_width = (int) ceil(old_width / 2.0);
-		int new_height = (int) ceil(old_height / 2.0);
+	for (unsigned int i = 1; i < algSettings.numLevels; i++) {
+		const unsigned int old_width = (unsigned int)data[i - 1]->width();
+		const unsigned int old_height = (unsigned int)data[i - 1]->height();
+		const unsigned int new_width = (unsigned int) ceil(old_width / 2.0);
+		const unsigned int new_height = (unsigned int) ceil(old_height / 2.0);
 
 		assert(new_width >= 1);
 		assert(new_height >= 1);
 
 		data[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(new_width, new_height);
-		for (int y = 0; y < old_height; y++) {
-			for (int x = 0; x < old_width; x++) {
-				for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+		for (unsigned int y = 0; y < old_height; y++) {
+			for (unsigned int x = 0; x < old_width; x++) {
+				for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
 					imRef(data[i], x/2, y/2)[value] +=
 							imRef(data[i-1], x, y)[value];
 				}
@@ -197,11 +197,11 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 
 	// run bp from coarse to fine
 	for (int i = algSettings.numLevels - 1; i >= 0; i--) {
-		int width = data[i]->width();
-		int height = data[i]->height();
+		unsigned int width = (unsigned int)data[i]->width();
+		unsigned int height = (unsigned int)data[i]->height();
 
 		// allocate & init memory for messages
-		if (i == algSettings.numLevels - 1) {
+		if ((unsigned int)i == (algSettings.numLevels - 1)) {
 			// in the coarsest level messages are initialized to zero
 			u[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
 			d[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
@@ -214,9 +214,9 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 			l[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height, false);
 			r[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height, false);
 
-			for (int y = 0; y < height; y++) {
-				for (int x = 0; x < width; x++) {
-					for (int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+			for (unsigned int y = 0; y < height; y++) {
+				for (unsigned int x = 0; x < width; x++) {
+					for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
 						imRef(u[i], x, y)[value] =
 								imRef(u[i+1], x/2, y/2)[value];
 						imRef(d[i], x, y)[value] =

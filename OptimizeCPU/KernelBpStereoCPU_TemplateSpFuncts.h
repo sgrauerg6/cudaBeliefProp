@@ -50,7 +50,7 @@ short convertValToDifferentDataTypeIfNeeded<float, short>(float data)
 }
 
 template<> inline
-void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,
+void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUDeviceCurrentCheckerboard0,
@@ -60,8 +60,8 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 		short* messageUDeviceCurrentCheckerboard1,
 		short* messageDDeviceCurrentCheckerboard1,
 		short* messageLDeviceCurrentCheckerboard1,
-		short* messageRDeviceCurrentCheckerboard1, float disc_k_bp,
-		int offsetData, bool dataAligned)
+		short* messageRDeviceCurrentCheckerboard1, const float disc_k_bp,
+		const unsigned int offsetData, const bool dataAligned)
 {
 	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, float>(
 			xVal, yVal, checkerboardToUpdate,
@@ -81,9 +81,9 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<short, short>(int xVal, int yVal, const levelProperties& currentLevelProperties,
+void initializeBottomLevelDataStereoPixel<short, short>(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
 		float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard0,
-		short* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
+		short* dataCostDeviceStereoCheckerboard1, const float lambda_bp, const float data_k_bp)
 {
 	initializeBottomLevelDataStereoPixel<short, float>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
@@ -95,9 +95,9 @@ void initializeBottomLevelDataStereoPixel<short, short>(int xVal, int yVal, cons
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void initializeCurrentLevelDataStereoPixel<short, short>(int xVal, int yVal, const Checkerboard_Parts checkerboardPart,
+void initializeCurrentLevelDataStereoPixel<short, short>(const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardPart,
 		const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties, short* dataCostStereoCheckerboard0,
-		short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo, int offsetNum)
+		short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo, const unsigned int offsetNum)
 {
 	initializeCurrentLevelDataStereoPixel<short, float>(
 			xVal, yVal, checkerboardPart,
@@ -108,7 +108,7 @@ void initializeCurrentLevelDataStereoPixel<short, short>(int xVal, int yVal, con
 }
 
 template<> inline
-void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<short, short>(int xVal, int yVal, const levelProperties& currentLevelProperties,
+void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<short, short>(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
 		short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
 		short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice)

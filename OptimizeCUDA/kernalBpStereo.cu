@@ -36,16 +36,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "SharedMemoryKernels/KernelBpStereoDataAndMessageInDynamicSharedMemory.cu"
 #else
 
+#if (__CUDA_ARCH__ >= 530)
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
-__device__ void msgStereo<half, half>(int xVal, int yVal,
+__device__ void msgStereo<half, half>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties,
 		half messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		half dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], half* dstMessageArray,
-		half disc_k_bp, bool dataAligned)
+		const half disc_k_bp, const bool dataAligned)
 {
 	// aggregate and find min
 	half minimum = bp_consts::INF_BP;
@@ -138,28 +139,29 @@ __device__ void msgStereo<half, half>(int xVal, int yVal,
 
 #endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 
+#endif
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T>
 __global__ void initializeBottomLevelDataStereo(
-		levelProperties currentLevelProperties, float* image1PixelsDevice,
-		float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard0,
-		T* dataCostDeviceStereoCheckerboard1, float lambda_bp,
-		float data_k_bp)
+		const levelProperties currentLevelProperties,
+		float* image1PixelsDevice, float* image2PixelsDevice,
+		T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
+		const float lambda_bp, float data_k_bp)
 {
 	// Block index
-    int bx = blockIdx.x;
-    int by = blockIdx.y;
+    const unsigned int bx = blockIdx.x;
+    const unsigned int by = blockIdx.y;
 
     // Thread index
-    int tx = threadIdx.x;
-    int ty = threadIdx.y;
+    const unsigned int tx = threadIdx.x;
+    const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+    const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
-	int xInCheckerboard = xVal / 2;
+    const unsigned int xInCheckerboard = xVal / 2;
 
 	if (withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
 	{
@@ -174,22 +176,22 @@ __global__ void initializeBottomLevelDataStereo(
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
 __global__ void initializeCurrentLevelDataStereo(
-		Checkerboard_Parts checkerboardPart,
-		levelProperties currentLevelProperties,
-		levelProperties prevLevelProperties, T* dataCostStereoCheckerboard0,
+		const Checkerboard_Parts checkerboardPart,
+		const levelProperties currentLevelProperties,
+		const levelProperties prevLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
-		int offsetNum)
+		const unsigned int offsetNum)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -206,7 +208,7 @@ __global__ void initializeCurrentLevelDataStereo(
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
 __global__ void initializeMessageValsToDefaultKernel(
-		levelProperties currentLevelProperties,
+		const levelProperties currentLevelProperties,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -217,15 +219,15 @@ __global__ void initializeMessageValsToDefaultKernel(
 		T* messageRDeviceCurrentCheckerboard1)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xValInCheckerboard = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+	const unsigned int xValInCheckerboard = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -242,8 +244,8 @@ __global__ void initializeMessageValsToDefaultKernel(
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
 __global__ void runBPIterationUsingCheckerboardUpdates(
-		Checkerboard_Parts checkerboardToUpdate,
-		levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
+		const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -251,19 +253,19 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, float disc_k_bp,
-		bool dataAligned)
+		T* messageRDeviceCurrentCheckerboard1,
+		const float disc_k_bp, const bool dataAligned)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel/2, currentLevelProperties.heightLevel))
 	{
@@ -288,9 +290,9 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
-		Checkerboard_Parts checkerboardPart,
-		levelProperties currentLevelProperties,
-		levelProperties nextLevelProperties,
+		const Checkerboard_Parts checkerboardPart,
+		const levelProperties currentLevelProperties,
+		const levelProperties nextLevelProperties,
 		T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
 		T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -305,15 +307,15 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 		T* messageRDeviceCurrentCheckerboard1)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -339,7 +341,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<typename T>
 __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
-		levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
+		const levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* messageUPrevStereoCheckerboard0,
 		T* messageDPrevStereoCheckerboard0, T* messageLPrevStereoCheckerboard0,
 		T* messageRPrevStereoCheckerboard0, T* messageUPrevStereoCheckerboard1,
@@ -348,15 +350,15 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 		float* disparityBetweenImagesDevice)
 {
 	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
+	const unsigned int bx = blockIdx.x;
+	const unsigned int by = blockIdx.y;
 
 	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
+	const unsigned int tx = threadIdx.x;
+	const unsigned int ty = threadIdx.y;
 
-	int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
+	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
 	{
@@ -372,7 +374,9 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 }
 
 template<typename T>
-__global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__global__ void printDataAndMessageValsAtPointKernel(
+		const unsigned int xVal, const unsigned int yVal,
+		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -380,8 +384,9 @@ __global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel)
+		T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel)
 {
 	if (((xVal + yVal) % 2) == 0) {
 		printf("xVal: %d\n", xVal);
@@ -444,7 +449,9 @@ __global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* data
 
 
 template<typename T>
-__device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__device__ void printDataAndMessageValsAtPointDevice(
+		const unsigned int xVal, const unsigned int yVal,
+		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -452,8 +459,9 @@ __device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel)
+		T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel)
 {
 	if (((xVal + yVal) % 2) == 0) {
 		printf("xVal: %d\n", xVal);
@@ -516,7 +524,9 @@ __device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* data
 
 
 template<typename T>
-__global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__global__ void printDataAndMessageValsToPointKernel(
+		const unsigned int xVal, const unsigned int yVal,
+		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -524,18 +534,11 @@ __global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel)
+		T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel)
 {
-	int checkerboardAdjustment;
-	if (((xVal + yVal) % 2) == 0)
-		{
-			checkerboardAdjustment = ((yVal)%2);
-		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_1
-		{
-			checkerboardAdjustment = ((yVal+1)%2);
-		}
+	const unsigned int checkerboardAdjustment = (((xVal + yVal) % 2) == 0) ? ((yVal)%2) : ((yVal+1)%2);
 	if (((xVal + yVal) % 2) == 0) {
 			printf("xVal: %d\n", xVal);
 			printf("yVal: %d\n", yVal);
@@ -597,7 +600,9 @@ __global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* data
 
 
 template<typename T>
-__device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__device__ void printDataAndMessageValsToPointDevice(
+		const unsigned int xVal, const unsigned int yVal,
+		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -605,18 +610,11 @@ __device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel)
+		T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel)
 {
-	int checkerboardAdjustment;
-	if (((xVal + yVal) % 2) == 0)
-		{
-			checkerboardAdjustment = ((yVal)%2);
-		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_1
-		{
-			checkerboardAdjustment = ((yVal+1)%2);
-		}
+	const unsigned int checkerboardAdjustment = (((xVal + yVal) % 2) == 0) ? ((yVal)%2) : ((yVal+1)%2);
 
 	if (((xVal + yVal) % 2) == 0) {
 		printf("xVal: %d\n", xVal);

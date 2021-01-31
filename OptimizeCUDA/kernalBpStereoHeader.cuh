@@ -32,10 +32,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif
 
 //checks if the current point is within the image bounds
-__device__ bool withinImageBounds(int xVal, int yVal, int width, int height);
+__device__ bool withinImageBounds(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height);
 
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
-__device__ int retrieveIndexInDataAndMessage(int xVal, int yVal, int width, int height, int currentDisparity, int totalNumDispVals, int offsetData = 0);
+__device__ int retrieveIndexInDataAndMessage(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height, const unsigned int currentDisparity, const unsigned int totalNumDispVals, const unsigned int offsetData = 0u);
 
 template<typename T>
 __device__ T getZeroVal();
@@ -54,8 +54,8 @@ __device__ void msgStereo(T messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T>
 __global__ void runBPIterationUsingCheckerboardUpdates(
-		Checkerboard_Parts checkerboardToUpdate,
-		levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
+		const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -63,16 +63,16 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, float disc_k_bp,
-		bool dataAligned);
+		T* messageRDeviceCurrentCheckerboard1, const float disc_k_bp,
+		const bool dataAligned);
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T>
 __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
-		Checkerboard_Parts checkerboardPart,
-		levelProperties currentLevelProperties,
-		levelProperties nextLevelProperties,
+		const Checkerboard_Parts checkerboardPart,
+		const levelProperties currentLevelProperties,
+		const levelProperties nextLevelProperties,
 		T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
 		T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -91,22 +91,22 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 template<typename T>
 __global__ void initializeBottomLevelDataStereo(levelProperties currentLevelProperties, float* image1PixelsDevice,
 		float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard0,
-		T* dataCostDeviceStereoCheckerboard1, float lambda_bp,
-		float data_k_bp);
+		T* dataCostDeviceStereoCheckerboard1, const float lambda_bp,
+		const float data_k_bp);
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<typename T>
 __global__ void initializeCurrentLevelDataStereo(
-		Checkerboard_Parts checkerboardPart,
+		const Checkerboard_Parts checkerboardPart,
 		levelProperties currentLevelProperties,
 		levelProperties prevLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
-		int offsetNum);
+		const int offsetNum);
 
 //initialize the message values at each pixel of the current level to the default value
 template<typename T>
 __global__ void initializeMessageValsToDefaultKernel(
-		levelProperties currentLevelProperties,
+		const levelProperties currentLevelProperties,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -118,7 +118,7 @@ __global__ void initializeMessageValsToDefaultKernel(
 
 
 template<typename T>
-__global__ void retrieveOutputDisparityCheckerboardStereoOptimized(levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
+__global__ void retrieveOutputDisparityCheckerboardStereoOptimized(const levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* messageUPrevStereoCheckerboard0,
 		T* messageDPrevStereoCheckerboard0, T* messageLPrevStereoCheckerboard0,
 		T* messageRPrevStereoCheckerboard0, T* messageUPrevStereoCheckerboard1,
@@ -128,7 +128,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(levelProperti
 
 
 template<typename T>
-__device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__device__ void printDataAndMessageValsToPointDevice(const unsigned int xVal, const unsigned int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -136,11 +136,11 @@ __device__ void printDataAndMessageValsToPointDevice(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel);
+		T* messageRDeviceCurrentCheckerboard1, const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel);
 
 template<typename T>
-__global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__global__ void printDataAndMessageValsToPointKernel(const unsigned int xVal, const unsigned int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -148,11 +148,11 @@ __global__ void printDataAndMessageValsToPointKernel(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel);
+		T* messageRDeviceCurrentCheckerboard1, const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel);
 
 template<typename T>
-__device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__device__ void printDataAndMessageValsAtPointDevice(const unsigned int xVal, const unsigned int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -160,11 +160,11 @@ __device__ void printDataAndMessageValsAtPointDevice(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel);
+		T* messageRDeviceCurrentCheckerboard1, const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel);
 
 template<typename T>
-__global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+__global__ void printDataAndMessageValsAtPointKernel(const unsigned int xVal, const unsigned int yVal, T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 		T* messageUDeviceCurrentCheckerboard0,
 		T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0,
@@ -172,7 +172,7 @@ __global__ void printDataAndMessageValsAtPointKernel(int xVal, int yVal, T* data
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1, int widthLevelCheckerboardPart,
-		int heightLevel);
+		T* messageRDeviceCurrentCheckerboard1, const unsigned int widthLevelCheckerboardPart,
+		const unsigned int heightLevel);
 
 #endif //KERNAL_BP_H

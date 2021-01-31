@@ -31,7 +31,7 @@ void ProcessOptimizedCPUBP<T, U>::runBPAtCurrentLevel(const BPsettings& algSetti
 		const checkerboardMessages<U>& messagesDevice)
 {
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
-	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
+	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
 		Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? CHECKERBOARD_PART_1 : CHECKERBOARD_PART_0;
 

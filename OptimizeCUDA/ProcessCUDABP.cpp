@@ -61,7 +61,7 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		const checkerboardMessages<U>& messagesDevice)
 {
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
+	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	grid.x = (unsigned int) ceil(
@@ -329,6 +329,11 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 
 template class ProcessCUDABP<float, float*>;
 template class ProcessCUDABP<double, double*>;
+//half precision only supported with compute capability 5.3 and higher
+//TODO: not sure if using CUDA_ARCH works as intended here since it's host code
+//may need to define whether or not to process half-precision elsewhere
+#if (__CUDA_ARCH__ >= 530)
 template class ProcessCUDABP<half, half*>;
+#endif
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

@@ -96,7 +96,7 @@ public:
 		{
 			checkerboardMessages<U> outputCheckerboardMessages;
 
-			for (int i = 0; i < outputCheckerboardMessages.checkerboardMessagesAtLevel.size(); i++)
+			for (unsigned int i = 0; i < outputCheckerboardMessages.checkerboardMessagesAtLevel.size(); i++)
 			{
 				outputCheckerboardMessages.checkerboardMessagesAtLevel[i] =
 					&((allCheckerboardMessages.checkerboardMessagesAtLevel[i])[offsetIntoAllCheckerboardMessages]);
@@ -129,7 +129,7 @@ public:
 			dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0 = allocateMemoryOnTargetDevice(10*numDataAllocatePerDataCostsMessageDataArray);
 			dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard1 = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[1 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
-			for (int i = 0; i < messagesDeviceAllLevels.checkerboardMessagesAtLevel.size(); i++)
+			for (unsigned int i = 0; i < messagesDeviceAllLevels.checkerboardMessagesAtLevel.size(); i++)
 			{
 				messagesDeviceAllLevels.checkerboardMessagesAtLevel[i] = &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0[(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
 
@@ -222,7 +222,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 	//compute "half" the total number of pixels in including every level of the "pyramid"
 	//using "half" because the data is split in two using the checkerboard scheme
-	for (int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
+	for (unsigned int levelNum = 0; levelNum < algSettings.numLevels; levelNum++)
 	{
 		processingLevelProperties[levelNum].widthLevel =
 			widthLevel;
@@ -285,7 +285,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	//std::cout << "DATA_COSTS_HIGHER_LEVEL" << std::endl;
 
 	//set the data costs at each level from the bottom level "up"
-	for (int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
+	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels; levelNum++)
 	{
 		dataCostData<U> dataCostsDeviceCheckerboardPrevLevel =
 			retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[levelNum - 1]);
@@ -355,7 +355,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 		//std::cout << "RUN_BP" << std::endl;
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
-		runBPAtCurrentLevel(algSettings, processingLevelProperties[levelNum],
+		runBPAtCurrentLevel(algSettings, processingLevelProperties[(unsigned int)levelNum],
 			dataCostsDeviceCheckerboardCurrentLevel,
 			messagesDevice[currentCheckerboardSet]);
 		//std::cout << "RUN_BP2" << std::endl;

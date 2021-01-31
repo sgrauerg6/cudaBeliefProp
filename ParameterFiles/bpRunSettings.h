@@ -18,12 +18,8 @@
 //not currently supporting half2 data type
 #define DATA_TYPE_PROCESSING_HALF_TWO 3
 
-enum class cpu_vectorization_setting
-{
-	NO_CPU_VECTORIZATION_CODE, 
-	USE_AVX_256, 
-	USE_AVX_512, 
-	USE_NEON
+enum class cpu_vectorization_setting {
+	NO_CPU_VECTORIZATION_CODE, USE_AVX_256, USE_AVX_512, USE_NEON
 };
 
 //If image set parameters from python, then use optimization settings set in current iteration in python script
@@ -35,18 +31,16 @@ enum class cpu_vectorization_setting
 //May be able to speed up processing by switching to using 16-bit half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
 //Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to false (not recommended; this slows down processing)
 #define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
-constexpr bool OPTIMIZED_INDEXING_SETTING = true;
-constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT = true;
-constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING = cpu_vectorization_setting::USE_AVX_256;
+constexpr bool OPTIMIZED_INDEXING_SETTING{true};
+constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
+constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_256};
 
-constexpr unsigned int getBytesAlignMemory(cpu_vectorization_setting inVectSetting)
-{
+constexpr unsigned int getBytesAlignMemory(cpu_vectorization_setting inVectSetting) {
 	//avx512 requires data to be aligned on 64 bytes
 	return (inVectSetting == cpu_vectorization_setting::USE_AVX_512) ? 64 : 16;
 }
 
-constexpr unsigned int getNumDataAlignWidth(cpu_vectorization_setting inVectSetting)
-{
+constexpr unsigned int getNumDataAlignWidth(cpu_vectorization_setting inVectSetting) {
 	//align width with 16 data values in AVX512
 	return (inVectSetting == cpu_vectorization_setting::USE_AVX_512) ? 16 : 8;
 }

@@ -15,21 +15,18 @@
 #endif
 
 template<typename T>
-ARCHITECTURE_ADDITION inline T getMin(T val1, T val2)
-{
+ARCHITECTURE_ADDITION inline T getMin(T val1, T val2) {
 	return ((val1 < val2) ? val1 : val2);
 }
 
 template<typename T>
-ARCHITECTURE_ADDITION inline T getMax(T val1, T val2)
-{
+ARCHITECTURE_ADDITION inline T getMax(T val1, T val2) {
 	return ((val1 > val2) ? val1 : val2);
 }
 
 //checks if the current point is within the image bounds
-ARCHITECTURE_ADDITION inline bool withinImageBounds(int xVal, int yVal, int width, int height)
-{
-	return ((xVal >= 0) && (xVal < width) && (yVal >= 0) && (yVal < height));
+ARCHITECTURE_ADDITION inline bool withinImageBounds(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height) {
+	return ((xVal < width) && (yVal < height));
 }
 
 #endif /* SHAREDUTILFUNCTS_H_ */
