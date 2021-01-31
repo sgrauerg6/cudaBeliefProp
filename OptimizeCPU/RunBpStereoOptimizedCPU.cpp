@@ -6,6 +6,7 @@
  */
 
 #include "RunBpStereoOptimizedCPU.h"
+#include <thread>
 
 template <typename T>
 RunBpStereoOptimizedCPU<T>::RunBpStereoOptimizedCPU() {
@@ -20,8 +21,8 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string&
 		const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
-	int nthreads = 0;
-	omp_set_num_threads(8);
+	int nthreads = std::thread::hardware_concurrency();
+	omp_set_num_threads(nthreads);
 
 	#pragma omp parallel
 	{

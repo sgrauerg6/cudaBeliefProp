@@ -45,7 +45,7 @@ enum class image_set_options
 	//IMAGE_SET_PARAMETERS_FROM_PYTHON_E
 };
 
-constexpr image_set_options IMAGE_SET_TO_PROCESS_E = image_set_options::TSUKUBA_IMAGES_E;
+constexpr image_set_options IMAGE_SET_TO_PROCESS_E = image_set_options::CONES_IMAGES_QUARTER_SIZE_E;
 
 constexpr unsigned int getNumDispVals(const image_set_options imageSet)
 {
