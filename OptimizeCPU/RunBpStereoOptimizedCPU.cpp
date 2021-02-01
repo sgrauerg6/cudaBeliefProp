@@ -21,7 +21,7 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string&
 		const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
-	int nthreads = std::thread::hardware_concurrency();
+	unsigned int nthreads = std::thread::hardware_concurrency();
 	omp_set_num_threads(nthreads);
 
 	#pragma omp parallel

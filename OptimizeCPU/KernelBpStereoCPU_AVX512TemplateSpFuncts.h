@@ -201,7 +201,7 @@ void KernelBpStereoCPU::dtStereoSIMD<__m512d >(
 
 // compute current message
 template<> inline
-void KernelBpStereoCPU::msgStereoSIMD<float, __m512 >(int xVal, int yVal,
+void KernelBpStereoCPU::msgStereoSIMD<float, __m512>(int xVal, int yVal,
 		const levelProperties& currentLevelProperties,
 		__m512 messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
 		__m512 messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],

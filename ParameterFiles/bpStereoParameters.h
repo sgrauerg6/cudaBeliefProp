@@ -49,21 +49,17 @@ constexpr image_set_options IMAGE_SET_TO_PROCESS_E = image_set_options::CONES_IM
 
 constexpr unsigned int getNumDispVals(const image_set_options imageSet)
 {
-	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
-	{
-		return 15;
+	if (imageSet == image_set_options::TSUKUBA_IMAGES_E) {
+		return 16;
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
-	{
-		return 63;
+	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E) {
+		return 64;
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
-	{
-		return 127;
+	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E) {
+		return 128;
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
-	{
-		return 255;
+	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E) {
+		return 256;
 	}
 
 	return 0;
@@ -71,20 +67,16 @@ constexpr unsigned int getNumDispVals(const image_set_options imageSet)
 
 constexpr unsigned int getScaleFactor(const image_set_options imageSet)
 {
-	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
-	{
+	if (imageSet == image_set_options::TSUKUBA_IMAGES_E) {
 		return 16;
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
-	{
+	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E) {
 		return 4;
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
-	{
+	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E) {
 		return 2;
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
-	{
+	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E) {
 		return 1;
 	}
 
@@ -93,20 +85,16 @@ constexpr unsigned int getScaleFactor(const image_set_options imageSet)
 
 constexpr char* getStereoSetString(const image_set_options imageSet)
 {
-	if (imageSet == image_set_options::TSUKUBA_IMAGES_E)
-	{
+	if (imageSet == image_set_options::TSUKUBA_IMAGES_E) {
 		return (char*)"tsukubaSet";
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E)
-	{
+	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E) {
 		return (char*)"conesQuarterSize";
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E)
-	{
+	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E) {
 		return (char*)"conesHalfSize";
 	}
-	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E)
-	{
+	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E) {
 		return (char*)"cones";
 	}
 
@@ -120,28 +108,28 @@ namespace bp_params
 	constexpr char* STEREO_SET = getStereoSetString(IMAGE_SET_TO_PROCESS_E);
 
 	//number of belief propagation stereo runs of same image set
-	const unsigned int NUM_BP_STEREO_RUNS = 15;
+	constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
 
 	//define the default message value...
-	const float DEFAULT_INITIAL_MESSAGE_VAL = 0.0f;
+	constexpr float DEFAULT_INITIAL_MESSAGE_VAL = 0.0f;
 
 	// number of BP iterations at each scale/level
-	const unsigned int ITER_BP = 10;
+	constexpr unsigned int ITER_BP = 7;
 
 	// number of scales/levels in the pyramid to run BP
-	const unsigned int LEVELS_BP = 5;
+	constexpr unsigned int LEVELS_BP = 5;
 
 	//truncation of discontinuity cost
-	const float DISC_K_BP = 1.7f;
+	constexpr float DISC_K_BP = ((float)getNumDispVals(IMAGE_SET_TO_PROCESS_E)) / 7.5f;
 
 	// truncation of data cost
-	const float DATA_K_BP = 15.0f;
+	constexpr float DATA_K_BP = 15.0f;
 
 	// weighing of data cost
-	const float LAMBDA_BP = 0.07f;
+	constexpr float LAMBDA_BP = 0.1f;
 
 	// amount to smooth the input images
-	const float SIGMA_BP = 0.0f;
+	constexpr float SIGMA_BP = 0.0f;
 }
 
 #endif /* BPSTEREOPARAMETERS_H_ */
