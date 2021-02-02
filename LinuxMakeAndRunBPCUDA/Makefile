@@ -32,8 +32,11 @@ COMPILE_FLAGS += -O3 -std=c++17 -Wall
 CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 
-# need to adjust to allow support for compute capability under 6.0 (note that can't use half precision before compute capability 5.3)
-ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60 -gencode arch=compute_35,code=sm_35
+# may need to adjust to allow support for target GPU (note that can't use half precision before compute capability 5.3)
+# by default including "server GPU" compute capabilities (P100, V100, A100)
+ARCHITECTURES_GENCODE = -gencode arch=compute_80,code=sm_80 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_60,code=sm_60
+#ARCHITECTURES_GENCODE = -gencode arch=compute_86,code=sm_86 -gencode arch=compute_80,code=sm_80 -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60
+#ARCHITECTURES_GENCODE = -gencode arch=compute_75,code=sm_75 -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60 #-gencode arch=compute_35,code=sm_35
 
 all: impDriverCUDA
 

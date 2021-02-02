@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "ProcessCUDABP.h"
 #include "kernalBpStereo.cu"
+#include "../ParameterFiles/bpStereoCudaParameters.h"
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
@@ -332,8 +333,8 @@ template class ProcessCUDABP<double, double*>;
 //half precision only supported with compute capability 5.3 and higher
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
-#if (__CUDA_ARCH__ >= 530)
+#ifdef CUDA_HALF_SUPPORT
 template class ProcessCUDABP<half, half*>;
-#endif
+#endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

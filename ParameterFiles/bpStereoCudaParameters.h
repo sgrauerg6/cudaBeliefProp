@@ -25,6 +25,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpRunSettings.h"
 #include "bpStructsAndEnums.h"
 
+//determine whether or not to support CUDA half-precision
+//comment out if not supporting CUDA half-precision
+#define CUDA_HALF_SUPPORT
+
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 //half precision currently only supported on CPU if using GPU with compute capability under 5.3
 #if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))

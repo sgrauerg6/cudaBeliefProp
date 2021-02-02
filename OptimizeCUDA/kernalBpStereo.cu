@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "SharedMemoryKernels/KernelBpStereoDataAndMessageInDynamicSharedMemory.cu"
 #else
 
-#if (__CUDA_ARCH__ >= 530)
+#ifdef CUDA_HALF_SUPPORT
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
@@ -139,7 +139,7 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 
 #endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 
-#endif
+#endif //CUDA_HALF_SUPPORT
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
