@@ -25,8 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
 inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
 {
-   if (code != cudaSuccess)
-   {
+   if (code != cudaSuccess) {
       fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
       if (abort) exit(code);
    }
@@ -65,20 +64,18 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
-	grid.x = (unsigned int) ceil(
-			(float) (currentLevelProperties.widthCheckerboardLevel) / (float) threads.x); //only updating half at a time
-	grid.y = (unsigned int) ceil((float) currentLevelProperties.heightLevel / (float) threads.y);
+	grid.x = (unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel) / (float)threads.x); //only updating half at a time
+	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel / (float)threads.y);
 
 	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
 	//still is a check if start of row is aligned
-	bool dataAligned = MemoryAlignedAtDataStart(0, 1);
+	const bool dataAligned{MemoryAlignedAtDataStart(0, 1)};
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (int iterationNum = 0; iterationNum < algSettings.numIterations; iterationNum++)
 	{
 		Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? CHECKERBOARD_PART_1 : CHECKERBOARD_PART_0;
-
-		(cudaDeviceSynchronize());
+		cudaDeviceSynchronize();
 
 #if (((USE_SHARED_MEMORY == 3) || (USE_SHARED_MEMORY == 4))  && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 		int numDataSharedMemory = BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
@@ -115,7 +112,7 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 				algSettings.disc_k_bp, dataAligned);
 #endif
 
-		(cudaDeviceSynchronize());
+		cudaDeviceSynchronize();
 		gpuErrchk( cudaPeekAtLastError() );
 
 		cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
@@ -133,34 +130,40 @@ void ProcessCUDABP<T, U>::copyMessageValuesToNextLevelDown(
 		const checkerboardMessages<U>& messagesDeviceCopyFrom,
 		const checkerboardMessages<U>& messagesDeviceCopyTo)
 {
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
+	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	grid.x = (unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel) / (float)threads.x);
 	grid.y = (unsigned int)ceil((float)(currentLevelProperties.heightLevel) / (float)threads.y);
 
-	( cudaDeviceSynchronize() );
-
-	gpuErrchk( cudaPeekAtLastError() );
+	cudaDeviceSynchronize();
+	gpuErrchk(cudaPeekAtLastError());
 
 	for (const auto& checkerboard_part : {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1})
-		{
+	{
+		//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
+		//storing the current message values
+		copyPrevLevelToNextLevelBPCheckerboardStereo<T> <<< grid, threads >>> (checkerboard_part, currentLevelProperties, nextlevelProperties,
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1]);
 
-	//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
-	//storing the current message values
-	copyPrevLevelToNextLevelBPCheckerboardStereo<T> <<< grid, threads >>> (checkerboard_part, currentLevelProperties, nextlevelProperties, messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0],
-		messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], 
-		messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], 
-		messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1],
-		messagesDeviceCopyFrom.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_0],	
-		messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_0], 
-		messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], 
-		messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1],
-		messagesDeviceCopyTo.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1]);
-
-(cudaDeviceSynchronize());
-gpuErrchk(cudaPeekAtLastError());
-		}
+		cudaDeviceSynchronize();
+		gpuErrchk(cudaPeekAtLastError());
+	}
 }
 
 
@@ -176,7 +179,7 @@ void ProcessCUDABP<T, U>::initializeDataCosts(const BPsettings& algSettings, con
 
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
+	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	//kernal run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
@@ -187,8 +190,7 @@ void ProcessCUDABP<T, U>::initializeDataCosts(const BPsettings& algSettings, con
 	initializeBottomLevelDataStereo<T><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
 			imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1, algSettings.lambda_bp, algSettings.data_k_bp);
-
-	( cudaDeviceSynchronize() );
+	cudaDeviceSynchronize();
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
@@ -217,31 +219,26 @@ void ProcessCUDABP<T, U>::initializeDataCurrentLevel(const levelProperties& curr
 		const dataCostData<U>& dataCostDeviceCheckerboard,
 		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo)
 {
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
+	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
 	//the four-connected neighbors are in the other checkerboard
-	grid.x = (unsigned int) ceil(
-			((float) currentLevelProperties.widthCheckerboardLevel) / (float) threads.x);
-	grid.y = (unsigned int) ceil(
-			(float) currentLevelProperties.heightLevel / (float) threads.y);
+	grid.x = (unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel) / (float)threads.x);
+	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel / (float)threads.y);
 
-	gpuErrchk( cudaPeekAtLastError() );
+	gpuErrchk(cudaPeekAtLastError());
 
-	size_t offsetNum = 0;
-	for (const auto& checkerboardAndDataCost : { std::make_pair(
-				CHECKERBOARD_PART_0,
-				dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0),
-				std::make_pair(CHECKERBOARD_PART_1,
-					dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1) })
+	const size_t offsetNum{0};
+	for (const auto& checkerboardAndDataCost : {
+			std::make_pair(CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0),
+			std::make_pair(CHECKERBOARD_PART_1,	dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1)})
 	{
 		initializeCurrentLevelDataStereo<T> <<<grid, threads>>>(checkerboardAndDataCost.first,
 				currentLevelProperties, prevLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1,
-				checkerboardAndDataCost.second,
-				((int) offsetNum / sizeof(float)));
+				checkerboardAndDataCost.second, ((unsigned int) offsetNum / sizeof(float)));
 
 		cudaDeviceSynchronize();
 		gpuErrchk(cudaPeekAtLastError());
@@ -307,7 +304,7 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 	float* resultingDisparityMapCompDevice;
 	cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.widthLevel * currentLevelProperties.heightLevel * sizeof(float));
 
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
+	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
 
 	grid.x = (unsigned int) ceil((float) currentLevelProperties.widthCheckerboardLevel / (float) threads.x);
@@ -321,8 +318,7 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_D_CHECKERBOARD_1],
 			messagesDevice.checkerboardMessagesAtLevel[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel[MESSAGES_R_CHECKERBOARD_1],
 			resultingDisparityMapCompDevice);
-
-	(cudaDeviceSynchronize());
+	cudaDeviceSynchronize();
 	gpuErrchk(cudaPeekAtLastError());
 
 	return resultingDisparityMapCompDevice;

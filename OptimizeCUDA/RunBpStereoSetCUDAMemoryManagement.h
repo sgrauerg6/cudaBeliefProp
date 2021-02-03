@@ -9,8 +9,7 @@ class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement
 {
 public:
 
-	U allocateDataOnCompDevice(int numData)
-	{
+	U allocateDataOnCompDevice(const unsigned int numData) {
 		//std::cout << "ALLOC_GPU\n";
 		//allocate the space for the disparity map estimation
 		U arrayToAllocate;
@@ -18,28 +17,19 @@ public:
 		return arrayToAllocate;
 	}
 
-	void freeDataOnCompDevice(U arrayToFree)
-	{
+	void freeDataOnCompDevice(U arrayToFree) {
 		//std::cout << "FREE_GPU\n";
 		cudaFree(arrayToFree);
 	}
 
-	void transferDataFromCompDeviceToHost(T* destArray, const U inArray, int numDataTransfer)
-	{
+	void transferDataFromCompDeviceToHost(T* destArray, const U inArray, const unsigned int numDataTransfer) {
 		//std::cout << "TRANSFER_GPU\n";
-		cudaMemcpy(destArray,
-				inArray,
-				numDataTransfer * sizeof(T),
-				cudaMemcpyDeviceToHost);
+		cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyDeviceToHost);
 	}
 
-	void transferDataFromCompHostToDevice(U destArray, const T* inArray, int numDataTransfer)
-	{
+	void transferDataFromCompHostToDevice(U destArray, const T* inArray, const unsigned int numDataTransfer) {
 		//std::cout << "TRANSFER_GPU\n";
-		cudaMemcpy(destArray,
-				inArray,
-				numDataTransfer * sizeof(T),
-				cudaMemcpyHostToDevice);
+		cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyHostToDevice);
 	}
 };
 

@@ -24,8 +24,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
 	if (token == PGM_EXTENSION) {
 		initImage = imageRead(filePathImage, image_type::PGM_IMAGE);
 	} else if (token == PPM_EXTENSION) {
-		initImage = imageRead(filePathImage, image_type::PGM_IMAGE,
-				USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
+		initImage = imageRead(filePathImage, image_type::PGM_IMAGE, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
 	} else {
 		//end function if not of type pgm or ppm with result
 		//being BpImage with default constructor
@@ -39,8 +38,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
 	pixels_ = std::make_unique<T[]>(width_ * height_);
 
 	//convert each pixel in dataRead to data type T and place in imageData array in same location
-	std::transform(initImage.getPointerToPixelsStart(),
-			initImage.getPointerToPixelsStart() + (width_ * height_),
+	std::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + (width_ * height_),
 			&(pixels_[0]), [] (const unsigned char i) -> T {return (T)i;});
 }
 
@@ -62,7 +60,7 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 
 template<class T>
 BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
-		image_type imageType, bool weightedRGBConversion) const {
+		const image_type imageType, const bool weightedRGBConversion) const {
 	std::string buf;
 
 	/* read header */

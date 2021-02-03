@@ -14,23 +14,19 @@ public:
 	virtual ~RunBpStereoSetMemoryManagement() {
 	}
 
-	virtual U allocateDataOnCompDevice(int numData)
-	{
+	virtual U allocateDataOnCompDevice(const unsigned int numData) {
 		return (new T[numData]);
 	}
 
-	virtual void freeDataOnCompDevice(U arrayToFree)
-	{
+	virtual void freeDataOnCompDevice(U arrayToFree) {
 		delete [] arrayToFree;
 	}
 
-	virtual void transferDataFromCompDeviceToHost(T* destArray, const U inArray, int numDataTransfer)
-	{
+	virtual void transferDataFromCompDeviceToHost(T* destArray, const U inArray, const unsigned int numDataTransfer) {
 		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 
-	virtual void transferDataFromCompHostToDevice(U destArray, const T* inArray, int numDataTransfer)
-	{
+	virtual void transferDataFromCompHostToDevice(U destArray, const T* inArray, const unsigned int numDataTransfer) {
 		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 };

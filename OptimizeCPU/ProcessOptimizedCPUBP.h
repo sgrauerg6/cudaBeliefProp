@@ -38,7 +38,7 @@ template<typename T, typename U>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>
 {
 public:
-		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, unsigned long numBytesAllocate) override
+		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override
 		{
 			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
 			//*arrayToAllocate = malloc(numBytesAllocate);
@@ -60,7 +60,7 @@ public:
 
 		}
 
-		U allocateMemoryOnTargetDevice(unsigned long numData) override
+		U allocateMemoryOnTargetDevice(const unsigned long numData) override
 		{
 #ifdef _WIN32
 			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T)));

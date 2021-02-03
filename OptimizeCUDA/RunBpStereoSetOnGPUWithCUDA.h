@@ -77,7 +77,6 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<short> : public RunBpStereoSet<short>
 {
 public:
-
 	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 	{
 		cudaDeviceProp prop;
@@ -107,7 +106,8 @@ public:
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, float*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
-		return this->processStereoSet<half, half*, float, float*>(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		return this->processStereoSet<half, half*, float, float*>(refImagePath, testImagePath, algSettings, resultsStream,
+				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 /* If processing using half2, not currently supported
 

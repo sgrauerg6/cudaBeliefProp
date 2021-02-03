@@ -26,57 +26,48 @@ const std::string PPM_EXTENSION = "ppm";
 template <class T>
 class BpImage {
 public:
-	BpImage() : width_(0), height_(0)
-{}
+	BpImage() : width_(0), height_(0) {}
 
-	BpImage(const unsigned int width, const unsigned int height) : width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height))
-{}
+	BpImage(const unsigned int width, const unsigned int height) : width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height)) {}
 
-	BpImage(const unsigned int width, const unsigned int height, const T* input_pixel_vals) : width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height))
+	BpImage(const unsigned int width, const unsigned int height, const T* input_pixel_vals) :
+			width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height))
 	{
 		std::copy(input_pixel_vals, input_pixel_vals + (width*height), pixels_.get());
 	}
 
-	BpImage(const std::string& fileName)
-	{
+	BpImage(const std::string& fileName) {
 		loadImageAsGrayScale(fileName);
 	}
 
-	const std::unique_ptr<T[]>& getUniquePtrToPixelData()
-	{
+	const std::unique_ptr<T[]>& getUniquePtrToPixelData() const {
 		return pixels_;
 	}
 
-	T* getPointerToPixelsStart() const
-	{
+	T* getPointerToPixelsStart() const {
 		return &(pixels_[0]);
 	}
 
-	const T getPixelAtPoint(const int x, const int y) const
-	{
+	T getPixelAtPoint(const int x, const int y) const {
 		return getPixelAtPoint(y*width_ + x);
 	}
 
-	const T getPixelAtPoint(const int i) const
-	{
+	T getPixelAtPoint(const int i) const {
 		return (pixels_.get())[i];
 	}
 
-	void setPixelAtPoint(const int x, const int y, const T val)
-	{
+	void setPixelAtPoint(const int x, const int y, const T val) {
 		setPixelAtPoint((y*width_ + x), val);
 	}
 
-	void setPixelAtPoint(const int i, const T val)
-	{
+	void setPixelAtPoint(const int i, const T val) {
 		(pixels_.get())[i] = val;
 	}
 
 	unsigned int getWidth() const { return width_; }
 	unsigned int getHeight() const { return height_; }
 
-	void saveImageAsPgm(const std::string& filename)
-	{
+	void saveImageAsPgm(const std::string& filename) const {
 		  std::ofstream file(filename, std::ios::out | std::ios::binary);
 
 		  file << "P5\n" << width_ << " " << height_ << "\n" << UCHAR_MAX << "\n";
@@ -95,7 +86,7 @@ protected:
 	void pnm_read(std::ifstream &file, std::string& buf) const;
 
 	BpImage<unsigned char> imageRead(const std::string& fileName,
-			image_type imageType, bool weightedRGBConversion = true) const;
+			const image_type imageType, const bool weightedRGBConversion = true) const;
 };
 
 #endif /* BPIMAGE_H_ */

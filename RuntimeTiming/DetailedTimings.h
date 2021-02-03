@@ -24,28 +24,23 @@ class DetailedTimings {
 public:
 
 	//initialize each timing segment
-	DetailedTimings(const std::unordered_map<T, std::string>& timingSegments = timingNames_BP) : numToString(timingSegments)
-	{
-		for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment.first] = std::vector<double>(); });
+	DetailedTimings(const std::unordered_map<T, std::string>& timingSegments = timingNames_BP) : numToString(timingSegments) {
+		std::for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment.first] = std::vector<double>(); });
 	}
 
-	void resetTiming()
-	{
+	void resetTiming() {
 		timings.clear();
 	}
 
 	void addToCurrentTimings(const DetailedTimings& inDetailedTimings)
 	{
-		std::for_each(inDetailedTimings.timings.begin(),
-				inDetailedTimings.timings.end(),
+		std::for_each(inDetailedTimings.timings.begin(), inDetailedTimings.timings.end(),
 				[this](const auto& currentTiming) {
 					auto iter = this->timings.find(currentTiming.first);
-					if (iter != this->timings.end())
-					{
+					if (iter != this->timings.end()) {
 						iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
 					}
-					else
-					{
+					else {
 						this->timings[currentTiming.first] = currentTiming.second;
 					}
 				});
@@ -53,8 +48,7 @@ public:
 
 	//add timing by segment index
 	//required that all timing segment numbers/names be initialized from constructor
-	void addTiming(const T timingIndex, double segmentTime)
-	{
+	void addTiming(const T timingIndex, const double segmentTime) {
 		timings[timingIndex].push_back(segmentTime);
 	}
 
@@ -62,20 +56,15 @@ public:
 		std::cout << *this;
 	}
 
-	double getMedianTiming(const T runSegmentIndex) const
-	{
-		if (timings.at(runSegmentIndex).size() > 0)
-		{
+	double getMedianTiming(const T runSegmentIndex) const {
+		if (timings.at(runSegmentIndex).size() > 0) {
 			std::vector<double> segmentTimingVectCopy(timings.at(runSegmentIndex));
 			std::sort(segmentTimingVectCopy.begin(), segmentTimingVectCopy.end());
 			return (segmentTimingVectCopy[segmentTimingVectCopy.size() / 2]);
 		}
-		else
-		{
+		else {
 			return 0.0;
 		}
-
-		return 0.0;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os,

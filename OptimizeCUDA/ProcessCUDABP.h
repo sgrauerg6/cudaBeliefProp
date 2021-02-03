@@ -32,9 +32,7 @@ template<typename T, typename U>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U>
 {
 public:
-
-	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate,
-			unsigned long numBytesAllocate) override {
+	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
 	}
 
@@ -42,7 +40,7 @@ public:
 		cudaFree(arrayToFree);
 	}
 
-	U allocateMemoryOnTargetDevice(unsigned long numData) override
+	U allocateMemoryOnTargetDevice(const unsigned long numData) override
 	{
 		//alignment in this case may not be guaranteed like with aligned_alloc, so may want to look into that
 		U arrayToAllocate;
@@ -50,8 +48,7 @@ public:
 		return arrayToAllocate;
 	}
 
-	void freeMemoryOnTargetDevice(U memoryToFree) override
-	{
+	void freeMemoryOnTargetDevice(U memoryToFree) override {
 		cudaFree(memoryToFree);
 	}
 
@@ -89,7 +86,6 @@ public:
 			const levelProperties& currentLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
 			const checkerboardMessages<U>& messagesDevice) override;
-
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

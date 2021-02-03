@@ -16,14 +16,13 @@ class BpFileHandling {
 public:
 
 	//constructor takes stereo set name as input, which must match the directory name of the stereo set
-	BpFileHandling(const std::string& stereo_set_name) : num_out_disp_map_(1)
-	{
+	BpFileHandling(const std::string& stereo_set_name) : num_out_disp_map_(1) {
 		stereo_set_path_ = getStereoSetsPath() / stereo_set_name;
 	}
 
 	//virtual ~BpFileHandling();
 
-	const std::filesystem::path getStereoSetsPath()
+	std::filesystem::path getStereoSetsPath() const
 	{
 		std::filesystem::path currentPath = std::filesystem::current_path();
 
@@ -44,14 +43,13 @@ public:
 			if (it == std::filesystem::end(dirIt))
 			{
 				//if current path same as parent path, then can't continue and throw error
-				if (currentPath == currentPath.parent_path())
-				{
+				if (currentPath == currentPath.parent_path()) {
 					throw std::filesystem::filesystem_error("Stereo set directory not found", std::error_code());
 				}
+
 				currentPath = currentPath.parent_path();
 			}
-			else
-			{
+			else {
 				std::filesystem::path stereoSetPath = it->path();
 				return stereoSetPath;
 			}
@@ -61,13 +59,11 @@ public:
 	}
 
 	//return path to reference image with valid extension if found, otherwise throw filesystem error
-	const std::filesystem::path getRefImagePath()
+	std::filesystem::path getRefImagePath() const
 	{
 		//check if ref image exists for each possible extension (currently pgm and ppm) and return path if so
-		for (const auto& extension : bp_file_handling::IN_IMAGE_POSS_EXTENSIONS)
-		{
-			if (std::filesystem::exists((stereo_set_path_ / (bp_file_handling::REF_IMAGE_NAME + "." + extension))))
-			{
+		for (const auto& extension : bp_file_handling::IN_IMAGE_POSS_EXTENSIONS) {
+			if (std::filesystem::exists((stereo_set_path_ / (bp_file_handling::REF_IMAGE_NAME + "." + extension)))) {
 				return stereo_set_path_ / (bp_file_handling::REF_IMAGE_NAME + "." + extension);
 			}
 		}
@@ -76,18 +72,12 @@ public:
 	}
 
 	//return path to test image with valid extension if found, otherwise throw filesystem error
-	const std::filesystem::path getTestImagePath()
+	std::filesystem::path getTestImagePath() const
 	{
 		//check if test image exists for each possible extension (currently pgm and ppm) and return path if so
-		for (const auto& extension : bp_file_handling::IN_IMAGE_POSS_EXTENSIONS)
-		{
-			if (std::filesystem::exists(
-					(stereo_set_path_
-							/ (bp_file_handling::TEST_IMAGE_NAME + "."
-									+ extension))))
-			{
-				return stereo_set_path_
-						/ (bp_file_handling::TEST_IMAGE_NAME + "." + extension);
+		for (const auto& extension : bp_file_handling::IN_IMAGE_POSS_EXTENSIONS) {
+			if (std::filesystem::exists((stereo_set_path_ / (bp_file_handling::TEST_IMAGE_NAME + "." + extension)))) {
+				return stereo_set_path_ / (bp_file_handling::TEST_IMAGE_NAME + "." + extension);
 			}
 		}
 
@@ -95,15 +85,13 @@ public:
 	}
 
 	//return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
-	const std::filesystem::path getCurrentOutputDisparityFilePathAndIncrement()
-	{
+	const std::filesystem::path getCurrentOutputDisparityFilePathAndIncrement() {
 		return stereo_set_path_ / (bp_file_handling::OUT_DISP_IMAGE_NAME_BASE + std::to_string(num_out_disp_map_++) + ".pgm");
 
 	}
 
 	//get file path to ground truth disparity map
-	const std::filesystem::path getGroundTruthDisparityFilePath()
-	{
+	const std::filesystem::path getGroundTruthDisparityFilePath() const {
 		return stereo_set_path_ / (bp_file_handling::GROUND_TRUTH_DISP_FILE);
 	}
 

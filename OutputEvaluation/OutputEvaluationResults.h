@@ -15,7 +15,8 @@
 template<class T>
 class OutputEvaluationResults {
 public:
-	OutputEvaluationResults() : totalDispAbsDiffNoMax((T)0), totalDispAbsDiffWithMax((T)0), disparityErrorCap((T)9999), averageDispAbsDiffNoMax(0.0f), averageDispAbsDiffWithMax(0.0f) {}
+	OutputEvaluationResults() : totalDispAbsDiffNoMax((T)0), totalDispAbsDiffWithMax((T)0), disparityErrorCap((T)9999),
+								averageDispAbsDiffNoMax(0.0f), averageDispAbsDiffWithMax(0.0f) {}
 	virtual ~OutputEvaluationResults() {}
 
 	//total value of the absolute difference between the disparity values for all pixels in disparity images 1 and 2 (not including border regions)
@@ -34,11 +35,9 @@ public:
 	//stores the number of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
 	std::map<float, unsigned int> numSigDiffPixelsAtThresholds;
 
-	void initializeWithEvalParams(OutputEvaluationParameters<T> evalParams)
-	{
+	void initializeWithEvalParams(const OutputEvaluationParameters<T>& evalParams) {
 		disparityErrorCap = evalParams.max_diff_cap_;
-		for (auto output_diff_threshold : evalParams.output_diff_thresholds_)
-		{
+		for (const auto& output_diff_threshold : evalParams.output_diff_thresholds_) {
 			numSigDiffPixelsAtThresholds[output_diff_threshold] = 0;
 		}
 	}
@@ -53,8 +52,7 @@ std::ostream& operator<<(std::ostream& os, const OutputEvaluationResults<T>& res
 	os << "Average RMS error: " << results.averageDispAbsDiffNoMax << std::endl;
 	os << "Average RMS error (with disparity error cap at " << results.disparityErrorCap << "): " <<  results.averageDispAbsDiffWithMax << std::endl;
 
-	for (auto propBadPixelsAtThreshold : results.propSigDiffPixelsAtThresholds)
-	{
+	for (const auto& propBadPixelsAtThreshold : results.propSigDiffPixelsAtThresholds) {
 		os << "Proportion bad pixels (error less than " << propBadPixelsAtThreshold.first << "): " << propBadPixelsAtThreshold.second << std::endl;
 	}
 

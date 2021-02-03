@@ -46,7 +46,8 @@ public:
 	//that each disparity was scaled by in the generation of the disparity map image
 	static void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap, std::ostream& resultsStream)
 	{
-		const OutputEvaluationResults<float> outputEvalResults = outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
+		const OutputEvaluationResults<float> outputEvalResults =
+				outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
 		resultsStream << outputEvalResults;
 	}
 
@@ -56,44 +57,37 @@ public:
 	static void runStereoTwoImpsAndCompare(std::ostream& outStream, const std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>, 2>& bpProcessingImps)
 	{
 		BpFileHandling bpFileSettings(bp_params::STEREO_SET);
-		filepathtype refImagePath = bpFileSettings.getRefImagePath();
-		filepathtype testImagePath = bpFileSettings.getTestImagePath();
+		const filepathtype refImagePath{bpFileSettings.getRefImagePath()};
+		const filepathtype testImagePath{bpFileSettings.getTestImagePath()};
 		std::array<filepathtype, 2> output_disp;
-		for (int i=0; i<2; i++)
-		{
+		for (unsigned int i=0; i < 2u; i++) {
 			output_disp[i] = bpFileSettings.getCurrentOutputDisparityFilePathAndIncrement();
 		}
 
-		filepathtype groundTruthDisp = bpFileSettings.getGroundTruthDisparityFilePath();
+		const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
 
 		//load all the BP default settings as set in bpStereoCudaParameters.cuh
-		BPsettings algSettings;
+		const BPsettings algSettings;
 
-		std::cout << "Running belief propagation on reference image " << refImagePath << " and test image " << testImagePath << " on " << bpProcessingImps[0]->getBpRunDescription() << " and " << bpProcessingImps[1]->getBpRunDescription() << std::endl;
+		std::cout << "Running belief propagation on reference image " << refImagePath << " and test image " << testImagePath << " on " <<
+				     bpProcessingImps[0]->getBpRunDescription() << " and " << bpProcessingImps[1]->getBpRunDescription() << std::endl;
 		std::array<ProcessStereoSetOutput, 2> run_output;
 
-		for (int i = 0; i < 2; i++) {
-			run_output[i] = bpProcessingImps[i]->operator()(refImagePath.string(),
-					testImagePath.string(), algSettings, outStream);
-			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i].string(),
-					bp_params::SCALE_BP);
-			outStream << "Median " << bpProcessingImps[i]->getBpRunDescription()
-					<< " runtime (including transfer time): "
-					<< run_output[i].runTime << std::endl;
+		for (unsigned int i = 0; i < 2u; i++) {
+			run_output[i] = bpProcessingImps[i]->operator()(refImagePath.string(), testImagePath.string(), algSettings, outStream);
+			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i].string(), bp_params::SCALE_BP);
+			outStream << "Median " << bpProcessingImps[i]->getBpRunDescription() << " runtime (including transfer time): " <<
+					     run_output[i].runTime << std::endl;
 		}
 
-		for (int i = 0; i < 2; i++) {
-			std::cout << "Output disparity map from run at " << output_disp[i]
-					<< std::endl;
-
+		for (unsigned int i = 0; i < 2u; i++) {
+			std::cout << "Output disparity map from run at " << output_disp[i] << std::endl;
 		}
 
 		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP);
-		for (int i = 0; i < 2; i++) {
-			outStream << std::endl << bpProcessingImps[i]->getBpRunDescription()
-					<< " output vs. Ground Truth result:\n";
-			compareDispMaps(run_output[i].outDisparityMap,
-					groundTruthDisparityMap, outStream);
+		for (unsigned int i = 0; i < 2u; i++) {
+			outStream << std::endl << bpProcessingImps[i]->getBpRunDescription() << " output vs. Ground Truth result:\n";
+			compareDispMaps(run_output[i].outDisparityMap, groundTruthDisparityMap, outStream);
 		}
 
 		outStream << std::endl << bpProcessingImps[0]->getBpRunDescription() << " output vs. " << bpProcessingImps[1]->getBpRunDescription() << " result:\n";
