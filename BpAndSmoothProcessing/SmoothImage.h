@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef SMOOTH_IMAGE_HOST_HEADER_CUH
 #define SMOOTH_IMAGE_HOST_HEADER_CUH
 
-#include <math.h>
+#include <cmath>
 #include <memory>
 #include <utility>
 #include "../ImageDataAndProcessing/BpImage.h"
@@ -42,13 +42,13 @@ public:
 	virtual ~SmoothImage() {};
 
 	//normalize filter mask so it integrates to one
-	void normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter)
+	void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter)
 	{
-		float sum = 0;
+		float sum{0.0f};
 		for (unsigned int i = 1; i < sizeFilter; i++) {
-			sum += fabs(filter[i]);
+			sum += std::abs(filter[i]);
 		}
-		sum = 2*sum + fabs(filter[0]);
+		sum = 2*sum + std::abs(filter[0]);
 		for (unsigned int i = 0; i < sizeFilter; i++) {
 			filter[i] /= sum;
 		}
