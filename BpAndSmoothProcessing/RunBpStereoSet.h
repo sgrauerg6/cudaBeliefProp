@@ -109,8 +109,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		//returns detailed timings for bp run
-		std::pair<X, DetailedTimings<Runtime_Type_BP>> rpBpStereoOutput =
-				(*runBpStereo)(smoothedImages, algSettings, widthHeightImages);
+		auto rpBpStereoOutput = (*runBpStereo)(smoothedImages, algSettings, widthHeightImages);
 
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_BP].second = std::chrono::system_clock::now();
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
@@ -142,11 +141,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& re
 	resultsStream << "Image Width: " << widthHeightImages[0] << "\nImage Height: " << widthHeightImages[1] << "\n";
 	resultsStream << detailedBPTimings;
 
-	ProcessStereoSetOutput output;
-	output.runTime = detailedBPTimings.getMedianTiming(Runtime_Type_BP::TOTAL_WITH_TRANSFER);
-	output.outDisparityMap = std::move(output_disparity_map);
-
-	return output;
+	//construct and return ProcessStereoSetOutput object
+	return {(float)detailedBPTimings.getMedianTiming(Runtime_Type_BP::TOTAL_WITH_TRANSFER), std::move(output_disparity_map)};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */
