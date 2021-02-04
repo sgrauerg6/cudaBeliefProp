@@ -70,8 +70,8 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float,
 		const levelProperties& currentLevelProperties, float* inData) {
 	return vld1q_f32(
 			&inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -80,8 +80,8 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataAligned<float16_t
 		const levelProperties& currentLevelProperties, float16_t* inData) {
 	return vld1_f16(
 			&inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -90,8 +90,8 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float,
 		const levelProperties& currentLevelProperties, float* inData) {
 	return vld1q_f32(
 			&inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -100,8 +100,8 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16
 		const levelProperties& currentLevelProperties, float16_t* inData) {
 	return vld1_f16(
 			&inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -214,8 +214,8 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, co
 	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (int currentDisparity = 0;
@@ -237,7 +237,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(int xVal, int yVal, co
 		if constexpr (OPTIMIZED_INDEXING_SETTING)
 		{
 			destMessageArrayIndex +=
-				currentLevelProperties.paddedWidthCheckerboardLevel;
+				currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else
 		{
@@ -296,8 +296,8 @@ void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal
 	valToNormalize = vdivq_f32(valToNormalize, vdupq_n_f32((float)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-			currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel, 0,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, 0,
 			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (int currentDisparity = 0;
@@ -322,7 +322,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(int xVal, int yVal
 		if constexpr (OPTIMIZED_INDEXING_SETTING)
 		{
 			destMessageArrayIndex +=
-				currentLevelProperties.paddedWidthCheckerboardLevel;
+				currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else
 		{

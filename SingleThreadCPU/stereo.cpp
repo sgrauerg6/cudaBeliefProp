@@ -34,8 +34,10 @@ static void dt(float f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]) {
 
 // compute message
 template<typename T>
-void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s4[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
-		float dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float disc_k_bp) {
+void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		float s2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		float s4[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+		const float disc_k_bp) {
 	float val;
 
 	// aggregate and find min
@@ -67,15 +69,16 @@ void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARI
 
 // computation of data costs
 template<typename T>
-image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings) {
-	unsigned int width = (unsigned int)img1->width();
-	unsigned int height = (unsigned int)img1->height();
+image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(
+		image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings) {
+	unsigned int width{(unsigned int)img1->width()};
+	unsigned int height{(unsigned int)img1->height()};
 	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
 
 	image<float> *sm1, *sm2;
-	if (algSettings.smoothingSigma >= 0.1) {
-		sm1 = FilterImage::smooth(img1, algSettings.smoothingSigma);
-		sm2 = FilterImage::smooth(img2, algSettings.smoothingSigma);
+	if (algSettings.smoothingSigma_ >= 0.1) {
+		sm1 = FilterImage::smooth(img1, algSettings.smoothingSigma_);
+		sm2 = FilterImage::smooth(img2, algSettings.smoothingSigma_);
 	} else {
 		sm1 = imageUCHARtoFLOAT(img1);
 		sm2 = imageUCHARtoFLOAT(img2);
@@ -85,7 +88,7 @@ image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThr
 		for (unsigned int x = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 1; x < width; x++) {
 			for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
 				const float val = abs(imRef(sm1, x, y) - imRef(sm2, x - value, y));
-				imRef(data, x, y)[value] = algSettings.lambda_bp * std::min(val, algSettings.data_k_bp);
+				imRef(data, x, y)[value] = algSettings.lambda_bp_ * std::min(val, algSettings.data_k_bp_);
 			}
 		}
 	}
@@ -97,17 +100,17 @@ image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThr
 
 // generate output from current messages
 template<typename T>
-image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data) {
-	int width = data->width();
-	int height = data->height();
+image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u,
+		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l,
+		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data) {
+	unsigned int width{(unsigned int)data->width()};
+	unsigned int height{(unsigned int)data->height()};
 	image<uchar> *out = new image<uchar>(width, height);
 
-	for (int y = 1; y < height - 1; y++) {
-		for (int x = 1; x < width - 1; x++) {
+	for (unsigned int y = 1; y < height - 1; y++) {
+		for (unsigned int x = 1; x < width - 1; x++) {
 			// keep track of best value for current pixel
-			int best = 0;
+			unsigned int best = 0;
 			float best_val = bp_consts::INF_BP;
 			for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
 				const float val =
@@ -133,15 +136,15 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_
 template<typename T>
 void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d,
 		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data, int iter, float disc_k_bp) {
-	int width = data->width();
-	int height = data->height();
+		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data, const unsigned int iter, const float disc_k_bp) {
+	unsigned int width{(unsigned int)data->width()};
+	unsigned int height{(unsigned int)data->height()};
 
-	for (int t = 0; t < iter; t++) {
+	for (unsigned int t = 0; t < iter; t++) {
 		//std::cout << "iter " << t << "\n";
 
-		for (int y = 1; y < height - 1; y++) {
-			for (int x = ((y + t) % 2) + 1; x < width - 1; x += 2) {
+		for (unsigned int y = 1; y < height - 1; y++) {
+			for (unsigned int x = ((y + t) % 2) + 1; x < width - 1; x += 2) {
 
 				msg(imRef(u, x, y + 1), imRef(l, x + 1, y), imRef(r, x - 1, y),
 						imRef(data, x, y), imRef(u, x, y), disc_k_bp);
@@ -162,7 +165,8 @@ void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[bp_params::NUM_POSSIBLE_DI
 
 // multiscale belief propagation for image restoration
 template<typename T>
-image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
+image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
+	const BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
 	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u[bp_params::LEVELS_BP];
 	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d[bp_params::LEVELS_BP];
 	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l[bp_params::LEVELS_BP];
@@ -175,7 +179,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 	data[0] = comp_data(img1, img2, algSettings);
 
 	// data pyramid
-	for (unsigned int i = 1; i < algSettings.numLevels; i++) {
+	for (unsigned int i = 1; i < algSettings.numLevels_; i++) {
 		const unsigned int old_width = (unsigned int)data[i - 1]->width();
 		const unsigned int old_height = (unsigned int)data[i - 1]->height();
 		const unsigned int new_width = (unsigned int) ceil(old_width / 2.0);
@@ -196,12 +200,12 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 	}
 
 	// run bp from coarse to fine
-	for (int i = algSettings.numLevels - 1; i >= 0; i--) {
+	for (int i = algSettings.numLevels_ - 1; i >= 0; i--) {
 		unsigned int width = (unsigned int)data[i]->width();
 		unsigned int height = (unsigned int)data[i]->height();
 
 		// allocate & init memory for messages
-		if ((unsigned int)i == (algSettings.numLevels - 1)) {
+		if ((unsigned int)i == (algSettings.numLevels_ - 1)) {
 			// in the coarsest level messages are initialized to zero
 			u[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
 			d[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
@@ -237,7 +241,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 		}
 
 		// BP
-		bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations, algSettings.disc_k_bp);
+		bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations_, algSettings.disc_k_bp_);
 	}
 
 	image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
@@ -259,9 +263,10 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 }
 
 template<typename T>
-ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsStream)
+ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::string& refImagePath, const std::string& testImagePath,
+		const BPsettings& algSettings, std::ostream& resultsStream)
 {
-	image<uchar> *img1, *img2, *out, *edges;
+	image<uchar> *img1, *img2, *out;// *edges;
 
 	// load input
 	img1 = loadPGMOrPPMImage(refImagePath.c_str());
@@ -271,15 +276,13 @@ ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::stri
 	// compute disparities
 	out = stereo_ms(img1, img2, algSettings, resultsStream, runtime);
 
-	DisparityMap<float> outDispMap(img1->width(), img1->height());
+	DisparityMap<float> outDispMap(std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
 
 	//set disparity at each point in disparity map
-	for (int y = 0; y < img1->height(); y++)
-	{
-			for (int x = 0; x < img1->width(); x++)
-			{
-				outDispMap.setPixelAtPoint(x, y, (float)imRef(out, x, y));
-			}
+	for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
+		for (unsigned int x = 0; x < (unsigned int)img1->width(); x++) {
+			outDispMap.setPixelAtPoint({x, y}, (float)imRef(out, x, y));
+		}
 	}
 
 	ProcessStereoSetOutput output;

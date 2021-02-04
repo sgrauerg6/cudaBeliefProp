@@ -90,8 +90,8 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 	//note that may cause results to differ a little from ideal
 	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
 		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 		for (int currentDisparity = 0;
@@ -101,7 +101,7 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
-					currentLevelProperties.paddedWidthCheckerboardLevel;
+					currentLevelProperties.paddedWidthCheckerboardLevel_;
 			}
 			else
 			{
@@ -114,8 +114,8 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 		valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 
 		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 		for (int currentDisparity = 0;
@@ -127,7 +127,7 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
-						currentLevelProperties.paddedWidthCheckerboardLevel;
+						currentLevelProperties.paddedWidthCheckerboardLevel_;
 			}
 			else
 			{
@@ -163,7 +163,7 @@ __global__ void initializeBottomLevelDataStereo(
 
     const unsigned int xInCheckerboard = xVal / 2;
 
-	if (withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel, currentLevelProperties.heightLevel))
+	if (withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
 	{
 		initializeBottomLevelDataStereoPixel<T, T, DISP_VALS>(xVal, yVal,
 				currentLevelProperties, image1PixelsDevice,
@@ -193,7 +193,7 @@ __global__ void initializeCurrentLevelDataStereo(
 	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
 	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
+	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
 		initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardPart,
@@ -229,7 +229,7 @@ __global__ void initializeMessageValsToDefaultKernel(
 	const unsigned int xValInCheckerboard = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
 	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
+	if (withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
 		//initialize message values in both checkerboards
 		initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(xValInCheckerboard,  yVal, currentLevelProperties,
@@ -264,7 +264,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
 	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel/2, currentLevelProperties.heightLevel))
+	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
 	{
 		runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardToUpdate, currentLevelProperties,
@@ -305,7 +305,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
 	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
+	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
 		copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
 				checkerboardPart, currentLevelProperties, nextLevelProperties,
@@ -343,7 +343,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
 	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
 
-	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel, currentLevelProperties.heightLevel))
+	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
 		retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
 				xVal, yVal, currentLevelProperties,

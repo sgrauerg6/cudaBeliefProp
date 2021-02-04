@@ -85,8 +85,8 @@ template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m25
 		const levelProperties& currentLevelProperties, double* inData) {
 	return _mm256_load_pd(
 		&inData[retrieveIndexInDataAndMessage(x, y,
-			currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel, currentDisparity,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, currentDisparity,
 			bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -95,8 +95,8 @@ template<> inline __m256 KernelBpStereoCPU::loadPackedDataAligned<float, __m256,
 		const levelProperties& currentLevelProperties, float* inData) {
 	return _mm256_load_ps(
 			&inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -105,8 +105,8 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataAligned<short, __m128
 		const levelProperties& currentLevelProperties, short* inData) {
 	return _mm_load_si128(
 			(__m128i *) &inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -115,8 +115,8 @@ template<> inline __m256 KernelBpStereoCPU::loadPackedDataUnaligned<float, __m25
 		const levelProperties& currentLevelProperties, float* inData) {
 	return _mm256_loadu_ps(
 			&inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -125,8 +125,8 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataUnaligned<short, __m1
 		const levelProperties& currentLevelProperties, short* inData) {
 	return _mm_loadu_si128(
 			(__m128i *) &inData[retrieveIndexInDataAndMessage(x, y,
-					currentLevelProperties.paddedWidthCheckerboardLevel,
-					currentLevelProperties.heightLevel, currentDisparity,
+					currentLevelProperties.paddedWidthCheckerboardLevel_,
+					currentLevelProperties.heightLevel_, currentDisparity,
 					bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -135,8 +135,8 @@ template<> inline __m256d KernelBpStereoCPU::loadPackedDataUnaligned<double, __m
 		const levelProperties& currentLevelProperties, double* inData) {
 	return _mm256_loadu_pd(
 		&inData[retrieveIndexInDataAndMessage(x, y,
-			currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel, currentDisparity,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, currentDisparity,
 			bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 }
 
@@ -294,8 +294,8 @@ void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DI
 	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-			currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel, 0,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, 0,
 			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -313,7 +313,7 @@ void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DI
 		}
 
 		if constexpr (OPTIMIZED_INDEXING_SETTING) {
-			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
+			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
 			destMessageArrayIndex++;
@@ -376,8 +376,8 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m256, bp_params::NUM_POSSIBLE_DIS
 	valToNormalize = _mm256_div_ps(valToNormalize, _mm256_set1_ps((float)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -395,7 +395,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m256, bp_params::NUM_POSSIBLE_DIS
 		}
 
 		if constexpr (OPTIMIZED_INDEXING_SETTING) {
-			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
+			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
 			destMessageArrayIndex++;
@@ -459,8 +459,8 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m256d, bp_params::NUM_POSSIBLE_D
 	valToNormalize = _mm256_div_pd(valToNormalize, _mm256_set1_pd((double)bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 
 	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -478,7 +478,7 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m256d, bp_params::NUM_POSSIBLE_D
 		}
 
 		if constexpr (OPTIMIZED_INDEXING_SETTING) {
-			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel;
+			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
 			destMessageArrayIndex++;

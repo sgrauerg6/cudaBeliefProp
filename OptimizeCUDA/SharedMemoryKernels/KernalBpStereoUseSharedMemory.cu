@@ -294,8 +294,8 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	valToNormalize /= ((float) NUM_POSSIBLE_DISPARITY_VALUES);
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-			currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel, 0,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, 0,
 			NUM_POSSIBLE_DISPARITY_VALUES);
 
 	indexIndexDstShared = startIndexDstShared;
@@ -310,7 +310,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #if OPTIMIZED_INDEXING_SETTING == 1
 		destMessageArrayIndex +=
-		currentLevelProperties.paddedWidthCheckerboardLevel;
+		currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 		destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -391,8 +391,8 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	valToNormalize /= ((float) NUM_POSSIBLE_DISPARITY_VALUES);
 
 	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-			currentLevelProperties.paddedWidthCheckerboardLevel,
-			currentLevelProperties.heightLevel, 0,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, 0,
 			NUM_POSSIBLE_DISPARITY_VALUES);
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
@@ -408,7 +408,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #if OPTIMIZED_INDEXING_SETTING == 1
 		destMessageArrayIndex +=
-		currentLevelProperties.paddedWidthCheckerboardLevel;
+		currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 		destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -425,7 +425,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #if OPTIMIZED_INDEXING_SETTING == 1
 		destMessageArrayIndex +=
-		currentLevelProperties.paddedWidthCheckerboardLevel;
+		currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 		destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -535,8 +535,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
 	{
 		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-						currentLevelProperties.paddedWidthCheckerboardLevel,
-						currentLevelProperties.heightLevel, 0,
+						currentLevelProperties.paddedWidthCheckerboardLevel_,
+						currentLevelProperties.heightLevel_, 0,
 						NUM_POSSIBLE_DISPARITY_VALUES);
 
 		for (int currentDisparity = 0;
@@ -545,7 +545,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
 #if OPTIMIZED_INDEXING_SETTING == 1
 			destMessageArrayIndex +=
-			currentLevelProperties.paddedWidthCheckerboardLevel;
+			currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 			destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -556,8 +556,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 		valToNormalize /= ((half) NUM_POSSIBLE_DISPARITY_VALUES);
 
 		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				NUM_POSSIBLE_DISPARITY_VALUES);
 
 		indexIndexDstShared = startIndexDstShared;
@@ -574,7 +574,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #if OPTIMIZED_INDEXING_SETTING == 1
 			destMessageArrayIndex +=
-			currentLevelProperties.paddedWidthCheckerboardLevel;
+			currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 			destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -661,8 +661,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
 		{
 			int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-							currentLevelProperties.paddedWidthCheckerboardLevel,
-							currentLevelProperties.heightLevel, 0,
+							currentLevelProperties.paddedWidthCheckerboardLevel_,
+							currentLevelProperties.heightLevel_, 0,
 							NUM_POSSIBLE_DISPARITY_VALUES);
 
 			for (int currentDisparity = 0;
@@ -671,7 +671,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 				dstMessageArray[destMessageArrayIndex] = (half) 0.0;
 	#if OPTIMIZED_INDEXING_SETTING == 1
 				destMessageArrayIndex +=
-				currentLevelProperties.paddedWidthCheckerboardLevel;
+				currentLevelProperties.paddedWidthCheckerboardLevel_;
 	#else
 				destMessageArrayIndex++;
 	#endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -681,8 +681,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 		valToNormalize /= ((half) NUM_POSSIBLE_DISPARITY_VALUES);
 
 		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel,
-				currentLevelProperties.heightLevel, 0,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
 				NUM_POSSIBLE_DISPARITY_VALUES);
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
@@ -701,7 +701,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #if OPTIMIZED_INDEXING_SETTING == 1
 			destMessageArrayIndex +=
-					currentLevelProperties.paddedWidthCheckerboardLevel;
+					currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 			destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1
@@ -718,7 +718,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #if OPTIMIZED_INDEXING_SETTING == 1
 			destMessageArrayIndex +=
-					currentLevelProperties.paddedWidthCheckerboardLevel;
+					currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
 			destMessageArrayIndex++;
 #endif //OPTIMIZED_INDEXING_SETTING == 1

@@ -33,12 +33,11 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
 
 	//set width and height using data from file image and initialize
 	//pixels array of size width_ * height_ with unique pointer
-	width_ = initImage.getWidth();
-	height_ = initImage.getHeight();
-	pixels_ = std::make_unique<T[]>(width_ * height_);
+	widthHeight_ = {initImage.getWidth(), initImage.getHeight()};
+	pixels_ = std::make_unique<T[]>(getTotalPixels());
 
 	//convert each pixel in dataRead to data type T and place in imageData array in same location
-	std::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + (width_ * height_),
+	std::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + getTotalPixels(),
 			&(pixels_[0]), [] (const unsigned char i) -> T {return (T)i;});
 }
 
@@ -79,7 +78,7 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
 	if (std::stoul(buf) > UCHAR_MAX)
 		std::cout << "ERROR READING FILE\n";
 
-	BpImage<unsigned char> outImage(cols, rows);
+	BpImage<unsigned char> outImage(std::array<unsigned int, 2>{cols, rows});
 
 	if (imageType == image_type::PGM_IMAGE) {
 		/* read data */

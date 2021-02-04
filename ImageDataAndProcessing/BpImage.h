@@ -17,6 +17,7 @@
 #include <climits>
 #include <sstream>
 #include <cmath>
+#include <array>
 
 enum class image_type { PGM_IMAGE, PPM_IMAGE };
 const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
@@ -26,14 +27,14 @@ const std::string PPM_EXTENSION = "ppm";
 template <class T>
 class BpImage {
 public:
-	BpImage() : width_(0), height_(0) {}
+	BpImage() : widthHeight_{0, 0} {}
 
-	BpImage(const unsigned int width, const unsigned int height) : width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height)) {}
+	BpImage(const std::array<unsigned int, 2>& widthHeight) : widthHeight_{widthHeight}, pixels_(std::make_unique<T[]>(widthHeight_[0]*widthHeight_[1])) {}
 
-	BpImage(const unsigned int width, const unsigned int height, const T* input_pixel_vals) :
-			width_(width), height_(height), pixels_(std::make_unique<T[]>(width*height))
+	BpImage(const std::array<unsigned int, 2>& widthHeight, const T* input_pixel_vals) :
+		widthHeight_{widthHeight}, pixels_(std::make_unique<T[]>(widthHeight_[0] * widthHeight_[1]))
 	{
-		std::copy(input_pixel_vals, input_pixel_vals + (width*height), pixels_.get());
+		std::copy(input_pixel_vals, input_pixel_vals + (getTotalPixels()), pixels_.get());
 	}
 
 	BpImage(const std::string& fileName) {
@@ -48,37 +49,36 @@ public:
 		return &(pixels_[0]);
 	}
 
-	T getPixelAtPoint(const int x, const int y) const {
-		return getPixelAtPoint(y*width_ + x);
+	T getPixelAtPoint(const std::array<unsigned int, 2>& xyPoint) const {
+		return getPixelAtPoint(xyPoint[1]*widthHeight_[0] + xyPoint[0]);
 	}
 
-	T getPixelAtPoint(const int i) const {
+	T getPixelAtPoint(const unsigned int i) const {
 		return (pixels_.get())[i];
 	}
 
-	void setPixelAtPoint(const int x, const int y, const T val) {
-		setPixelAtPoint((y*width_ + x), val);
+	void setPixelAtPoint(const std::array<unsigned int, 2>& xyPoint, const T val) {
+		setPixelAtPoint((xyPoint[1]*widthHeight_[0] + xyPoint[0]), val);
 	}
 
-	void setPixelAtPoint(const int i, const T val) {
+	void setPixelAtPoint(const unsigned int i, const T val) {
 		(pixels_.get())[i] = val;
 	}
 
-	unsigned int getWidth() const { return width_; }
-	unsigned int getHeight() const { return height_; }
+	unsigned int getWidth() const { return widthHeight_[0]; }
+	unsigned int getHeight() const { return widthHeight_[1]; }
 
 	void saveImageAsPgm(const std::string& filename) const {
 		  std::ofstream file(filename, std::ios::out | std::ios::binary);
 
-		  file << "P5\n" << width_ << " " << height_ << "\n" << UCHAR_MAX << "\n";
-		  file.write((char*)(&pixels_[0]), width_ * height_ * sizeof(char));
+		  file << "P5\n" << widthHeight_[0] << " " << widthHeight_[1] << "\n" << UCHAR_MAX << "\n";
+		  file.write((char*)(&pixels_[0]), getTotalPixels() * sizeof(char));
 		  file.close();
 	}
 
 protected:
 
-	unsigned int width_;
-	unsigned int height_;
+	std::array<unsigned int, 2> widthHeight_;
 	std::unique_ptr<T[]> pixels_;
 
 	void loadImageAsGrayScale(const std::string& filePathImage);
@@ -87,6 +87,11 @@ protected:
 
 	BpImage<unsigned char> imageRead(const std::string& fileName,
 			const image_type imageType, const bool weightedRGBConversion = true) const;
+
+	//currently assuming single channel
+	inline unsigned int getTotalPixels(/*const unsigned int numChannels = 1*/) const {
+		return (widthHeight_[0] * widthHeight_[1]/* * numChannels*/);
+	}
 };
 
 #endif /* BPIMAGE_H_ */
