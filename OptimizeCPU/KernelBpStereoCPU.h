@@ -214,9 +214,9 @@ public:
 
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
-#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
+//#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 //uncomment to enable AVX512 (need to then comment out AVX256)
-//#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
+#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 
 //do nothing
 

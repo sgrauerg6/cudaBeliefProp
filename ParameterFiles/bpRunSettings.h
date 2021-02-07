@@ -34,7 +34,7 @@ enum class cpu_vectorization_setting {
 constexpr bool OPTIMIZED_INDEXING_SETTING{true};
 constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
 constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
-constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_256};
+constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_512};
 
 constexpr unsigned int getBytesAlignMemory(cpu_vectorization_setting inVectSetting) {
 	//avx512 requires data to be aligned on 64 bytes

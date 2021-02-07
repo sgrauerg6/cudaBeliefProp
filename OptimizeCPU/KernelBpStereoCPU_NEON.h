@@ -155,7 +155,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, float32x4_t>(const unsigned int xVa
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
-	float32x4_t minimum = vdupq_n_f32(INF_BP);
+	float32x4_t minimum = vdupq_n_f32(bp_consts::INF_BP);
 	float32x4_t dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -235,7 +235,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(const unsigned int
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
-	float32x4_t minimum = vdupq_n_f32(INF_BP);
+	float32x4_t minimum = vdupq_n_f32(bp_consts::INF_BP);
 	float32x4_t dstFloat[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)

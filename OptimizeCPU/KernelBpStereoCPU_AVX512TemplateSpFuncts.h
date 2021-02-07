@@ -193,7 +193,7 @@ void KernelBpStereoCPU::msgStereoSIMD<float, __m512>(const unsigned int xVal, co
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
-	__m512 minimum = _mm512_set1_ps(INF_BP);
+	__m512 minimum = _mm512_set1_ps(bp_consts::INF_BP);
 	__m512 dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -275,7 +275,7 @@ void KernelBpStereoCPU::msgStereoSIMD<double, __m512d >(
 {
 	// aggregate and find min
 	//T minimum = INF_BP;
-	__m512d minimum = _mm512_set1_pd(INF_BP);
+	__m512d minimum = _mm512_set1_pd(bp_consts::INF_BP);
 	__m512d dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
@@ -361,7 +361,7 @@ void KernelBpStereoCPU::msgStereoSIMD<short, __m256i >(
 		short* dstMessageArray, const __m256i& disc_k_bp, const bool dataAligned) {
 	// aggregate and find min
 	//T minimum = INF_BP;
-	__m512 minimum = _mm512_set1_ps(INF_BP);
+	__m512 minimum = _mm512_set1_ps(bp_consts::INF_BP);
 	__m512 dstFloat[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
