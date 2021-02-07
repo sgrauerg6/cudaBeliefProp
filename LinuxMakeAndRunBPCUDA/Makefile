@@ -29,7 +29,7 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++17 -Wall
-CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3
+CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3 -std=c++17
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 
 # may need to adjust to allow support for target GPU (note that can't use half precision before compute capability 5.3)
@@ -48,10 +48,10 @@ driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../ParameterFiles/bpStereoCu
 
 RunAndEvaluateBpResults.o: ../MainDriverFiles/RunAndEvaluateBpResults.h ../MainDriverFiles/RunAndEvaluateBpResults.cpp
 	$(CC) ../MainDriverFiles/RunAndEvaluateBpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHandling.cpp ../FileProcessing/BpFileHandlingConsts.h
 	$(CC) ../FileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 DetailedTimings.o: ../RuntimeTiming/DetailedTimings.cpp ../RuntimeTiming/DetailedTimings.h
 	$(CC) ../RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
@@ -72,7 +72,7 @@ OutputEvaluationParameters.o: ../OutputEvaluation/OutputEvaluationParameters.cpp
 
 OutputEvaluationResults.o: ../OutputEvaluation/OutputEvaluationResults.cpp ../OutputEvaluation/OutputEvaluationResults.h
 	$(CC) ../OutputEvaluation/OutputEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-		
+
 DisparityMap.o: ../OutputEvaluation/DisparityMap.cpp ../OutputEvaluation/DisparityMap.h OutputEvaluationParameters.o OutputEvaluationResults.o
 	$(CC) ../OutputEvaluation/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
@@ -90,6 +90,6 @@ ProcessCUDABP.o: ../OptimizeCUDA/ProcessCUDABP.cpp ../OptimizeCUDA/ProcessCUDABP
 
 SmoothImageCUDA.o: ../OptimizeCUDA/SmoothImageCUDA.cpp ../OptimizeCUDA/SmoothImageCUDA.h ../OptimizeCUDA/kernalFilter.cu ../OptimizeCUDA/kernalFilterHeader.cuh
 	$(NVCC) -x cu -c ../OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
-	
+
 make clean:
 	rm *.o driverCudaBp driverCPUBp
