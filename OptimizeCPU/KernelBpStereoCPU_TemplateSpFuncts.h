@@ -53,29 +53,20 @@ template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short>(const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
-		short* messageUDeviceCurrentCheckerboard0,
-		short* messageDDeviceCurrentCheckerboard0,
-		short* messageLDeviceCurrentCheckerboard0,
-		short* messageRDeviceCurrentCheckerboard0,
-		short* messageUDeviceCurrentCheckerboard1,
-		short* messageDDeviceCurrentCheckerboard1,
-		short* messageLDeviceCurrentCheckerboard1,
-		short* messageRDeviceCurrentCheckerboard1, const float disc_k_bp,
-		const unsigned int offsetData, const bool dataAligned)
+		short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
+		short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
+		short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
+		short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+		const float disc_k_bp, const unsigned int offsetData, const bool dataAligned)
 {
 	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, float>(
-			xVal, yVal, checkerboardToUpdate,
-			currentLevelProperties,
+			xVal, yVal, checkerboardToUpdate, currentLevelProperties,
 			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-			messageUDeviceCurrentCheckerboard0,
-			messageDDeviceCurrentCheckerboard0,
-			messageLDeviceCurrentCheckerboard0,
-			messageRDeviceCurrentCheckerboard0,
-			messageUDeviceCurrentCheckerboard1,
-			messageDDeviceCurrentCheckerboard1,
-			messageLDeviceCurrentCheckerboard1,
-			messageRDeviceCurrentCheckerboard1, disc_k_bp,
-			offsetData, dataAligned);
+			messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+			disc_k_bp, offsetData, dataAligned);
 }
 
 
@@ -85,11 +76,8 @@ void initializeBottomLevelDataStereoPixel<short, short>(const unsigned int xVal,
 		float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard0,
 		short* dataCostDeviceStereoCheckerboard1, const float lambda_bp, const float data_k_bp)
 {
-	initializeBottomLevelDataStereoPixel<short, float>(xVal, yVal,
-			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-			dataCostDeviceStereoCheckerboard1, lambda_bp,
-			data_k_bp);
+	initializeBottomLevelDataStereoPixel<short, float>(xVal, yVal, currentLevelProperties, image1PixelsDevice, image2PixelsDevice,
+			dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1, lambda_bp, data_k_bp);
 }
 
 
@@ -99,12 +87,8 @@ void initializeCurrentLevelDataStereoPixel<short, short>(const unsigned int xVal
 		const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties, short* dataCostStereoCheckerboard0,
 		short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo, const unsigned int offsetNum)
 {
-	initializeCurrentLevelDataStereoPixel<short, float>(
-			xVal, yVal, checkerboardPart,
-			currentLevelProperties,
-			prevLevelProperties, dataCostStereoCheckerboard0,
-			dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
-			offsetNum);
+	initializeCurrentLevelDataStereoPixel<short, float>(xVal, yVal, checkerboardPart, currentLevelProperties, prevLevelProperties,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo, offsetNum);
 }
 
 template<> inline
