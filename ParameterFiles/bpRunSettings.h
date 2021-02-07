@@ -33,6 +33,7 @@ enum class cpu_vectorization_setting {
 #define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
 constexpr bool OPTIMIZED_INDEXING_SETTING{true};
 constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
+constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_256};
 
 constexpr unsigned int getBytesAlignMemory(cpu_vectorization_setting inVectSetting) {

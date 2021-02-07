@@ -78,6 +78,21 @@ struct levelProperties
 		}
 	}
 
+	template <typename T>
+	static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
+			const unsigned int totalPossibleMovements, const unsigned int numLevels)
+	{
+		levelProperties currLevelProperties(widthHeightBottomLevel);
+		unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
+		for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
+			currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);
+			totalData += currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
+		}
+
+		return totalData;
+	}
+
+
 	unsigned int widthLevel_;
 	unsigned int heightLevel_;
 	unsigned int widthCheckerboardLevel_;

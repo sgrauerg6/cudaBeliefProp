@@ -85,6 +85,14 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::array<std:
 	//generate output disparity map object
 	DisparityMap<float> output_disparity_map(widthHeightImages);
 
+	//allocate data for bp processing on target device ahead of runs if option selected
+	V bpData = nullptr;
+	if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+		unsigned long numData = levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(widthHeightImages,
+				bp_params::NUM_POSSIBLE_DISPARITY_VALUES, algSettings.numLevels_);
+		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
+	}
+
 	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
 	{
 		//allocate the device memory to store and x and y smoothed images
@@ -111,7 +119,7 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::array<std:
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		//returns detailed timings for bp run
-		auto rpBpStereoOutput = (*runBpStereo)(smoothedImages, algSettings, widthHeightImages);
+		auto rpBpStereoOutput = (*runBpStereo)(smoothedImages, algSettings, widthHeightImages, bpData);
 
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_BP].second = std::chrono::system_clock::now();
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
@@ -138,6 +146,12 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::array<std:
 		for (auto& smoothedImage : smoothedImages) {
 			runBPMemoryMangement->freeDataOnCompDevice(smoothedImage);
 		}
+	}
+
+	//free data for bp processing on target device if this memory
+	//management set to be done outside of runs
+	if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+		runBpStereo->freeMemoryOnTargetDevice(bpData);
 	}
 
 	resultsStream << "Image Width: " << widthHeightImages[0] << "\nImage Height: " << widthHeightImages[1] << "\n";
