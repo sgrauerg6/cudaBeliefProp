@@ -57,8 +57,9 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<floa
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float* image1PixelsDevice,
-		float* image2PixelsDevice, float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
+void initializeBottomLevelDataStereoPixel<float16_t, float16_t>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
+		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
 	initializeBottomLevelDataStereoPixel<float16_t, float>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
