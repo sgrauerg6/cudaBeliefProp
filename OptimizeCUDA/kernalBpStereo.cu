@@ -53,7 +53,7 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 
 	half dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity] = messageValsNeighbor1[currentDisparity]
@@ -73,7 +73,7 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 	// normalize
 	half valToNormalize = 0;
 
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++)
 	{
@@ -89,12 +89,12 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 	//set destination vector to 0 for all disparities
 	//note that may cause results to differ a little from ideal
 	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel_,
 				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
-		for (int currentDisparity = 0;
+		for (unsigned int currentDisparity = 0;
 				currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
@@ -113,12 +113,12 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 	{
 		valToNormalize /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 
-		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel_,
 				currentLevelProperties.heightLevel_, 0,
 				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
-		for (int currentDisparity = 0;
+		for (unsigned int currentDisparity = 0;
 				currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++)
 		{

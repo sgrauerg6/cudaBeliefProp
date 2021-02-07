@@ -72,7 +72,7 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 	const bool dataAligned{MemoryAlignedAtDataStart(0, 1)};
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
-	for (int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
+	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
 	{
 		Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? CHECKERBOARD_PART_1 : CHECKERBOARD_PART_0;
 		cudaDeviceSynchronize();
@@ -200,8 +200,8 @@ void ProcessCUDABP<T, U>::initializeMessageValsToDefault(
 		const checkerboardMessages<U>& messagesDevice)
 {
 	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid((unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x), (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y));
-
+	dim3 grid((unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
+			  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y));
 
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
 	initializeMessageValsToDefaultKernel<T> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
@@ -311,8 +311,7 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 	grid.y = (unsigned int) ceil((float) currentLevelProperties.heightLevel_ / (float) threads.y);
 
 	retrieveOutputDisparityCheckerboardStereoOptimized<T> <<<grid, threads>>>(currentLevelProperties,
-			dataCostDeviceCheckerboard.dataCostCheckerboard0_,
-			dataCostDeviceCheckerboard.dataCostCheckerboard1_,
+			dataCostDeviceCheckerboard.dataCostCheckerboard0_, dataCostDeviceCheckerboard.dataCostCheckerboard1_,
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],

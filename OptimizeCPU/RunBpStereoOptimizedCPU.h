@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include <array>
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
@@ -25,7 +26,7 @@ public:
 	std::string getBpRunDescription() override { return "Optimized CPU"; }
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsStream) override;
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const BPsettings& algSettings, std::ostream& resultsStream) override;
 };
 
 #ifdef _WIN32

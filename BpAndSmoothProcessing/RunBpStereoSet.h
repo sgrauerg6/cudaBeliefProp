@@ -12,6 +12,8 @@
 #include <iostream>
 #include <unordered_map>
 #include <memory>
+#include <array>
+#include <string>
 #include "SmoothImage.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpRunSettings.h"
@@ -40,7 +42,7 @@ public:
 	virtual std::string getBpRunDescription() = 0;
 
 	//pure abstract overloaded operator that must be defined in child class
-	virtual ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
+	virtual ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream) = 0;
 
 protected:
@@ -48,7 +50,7 @@ protected:
 	//protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
 	template <typename U, typename V, typename W=float, typename X = float*>
-	ProcessStereoSetOutput processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
+	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
 		const std::unique_ptr<ProcessBPOnTargetDevice<U, V>>& runBpStereo, 
 		const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement = 
@@ -65,13 +67,13 @@ protected:
 
 template<typename T>
 template<typename U, typename V, typename W, typename X>
-ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::string& refImagePath, const std::string& testImagePath,
+ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
 	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
 	const std::unique_ptr<ProcessBPOnTargetDevice<U, V>>& runBpStereo,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement)
 {
 	//retrieve the images as well as the width and height
-	const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refImagePath), BpImage<unsigned int>(testImagePath)};
+	const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refTestImagePath[0]), BpImage<unsigned int>(refTestImagePath[1])};
 	const std::array<unsigned int, 2> widthHeightImages{inputImages[0].getWidth(), inputImages[0].getHeight()};
 
 	//get total number of pixels in input images

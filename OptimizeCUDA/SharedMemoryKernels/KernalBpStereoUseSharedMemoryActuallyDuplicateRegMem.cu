@@ -12,15 +12,15 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 	T lastVal;
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
-	//int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
-	//int indexIndexDstShared = startIndexDstShared;
+	//unsigned int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
+	//unsigned int indexIndexDstShared = startIndexDstShared;
 	lastVal = dstSharedMemActuallyReg[0];
 #else
 	lastVal= dst[0];
 #endif
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
-	for (int currentDisparity = 1;
+	for (unsigned int currentDisparity = 1;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		prev = lastVal + (T) 1.0;
@@ -32,7 +32,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 	}
 #endif
 #pragma unroll
-	for (int currentDisparity = getMax(1, DISP_INDEX_START_REG_LOCAL_MEM);
+	for (unsigned int currentDisparity = getMax(1, DISP_INDEX_START_REG_LOCAL_MEM);
 			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		prev = lastVal + (T) 1.0;
@@ -43,7 +43,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 	}
 
 //#pragma unroll 64
-	for (int currentDisparity = NUM_POSSIBLE_DISPARITY_VALUES - 2;
+	for (unsigned int currentDisparity = NUM_POSSIBLE_DISPARITY_VALUES - 2;
 			currentDisparity >= DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity--) {
 		prev = lastVal + (T) 1.0;
@@ -54,7 +54,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 	}
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
-	for (int currentDisparity = getMin(NUM_POSSIBLE_DISPARITY_VALUES - 2,
+	for (unsigned int currentDisparity = getMin(NUM_POSSIBLE_DISPARITY_VALUES - 2,
 			DISP_INDEX_START_REG_LOCAL_MEM - 1); currentDisparity >= 0;
 			currentDisparity--) {
 		prev = lastVal + (T) 1.0;
@@ -90,14 +90,14 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	float dstSharedMemActuallyReg[DISP_INDEX_START_REG_LOCAL_MEM];
 #endif
 
-	//int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
-	//int indexIndexDstShared = startIndexDstShared;
+	//unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
+	//unsigned int indexIndexDstShared = startIndexDstShared;
 
 	float dst[NUM_POSSIBLE_DISPARITY_VALUES - DISP_INDEX_START_REG_LOCAL_MEM];
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		dstSharedMemActuallyReg[currentDisparity] =
@@ -116,7 +116,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 	//indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
-	for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+	for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] =
@@ -147,7 +147,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	//indexIndexDstShared = startIndexDstShared;
 	//indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		if (minimum < dstSharedMemActuallyReg[currentDisparity]) {
@@ -161,7 +161,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	}
 #endif
 //#pragma unroll 64
-	for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+	for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		if (minimum < dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]) {
@@ -173,7 +173,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	}
 		valToNormalize /= ((float) NUM_POSSIBLE_DISPARITY_VALUES);
 
-		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel_,
 				currentLevelProperties.heightLevel_, 0,
 				NUM_POSSIBLE_DISPARITY_VALUES);
@@ -182,7 +182,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 		//indexIndexDstShared = startIndexDstShared;
 		//indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
-		for (int currentDisparity = 0;
+		for (unsigned int currentDisparity = 0;
 				currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 				currentDisparity++) {
 			dstSharedMemActuallyReg[currentDisparity] -= valToNormalize;
@@ -201,7 +201,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 		}
 #endif
 //#pragma unroll 64
-		for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+		for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
 			dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] -=
@@ -241,14 +241,14 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	half dstSharedMemActuallyReg[DISP_INDEX_START_REG_LOCAL_MEM];
 #endif
 
-	//int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
-	//int indexIndexDstShared = startIndexDstShared;
+	//unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
+	//unsigned int indexIndexDstShared = startIndexDstShared;
 
 	half dst[NUM_POSSIBLE_DISPARITY_VALUES - DISP_INDEX_START_REG_LOCAL_MEM];
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		dstSharedMemActuallyReg[currentDisparity] =
@@ -267,7 +267,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 	//indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
-	for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+	for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] =
@@ -298,7 +298,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	//indexIndexDstShared = startIndexDstShared;
 	//indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		if (minimum < dstSharedMemActuallyReg[currentDisparity]) {
@@ -312,7 +312,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	}
 #endif
 //#pragma unroll 64
-	for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+	for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		if (minimum < dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]) {
@@ -325,12 +325,12 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
 	{
-		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel_,
 				currentLevelProperties.heightLevel_, 0,
 				NUM_POSSIBLE_DISPARITY_VALUES);
 
-		for (int currentDisparity = 0;
+		for (unsigned int currentDisparity = 0;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
@@ -346,7 +346,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	{
 		valToNormalize /= ((half) NUM_POSSIBLE_DISPARITY_VALUES);
 
-		int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 				currentLevelProperties.paddedWidthCheckerboardLevel_,
 				currentLevelProperties.heightLevel_, 0,
 				NUM_POSSIBLE_DISPARITY_VALUES);
@@ -355,7 +355,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 		//indexIndexDstShared = startIndexDstShared;
 		//indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
-		for (int currentDisparity = 0;
+		for (unsigned int currentDisparity = 0;
 				currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 				currentDisparity++) {
 			dstSharedMemActuallyReg[currentDisparity] -= valToNormalize;
@@ -374,7 +374,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 		}
 #endif
 //#pragma unroll 64
-		for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+		for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 				currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
 				currentDisparity++) {
 			dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] -=

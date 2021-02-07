@@ -84,7 +84,7 @@ public:
 		return outputCheckerboardMessages;
 	}
 
-	virtual checkerboardMessages<U> retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(
+	virtual checkerboardMessages<U> retrieveLevelMessageData(
 			const checkerboardMessages<U>& allCheckerboardMessages, const unsigned long offsetIntoAllCheckerboardMessages)
 	{
 		checkerboardMessages<U> outputCheckerboardMessages;
@@ -103,13 +103,9 @@ public:
 		freeMemoryOnTargetDevice(dataCostsToFree.dataCostCheckerboard1_);
 	}
 
-	virtual dataCostData<U> allocateMemoryForDataCosts(const unsigned long numDataAllocatePerDataCostsCheckerboard)
+	virtual dataCostData<U> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard)
 	{
-		dataCostData<U> outputDataCosts;
-		outputDataCosts.dataCostCheckerboard0_ = allocateMemoryOnTargetDevice(numDataAllocatePerDataCostsCheckerboard);
-		outputDataCosts.dataCostCheckerboard1_ = allocateMemoryOnTargetDevice(numDataAllocatePerDataCostsCheckerboard);
-
-		return outputDataCosts;
+		return {allocateMemoryOnTargetDevice(numDataCostsCheckerboard), allocateMemoryOnTargetDevice(numDataCostsCheckerboard)};
 	}
 
 	virtual std::pair<dataCostData<U>, checkerboardMessages<U>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
@@ -126,7 +122,7 @@ public:
 					&(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
 		}
 
-		return std::make_pair(dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels);
+		return {dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels};
 	}
 
 	virtual void freeDataCostsAllDataInSingleArray(const dataCostData<U>& dataCostsToFree)
@@ -134,13 +130,9 @@ public:
 		freeMemoryOnTargetDevice(dataCostsToFree.dataCostCheckerboard0_);
 	}
 
-	virtual dataCostData<U> retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(const dataCostData<U>& allDataCosts, const unsigned long offsetIntoAllDataCosts)
+	virtual dataCostData<U> retrieveLevelDataCosts(const dataCostData<U>& allDataCosts, const unsigned long offsetIntoAllDataCosts)
 	{
-		dataCostData<U> outputDataCosts;
-		outputDataCosts.dataCostCheckerboard0_ = &(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]);
-		outputDataCosts.dataCostCheckerboard1_ = &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts]);
-
-		return outputDataCosts;
+		return {&(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]), &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
 	}
 
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -158,45 +150,33 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	const BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages)
 {
 	DetailedTimings<Runtime_Type_BP> segmentTimings(timingNames_BP);
-	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
-	double totalTimeBpIters{0.0};
-	double totalTimeCopyData{0.0};
-	double totalTimeCopyDataKernel{0.0};
+	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
+	double totalTimeBpIters{0.0}, totalTimeCopyData{0.0}, totalTimeCopyDataKernel{0.0};
 
 	//start at the "bottom level" and work way up to determine amount of space needed to store data costs
-	std::vector<levelProperties> processingLevelProperties(algSettings.numLevels_);
-	std::vector<unsigned long> offsetAtLevel(algSettings.numLevels_);
+	std::vector<levelProperties> bpLevelProperties;
+	bpLevelProperties.reserve(algSettings.numLevels_);
 
-	//set level properties and offset for bottom level
-	processingLevelProperties[0] = levelProperties(widthHeightImages);
-	offsetAtLevel[0] = 0;
+	//set level properties for bottom level that include processing of full image width/height
+	bpLevelProperties.push_back(levelProperties(widthHeightImages));
 
-	//compute level properties and set offset for each data/message array for each level after the bottom level
-	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++)
-	{
+	//compute level properties which includes offset for each data/message array for each level after the bottom level
+	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
 		//get current level properties from previous level properties
-		processingLevelProperties[levelNum] = processingLevelProperties[levelNum-1].getNextLevelProperties();
-
-		//retrieve amount of data used for processing up to current level in each data/message array and set as offset into data at level
-		offsetAtLevel[levelNum] = offsetAtLevel[levelNum-1] + bp_util_functs::getNumDataForAlignedMemoryAtLevel<T>(
-			{processingLevelProperties[levelNum - 1].widthLevel_, processingLevelProperties[levelNum - 1].heightLevel_},
-			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
+		bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
 	}
 
-	//data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
-	const unsigned long dataAllLevelsEachDataMessageArr =
-			offsetAtLevel[algSettings.numLevels_-1] + bp_util_functs::getNumDataForAlignedMemoryAtLevel<T>(
-					{processingLevelProperties[algSettings.numLevels_-1].widthLevel_, processingLevelProperties[algSettings.numLevels_-1].heightLevel_},
-					bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
-
-	runtime_start_end_timings[Runtime_Type_BP::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
 
 	//declare and allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
 	//as well as the message data used for bp processing
-	//each checkerboard holds half of the data
-	//checkerboard 0 includes the pixel in slot (0, 0)
-	dataCostData<U> dataCostsDeviceCheckerboardAllLevels;
+	//each checkerboard holds half of the data and checkerboard 0 includes the pixel in slot (0, 0)
+	dataCostData<U> dataCostsDeviceAllLevels;
 	checkerboardMessages<U> messagesDeviceAllLevels;
+
+	//data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
+	const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.numLevels_-1].offsetIntoArrays_ +
+			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 #ifdef _WIN32
 	//assuming that width includes padding
@@ -206,42 +186,40 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 #endif
 	{
 		//call function that allocates all data in single array and then set offsets in array for data costs and message data locations
-		std::tie(dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels) =
+		std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
 			allocateAndOrganizeDataCostsAndMessageDataAllLevels(dataAllLevelsEachDataMessageArr);
 	}
 	else
 	{
-		dataCostsDeviceCheckerboardAllLevels = allocateMemoryForDataCosts(dataAllLevelsEachDataMessageArr);
+		dataCostsDeviceAllLevels = allocateMemoryForDataCosts(dataAllLevelsEachDataMessageArr);
 	}
 
-	runtime_start_end_timings[Runtime_Type_BP::INIT_SETTINGS_MALLOC].second = std::chrono::system_clock::now();
-	runtime_start_end_timings[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].first = std::chrono::system_clock::now();
 
 	//initialize the data cost at the bottom level
-	initializeDataCosts(algSettings, processingLevelProperties[0], imagesOnTargetDevice,
-		dataCostsDeviceCheckerboardAllLevels);
+	initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
 
-	runtime_start_end_timings[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].second = std::chrono::system_clock::now();
-	runtime_start_end_timings[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].first = std::chrono::system_clock::now();
 
 	//set the data costs at each level from the bottom level "up"
 	for (unsigned int levelNum = 1u; levelNum < algSettings.numLevels_; levelNum++)
 	{
-		dataCostData<U> dataCostsDeviceCheckerboardPrevLevel =
-			retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[levelNum - 1u]);
-		dataCostData<U> dataCostsDeviceCheckerboardWriteTo =
-			retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[levelNum]);
+		std::array<dataCostData<U>, 2> dataCostsDevicePrevLevelAndWriteToLevel{
+			retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
+			retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_)};
 
-		initializeDataCurrentLevel(processingLevelProperties[levelNum], processingLevelProperties[levelNum - 1],
-			dataCostsDeviceCheckerboardPrevLevel, dataCostsDeviceCheckerboardWriteTo);
+		initializeDataCurrentLevel(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
+				dataCostsDevicePrevLevelAndWriteToLevel[0], dataCostsDevicePrevLevelAndWriteToLevel[1]);
 	}
 
-	runtime_start_end_timings[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].second = std::chrono::system_clock::now();
-	runtime_start_end_timings[Runtime_Type_BP::INIT_MESSAGES].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].first = std::chrono::system_clock::now();
 
 	//get and use offset into data at current processing level of pyramid
-	dataCostData<U> dataCostsDeviceCheckerboardCurrentLevel =
-		retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[algSettings.numLevels_ - 1u]);
+	dataCostData<U> dataCostsDeviceCurrentLevel =
+		retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
 
 	//declare the space to pass the BP messages; need to have two "sets" of checkerboards because the message
 	//data at the "higher" level in the image pyramid need copied to a lower level without overwriting values
@@ -254,31 +232,29 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif
 	{
-		messagesDevice[0] = retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(
-				messagesDeviceAllLevels, offsetAtLevel[algSettings.numLevels_ - 1u]);
+		messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
 	}
 	else
 	{
 		//retrieve the number of bytes needed to store the data cost/each set of messages in the checkerboard
-		const unsigned int numDataAndMessageSetInCheckerboardAtLevel = bp_util_functs::getNumDataForAlignedMemoryAtLevel<T>(
-				{processingLevelProperties[algSettings.numLevels_ - 1u].widthLevel_, processingLevelProperties[algSettings.numLevels_ - 1u].heightLevel_},
-				bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
+		const unsigned int numDataAndMessageSetInCheckerboardAtLevel =
+				bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 		//allocate the space for the message values in the first checkboard set at the current level
 		messagesDevice[0] = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
 	}
 
-	runtime_start_end_timings[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
 
 	//initialize all the BP message values at every pixel for every disparity to 0
-	initializeMessageValsToDefault(processingLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0]);
+	initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0]);
 
-	runtime_start_end_timings[Runtime_Type_BP::INIT_MESSAGES_KERNEL].second = std::chrono::system_clock::now();
-	runtime_start_end_timings[Runtime_Type_BP::INIT_MESSAGES].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].second = std::chrono::system_clock::now();
 
 	//alternate between checkerboard sets 0 and 1
 	enum Checkerboard_Num { CHECKERBOARD_ZERO = 0, CHECKERBOARD_ONE = 1 };
-	Checkerboard_Num currentCheckerboardSet{Checkerboard_Num::CHECKERBOARD_ZERO};
+	Checkerboard_Num currCheckerboardSet{Checkerboard_Num::CHECKERBOARD_ZERO};
 
 	//run BP at each level in the "pyramid" starting on top and continuing to the bottom
 	//where the final movement values are computed...the message values are passed from
@@ -290,8 +266,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		const auto timeBpIterStart = std::chrono::system_clock::now();
 
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
-		runBPAtCurrentLevel(algSettings, processingLevelProperties[(unsigned int)levelNum],
-			dataCostsDeviceCheckerboardCurrentLevel, messagesDevice[currentCheckerboardSet]);
+		runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet]);
 
 		const auto timeBpIterEnd = std::chrono::system_clock::now();
 		diff = timeBpIterEnd - timeBpIterStart;
@@ -302,8 +277,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		if (levelNum > 0)
 		{
 			//use offset into allocated memory at next level
-			dataCostsDeviceCheckerboardCurrentLevel =
-				retrieveCurrentDataCostsFromOffsetIntoAllDataCosts(dataCostsDeviceCheckerboardAllLevels, offsetAtLevel[levelNum - 1]);
+			dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 
 #ifdef _WIN32
 			//assuming that width includes padding
@@ -312,26 +286,25 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			if (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
 #endif
 			{
-				messagesDevice[(currentCheckerboardSet + 1) % 2] =
-						retrieveCurrentCheckerboardMessagesFromOffsetIntoAllCheckerboardMessages(messagesDeviceAllLevels, offsetAtLevel[levelNum - 1]);
+				messagesDevice[(currCheckerboardSet + 1) % 2] = retrieveLevelMessageData(
+						messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 			}
 			else
 			{
 				//update the number of bytes needed to store each set
-				const unsigned int numDataAndMessageSetInCheckerboardAtLevel = bp_util_functs::getNumDataForAlignedMemoryAtLevel<T>(
-						{processingLevelProperties[levelNum - 1].widthLevel_, processingLevelProperties[levelNum - 1].heightLevel_},
-						bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
+				const unsigned int numDataInBpArraysAtLevel =
+						bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 				//allocate space in the GPU for the message values in the checkerboard set to copy to
-				messagesDevice[(currentCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(numDataAndMessageSetInCheckerboardAtLevel);
+				messagesDevice[(currCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(numDataInBpArraysAtLevel);
 			}
 
 			const auto timeCopyMessageValuesKernelStart = std::chrono::system_clock::now();
 
 			//currentCheckerboardSet = index copying data from
 			//(currentCheckerboardSet + 1) % 2 = index copying data to
-			copyMessageValuesToNextLevelDown(processingLevelProperties[levelNum], processingLevelProperties[levelNum - 1],
-					messagesDevice[currentCheckerboardSet], messagesDevice[(currentCheckerboardSet + 1) % 2]);
+			copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
+					messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2]);
 
 			const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
@@ -345,11 +318,11 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 #endif
 			{
 				//free the now-copied from computed data of the completed level
-				freeCheckerboardMessagesMemory(messagesDevice[currentCheckerboardSet]);
+				freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet]);
 			}
 
 			//alternate between checkerboard parts 1 and 2
-			currentCheckerboardSet = (currentCheckerboardSet == Checkerboard_Num::CHECKERBOARD_ZERO) ?
+			currCheckerboardSet = (currCheckerboardSet == Checkerboard_Num::CHECKERBOARD_ZERO) ?
 					Checkerboard_Num::CHECKERBOARD_ONE : Checkerboard_Num::CHECKERBOARD_ZERO;
 		}
 
@@ -358,14 +331,14 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 		totalTimeCopyData += diff.count();
 	}
 
-	runtime_start_end_timings[Runtime_Type_BP::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
 
 	//assume in bottom level when retrieving output disparity
-	const V resultingDisparityMapCompDevice = retrieveOutputDisparity(processingLevelProperties[0],
-			dataCostsDeviceCheckerboardCurrentLevel, messagesDevice[currentCheckerboardSet]);
+	const V resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
+			dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet]);
 
-	runtime_start_end_timings[Runtime_Type_BP::OUTPUT_DISPARITY].second = std::chrono::system_clock::now();
-	runtime_start_end_timings[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
 
 #ifdef _WIN32
 			//assuming that width includes padding
@@ -376,21 +349,21 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	{
 		//now free the allocated data space; all data in single array when
 		//USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
-		freeDataCostsAllDataInSingleArray(dataCostsDeviceCheckerboardAllLevels);
+		freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels);
 	}
 	else
 	{
 		//free the device storage allocated to the message values used to retrieve the output movement values
-		freeCheckerboardMessagesMemory(messagesDevice[(currentCheckerboardSet == 0) ? 0 : 1]);
+		freeCheckerboardMessagesMemory(messagesDevice[(currCheckerboardSet == 0) ? 0 : 1]);
 
 		//now free the allocated data space
-		freeDataCostsMemory(dataCostsDeviceCheckerboardAllLevels);
+		freeDataCostsMemory(dataCostsDeviceAllLevels);
 	}
 
-	runtime_start_end_timings[Runtime_Type_BP::FINAL_FREE].second = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::FINAL_FREE].second = std::chrono::system_clock::now();
 
 	//retrieve the timing for each runtime segment and add to vector in timings map
-	std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
+	std::for_each(startEndTimes.begin(), startEndTimes.end(),
 		[&segmentTimings](const auto& currentRuntimeNameAndTiming) {
 		segmentTimings.addTiming(currentRuntimeNameAndTiming.first,
 			(timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());

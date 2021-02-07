@@ -32,15 +32,15 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	// aggregate and find min
 	half minimum = INF_BP;
 
-	int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
-	int indexIndexDstShared = startIndexDstShared;
+	unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
+	unsigned int indexIndexDstShared = startIndexDstShared;
 	int halfIndexSharedVals[2] = {1, (2*BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP)-1};
 	int indexIntervalNextHalfIndexSharedVals = 0;
 
 	half dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		dst[currentDisparity] =
@@ -56,7 +56,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	}
 
 //#pragma unroll 64
-	for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+	for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity] =
@@ -83,7 +83,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 	half valToNormalize = 0.0f;
 
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		if (minimum < dst[currentDisparity]) {
@@ -96,13 +96,13 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 	valToNormalize /= ((half) bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
-	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 			currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, 0,
 			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity] -=
@@ -138,13 +138,13 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	// aggregate and find min
 	float minimum = INF_BP;
 
-	int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
-	int indexIndexDstShared = startIndexDstShared;
+	unsigned int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
+	unsigned int indexIndexDstShared = startIndexDstShared;
 
 	float dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity++) {
 		dst[currentDisparity] =
@@ -159,7 +159,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	}
 
 //#pragma unroll 64
-	for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
+	for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity] =
@@ -186,7 +186,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 	float valToNormalize = 0.0f;
 
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		if (minimum < dst[currentDisparity]) {
@@ -199,13 +199,13 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 	valToNormalize /= ((float) bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
-	int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
 			currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, 0,
 			bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
 
 //#pragma unroll 64
-	for (int currentDisparity = 0;
+	for (unsigned int currentDisparity = 0;
 			currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
 			currentDisparity++) {
 		dst[currentDisparity] -=
@@ -316,9 +316,9 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 		float *dataMessageShared = nullptr;
 #endif
 
-		int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
-		int indexIndexDstShared = startIndexDstShared;
-		for (int currentDisparity = 0; currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity++)
+		unsigned int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
+		unsigned int indexIndexDstShared = startIndexDstShared;
+		for (unsigned int currentDisparity = 0; currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity++)
 		{
 			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 			{
@@ -339,7 +339,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			indexIndexDstShared += BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP;;
 		}
 
-		for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+		for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
 					if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 					{
@@ -454,12 +454,12 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 		half *dataMessageShared = nullptr;
 #endif
 
-		int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
-		int indexIndexDstShared = startIndexDstShared;
+		unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
+		unsigned int indexIndexDstShared = startIndexDstShared;
 		int halfIndexSharedVals[2] = {1, (2*BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP)-1};
 		int indexIntervalNextHalfIndexSharedVals = 0;
 
-		for (int currentDisparity = 0; currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity++)
+		for (unsigned int currentDisparity = 0; currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity++)
 		{
 			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 			{
@@ -481,7 +481,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			indexIntervalNextHalfIndexSharedVals = !indexIntervalNextHalfIndexSharedVals;
 		}
 
-		for (int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
+		for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
 					if (checkerboardToUpdate == CHECKERBOARD_PART_0)
 					{

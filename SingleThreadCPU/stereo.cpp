@@ -263,14 +263,14 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 }
 
 template<typename T>
-ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::string& refImagePath, const std::string& testImagePath,
+ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	image<uchar> *img1, *img2, *out;// *edges;
 
 	// load input
-	img1 = loadPGMOrPPMImage(refImagePath.c_str());
-	img2 = loadPGMOrPPMImage(testImagePath.c_str());
+	img1 = loadPGMOrPPMImage(refTestImagePath[0].c_str());
+	img2 = loadPGMOrPPMImage(refTestImagePath[1].c_str());
 	float runtime = 0.0f;
 
 	// compute disparities

@@ -57,8 +57,7 @@ public:
 	static void runStereoTwoImpsAndCompare(std::ostream& outStream, const std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>, 2>& bpProcessingImps)
 	{
 		BpFileHandling bpFileSettings(bp_params::STEREO_SET);
-		const filepathtype refImagePath{bpFileSettings.getRefImagePath()};
-		const filepathtype testImagePath{bpFileSettings.getTestImagePath()};
+		const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};
 		std::array<filepathtype, 2> output_disp;
 		for (unsigned int i=0; i < 2u; i++) {
 			output_disp[i] = bpFileSettings.getCurrentOutputDisparityFilePathAndIncrement();
@@ -69,12 +68,12 @@ public:
 		//load all the BP default settings as set in bpStereoCudaParameters.cuh
 		const BPsettings algSettings;
 
-		std::cout << "Running belief propagation on reference image " << refImagePath << " and test image " << testImagePath << " on " <<
+		std::cout << "Running belief propagation on reference image " << refTestImagePath[0] << " and test image " << refTestImagePath[1] << " on " <<
 				     bpProcessingImps[0]->getBpRunDescription() << " and " << bpProcessingImps[1]->getBpRunDescription() << std::endl;
 		std::array<ProcessStereoSetOutput, 2> run_output;
 
 		for (unsigned int i = 0; i < 2u; i++) {
-			run_output[i] = bpProcessingImps[i]->operator()(refImagePath.string(), testImagePath.string(), algSettings, outStream);
+			run_output[i] = bpProcessingImps[i]->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, outStream);
 			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i].string(), bp_params::SCALE_BP);
 			outStream << "Median " << bpProcessingImps[i]->getBpRunDescription() << " runtime (including transfer time): " <<
 					     run_output[i].runTime << std::endl;

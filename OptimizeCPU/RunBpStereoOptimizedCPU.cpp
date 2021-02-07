@@ -17,7 +17,7 @@ RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
 }
 
 template<typename T>
-ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string& refImagePath, const std::string& testImagePath,
+ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
@@ -34,7 +34,7 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::string&
 	std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCPU = std::make_unique<ProcessOptimizedCPUBP<T, T*>>();
 
 	//can use default memory management since running on CPU
-	return this->processStereoSet(refImagePath, testImagePath, algSettings,
+	return this->processStereoSet(refTestImagePath, algSettings,
 			resultsStream, smoothImageCPU, processImageCPU);
 }
 

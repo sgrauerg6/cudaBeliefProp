@@ -38,11 +38,10 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		const unsigned int yVal = val / currentLevelProperties.widthLevel_;
 		const unsigned int xVal = val % currentLevelProperties.widthLevel_;
 
-		initializeBottomLevelDataStereoPixel<T, T, DISP_VALS>(xVal, yVal,
-				currentLevelProperties, image1PixelsDevice,
-				image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-				dataCostDeviceStereoCheckerboard1, lambda_bp,
-				data_k_bp);
+		initializeBottomLevelDataStereoPixel<T, T, DISP_VALS>(xVal, yVal, currentLevelProperties,
+				image1PixelsDevice, image2PixelsDevice,
+				dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
+				lambda_bp, data_k_bp);
 	}
 }
 
@@ -64,10 +63,9 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 
 		initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardPart,
-				currentLevelProperties,
-				prevLevelProperties, dataCostStereoCheckerboard0,
-				dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
-				offsetNum);
+				currentLevelProperties, prevLevelProperties,
+				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				dataCostDeviceToWriteTo, offsetNum);
 	}
 }
 
@@ -175,8 +173,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 		//checkerboardAdjustment used for indexing into current checkerboard to update
 		const unsigned int checkerboardAdjustment = (checkerboardToUpdate == CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
 		const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
-		const unsigned int endFinal = std::min(
-				currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment, widthCheckerboardRunProcessing);
+		const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
+				widthCheckerboardRunProcessing);
 		const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
 
 		for (unsigned int xVal = 0; xVal < endFinal; xVal += numDataInSIMDVector) {
@@ -259,19 +257,15 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 			if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
 				runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
 						prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-						messageUDeviceCurrentCheckerboard0,
-						messageDDeviceCurrentCheckerboard0,
-						messageLDeviceCurrentCheckerboard0,
-						messageRDeviceCurrentCheckerboard0,
+						messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+						messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 						disc_k_bp_vector, dataAlignedAtXValProcess);
 			}
 			else {
 				runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
 						prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-						messageUDeviceCurrentCheckerboard1,
-						messageDDeviceCurrentCheckerboard1,
-						messageLDeviceCurrentCheckerboard1,
-						messageRDeviceCurrentCheckerboard1,
+						messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+						messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						disc_k_bp_vector, dataAlignedAtXValProcess);
 			}
 		}

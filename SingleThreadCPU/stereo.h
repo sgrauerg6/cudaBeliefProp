@@ -15,6 +15,7 @@
 #include <string>
 #include <chrono>
 #include <iostream>
+#include <array>
 #include "image.h"
 #include "misc.h"
 #include "pnmfile.h"
@@ -29,7 +30,7 @@ template<typename T = float>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
 {
 public:
-	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath, const BPsettings& algSettings, std::ostream& resultsFile) override;
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const BPsettings& algSettings, std::ostream& resultsFile) override;
 	std::string getBpRunDescription() override { return "Single-Thread CPU"; }
 
 private:

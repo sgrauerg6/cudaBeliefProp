@@ -60,7 +60,7 @@ public:
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
-	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 				const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
 		//using SmoothImageCUDA::SmoothImage;
@@ -69,7 +69,7 @@ public:
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
-		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		return this->processStereoSet(refTestImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 };
 
@@ -98,7 +98,7 @@ public:
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator()(const std::string& refImagePath, const std::string& testImagePath,
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 					const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA (half-precision)\n";
@@ -106,7 +106,7 @@ public:
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, float*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
-		return this->processStereoSet<half, half*, float, float*>(refImagePath, testImagePath, algSettings, resultsStream,
+		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 
 /* If processing using half2, not currently supported

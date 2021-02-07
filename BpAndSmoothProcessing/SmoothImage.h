@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ImageDataAndProcessing/BpImage.h"
 #include <algorithm>
 
-#define MIN_SIGMA_VAL_SMOOTH 0.1f //don't smooth input images if SIGMA_BP below this
+constexpr float MIN_SIGMA_VAL_SMOOTH{0.1f}; //don't smooth input images if SIGMA_BP below this
 
 //more parameters for smoothing
-#define WIDTH_SIGMA_1 4.0
-#define MAX_SIZE_FILTER 25
+constexpr float WIDTH_SIGMA_1{4.0f};
+//constexpr unsigned int MAX_SIZE_FILTER{25u};
 
 //functions relating to smoothing the images before running BP
 template <typename T=float*>
@@ -65,11 +65,7 @@ public:
 		}
 		normalizeFilter(mask, sizeFilter);
 
-		std::pair<std::unique_ptr<float[]>, unsigned int> outPair;
-		outPair.first = std::move(mask);
-		outPair.second = sizeFilter;
-
-		return outPair;
+		return {std::move(mask), sizeFilter};
 	}
 
 	//function to use the image filter to apply a guassian filter to the a single images

@@ -11,6 +11,7 @@
 #include <array>
 #include "bpStereoParameters.h"
 #include "BpAndSmoothProcessing/BpUtilFuncts.h"
+#include "../BpAndSmoothProcessing/BpUtilFuncts.h"
 
 //structure to store the settings for the number of levels and iterations
 struct BPsettings
@@ -27,20 +28,61 @@ struct BPsettings
 //structure to store the properties of the current level
 struct levelProperties
 {
-	levelProperties(const std::array<unsigned int, 2>& widthHeight = {0, 0}) :
+	levelProperties(const std::array<unsigned int, 2>& widthHeight = {0, 0}, unsigned long offsetIntoArrays = 0) :
 		widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
-		widthCheckerboardLevel_(bp_util_functs::getCheckerboardWidthTargetDevice(widthLevel_)),
-		paddedWidthCheckerboardLevel_(bp_util_functs::getPaddedCheckerboardWidth(widthCheckerboardLevel_)) {}
+		widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
+		paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
+		offsetIntoArrays_(offsetIntoArrays) {}
 
 	//get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
-	levelProperties getNextLevelProperties() const {
-		return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)});
+	template <typename T>
+	levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
+		const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
+		return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
+				offsetNextLevel);
+	}
+
+	//get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
+	//with the given number of possible movements
+	template <typename T>
+	unsigned int getNumDataInBpArrays(const unsigned int numDisparityValues) const {
+		return getNumDataForAlignedMemoryAtLevel<T>({widthLevel_, heightLevel_}, numDisparityValues);
+	}
+
+	unsigned int getCheckerboardWidthTargetDevice(const unsigned int widthLevel) const {
+		return (unsigned int)std::ceil(((float)widthLevel) / 2.0f);
+	}
+
+	unsigned int getPaddedCheckerboardWidth(const unsigned int checkerboardWidth) const
+	{
+		//add "padding" to checkerboard width if necessary for alignment
+		return ((checkerboardWidth % bp_params::NUM_DATA_ALIGN_WIDTH) == 0) ?
+				checkerboardWidth :
+				(checkerboardWidth + (bp_params::NUM_DATA_ALIGN_WIDTH - (checkerboardWidth % bp_params::NUM_DATA_ALIGN_WIDTH)));
+	}
+
+	template <typename T>
+	unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& widthHeightLevel,
+			const unsigned int totalPossibleMovements) const
+	{
+		const unsigned long numDataAtLevel = (unsigned long)getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(widthHeightLevel[0]))
+			* ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
+		unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
+
+		if ((numBytesAtLevel % bp_params::BYTES_ALIGN_MEMORY) == 0) {
+			return numDataAtLevel;
+		}
+		else {
+			numBytesAtLevel += (bp_params::BYTES_ALIGN_MEMORY - (numBytesAtLevel % bp_params::BYTES_ALIGN_MEMORY));
+			return (numBytesAtLevel / sizeof(T));
+		}
 	}
 
 	unsigned int widthLevel_;
 	unsigned int heightLevel_;
 	unsigned int widthCheckerboardLevel_;
 	unsigned int paddedWidthCheckerboardLevel_;
+	unsigned long offsetIntoArrays_;
 };
 
 //used to define the two checkerboard "parts" that the image is divided into
