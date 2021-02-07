@@ -23,45 +23,37 @@ float16_t getZeroVal<float16_t>()
 }
 
 template<> inline
-float convertValToDifferentDataTypeIfNeeded<float16_t, float>(float16_t valToConvert)
+float convertValToDifferentDataTypeIfNeeded<float16_t, float>(const float16_t valToConvert)
 {
 	return (float)valToConvert;
 }
 
 template<> inline
-float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(float valToConvert)
+float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(const float valToConvert)
 {
 	//seems like simple cast function works
 	return (float16_t)valToConvert;
 }
 
 template<> inline
-void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t>(int xVal, int yVal, const Checkerboard_Parts checkerboardToUpdate,
+void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t>(
+		const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
 		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
-		float16_t* messageUDeviceCurrentCheckerboard0,
-		float16_t* messageDDeviceCurrentCheckerboard0,
-		float16_t* messageLDeviceCurrentCheckerboard0,
-		float16_t* messageRDeviceCurrentCheckerboard0,
-		float16_t* messageUDeviceCurrentCheckerboard1,
-		float16_t* messageDDeviceCurrentCheckerboard1,
-		float16_t* messageLDeviceCurrentCheckerboard1,
-		float16_t* messageRDeviceCurrentCheckerboard1, float disc_k_bp,
-		int offsetData, bool dataAligned)
+		float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
+		float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
+		float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
+		float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
+		const float disc_k_bp, const unsigned int offsetData, const bool dataAligned)
 {
 	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float>(
-				xVal, yVal, checkerboardToUpdate,
-				currentLevelProperties,
+				xVal, yVal, checkerboardToUpdate, currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-				messageUDeviceCurrentCheckerboard0,
-				messageDDeviceCurrentCheckerboard0,
-				messageLDeviceCurrentCheckerboard0,
-				messageRDeviceCurrentCheckerboard0,
-				messageUDeviceCurrentCheckerboard1,
-				messageDDeviceCurrentCheckerboard1,
-				messageLDeviceCurrentCheckerboard1,
-				messageRDeviceCurrentCheckerboard1, disc_k_bp,
-				offsetData, dataAligned);
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				disc_k_bp, offsetData, dataAligned);
 }
 
 template<> inline
@@ -77,22 +69,25 @@ void initializeBottomLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yV
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(int xVal, int yVal, const Checkerboard_Parts checkerboardPart, const levelProperties& currentLevelProperties,
-		const levelProperties& prevLevelProperties, float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1, float16_t* dataCostDeviceToWriteTo, int offsetNum)
+void initializeCurrentLevelDataStereoPixel<float16_t, float16_t>(
+		const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardPart,
+		const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties,
+		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* dataCostDeviceToWriteTo, const unsigned int offsetNum)
 {
-	initializeCurrentLevelDataStereoPixel<float16_t, float>(
-			xVal, yVal, checkerboardPart,
-			currentLevelProperties,
-			prevLevelProperties, dataCostStereoCheckerboard0,
-			dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
-			offsetNum);
+	initializeCurrentLevelDataStereoPixel<float16_t, float>(xVal, yVal, checkerboardPart,
+			currentLevelProperties, prevLevelProperties,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo, offsetNum);
 }
 
 template<> inline
-void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_t>(int xVal, int yVal, const levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard0,
-		float16_t* dataCostStereoCheckerboard1, float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0, float16_t* messageLPrevStereoCheckerboard0,
-		float16_t* messageRPrevStereoCheckerboard0, float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1, float16_t* messageLPrevStereoCheckerboard1,
-		float16_t* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice)
+void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_t>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
+		float16_t* messageLPrevStereoCheckerboard0, float16_t* messageRPrevStereoCheckerboard0,
+		float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1,
+		float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice)
 {
 	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0,
 			messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,

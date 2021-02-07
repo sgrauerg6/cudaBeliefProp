@@ -26,7 +26,7 @@ short getZeroVal<short>()
 }
 
 template<> inline
-float convertValToDifferentDataTypeIfNeeded<short, float>(short data)
+float convertValToDifferentDataTypeIfNeeded<short, float>(const short data)
 {
 #ifdef _WIN32
 	__m128i dataInAvxReg = _mm_cvtsi32_si128(static_cast<int>(data));
@@ -38,7 +38,7 @@ float convertValToDifferentDataTypeIfNeeded<short, float>(short data)
 }
 
 template<> inline
-short convertValToDifferentDataTypeIfNeeded<float, short>(float data)
+short convertValToDifferentDataTypeIfNeeded<float, short>(const float data)
 {
 #ifdef _WIN32
 	__m128 dataInAvxReg = _mm_set_ss(data);
