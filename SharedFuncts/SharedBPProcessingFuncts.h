@@ -141,7 +141,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-template<typename T, typename U, unsigned int DISP_VALS>
+template<typename T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice,
 		float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard0,

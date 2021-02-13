@@ -35,11 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "RunBpStereoSetCUDAMemoryManagement.h"
 
-template <typename T, unsigned int DISP_VALS>
-class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS>
+namespace bp_cuda_device
 {
-public:
-
 	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 	{
 		cudaDeviceProp prop;
@@ -56,6 +53,12 @@ public:
 		resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
 		resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
 	}
+};
+
+template <typename T, unsigned int DISP_VALS>
+class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS>
+{
+public:
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -65,12 +68,14 @@ public:
 	{
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-		retrieveDeviceProperties(0, resultsStream);
+		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCUDA =
 				std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>();
-		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
-		return this->processStereoSet(refTestImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement =
+				std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
+		return this->processStereoSet(refTestImagePath, algSettings, resultsStream,
+				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 };
 
@@ -78,22 +83,6 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
 {
 public:
-	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
-	{
-		cudaDeviceProp prop;
-		cudaGetDeviceProperties(&prop, numDevice);
-		int cudaDriverVersion;
-		cudaDriverGetVersion(&cudaDriverVersion);
-
-		resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
-		resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
-		int cudaRuntimeVersion;
-		cudaRuntimeGetVersion(&cudaRuntimeVersion);
-		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
-
-		resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
-		resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
-	}
 
 	std::string getBpRunDescription() override { return "CUDA (half-precision)"; }
 
@@ -103,24 +92,13 @@ public:
 					const BPsettings& algSettings, std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA (half-precision)\n";
-		retrieveDeviceProperties(0, resultsStream);
+		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, float*>> processImageCUDA =
 				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
-
-/* If processing using half2, not currently supported
-
-		std::cout << "Processing as half2 on GPU\n";
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half2, half2*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
-		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
-		return this->processStereoSet(refImagePath, testImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
-
-*/
-
 	}
 };
 

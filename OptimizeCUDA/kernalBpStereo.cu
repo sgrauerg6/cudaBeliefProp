@@ -165,7 +165,7 @@ __global__ void initializeBottomLevelDataStereo(
 
 	if (withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
 	{
-		initializeBottomLevelDataStereoPixel<T, T, DISP_VALS>(xVal, yVal,
+		initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal,
 				currentLevelProperties, image1PixelsDevice,
 				image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 				dataCostDeviceStereoCheckerboard1, lambda_bp,

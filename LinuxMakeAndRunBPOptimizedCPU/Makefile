@@ -65,5 +65,8 @@ SmoothImageCPU.o: ../OptimizeCPU/SmoothImageCPU.cpp ../OptimizeCPU/SmoothImageCP
 RunBpStereoOptimizedCPU.o: ../OptimizeCPU/RunBpStereoOptimizedCPU.cpp ../OptimizeCPU/RunBpStereoOptimizedCPU.h SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
 	$(CC) ../OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
+#KernelBpStereoCPU.o : ../OptimizeCPU/KernelBpStereoCPU.cpp ../OptimizeCPU/KernelBpStereoCPU.h
+#	$(CC) ../OptimizeCPU/KernelBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
 make clean:
 	rm *.o driverCPUBp

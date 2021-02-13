@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ParameterFiles/bpRunSettings.h"
 
 //include for the "kernal" functions to be run on the CPU
+#include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
 template<typename T, typename U, unsigned int DISP_VALS>
@@ -108,5 +109,130 @@ public:
 				const dataCostData<U>& dataCostDeviceCheckerboard,
 				const checkerboardMessages<U>& messagesDevice) override;
 };
+
+//functions definitions related to running BP to retrieve the movement between the images
+
+//run the given number of iterations of BP at the current level using the given message values in global device memory
+template<typename T, typename U, unsigned int DISP_VALS>
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSettings,
+		const levelProperties& currentLevelProperties,
+		const dataCostData<U>& dataCostDeviceCheckerboard,
+		const checkerboardMessages<U>& messagesDevice)
+{
+	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
+	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
+	{
+		Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? CHECKERBOARD_PART_1 : CHECKERBOARD_PART_0;
+
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU<T, DISP_VALS>(
+				checkboardPartUpdate, currentLevelProperties,
+				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
+				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
+				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
+				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
+				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
+				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+				algSettings.disc_k_bp_);
+	}
+}
+
+//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
+//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
+//in the next level down
+//need two different "sets" of message values to avoid read-write conflicts
+template<typename T, typename U, unsigned int DISP_VALS>
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
+		const levelProperties& currentLevelProperties,
+		const levelProperties& nextlevelProperties,
+		const checkerboardMessages<U>& messagesDeviceCopyFrom,
+		const checkerboardMessages<U>& messagesDeviceCopyTo)
+{
+	for (const auto& checkerboard_part : {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1})
+	{
+		//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
+		//storing the current message values
+		KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<T, DISP_VALS>(
+				checkerboard_part, currentLevelProperties, nextlevelProperties,
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1]);
+	}
+}
+
+//initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
+template<typename T, typename U, unsigned int DISP_VALS>
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
+		const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard)
+{
+	//initialize the data the the "bottom" of the image pyramid
+	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
+			imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
+			dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_);
+}
+
+//initialize the message values with no previous message values...all message values are set to 0
+template<typename T, typename U, unsigned int DISP_VALS>
+void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
+		const levelProperties& currentLevelProperties,
+		const checkerboardMessages<U>& messagesDevice)
+{
+	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
+	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T, DISP_VALS>(
+			currentLevelProperties,
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1]);
+}
+
+
+template<typename T, typename U, unsigned int DISP_VALS>
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
+		const levelProperties& prevLevelProperties,
+		const dataCostData<U>& dataCostDeviceCheckerboard,
+		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo)
+{
+	size_t offsetNum = 0;
+
+	for (const auto& checkerboardAndDataCost : { std::make_pair(
+			CHECKERBOARD_PART_0,
+			dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
+			std::make_pair(CHECKERBOARD_PART_1,
+					dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_) })
+	{
+		KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU<T, DISP_VALS>(
+				checkerboardAndDataCost.first, currentLevelProperties, prevLevelProperties,
+					dataCostDeviceCheckerboard.dataCostCheckerboard0_,
+					dataCostDeviceCheckerboard.dataCostCheckerboard1_,
+					checkerboardAndDataCost.second,
+					((int) offsetNum / sizeof(float)));
+	}
+}
+
+template<typename T, typename U, unsigned int DISP_VALS>
+inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS>::retrieveOutputDisparity(
+		const levelProperties& currentLevelProperties,
+		const dataCostData<U>& dataCostDeviceCheckerboard,
+		const checkerboardMessages<U>& messagesDevice)
+{
+	float* resultingDisparityMapCompDevice = new float[currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_];
+
+	KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T, DISP_VALS>(
+			currentLevelProperties,
+			dataCostDeviceCheckerboard.dataCostCheckerboard0_,
+			dataCostDeviceCheckerboard.dataCostCheckerboard1_,
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+			resultingDisparityMapCompDevice);
+
+	return resultingDisparityMapCompDevice;
+}
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

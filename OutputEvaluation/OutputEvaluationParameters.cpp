@@ -6,3 +6,5 @@
  */
 
 #include "OutputEvaluationParameters.h"
+
+template class OutputEvaluationParameters<float>;

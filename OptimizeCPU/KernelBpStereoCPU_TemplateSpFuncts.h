@@ -69,18 +69,6 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 			disc_k_bp, offsetData, dataAligned);
 }
 
-
-
-template<> inline
-void initializeBottomLevelDataStereoPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
-		float* image1PixelsDevice, float* image2PixelsDevice, short* dataCostDeviceStereoCheckerboard0,
-		short* dataCostDeviceStereoCheckerboard1, const float lambda_bp, const float data_k_bp)
-{
-	initializeBottomLevelDataStereoPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(xVal, yVal, currentLevelProperties, image1PixelsDevice, image2PixelsDevice,
-			dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1, lambda_bp, data_k_bp);
-}
-
-
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void initializeCurrentLevelDataStereoPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardPart,

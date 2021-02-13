@@ -12,6 +12,7 @@
 #include <string>
 #include <memory>
 #include <array>
+#include <thread>
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
@@ -20,14 +21,37 @@
 template <typename T, unsigned int DISP_VALS>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS> {
 public:
-	RunBpStereoOptimizedCPU();
-	virtual ~RunBpStereoOptimizedCPU();
+	RunBpStereoOptimizedCPU() {}
+	virtual ~RunBpStereoOptimizedCPU() {}
 
 	std::string getBpRunDescription() override { return "Optimized CPU"; }
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const BPsettings& algSettings, std::ostream& resultsStream) override;
 };
+
+template<typename T, unsigned int DISP_VALS>
+inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
+		const BPsettings& algSettings, std::ostream& resultsStream)
+{
+	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
+	unsigned int nthreads = std::thread::hardware_concurrency();
+	omp_set_num_threads(nthreads);
+
+	#pragma omp parallel
+	{
+		nthreads = omp_get_num_threads();
+	}
+
+	resultsStream << "Number of OMP threads: " << nthreads << "\n";
+	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>();
+	std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCPU =
+			std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>();
+
+	//can use default memory management since running on CPU
+	return this->processStereoSet(refTestImagePath, algSettings,
+			resultsStream, smoothImageCPU, processImageCPU);
+}
 
 #ifdef _WIN32
 

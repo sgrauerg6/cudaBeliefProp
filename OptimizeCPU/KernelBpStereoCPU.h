@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
+#include "KernelBpStereoCPU_AVX256_SIMDFuncts.h"
 
 class KernelBpStereoCPU
 {
@@ -52,18 +53,6 @@ public:
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
-
-	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	template<typename T, unsigned int DISP_VALS>
-	static void dtStereoSIMD(T f[DISP_VALS]);
-
-	// compute current message
-	template<typename T, typename U, unsigned int DISP_VALS>
-	static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
-			U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
-			U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
-			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -142,18 +131,35 @@ public:
 			T* currentLMessageArray, T* currentRMessageArray,
 			const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing);
 
-	template<typename T, unsigned int DISP_VALS>
+	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp)
-	{
-		printf("Data type not supported\n");
-	}
+			float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+			float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
+			float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
+			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
+			float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp);
+
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
+			short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
+			short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
+			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
+			short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp);
+
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+			double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
+			double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
+			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
+			double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp);
 
 	template<typename T, typename U, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
@@ -165,32 +171,18 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 			const float disc_k_bp, const unsigned int numDataInSIMDVector);
 
-	template<typename T, typename U, unsigned int DISP_VALS>
+	template<typename T, typename U>
 	static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-			const levelProperties& currentLevelProperties, T* inData)
+			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
 	{
 		printf("Data type not supported for loading aligned data\n");
 	}
 
-	template<typename T, typename U, unsigned int DISP_VALS>
+	template<typename T, typename U>
 	static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-			const levelProperties& currentLevelProperties, T* inData)
+			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
 	{
 		printf("Data type not supported for loading unaligned data\n");
-	}
-
-	template<typename T, typename U>
-	static void storePackedDataAligned(
-			const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore)
-	{
-		printf("Data type not supported for storing aligned data\n");
-	}
-
-	template<typename T, typename U>
-	static void storePackedDataUnaligned(
-			const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore)
-	{
-		printf("Data type not supported for storing unaligned data\n");
 	}
 
 	template<typename T>
