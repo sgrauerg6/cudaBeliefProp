@@ -54,8 +54,8 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<typename T, typename U>
-void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
+template<typename T, typename U, unsigned int DISP_VALS>
+void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		const levelProperties& currentLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
 		const checkerboardMessages<U>& messagesDevice)
@@ -92,7 +92,7 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		cudaFuncSetAttribute(runBPIterationUsingCheckerboardUpdates<T>, cudaFuncAttributeMaxDynamicSharedMemorySize, maxbytes);
 
 		//std::cout << "numDataSharedMemory: " << numDataSharedMemory << std::endl;
-		runBPIterationUsingCheckerboardUpdates<T><<<grid, threads, maxbytes>>>(checkboardPartUpdate, currentLevelProperties,
+		runBPIterationUsingCheckerboardUpdates<T, DISP_VALS><<<grid, threads, maxbytes>>>(checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
 				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
@@ -102,7 +102,7 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 				algSettings.disc_k_bp, dataAligned);
 
 #else
-		runBPIterationUsingCheckerboardUpdates<T><<<grid, threads>>>(checkboardPartUpdate, currentLevelProperties,
+		runBPIterationUsingCheckerboardUpdates<T, DISP_VALS><<<grid, threads>>>(checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
 				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
@@ -123,8 +123,8 @@ void ProcessCUDABP<T, U>::runBPAtCurrentLevel(const BPsettings& algSettings,
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<typename T, typename U>
-void ProcessCUDABP<T, U>::copyMessageValuesToNextLevelDown(
+template<typename T, typename U, unsigned int DISP_VALS>
+void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 		const levelProperties& currentLevelProperties,
 		const levelProperties& nextlevelProperties,
 		const checkerboardMessages<U>& messagesDeviceCopyFrom,
@@ -143,7 +143,7 @@ void ProcessCUDABP<T, U>::copyMessageValuesToNextLevelDown(
 	{
 		//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 		//storing the current message values
-		copyPrevLevelToNextLevelBPCheckerboardStereo<T> <<< grid, threads >>> (checkerboard_part, currentLevelProperties, nextlevelProperties,
+		copyPrevLevelToNextLevelBPCheckerboardStereo<T, DISP_VALS> <<< grid, threads >>> (checkerboard_part, currentLevelProperties, nextlevelProperties,
 				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
 				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
 				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0],
@@ -170,8 +170,8 @@ void ProcessCUDABP<T, U>::copyMessageValuesToNextLevelDown(
 
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<typename T, typename U>
-void ProcessCUDABP<T, U>::initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
+template<typename T, typename U, unsigned int DISP_VALS>
+void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
 		const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard)
 {
 	//since this is first kernel run in BP, set to prefer L1 cache for now since no shared memory is used by default
@@ -187,15 +187,15 @@ void ProcessCUDABP<T, U>::initializeDataCosts(const BPsettings& algSettings, con
 	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y);
 
 	//initialize the data the the "bottom" of the image pyramid
-	initializeBottomLevelDataStereo<T><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
+	initializeBottomLevelDataStereo<T, DISP_VALS><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
 			imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_);
 	cudaDeviceSynchronize();
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<typename T, typename U>
-void ProcessCUDABP<T, U>::initializeMessageValsToDefault(
+template<typename T, typename U, unsigned int DISP_VALS>
+void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const levelProperties& currentLevelProperties,
 		const checkerboardMessages<U>& messagesDevice)
 {
@@ -204,7 +204,7 @@ void ProcessCUDABP<T, U>::initializeMessageValsToDefault(
 			  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y));
 
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
-	initializeMessageValsToDefaultKernel<T> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
+	initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1]);
@@ -213,8 +213,8 @@ void ProcessCUDABP<T, U>::initializeMessageValsToDefault(
 }
 
 
-template<typename T, typename U>
-void ProcessCUDABP<T, U>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
+template<typename T, typename U, unsigned int DISP_VALS>
+void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 		const levelProperties& prevLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
 		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo)
@@ -234,7 +234,7 @@ void ProcessCUDABP<T, U>::initializeDataCurrentLevel(const levelProperties& curr
 			std::make_pair(CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
 			std::make_pair(CHECKERBOARD_PART_1,	dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
 	{
-		initializeCurrentLevelDataStereo<T> <<<grid, threads>>>(checkerboardAndDataCost.first,
+		initializeCurrentLevelDataStereo<T, DISP_VALS> <<<grid, threads>>>(checkerboardAndDataCost.first,
 				currentLevelProperties, prevLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
@@ -295,8 +295,8 @@ void ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const levelPropert
 
 #endif
 
-template<typename T, typename U>
-float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
+template<typename T, typename U, unsigned int DISP_VALS>
+float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 		const levelProperties& currentLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
 		const checkerboardMessages<U>& messagesDevice)
@@ -310,7 +310,7 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 	grid.x = (unsigned int) ceil((float) currentLevelProperties.widthCheckerboardLevel_ / (float) threads.x);
 	grid.y = (unsigned int) ceil((float) currentLevelProperties.heightLevel_ / (float) threads.y);
 
-	retrieveOutputDisparityCheckerboardStereoOptimized<T> <<<grid, threads>>>(currentLevelProperties,
+	retrieveOutputDisparityCheckerboardStereoOptimized<T, DISP_VALS> <<<grid, threads>>>(currentLevelProperties,
 			dataCostDeviceCheckerboard.dataCostCheckerboard0_, dataCostDeviceCheckerboard.dataCostCheckerboard1_,
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
@@ -323,13 +323,13 @@ float* ProcessCUDABP<T, U>::retrieveOutputDisparity(
 	return resultingDisparityMapCompDevice;
 }
 
-template class ProcessCUDABP<float, float*>;
-template class ProcessCUDABP<double, double*>;
+template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
+template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 //half precision only supported with compute capability 5.3 and higher
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
 #ifdef CUDA_HALF_SUPPORT
-template class ProcessCUDABP<half, half*>;
+template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 #endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

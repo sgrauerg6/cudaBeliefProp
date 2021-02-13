@@ -8,16 +8,14 @@
 #include "RunBpStereoOptimizedCPU.h"
 #include <thread>
 
-template <typename T>
-RunBpStereoOptimizedCPU<T>::RunBpStereoOptimizedCPU() {
-}
+template <typename T, unsigned int DISP_VALS>
+RunBpStereoOptimizedCPU<T, DISP_VALS>::RunBpStereoOptimizedCPU() { }
 
-template <typename T>
-RunBpStereoOptimizedCPU<T>::~RunBpStereoOptimizedCPU() {
-}
+template <typename T, unsigned int DISP_VALS>
+RunBpStereoOptimizedCPU<T, DISP_VALS>::~RunBpStereoOptimizedCPU() { }
 
-template<typename T>
-ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::array<std::string, 2>& refTestImagePath,
+template<typename T, unsigned int DISP_VALS>
+ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
@@ -31,7 +29,8 @@ ProcessStereoSetOutput RunBpStereoOptimizedCPU<T>::operator()(const std::array<s
 
 	resultsStream << "Number of OMP threads: " << nthreads << "\n";
 	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>();
-	std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCPU = std::make_unique<ProcessOptimizedCPUBP<T, T*>>();
+	std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCPU =
+			std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>();
 
 	//can use default memory management since running on CPU
 	return this->processStereoSet(refTestImagePath, algSettings,
@@ -57,10 +56,10 @@ __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoOptimizedC
 
 #endif //_WIN32
 
-template class RunBpStereoOptimizedCPU<float>;
-template class RunBpStereoOptimizedCPU<double>;
+template class RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
+template class RunBpStereoOptimizedCPU<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 #ifdef COMPILING_FOR_ARM
-template class RunBpStereoOptimizedCPU<float16_t>;
+template class RunBpStereoOptimizedCPU<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 #else
-template class RunBpStereoOptimizedCPU<short>;
+template class RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 #endif //COMPILING_FOR_ARM

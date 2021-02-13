@@ -33,16 +33,16 @@ static void dt(float f[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]) {
 }
 
 // compute message
-template<typename T>
-void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
-		float s2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
-		float s4[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
+template<typename T, unsigned int DISP_VALS>
+void RunBpStereoCPUSingleThread<T, DISP_VALS>::msg(float s1[DISP_VALS],
+		float s2[DISP_VALS], float s3[DISP_VALS],
+		float s4[DISP_VALS], float dst[DISP_VALS],
 		const float disc_k_bp) {
 	float val;
 
 	// aggregate and find min
 	float minimum = bp_consts::INF_BP;
-	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+	for (unsigned int value = 0; value < DISP_VALS; value++) {
 		dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
 		if (dst[value] < minimum)
 			minimum = dst[value];
@@ -53,27 +53,27 @@ void RunBpStereoCPUSingleThread<T>::msg(float s1[bp_params::NUM_POSSIBLE_DISPARI
 
 	// truncate
 	minimum += disc_k_bp;
-	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
+	for (unsigned int value = 0; value < DISP_VALS; value++)
 		if (minimum < dst[value])
 			dst[value] = minimum;
 
 	// normalize
 	val = 0;
-	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
+	for (unsigned int value = 0; value < DISP_VALS; value++)
 		val += dst[value];
 
-	val /= bp_params::NUM_POSSIBLE_DISPARITY_VALUES;
-	for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++)
+	val /= DISP_VALS;
+	for (unsigned int value = 0; value < DISP_VALS; value++)
 		dst[value] -= val;
 }
 
 // computation of data costs
-template<typename T>
-image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThread<T>::comp_data(
+template<typename T, unsigned int DISP_VALS>
+image<float[DISP_VALS]> * RunBpStereoCPUSingleThread<T, DISP_VALS>::comp_data(
 		image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings) {
 	unsigned int width{(unsigned int)img1->width()};
 	unsigned int height{(unsigned int)img1->height()};
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
+	image<float[DISP_VALS]> *data = new image<float[DISP_VALS]>(width, height);
 
 	image<float> *sm1, *sm2;
 	if (algSettings.smoothingSigma_ >= 0.1) {
@@ -85,8 +85,8 @@ image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThr
 	}
 
 	for (unsigned int y = 0; y < height; y++) {
-		for (unsigned int x = bp_params::NUM_POSSIBLE_DISPARITY_VALUES - 1; x < width; x++) {
-			for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+		for (unsigned int x = DISP_VALS - 1; x < width; x++) {
+			for (unsigned int value = 0; value < DISP_VALS; value++) {
 				const float val = abs(imRef(sm1, x, y) - imRef(sm2, x - value, y));
 				imRef(data, x, y)[value] = algSettings.lambda_bp_ * std::min(val, algSettings.data_k_bp_);
 			}
@@ -99,10 +99,10 @@ image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> * RunBpStereoCPUSingleThr
 }
 
 // generate output from current messages
-template<typename T>
-image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data) {
+template<typename T, unsigned int DISP_VALS>
+image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::output(image<float[DISP_VALS]> *u,
+		image<float[DISP_VALS]> *d, image<float[DISP_VALS]> *l,
+		image<float[DISP_VALS]> *r, image<float[DISP_VALS]> *data) {
 	unsigned int width{(unsigned int)data->width()};
 	unsigned int height{(unsigned int)data->height()};
 	image<uchar> *out = new image<uchar>(width, height);
@@ -112,7 +112,7 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_
 			// keep track of best value for current pixel
 			unsigned int best = 0;
 			float best_val = bp_consts::INF_BP;
-			for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+			for (unsigned int value = 0; value < DISP_VALS; value++) {
 				const float val =
 				imRef(u, x, y+1)[value] +
 				imRef(d, x, y-1)[value] +
@@ -133,10 +133,10 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float[bp_params::NUM_
 }
 
 // belief propagation using checkerboard update scheme
-template<typename T>
-void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r,
-		image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data, const unsigned int iter, const float disc_k_bp) {
+template<typename T, unsigned int DISP_VALS>
+void RunBpStereoCPUSingleThread<T, DISP_VALS>::bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
+		image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
+		image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp) {
 	unsigned int width{(unsigned int)data->width()};
 	unsigned int height{(unsigned int)data->height()};
 
@@ -164,14 +164,14 @@ void RunBpStereoCPUSingleThread<T>::bp_cb(image<float[bp_params::NUM_POSSIBLE_DI
 }
 
 // multiscale belief propagation for image restoration
-template<typename T>
-image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
+template<typename T, unsigned int DISP_VALS>
+image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
 	const BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u[bp_params::LEVELS_BP];
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d[bp_params::LEVELS_BP];
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l[bp_params::LEVELS_BP];
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r[bp_params::LEVELS_BP];
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data[bp_params::LEVELS_BP];
+	image<float[DISP_VALS]> *u[bp_params::LEVELS_BP];
+	image<float[DISP_VALS]> *d[bp_params::LEVELS_BP];
+	image<float[DISP_VALS]> *l[bp_params::LEVELS_BP];
+	image<float[DISP_VALS]> *r[bp_params::LEVELS_BP];
+	image<float[DISP_VALS]> *data[bp_params::LEVELS_BP];
 
 	auto timeStart = std::chrono::system_clock::now();
 
@@ -188,10 +188,10 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 		assert(new_width >= 1);
 		assert(new_height >= 1);
 
-		data[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(new_width, new_height);
+		data[i] = new image<float[DISP_VALS]>(new_width, new_height);
 		for (unsigned int y = 0; y < old_height; y++) {
 			for (unsigned int x = 0; x < old_width; x++) {
-				for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+				for (unsigned int value = 0; value < DISP_VALS; value++) {
 					imRef(data[i], x/2, y/2)[value] +=
 							imRef(data[i-1], x, y)[value];
 				}
@@ -207,20 +207,20 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 		// allocate & init memory for messages
 		if ((unsigned int)i == (algSettings.numLevels_ - 1)) {
 			// in the coarsest level messages are initialized to zero
-			u[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
-			d[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
-			l[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
-			r[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height);
+			u[i] = new image<float[DISP_VALS]>(width, height);
+			d[i] = new image<float[DISP_VALS]>(width, height);
+			l[i] = new image<float[DISP_VALS]>(width, height);
+			r[i] = new image<float[DISP_VALS]>(width, height);
 		} else {
 			// initialize messages from values of previous level
-			u[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height, false);
-			d[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height, false);
-			l[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height, false);
-			r[i] = new image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]>(width, height, false);
+			u[i] = new image<float[DISP_VALS]>(width, height, false);
+			d[i] = new image<float[DISP_VALS]>(width, height, false);
+			l[i] = new image<float[DISP_VALS]>(width, height, false);
+			r[i] = new image<float[DISP_VALS]>(width, height, false);
 
 			for (unsigned int y = 0; y < height; y++) {
 				for (unsigned int x = 0; x < width; x++) {
-					for (unsigned int value = 0; value < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; value++) {
+					for (unsigned int value = 0; value < DISP_VALS; value++) {
 						imRef(u[i], x, y)[value] =
 								imRef(u[i+1], x/2, y/2)[value];
 						imRef(d[i], x, y)[value] =
@@ -262,8 +262,8 @@ image<uchar> * RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, imag
 	return out;
 }
 
-template<typename T>
-ProcessStereoSetOutput RunBpStereoCPUSingleThread<T>::operator()(const std::array<std::string, 2>& refTestImagePath,
+template<typename T, unsigned int DISP_VALS>
+ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream)
 {
 	image<uchar> *img1, *img2, *out;// *edges;
@@ -315,11 +315,11 @@ __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoCPUSingleT
 
 #endif //_WIN32
 
-template class RunBpStereoCPUSingleThread<float>;
-template class RunBpStereoCPUSingleThread<double>;
+template class RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
+template class RunBpStereoCPUSingleThread<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 //float16_t data type used for arm (rather than short)
 #ifdef COMPILING_FOR_ARM
-template class RunBpStereoCPUSingleThread<float16_t>;
+template class RunBpStereoCPUSingleThread<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 #else
-template class RunBpStereoCPUSingleThread<short>;
+template class RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
 #endif //COMPILING_FOR_ARM

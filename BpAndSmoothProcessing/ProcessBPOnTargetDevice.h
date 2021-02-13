@@ -25,7 +25,7 @@
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
-template<typename T, typename U, typename V=float*>
+template<typename T, typename U, unsigned int DISP_VALS, typename V=float*>
 class ProcessBPOnTargetDevice {
 public:
 	ProcessBPOnTargetDevice() { }
@@ -152,8 +152,8 @@ public:
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
 //input is images image1Pixels and image1Pixels
 //output is resultingDisparityMap
-template<typename T, typename U, typename V>
-std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
+template<typename T, typename U, unsigned int DISP_VALS, typename V>
+std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DISP_VALS, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
 	const BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice)
 {
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
@@ -169,7 +169,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	//compute level properties which includes offset for each data/message array for each level after the bottom level
 	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
 		//get current level properties from previous level properties
-		bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
+		bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(DISP_VALS));
 	}
 
 	startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
@@ -182,7 +182,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 
 	//data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
 	const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.numLevels_-1].offsetIntoArrays_ +
-			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
+			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(DISP_VALS);
 
 	//assuming that width includes padding
 	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
@@ -240,7 +240,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 	{
 		//allocate the space for the message values in the first checkboard set at the current level
 		messagesDevice[0] = allocateMemoryForCheckerboardMessages(
-				bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
+				bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(DISP_VALS));
 	}
 
 	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
@@ -288,7 +288,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, V>:
 			{
 				//allocate space in the GPU for the message values in the checkerboard set to copy to
 				messagesDevice[(currCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(
-						bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(bp_params::NUM_POSSIBLE_DISPARITY_VALUES));
+						bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(DISP_VALS));
 			}
 
 			const auto timeCopyMessageValuesKernelStart = std::chrono::system_clock::now();

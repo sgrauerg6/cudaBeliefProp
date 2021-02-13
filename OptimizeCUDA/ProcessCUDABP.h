@@ -28,8 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <cuda_fp16.h>
 
-template<typename T, typename U>
-class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U>
+template<typename T, typename U, unsigned int DISP_VALS>
+class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
 	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override {

@@ -26,8 +26,8 @@
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-template<typename T = float>
-class RunBpStereoCPUSingleThread : public RunBpStereoSet<T>
+template<typename T, unsigned int DISP_VALS>
+class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS>
 {
 public:
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const BPsettings& algSettings, std::ostream& resultsFile) override;
@@ -35,15 +35,15 @@ public:
 
 private:
 	// compute message
-	image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings);
-	void msg(float s1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], float s4[bp_params::NUM_POSSIBLE_DISPARITY_VALUES],
-			float dst[bp_params::NUM_POSSIBLE_DISPARITY_VALUES], const float disc_k_bp);
-	image<uchar> *output(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d,
-			image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r,
-			image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data);
-	void bp_cb(image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *u, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *d,
-			image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *l, image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *r,
-			image<float[bp_params::NUM_POSSIBLE_DISPARITY_VALUES]> *data, const unsigned int iter, const float disc_k_bp);
+	image<float[DISP_VALS]> *comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings);
+	void msg(float s1[DISP_VALS], float s2[DISP_VALS], float s3[DISP_VALS], float s4[DISP_VALS],
+			float dst[DISP_VALS], const float disc_k_bp);
+	image<uchar> *output(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
+			image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
+			image<float[DISP_VALS]> *data);
+	void bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
+			image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
+			image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp);
 	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
 };
 

@@ -33,7 +33,7 @@ struct ProcessStereoSetOutput
 	DisparityMap<float> outDisparityMap;
 };
 
-template <typename T = float>
+template <typename T, unsigned int DISP_VALS>
 class RunBpStereoSet {
 public:
 
@@ -52,7 +52,7 @@ protected:
 	template <typename U, typename V, typename W=float, typename X = float*>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
 		const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
-		const std::unique_ptr<ProcessBPOnTargetDevice<U, V>>& runBpStereo, 
+		const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
 		const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement = 
 		std::make_unique<RunBpStereoSetMemoryManagement<
 		#ifdef _WIN32
@@ -65,11 +65,11 @@ protected:
 };
 
 
-template<typename T>
+template<typename T, unsigned int DISP_VALS>
 template<typename U, typename V, typename W, typename X>
-ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
+ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
 	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
-	const std::unique_ptr<ProcessBPOnTargetDevice<U, V>>& runBpStereo,
+	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement)
 {
 	//retrieve the images as well as the width and height
@@ -88,8 +88,8 @@ ProcessStereoSetOutput RunBpStereoSet<T>::processStereoSet(const std::array<std:
 	//allocate data for bp processing on target device ahead of runs if option selected
 	V bpData = nullptr;
 	if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
-		unsigned long numData = levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(widthHeightImages,
-				bp_params::NUM_POSSIBLE_DISPARITY_VALUES, algSettings.numLevels_);
+		unsigned long numData = levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
+				widthHeightImages, DISP_VALS, algSettings.numLevels_);
 		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
 	}
 

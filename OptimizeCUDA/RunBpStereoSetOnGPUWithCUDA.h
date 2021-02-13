@@ -35,8 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "RunBpStereoSetCUDAMemoryManagement.h"
 
-template <typename T = float>
-class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T>
+template <typename T, unsigned int DISP_VALS>
+class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS>
 {
 public:
 
@@ -67,14 +67,15 @@ public:
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		retrieveDeviceProperties(0, resultsStream);
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
-		std::unique_ptr<ProcessBPOnTargetDevice<T, T*>> processImageCUDA = std::make_unique<ProcessCUDABP<T, T*>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCUDA =
+				std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet(refTestImagePath, algSettings, resultsStream, smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 };
 
 template<>
-class RunBpStereoSetOnGPUWithCUDA<short> : public RunBpStereoSet<short>
+class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
 {
 public:
 	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
@@ -104,7 +105,8 @@ public:
 		resultsStream << "CURRENT RUN: GPU WITH CUDA (half-precision)\n";
 		retrieveDeviceProperties(0, resultsStream);
 		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
-		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, float*>> processImageCUDA = std::make_unique<ProcessCUDABP<half, half*>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, float*>> processImageCUDA =
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);

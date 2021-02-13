@@ -33,20 +33,20 @@ public:
 
 	//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 	//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void initializeBottomLevelDataStereoCPU(const levelProperties& currentLevelProperties,
 			float* image1PixelsDevice, float* image2PixelsDevice,
 			T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
 			const float lambda_bp, const float data_k_bp);
 
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void initializeCurrentLevelDataStereoCPU(const Checkerboard_Parts checkerboardPart,
 			const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* dataCostDeviceToWriteTo, const unsigned int offsetNum);
 
 	//initialize the message values at each pixel of the current level to the default value
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void initializeMessageValsToDefaultKernelCPU(const levelProperties& currentLevelProperties,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -54,11 +54,11 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 
 	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void dtStereoSIMD(T f[DISP_VALS]);
 
 	// compute current message
-	template<typename T, typename U, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, typename U, unsigned int DISP_VALS>
 	static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
 			const levelProperties& currentLevelProperties,
 			U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
@@ -67,7 +67,7 @@ public:
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPU(const Checkerboard_Parts checkerboardToUpdate,
 			const levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -77,7 +77,7 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 			const float disc_k_bp);
 
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
 			const Checkerboard_Parts checkerboardPartUpdate, const levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
@@ -89,7 +89,7 @@ public:
 
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Checkerboard_Parts checkerboardPart,
 			const levelProperties& currentLevelProperties, const levelProperties& nextLevelProperties,
 			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -102,7 +102,7 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
 			T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -111,7 +111,7 @@ public:
 			T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
 			float* disparityBetweenImagesDevice);
 
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
 			const levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -120,7 +120,7 @@ public:
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void printDataAndMessageValsToPointKernelCPU(
 			const unsigned int xVal, const unsigned int yVal,
 			const levelProperties& currentLevelProperties,
@@ -132,7 +132,7 @@ public:
 
 	//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 	//and the output message values are save to output message arrays
-	template<typename T, typename U, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, typename U, unsigned int DISP_VALS>
 	static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(const unsigned int xValStartProcessing,
 			const unsigned int yVal, const levelProperties& currentLevelProperties,
 			U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
@@ -142,7 +142,7 @@ public:
 			T* currentLMessageArray, T* currentRMessageArray,
 			const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing);
 
-	template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -155,7 +155,7 @@ public:
 		printf("Data type not supported\n");
 	}
 
-	template<typename T, typename U, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, typename U, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
 			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -165,14 +165,14 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 			const float disc_k_bp, const unsigned int numDataInSIMDVector);
 
-	template<typename T, typename U, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, typename U, unsigned int DISP_VALS>
 	static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 			const levelProperties& currentLevelProperties, T* inData)
 	{
 		printf("Data type not supported for loading aligned data\n");
 	}
 
-	template<typename T, typename U, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+	template<typename T, typename U, unsigned int DISP_VALS>
 	static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 			const levelProperties& currentLevelProperties, T* inData)
 	{
@@ -214,9 +214,9 @@ public:
 
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
-//#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
+#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 //uncomment to enable AVX512 (need to then comment out AVX256)
-#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
+//#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 
 //do nothing
 

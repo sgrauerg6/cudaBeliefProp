@@ -143,7 +143,7 @@ __device__ void msgStereo<half, half, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void initializeBottomLevelDataStereo(
 		const levelProperties currentLevelProperties,
 		float* image1PixelsDevice, float* image2PixelsDevice,
@@ -174,7 +174,7 @@ __global__ void initializeBottomLevelDataStereo(
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void initializeCurrentLevelDataStereo(
 		const Checkerboard_Parts checkerboardPart,
 		const levelProperties currentLevelProperties,
@@ -206,7 +206,7 @@ __global__ void initializeCurrentLevelDataStereo(
 
 
 //initialize the message values at each pixel of the current level to the default value
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void initializeMessageValsToDefaultKernel(
 		const levelProperties currentLevelProperties,
 		T* messageUDeviceCurrentCheckerboard0,
@@ -243,7 +243,7 @@ __global__ void initializeMessageValsToDefaultKernel(
 
 //kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void runBPIterationUsingCheckerboardUpdates(
 		const Checkerboard_Parts checkerboardToUpdate, const levelProperties currentLevelProperties,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -280,7 +280,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 		const Checkerboard_Parts checkerboardPart,
 		const levelProperties currentLevelProperties,
@@ -322,7 +322,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 		const levelProperties currentLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* messageUPrevStereoCheckerboard0,
@@ -356,7 +356,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 	}
 }
 
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void printDataAndMessageValsAtPointKernel(
 		const unsigned int xVal, const unsigned int yVal,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -422,7 +422,7 @@ __global__ void printDataAndMessageValsAtPointKernel(
 }
 
 
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __device__ void printDataAndMessageValsAtPointDevice(
 		const unsigned int xVal, const unsigned int yVal,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -488,7 +488,7 @@ __device__ void printDataAndMessageValsAtPointDevice(
 }
 
 
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __global__ void printDataAndMessageValsToPointKernel(
 		const unsigned int xVal, const unsigned int yVal,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -555,7 +555,7 @@ __global__ void printDataAndMessageValsToPointKernel(
 }
 
 
-template<typename T, unsigned int DISP_VALS = bp_params::NUM_POSSIBLE_DISPARITY_VALUES>
+template<typename T, unsigned int DISP_VALS>
 __device__ void printDataAndMessageValsToPointDevice(
 		const unsigned int xVal, const unsigned int yVal,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,

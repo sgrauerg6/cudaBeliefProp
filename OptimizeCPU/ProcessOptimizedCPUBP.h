@@ -34,8 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //include for the "kernal" functions to be run on the CPU
 #include "KernelBpStereoCPU.h"
 
-template<typename T, typename U>
-class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U>
+template<typename T, typename U, unsigned int DISP_VALS>
+class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
 		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override
@@ -84,29 +84,29 @@ public:
 				const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard) override;
 
 		void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
-					const levelProperties& prevLevelProperties,
-					const dataCostData<U>& dataCostDeviceCheckerboard,
-					const dataCostData<U>& dataCostDeviceCheckerboardWriteTo) override;
+				const levelProperties& prevLevelProperties,
+				const dataCostData<U>& dataCostDeviceCheckerboard,
+				const dataCostData<U>& dataCostDeviceCheckerboardWriteTo) override;
 
 		void initializeMessageValsToDefault(
-					const levelProperties& currentLevelProperties,
-					const checkerboardMessages<U>& messagesDevice) override;
+				const levelProperties& currentLevelProperties,
+				const checkerboardMessages<U>& messagesDevice) override;
 
 		void runBPAtCurrentLevel(const BPsettings& algSettings,
-					const levelProperties& currentLevelProperties,
-					const dataCostData<U>& dataCostDeviceCheckerboard,
-					const checkerboardMessages<U>& messagesDevice) override;
+				const levelProperties& currentLevelProperties,
+				const dataCostData<U>& dataCostDeviceCheckerboard,
+				const checkerboardMessages<U>& messagesDevice) override;
 
 		void copyMessageValuesToNextLevelDown(
-					const levelProperties& currentLevelProperties,
-					const levelProperties& nextlevelProperties,
-					const checkerboardMessages<U>& messagesDeviceCopyFrom,
-					const checkerboardMessages<U>& messagesDeviceCopyTo) override;
+				const levelProperties& currentLevelProperties,
+				const levelProperties& nextlevelProperties,
+				const checkerboardMessages<U>& messagesDeviceCopyFrom,
+				const checkerboardMessages<U>& messagesDeviceCopyTo) override;
 
 		float* retrieveOutputDisparity(
-					const levelProperties& currentLevelProperties,
-					const dataCostData<U>& dataCostDeviceCheckerboard,
-					const checkerboardMessages<U>& messagesDevice) override;
+				const levelProperties& currentLevelProperties,
+				const dataCostData<U>& dataCostDeviceCheckerboard,
+				const checkerboardMessages<U>& messagesDevice) override;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

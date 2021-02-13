@@ -54,7 +54,9 @@ public:
 	//run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 	//saved disparity map file as defined in bpStereoCudaParameters.cuh
 	//static void runStereoTwoImpsAndCompare(std::ostream& outStream, const std::array<RunBpStereoSet<beliefPropProcessingDataType>*, 2>& bpProcessingImps)
-	static void runStereoTwoImpsAndCompare(std::ostream& outStream, const std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType>>, 2>& bpProcessingImps)
+	template<unsigned int DISP_VALS>
+	static void runStereoTwoImpsAndCompare(std::ostream& outStream,
+			const std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType, DISP_VALS>>, 2>& bpProcessingImps)
 	{
 		BpFileHandling bpFileSettings(bp_params::STEREO_SET);
 		const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};

@@ -17,8 +17,8 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 
-template <typename T = float>
-class RunBpStereoOptimizedCPU : public RunBpStereoSet<T> {
+template <typename T, unsigned int DISP_VALS>
+class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS> {
 public:
 	RunBpStereoOptimizedCPU();
 	virtual ~RunBpStereoOptimizedCPU();
