@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <utility>
 
 const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
+const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
 template<typename T, unsigned int NUM_SET>
 void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns)
@@ -74,7 +75,7 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns);
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 
-	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE);
+	std::ofstream resultsStream(BP_ALL_RUNS_OUTPUT_CSV_FILE);
 	for (const auto& currHeader : headersInOrder) {
 		resultsStream << currHeader << ",";
 	}
