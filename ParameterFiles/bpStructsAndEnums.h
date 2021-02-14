@@ -22,7 +22,7 @@ struct BPsettings
 	float smoothingSigma_{bp_params::SIGMA_BP};
 	float lambda_bp_{bp_params::LAMBDA_BP};
 	float data_k_bp_{bp_params::DATA_K_BP};
-	float disc_k_bp_{bp_params::DISC_K_BP};
+	float disc_k_bp_{bp_params::DISC_K_BP[0]};
 };
 
 //structure to store the properties of the current level

@@ -18,20 +18,20 @@ typedef std::filesystem::path filepathtype;
 
 class RunAndEvaluateBpResults {
 public:
-	static void printParameters(std::ostream& resultsStream)
+	static void printParameters(const unsigned int numStereoSet, std::ostream& resultsStream)
 	{
 		bool optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT;
-		resultsStream << "Stereo Set: " << bp_params::STEREO_SET << "\n";
+		resultsStream << "Stereo Set: " << bp_params::STEREO_SET[numStereoSet] << "\n";
 		resultsStream << "Memory Optimization Level: " << optLevel << "\n";
 		resultsStream << "Indexing Optimization Level: "
 					<< OPTIMIZED_INDEXING_SETTING << "\n";
-		resultsStream << "BP Processing Data Type: "
-					<< BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
+		//resultsStream << "BP Processing Data Type: "
+		//			<< BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
 		resultsStream << "Num Possible Disparity Values: "
-					<< bp_params::NUM_POSSIBLE_DISPARITY_VALUES << "\n";
+					<< bp_params::NUM_POSSIBLE_DISPARITY_VALUES[numStereoSet] << "\n";
 		resultsStream << "Num BP Levels: " << bp_params::LEVELS_BP << "\n";
 		resultsStream << "Num BP Iterations: " << bp_params::ITER_BP << "\n";
-		resultsStream << "DISC_K_BP: " << bp_params::DISC_K_BP << "\n";
+		resultsStream << "DISC_K_BP: " << bp_params::DISC_K_BP[numStereoSet] << "\n";
 		resultsStream << "DATA_K_BP: " << bp_params::DATA_K_BP << "\n";
 		resultsStream << "LAMBDA_BP: " << bp_params::LAMBDA_BP << "\n";
 		resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
@@ -54,11 +54,13 @@ public:
 	//run the CUDA stereo implementation on the default reference and test images with the result saved to the default
 	//saved disparity map file as defined in bpStereoCudaParameters.cuh
 	//static void runStereoTwoImpsAndCompare(std::ostream& outStream, const std::array<RunBpStereoSet<beliefPropProcessingDataType>*, 2>& bpProcessingImps)
-	template<unsigned int DISP_VALS>
+	template<typename T, unsigned int DISP_VALS>
 	static void runStereoTwoImpsAndCompare(std::ostream& outStream,
-			const std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType, DISP_VALS>>, 2>& bpProcessingImps)
+			const std::array<std::unique_ptr<RunBpStereoSet<T, DISP_VALS>>, 2>& bpProcessingImps,
+			const unsigned int numStereoSet)
 	{
-		BpFileHandling bpFileSettings(bp_params::STEREO_SET);
+		printParameters(numStereoSet, outStream);
+		BpFileHandling bpFileSettings(bp_params::STEREO_SET[numStereoSet]);
 		const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};
 		std::array<filepathtype, 2> output_disp;
 		for (unsigned int i=0; i < 2u; i++) {
@@ -76,7 +78,7 @@ public:
 
 		for (unsigned int i = 0; i < 2u; i++) {
 			run_output[i] = bpProcessingImps[i]->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, outStream);
-			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i].string(), bp_params::SCALE_BP);
+			run_output[i].outDisparityMap.saveDisparityMap(output_disp[i].string(), bp_params::SCALE_BP[numStereoSet]);
 			outStream << "Median " << bpProcessingImps[i]->getBpRunDescription() << " runtime (including transfer time): " <<
 					     run_output[i].runTime << std::endl;
 		}
@@ -85,7 +87,7 @@ public:
 			std::cout << "Output disparity map from run at " << output_disp[i] << std::endl;
 		}
 
-		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP);
+		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
 		for (unsigned int i = 0; i < 2u; i++) {
 			outStream << std::endl << bpProcessingImps[i]->getBpRunDescription() << " output vs. Ground Truth result:\n";
 			compareDispMaps(run_output[i].outDisparityMap, groundTruthDisparityMap, outStream);

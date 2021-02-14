@@ -48,7 +48,6 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 #endif
 */
 
-
 //functions directed related to running BP to retrieve the movement between the images
 
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
@@ -166,9 +165,6 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 	}
 }
 
-
-
-
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T, typename U, unsigned int DISP_VALS>
 void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
@@ -211,7 +207,6 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 
 	cudaDeviceSynchronize();
 }
-
 
 template<typename T, typename U, unsigned int DISP_VALS>
 void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
@@ -323,13 +318,19 @@ float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 	return resultingDisparityMapCompDevice;
 }
 
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
+template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
+template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
 //half precision only supported with compute capability 5.3 and higher
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
 #ifdef CUDA_HALF_SUPPORT
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>;
+template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
 #endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

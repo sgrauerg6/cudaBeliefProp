@@ -32,12 +32,55 @@ int main(int argc, char** argv)
 	std::ofstream resultsStream("output.txt", std::ofstream::out);
 	//std::ostream resultsStream(std::cout.rdbuf());
 
-	RunAndEvaluateBpResults::printParameters(resultsStream);
-
-	std::array<std::unique_ptr<RunBpStereoSet<beliefPropProcessingDataType, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>>, 2> bpProcessingImps = {
-			std::make_unique<RunBpStereoOptimizedCPU<beliefPropProcessingDataType, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<beliefPropProcessingDataType, bp_params::NUM_POSSIBLE_DISPARITY_VALUES>>()
+	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>, 2> bpProcess_stereoSet0_float = {
+			std::make_unique<RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>()
 	};
 
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<bp_params::NUM_POSSIBLE_DISPARITY_VALUES>(resultsStream, bpProcessingImps);
+	resultsStream << "DataType: FLOAT" << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(resultsStream, bpProcess_stereoSet0_float, 0);
+	resultsStream << std::endl << std::endl;
+
+	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>, 2> bpProcess_stereoSet1_float = {
+			std::make_unique<RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>()
+	};
+
+	resultsStream << "DataType: FLOAT" << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(resultsStream, bpProcess_stereoSet1_float, 1);
+	resultsStream << std::endl << std::endl;
+
+	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>, 2> bpProcess_stereoSet2_float = {
+			std::make_unique<RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>()
+	};
+
+	resultsStream << "DataType: FLOAT" << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(resultsStream, bpProcess_stereoSet2_float, 2);
+
+	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>, 2> bpProcess_stereoSet0_half = {
+			std::make_unique<RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>()
+	};
+
+	resultsStream << "DataType: HALF" << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(resultsStream, bpProcess_stereoSet0_half, 0);
+	resultsStream << std::endl << std::endl;
+
+	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>, 2> bpProcess_stereoSet1_half = {
+			std::make_unique<RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>()
+	};
+
+	resultsStream << "DataType: HALF" << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(resultsStream, bpProcess_stereoSet1_half, 1);
+	resultsStream << std::endl << std::endl;
+
+	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>, 2> bpProcess_stereoSet2_half = {
+			std::make_unique<RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>()
+	};
+
+	resultsStream << "DataType: HALF" << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(resultsStream, bpProcess_stereoSet2_half, 2);
 }

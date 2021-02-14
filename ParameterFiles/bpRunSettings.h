@@ -58,7 +58,7 @@ namespace bp_params
 #endif
 
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
+/*#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
 typedef float beliefPropProcessingDataType;
 const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "FLOAT";
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
@@ -71,10 +71,10 @@ typedef float16_t beliefPropProcessingDataType;
 typedef short beliefPropProcessingDataType;
 #endif
 const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF";
-//not currently supporting half2 data type
+//not currently supporting half2 data type*/
 /*#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 typedef short beliefPropProcessingDataType;*/
 //const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF2";
-#endif
+//#endif
 
 #endif /* BPRUNSETTINGS_H_ */

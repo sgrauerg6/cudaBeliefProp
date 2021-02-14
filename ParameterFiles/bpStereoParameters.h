@@ -30,82 +30,52 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "bpParametersFromPython.h"
 #include <string>
+#include <array>
 
 namespace bp_consts
 {
 	constexpr float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
 }
 
-enum class image_set_options
+enum image_set_options
 {
-	TSUKUBA_IMAGES_E,
-	CONES_IMAGES_QUARTER_SIZE_E,
-	CONES_IMAGES_HALF_SIZE_E,
-	CONES_IMAGES_FULL_SIZE_E,
+	TSUKUBA_IMAGES_E = 0,
+	CONES_IMAGES_QUARTER_SIZE_E = 1,
+	CONES_IMAGES_HALF_SIZE_E = 2,
+	//CONES_IMAGES_FULL_SIZE_E,
 	//IMAGE_SET_PARAMETERS_FROM_PYTHON_E
 };
 
-constexpr image_set_options IMAGE_SET_TO_PROCESS_E = image_set_options::CONES_IMAGES_HALF_SIZE_E;
+constexpr image_set_options IMAGE_SET_TO_PROCESS_E{image_set_options::CONES_IMAGES_HALF_SIZE_E};
 
-constexpr unsigned int getNumDispVals(const image_set_options imageSet)
-{
-	if (imageSet == image_set_options::TSUKUBA_IMAGES_E) {
-		return 16;
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E) {
-		return 64;
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E) {
-		return 128;
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E) {
-		return 256;
-	}
-
-	return 0;
+struct BpStereoSet {
+	const char* name;
+	unsigned int numDispVals;
+	unsigned int scaleFactor;
 };
 
-constexpr unsigned int getScaleFactor(const image_set_options imageSet)
-{
-	if (imageSet == image_set_options::TSUKUBA_IMAGES_E) {
-		return 16;
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E) {
-		return 4;
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E) {
-		return 2;
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E) {
-		return 1;
-	}
-
-	return 0;
-};
-
-constexpr char* getStereoSetString(const image_set_options imageSet)
-{
-	if (imageSet == image_set_options::TSUKUBA_IMAGES_E) {
-		return (char*)"tsukubaSet";
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_QUARTER_SIZE_E) {
-		return (char*)"conesQuarterSize";
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_HALF_SIZE_E) {
-		return (char*)"conesHalfSize";
-	}
-	if (imageSet == image_set_options::CONES_IMAGES_FULL_SIZE_E) {
-		return (char*)"cones";
-	}
-
-	return nullptr;
+constexpr std::array<BpStereoSet, 3> STEREO_SETS_TO_PROCESS{
+	//declare stereo sets to process with (in order) name, num disparity values, and scale factor
+	//order is the same as in image_set_options enum
+	BpStereoSet{"tsukubaSet", 16, 16},
+	BpStereoSet{"conesQuarterSize", 64, 4},
+	BpStereoSet{"conesHalfSize", 128, 2}
 };
 
 namespace bp_params
 {
-	constexpr unsigned int NUM_POSSIBLE_DISPARITY_VALUES = getNumDispVals(IMAGE_SET_TO_PROCESS_E);
-	constexpr unsigned int SCALE_BP = getScaleFactor(IMAGE_SET_TO_PROCESS_E);
-	constexpr char* STEREO_SET = getStereoSetString(IMAGE_SET_TO_PROCESS_E);
+	constexpr std::array<unsigned int, 3> NUM_POSSIBLE_DISPARITY_VALUES{
+		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].numDispVals,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].numDispVals,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals};
+	constexpr std::array<unsigned int, 3> SCALE_BP{
+		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].scaleFactor,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].scaleFactor,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].scaleFactor};
+	constexpr std::array<const char*, 3> STEREO_SET{
+		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].name,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].name,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].name};
 
 	//number of belief propagation stereo runs of same image set
 	constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
@@ -120,7 +90,10 @@ namespace bp_params
 	constexpr unsigned int LEVELS_BP = 5;
 
 	//truncation of discontinuity cost
-	constexpr float DISC_K_BP = ((float)getNumDispVals(IMAGE_SET_TO_PROCESS_E)) / 7.5f;
+	constexpr std::array<float, 3> DISC_K_BP{
+		(float)STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].numDispVals / 7.5f,
+		(float)STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].numDispVals / 7.5f,
+		(float)STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals / 7.5f};
 
 	// truncation of data cost
 	constexpr float DATA_K_BP = 15.0f;
