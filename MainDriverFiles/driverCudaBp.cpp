@@ -27,6 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunAndEvaluateBpResults.h"
 #include <memory>
 #include <fstream>
+#include <map>
+#include <string>
+#include <tuple>
+#include <utility>
 
 void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 {
@@ -38,7 +42,6 @@ void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
 	resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
 	resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
 }
-
 
 int main(int argc, char** argv)
 {
@@ -60,7 +63,15 @@ int main(int argc, char** argv)
 	resultsStream << "DataType: FLOAT" << std::endl;
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
 			resultsStream, bpProcess_stereoSet0_float, 0);
-	resultsStream << std::endl << std::endl;
+
+	resultsStream.close();
+
+	std::map<std::string, std::vector<std::string>> resultsAcrossRuns;
+	auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first] = std::vector{currRunResult.second};
+	}
+	resultsStream.open("output.txt", std::ofstream::out);
 
 	retrieveDeviceProperties(0, resultsStream);
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
@@ -74,7 +85,14 @@ int main(int argc, char** argv)
 	resultsStream << "DataType: FLOAT" << std::endl;
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
 			resultsStream, bpProcess_stereoSet1_float, 1);
-	resultsStream << std::endl << std::endl;
+
+	resultsStream.close();
+
+	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	}
+	resultsStream.open("output.txt", std::ofstream::out);
 
 	retrieveDeviceProperties(0, resultsStream);
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
@@ -89,11 +107,20 @@ int main(int argc, char** argv)
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
 			resultsStream, bpProcess_stereoSet2_float, 2);
 
-#ifdef CUDA_HALF_SUPPORT
-
 	retrieveDeviceProperties(0, resultsStream);
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+	resultsStream.close();
+
+#ifdef CUDA_HALF_SUPPORT
+
+	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	}
+
+	resultsStream.open("output.txt", std::ofstream::out);
 
 	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>, 2> bpProcess_stereoSet0_half = {
 				std::make_unique<RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(),
@@ -103,11 +130,18 @@ int main(int argc, char** argv)
 	resultsStream << "DataType: HALF" << std::endl;
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
 			resultsStream, bpProcess_stereoSet0_half, 0);
-	resultsStream << std::endl << std::endl;
 
 	retrieveDeviceProperties(0, resultsStream);
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+	resultsStream.close();
+
+	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	}
+	resultsStream.open("output.txt", std::ofstream::out);
 
 	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>, 2> bpProcess_stereoSet1_half = {
 			std::make_unique<RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(),
@@ -117,11 +151,18 @@ int main(int argc, char** argv)
 	resultsStream << "DataType: HALF" << std::endl;
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
 			resultsStream, bpProcess_stereoSet1_half, 1);
-	resultsStream << std::endl << std::endl;
 
 	retrieveDeviceProperties(0, resultsStream);
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+	resultsStream.close();
+
+	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	}
+	resultsStream.open("output.txt", std::ofstream::out);
 
 	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>, 2> bpProcess_stereoSet2_half = {
 			std::make_unique<RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(),
@@ -132,5 +173,36 @@ int main(int argc, char** argv)
 	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
 			resultsStream, bpProcess_stereoSet2_half, 2);
 
+	retrieveDeviceProperties(0, resultsStream);
+	cudaRuntimeGetVersion(&cudaRuntimeVersion);
+	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+	resultsStream.close();
+
+	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	}
+
 #endif //CUDA_HALF_SUPPORT
+
+	std::vector<std::string> headersInOrder;
+	std::tie(resultsCurrentRun, headersInOrder) = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt");
+	for (auto& currRunResult : resultsCurrentRun) {
+		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	}
+	resultsStream.open("outputResults.csv", std::ofstream::out);
+
+	for (auto& currHeader : headersInOrder) {
+		resultsStream << currHeader << ",";
+	}
+	resultsStream << std::endl;
+
+	for (unsigned int i=0; i < resultsAcrossRuns.begin()->second.size(); i++) {
+		for (auto& currHeader : headersInOrder) {
+			resultsStream << resultsAcrossRuns[currHeader][i] << ",";
+		}
+		resultsStream << std::endl;
+	}
+	resultsStream.close();
 }

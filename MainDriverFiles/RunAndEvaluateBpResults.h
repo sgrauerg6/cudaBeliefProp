@@ -11,6 +11,9 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include <memory>
 #include <array>
+#include <fstream>
+#include <map>
+#include <vector>
 #include "../FileProcessing/BpFileHandling.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
@@ -18,6 +21,29 @@ typedef std::filesystem::path filepathtype;
 
 class RunAndEvaluateBpResults {
 public:
+	static std::pair<std::map<std::string, std::string>, std::vector<std::string>> getResultsMappingFromFile(const std::string& fileName) {
+		std::map<std::string, std::string> resultsMapping;
+		std::vector<std::string> headersInOrder;
+		std::ifstream resultsFile(fileName);
+
+		std::string line;
+		constexpr char delim{':'};
+		while (std::getline(resultsFile, line))
+		{
+		    //get "header" and corresponding result that are divided by ":"
+			std::stringstream ss(line);
+			std::string header, result;
+			std::getline(ss, header, delim);
+			std::getline(ss, result, delim);
+			if (header.size() > 0) {
+				resultsMapping[header] = result;
+				headersInOrder.push_back(header);
+			}
+		}
+
+		return {resultsMapping, headersInOrder};
+	}
+
 	static void printParameters(const unsigned int numStereoSet, std::ostream& resultsStream)
 	{
 		bool optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT;
