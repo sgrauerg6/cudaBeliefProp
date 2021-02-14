@@ -36,6 +36,12 @@ public:
 			std::getline(ss, header, delim);
 			std::getline(ss, result, delim);
 			if (header.size() > 0) {
+				unsigned int i{0u};
+				const std::string origHeader{header};
+				while (resultsMapping.count(header) > 0) {
+					i++;
+					header = origHeader + "_" + std::to_string(i);
+				}
 				resultsMapping[header] = result;
 				headersInOrder.push_back(header);
 			}

@@ -31,104 +31,51 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <tuple>
 #include <utility>
 
+const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
+
+template<typename T, unsigned int NUM_SET>
+void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns)
+{
+	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
+
+	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
+			std::make_unique<RunBpStereoOptimizedCPU<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
+			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
+	};
+
+	resultsStream << "DataType:" << dataTypeName << std::endl;
+	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+			resultsStream, runBpStereo, NUM_SET);
+	resultsStream.close();
+
+	auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
+	for (auto& currRunResult : resultsCurrentRun) {
+		if (resultsAcrossRuns.count(currRunResult.first)) {
+			resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+		}
+		else {
+			resultsAcrossRuns[currRunResult.first] = std::vector{currRunResult.second};
+		}
+	}
+}
+
 int main(int argc, char** argv)
 {
-	std::ofstream resultsStream("output.txt", std::ofstream::out);
-	//std::ostream resultsStream(std::cout.rdbuf());
-
-	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>, 2> bpProcess_stereoSet0_float = {
-			std::make_unique<RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>()
-	};
-
-	resultsStream << "DataType: FLOAT" << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(resultsStream, bpProcess_stereoSet0_float, 0);
-	resultsStream.close();
-
 	std::map<std::string, std::vector<std::string>> resultsAcrossRuns;
-	auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first] = std::vector{currRunResult.second};
-	}
-	resultsStream.open("output.txt", std::ofstream::out);
+	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float, 1>("FLOAT", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns);
+	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 
-	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>, 2> bpProcess_stereoSet1_float = {
-			std::make_unique<RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>()
-	};
-
-	resultsStream << "DataType: FLOAT" << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(resultsStream, bpProcess_stereoSet1_float, 1);
-	resultsStream.close();
-
-	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
-	}
-	resultsStream.open("output.txt", std::ofstream::out);
-
-	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>, 2> bpProcess_stereoSet2_float = {
-			std::make_unique<RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>()
-	};
-
-	resultsStream << "DataType: FLOAT" << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(resultsStream, bpProcess_stereoSet2_float, 2);
-	resultsStream.close();
-
-	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
-	}
-	resultsStream.open("output.txt", std::ofstream::out);
-
-	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>, 2> bpProcess_stereoSet0_half = {
-			std::make_unique<RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>()
-	};
-
-	resultsStream << "DataType: HALF" << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(resultsStream, bpProcess_stereoSet0_half, 0);
-	resultsStream.close();
-
-	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
-	}
-	resultsStream.open("output.txt", std::ofstream::out);
-
-	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>, 2> bpProcess_stereoSet1_half = {
-			std::make_unique<RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>()
-	};
-
-	resultsStream << "DataType: HALF" << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(resultsStream, bpProcess_stereoSet1_half, 1);
-	resultsStream.close();
-
-	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
-	}
-	resultsStream.open("output.txt", std::ofstream::out);
-
-	std::array<std::unique_ptr<RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>, 2> bpProcess_stereoSet2_half = {
-			std::make_unique<RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>()
-	};
-
-	resultsStream << "DataType: HALF" << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(resultsStream, bpProcess_stereoSet2_half, 2);
-	resultsStream.close();
-
-	std::vector<std::string> headersInOrder;
-	std::tie(resultsCurrentRun, headersInOrder) = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt");
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
-	}
-	resultsStream.open("outputResults.csv", std::ofstream::out);
-
-	for (auto& currHeader : headersInOrder) {
+	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE);
+	for (const auto& currHeader : headersInOrder) {
 		resultsStream << currHeader << ",";
 	}
 	resultsStream << std::endl;
