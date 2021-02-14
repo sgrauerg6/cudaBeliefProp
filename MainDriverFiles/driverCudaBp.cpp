@@ -179,11 +179,6 @@ int main(int argc, char** argv)
 
 	resultsStream.close();
 
-	resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile("output.txt").first;
-	for (auto& currRunResult : resultsCurrentRun) {
-		resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
-	}
-
 #endif //CUDA_HALF_SUPPORT
 
 	std::vector<std::string> headersInOrder;
