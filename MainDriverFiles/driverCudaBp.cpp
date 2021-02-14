@@ -101,15 +101,7 @@ int main(int argc, char** argv)
 
 	for (unsigned int i=0; i < resultsAcrossRuns.begin()->second.size(); i++) {
 		for (auto& currHeader : headersInOrder) {
-			if (!(resultsAcrossRuns.count(currHeader))) {
-				resultsStream << "NO HEADER RESULTS,";
-			}
-			else if (i >= resultsAcrossRuns[currHeader].size()) {
-				resultsStream << "MISSING,";
-			}
-			else {
-				resultsStream << resultsAcrossRuns[currHeader][i] << ",";
-			}
+			resultsStream << resultsAcrossRuns[currHeader][i] << ",";
 		}
 		resultsStream << std::endl;
 	}
