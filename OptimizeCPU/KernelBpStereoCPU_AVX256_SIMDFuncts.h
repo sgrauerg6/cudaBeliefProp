@@ -140,8 +140,7 @@ namespace bp_simd_processing
 
 		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
 		{
-			/*if (minimum < dst[currentDisparity])
-			{
+			/*if (minimum < dst[currentDisparity]) {
 				dst[currentDisparity] = minimum;
 			}*/
 			dstFloat[currentDisparity] = _mm256_min_ps(minimum, dstFloat[currentDisparity]);
@@ -222,8 +221,7 @@ namespace bp_simd_processing
 
 		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
 		{
-			/*if (minimum < dst[currentDisparity])
-			{
+			/*if (minimum < dst[currentDisparity]) {
 				dst[currentDisparity] = minimum;
 			}*/
 			dst[currentDisparity] = _mm256_min_ps(minimum, dst[currentDisparity]);
@@ -304,8 +302,7 @@ namespace bp_simd_processing
 
 		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
 		{
-			/*if (minimum < dst[currentDisparity])
-			{
+			/*if (minimum < dst[currentDisparity]) {
 				dst[currentDisparity] = minimum;
 			}*/
 			dst[currentDisparity] = _mm256_min_pd(minimum, dst[currentDisparity]);

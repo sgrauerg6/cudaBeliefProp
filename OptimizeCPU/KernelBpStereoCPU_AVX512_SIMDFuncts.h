@@ -149,10 +149,10 @@ namespace bp_simd_processing
 			//dst[currentDisparity] -= valToNormalize;
 			dst[currentDisparity] = _mm512_sub_ps(dst[currentDisparity], valToNormalize);
 			if (dataAligned) {
-				storePackedDataAligned<float, __m512 >(destMessageArrayIndex,
+				storePackedDataAligned(destMessageArrayIndex,
 						dstMessageArray, dst[currentDisparity]);
 			} else {
-				storePackedDataUnaligned<float, __m512 >(destMessageArrayIndex,
+				storePackedDataUnaligned(destMessageArrayIndex,
 						dstMessageArray, dst[currentDisparity]);
 			}
 			if constexpr (OPTIMIZED_INDEXING_SETTING)
@@ -230,15 +230,11 @@ namespace bp_simd_processing
 			dst[currentDisparity] = _mm512_sub_pd(dst[currentDisparity], valToNormalize);
 			if (dataAligned)
 			{
-				storePackedDataAligned<double, __m512d >(destMessageArrayIndex,
-						dstMessageArray,
-						dst[currentDisparity]);
+				storePackedDataAligned(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
 			}
 			else
 			{
-				storePackedDataUnaligned<double, __m512d >(destMessageArrayIndex,
-						dstMessageArray,
-						dst[currentDisparity]);
+				storePackedDataUnaligned(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
 			}
 			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
@@ -312,12 +308,10 @@ namespace bp_simd_processing
 			//dst[currentDisparity] -= valToNormalize;
 			dstFloat[currentDisparity] = _mm512_sub_ps(dstFloat[currentDisparity], valToNormalize);
 			if (dataAligned) {
-				storePackedDataAligned<short, __m256i >(destMessageArrayIndex,
-						dstMessageArray,
+				storePackedDataAligned(destMessageArrayIndex, dstMessageArray,
 						_mm512_cvtps_ph(dstFloat[currentDisparity], 0));
 			} else {
-				storePackedDataUnaligned<short, __m256i >(destMessageArrayIndex,
-						dstMessageArray,
+				storePackedDataUnaligned(destMessageArrayIndex, dstMessageArray,
 						_mm512_cvtps_ph(dstFloat[currentDisparity], 0));
 			}
 			if constexpr (OPTIMIZED_INDEXING_SETTING)
