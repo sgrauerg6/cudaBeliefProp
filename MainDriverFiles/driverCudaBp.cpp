@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
 const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
-void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
+void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 {
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties( &prop, numDevice);
@@ -65,8 +65,8 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 			resultsStream, runBpStereo, NUM_SET);
 	resultsStream.close();
 
-	auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
-	for (auto& currRunResult : resultsCurrentRun) {
+	const auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
+	for (const auto& currRunResult : resultsCurrentRun) {
 		if (resultsAcrossRuns.count(currRunResult.first)) {
 			resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
 		}
