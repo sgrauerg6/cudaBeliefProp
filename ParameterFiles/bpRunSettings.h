@@ -40,13 +40,13 @@ constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 #define AVX_512 1
 #define NEON 2
 #define NO_VECTORIZATION 3
-#define CURRENT_CPU_VECTORIZATION_SETTING AVX_256
+#define CPU_VECTORIZATION_SETTING AVX_256
 
-#if (CURRENT_CPU_VECTORIZATION_SETTING == NEON)
+#if (CPU_VECTORIZATION_SETTING == NEON)
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_NEON};
-#elif (CURRENT_CPU_VECTORIZATION_SETTING == AVX_256)
+#elif (CPU_VECTORIZATION_SETTING == AVX_256)
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_256};
-#elif (CURRENT_CPU_VECTORIZATION_SETTING == AVX_512)
+#elif (CPU_VECTORIZATION_SETTING == AVX_512)
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_512};
 #else
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::NO_CPU_VECTORIZATION};

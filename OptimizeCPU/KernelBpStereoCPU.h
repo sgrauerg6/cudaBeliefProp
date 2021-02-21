@@ -28,11 +28,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 
 //headers to include differ depending on architecture and CPU vectorization setting
-#if (CURRENT_CPU_VECTORIZATION_SETTING == AVX_256)
+#ifdef COMPILING_FOR_ARM
+
+#if (CPU_VECTORIZATION_SETTING == NEON)
+#include "KernelBpStereoCPU_NEON_SIMDFuncts.h"
+#endif //CPU_OPTIMIZATION_SETTING == USE_NEON
+
+#else
+
+#if (CPU_VECTORIZATION_SETTING == AVX_256)
 #include "KernelBpStereoCPU_AVX256_SIMDFuncts.h"
-#elif (CURRENT_CPU_VECTORIZATION_SETTING == AVX_512)
+#elif (CPU_VECTORIZATION_SETTING == AVX_512)
 #include "KernelBpStereoCPU_AVX512_SIMDFuncts.h"
-#endif
+#endif //CPU_VECTORIZATION_SETTING
+
+#endif //COMPILING_FOR_ARM
 
 class KernelBpStereoCPU
 {
@@ -203,7 +213,7 @@ public:
 
 #include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
 
-#if (CURRENT_CPU_VECTORIZATION_SETTING == NEON)
+#if (CPU_VECTORIZATION_SETTING == NEON)
 
 #include "KernelBpStereoCPU_NEON.h"
 
@@ -214,9 +224,9 @@ public:
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
-#if (CURRENT_CPU_VECTORIZATION_SETTING == AVX_256)
+#if (CPU_VECTORIZATION_SETTING == AVX_256)
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-#elif (CURRENT_CPU_VECTORIZATION_SETTING == AVX_512)
+#elif (CPU_VECTORIZATION_SETTING == AVX_512)
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 #endif
 
