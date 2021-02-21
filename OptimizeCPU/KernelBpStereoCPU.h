@@ -26,8 +26,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
-//#include "KernelBpStereoCPU_AVX256_SIMDFuncts.h"
-#include "KernelBpStereoCPU_AVX512_SIMDFuncts.h"
+#include "KernelBpStereoCPU_AVX256_SIMDFuncts.h"
+//#include "KernelBpStereoCPU_AVX512_SIMDFuncts.h"
 
 class KernelBpStereoCPU
 {
@@ -207,9 +207,9 @@ public:
 
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
-//#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
+#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 //uncomment to enable AVX512 (need to then comment out AVX256)
-#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
+//#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 
 //do nothing
 

@@ -16,8 +16,7 @@
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-		const Checkerboard_Parts checkerboardToUpdate,
-		const levelProperties& currentLevelProperties,
+		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
 		float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -37,8 +36,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 }
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(const Checkerboard_Parts checkerboardToUpdate,
-		const levelProperties& currentLevelProperties,
+void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
 		short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
