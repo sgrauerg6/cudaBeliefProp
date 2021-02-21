@@ -73,11 +73,11 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns);
 #ifdef COMPILING_FOR_ARM
-	runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns);
+	/*runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<float16_t, 1>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<float16_t, 2>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<float16_t, 3>("HALF", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<float16_t, 4>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float16_t, 4>("HALF", resultsAcrossRuns);*/
 #else
 	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns);
