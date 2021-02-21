@@ -141,7 +141,7 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<floa
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(const unsigned int xVal, const unsigned int yVal,
+void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
@@ -153,7 +153,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_P
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(const unsigned int xVal, const unsigned int yVal,
+void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
@@ -165,7 +165,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_P
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(const unsigned int xVal, const unsigned int yVal,
+void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
@@ -177,7 +177,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_P
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(const unsigned int xVal, const unsigned int yVal,
+void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
@@ -189,7 +189,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_P
 }
 
 template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(const unsigned int xVal, const unsigned int yVal,
+void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
