@@ -120,11 +120,11 @@ namespace bp_simd_processing
 					valToNormalize);
 			if (dataAligned)
 			{
-				storePackedDataAligned<float, float32x4_t >(destMessageArrayIndex,
+				storePackedDataAligned(destMessageArrayIndex,
 						dstMessageArray, dst[currentDisparity]);
 			} else
 			{
-				storePackedDataUnaligned<float, float32x4_t >(destMessageArrayIndex,
+				storePackedDataUnaligned(destMessageArrayIndex,
 						dstMessageArray, dst[currentDisparity]);
 			}
 			if constexpr (OPTIMIZED_INDEXING_SETTING)
@@ -199,12 +199,12 @@ namespace bp_simd_processing
 			dstFloat[currentDisparity] = vsubq_f32(dstFloat[currentDisparity], valToNormalize);
 			if (dataAligned)
 			{
-				storePackedDataAligned<float16_t, float16x4_t >(destMessageArrayIndex, dstMessageArray,
+				storePackedDataAligned(destMessageArrayIndex, dstMessageArray,
 						vcvt_f16_f32(dstFloat[currentDisparity]));
 			}
 			else
 			{
-				storePackedDataUnaligned<float16_t, float16x4_t >(destMessageArrayIndex, dstMessageArray,
+				storePackedDataUnaligned(destMessageArrayIndex, dstMessageArray,
 						vcvt_f16_f32(dstFloat[currentDisparity]));
 			}
 			if constexpr (OPTIMIZED_INDEXING_SETTING)
