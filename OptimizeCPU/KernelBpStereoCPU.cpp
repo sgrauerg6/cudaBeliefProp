@@ -284,7 +284,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const float disc_k_bp)
 {
-
 	if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_256)
 	{
 		//only use AVX-256 if width of processing checkerboard is over 10

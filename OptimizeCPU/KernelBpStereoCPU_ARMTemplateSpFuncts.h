@@ -8,7 +8,6 @@
 #ifndef KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_
 
-
 #include "KernelBpStereoCPU.h"
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
@@ -335,8 +334,6 @@ void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_
 			messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice);
 }
 
-#endif
-
-
+#endif //COMPILING_FOR_ARM
 
 #endif /* KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_ */
