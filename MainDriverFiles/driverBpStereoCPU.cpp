@@ -31,6 +31,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <tuple>
 #include <utility>
 
+#ifdef COMPILING_FOR_ARM
+#include <arm_neon.h> //needed for float16_t type
+#endif
+
 const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
 const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
@@ -68,11 +72,20 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns);
+#ifdef COMPILING_FOR_ARM
+	runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float16_t, 1>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float16_t, 2>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float16_t, 3>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float16_t, 4>("HALF", resultsAcrossRuns);
+#else
 	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns);
 	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns);
+#endif
+
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 
 	std::ofstream resultsStream(BP_ALL_RUNS_OUTPUT_CSV_FILE);
