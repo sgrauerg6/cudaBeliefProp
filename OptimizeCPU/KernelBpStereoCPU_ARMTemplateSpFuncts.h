@@ -145,7 +145,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DIS
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
-	initializeBottomLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(xVal, yVal,
+	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
 			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 			dataCostDeviceStereoCheckerboard1, lambda_bp,
@@ -157,7 +157,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DIS
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
-	initializeBottomLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(xVal, yVal,
+	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
 			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 			dataCostDeviceStereoCheckerboard1, lambda_bp,
@@ -169,7 +169,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DIS
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
-	initializeBottomLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(xVal, yVal,
+	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
 			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 			dataCostDeviceStereoCheckerboard1, lambda_bp,
@@ -181,7 +181,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DIS
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
-	initializeBottomLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(xVal, yVal,
+	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
 			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 			dataCostDeviceStereoCheckerboard1, lambda_bp,
@@ -193,7 +193,7 @@ void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DIS
 		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
 		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
 {
-	initializeBottomLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(xVal, yVal,
+	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(xVal, yVal,
 			currentLevelProperties, image1PixelsDevice,
 			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 			dataCostDeviceStereoCheckerboard1, lambda_bp,
