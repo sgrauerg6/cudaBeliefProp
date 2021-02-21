@@ -19,7 +19,7 @@
 #define DATA_TYPE_PROCESSING_HALF_TWO 3
 
 enum class cpu_vectorization_setting {
-	NO_CPU_VECTORIZATION_CODE, USE_AVX_256, USE_AVX_512, USE_NEON
+	NO_CPU_VECTORIZATION, USE_AVX_256, USE_AVX_512, USE_NEON
 };
 
 //If image set parameters from python, then use optimization settings set in current iteration in python script
@@ -34,7 +34,23 @@ enum class cpu_vectorization_setting {
 constexpr bool OPTIMIZED_INDEXING_SETTING{true};
 constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
 constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
+
+//define and set CPU vectorization options using preprocessor (since needed to determine what code gets compiled to support vectorization)
+#define AVX_256 0
+#define AVX_512 1
+#define NEON 2
+#define NO_VECTORIZATION 3
+#define CURRENT_CPU_VECTORIZATION_SETTING AVX_256
+
+#if (CURRENT_CPU_VECTORIZATION_SETTING == NEON)
+constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_NEON};
+#elif (CURRENT_CPU_VECTORIZATION_SETTING == AVX_256)
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_256};
+#elif (CURRENT_CPU_VECTORIZATION_SETTING == AVX_512)
+constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_512};
+#else
+constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::NO_CPU_VECTORIZATION};
+#endif
 
 constexpr unsigned int getBytesAlignMemory(cpu_vectorization_setting inVectSetting) {
 	//avx512 requires data to be aligned on 64 bytes
@@ -52,6 +68,7 @@ namespace bp_params
 	constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_OPTIMIZATION_SETTING);
 }
 
+//uncomment if compiling/running on ARM architecture
 //#define COMPILING_FOR_ARM
 #ifdef COMPILING_FOR_ARM
 #include <arm_neon.h> //needed for float16_t type
