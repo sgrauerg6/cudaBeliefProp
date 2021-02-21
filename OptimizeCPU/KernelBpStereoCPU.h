@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //headers to include differ depending on architecture and CPU vectorization setting
 #ifdef COMPILING_FOR_ARM
+#include <arm_neon.h>
 
 #if (CPU_VECTORIZATION_SETTING == NEON)
 #include "KernelBpStereoCPU_NEON_SIMDFuncts.h"
@@ -176,6 +177,18 @@ public:
 			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
 			double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
 			const float disc_k_bp);
+
+#ifdef COMPILING_FOR_ARM
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+			float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
+			float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
+			float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
+			float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp);
+#endif //COMPILING_FOR_ARM
 
 	template<typename T, typename U, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
