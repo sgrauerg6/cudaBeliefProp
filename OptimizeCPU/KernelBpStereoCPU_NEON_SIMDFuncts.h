@@ -83,7 +83,7 @@ namespace bp_simd_processing
 		}
 
 		//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-		dtStereoSIMD<float32x4_t>(dst);
+		dtStereoSIMD<DISP_VALS>(dst);
 
 		// truncate
 		//minimum += disc_k_bp;
@@ -163,7 +163,7 @@ namespace bp_simd_processing
 		}
 
 		//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-		dtStereoSIMD<float32x4_t>(dstFloat);
+		dtStereoSIMD<DISP_VALS>(dstFloat);
 
 		// truncate
 		//minimum += disc_k_bp;
