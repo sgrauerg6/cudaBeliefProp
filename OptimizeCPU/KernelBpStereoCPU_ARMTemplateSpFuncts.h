@@ -139,67 +139,6 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<floa
 				disc_k_bp, offsetData, dataAligned);
 }
 
-template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
-		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
-{
-	std::cout << "initializeBottomLevelDataStereoPixel NUM_POSSIBLE_DISPARITY_VALUES[0]" << std::endl;
-	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(xVal, yVal,
-			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-			dataCostDeviceStereoCheckerboard1, lambda_bp,
-			data_k_bp);
-}
-
-template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
-		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
-{
-	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(xVal, yVal,
-			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-			dataCostDeviceStereoCheckerboard1, lambda_bp,
-			data_k_bp);
-}
-
-template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
-		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
-{
-	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(xVal, yVal,
-			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-			dataCostDeviceStereoCheckerboard1, lambda_bp,
-			data_k_bp);
-}
-
-template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
-		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
-{
-	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(xVal, yVal,
-			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-			dataCostDeviceStereoCheckerboard1, lambda_bp,
-			data_k_bp);
-}
-
-template<> inline
-void initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice,
-		float16_t* dataCostDeviceStereoCheckerboard0, float16_t* dataCostDeviceStereoCheckerboard1, float lambda_bp, float data_k_bp)
-{
-	initializeBottomLevelDataStereoPixel<float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(xVal, yVal,
-			currentLevelProperties, image1PixelsDevice,
-			image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
-			dataCostDeviceStereoCheckerboard1, lambda_bp,
-			data_k_bp);
-}
-
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void initializeCurrentLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
