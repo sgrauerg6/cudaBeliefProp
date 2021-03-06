@@ -30,7 +30,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		const levelProperties& currentLevelProperties,
 		float* image1PixelsDevice, float* image2PixelsDevice,
 		T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
-		const float lambda_bp, const float data_k_bp)
+		const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
 	for (unsigned int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
@@ -41,7 +41,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
 				image1PixelsDevice, image2PixelsDevice,
 				dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
-				lambda_bp, data_k_bp);
+				lambda_bp, data_k_bp, bpSettingsDispVals);
 	}
 }
 
@@ -53,7 +53,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 		const levelProperties& currentLevelProperties,
 		const levelProperties& prevLevelProperties,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
-		T* dataCostDeviceToWriteTo, const unsigned int offsetNum)
+		T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
@@ -65,7 +65,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 				xVal, yVal, checkerboardPart,
 				currentLevelProperties, prevLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-				dataCostDeviceToWriteTo, offsetNum);
+				dataCostDeviceToWriteTo, offsetNum, bpSettingsDispVals);
 	}
 }
 
@@ -76,7 +76,8 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const levelPrope
 		T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1)
+		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
@@ -89,7 +90,8 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const levelPrope
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1);
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				bpSettingsDispVals);
 	}
 }
 
@@ -102,7 +104,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		float disc_k_bp)
+		float disc_k_bp, const unsigned int bpSettingsDispVals)
 {
 	const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 
@@ -123,7 +125,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-				disc_k_bp, 0, dataAligned);
+				disc_k_bp, 0, dataAligned, bpSettingsDispVals);
 	}
 }
 
@@ -155,6 +157,35 @@ void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing);
 }
 
+template<typename T, typename U>
+void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
+		const unsigned int xValStartProcessing, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		U* prevUMessage, U* prevDMessage,
+		U* prevLMessage, U* prevRMessage,
+		U* dataMessage,
+		T* currentUMessageArray, T* currentDMessageArray,
+		T* currentLMessageArray, T* currentRMessageArray,
+		const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing,
+		const unsigned int bpSettingsDispVals)
+{
+	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+			prevLMessage, prevRMessage, dataMessage, currentUMessageArray,
+			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
+
+	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevDMessage,
+			prevLMessage, prevRMessage, dataMessage, currentDMessageArray,
+			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
+
+	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+			prevDMessage, prevRMessage, dataMessage, currentRMessageArray,
+			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
+
+	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+			prevDMessage, prevLMessage, dataMessage, currentLMessageArray,
+			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
+}
+
 template<typename T, typename U, unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
 		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
@@ -163,110 +194,227 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const unsigned int numDataInSIMDVector)
+		const float disc_k_bp, const unsigned int numDataInSIMDVector,
+		const unsigned int bpSettingsDispVals)
 {
 	const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 	const U disc_k_bp_vector = createSIMDVectorSameData<U>(disc_k_bp);
 
-#pragma omp parallel for
-	for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
-		//checkerboardAdjustment used for indexing into current checkerboard to update
-		const unsigned int checkerboardAdjustment = (checkerboardToUpdate == CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
-		const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
-		const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
-				widthCheckerboardRunProcessing);
-		const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
+	if constexpr (DISP_VALS > 0) {
+		#pragma omp parallel for
+		for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+			//checkerboardAdjustment used for indexing into current checkerboard to update
+			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
+			const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
+			const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
+					widthCheckerboardRunProcessing);
+			const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
 
-		for (unsigned int xVal = 0; xVal < endFinal; xVal += numDataInSIMDVector) {
-			unsigned int xValProcess = xVal;
+			for (unsigned int xVal = 0; xVal < endFinal; xVal += numDataInSIMDVector) {
+				unsigned int xValProcess = xVal;
 
-			//need this check first for case where endXAvxStart is 0 and startX is 1
-			//if past the last AVX start (since the next one would go beyond the row), set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
-			//may be a few pixels that are computed twice but that's OK
-			if (xValProcess > endXSIMDVectorStart) {
-				xValProcess = endFinal - numDataInSIMDVector;
-			}
+				//need this check first for case where endXAvxStart is 0 and startX is 1
+				//if past the last AVX start (since the next one would go beyond the row), set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
+				//may be a few pixels that are computed twice but that's OK
+				if (xValProcess > endXSIMDVectorStart) {
+					xValProcess = endFinal - numDataInSIMDVector;
+				}
 
-			//not processing at x=0 if startX is 1 (this will cause this processing to be less aligned than ideal for this iteration)
-			xValProcess = std::max(startX, xValProcess);
+				//not processing at x=0 if startX is 1 (this will cause this processing to be less aligned than ideal for this iteration)
+				xValProcess = std::max(startX, xValProcess);
 
-			//check if the memory is aligned for AVX instructions at xValProcess location
-			const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				//check if the memory is aligned for AVX instructions at xValProcess location
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
 
-			//initialize arrays for data and message values
-			U dataMessage[DISP_VALS], prevUMessage[DISP_VALS], prevDMessage[DISP_VALS], prevLMessage[DISP_VALS], prevRMessage[DISP_VALS];
+				//initialize arrays for data and message values
+				U dataMessage[DISP_VALS], prevUMessage[DISP_VALS], prevDMessage[DISP_VALS], prevLMessage[DISP_VALS], prevRMessage[DISP_VALS];
 
-			//load using aligned instructions when possible
-			if (dataAlignedAtXValProcess) {
-				for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
-					if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
-						dataMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
-						prevUMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard1);
-						prevDMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard1);
-						prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard1);
-						prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
+				//load using aligned instructions when possible
+				if (dataAlignedAtXValProcess) {
+					for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+							dataMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
+							prevUMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard1);
+							prevDMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard1);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard1);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
+						}
+						else //checkerboardPartUpdate == CHECKERBOARD_PART_1
+						{
+							dataMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
+							prevUMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard0);
+							prevDMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard0);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard0);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard0);
+						}
 					}
-					else //checkerboardPartUpdate == CHECKERBOARD_PART_1
-					{
-						dataMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
-						prevUMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard0);
-						prevDMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard0);
-						prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard0);
-						prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard0);
+				} else {
+					for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+							dataMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
+							prevUMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard1);
+							prevDMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard1);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard1);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
+						} else //checkerboardPartUpdate == CHECKERBOARD_PART_1
+						{
+							dataMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
+							prevUMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard0);
+							prevDMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard0);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard0);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard0);
+						}
 					}
 				}
-			} else {
-				for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
-					if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
-						dataMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
-						prevUMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard1);
-						prevDMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard1);
-						prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard1);
-						prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
-					} else //checkerboardPartUpdate == CHECKERBOARD_PART_1
-					{
-						dataMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
-						prevUMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageUDeviceCurrentCheckerboard0);
-						prevDMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageDDeviceCurrentCheckerboard0);
-						prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard0);
-						prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-								currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard0);
-					}
+
+				if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+					runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
+							prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+							messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+							messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+							disc_k_bp_vector, dataAlignedAtXValProcess);
+				}
+				else {
+					runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
+							prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+							messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+							messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+							disc_k_bp_vector, dataAlignedAtXValProcess);
 				}
 			}
+		}
+	}
+	else {
+		#pragma omp parallel for
+		for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+			//checkerboardAdjustment used for indexing into current checkerboard to update
+			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
+			const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
+			const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
+					widthCheckerboardRunProcessing);
+			const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
 
-			if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
-				runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
-						prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-						messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-						messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-						disc_k_bp_vector, dataAlignedAtXValProcess);
-			}
-			else {
-				runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
-						prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
-						messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-						messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-						disc_k_bp_vector, dataAlignedAtXValProcess);
+			for (unsigned int xVal = 0; xVal < endFinal; xVal += numDataInSIMDVector) {
+				unsigned int xValProcess = xVal;
+
+				//need this check first for case where endXAvxStart is 0 and startX is 1
+				//if past the last AVX start (since the next one would go beyond the row), set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
+				//may be a few pixels that are computed twice but that's OK
+				if (xValProcess > endXSIMDVectorStart) {
+					xValProcess = endFinal - numDataInSIMDVector;
+				}
+
+				//not processing at x=0 if startX is 1 (this will cause this processing to be less aligned than ideal for this iteration)
+				xValProcess = std::max(startX, xValProcess);
+
+				//check if the memory is aligned for AVX instructions at xValProcess location
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+
+				//initialize arrays for data and message values
+				U* dataMessage = new U[bpSettingsDispVals];
+				U* prevUMessage = new U[bpSettingsDispVals];
+				U* prevDMessage = new U[bpSettingsDispVals];
+				U* prevLMessage = new U[bpSettingsDispVals];
+				U* prevRMessage = new U[bpSettingsDispVals];
+
+				//load using aligned instructions when possible
+				if (dataAlignedAtXValProcess) {
+					for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+							dataMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0);
+							prevUMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUDeviceCurrentCheckerboard1);
+							prevDMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDDeviceCurrentCheckerboard1);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLDeviceCurrentCheckerboard1);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRDeviceCurrentCheckerboard1);
+						}
+						else //checkerboardPartUpdate == CHECKERBOARD_PART_1
+						{
+							dataMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1);
+							prevUMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUDeviceCurrentCheckerboard0);
+							prevDMessage[currentDisparity] = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDDeviceCurrentCheckerboard0);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLDeviceCurrentCheckerboard0);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRDeviceCurrentCheckerboard0);
+						}
+					}
+				} else {
+					for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+						if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+							dataMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0);
+							prevUMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUDeviceCurrentCheckerboard1);
+							prevDMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDDeviceCurrentCheckerboard1);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLDeviceCurrentCheckerboard1);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRDeviceCurrentCheckerboard1);
+						} else //checkerboardPartUpdate == CHECKERBOARD_PART_1
+						{
+							dataMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1);
+							prevUMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUDeviceCurrentCheckerboard0);
+							prevDMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDDeviceCurrentCheckerboard0);
+							prevLMessage[currentDisparity] = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLDeviceCurrentCheckerboard0);
+							prevRMessage[currentDisparity] = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
+									currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRDeviceCurrentCheckerboard0);
+						}
+					}
+				}
+
+				if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+					runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
+							prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+							messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+							messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+							disc_k_bp_vector, dataAlignedAtXValProcess, bpSettingsDispVals);
+				}
+				else {
+					runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
+							prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+							messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+							messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+							disc_k_bp_vector, dataAlignedAtXValProcess, bpSettingsDispVals);
+				}
+
+				delete [] dataMessage;
+				delete [] prevUMessage;
+				delete [] prevDMessage;
+				delete [] prevLMessage;
+				delete [] prevRMessage;
 			}
 		}
 	}
@@ -282,7 +430,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp)
+		const float disc_k_bp, const unsigned int bpSettingsNumDispVals)
 {
 	if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_256)
 	{
@@ -295,7 +443,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp);
+					disc_k_bp, bpSettingsNumDispVals);
 		}
 		else
 		{
@@ -305,7 +453,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp);
+					disc_k_bp, bpSettingsNumDispVals);
 		}
 	}
 	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_512)
@@ -319,7 +467,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp);
+					disc_k_bp, bpSettingsNumDispVals);
 		}
 		else
 		{
@@ -329,7 +477,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp);
+					disc_k_bp, bpSettingsNumDispVals);
 		}
 	}
 	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_NEON)
@@ -342,7 +490,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp);
+					disc_k_bp, bpSettingsNumDispVals);
 		}
 		else
 		{
@@ -352,7 +500,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp);
+					disc_k_bp, bpSettingsNumDispVals);
 		}
 	}
 	else
@@ -363,7 +511,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-				disc_k_bp);
+				disc_k_bp, bpSettingsNumDispVals);
 	}
 }
 
@@ -380,7 +528,8 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Ch
 		T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1)
+		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
@@ -397,7 +546,8 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Ch
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1);
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				bpSettingsDispVals);
 	}
 }
 
@@ -409,7 +559,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
-		float* disparityBetweenImagesDevice) {
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals) {
 	#pragma omp parallel for
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 	{
@@ -423,7 +573,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
-				disparityBetweenImagesDevice);
+				disparityBetweenImagesDevice, bpSettingsDispVals);
 	}
 }
 

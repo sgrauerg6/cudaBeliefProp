@@ -55,13 +55,13 @@ public:
 	static void initializeBottomLevelDataStereoCPU(const levelProperties& currentLevelProperties,
 			float* image1PixelsDevice, float* image2PixelsDevice,
 			T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
-			const float lambda_bp, const float data_k_bp);
+			const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals);
 
 	template<typename T, unsigned int DISP_VALS>
 	static void initializeCurrentLevelDataStereoCPU(const Checkerboard_Parts checkerboardPart,
 			const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
-			T* dataCostDeviceToWriteTo, const unsigned int offsetNum);
+			T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals);
 
 	//initialize the message values at each pixel of the current level to the default value
 	template<typename T, unsigned int DISP_VALS>
@@ -69,7 +69,8 @@ public:
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
+			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+			const unsigned int bpSettingsDispVals);
 
 	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -81,7 +82,7 @@ public:
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp);
+			const float disc_k_bp, const unsigned int bpSettingsNumDispVals);
 
 	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
@@ -91,7 +92,7 @@ public:
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp);
+			const float disc_k_bp, const unsigned int bpSettingsDispVals);
 
 	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
@@ -105,7 +106,8 @@ public:
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
+			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+			const unsigned int bpSettingsDispVals);
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 	template<typename T, unsigned int DISP_VALS>
@@ -115,7 +117,7 @@ public:
 			T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
 			T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
 			T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
-			float* disparityBetweenImagesDevice);
+			float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
 
 	template<typename T, unsigned int DISP_VALS>
 	static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
@@ -148,6 +150,18 @@ public:
 			T* currentLMessageArray, T* currentRMessageArray,
 			const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing);
 
+	template<typename T, typename U>
+	static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
+			const unsigned int xValStartProcessing, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			U* prevUMessage, U* prevDMessage,
+			U* prevLMessage, U* prevRMessage,
+			U* dataMessage,
+			T* currentUMessageArray, T* currentDMessageArray,
+			T* currentLMessageArray, T* currentRMessageArray,
+			const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing,
+			const unsigned int bpSettingsDispVals);
+
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
@@ -156,7 +170,7 @@ public:
 			float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
 			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
 			float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp);
+			const float disc_k_bp, const unsigned int bpSettingsDispVals = 0);
 
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
@@ -166,7 +180,7 @@ public:
 			short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
 			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
 			short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp);
+			const float disc_k_bp, const unsigned int bpSettingsDispVals = 0);
 
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
@@ -176,7 +190,7 @@ public:
 			double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
 			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
 			double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp);
+			const float disc_k_bp, const unsigned int bpSettingsDispVals = 0);
 
 #ifdef COMPILING_FOR_ARM
 	template<unsigned int DISP_VALS>
@@ -198,7 +212,8 @@ public:
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp, const unsigned int numDataInSIMDVector);
+			const float disc_k_bp, const unsigned int numDataInSIMDVector,
+			const unsigned int bpSettingsDispVals);
 
 	template<typename T, typename U>
 	static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,

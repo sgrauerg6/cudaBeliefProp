@@ -47,7 +47,8 @@ void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 }
 
 template<typename T, unsigned int NUM_SET>
-void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns)
+void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns,
+		const bool isTemplatedDispVals)
 {
 	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
 	retrieveDeviceProperties(0, resultsStream);
@@ -60,9 +61,20 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
 	};
 
+	//load all the BP default settings as set in bpStereoCudaParameters.cuh
+	BPsettings algSettings;
+	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
+
 	resultsStream << "DataType:" << dataTypeName << std::endl;
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-			resultsStream, runBpStereo, NUM_SET);
+	if (isTemplatedDispVals) {
+		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+				resultsStream, runBpStereo, NUM_SET, algSettings);
+	}
+	else {
+		std::unique_ptr<RunBpStereoSet<T, 0>> optCUDADispValsNoTemplate = std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, 0>>();
+		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+				resultsStream, optCUDADispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
+	}
 	resultsStream.close();
 
 	const auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
@@ -79,17 +91,27 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 int main(int argc, char** argv)
 {
 	std::map<std::string, std::vector<std::string>> resultsAcrossRuns;
-	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<float, 1>("FLOAT", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 1>("FLOAT", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 1>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, false);
 #ifdef CUDA_HALF_SUPPORT
-	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns);
-	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns);
+	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, false);
 #endif //CUDA_HALF_SUPPORT
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 

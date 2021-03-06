@@ -80,6 +80,29 @@ public:
 };
 
 template<>
+class RunBpStereoSetOnGPUWithCUDA<short, 0> : public RunBpStereoSet<short, 0>
+{
+public:
+
+	std::string getBpRunDescription() override { return "CUDA"; }
+
+	//if type is specified as short, process as half on GPU
+	//note that half is considered a data type for 16-bit floats in CUDA
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+					const BPsettings& algSettings, std::ostream& resultsStream) override
+	{
+		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
+		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, 0, float*>> processImageCUDA =
+				std::make_unique<ProcessCUDABP<half, half*, 0>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
+		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
+				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+	}
+};
+
+template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>
 {
 public:

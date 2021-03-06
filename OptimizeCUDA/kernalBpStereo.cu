@@ -46,6 +46,107 @@ constexpr unsigned int DISP_VALS_4{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]};
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
+__device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		half* messageValsNeighbor1,
+		half* messageValsNeighbor2,
+		half* messageValsNeighbor3,
+		half* dataCosts, half* dstMessageArray,
+		const half disc_k_bp, const bool dataAligned,
+		const unsigned int bpSettingsDispVals)
+{
+	// aggregate and find min
+	half minimum = bp_consts::INF_BP;
+
+	half* dst = new half[bpSettingsDispVals];
+
+	for (unsigned int currentDisparity = 0;
+			currentDisparity < bpSettingsDispVals;
+			currentDisparity++) {
+		dst[currentDisparity] = messageValsNeighbor1[currentDisparity]
+				+ messageValsNeighbor2[currentDisparity]
+				+ messageValsNeighbor3[currentDisparity]
+				+ dataCosts[currentDisparity];
+		if (dst[currentDisparity] < minimum)
+			minimum = dst[currentDisparity];
+	}
+
+	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	dtStereo<half>(dst, bpSettingsDispVals);
+
+	// truncate
+	minimum += disc_k_bp;
+
+	// normalize
+	half valToNormalize = 0;
+
+	for (unsigned int currentDisparity = 0;
+			currentDisparity < bpSettingsDispVals;
+			currentDisparity++)
+	{
+		if (minimum < dst[currentDisparity])
+		{
+			dst[currentDisparity] = minimum;
+		}
+
+		valToNormalize += dst[currentDisparity];
+	}
+
+	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
+	//set destination vector to 0 for all disparities
+	//note that may cause results to differ a little from ideal
+	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				bpSettingsDispVals);
+
+		for (unsigned int currentDisparity = 0;
+				currentDisparity < bpSettingsDispVals;
+				currentDisparity++) {
+			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
+			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			{
+				destMessageArrayIndex +=
+					currentLevelProperties.paddedWidthCheckerboardLevel_;
+			}
+			else
+			{
+				destMessageArrayIndex++;
+			}
+		}
+	}
+	else
+	{
+		valToNormalize /= bpSettingsDispVals;
+
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				bpSettingsDispVals);
+
+		for (unsigned int currentDisparity = 0;
+				currentDisparity < bpSettingsDispVals;
+				currentDisparity++)
+		{
+			dst[currentDisparity] -= valToNormalize;
+			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
+			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			{
+				destMessageArrayIndex +=
+						currentLevelProperties.paddedWidthCheckerboardLevel_;
+			}
+			else
+			{
+				destMessageArrayIndex++;
+			}
+		}
+	}
+
+	delete [] dst;
+}
+
+template<>
 __device__ inline void msgStereo<half, half, DISP_VALS_0>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties,
 		half messageValsNeighbor1[DISP_VALS_0],
@@ -547,7 +648,7 @@ __global__ void initializeBottomLevelDataStereo(
 		const levelProperties currentLevelProperties,
 		float* image1PixelsDevice, float* image2PixelsDevice,
 		T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
-		const float lambda_bp, float data_k_bp)
+		const float lambda_bp, float data_k_bp, const unsigned int bpSettingsDispVals)
 {
 	// Block index
     const unsigned int bx = blockIdx.x;
@@ -568,7 +669,7 @@ __global__ void initializeBottomLevelDataStereo(
 				currentLevelProperties, image1PixelsDevice,
 				image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
 				dataCostDeviceStereoCheckerboard1, lambda_bp,
-				data_k_bp);
+				data_k_bp, bpSettingsDispVals);
 	}
 }
 
@@ -579,7 +680,7 @@ __global__ void initializeCurrentLevelDataStereo(
 		const levelProperties currentLevelProperties,
 		const levelProperties prevLevelProperties, T* dataCostStereoCheckerboard0,
 		T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
-		const unsigned int offsetNum)
+		const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
 	// Block index
 	const unsigned int bx = blockIdx.x;
@@ -599,7 +700,7 @@ __global__ void initializeCurrentLevelDataStereo(
 				currentLevelProperties,
 				prevLevelProperties, dataCostStereoCheckerboard0,
 				dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
-				offsetNum);
+				offsetNum, bpSettingsDispVals);
 	}
 }
 
@@ -615,7 +716,8 @@ __global__ void initializeMessageValsToDefaultKernel(
 		T* messageUDeviceCurrentCheckerboard1,
 		T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1,
-		T* messageRDeviceCurrentCheckerboard1)
+		T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int bpSettingsDispVals)
 {
 	// Block index
 	const unsigned int bx = blockIdx.x;
@@ -635,7 +737,8 @@ __global__ void initializeMessageValsToDefaultKernel(
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1);
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				bpSettingsDispVals);
 	}
 }
 
@@ -650,7 +753,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const bool dataAligned)
+		const float disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
 	// Block index
 	const unsigned int bx = blockIdx.x;
@@ -672,7 +775,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-				disc_k_bp, 0, dataAligned);
+				disc_k_bp, 0, dataAligned, bpSettingsDispVals);
 	}
 }
 
@@ -691,7 +794,8 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 		T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1)
+		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+		const unsigned int bpSettingsDispVals)
 {
 	// Block index
 	const unsigned int bx = blockIdx.x;
@@ -715,7 +819,8 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1);
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				bpSettingsDispVals);
 	}
 }
 
@@ -729,7 +834,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 		T* messageRPrevStereoCheckerboard0, T* messageUPrevStereoCheckerboard1,
 		T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1,
 		T* messageRPrevStereoCheckerboard1,
-		float* disparityBetweenImagesDevice)
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
 	// Block index
 	const unsigned int bx = blockIdx.x;
@@ -751,7 +856,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
-				disparityBetweenImagesDevice);
+				disparityBetweenImagesDevice, bpSettingsDispVals);
 	}
 }
 

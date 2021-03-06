@@ -9,6 +9,7 @@
 #define RUNANDEVALUATEBPRESULTS_H_
 
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
+//#include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
 #include <memory>
 #include <array>
 #include <fstream>
@@ -89,9 +90,10 @@ public:
 	template<typename T, unsigned int DISP_VALS>
 	static void runStereoTwoImpsAndCompare(std::ostream& outStream,
 			const std::array<std::unique_ptr<RunBpStereoSet<T, DISP_VALS>>, 2>& bpProcessingImps,
-			const unsigned int numStereoSet)
+			const unsigned int numStereoSet, const BPsettings& algSettings)
 	{
 		printParameters(numStereoSet, outStream);
+		outStream << "DISP_VALS_TEMPLATED: " << "YES" << std::endl;
 		BpFileHandling bpFileSettings(bp_params::STEREO_SET[numStereoSet]);
 		const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};
 		std::array<filepathtype, 2> output_disp;
@@ -100,9 +102,6 @@ public:
 		}
 
 		const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
-
-		//load all the BP default settings as set in bpStereoCudaParameters.cuh
-		const BPsettings algSettings;
 
 		std::cout << "Running belief propagation on reference image " << refTestImagePath[0] << " and test image " << refTestImagePath[1] << " on " <<
 				     bpProcessingImps[0]->getBpRunDescription() << " and " << bpProcessingImps[1]->getBpRunDescription() << std::endl;
@@ -126,6 +125,53 @@ public:
 		}
 
 		outStream << std::endl << bpProcessingImps[0]->getBpRunDescription() << " output vs. " << bpProcessingImps[1]->getBpRunDescription() << " result:\n";
+		compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap, outStream);
+
+		std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";
+	}
+
+	template<typename T, unsigned int DISP_VALS>
+		static void runStereoTwoImpsAndCompare(std::ostream& outStream,
+		const std::unique_ptr<RunBpStereoSet<T, 0>>& optimizedImp,
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS>>& singleThreadCPUImp,
+		const unsigned int numStereoSet, const BPsettings& algSettings)
+	{
+		printParameters(numStereoSet, outStream);
+		outStream << "DISP_VALS_TEMPLATED: " << "NO" << std::endl;
+		BpFileHandling bpFileSettings(bp_params::STEREO_SET[numStereoSet]);
+		const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};
+		std::array<filepathtype, 2> output_disp;
+		for (unsigned int i=0; i < 2u; i++) {
+			output_disp[i] = bpFileSettings.getCurrentOutputDisparityFilePathAndIncrement();
+		}
+
+		const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
+
+		std::cout << "Running belief propagation on reference image " << refTestImagePath[0] << " and test image " << refTestImagePath[1] << " on " <<
+				optimizedImp->getBpRunDescription() << " and " << singleThreadCPUImp->getBpRunDescription() << std::endl;
+		std::array<ProcessStereoSetOutput, 2> run_output;
+
+		run_output[0] = optimizedImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, outStream);
+		run_output[0].outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
+		outStream << "Median " << optimizedImp->getBpRunDescription() << " runtime (including transfer time): " <<
+				run_output[0].runTime << std::endl;
+
+		run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, outStream);
+		run_output[1].outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
+		outStream << "Median " << singleThreadCPUImp->getBpRunDescription() << " runtime (including transfer time): " <<
+				run_output[1].runTime << std::endl;
+
+		for (unsigned int i = 0; i < 2u; i++) {
+			std::cout << "Output disparity map from run at " << output_disp[i] << std::endl;
+		}
+
+		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
+		outStream << std::endl << optimizedImp->getBpRunDescription() << " output vs. Ground Truth result:\n";
+		compareDispMaps(run_output[0].outDisparityMap, groundTruthDisparityMap, outStream);
+		outStream << std::endl << singleThreadCPUImp->getBpRunDescription() << " output vs. Ground Truth result:\n";
+		compareDispMaps(run_output[1].outDisparityMap, groundTruthDisparityMap, outStream);
+
+		outStream << std::endl << optimizedImp->getBpRunDescription() << " output vs. " << singleThreadCPUImp->getBpRunDescription() << " result:\n";
 		compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap, outStream);
 
 		std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";

@@ -22,7 +22,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
 		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
 		float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp)
+		const float disc_k_bp, const unsigned int bpSettingsDispVals)
 {
 	constexpr unsigned int numDataInSIMDVector{8u};
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<float, __m256, DISP_VALS>(
@@ -32,7 +32,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-			disc_k_bp, numDataInSIMDVector);
+			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
 template<unsigned int DISP_VALS>
@@ -43,7 +43,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
 		short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
 		short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp)
+		const float disc_k_bp, const unsigned int bpSettingsDispVals)
 {
 	constexpr unsigned int numDataInSIMDVector{8u};
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<short, __m128i, DISP_VALS>(
@@ -53,7 +53,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-			disc_k_bp, numDataInSIMDVector);
+			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
 template<unsigned int DISP_VALS>
@@ -64,7 +64,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
 		double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
 		double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp)
+		const float disc_k_bp, const unsigned int bpSettingsDispVals)
 {
 	constexpr unsigned int numDataInSIMDVector{4u};
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<double, __m256d, DISP_VALS>(
@@ -74,7 +74,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-			disc_k_bp, numDataInSIMDVector);
+			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
 template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m256d>(

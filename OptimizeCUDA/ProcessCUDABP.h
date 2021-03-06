@@ -59,12 +59,14 @@ public:
 	void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 			const levelProperties& prevLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo) override;
+			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+			const unsigned int bpSettingsNumDispVals) override;
 
 	//initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
 	void initializeMessageValsToDefault(
 			const levelProperties& currentLevelProperties,
-			const checkerboardMessages<U>& messagesDevice) override;
+			const checkerboardMessages<U>& messagesDevice,
+			const unsigned int bpSettingsNumDispVals) override;
 
 	//run the given number of iterations of BP at the current level using the given message values in global device memory
 	void runBPAtCurrentLevel(const BPsettings& algSettings,
@@ -80,12 +82,14 @@ public:
 			const levelProperties& currentLevelProperties,
 			const levelProperties& nextlevelProperties,
 			const checkerboardMessages<U>& messagesDeviceCopyFrom,
-			const checkerboardMessages<U>& messagesDeviceCopyTo) override;
+			const checkerboardMessages<U>& messagesDeviceCopyTo,
+			const unsigned int bpSettingsNumDispVals) override;
 
 	float* retrieveOutputDisparity(
 			const levelProperties& currentLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice) override;
+			const checkerboardMessages<U>& messagesDevice,
+			const unsigned int bpSettingsNumDispVals) override;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

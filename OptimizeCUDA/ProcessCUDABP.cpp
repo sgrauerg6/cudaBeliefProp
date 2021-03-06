@@ -108,7 +108,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
 				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
-				algSettings.disc_k_bp_, dataAligned);
+				algSettings.disc_k_bp_, dataAligned, algSettings.numDispVals_);
 #endif
 
 		cudaDeviceSynchronize();
@@ -127,7 +127,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 		const levelProperties& currentLevelProperties,
 		const levelProperties& nextlevelProperties,
 		const checkerboardMessages<U>& messagesDeviceCopyFrom,
-		const checkerboardMessages<U>& messagesDeviceCopyTo)
+		const checkerboardMessages<U>& messagesDeviceCopyTo,
+		const unsigned int bpSettingsNumDispVals)
 {
 	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
@@ -158,7 +159,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1],
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1],
-				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1]);
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+				bpSettingsNumDispVals);
 
 		cudaDeviceSynchronize();
 		gpuErrchk(cudaPeekAtLastError());
@@ -185,7 +187,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSe
 	//initialize the data the the "bottom" of the image pyramid
 	initializeBottomLevelDataStereo<T, DISP_VALS><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
 			imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
-			dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_);
+			dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
+			algSettings.numDispVals_);
 	cudaDeviceSynchronize();
 }
 
@@ -193,7 +196,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSe
 template<typename T, typename U, unsigned int DISP_VALS>
 void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const levelProperties& currentLevelProperties,
-		const checkerboardMessages<U>& messagesDevice)
+		const checkerboardMessages<U>& messagesDevice,
+		const unsigned int bpSettingsNumDispVals)
 {
 	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid((unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
@@ -203,7 +207,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 	initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1],
-		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1]);
+		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1], bpSettingsNumDispVals);
 
 	cudaDeviceSynchronize();
 }
@@ -212,7 +216,8 @@ template<typename T, typename U, unsigned int DISP_VALS>
 void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 		const levelProperties& prevLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo)
+		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+		const unsigned int bpSettingsNumDispVals)
 {
 	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
@@ -233,7 +238,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelPrope
 				currentLevelProperties, prevLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
-				checkerboardAndDataCost.second, ((unsigned int) offsetNum / sizeof(float)));
+				checkerboardAndDataCost.second, ((unsigned int) offsetNum / sizeof(float)),
+				bpSettingsNumDispVals);
 
 		cudaDeviceSynchronize();
 		gpuErrchk(cudaPeekAtLastError());
@@ -294,7 +300,8 @@ template<typename T, typename U, unsigned int DISP_VALS>
 float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 		const levelProperties& currentLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const checkerboardMessages<U>& messagesDevice)
+		const checkerboardMessages<U>& messagesDevice,
+		const unsigned int bpSettingsNumDispVals)
 {
 	float* resultingDisparityMapCompDevice;
 	cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_ * sizeof(float));
@@ -311,13 +318,15 @@ float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
-			resultingDisparityMapCompDevice);
+			resultingDisparityMapCompDevice, bpSettingsNumDispVals);
 	cudaDeviceSynchronize();
 	gpuErrchk(cudaPeekAtLastError());
 
 	return resultingDisparityMapCompDevice;
 }
 
+template class ProcessCUDABP<float, float*, 0>;
+template class ProcessCUDABP<double, double*, 0>;
 template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
 template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
 template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
@@ -332,6 +341,7 @@ template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
 #ifdef CUDA_HALF_SUPPORT
+template class ProcessCUDABP<half, half*, 0>;
 template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
 template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
 template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;

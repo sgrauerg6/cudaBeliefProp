@@ -45,11 +45,13 @@ public:
 	virtual void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
 			const levelProperties& prevLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo) = 0;
+			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+			const unsigned int bpSettingsNumDispVals) = 0;
 
 	virtual void initializeMessageValsToDefault(
 			const levelProperties& currentLevelProperties,
-			const checkerboardMessages<U>& messagesDevice) = 0;
+			const checkerboardMessages<U>& messagesDevice,
+			const unsigned int bpSettingsNumDispVals) = 0;
 
 	virtual void runBPAtCurrentLevel(const BPsettings& algSettings,
 			const levelProperties& currentLevelProperties,
@@ -60,12 +62,14 @@ public:
 			const levelProperties& currentLevelProperties,
 			const levelProperties& nextlevelProperties,
 			const checkerboardMessages<U>& messagesDeviceCopyFrom,
-			const checkerboardMessages<U>& messagesDeviceCopyTo) = 0;
+			const checkerboardMessages<U>& messagesDeviceCopyTo,
+			const unsigned int bpSettingsNumDispVals) = 0;
 
 	virtual V retrieveOutputDisparity(
 			const levelProperties& levelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice) = 0;
+			const checkerboardMessages<U>& messagesDevice,
+			const unsigned int bpSettingsNumDispVals) = 0;
 
 	virtual void freeCheckerboardMessagesMemory(const checkerboardMessages<U>& checkerboardMessagesToFree)
 	{
@@ -169,7 +173,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	//compute level properties which includes offset for each data/message array for each level after the bottom level
 	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
 		//get current level properties from previous level properties
-		bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(DISP_VALS));
+		bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(algSettings.numDispVals_));
 	}
 
 	startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
@@ -182,7 +186,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
 	//data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
 	const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.numLevels_-1].offsetIntoArrays_ +
-			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(DISP_VALS);
+			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
 
 	//assuming that width includes padding
 	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
@@ -217,7 +221,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	{
 		initializeDataCurrentLevel(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
 				retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
-				retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_));
+				retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
+				algSettings.numDispVals_);
 	}
 
 	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].second = std::chrono::system_clock::now();
@@ -240,13 +245,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	{
 		//allocate the space for the message values in the first checkboard set at the current level
 		messagesDevice[0] = allocateMemoryForCheckerboardMessages(
-				bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(DISP_VALS));
+				bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_));
 	}
 
 	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
 
 	//initialize all the BP message values at every pixel for every disparity to 0
-	initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0]);
+	initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
 
 	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].second = std::chrono::system_clock::now();
 	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].second = std::chrono::system_clock::now();
@@ -288,7 +293,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			{
 				//allocate space in the GPU for the message values in the checkerboard set to copy to
 				messagesDevice[(currCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(
-						bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(DISP_VALS));
+						bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(algSettings.numDispVals_));
 			}
 
 			const auto timeCopyMessageValuesKernelStart = std::chrono::system_clock::now();
@@ -296,7 +301,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			//currentCheckerboardSet = index copying data from
 			//(currentCheckerboardSet + 1) % 2 = index copying data to
 			copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
-					messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2]);
+					messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2],
+					algSettings.numDispVals_);
 
 			const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
@@ -323,7 +329,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
 	//assume in bottom level when retrieving output disparity
 	const V resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
-			dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet]);
+			dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
 
 	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = std::chrono::system_clock::now();
 	startEndTimes[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
