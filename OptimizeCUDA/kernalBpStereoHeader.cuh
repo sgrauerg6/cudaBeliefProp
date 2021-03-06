@@ -60,7 +60,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(const Checkerboard_Parts 
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const bool dataAligned);
+		const float disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals);
 
 //kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
