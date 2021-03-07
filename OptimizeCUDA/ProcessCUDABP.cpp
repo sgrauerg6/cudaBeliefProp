@@ -73,7 +73,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 
 	cudaDeviceSynchronize();
 	gpuErrchk( cudaPeekAtLastError() );
-	std::cout << "NO CUDA ERROR HERE" << std::endl;
+	//std::cout << "NO CUDA ERROR HERE" << std::endl;
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
@@ -119,7 +119,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 		cudaDeviceSynchronize();
 		gpuErrchk( cudaPeekAtLastError() );
 
-		cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
+		//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	}
 }
 
