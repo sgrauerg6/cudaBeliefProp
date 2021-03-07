@@ -72,7 +72,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 	const bool dataAligned{MemoryAlignedAtDataStart(0, 1)};
 	void* dstProcessDevice = 0;
 	cudaMalloc((void**)&dstProcessDevice,
-			currentLevelProperties.heightLevel_ * currentLevelProperties.widthCheckerboardLevel_ * algSettings.numDispVals_ * sizeof(T));
+			currentLevelProperties.heightLevel_ * currentLevelProperties.paddedWidthCheckerboardLevel_ * algSettings.numDispVals_ * sizeof(T));
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
