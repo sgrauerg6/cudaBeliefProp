@@ -166,7 +166,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 {
 	// aggregate and find min
 	U minimum{(U)bp_consts::INF_BP};
-	U* dst = new U[bpSettingsDispVals];
+	U* dst = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
 	{
@@ -216,7 +216,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 		}
 	}
 
-	delete [] dst;
+	free(dst);
 }
 
 

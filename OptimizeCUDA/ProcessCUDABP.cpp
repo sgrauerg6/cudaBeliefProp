@@ -60,6 +60,9 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 		const checkerboardMessages<U>& messagesDevice)
 {
 	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
+	size_t heapSize;
+	cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
+	std::cout << "HEAP SIZE LIMIT: " << heapSize << std::endl;
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
