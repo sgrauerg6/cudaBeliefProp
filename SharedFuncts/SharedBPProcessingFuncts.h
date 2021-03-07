@@ -79,7 +79,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T f[DISP_VALS])
 }
 
 template<typename T>
-ARCHITECTURE_ADDITION inline void dtStereo(T*& f, const unsigned int bpSettingsDispVals)
+ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDispVals)
 {
 	T prev;
 	for (unsigned int currentDisparity = 1; currentDisparity < bpSettingsDispVals; currentDisparity++)
@@ -160,13 +160,13 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
-		U*& messageValsNeighbor1, U*& messageValsNeighbor2,
-		U*& messageValsNeighbor3, U*& dataCosts,
+		U* messageValsNeighbor1, U* messageValsNeighbor2,
+		U* messageValsNeighbor3, U* dataCosts,
 		T* dstMessageArray, U disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
 	// aggregate and find min
 	U minimum{(U)bp_consts::INF_BP};
-	U* dst = (U*)malloc(sizeof(U) * bpSettingsDispVals);
+	U* dst = new U[bpSettingsDispVals];
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
 	{
@@ -216,7 +216,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 		}
 	}
 
-	free(dst);
+	delete [] dst;
 }
 
 
@@ -635,12 +635,11 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			}
 		}
 		else {
-			//U dataMessage[200], prevUMessage[200], prevDMessage[200], prevLMessage[200], prevRMessage[200];
-			U* dataMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
-			U* prevUMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
-			U* prevDMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
-			U* prevLMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
-			U* prevRMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
+			U* dataMessage = new U[bpSettingsDispVals];
+			U* prevUMessage = new U[bpSettingsDispVals];
+			U* prevDMessage = new U[bpSettingsDispVals];
+			U* prevLMessage = new U[bpSettingsDispVals];
+			U* prevRMessage = new U[bpSettingsDispVals];
 
 			for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 				if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
@@ -705,11 +704,11 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 						(U)disc_k_bp, dataAligned, bpSettingsDispVals);
 			}
 
-			free(dataMessage);
-			free(prevUMessage);
-			free(prevDMessage);
-			free(prevLMessage);
-			free(prevRMessage);
+			delete [] dataMessage;
+			delete [] prevUMessage;
+			delete [] prevDMessage;
+			delete [] prevLMessage;
+			delete [] prevRMessage;
 		}
 	}
 }

@@ -48,10 +48,10 @@ constexpr unsigned int DISP_VALS_4{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]};
 template<>
 __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties,
-		half*& messageValsNeighbor1,
-		half*& messageValsNeighbor2,
-		half*& messageValsNeighbor3,
-		half*& dataCosts, half* dstMessageArray,
+		half* messageValsNeighbor1,
+		half* messageValsNeighbor2,
+		half* messageValsNeighbor3,
+		half* dataCosts, half* dstMessageArray,
 		const half disc_k_bp, const bool dataAligned,
 		const unsigned int bpSettingsDispVals)
 {
