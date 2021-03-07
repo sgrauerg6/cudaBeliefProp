@@ -103,7 +103,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 				algSettings.disc_k_bp, dataAligned);
 
 #else
-		if (DISP_VALS > 0) {
+		if constexpr (DISP_VALS > 0) {
 			runBPIterationUsingCheckerboardUpdates<T, DISP_VALS><<<grid, threads>>>(checkboardPartUpdate, currentLevelProperties,
 					dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 					dataCostDeviceCheckerboard.dataCostCheckerboard1_,

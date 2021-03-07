@@ -105,7 +105,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 				currentDisparity < bpSettingsDispVals;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -131,7 +131,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -146,7 +146,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 	delete [] dst;
 }
 
-template<>
+/*template<>
 __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
 		half* prevUMessageArray, half* prevDMessageArray,
 		half* prevLMessageArray, half* prevRMessageArray,
@@ -198,7 +198,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 		if (dstProcessing[procArrIdx] < minimum)
 			minimum = dstProcessing[procArrIdx];
 
-		if (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (OPTIMIZED_INDEXING_SETTING) {
 			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -223,7 +223,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 
 		valToNormalize += dstProcessing[procArrIdx];
 
-		if (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (OPTIMIZED_INDEXING_SETTING) {
 			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -244,7 +244,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 				currentDisparity < bpSettingsDispVals;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half)0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -264,13 +264,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 		for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 			dstProcessing[procArrIdx] -= valToNormalize;
 			dstMessageArray[procArrIdx] = convertValToDifferentDataTypeIfNeeded<half, half>(dstProcessing[procArrIdx]);
-#ifdef _WIN32
-			//assuming that width includes padding
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
-#else
-			if (OPTIMIZED_INDEXING_SETTING)
-#endif
-			{
+			if constexpr (OPTIMIZED_INDEXING_SETTING) {
 				procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 			}
 			else {
@@ -278,7 +272,7 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 			}
 		}
 	}
-}
+}*/
 
 template<>
 __device__ inline void msgStereo<half, half, DISP_VALS_0>(const unsigned int xVal, const unsigned int yVal,
@@ -339,7 +333,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_0>(const unsigned int xVa
 				currentDisparity < DISP_VALS_0;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -365,7 +359,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_0>(const unsigned int xVa
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -437,7 +431,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_1>(const unsigned int xVa
 				currentDisparity < DISP_VALS_1;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -463,7 +457,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_1>(const unsigned int xVa
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -535,7 +529,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_2>(const unsigned int xVa
 				currentDisparity < DISP_VALS_2;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -561,7 +555,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_2>(const unsigned int xVa
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -633,7 +627,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_3>(const unsigned int xVa
 				currentDisparity < DISP_VALS_3;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -659,7 +653,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_3>(const unsigned int xVa
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -731,7 +725,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_4>(const unsigned int xVa
 				currentDisparity < DISP_VALS_4;
 				currentDisparity++) {
 			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 					currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -757,7 +751,7 @@ __device__ inline void msgStereo<half, half, DISP_VALS_4>(const unsigned int xVa
 		{
 			dst[currentDisparity] -= valToNormalize;
 			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if /*constexpr*/ (OPTIMIZED_INDEXING_SETTING)
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
 			{
 				destMessageArrayIndex +=
 						currentLevelProperties.paddedWidthCheckerboardLevel_;
