@@ -523,9 +523,9 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 		const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
-		U*& prevUMessage, U*& prevDMessage,
-		U*& prevLMessage, U*& prevRMessage,
-		U*& dataMessage,
+		U* prevUMessage, U* prevDMessage,
+		U* prevLMessage, U* prevRMessage,
+		U* dataMessage,
 		T* currentUMessageArray, T* currentDMessageArray,
 		T* currentLMessageArray, T* currentRMessageArray,
 		const U disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
