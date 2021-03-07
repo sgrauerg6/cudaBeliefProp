@@ -73,6 +73,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 
 	cudaDeviceSynchronize();
 	gpuErrchk( cudaPeekAtLastError() );
+	std::cout << DISP_VALS << " " << algSettings.numDispVals_ << std::endl;
 	//std::cout << "NO CUDA ERROR HERE" << std::endl;
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
