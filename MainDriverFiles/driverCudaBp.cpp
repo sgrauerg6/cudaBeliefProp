@@ -58,7 +58,7 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 
 	size_t heapSize;
 	cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
-	cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*200);
+	cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*100);
 
 	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
 			std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
