@@ -166,13 +166,6 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 
 	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
 	{
-		if (OPTIMIZED_INDEXING_SETTING) {
-			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
-		}
-		else {
-			procArrIdx++;
-		}
-
 		const half prevUVal = convertValToDifferentDataTypeIfNeeded<half, half>(prevUMessageArray[retrieveIndexInDataAndMessage(xVal, (yVal+1),
 				currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
 				currentDisparity, bpSettingsDispVals)]);
@@ -204,6 +197,13 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 
 		if (dstProcessing[procArrIdx] < minimum)
 			minimum = dstProcessing[procArrIdx];
+
+		if (OPTIMIZED_INDEXING_SETTING) {
+			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
+		}
+		else {
+			procArrIdx++;
+		}
 	}
 
 	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
@@ -217,17 +217,18 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 
 	procArrIdx = processingArrIndexDisp0;
 	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+		if (minimum < dstProcessing[procArrIdx]) {
+			dstProcessing[procArrIdx] = minimum;
+		}
+
+		valToNormalize += dstProcessing[procArrIdx];
+
 		if (OPTIMIZED_INDEXING_SETTING) {
 			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
 			procArrIdx++;
 		}
-		if (minimum < dstProcessing[procArrIdx]) {
-			dstProcessing[procArrIdx] = minimum;
-		}
-
-		valToNormalize += dstProcessing[procArrIdx];
 	}
 
 	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
