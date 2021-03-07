@@ -689,7 +689,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			}
 
 			//uses the previous message values and data cost to calculate the current message values and store the results
-			if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+			/*if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
 				runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties,
 						prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
 						messageUDeviceCurrentCheckerboard0,	messageDDeviceCurrentCheckerboard0,
@@ -702,7 +702,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 						messageUDeviceCurrentCheckerboard1,	messageDDeviceCurrentCheckerboard1,
 						messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						(U)disc_k_bp, dataAligned, bpSettingsDispVals);
-			}
+			}*/
 
 			free(dataMessage);
 			free(prevUMessage);
