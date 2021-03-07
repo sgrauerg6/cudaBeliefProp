@@ -79,7 +79,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T f[DISP_VALS])
 }
 
 template<typename T>
-ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDispVals)
+ARCHITECTURE_ADDITION inline void dtStereo(T*& f, const unsigned int bpSettingsDispVals)
 {
 	T prev;
 	for (unsigned int currentDisparity = 1; currentDisparity < bpSettingsDispVals; currentDisparity++)
@@ -160,8 +160,8 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
-		U* messageValsNeighbor1, U* messageValsNeighbor2,
-		U* messageValsNeighbor3, U* dataCosts,
+		U*& messageValsNeighbor1, U*& messageValsNeighbor2,
+		U*& messageValsNeighbor3, U*& dataCosts,
 		T* dstMessageArray, U disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
 	// aggregate and find min
@@ -523,9 +523,9 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 template<typename T, typename U>
 ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 		const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
-		U* prevUMessage, U* prevDMessage,
-		U* prevLMessage, U* prevRMessage,
-		U* dataMessage,
+		U*& prevUMessage, U*& prevDMessage,
+		U*& prevLMessage, U*& prevRMessage,
+		U*& dataMessage,
 		T* currentUMessageArray, T* currentDMessageArray,
 		T* currentLMessageArray, T* currentRMessageArray,
 		const U disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
