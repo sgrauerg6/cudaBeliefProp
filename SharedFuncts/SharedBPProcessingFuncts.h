@@ -635,12 +635,12 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			}
 		}
 		else {
-			U dataMessage[200], prevUMessage[200], prevDMessage[200], prevLMessage[200], prevRMessage[200];
-			/*U* dataMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
+			//U dataMessage[200], prevUMessage[200], prevDMessage[200], prevLMessage[200], prevRMessage[200];
+			U* dataMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevUMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevDMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevLMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
-			U* prevRMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);*/
+			U* prevRMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 
 			for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 				if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
@@ -705,11 +705,11 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 						(U)disc_k_bp, dataAligned, bpSettingsDispVals);
 			}
 
-			/*free(dataMessage);
+			free(dataMessage);
 			free(prevUMessage);
 			free(prevDMessage);
 			free(prevLMessage);
-			free(prevRMessage);*/
+			free(prevRMessage);
 		}
 	}
 }
