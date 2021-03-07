@@ -70,6 +70,27 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<shor
 }
 
 template<> inline
+void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short, 0>(const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties& currentLevelProperties,
+		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
+		short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
+		short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
+		short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
+		short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+		const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals,
+		void* dstProcessing)
+{
+	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, float, 0>(
+			xVal, yVal, checkerboardToUpdate, currentLevelProperties,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+			messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+			disc_k_bp, offsetData, dataAligned, bpSettingsDispVals, dstProcessing);
+}
+
+template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardToUpdate,
 		const levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
