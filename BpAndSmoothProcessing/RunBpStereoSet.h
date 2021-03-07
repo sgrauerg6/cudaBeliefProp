@@ -93,8 +93,8 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
 		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
 
-		levelProperties bottomLevelProperties(widthHeightBottomLevel);
-		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals);
+		levelProperties bottomLevelProperties(widthHeightImages);
+		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
 		bpProcStore = runBpStereo->allocateMemoryOnTargetDevice(totalDataBottomLevel);
 	}
 
