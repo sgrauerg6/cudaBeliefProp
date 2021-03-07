@@ -56,7 +56,8 @@ public:
 	virtual void runBPAtCurrentLevel(const BPsettings& algSettings,
 			const levelProperties& currentLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice) = 0;
+			const checkerboardMessages<U>& messagesDevice,
+			void* allocatedMemForProcessing) = 0;
 
 	virtual void copyMessageValuesToNextLevelDown(
 			const levelProperties& currentLevelProperties,
@@ -150,7 +151,7 @@ public:
 	//output is resultingDisparityMap
 	std::pair<V, DetailedTimings<Runtime_Type_BP>> operator()(const std::array<V, 2>& imagesOnTargetDevice,
 			const BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
-			U allocatedMemForBpProcessingDevice = nullptr);
+			U allocatedMemForBpProcessingDevice = nullptr, void* allocatedMemForProcessing = nullptr);
 };
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -158,7 +159,7 @@ public:
 //output is resultingDisparityMap
 template<typename T, typename U, unsigned int DISP_VALS, typename V>
 std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DISP_VALS, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
-	const BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice)
+	const BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, void* allocatedMemForProcessing)
 {
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
 	double totalTimeBpIters{0.0}, totalTimeCopyData{0.0}, totalTimeCopyDataKernel{0.0};
@@ -270,7 +271,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 		const auto timeBpIterStart = std::chrono::system_clock::now();
 
 		//need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
-		runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet]);
+		runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], allocatedMemForProcessing);
 
 		const auto timeBpIterEnd = std::chrono::system_clock::now();
 		diff = timeBpIterEnd - timeBpIterStart;

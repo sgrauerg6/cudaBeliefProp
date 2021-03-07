@@ -98,7 +98,8 @@ public:
 		void runBPAtCurrentLevel(const BPsettings& algSettings,
 				const levelProperties& currentLevelProperties,
 				const dataCostData<U>& dataCostDeviceCheckerboard,
-				const checkerboardMessages<U>& messagesDevice) override;
+				const checkerboardMessages<U>& messagesDevice,
+				void* allocatedMemForProcessing) override;
 
 		void copyMessageValuesToNextLevelDown(
 				const levelProperties& currentLevelProperties,
@@ -121,7 +122,8 @@ template<typename T, typename U, unsigned int DISP_VALS>
 inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		const levelProperties& currentLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const checkerboardMessages<U>& messagesDevice)
+		const checkerboardMessages<U>& messagesDevice,
+		void* allocatedMemForProcessing)
 {
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)

@@ -57,7 +57,8 @@ template<typename T, typename U, unsigned int DISP_VALS>
 void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSettings,
 		const levelProperties& currentLevelProperties,
 		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const checkerboardMessages<U>& messagesDevice)
+		const checkerboardMessages<U>& messagesDevice,
+		void* allocatedMemForProcessing)
 {
 	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
@@ -70,9 +71,6 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
 	//still is a check if start of row is aligned
 	const bool dataAligned{MemoryAlignedAtDataStart(0, 1)};
-	void* dstProcessDevice = 0;
-	cudaMalloc((void**)&dstProcessDevice,
-			currentLevelProperties.heightLevel_ * currentLevelProperties.paddedWidthCheckerboardLevel_ * algSettings.numDispVals_ * sizeof(T));
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
@@ -123,7 +121,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 					messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 					messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
 					messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
-					algSettings.disc_k_bp_, dataAligned, algSettings.numDispVals_, (void*)dstProcessDevice);
+					algSettings.disc_k_bp_, dataAligned, algSettings.numDispVals_, allocatedMemForProcessing);
 		}
 #endif
 
@@ -131,8 +129,6 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 		gpuErrchk( cudaPeekAtLastError() );
 		//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	}
-
-	cudaFree(dstProcessDevice);
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation

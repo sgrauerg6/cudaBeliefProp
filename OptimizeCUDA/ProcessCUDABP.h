@@ -72,7 +72,8 @@ public:
 	void runBPAtCurrentLevel(const BPsettings& algSettings,
 			const levelProperties& currentLevelProperties,
 			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice) override;
+			const checkerboardMessages<U>& messagesDevice,
+			void* allocatedMemForProcessing) override;
 
 	//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
 	//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"

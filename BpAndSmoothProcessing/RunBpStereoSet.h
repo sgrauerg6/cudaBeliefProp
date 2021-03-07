@@ -87,10 +87,15 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 
 	//allocate data for bp processing on target device ahead of runs if option selected
 	V bpData = nullptr;
+	void* bpProcStore = nullptr;
 	if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 		unsigned long numData = levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
 		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
+
+		levelProperties bottomLevelProperties(widthHeightBottomLevel);
+		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals);
+		bpProcStore = runBpStereo->allocateMemoryOnTargetDevice(totalDataBottomLevel);
 	}
 
 	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
@@ -119,7 +124,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		//returns detailed timings for bp run
-		auto rpBpStereoOutput = (*runBpStereo)(smoothedImages, algSettings, widthHeightImages, bpData);
+		auto rpBpStereoOutput = (*runBpStereo)(smoothedImages, algSettings, widthHeightImages, bpData, bpProcStore);
 
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_BP].second = std::chrono::system_clock::now();
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
@@ -152,6 +157,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 	//management set to be done outside of runs
 	if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 		runBpStereo->freeMemoryOnTargetDevice(bpData);
+		runBpStereo->freeMemoryOnTargetDevice(bpProcStore);
 	}
 
 	resultsStream << "Image Width: " << widthHeightImages[0] << "\nImage Height: " << widthHeightImages[1] << "\n";
