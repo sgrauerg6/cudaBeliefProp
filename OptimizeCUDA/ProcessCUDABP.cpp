@@ -60,9 +60,6 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 		const checkerboardMessages<U>& messagesDevice)
 {
 	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-	size_t heapSize;
-	cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
-	std::cout << "HEAP SIZE LIMIT: " << heapSize << std::endl;
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
 	dim3 grid;
@@ -73,11 +70,6 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
 	//still is a check if start of row is aligned
 	const bool dataAligned{MemoryAlignedAtDataStart(0, 1)};
-
-	cudaDeviceSynchronize();
-	gpuErrchk( cudaPeekAtLastError() );
-	std::cout << DISP_VALS << " " << algSettings.numDispVals_ << std::endl;
-	//std::cout << "NO CUDA ERROR HERE" << std::endl;
 
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)

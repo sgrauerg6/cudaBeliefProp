@@ -90,10 +90,9 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 
 int main(int argc, char** argv)
 {
-	size_t heapSize;
-	cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
-	cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*50);
-
+	//size_t heapSize;
+	//cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
+	//cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*50);
 	std::map<std::string, std::vector<std::string>> resultsAcrossRuns;
 	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, false);
