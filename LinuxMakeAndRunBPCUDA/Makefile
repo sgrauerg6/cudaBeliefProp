@@ -29,7 +29,7 @@ COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
 
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++17 -Wall
-CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3 
+CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3 -std=c++17
 #-std=c++17
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 
