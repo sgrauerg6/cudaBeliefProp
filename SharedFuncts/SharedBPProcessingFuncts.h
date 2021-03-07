@@ -641,7 +641,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			U* prevLMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevRMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 
-			for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+			/*for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 				if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
 					dataMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(
 							dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(xVal, yVal,
@@ -686,7 +686,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 									currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
 									currentDisparity, bpSettingsDispVals)]);
 				}
-			}
+			}*/
 
 			//uses the previous message values and data cost to calculate the current message values and store the results
 			/*if (checkerboardToUpdate == CHECKERBOARD_PART_0) {

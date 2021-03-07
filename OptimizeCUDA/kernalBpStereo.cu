@@ -768,14 +768,14 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
 	{
-		/*runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+		runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardToUpdate, currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-				disc_k_bp, 0, dataAligned, bpSettingsDispVals);*/
+				disc_k_bp, 0, dataAligned, bpSettingsDispVals);
 	}
 }
 
