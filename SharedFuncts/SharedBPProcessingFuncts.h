@@ -635,13 +635,14 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 			}
 		}
 		else {
-			U* dataMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
+			U dataMessage[200], prevUMessage[200], prevDMessage[200], prevLMessage[200], prevRMessage[200];
+			/*U* dataMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevUMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevDMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
 			U* prevLMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
-			U* prevRMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);
+			U* prevRMessage = (U*)malloc(sizeof(U) * bpSettingsDispVals);*/
 
-			/*for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+			for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 				if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
 					dataMessage[currentDisparity] = convertValToDifferentDataTypeIfNeeded<T, U>(
 							dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(xVal, yVal,
@@ -686,10 +687,10 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 									currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
 									currentDisparity, bpSettingsDispVals)]);
 				}
-			}*/
+			}
 
 			//uses the previous message values and data cost to calculate the current message values and store the results
-			/*if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
+			if (checkerboardToUpdate == CHECKERBOARD_PART_0) {
 				runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties,
 						prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
 						messageUDeviceCurrentCheckerboard0,	messageDDeviceCurrentCheckerboard0,
@@ -702,13 +703,13 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 						messageUDeviceCurrentCheckerboard1,	messageDDeviceCurrentCheckerboard1,
 						messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 						(U)disc_k_bp, dataAligned, bpSettingsDispVals);
-			}*/
+			}
 
-			free(dataMessage);
+			/*free(dataMessage);
 			free(prevUMessage);
 			free(prevDMessage);
 			free(prevLMessage);
-			free(prevRMessage);
+			free(prevRMessage);*/
 		}
 	}
 }
