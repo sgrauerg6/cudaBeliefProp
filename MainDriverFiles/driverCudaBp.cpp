@@ -56,10 +56,6 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 
-	size_t heapSize;
-	cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
-	cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*100);
-
 	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
 			std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
 			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
@@ -94,6 +90,10 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 
 int main(int argc, char** argv)
 {
+	size_t heapSize;
+	cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
+	cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*50);
+
 	std::map<std::string, std::vector<std::string>> resultsAcrossRuns;
 	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, false);
