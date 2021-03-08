@@ -244,7 +244,8 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 }
 
 template<typename T, typename U, messageComp M>
-ARCHITECTURE_ADDITION void inline setInitDstProcessing(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
+ARCHITECTURE_ADDITION void inline setInitDstProcessing(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
 		T* prevUMessageArray, T* prevDMessageArray,
 		T* prevLMessageArray, T* prevRMessageArray,
 		T* dataMessageArray, T* dstMessageArray,
@@ -313,7 +314,8 @@ ARCHITECTURE_ADDITION void inline setInitDstProcessing(const unsigned int xVal, 
 
 //TODO: may need to specialize for half-precision to account for possible NaN/inf vals
 template<typename T, typename U, messageComp M>
-ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
+ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
 		T* prevUMessageArray, T* prevDMessageArray,
 		T* prevLMessageArray, T* prevRMessageArray,
 		T* dataMessageArray, T* dstMessageArray,
