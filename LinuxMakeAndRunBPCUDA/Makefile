@@ -1,4 +1,4 @@
-CUDA_DIR = /usr/local/cuda/
+CUDA_DIR = /usr/local/cuda-11.1/
 CUDA_SDK_ROOT := 
 
 CU_FILE = driverCudaBp.cu
