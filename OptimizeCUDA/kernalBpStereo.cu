@@ -41,6 +41,7 @@ constexpr unsigned int DISP_VALS_1{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]};
 constexpr unsigned int DISP_VALS_2{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]};
 constexpr unsigned int DISP_VALS_3{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]};
 constexpr unsigned int DISP_VALS_4{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]};
+constexpr unsigned int DISP_VALS_5{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]};
 
 #ifdef CUDA_HALF_SUPPORT
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
@@ -747,6 +748,104 @@ __device__ inline void msgStereo<half, half, DISP_VALS_4>(const unsigned int xVa
 
 		for (unsigned int currentDisparity = 0;
 				currentDisparity < DISP_VALS_4;
+				currentDisparity++)
+		{
+			dst[currentDisparity] -= valToNormalize;
+			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
+			{
+				destMessageArrayIndex +=
+						currentLevelProperties.paddedWidthCheckerboardLevel_;
+			}
+			else
+			{
+				destMessageArrayIndex++;
+			}
+		}
+	}
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_5>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		half messageValsNeighbor1[DISP_VALS_5],
+		half messageValsNeighbor2[DISP_VALS_5],
+		half messageValsNeighbor3[DISP_VALS_5],
+		half dataCosts[DISP_VALS_5], half* dstMessageArray,
+		const half disc_k_bp, const bool dataAligned)
+{
+	// aggregate and find min
+	half minimum = bp_consts::INF_BP;
+
+	half dst[DISP_VALS_5];
+
+	for (unsigned int currentDisparity = 0;
+			currentDisparity < DISP_VALS_5;
+			currentDisparity++) {
+		dst[currentDisparity] = messageValsNeighbor1[currentDisparity]
+				+ messageValsNeighbor2[currentDisparity]
+				+ messageValsNeighbor3[currentDisparity]
+				+ dataCosts[currentDisparity];
+		if (dst[currentDisparity] < minimum)
+			minimum = dst[currentDisparity];
+	}
+
+	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	dtStereo<half, DISP_VALS_5>(dst);
+
+	// truncate
+	minimum += disc_k_bp;
+
+	// normalize
+	half valToNormalize = 0;
+
+	for (unsigned int currentDisparity = 0;
+			currentDisparity < DISP_VALS_5;
+			currentDisparity++)
+	{
+		if (minimum < dst[currentDisparity])
+		{
+			dst[currentDisparity] = minimum;
+		}
+
+		valToNormalize += dst[currentDisparity];
+	}
+
+	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
+	//set destination vector to 0 for all disparities
+	//note that may cause results to differ a little from ideal
+	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				DISP_VALS_5);
+
+		for (unsigned int currentDisparity = 0;
+				currentDisparity < DISP_VALS_5;
+				currentDisparity++) {
+			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
+			if constexpr (OPTIMIZED_INDEXING_SETTING)
+			{
+				destMessageArrayIndex +=
+					currentLevelProperties.paddedWidthCheckerboardLevel_;
+			}
+			else
+			{
+				destMessageArrayIndex++;
+			}
+		}
+	}
+	else
+	{
+		valToNormalize /= DISP_VALS_5;
+
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				DISP_VALS_5);
+
+		for (unsigned int currentDisparity = 0;
+				currentDisparity < DISP_VALS_5;
 				currentDisparity++)
 		{
 			dst[currentDisparity] -= valToNormalize;

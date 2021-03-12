@@ -92,8 +92,7 @@ public:
 	virtual checkerboardMessages<U> retrieveLevelMessageData(const checkerboardMessages<U>& allCheckerboardMessages, const unsigned long offsetIntoMessages)
 	{
 		checkerboardMessages<U> outputCheckerboardMessages;
-		for (unsigned int i = 0; i < outputCheckerboardMessages.checkerboardMessagesAtLevel_.size(); i++)
-		{
+		for (unsigned int i = 0; i < outputCheckerboardMessages.checkerboardMessagesAtLevel_.size(); i++) {
 			outputCheckerboardMessages.checkerboardMessagesAtLevel_[i] =
 				&((allCheckerboardMessages.checkerboardMessagesAtLevel_[i])[offsetIntoMessages]);
 		}
@@ -101,14 +100,12 @@ public:
 		return outputCheckerboardMessages;
 	}
 
-	virtual void freeDataCostsMemory(const dataCostData<U>& dataCostsToFree)
-	{
+	virtual void freeDataCostsMemory(const dataCostData<U>& dataCostsToFree) {
 		freeMemoryOnTargetDevice(dataCostsToFree.dataCostCheckerboard0_);
 		freeMemoryOnTargetDevice(dataCostsToFree.dataCostCheckerboard1_);
 	}
 
-	virtual dataCostData<U> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard)
-	{
+	virtual dataCostData<U> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard) {
 		return {allocateMemoryOnTargetDevice(numDataCostsCheckerboard), allocateMemoryOnTargetDevice(numDataCostsCheckerboard)};
 	}
 
@@ -136,14 +133,13 @@ public:
 		return {dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels};
 	}
 
-	virtual void freeDataCostsAllDataInSingleArray(const dataCostData<U>& dataCostsToFree)
-	{
+	virtual void freeDataCostsAllDataInSingleArray(const dataCostData<U>& dataCostsToFree) {
 		freeMemoryOnTargetDevice(dataCostsToFree.dataCostCheckerboard0_);
 	}
 
-	virtual dataCostData<U> retrieveLevelDataCosts(const dataCostData<U>& allDataCosts, const unsigned long offsetIntoAllDataCosts)
-	{
-		return {&(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]), &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
+	virtual dataCostData<U> retrieveLevelDataCosts(const dataCostData<U>& allDataCosts, const unsigned long offsetIntoAllDataCosts) {
+		return {&(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]),
+			    &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
 	}
 
 	//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -190,21 +186,18 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
 
 	//assuming that width includes padding
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
-	{
+	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 		if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 			std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
 					organizeDataCostsAndMessageDataAllLevels(allocatedMemForBpProcessingDevice, dataAllLevelsEachDataMessageArr);
 		}
-		else
-		{
+		else {
 			//call function that allocates all data in single array and then set offsets in array for data costs and message data locations
 			std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
 					allocateAndOrganizeDataCostsAndMessageDataAllLevels(dataAllLevelsEachDataMessageArr);
 		}
 	}
-	else
-	{
+	else {
 		dataCostsDeviceAllLevels = allocateMemoryForDataCosts(dataAllLevelsEachDataMessageArr);
 	}
 
@@ -238,12 +231,10 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	std::array<checkerboardMessages<U>, 2> messagesDevice;
 
 	//assuming that width includes padding
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
-	{
+	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 		messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
 	}
-	else
-	{
+	else {
 		//allocate the space for the message values in the first checkboard set at the current level
 		messagesDevice[0] = allocateMemoryForCheckerboardMessages(
 				bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_));
@@ -285,13 +276,11 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 
 			//assuming that width includes padding
-			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
-			{
+			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 				messagesDevice[(currCheckerboardSet + 1) % 2] = retrieveLevelMessageData(
 						messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 			}
-			else
-			{
+			else {
 				//allocate space in the GPU for the message values in the checkerboard set to copy to
 				messagesDevice[(currCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(
 						bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(algSettings.numDispVals_));
@@ -310,8 +299,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			totalTimeCopyDataKernel += diff.count();
 
 			//assuming that width includes padding
-			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
-			{
+			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 				//free the now-copied from computed data of the completed level
 				freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet]);
 			}
@@ -335,20 +323,17 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = std::chrono::system_clock::now();
 	startEndTimes[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
 
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT)
-	{
+	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 		if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
           //do nothing; memory free outside of runs
 		}
-		else
-		{
+		else {
 			//now free the allocated data space; all data in single array when
 			//USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
 			freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels);
 		}
 	}
-	else
-	{
+	else {
 		//free the device storage allocated to the message values used to retrieve the output movement values
 		freeCheckerboardMessagesMemory(messagesDevice[(currCheckerboardSet == 0) ? 0 : 1]);
 

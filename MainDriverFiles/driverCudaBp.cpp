@@ -37,16 +37,13 @@ const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
 void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 {
-	cudaSetDevice(0);
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties( &prop, numDevice);
 	int cudaDriverVersion;
 	cudaDriverGetVersion(&cudaDriverVersion);
 
 	resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
-	std::cout << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
 	resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
-	std::cout << "Cuda version: " << cudaDriverVersion << "\n";
 }
 
 template<typename T, unsigned int NUM_SET>
@@ -58,7 +55,6 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 	int cudaRuntimeVersion;
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
-	std::cout << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 
 	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
 			std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
@@ -108,6 +104,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
 #ifdef CUDA_HALF_SUPPORT
 	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, false);
@@ -119,6 +117,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, false);
 #endif //CUDA_HALF_SUPPORT
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 

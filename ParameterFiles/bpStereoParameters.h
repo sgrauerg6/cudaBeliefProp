@@ -44,7 +44,7 @@ enum image_set_options
 	BARN_1_IMAGES_E = 2,
 	CONES_IMAGES_QUARTER_SIZE_E = 3,
 	CONES_IMAGES_HALF_SIZE_E = 4,
-	//CONES_IMAGES_FULL_SIZE_E,
+	CONES_IMAGES_FULL_SIZE_E = 5
 	//IMAGE_SET_PARAMETERS_FROM_PYTHON_E
 };
 
@@ -56,36 +56,40 @@ struct BpStereoSet {
 	unsigned int scaleFactor;
 };
 
-constexpr std::array<BpStereoSet, 5> STEREO_SETS_TO_PROCESS{
+constexpr std::array<BpStereoSet, 6> STEREO_SETS_TO_PROCESS{
 	//declare stereo sets to process with (in order) name, num disparity values, and scale factor
 	//order is the same as in image_set_options enum
 	BpStereoSet{"tsukubaSet", 16, 16},
 	BpStereoSet{"venus", 21, 8},
 	BpStereoSet{"barn1", 32, 8},
 	BpStereoSet{"conesQuarterSize", 64, 4},
-	BpStereoSet{"conesHalfSize", 128, 2}
+	BpStereoSet{"conesHalfSize", 128, 2},
+	BpStereoSet{"conesFullSize", 256, 1}
 };
 
 namespace bp_params
 {
-	constexpr std::array<unsigned int, 5> NUM_POSSIBLE_DISPARITY_VALUES{
+	constexpr std::array<unsigned int, 6> NUM_POSSIBLE_DISPARITY_VALUES{
 		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].numDispVals,
 		STEREO_SETS_TO_PROCESS[VENUS_IMAGES_E].numDispVals,
 		STEREO_SETS_TO_PROCESS[BARN_1_IMAGES_E].numDispVals,
 		STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].numDispVals,
-		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals};
-	constexpr std::array<unsigned int, 5> SCALE_BP{
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_FULL_SIZE_E].numDispVals};
+	constexpr std::array<unsigned int, 6> SCALE_BP{
 		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].scaleFactor,
 		STEREO_SETS_TO_PROCESS[VENUS_IMAGES_E].scaleFactor,
 		STEREO_SETS_TO_PROCESS[BARN_1_IMAGES_E].scaleFactor,
 		STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].scaleFactor,
-		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].scaleFactor};
-	constexpr std::array<const char*, 5> STEREO_SET{
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].scaleFactor,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_FULL_SIZE_E].scaleFactor};
+	constexpr std::array<const char*, 6> STEREO_SET{
 		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].name,
 		STEREO_SETS_TO_PROCESS[VENUS_IMAGES_E].name,
 		STEREO_SETS_TO_PROCESS[BARN_1_IMAGES_E].name,
 		STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].name,
-		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].name};
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].name,
+		STEREO_SETS_TO_PROCESS[CONES_IMAGES_FULL_SIZE_E].name};
 
 	//number of belief propagation stereo runs of same image set
 	constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
@@ -100,12 +104,13 @@ namespace bp_params
 	constexpr unsigned int LEVELS_BP = 5;
 
 	//truncation of discontinuity cost
-	constexpr std::array<float, 5> DISC_K_BP{
+	constexpr std::array<float, 6> DISC_K_BP{
 		(float)STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].numDispVals / 7.5f,
 		(float)STEREO_SETS_TO_PROCESS[VENUS_IMAGES_E].numDispVals / 7.5f,
 		(float)STEREO_SETS_TO_PROCESS[BARN_1_IMAGES_E].numDispVals / 7.5f,
 		(float)STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].numDispVals / 7.5f,
-		(float)STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals / 7.5f};
+		(float)STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals / 7.5f,
+		(float)STEREO_SETS_TO_PROCESS[CONES_IMAGES_FULL_SIZE_E].numDispVals / 7.5f};
 
 	// truncation of data cost
 	constexpr float DATA_K_BP = 15.0f;
