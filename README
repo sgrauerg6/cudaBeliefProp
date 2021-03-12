@@ -43,12 +43,11 @@ This code runs belief propagation for stereo vision on the CPU and GPU using CUD
 
 The parameters are defined in ParameterFiles/bpStereoParameters.h and are documented in that file and the paper.  
 In order to compile/re-compile the program, navigate to the directory LinuxMakeAndRunBPOptimizedCPU (for optimized GPU
-implementation or LinuxMakeAndRunBPCUDA (for CUDA implementation; currently this get compilation error due to use of C++17
-with NVCC) and run "make clean" and "make".  To run the CUDA code, the CUDA installation must have a symbolic link to /usr/local/cuda/
-for the Makefile to work as is.
+implementation or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".  To run the CUDA code,
+the CUDA installation must have a symbolic link to /usr/local/cuda/ for the Makefile to work as is.
 
-The Tsukuba stereo set is included as part of this folder as a sample program.  In order to test the implementation on this 
-stereo set using the initial parameters as defined in ParameterFiles/bpStereoParameters.h, perform the following steps:
+A number of stereo sets including the Tsukuba stereo are included in the "StereoSets" folder.  In order to run the implementation
+on these stereo sets using the initial parameters as defined in ParameterFiles/bpStereoParameters.h, perform the following steps:
 
 LINUX:
 
@@ -59,22 +58,23 @@ with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DI
 LinuxMakeAndRunBPCUDA).
 
 3.  Execute the commands "make clean" and "make" on the command line (Note that the current Makefile for CUDA compiles specifically for
-compute capabilities 6.0, 6.1, 7.0, and 7.5, which correspond to Pascal, Volta, and Turing architecture discrete GPUs.  May need to make
-adjustments to run on other NVIDIA GPUs or to run on SOCs such as the Jetson TX1/2).
+compute capability 7.0 which corresponds to the Volta V100 server GPU.  Need to make adjustments to run on other NVIDIA GPUs or to run
+on SOCs such as the Jetson TX1/2).
 
 4.  The executable named "driverCPUBp" or "driverCudaBp" should now be created, so call executable to run the implementation on the
-Tsukuba set. The implementation is run multiple times to more accuracy guage the runtime, with the median optimized CPU or GPU runtime given.
-The single-thread CPU implementation code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run with the runtime given.
+multiple stereo sets. The implementation is run multiple times to more accuracy guage the runtime.  The single-thread CPU implementation
+code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run to make it possible to compare the output disparity maps/runtimes
+from the original single-thread implementation with the optimized implementations.
 
-5.  The GPU and CPU runtimes are output in the terminal also with the location of the output disparity maps.  More detailed info
-including input parameters, detailed timings, and output disparity maps comparison to ground truth are in output.txt file (in the
-same folder as the driverCudaBp executable).
+5.  The locations of the output disparity maps are given in the console output.  More detailed info including input parameters, detailed
+timings, and output disparity maps comparison to ground truth for each run are in a outputResults.csv file; this file is in the same
+folder as the driverCPUBp/driverCudaBp executable.
 
-6.  In order to adjust the parameters to run on different input or different parameters, adjust the desired parameters in 
-ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile to the program with the adjusted parameters, then call
+6.  In order to adjust the parameters to run on different inputs or with different parameters, set the desired parameters in 
+ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the adjusted parameters, and then call
 the executable to run the program with the adjusted parameters.
 
-WINDOWS:
+WINDOWS (MAY NOT CURRENTLY WORK AS IS; HASN'T BEEN TESTED FOR AWHILE):
 
 1. Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
 
