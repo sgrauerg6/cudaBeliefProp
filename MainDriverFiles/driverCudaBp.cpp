@@ -43,7 +43,9 @@ void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 	cudaDriverGetVersion(&cudaDriverVersion);
 
 	resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
+	std::cout << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
 	resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
+	std::cout << "Cuda version: " << cudaDriverVersion << "\n";
 }
 
 template<typename T, unsigned int NUM_SET>
@@ -55,6 +57,7 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 	int cudaRuntimeVersion;
 	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+	std::cout << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 
 	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
 			std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
