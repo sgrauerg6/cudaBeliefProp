@@ -37,6 +37,7 @@ const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
 void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 {
+	cudaSetDevice(0);
 	cudaDeviceProp prop;
 	cudaGetDeviceProperties( &prop, numDevice);
 	int cudaDriverVersion;
