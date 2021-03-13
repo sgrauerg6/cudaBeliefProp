@@ -1,4 +1,4 @@
-CUDA_DIR = /usr/local/cuda-11.1/
+CUDA_DIR = /usr/local/cuda/
 CUDA_SDK_ROOT := 
 
 CU_FILE = driverCudaBp.cu
@@ -34,7 +34,7 @@ ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 
 # may need to adjust to allow support for target GPU (note that can't use half precision before compute capability 5.3)
 # by default including "server GPU" compute capabilities (P100, V100, A100)
-ARCHITECTURES_GENCODE = -gencode arch=compute_80,code=sm_80
+ARCHITECTURES_GENCODE = -gencode arch=compute_70,code=sm_70
 #-gencode arch=compute_60,code=sm_60 -gencode arch=compute_80,code=sm_80
 #-gencode arch=compute_35,code=sm_35
 #ARCHITECTURES_GENCODE = -gencode arch=compute_86,code=sm_86 -gencode arch=compute_80,code=sm_80 -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60
