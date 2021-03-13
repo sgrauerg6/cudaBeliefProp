@@ -57,18 +57,18 @@ with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DI
 2.  Navigate to the folder with the optimized CPU implementation or CUDA implementation Makefile (LinuxMakeAndRunBPOptimizedCPU / 
 LinuxMakeAndRunBPCUDA).
 
-3.  Execute the commands "make clean" and "make" on the command line (Note that the current Makefile for CUDA compiles specifically for
-compute capability 7.0 which corresponds to the Volta V100 server GPU.  Need to make adjustments to run on other NVIDIA GPUs or to run
-on SOCs such as the Jetson TX1/2).
+3.  Execute the commands "make clean" and "make" on the command line
+Note: The current Makefile for CUDA compiles specifically for compute capability 7.0 which corresponds to the Volta V100 server GPU.
+Need to modify Makefile to run on other NVIDIA GPUs or SOCs such as the Jetson TX1/2
 
 4.  The executable named "driverCPUBp" or "driverCudaBp" should now be created, so call executable to run the implementation on the
 multiple stereo sets. The implementation is run multiple times to more accuracy guage the runtime.  The single-thread CPU implementation
 code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run to make it possible to compare the output disparity maps/runtimes
 from the original single-thread implementation with the optimized implementations.
 
-5.  The locations of the output disparity maps are given in the console output.  More detailed info including input parameters, detailed
-timings, and output disparity maps comparison to ground truth for each run are in a outputResults.csv file; this file is in the same
-folder as the driverCPUBp/driverCudaBp executable.
+5.  The locations of the output disparity maps are given in the console output.  More detailed info including input stereo set and
+parameters, detailed timings, and output disparity map evaluation as compared to ground truth for each run are written to a
+outputResults.csv file; this file is in the same folder as the driverCPUBp/driverCudaBp executable.
 
 6.  In order to adjust the parameters to run on different inputs or with different parameters, set the desired parameters in 
 ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the adjusted parameters, and then call
