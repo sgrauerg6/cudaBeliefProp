@@ -104,6 +104,16 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 0>("DOUBLE", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 0>("DOUBLE", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 1>("DOUBLE", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 1>("DOUBLE", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 2>("DOUBLE", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 2>("DOUBLE", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 3>("DOUBLE", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 3>("DOUBLE", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 4>("DOUBLE", resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 4>("DOUBLE", resultsAcrossRuns, false);
 	//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
 	//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
 #ifdef CUDA_HALF_SUPPORT
