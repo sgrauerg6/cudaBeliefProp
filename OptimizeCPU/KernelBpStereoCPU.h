@@ -30,19 +30,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //headers to include differ depending on architecture and CPU vectorization setting
 #ifdef COMPILING_FOR_ARM
 #include <arm_neon.h>
-
-#if (CPU_VECTORIZATION_SETTING == NEON)
-#include "KernelBpStereoCPU_NEON_SIMDFuncts.h"
-#endif //CPU_OPTIMIZATION_SETTING == USE_NEON
-
-#else
-
-#if (CPU_VECTORIZATION_SETTING == AVX_256)
-#include "KernelBpStereoCPU_AVX256_SIMDFuncts.h"
-#elif (CPU_VECTORIZATION_SETTING == AVX_512)
-#include "KernelBpStereoCPU_AVX512_SIMDFuncts.h"
-#endif //CPU_VECTORIZATION_SETTING
-
 #endif //COMPILING_FOR_ARM
 
 class KernelBpStereoCPU
@@ -118,25 +105,6 @@ public:
 			T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
 			T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
 			float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
-
-	template<typename T, unsigned int DISP_VALS>
-	static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
-
-	template<typename T, unsigned int DISP_VALS>
-	static void printDataAndMessageValsToPointKernelCPU(
-			const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
-			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 
 	//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 	//and the output message values are save to output message arrays
@@ -215,40 +183,119 @@ public:
 			const float disc_k_bp, const unsigned int numDataInSIMDVector,
 			const unsigned int bpSettingsDispVals);
 
+	// compute current message
+	template<typename T, typename U, unsigned int DISP_VALS>
+	static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
+			U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
+			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
+
+	// compute current message
+	template<typename T, typename U>
+	static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			U* messageValsNeighbor1, U* messageValsNeighbor2,
+			U* messageValsNeighbor3, U* dataCosts,
+			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned,
+			const unsigned int bpSettingsDispVals);
+
+	// compute current message
+	template<typename T, typename U, typename V, typename W>
+	static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			U* messageValsNeighbor1, U* messageValsNeighbor2,
+			U* messageValsNeighbor3, U* dataCosts,
+			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned,
+			const unsigned int bpSettingsDispVals);
+
+	// compute current message
+	template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
+	static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
+			U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
+			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
+
+	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	template<typename T, typename U, unsigned int DISP_VALS>
+	static void dtStereoSIMD(U f[DISP_VALS]);
+
+	//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	//TODO: look into defining function in .cpp file so don't need to declare inline
+	template<typename T, typename U>
+	static void dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals);
+
 	template<typename T, typename U>
 	static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
-	{
+			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData) {
 		printf("Data type not supported for loading aligned data\n");
 	}
 
 	template<typename T, typename U>
 	static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
-	{
+			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData) {
 		printf("Data type not supported for loading unaligned data\n");
 	}
 
 	template<typename T>
-	static T createSIMDVectorSameData(const float data)
-	{
+	static T createSIMDVectorSameData(const float data) {
 		printf("Data type not supported for creating simd vector\n");
 	}
+
+	template<typename T, typename U, typename V>
+	static V addVals(const T& val1, const U& val2) { return (val1 + val2); }
+
+	template<typename T, typename U, typename V>
+	static V subtractVals(const T& val1, const U& val2) { return (val1 - val2); }
+
+	template<typename T, typename U, typename V>
+	static V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
+
+	template<typename T, typename V>
+	static T convertValToDatatype(const V val) { return (T)val; }
+
+	template<typename T>
+	static T getMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }
+
+	template<typename T, typename U>
+	static void storePackedDataAligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
+		locationDataStore[indexDataStore] = dataToStore;
+	}
+
+	template<typename T, typename U>
+	static void storePackedDataUnaligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
+		locationDataStore[indexDataStore] = dataToStore;
+	}
+
+	template<typename T, unsigned int DISP_VALS>
+	static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
+			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
+			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
+
+	template<typename T, unsigned int DISP_VALS>
+	static void printDataAndMessageValsToPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
+			const levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
+			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
+			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
+			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting
 #ifdef COMPILING_FOR_ARM
-
 #include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
 
 #if (CPU_VECTORIZATION_SETTING == NEON)
-
 #include "KernelBpStereoCPU_NEON.h"
-
 #endif //CPU_OPTIMIZATION_SETTING == USE_NEON
 
 #else
-
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
@@ -258,9 +305,6 @@ public:
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 #endif
 
-//do nothing
-
 #endif //COMPILING_FOR_ARM
-
 
 #endif //KERNAL_BP_STEREO_CPU_H

@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.h"
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 
-
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<typename T, unsigned int DISP_VALS>
@@ -134,25 +133,23 @@ void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
 		const unsigned int xValStartProcessing, const unsigned int yVal,
 		const levelProperties& currentLevelProperties,
 		U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
-		U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS],
-		U dataMessage[DISP_VALS],
-		T* currentUMessageArray, T* currentDMessageArray,
-		T* currentLMessageArray, T* currentRMessageArray,
+		U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS], U dataMessage[DISP_VALS],
+		T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray,
 		const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing)
 {
-	bp_simd_processing::msgStereoSIMD<DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+	msgStereoSIMD<T, U, DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
 			prevLMessage, prevRMessage, dataMessage, currentUMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing);
 
-	bp_simd_processing::msgStereoSIMD<DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevDMessage,
+	msgStereoSIMD<T, U, DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevDMessage,
 			prevLMessage, prevRMessage, dataMessage, currentDMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing);
 
-	bp_simd_processing::msgStereoSIMD<DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+	msgStereoSIMD<T, U, DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
 			prevDMessage, prevRMessage, dataMessage, currentRMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing);
 
-	bp_simd_processing::msgStereoSIMD<DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+	msgStereoSIMD<T, U, DISP_VALS>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
 			prevDMessage, prevLMessage, dataMessage, currentLMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing);
 }
@@ -161,27 +158,23 @@ template<typename T, typename U>
 void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
 		const unsigned int xValStartProcessing, const unsigned int yVal,
 		const levelProperties& currentLevelProperties,
-		U* prevUMessage, U* prevDMessage,
-		U* prevLMessage, U* prevRMessage,
-		U* dataMessage,
-		T* currentUMessageArray, T* currentDMessageArray,
-		T* currentLMessageArray, T* currentRMessageArray,
-		const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing,
-		const unsigned int bpSettingsDispVals)
+		U* prevUMessage, U* prevDMessage, U* prevLMessage, U* prevRMessage, U* dataMessage,
+		T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray,
+		const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing, const unsigned int bpSettingsDispVals)
 {
-	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+	msgStereoSIMD<T, U>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
 			prevLMessage, prevRMessage, dataMessage, currentUMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
 
-	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevDMessage,
+	msgStereoSIMD<T, U>(xValStartProcessing, yVal, currentLevelProperties, prevDMessage,
 			prevLMessage, prevRMessage, dataMessage, currentDMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
 
-	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+	msgStereoSIMD<T, U>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
 			prevDMessage, prevRMessage, dataMessage, currentRMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
 
-	bp_simd_processing::msgStereoSIMD(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
+	msgStereoSIMD<T, U>(xValStartProcessing, yVal, currentLevelProperties, prevUMessage,
 			prevDMessage, prevLMessage, dataMessage, currentLMessageArray,
 			disc_k_bp_vector, dataAlignedAtxValStartProcessing, bpSettingsDispVals);
 }
@@ -214,7 +207,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				unsigned int xValProcess = xVal;
 
 				//need this check first for case where endXAvxStart is 0 and startX is 1
-				//if past the last AVX start (since the next one would go beyond the row), set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
+				//if past the last AVX start (since the next one would go beyond the row),
+				//set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
 				//may be a few pixels that are computed twice but that's OK
 				if (xValProcess > endXSIMDVectorStart) {
 					xValProcess = endFinal - numDataInSIMDVector;
@@ -318,7 +312,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				unsigned int xValProcess = xVal;
 
 				//need this check first for case where endXAvxStart is 0 and startX is 1
-				//if past the last AVX start (since the next one would go beyond the row), set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
+				//if past the last AVX start (since the next one would go beyond the row),
+				//set to numDataInSIMDVector from the final pixel so processing the last numDataInAvxVector in avx
 				//may be a few pixels that are computed twice but that's OK
 				if (xValProcess > endXSIMDVectorStart) {
 					xValProcess = endFinal - numDataInSIMDVector;
@@ -577,6 +572,253 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 	}
 }
 
+//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+template<typename T, typename U, unsigned int DISP_VALS>
+void KernelBpStereoCPU::dtStereoSIMD(U f[DISP_VALS])
+{
+	U prev;
+	const U vectorAllOneVal = convertValToDatatype<U, T>(1.0f);
+	for (unsigned int currentDisparity = 1; currentDisparity < DISP_VALS; currentDisparity++)
+	{
+		//prev = f[currentDisparity-1] + (T)1.0;
+		prev = addVals<U, U, U>(f[currentDisparity - 1], vectorAllOneVal);
+
+		/*if (prev < f[currentDisparity])
+					f[currentDisparity] = prev;*/
+		f[currentDisparity] = getMinByElement<U>(prev, f[currentDisparity]);
+	}
+
+	for (int currentDisparity = (int)DISP_VALS-2; currentDisparity >= 0; currentDisparity--)
+	{
+		//prev = f[currentDisparity+1] + (T)1.0;
+		prev = addVals<U, U, U>(f[currentDisparity + 1], vectorAllOneVal);
+
+		//if (prev < f[currentDisparity])
+		//	f[currentDisparity] = prev;
+		f[currentDisparity] = getMinByElement<U>(prev, f[currentDisparity]);
+	}
+}
+
+// compute current message
+template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
+void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		U messageValsNeighbor1[DISP_VALS],
+		U messageValsNeighbor2[DISP_VALS],
+		U messageValsNeighbor3[DISP_VALS],
+		U dataCosts[DISP_VALS],
+		T* dstMessageArray, const U& disc_k_bp, const bool dataAligned)
+{
+	// aggregate and find min
+	//T minimum = bp_consts::INF_BP;
+	W minimum = convertValToDatatype<W, V>(bp_consts::INF_BP);
+	W dst[DISP_VALS];
+
+	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
+	{
+		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
+		dst[currentDisparity] = addVals<U, U, W>(messageValsNeighbor1[currentDisparity], messageValsNeighbor2[currentDisparity]);
+		dst[currentDisparity] = addVals<W, U, W>(dst[currentDisparity], messageValsNeighbor3[currentDisparity]);
+		dst[currentDisparity] = addVals<W, U, W>(dst[currentDisparity], dataCosts[currentDisparity]);
+
+		//if (dst[currentDisparity] < minimum)
+		//	minimum = dst[currentDisparity];
+		minimum = getMinByElement<W>(minimum, dst[currentDisparity]);
+	}
+
+	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	dtStereoSIMD<V, W, DISP_VALS>(dst);
+
+	// truncate
+	//minimum += disc_k_bp;
+	minimum = addVals<W, U, W>(minimum, disc_k_bp);
+
+	// normalize
+	//T valToNormalize = 0;
+	W valToNormalize = convertValToDatatype<W, V>(0.0);
+
+	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
+	{
+		/*if (minimum < dst[currentDisparity]) {
+			dst[currentDisparity] = minimum;
+		}*/
+		dst[currentDisparity] = getMinByElement<W>(minimum, dst[currentDisparity]);
+
+		//valToNormalize += dst[currentDisparity];
+		valToNormalize = addVals<W, W, W>(valToNormalize, dst[currentDisparity]);
+	}
+
+	//valToNormalize /= DISP_VALS;
+	valToNormalize = divideVals<W, W, W>(valToNormalize, convertValToDatatype<W, V>((double)DISP_VALS));
+
+	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				DISP_VALS);
+
+	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
+	{
+		//dst[currentDisparity] -= valToNormalize;
+		dst[currentDisparity] = subtractVals<W, W, W>(dst[currentDisparity], valToNormalize);
+
+		if (dataAligned) {
+			storePackedDataAligned<T, W>(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+		else {
+			storePackedDataUnaligned<T, W>(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+
+		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+		}
+		else {
+			destMessageArrayIndex++;
+		}
+	}
+}
+
+//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+//TODO: look into defining function in .cpp file so don't need to declare inline
+template<typename T, typename U>
+void KernelBpStereoCPU::dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals)
+{
+	U prev;
+	const U vectorAllOneVal = convertValToDatatype<U, T>(1.0f);
+	for (unsigned int currentDisparity = 1; currentDisparity < bpSettingsDispVals; currentDisparity++)
+	{
+		//prev = f[currentDisparity-1] + (T)1.0;
+		prev = addVals<U, U, U>(f[currentDisparity - 1], vectorAllOneVal);
+
+		/*if (prev < f[currentDisparity])
+					f[currentDisparity] = prev;*/
+		f[currentDisparity] = getMinByElement<U>(prev, f[currentDisparity]);
+	}
+
+	for (int currentDisparity = (int)bpSettingsDispVals-2; currentDisparity >= 0; currentDisparity--)
+	{
+		//prev = f[currentDisparity+1] + (T)1.0;
+		prev = addVals<U, U, U>(f[currentDisparity + 1], vectorAllOneVal);
+
+		//if (prev < f[currentDisparity])
+		//	f[currentDisparity] = prev;
+		f[currentDisparity] = getMinByElement<U>(prev, f[currentDisparity]);
+	}
+}
+
+// compute current message
+template<typename T, typename U, typename V, typename W>
+void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
+	const levelProperties& currentLevelProperties,
+	U* messageValsNeighbor1, U* messageValsNeighbor2,
+	U* messageValsNeighbor3, U* dataCosts,
+	T* dstMessageArray, const U& disc_k_bp, const bool dataAligned,
+	const unsigned int bpSettingsDispVals)
+{
+	// aggregate and find min
+	//T minimum = bp_consts::INF_BP;
+	W minimum = convertValToDatatype<W, V>(bp_consts::INF_BP);
+	W* dst = new W[bpSettingsDispVals];
+
+	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
+	{
+		//dst[currentDisparity] = messageValsNeighbor1[currentDisparity] + messageValsNeighbor2[currentDisparity] + messageValsNeighbor3[currentDisparity] + dataCosts[currentDisparity];
+		dst[currentDisparity] = addVals<U, U, W>(messageValsNeighbor1[currentDisparity], messageValsNeighbor2[currentDisparity]);
+		dst[currentDisparity] = addVals<W, U, W>(dst[currentDisparity], messageValsNeighbor3[currentDisparity]);
+		dst[currentDisparity] = addVals<W, U, W>(dst[currentDisparity], dataCosts[currentDisparity]);
+
+		//if (dst[currentDisparity] < minimum)
+		//	minimum = dst[currentDisparity];
+		minimum = getMinByElement<W>(minimum, dst[currentDisparity]);
+	}
+
+	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	dtStereoSIMD<V, W>(dst, bpSettingsDispVals);
+
+	// truncate
+	//minimum += disc_k_bp;
+	minimum = addVals<W, U, W>(minimum, disc_k_bp);
+
+	// normalize
+	//T valToNormalize = 0;
+	W valToNormalize = convertValToDatatype<W, V>(0.0f);
+
+	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
+	{
+		//if (minimum < dst[currentDisparity]) {
+		//	dst[currentDisparity] = minimum;
+		//}
+		dst[currentDisparity] = getMinByElement<W>(minimum, dst[currentDisparity]);
+
+		//valToNormalize += dst[currentDisparity];
+		valToNormalize = addVals<W, W, W>(valToNormalize, dst[currentDisparity]);
+	}
+
+	//valToNormalize /= DISP_VALS;
+	valToNormalize = divideVals<W, W, W>(valToNormalize, convertValToDatatype<W, V>((float)bpSettingsDispVals));
+
+	unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+			currentLevelProperties.paddedWidthCheckerboardLevel_,
+			currentLevelProperties.heightLevel_, 0,
+			bpSettingsDispVals);
+
+	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
+	{
+		//dst[currentDisparity] -= valToNormalize;
+		dst[currentDisparity] = subtractVals<W, W, W>(dst[currentDisparity], valToNormalize);
+
+		if (dataAligned) {
+			storePackedDataAligned<T, W>(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+		else {
+			storePackedDataUnaligned<T, W>(destMessageArrayIndex,
+					dstMessageArray, dst[currentDisparity]);
+		}
+
+		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+		}
+		else {
+			destMessageArrayIndex++;
+		}
+	}
+
+	delete [] dst;
+}
+
+// compute current message
+template<typename T, typename U, unsigned int DISP_VALS>
+void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		U messageValsNeighbor1[DISP_VALS],
+		U messageValsNeighbor2[DISP_VALS],
+		U messageValsNeighbor3[DISP_VALS],
+		U dataCosts[DISP_VALS],
+		T* dstMessageArray, const U& disc_k_bp, const bool dataAligned)
+{
+	msgStereoSIMDProcessing<T, U, T, U, DISP_VALS>(xVal, yVal,
+			currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
+			messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+// compute current message
+template<typename T, typename U>
+void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		U* messageValsNeighbor1, U* messageValsNeighbor2,
+		U* messageValsNeighbor3, U* dataCosts,
+		T* dstMessageArray, const U& disc_k_bp, const bool dataAligned,
+		const unsigned int bpSettingsDispVals)
+{
+	msgStereoSIMDProcessing<T, U, T, U>(
+			xVal, yVal, currentLevelProperties,
+			messageValsNeighbor1, messageValsNeighbor2,
+			messageValsNeighbor3, dataCosts,
+			dstMessageArray, disc_k_bp, dataAligned,
+			bpSettingsDispVals);
+}
 
 template<typename T, unsigned int DISP_VALS>
 void KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU(
