@@ -115,8 +115,9 @@ public:
 		}
 
 		for (unsigned int i = 0; i < 2u; i++) {
-			std::cout << "Output disparity map from run at " << output_disp[i] << std::endl;
+			std::cout << "Output disparity map from " << bpProcessingImps[i]->getBpRunDescription() << " run at " << output_disp[i] << std::endl;
 		}
+		std::cout << std::endl;
 
 		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
 		for (unsigned int i = 0; i < 2u; i++) {
@@ -126,8 +127,6 @@ public:
 
 		outStream << std::endl << bpProcessingImps[0]->getBpRunDescription() << " output vs. " << bpProcessingImps[1]->getBpRunDescription() << " result:\n";
 		compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap, outStream);
-
-		std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";
 	}
 
 	template<typename T, unsigned int DISP_VALS>
@@ -162,8 +161,10 @@ public:
 				run_output[1].runTime << std::endl;
 
 		for (unsigned int i = 0; i < 2u; i++) {
-			std::cout << "Output disparity map from run at " << output_disp[i] << std::endl;
+			const std::string runDesc{(i == 0) ? optimizedImp->getBpRunDescription() : singleThreadCPUImp->getBpRunDescription()};
+			std::cout << "Output disparity map from " << runDesc << " run at " << output_disp[i] << std::endl;
 		}
+		std::cout << std::endl;
 
 		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
 		outStream << std::endl << optimizedImp->getBpRunDescription() << " output vs. Ground Truth result:\n";
@@ -173,8 +174,6 @@ public:
 
 		outStream << std::endl << optimizedImp->getBpRunDescription() << " output vs. " << singleThreadCPUImp->getBpRunDescription() << " result:\n";
 		compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap, outStream);
-
-		std::cout << "More info including input parameters, detailed timings, and output disparity maps comparison to ground truth in output.txt.\n";
 	}
 };
 

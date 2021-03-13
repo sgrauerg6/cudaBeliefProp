@@ -89,8 +89,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
+	//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
+	//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
 #ifdef COMPILING_FOR_ARM
 	runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns, false);
@@ -102,8 +102,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float16_t, 3>("HALF", resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float16_t, 4>("HALF", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 4>("HALF", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<float16_t, 5>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float16_t, 5>("HALF", resultsAcrossRuns, false);
+	//runBpOnSetAndUpdateResults<float16_t, 5>("HALF", resultsAcrossRuns, true);
+	//runBpOnSetAndUpdateResults<float16_t, 5>("HALF", resultsAcrossRuns, false);
 #else
 	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, false);
@@ -115,8 +115,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, false);
+	//runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, true);
+	//runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, false);
 #endif
 
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
@@ -134,4 +134,7 @@ int main(int argc, char** argv)
 		resultsStream << std::endl;
 	}
 	resultsStream.close();
+
+	std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run in "
+			  << BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
 }
