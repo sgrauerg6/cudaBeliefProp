@@ -74,7 +74,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
-template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, float64x2_t>(
+template<> inline float64x2_t KernelBpStereoCPU::loadPackedDataAligned<double, float64x2_t>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
 	return vld1q_f64(&inData[retrieveIndexInDataAndMessage(
@@ -115,7 +115,7 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
 
-template<> inline __m256d KernelBpStereoCPU::loadPackedDataUnaligned<double, float64x2_t>(
+template<> inline float64x2_t KernelBpStereoCPU::loadPackedDataUnaligned<double, float64x2_t>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
 	return vld1q_f64(&inData[retrieveIndexInDataAndMessage(
