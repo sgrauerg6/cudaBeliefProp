@@ -96,7 +96,7 @@ template<> inline __m512 KernelBpStereoCPU::loadPackedDataAligned<float, __m512>
 template<> inline __m256i KernelBpStereoCPU::loadPackedDataAligned<short, __m256i>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData) {
-	return _mm256_load_si256((__m256i *)(&inData[retrieveIndexInDataAndMessage(
+	return _mm256_load_si256((__m256i*)(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity,
 			numDispVals)]));
