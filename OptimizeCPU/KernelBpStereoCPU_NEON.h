@@ -53,7 +53,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
-/*template<unsigned int DISP_VALS>
+template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
@@ -63,8 +63,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
 		const float disc_k_bp, const unsigned int bpSettingsDispVals)
 {
-	constexpr unsigned int numDataInSIMDVector{4u};
-	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<double, __m256d, DISP_VALS>(
+	constexpr unsigned int numDataInSIMDVector{2u};
+	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<double, float64x2_t, DISP_VALS>(
 			checkerboardToUpdate, currentLevelProperties,
 			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 			messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -74,13 +74,13 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
-template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m256d>(
+template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, float64x2_t>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
-	return _mm256_load_pd(&inData[retrieveIndexInDataAndMessage(
+	return vld1q_f64(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
-}*/
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataAligned<float, float32x4_t>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
@@ -115,13 +115,13 @@ template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::loadPackedDataUnaligned<double, __m256d>(
+template<> inline __m256d KernelBpStereoCPU::loadPackedDataUnaligned<double, float64x2_t>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
-	return _mm256_loadu_pd(&inData[retrieveIndexInDataAndMessage(
+	return vld1q_f64(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
-}*/
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::createSIMDVectorSameData<float32x4_t>(const float data) {
 	return vdupq_n_f32(data);
@@ -131,17 +131,17 @@ template<> inline float16x4_t KernelBpStereoCPU::createSIMDVectorSameData<float1
 	return vcvt_f16_f32(createSIMDVectorSameData<float32x4_t>(data));
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::createSIMDVectorSameData<__m256d>(const float data) {
-	return _mm256_set1_pd(data);
-}*/
+template<> inline float64x2_t KernelBpStereoCPU::createSIMDVectorSameData<float64x2_t>(const float data) {
+	return vdupq_n_f64(data);
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::addVals<float32x4_t, float32x4_t, float32x4_t>(const float32x4_t& val1, const float32x4_t& val2) {
 	return vaddq_f32(val1, val2);
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::addVals<__m256d, __m256d, __m256d>(const __m256d& val1, const __m256d& val2) {
-	return _mm256_add_pd(val1, val2);
-}*/
+template<> inline float64x2_t KernelBpStereoCPU::addVals<float64x2_t, float64x2_t, float64x2_t>(const float64x2_t& val1, const float64x2_t& val2) {
+	return vaddq_f64(val1, val2);
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::addVals<float32x4_t, float16x4_t, float32x4_t>(const float32x4_t& val1, const float16x4_t& val2) {
 	return vaddq_f32(val1, vcvt_f32_f16(val2));
@@ -159,33 +159,33 @@ template<> inline float32x4_t KernelBpStereoCPU::subtractVals<float32x4_t, float
 	return vsubq_f32(val1, val2);
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::subtractVals<__m256d, __m256d, __m256d>(const __m256d& val1, const __m256d& val2) {
-	return _mm256_sub_pd(val1, val2);
-}*/
+template<> inline float64x2_t KernelBpStereoCPU::subtractVals<float64x2_t, float64x2_t, float64x2_t>(const float64x2_t& val1, const float64x2_t& val2) {
+	return vsubq_f64(val1, val2);
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::divideVals<float32x4_t, float32x4_t, float32x4_t>(const float32x4_t& val1, const float32x4_t& val2) {
 	return vdivq_f32(val1, val2);
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::divideVals<__m256d, __m256d, __m256d>(const __m256d& val1, const __m256d& val2) {
-	return _mm256_div_pd(val1, val2);
-}*/
+template<> inline float64x2_t KernelBpStereoCPU::divideVals<float64x2_t, float64x2_t, float64x2_t>(const float64x2_t& val1, const float64x2_t& val2) {
+	return vdivq_f64(val1, val2);
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::convertValToDatatype<float32x4_t, float>(const float val) {
 	return vdupq_n_f32(val);
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::convertValToDatatype<__m256d, double>(const double val) {
-	return _mm256_set1_pd(val);
-}*/
+template<> inline float64x2_t KernelBpStereoCPU::convertValToDatatype<float64x2_t, double>(const double val) {
+	return vdupq_n_f64(val);
+}
 
 template<> inline float32x4_t KernelBpStereoCPU::getMinByElement<float32x4_t>(const float32x4_t& val1, const float32x4_t& val2) {
 	return vminnmq_f32(val1, val2);
 }
 
-/*template<> inline __m256d KernelBpStereoCPU::getMinByElement<__m256d>(const __m256d& val1, const __m256d& val2) {
-	return _mm256_min_pd(val1, val2);
-}*/
+template<> inline float64x2_t KernelBpStereoCPU::getMinByElement<float64x2_t>(const float64x2_t& val1, const float64x2_t& val2) {
+	return vminnmq_f64(val1, val2);
+}
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, float32x4_t>(
 		const unsigned int indexDataStore, float* locationDataStore, const float32x4_t& dataToStore) {
@@ -197,10 +197,10 @@ template<> inline void KernelBpStereoCPU::storePackedDataAligned<float16_t, floa
 	vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore));
 }
 
-/*template<> inline void KernelBpStereoCPU::storePackedDataAligned<double, __m256d>(
-		const unsigned int indexDataStore, double* locationDataStore, const __m256d& dataToStore) {
-	_mm256_store_pd(&locationDataStore[indexDataStore], dataToStore);
-}*/
+template<> inline void KernelBpStereoCPU::storePackedDataAligned<double, float64x2_t>(
+		const unsigned int indexDataStore, double* locationDataStore, const float64x2_t& dataToStore) {
+	vst1q_f64(&locationDataStore[indexDataStore], dataToStore);
+}
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float, float32x4_t>(
 		const unsigned int indexDataStore, float* locationDataStore, const float32x4_t& dataToStore) {
@@ -212,10 +212,10 @@ template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float16_t, fl
 	vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore));
 }
 
-/*template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<double, __m256d>(
-		const unsigned int indexDataStore, double* locationDataStore, const __m256d& dataToStore) {
-	_mm256_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
-}*/
+template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<double, float64x2_t>(
+		const unsigned int indexDataStore, double* locationDataStore, const float64x2_t& dataToStore) {
+	vst1q_f64(&locationDataStore[indexDataStore], dataToStore);
+}
 
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
