@@ -107,7 +107,7 @@ template<> inline float32x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float, 
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
 
-template<> inline float16_t KernelBpStereoCPU::loadPackedDataUnaligned<float16_t, float16x4_t>(
+template<> inline float16x4_t KernelBpStereoCPU::loadPackedDataUnaligned<float16_t, float16x4_t>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, float16_t* inData) {
 	return vld1_f16(&inData[retrieveIndexInDataAndMessage(
