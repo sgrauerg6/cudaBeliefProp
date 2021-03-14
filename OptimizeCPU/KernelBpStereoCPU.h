@@ -169,7 +169,7 @@ public:
 			float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
 			float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
 			float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
-			const float disc_k_bp);
+			const float disc_k_bp, const unsigned int bpSettingsDispVals = 0);
 #endif //COMPILING_FOR_ARM
 
 	template<typename T, typename U, unsigned int DISP_VALS>
