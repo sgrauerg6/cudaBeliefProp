@@ -194,7 +194,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataAligned<float, float32x
 
 template<> inline void KernelBpStereoCPU::storePackedDataAligned<float16_t, float32x4_t>(
 		const unsigned int indexDataStore, float16_t* locationDataStore, const float32x4_t& dataToStore) {
-	vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore, 0));
+	vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore));
 }
 
 /*template<> inline void KernelBpStereoCPU::storePackedDataAligned<double, __m256d>(
@@ -209,7 +209,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float, float3
 
 template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<float16_t, float32x4_t>(
 		const unsigned int indexDataStore, float16_t* locationDataStore, const float32x4_t& dataToStore) {
-	vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore, 0));
+	vst1_f16(&locationDataStore[indexDataStore], vcvt_f16_f32(dataToStore));
 }
 
 /*template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<double, __m256d>(
