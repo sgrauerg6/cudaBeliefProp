@@ -84,9 +84,9 @@ program output shows the optimized CPU and CUDA implementation results compared 
 Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and will need to re-compile to see results with
 adjusted parameters.
 
-RESULTS USING CURRENT CODE
+RUNTIME RESULTS USING CURRENT CODE:
 
-Relative speedup across various processors using updated code:
+Relative speedup across various processors:
 NVIDIA A100: 2.3x
 NVIDIA V100: 1.7x
 NVIDIA P100: 1.05x
