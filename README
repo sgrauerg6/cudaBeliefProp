@@ -83,3 +83,15 @@ and CUDA implementations into DLLs, then the main program in the solution will l
 program output shows the optimized CPU and CUDA implementation results compared to the single-thread CPU implementation results.
 Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and will need to re-compile to see results with
 adjusted parameters.
+
+RESULTS USING CURRENT CODE
+
+Relative speedup across various processors using updated code:
+NVIDIA A100: 2.3x
+NVIDIA V100: 1.7x
+NVIDIA P100: 1.05x
+AMD Rome (48 cores/96 threads): 1.0x
+Amazon Graviton2 (64 core ARM server): 0.985x
+Intel Cascade Lake (24 cores/48 threads): 0.66x
+GTX Titan Black: 0.63x
+Spreadsheet with more detailed results: https://docs.google.com/spreadsheets/d/1YQn-byWwkW5DcD1EnEb7XL3LyvVUoUA0tlB491GgMiY/edit?usp=sharing
