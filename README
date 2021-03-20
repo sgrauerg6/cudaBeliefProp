@@ -32,7 +32,7 @@ http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.  The o
 http://scottgg.net/beliefPropCodePost.zip.
 
 See "RUNTIME RESULTS USING CURRENT CODE" section at end of README for runtime info across various processors
-including the NVIDIA A100 GPU and AMD Rome 48 core/96 thread server CPU.
+including the NVIDIA A100 GPU and AMD Rome 48-core/96-thread CPU.
 
 This code is distributed using the GNU General Public License, so any derivative work which 
 is distributed must also contain this license.
