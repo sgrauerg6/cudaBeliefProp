@@ -31,7 +31,7 @@ in the future).  The additional optimizations as well as the parallel CPU implem
 http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.  The original code is available at
 http://scottgg.net/beliefPropCodePost.zip.
 
-See "RUNTIME RESULTS USING CURRENT CODE" section at end of README for average relative speedup across various processors
+See "RUNTIME RESULTS USING CURRENT CODE" section at end of README for runtime info across various processors
 including the NVIDIA A100 GPU and AMD Rome 48 core/96 thread server CPU.
 
 This code is distributed using the GNU General Public License, so any derivative work which 
