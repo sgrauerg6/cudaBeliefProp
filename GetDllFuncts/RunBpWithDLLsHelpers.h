@@ -10,19 +10,21 @@
 
 //Needed for beliefPropProcessingDataType
 #include "ParameterFiles/bpRunSettings.h"
+#include "ParameterFiles/bpStereoParameters.h"
 #include "BpAndSmoothProcessing/RunBpStereoSet.h"
 
 //typedef RunBpStereoSet<float>* (__cdecl *RunBpStereoSet_factory)();
-using RunBpStereoSet_factory = RunBpStereoSet<beliefPropProcessingDataType>* (__cdecl*)();
+using RunBpStereoSet_factory = RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* (__cdecl*)();
 
 namespace run_bp_dlls
 {
 	enum class device_run { SINGLE_THREAD_CPU, OPTIMIZED_CPU, CUDA };
-	const std::map< device_run, std::string> DLL_FILE_NAMES = { {device_run::SINGLE_THREAD_CPU, "SingleThreadCPUBeliefPropDLL.dll"},
+	const std::map<device_run, std::string> DLL_FILE_NAMES = { {device_run::SINGLE_THREAD_CPU, "SingleThreadCPUBeliefPropDLL.dll"},
 																{device_run::OPTIMIZED_CPU, "OptimizedCPUBeliefPropDLL.dll"},
 																{device_run::CUDA, "CUDABeliefPropDLL.dll"} };
 }
 
+//template <typename T= RunBpStereoSet<float, 16>* (__cdecl*)()>
 class RunBpWithDLLsHelpers
 {
 public:
@@ -69,7 +71,7 @@ public:
 	static const std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> getRunBpFactoryFuncts()
 	{
 		std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> runBpFactoryFuncts;
-		std::map<run_bp_dlls::device_run, std::string> runStereoSetMethodNames = getRunStereoSetMethodNames<beliefPropProcessingDataType>();
+		std::map<run_bp_dlls::device_run, std::string> runStereoSetMethodNames = getRunStereoSetMethodNames<float>();
 
 		//retrieve the factory functions for each possible device run
 		for (const auto& deviceTypeAndDLL : run_bp_dlls::DLL_FILE_NAMES)

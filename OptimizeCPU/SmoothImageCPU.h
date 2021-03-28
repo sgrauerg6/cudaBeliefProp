@@ -62,7 +62,11 @@ private:
 			const unsigned int widthImages, const unsigned int heightImages)
 	{
 		#pragma omp parallel for
+#ifdef _WIN32
+		for (int val = 0; val < widthImages * heightImages; val++) {
+#else
 		for (unsigned int val = 0; val < widthImages * heightImages; val++) {
+#endif //_WIN32
 			const unsigned int yVal = val / widthImages;
 			const unsigned int xVal = val % widthImages;
 			floatImagePixels[yVal * widthImages + xVal] =
@@ -77,7 +81,11 @@ private:
 			float* imageFilter, const unsigned int sizeFilter)
 	{
 		#pragma omp parallel for
+#ifdef _WIN32
+		for (int val = 0; val < widthImages * heightImages; val++) {
+#else
 		for (unsigned int val = 0; val < widthImages * heightImages; val++) {
+#endif //_WIN32
 			const unsigned int yVal = val / widthImages;
 			const unsigned int xVal = val % widthImages;
 			filterImageAcrossProcessPixel<U>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
@@ -92,7 +100,11 @@ private:
 			float* imageFilter, const unsigned int sizeFilter)
 	{
 		#pragma omp parallel for
+#ifdef _WIN32
+		for (int val = 0; val < widthImages * heightImages; val++) {
+#else
 		for (unsigned int val = 0; val < widthImages * heightImages; val++) {
+#endif //_WIN32
 			const unsigned int yVal = val / widthImages;
 			const unsigned int xVal = val % widthImages;
 			filterImageVerticalProcessPixel<U>(xVal, yVal, imagePixelsToFilter,

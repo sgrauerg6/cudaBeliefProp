@@ -32,7 +32,11 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
+#ifdef _WIN32
+	for (int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
+#else
 	for (unsigned int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
+#endif //_WIN32
 	{
 		const unsigned int yVal = val / currentLevelProperties.widthLevel_;
 		const unsigned int xVal = val % currentLevelProperties.widthLevel_;
@@ -55,7 +59,11 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 		T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
+#ifdef _WIN32
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#else
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#endif //_WIN32
 	{
 		const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
 		const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
@@ -79,7 +87,11 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const levelPrope
 		const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
+#ifdef _WIN32
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#else
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#endif //_WIN32
 	{
 		const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
 		const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
@@ -112,7 +124,11 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 	const bool dataAligned = MemoryAlignedAtDataStart(0, 1);
 
 	#pragma omp parallel for
+#ifdef _WIN32
+	for (int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_); val++)
+#else
 	for (unsigned int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_); val++)
+#endif //_WIN32
 	{
 		const unsigned int yVal = val / widthCheckerboardRunProcessing;
 		const unsigned int xVal = val % widthCheckerboardRunProcessing;
@@ -195,7 +211,11 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 
 	if constexpr (DISP_VALS > 0) {
 		#pragma omp parallel for
+#ifdef _WIN32
+		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+#else
 		for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+#endif //_WIN32
 			//checkerboardAdjustment used for indexing into current checkerboard to update
 			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
 			const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
@@ -300,7 +320,11 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	}
 	else {
 		#pragma omp parallel for
+#ifdef _WIN32
+		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+#else
 		for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+#endif //_WIN32
 			//checkerboardAdjustment used for indexing into current checkerboard to update
 			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
 			const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
@@ -527,7 +551,11 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Ch
 		const unsigned int bpSettingsDispVals)
 {
 	#pragma omp parallel for
+#ifdef _WIN32
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#else
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#endif //_WIN32
 	{
 		const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
 		const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
@@ -556,7 +584,11 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals) {
 	#pragma omp parallel for
+#ifdef _WIN32
+	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#else
 	for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+#endif //_WIN32
 	{
 		const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
 		const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;

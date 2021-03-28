@@ -292,9 +292,9 @@ public:
 
 #ifdef _WIN32
 
-extern "C" __declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat();
-extern "C" __declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble();
-extern "C" __declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort();
 
 #endif //_WIN32
 

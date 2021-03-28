@@ -20,19 +20,19 @@
 
 #ifdef _WIN32
 
-__declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoCPUSingleThreadFloat()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoCPUSingleThreadFloat()
 {
-	return new RunBpStereoCPUSingleThread<float>();
+	return new RunBpStereoCPUSingleThread<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>();
 }
 
-__declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoCPUSingleThreadDouble()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoCPUSingleThreadDouble()
 {
-	return new RunBpStereoCPUSingleThread<double>();
+	return new RunBpStereoCPUSingleThread<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>();
 }
 
-__declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoCPUSingleThreadShort()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoCPUSingleThreadShort()
 {
-	return new RunBpStereoCPUSingleThread<short>();
+	return new RunBpStereoCPUSingleThread<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>();
 }
 
 #endif //_WIN32

@@ -22,19 +22,19 @@
 
 #ifdef _WIN32
 
-__declspec(dllexport) RunBpStereoSet<float>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat()
 {
-	return new RunBpStereoSetOnGPUWithCUDA<float>();
+	return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>();
 }
 
-__declspec(dllexport) RunBpStereoSet<double>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble()
 {
-	return new RunBpStereoSetOnGPUWithCUDA<double>();
+	return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>();
 }
 
-__declspec(dllexport) RunBpStereoSet<short>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort()
 {
-	return new RunBpStereoSetOnGPUWithCUDA<short>();
+	return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>();
 }
 
 #endif //_WIN32
