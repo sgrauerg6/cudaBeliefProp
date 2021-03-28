@@ -18,7 +18,7 @@
 int main(int argc, char** argv)
 {
 	//get mapping of device config to factory function to retrieve run stereo set object for device config
-	auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts();
+	auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts(0);
 
 	//set bp settings for image processing
 	BPsettings algSettings;

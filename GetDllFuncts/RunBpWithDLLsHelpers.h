@@ -42,36 +42,57 @@ public:
 
 	//retrieve name of factory function to get run stereo set class object to run stereo set for each possible device config
 	//templated with data type to process since function name is different for each data type (currently support float, double, 
-	//and short)
+	//and short) and also index of supported compile-time disparity (compTimeDispIdx set to <0 for case where disparity not known at compile-time)
 	template <typename T>
-	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames()
+	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames(const unsigned int compTimeDispIdx)
 	{
-		return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadFloat"},
-		{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUFloat" },
-		{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDAFloat" } };
+		if (compTimeDispIdx < 0) {
+			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadFloat"},
+			{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUFloat" },
+			{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDAFloat" } };
+		}
+		else {
+			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, std::string("createRunBpStereoCPUSingleThreadFloat") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx)},
+			{ run_bp_dlls::device_run::OPTIMIZED_CPU, std::string("createRunBpStereoOptimizedCPUFloat") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx) },
+			{ run_bp_dlls::device_run::CUDA, std::string("createRunBpStereoSetOnGPUWithCUDAFloat") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx) } };
+		}
 	}
 
 	template <>
-	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<double>()
+	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<double>(const unsigned int compTimeDispIdx)
 	{
-		return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadDouble"},
-		{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUDouble" },
-		{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDADouble" } };
+		if (compTimeDispIdx < 0) {
+			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadDouble"},
+			{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUDouble" },
+			{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDADouble" } };
+		}
+		else {
+			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, std::string("createRunBpStereoCPUSingleThreadDouble") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx)},
+			{ run_bp_dlls::device_run::OPTIMIZED_CPU, std::string("createRunBpStereoOptimizedCPUDouble") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx) },
+			{ run_bp_dlls::device_run::CUDA, std::string("createRunBpStereoSetOnGPUWithCUDADouble") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx) } };
+		}
 	}
 
 	template <>
-	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<short>()
+	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<short>(const unsigned int compTimeDispIdx)
 	{
-		return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadShort"},
-		{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUShort" },
-		{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDAShort" } };
+		if (compTimeDispIdx < 0) {
+			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadShort"},
+			{ run_bp_dlls::device_run::OPTIMIZED_CPU, "createRunBpStereoOptimizedCPUShort" },
+			{ run_bp_dlls::device_run::CUDA, "createRunBpStereoSetOnGPUWithCUDAShort" } };
+		}
+		else {
+			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, std::string("createRunBpStereoCPUSingleThreadShort") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx)},
+			{ run_bp_dlls::device_run::OPTIMIZED_CPU, std::string("createRunBpStereoOptimizedCPUShort") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx) },
+			{ run_bp_dlls::device_run::CUDA, std::string("createRunBpStereoSetOnGPUWithCUDAShort") + std::string("_KnownDisp") + std::to_string(compTimeDispIdx) } };
+		}
 	}
 
 	//retrieve mapping of each possible device config to factory function to run stereo set with config
-	static const std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> getRunBpFactoryFuncts()
+	static const std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> getRunBpFactoryFuncts(const unsigned int compTimeDispIdx)
 	{
 		std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> runBpFactoryFuncts;
-		std::map<run_bp_dlls::device_run, std::string> runStereoSetMethodNames = getRunStereoSetMethodNames<float>();
+		std::map<run_bp_dlls::device_run, std::string> runStereoSetMethodNames = getRunStereoSetMethodNames<float>(compTimeDispIdx);
 
 		//retrieve the factory functions for each possible device run
 		for (const auto& deviceTypeAndDLL : run_bp_dlls::DLL_FILE_NAMES)
@@ -83,6 +104,7 @@ public:
 			}
 
 			// Get the function from the DLL
+			std::cout << "Name: " << runStereoSetMethodNames[deviceTypeAndDLL.first] << std::endl;
 			RunBpStereoSet_factory factory_func = reinterpret_cast<RunBpStereoSet_factory>(
 				::GetProcAddress(dll_handle, (runStereoSetMethodNames[deviceTypeAndDLL.first]).c_str()));
 			if (!factory_func) {
