@@ -178,8 +178,8 @@ int main(int argc, char** argv)
 		runBpOnSetAndUpdateResultsCUDA<double, 2>("DOUBLE", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResultsCUDA<double, 3>("DOUBLE", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResultsCUDA<double, 3>("DOUBLE", resultsAcrossRuns, false);
-		//runBpOnSetAndUpdateResultsCUDA<double, 4>("DOUBLE", resultsAcrossRuns, true);
-		//runBpOnSetAndUpdateResultsCUDA<double, 4>("DOUBLE", resultsAcrossRuns, false);
+		runBpOnSetAndUpdateResultsCUDA<double, 4>("DOUBLE", resultsAcrossRuns, true);
+		runBpOnSetAndUpdateResultsCUDA<double, 4>("DOUBLE", resultsAcrossRuns, false);
 		//runBpOnSetAndUpdateResultsCUDA<float, 5>("FLOAT", resultsAcrossRuns, true);
 		//runBpOnSetAndUpdateResultsCUDA<float, 5>("FLOAT", resultsAcrossRuns, false);
 #ifdef COMPILING_FOR_ARM
@@ -229,27 +229,4 @@ int main(int argc, char** argv)
 
 	std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run in "
 		<< BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
-
-	//get mapping of device config to factory function to retrieve run stereo set object for device config
-	/*auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts(0);
-
-	//set bp settings for image processing
-	BPsettings algSettings;
-	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0];
-
-	//std::ofstream resultsStream("output.txt", std::ofstream::out);
-	std::ostream resultsStream(std::cout.rdbuf());
-	RunAndEvaluateBpResults::printParameters(0, resultsStream);
-
-	//run single thread CPU and CUDA implementations and compare
-	std::array<std::unique_ptr<RunBpStereoSet<float, 16>>, 2> bpProcessingImps = {
-				std::unique_ptr<RunBpStereoSet<float, 16>>(runBpFactoryFuncts[run_bp_dlls::device_run::SINGLE_THREAD_CPU]()),
-				std::unique_ptr<RunBpStereoSet<float, 16>>(runBpFactoryFuncts[run_bp_dlls::device_run::CUDA]())};
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, 16>(resultsStream, bpProcessingImps, 0, algSettings);
-
-	//run single thread CPU and optimized implementations and compare
-	std::array<std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>, 2> bpProcessingImps2 = {
-				std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(runBpFactoryFuncts[run_bp_dlls::device_run::SINGLE_THREAD_CPU]()),
-				std::unique_ptr<RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(runBpFactoryFuncts[run_bp_dlls::device_run::OPTIMIZED_CPU]())};
-	RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(resultsStream, bpProcessingImps2, 0, algSettings);*/
 }
