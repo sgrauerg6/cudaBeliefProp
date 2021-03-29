@@ -74,6 +74,7 @@ public:
 				std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>();
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement =
 				std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
+
 		return this->processStereoSet(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}

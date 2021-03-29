@@ -14,7 +14,8 @@
 #include "BpAndSmoothProcessing/RunBpStereoSet.h"
 
 //typedef RunBpStereoSet<float>* (__cdecl *RunBpStereoSet_factory)();
-using RunBpStereoSet_factory = RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* (__cdecl*)();
+template <typename T, unsigned int NUM_DISP>
+using RunBpStereoSet_factory = RunBpStereoSet<T, NUM_DISP>* (__cdecl*)();
 
 namespace run_bp_dlls
 {
@@ -44,7 +45,7 @@ public:
 	//templated with data type to process since function name is different for each data type (currently support float, double, 
 	//and short) and also index of supported compile-time disparity (compTimeDispIdx set to <0 for case where disparity not known at compile-time)
 	template <typename T>
-	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames(const unsigned int compTimeDispIdx)
+	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames(const int compTimeDispIdx)
 	{
 		if (compTimeDispIdx < 0) {
 			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadFloat"},
@@ -59,7 +60,7 @@ public:
 	}
 
 	template <>
-	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<double>(const unsigned int compTimeDispIdx)
+	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<double>(const int compTimeDispIdx)
 	{
 		if (compTimeDispIdx < 0) {
 			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadDouble"},
@@ -74,7 +75,7 @@ public:
 	}
 
 	template <>
-	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<short>(const unsigned int compTimeDispIdx)
+	static const std::map<run_bp_dlls::device_run, std::string> getRunStereoSetMethodNames<short>(const int compTimeDispIdx)
 	{
 		if (compTimeDispIdx < 0) {
 			return std::map< run_bp_dlls::device_run, std::string> { {run_bp_dlls::device_run::SINGLE_THREAD_CPU, "createRunBpStereoCPUSingleThreadShort"},
@@ -89,10 +90,11 @@ public:
 	}
 
 	//retrieve mapping of each possible device config to factory function to run stereo set with config
-	static const std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> getRunBpFactoryFuncts(const unsigned int compTimeDispIdx)
+	template <typename T, unsigned int NUM_DISP>
+	static const std::map<run_bp_dlls::device_run, RunBpStereoSet_factory<T, NUM_DISP>> getRunBpFactoryFuncts(const int compTimeDispIdx)
 	{
-		std::map<run_bp_dlls::device_run, RunBpStereoSet_factory> runBpFactoryFuncts;
-		std::map<run_bp_dlls::device_run, std::string> runStereoSetMethodNames = getRunStereoSetMethodNames<float>(compTimeDispIdx);
+		std::map<run_bp_dlls::device_run, RunBpStereoSet_factory<T, NUM_DISP>> runBpFactoryFuncts;
+		std::map<run_bp_dlls::device_run, std::string> runStereoSetMethodNames = getRunStereoSetMethodNames<T>(compTimeDispIdx);
 
 		//retrieve the factory functions for each possible device run
 		for (const auto& deviceTypeAndDLL : run_bp_dlls::DLL_FILE_NAMES)
@@ -105,7 +107,7 @@ public:
 
 			// Get the function from the DLL
 			std::cout << "Name: " << runStereoSetMethodNames[deviceTypeAndDLL.first] << std::endl;
-			RunBpStereoSet_factory factory_func = reinterpret_cast<RunBpStereoSet_factory>(
+			RunBpStereoSet_factory<T, NUM_DISP> factory_func = reinterpret_cast<RunBpStereoSet_factory<T, NUM_DISP>>(
 				::GetProcAddress(dll_handle, (runStereoSetMethodNames[deviceTypeAndDLL.first]).c_str()));
 			if (!factory_func) {
 				std::cout << "Unable to load factory_func from DLL!\n";
