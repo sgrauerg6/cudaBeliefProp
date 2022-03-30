@@ -47,8 +47,7 @@ void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 }
 
 template<typename T, unsigned int NUM_SET>
-void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns,
-		const bool isTemplatedDispVals)
+void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>& resultsAcrossRuns, const bool isTemplatedDispVals)
 {
 	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
 	retrieveDeviceProperties(0, resultsStream);
@@ -65,7 +64,7 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 	BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
-	resultsStream << "DataType:" << dataTypeName << std::endl;
+	resultsStream << "DataType:" << DATA_TYPE_TO_NAME_MAP.at(std::type_index(typeid(T))) << std::endl;
 	if (isTemplatedDispVals) {
 		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
 				resultsStream, runBpStereo, NUM_SET, algSettings);
@@ -94,41 +93,41 @@ int main(int argc, char** argv)
 	//cudaDeviceGetLimit(&heapSize, cudaLimitMallocHeapSize);
 	//cudaDeviceSetLimit(cudaLimitMallocHeapSize, heapSize*50);
 	std::map<std::string, std::vector<std::string>> resultsAcrossRuns;
-	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float, 0>("FLOAT", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<float, 1>("FLOAT", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float, 1>("FLOAT", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float, 2>("FLOAT", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<double, 0>("DOUBLE", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<double, 0>("DOUBLE", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<double, 1>("DOUBLE", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<double, 1>("DOUBLE", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<double, 2>("DOUBLE", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<double, 2>("DOUBLE", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<double, 3>("DOUBLE", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<double, 3>("DOUBLE", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<double, 4>("DOUBLE", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<double, 4>("DOUBLE", resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 0>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 0>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 1>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 1>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 2>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 2>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 1>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 1>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 2>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 2>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
+	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
+	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
 #ifdef CUDA_HALF_SUPPORT
-	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<short, 0>("HALF", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<short, 1>("HALF", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<short, 2>("HALF", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<short, 3>("HALF", resultsAcrossRuns, false);
-	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, true);
-	runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 1>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 1>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 2>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 2>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 3>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 3>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, false);
+	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
+	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
 #endif //CUDA_HALF_SUPPORT
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 

@@ -11,6 +11,24 @@
 #include "bpStereoParameters.h"
 #include "bpParametersFromPython.h"
 #include <fstream>
+#include <typeinfo>
+#include <typeindex>
+#include <map>
+
+//uncomment if compiling/running on ARM architecture
+//#define COMPILING_FOR_ARM
+#ifdef COMPILING_FOR_ARM
+#include <arm_neon.h> //needed for float16_t type
+#endif
+
+//mapping from data type to data type string
+//need to include float16_t data type if compiling for ARM architecture
+const std::map<std::type_index, std::string> DATA_TYPE_TO_NAME_MAP{
+	{std::type_index(typeid(float)), "FLOAT"}, {std::type_index(typeid(double)), "DOUBLE"}, {std::type_index(typeid(short)), "HALF"}
+#ifdef COMPILING_FOR_ARM
+, {std::type_index(typeid(float16_t)), "HALF"}
+#endif
+};
 
 #define DATA_TYPE_PROCESSING_FLOAT 0
 #define DATA_TYPE_PROCESSING_DOUBLE 1
@@ -67,31 +85,5 @@ namespace bp_params
 	constexpr unsigned int BYTES_ALIGN_MEMORY = getBytesAlignMemory(CPU_OPTIMIZATION_SETTING);
 	constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_OPTIMIZATION_SETTING);
 }
-
-//uncomment if compiling/running on ARM architecture
-//#define COMPILING_FOR_ARM
-#ifdef COMPILING_FOR_ARM
-#include <arm_neon.h> //needed for float16_t type
-#endif
-
-//remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
-/*#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_FLOAT
-typedef float beliefPropProcessingDataType;
-const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "FLOAT";
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_DOUBLE
-typedef double beliefPropProcessingDataType;
-const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "DOUBLE";
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
-#ifdef COMPILING_FOR_ARM
-typedef float16_t beliefPropProcessingDataType;
-#else
-typedef short beliefPropProcessingDataType;
-#endif
-const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF";
-//not currently supporting half2 data type*/
-/*#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
-typedef short beliefPropProcessingDataType;*/
-//const std::string BELIEF_PROP_PROCESSING_DATA_TYPE_STRING = "HALF2";
-//#endif
 
 #endif /* BPRUNSETTINGS_H_ */

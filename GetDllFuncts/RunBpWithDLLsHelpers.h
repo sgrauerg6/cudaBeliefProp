@@ -8,7 +8,6 @@
 #include <iostream>
 #include <map>
 
-//Needed for beliefPropProcessingDataType
 #include "ParameterFiles/bpRunSettings.h"
 #include "ParameterFiles/bpStereoParameters.h"
 #include "BpAndSmoothProcessing/RunBpStereoSet.h"
