@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 __device__ bool withinImageBoundsFilter(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height)
 {
 	//xVal and yVal unsigned so no need to compare with zero
-	return (/*(xVal >= 0) &&*/ (xVal < width) && /*(yVal >= 0) &&*/ (yVal < height));
+	return ((xVal < width) && (yVal < height));
 }
 
 
@@ -50,12 +50,9 @@ __global__ void convertUnsignedIntImageToFloat(
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
-	{
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
 		//retrieve the float-value of the unsigned int pixel value at the current location
-		const float floatPixelVal = 1.0f * imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];
-
-		floatImagePixels[yVal*widthImages + xVal] = floatPixelVal;
+		floatImagePixels[yVal*widthImages + xVal] = (float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];;
 	}
 }
 
@@ -73,12 +70,9 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
-	{
-		filterImageAcrossProcessPixel<T>(xVal, yVal,
-				imagePixelsToFilter,
-				filteredImagePixels, widthImages, heightImages,
-				imageFilter, sizeFilter);
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
+		filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
+		                                 widthImages, heightImages, imageFilter, sizeFilter);
 	}
 }
 
@@ -95,11 +89,8 @@ __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImage
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//make sure that (xVal, yVal) is within image bounds
-	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
-	{
-		filterImageVerticalProcessPixel<T>(xVal, yVal,
-				imagePixelsToFilter,
-				filteredImagePixels, widthImages, heightImages,
-				imageFilter, sizeFilter);
+	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
+		filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
+		                                   widthImages, heightImages, imageFilter, sizeFilter);
 	}
 }
