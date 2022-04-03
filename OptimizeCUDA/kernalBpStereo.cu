@@ -877,16 +877,9 @@ __global__ void initializeBottomLevelDataStereo(
 		T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
 		const float lambda_bp, float data_k_bp, const unsigned int bpSettingsDispVals)
 {
-	// Block index
-    const unsigned int bx = blockIdx.x;
-    const unsigned int by = blockIdx.y;
-
-    // Thread index
-    const unsigned int tx = threadIdx.x;
-    const unsigned int ty = threadIdx.y;
-
-    const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-    const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+    const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+    const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
     const unsigned int xInCheckerboard = xVal / 2;
 
@@ -909,16 +902,9 @@ __global__ void initializeCurrentLevelDataStereo(
 		T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
 		const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
@@ -946,16 +932,9 @@ __global__ void initializeMessageValsToDefaultKernel(
 		T* messageRDeviceCurrentCheckerboard1,
 		const unsigned int bpSettingsDispVals)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xValInCheckerboard = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	const unsigned int xValInCheckerboard = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
@@ -982,16 +961,9 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const float disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
 	{
@@ -1018,16 +990,9 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		const float disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals,
 		void* dstProcessing)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
 	{
@@ -1060,16 +1025,9 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const unsigned int bpSettingsDispVals)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
@@ -1099,16 +1057,9 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 		T* messageRPrevStereoCheckerboard1,
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_BP + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_BP + ty;
+    //get x and y indices for the current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
 	{
@@ -1773,16 +1724,9 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized<half2>(levelP
 /*template<typename T>
 __global__ void retrieveOutputDisparityCheckerboardStereo(T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2, T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1, T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1, T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2, T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
-	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
-
-	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
-
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+	//get the x and y indices for the current CUDA thread
+	int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal, yVal, widthLevel, heightLevel))
 	{
@@ -1857,16 +1801,9 @@ __global__ void retrieveOutputDisparityCheckerboardStereo(T* dataCostStereoCheck
 template<>
 __global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
-	// Block index
-	int bx = blockIdx.x;
-	int by = blockIdx.y;
-
-	// Thread index
-	int tx = threadIdx.x;
-	int ty = threadIdx.y;
-
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	if (withinImageBounds(xVal*2, yVal, widthLevel, heightLevel))
 	{
@@ -2065,16 +2002,9 @@ __global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCost
 /*template<>
 __global__ void initializeBottomLevelDataStereo<half2>(levelProperties currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
-	// Block index
-    int bx = blockIdx.x;
-    int by = blockIdx.y;
-
-    // Thread index
-    int tx = threadIdx.x;
-    int ty = threadIdx.y;
-
-	int xVal = bx * BLOCK_SIZE_WIDTH_BP + tx;
-	int yVal = by * BLOCK_SIZE_HEIGHT_BP + ty;
+    //get the x and y indices for the current CUDA thread
+	int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	int indexVal;
 	int imageCheckerboardWidth = getCheckerboardWidth<half2>(widthImages);

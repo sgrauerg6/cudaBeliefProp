@@ -58,7 +58,11 @@ constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 #define AVX_512 1
 #define NEON 2
 #define NO_VECTORIZATION 3
+#ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
+#define CPU_VECTORIZATION_SETTING NEON
+#else
 #define CPU_VECTORIZATION_SETTING AVX_256
+#endif
 
 #if (CPU_VECTORIZATION_SETTING == NEON)
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_NEON};

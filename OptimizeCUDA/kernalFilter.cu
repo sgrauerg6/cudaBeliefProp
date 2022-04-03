@@ -45,16 +45,9 @@ __global__ void convertUnsignedIntImageToFloat(
 		unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
 		const unsigned int widthImages, const unsigned int heightImages)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+    //get x and y indices corresponding to current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
@@ -75,16 +68,9 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 		const unsigned int widthImages, const unsigned int heightImages,
 		float* imageFilter, const unsigned int sizeFilter)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	//get x and y indices corresponding to current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
@@ -104,16 +90,9 @@ template<typename T>
 __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels,
 		const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter)
 {
-	// Block index
-	const unsigned int bx = blockIdx.x;
-	const unsigned int by = blockIdx.y;
-
-	// Thread index
-	const unsigned int tx = threadIdx.x;
-	const unsigned int ty = threadIdx.y;
-
-	const unsigned int xVal = bx * bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES + tx;
-	const unsigned int yVal = by * bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES + ty;
+	//get x and y indices corresponding to current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages))
