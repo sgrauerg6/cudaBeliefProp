@@ -36,12 +36,14 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
 	unsigned int nthreads = std::thread::hardware_concurrency();
-	/*omp_set_num_threads(nthreads);
+	#ifndef USE_THREAD_POOL
+	omp_set_num_threads(nthreads);
 
 	#pragma omp parallel
 	{
 		nthreads = omp_get_num_threads();
-	}*/
+	}
+	#endif //USE_THREAD_POOL
 
 	resultsStream << "Number of threads: " << nthreads << "\n";
 	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>();

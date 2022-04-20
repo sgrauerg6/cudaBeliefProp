@@ -8,8 +8,7 @@ INCLUDE_DIRS := -I. -I./ -I./.. -I$(COMMONDIR)/inc -I$(SHAREDDIR)/inc
 LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lstdc++fs -lpthread
 
 # set OPENMP_LIB if using OpenMP
-OPENMP_LIB := 
-#-fopenmp
+OPENMP_LIB := -fopenmp
 
 # define the path for the compiler
 CC := g++

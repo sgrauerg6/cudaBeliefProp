@@ -15,8 +15,8 @@
 #include <typeindex>
 #include <map>
 
-//comment out to use OpenMP
-#define USE_THREAD_POOL
+//uncomment to use C++ thread pool rather than OpenMP
+//#define USE_THREAD_POOL
 
 //uncomment if compiling/running on ARM architecture
 //#define COMPILING_FOR_ARM
@@ -64,7 +64,7 @@ constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 #ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
 #define CPU_VECTORIZATION_SETTING NEON
 #else
-#define CPU_VECTORIZATION_SETTING AVX_256
+#define CPU_VECTORIZATION_SETTING AVX_512
 #endif
 
 #if (CPU_VECTORIZATION_SETTING == NEON)
