@@ -5,8 +5,11 @@ INCLUDE_DIRS := -I. -I./ -I./.. -I$(COMMONDIR)/inc -I$(SHAREDDIR)/inc
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work
-LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lstdc++fs
-OPENMP_LIB := -fopenmp
+LIB_CPU := -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lstdc++fs -lpthread
+
+# set OPENMP_LIB if using OpenMP
+OPENMP_LIB := 
+#-fopenmp
 
 # define the path for the compiler
 CC := g++

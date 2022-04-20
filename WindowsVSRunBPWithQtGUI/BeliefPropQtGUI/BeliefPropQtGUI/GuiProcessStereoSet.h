@@ -18,7 +18,9 @@
 #include "./BpAndSmoothProcessing/RunBpStereoSet.h"
 
 //needed to set number of threads for OpenMP
+#ifndef USE_THREAD_POOL
 #include <omp.h>
+#endif //USE_THREAD_POOL
 
 typedef std::filesystem::path filepathtype;
 enum bpImplementation { NAIVE_CPU, OPTIMIZED_CPU, OPTIMIZED_CUDA };

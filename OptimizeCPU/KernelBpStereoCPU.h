@@ -23,9 +23,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../ParameterFiles/bpRunSettings.h"
 #include <math.h>
+#ifndef USE_THREAD_POOL
 #include <omp.h>
+#endif //USE_THREAD_POOL
 #include <algorithm>
+#include "../ThreadPool/thread_pool.hpp"
 
 //headers to include differ depending on architecture and CPU vectorization setting
 #ifdef COMPILING_FOR_ARM
@@ -35,6 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 class KernelBpStereoCPU
 {
 public:
+    inline static thread_pool tPool;
 
 	//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 	//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo

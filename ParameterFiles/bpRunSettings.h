@@ -15,6 +15,9 @@
 #include <typeindex>
 #include <map>
 
+//comment out to use OpenMP
+#define USE_THREAD_POOL
+
 //uncomment if compiling/running on ARM architecture
 //#define COMPILING_FOR_ARM
 #ifdef COMPILING_FOR_ARM
