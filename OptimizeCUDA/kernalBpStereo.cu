@@ -132,6 +132,148 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 	delete [] dst;
 }
 
+//device function to process messages using half precision with number of disparity values
+//given in template parameter
+template <unsigned int DISP_VALS>
+__device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS],
+		half messageValsNeighbor2[DISP_VALS], half messageValsNeighbor3[DISP_VALS],
+		half dataCosts[DISP_VALS], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	// aggregate and find min
+	half minimum = bp_consts::INF_BP;
+	half dst[DISP_VALS];
+
+	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
+		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
+								messageValsNeighbor2[currentDisparity] +
+								messageValsNeighbor3[currentDisparity] +
+								dataCosts[currentDisparity];
+		if (dst[currentDisparity] < minimum) {
+			minimum = dst[currentDisparity];
+		}
+	}
+
+	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+	dtStereo<half, DISP_VALS>(dst);
+
+	// truncate
+	minimum += disc_k_bp;
+
+	// normalize
+	half valToNormalize = 0;
+
+	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
+	{
+		if (minimum < dst[currentDisparity]) {
+			dst[currentDisparity] = minimum;
+		}
+		valToNormalize += dst[currentDisparity];
+	}
+
+	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
+	//set destination vector to 0 for all disparities
+	//note that may cause results to differ a little from ideal
+	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				DISP_VALS);
+
+		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
+			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
+			if constexpr (OPTIMIZED_INDEXING_SETTING) {
+				destMessageArrayIndex +=
+					currentLevelProperties.paddedWidthCheckerboardLevel_;
+			}
+			else {
+				destMessageArrayIndex++;
+			}
+		}
+	}
+	else
+	{
+		valToNormalize /= DISP_VALS;
+
+		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+				currentLevelProperties.paddedWidthCheckerboardLevel_,
+				currentLevelProperties.heightLevel_, 0,
+				DISP_VALS);
+
+		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
+		{
+			dst[currentDisparity] -= valToNormalize;
+			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
+			if constexpr (OPTIMIZED_INDEXING_SETTING) {
+				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+			}
+			else {
+				destMessageArrayIndex++;
+			}
+		}
+	}
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_0>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_0],
+		half messageValsNeighbor2[DISP_VALS_0], half messageValsNeighbor3[DISP_VALS_0],
+		half dataCosts[DISP_VALS_0], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_0>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_1>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_1],
+		half messageValsNeighbor2[DISP_VALS_1], half messageValsNeighbor3[DISP_VALS_1],
+		half dataCosts[DISP_VALS_1], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_1>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_2>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_2],
+		half messageValsNeighbor2[DISP_VALS_2], half messageValsNeighbor3[DISP_VALS_2],
+		half dataCosts[DISP_VALS_2], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_2>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_3>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_3],
+		half messageValsNeighbor2[DISP_VALS_3], half messageValsNeighbor3[DISP_VALS_3],
+		half dataCosts[DISP_VALS_3], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_3>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_4>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_4],
+		half messageValsNeighbor2[DISP_VALS_4], half messageValsNeighbor3[DISP_VALS_4],
+		half dataCosts[DISP_VALS_4], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_4>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_5>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_5],
+		half messageValsNeighbor2[DISP_VALS_5], half messageValsNeighbor3[DISP_VALS_5],
+		half dataCosts[DISP_VALS_5], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_5>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
 /*template<>
 __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsigned int yVal, const levelProperties& currentLevelProperties,
 		half* prevUMessageArray, half* prevDMessageArray,
@@ -259,507 +401,6 @@ __device__ inline void msgStereo<half, half>(const unsigned int xVal, const unsi
 		}
 	}
 }*/
-
-template<>
-__device__ inline void msgStereo<half, half, DISP_VALS_0>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
-		half messageValsNeighbor1[DISP_VALS_0],
-		half messageValsNeighbor2[DISP_VALS_0],
-		half messageValsNeighbor3[DISP_VALS_0],
-		half dataCosts[DISP_VALS_0], half* dstMessageArray,
-		const half disc_k_bp, const bool dataAligned)
-{
-	// aggregate and find min
-	half minimum = bp_consts::INF_BP;
-	half dst[DISP_VALS_0];
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_0; currentDisparity++) {
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
-								messageValsNeighbor2[currentDisparity] +
-								messageValsNeighbor3[currentDisparity] +
-								dataCosts[currentDisparity];
-		if (dst[currentDisparity] < minimum) {
-			minimum = dst[currentDisparity];
-		}
-	}
-
-	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half, DISP_VALS_0>(dst);
-
-	// truncate
-	minimum += disc_k_bp;
-
-	// normalize
-	half valToNormalize = 0;
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_0; currentDisparity++)
-	{
-		if (minimum < dst[currentDisparity]) {
-			dst[currentDisparity] = minimum;
-		}
-		valToNormalize += dst[currentDisparity];
-	}
-
-	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
-	//set destination vector to 0 for all disparities
-	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_0);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_0; currentDisparity++) {
-			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex +=
-					currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-	else
-	{
-		valToNormalize /= DISP_VALS_0;
-
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_0);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_0; currentDisparity++)
-		{
-			dst[currentDisparity] -= valToNormalize;
-			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-}
-
-template<>
-__device__ inline void msgStereo<half, half, DISP_VALS_1>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
-		half messageValsNeighbor1[DISP_VALS_1],
-		half messageValsNeighbor2[DISP_VALS_1],
-		half messageValsNeighbor3[DISP_VALS_1],
-		half dataCosts[DISP_VALS_1], half* dstMessageArray,
-		const half disc_k_bp, const bool dataAligned)
-{
-	// aggregate and find min
-	half minimum = bp_consts::INF_BP;
-
-	half dst[DISP_VALS_1];
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_1; currentDisparity++) {
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
-								messageValsNeighbor2[currentDisparity] +
-								messageValsNeighbor3[currentDisparity] +
-								dataCosts[currentDisparity];
-		if (dst[currentDisparity] < minimum) {
-			minimum = dst[currentDisparity];
-		}
-	}
-
-	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half, DISP_VALS_1>(dst);
-
-	// truncate
-	minimum += disc_k_bp;
-
-	// normalize
-	half valToNormalize = 0;
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_1; currentDisparity++)
-	{
-		if (minimum < dst[currentDisparity]) {
-			dst[currentDisparity] = minimum;
-		}
-
-		valToNormalize += dst[currentDisparity];
-	}
-
-	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
-	//set destination vector to 0 for all disparities
-	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_1);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_1; currentDisparity++) {
-			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-	else
-	{
-		valToNormalize /= DISP_VALS_1;
-
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_1);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_1; currentDisparity++)
-		{
-			dst[currentDisparity] -= valToNormalize;
-			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-}
-
-template<>
-__device__ inline void msgStereo<half, half, DISP_VALS_2>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
-		half messageValsNeighbor1[DISP_VALS_2],
-		half messageValsNeighbor2[DISP_VALS_2],
-		half messageValsNeighbor3[DISP_VALS_2],
-		half dataCosts[DISP_VALS_2], half* dstMessageArray,
-		const half disc_k_bp, const bool dataAligned)
-{
-	// aggregate and find min
-	half minimum = bp_consts::INF_BP;
-	half dst[DISP_VALS_2];
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_2; currentDisparity++) {
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
-								messageValsNeighbor2[currentDisparity] +
-								messageValsNeighbor3[currentDisparity] +
-								dataCosts[currentDisparity];
-		if (dst[currentDisparity] < minimum) {
-			minimum = dst[currentDisparity];
-		}
-	}
-
-	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half, DISP_VALS_2>(dst);
-
-	// truncate
-	minimum += disc_k_bp;
-
-	// normalize
-	half valToNormalize = 0;
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_2; currentDisparity++)
-	{
-		if (minimum < dst[currentDisparity]) {
-			dst[currentDisparity] = minimum;
-		}
-
-		valToNormalize += dst[currentDisparity];
-	}
-
-	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
-	//set destination vector to 0 for all disparities
-	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_2);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_2; currentDisparity++) {
-			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-	else
-	{
-		valToNormalize /= DISP_VALS_2;
-
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_2);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_2; currentDisparity++)
-		{
-			dst[currentDisparity] -= valToNormalize;
-			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-}
-
-template<>
-__device__ inline void msgStereo<half, half, DISP_VALS_3>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
-		half messageValsNeighbor1[DISP_VALS_3],
-		half messageValsNeighbor2[DISP_VALS_3],
-		half messageValsNeighbor3[DISP_VALS_3],
-		half dataCosts[DISP_VALS_3], half* dstMessageArray,
-		const half disc_k_bp, const bool dataAligned)
-{
-	// aggregate and find min
-	half minimum = bp_consts::INF_BP;
-
-	half dst[DISP_VALS_3];
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_3; currentDisparity++) {
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
-								messageValsNeighbor2[currentDisparity] +
-								messageValsNeighbor3[currentDisparity] +
-								dataCosts[currentDisparity];
-		if (dst[currentDisparity] < minimum) {
-			minimum = dst[currentDisparity];
-		}
-	}
-
-	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half, DISP_VALS_3>(dst);
-
-	// truncate
-	minimum += disc_k_bp;
-
-	// normalize
-	half valToNormalize = 0;
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_3; currentDisparity++)
-	{
-		if (minimum < dst[currentDisparity]) {
-			dst[currentDisparity] = minimum;
-		}
-
-		valToNormalize += dst[currentDisparity];
-	}
-
-	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
-	//set destination vector to 0 for all disparities
-	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_3);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_3; currentDisparity++) {
-			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-	else
-	{
-		valToNormalize /= DISP_VALS_3;
-
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_3);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_3; currentDisparity++)
-		{
-			dst[currentDisparity] -= valToNormalize;
-			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-}
-
-template<>
-__device__ inline void msgStereo<half, half, DISP_VALS_4>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
-		half messageValsNeighbor1[DISP_VALS_4],
-		half messageValsNeighbor2[DISP_VALS_4],
-		half messageValsNeighbor3[DISP_VALS_4],
-		half dataCosts[DISP_VALS_4], half* dstMessageArray,
-		const half disc_k_bp, const bool dataAligned)
-{
-	// aggregate and find min
-	half minimum = bp_consts::INF_BP;
-	half dst[DISP_VALS_4];
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_4; currentDisparity++) {
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
-								messageValsNeighbor2[currentDisparity] +
-								messageValsNeighbor3[currentDisparity] +
-								dataCosts[currentDisparity];
-		if (dst[currentDisparity] < minimum) {
-			minimum = dst[currentDisparity];
-		}
-	}
-
-	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half, DISP_VALS_4>(dst);
-
-	// truncate
-	minimum += disc_k_bp;
-
-	// normalize
-	half valToNormalize = 0;
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_4; currentDisparity++)
-	{
-		if (minimum < dst[currentDisparity]) {
-			dst[currentDisparity] = minimum;
-		}
-
-		valToNormalize += dst[currentDisparity];
-	}
-
-	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
-	//set destination vector to 0 for all disparities
-	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_4);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_4; currentDisparity++) {
-			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-	else
-	{
-		valToNormalize /= DISP_VALS_4;
-
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_4);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_4; currentDisparity++)
-		{
-			dst[currentDisparity] -= valToNormalize;
-			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-}
-
-template<>
-__device__ inline void msgStereo<half, half, DISP_VALS_5>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
-		half messageValsNeighbor1[DISP_VALS_5],
-		half messageValsNeighbor2[DISP_VALS_5],
-		half messageValsNeighbor3[DISP_VALS_5],
-		half dataCosts[DISP_VALS_5], half* dstMessageArray,
-		const half disc_k_bp, const bool dataAligned)
-{
-	// aggregate and find min
-	half minimum = bp_consts::INF_BP;
-	half dst[DISP_VALS_5];
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_5; currentDisparity++) {
-		dst[currentDisparity] = messageValsNeighbor1[currentDisparity] +
-								messageValsNeighbor2[currentDisparity] +
-								messageValsNeighbor3[currentDisparity] +
-								dataCosts[currentDisparity];
-		if (dst[currentDisparity] < minimum) {
-			minimum = dst[currentDisparity];
-		}
-	}
-
-	//retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-	dtStereo<half, DISP_VALS_5>(dst);
-
-	// truncate
-	minimum += disc_k_bp;
-
-	// normalize
-	half valToNormalize = 0;
-
-	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_5; currentDisparity++)
-	{
-		if (minimum < dst[currentDisparity]) {
-			dst[currentDisparity] = minimum;
-		}
-
-		valToNormalize += dst[currentDisparity];
-	}
-
-	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
-	//set destination vector to 0 for all disparities
-	//note that may cause results to differ a little from ideal
-	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_5);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_5; currentDisparity++) {
-			dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-	else
-	{
-		valToNormalize /= DISP_VALS_5;
-
-		unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
-				currentLevelProperties.paddedWidthCheckerboardLevel_,
-				currentLevelProperties.heightLevel_, 0,
-				DISP_VALS_5);
-
-		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS_5; currentDisparity++)
-		{
-			dst[currentDisparity] -= valToNormalize;
-			dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-			if constexpr (OPTIMIZED_INDEXING_SETTING) {
-				destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
-			}
-			else {
-				destMessageArrayIndex++;
-			}
-		}
-	}
-}
-
 
 #endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 
