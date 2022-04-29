@@ -15,6 +15,7 @@
 
 #include <arm_neon.h>
 
+#ifdef HALF_PRECISION_SUPPORTED
 template<> inline
 float16_t getZeroVal<float16_t>()
 {
@@ -369,6 +370,8 @@ void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_
 			messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
 			messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
+
+#endif //HALF_PRECISION_SUPPORTED
 
 #endif //COMPILING_FOR_ARM
 

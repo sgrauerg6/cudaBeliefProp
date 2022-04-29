@@ -119,6 +119,9 @@ int main(int argc, char** argv)
 		runBpOnSetAndUpdateResults<float, 3>("FLOAT", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResults<float, 4>("FLOAT", resultsAcrossRuns, false);
+		//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
+		//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
+#ifdef DOUBLE_PRECISION_SUPPORTED
 		runBpOnSetAndUpdateResults<double, 0>("DOUBLE", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResults<double, 0>("DOUBLE", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResults<double, 1>("DOUBLE", resultsAcrossRuns, true);
@@ -129,8 +132,8 @@ int main(int argc, char** argv)
 		runBpOnSetAndUpdateResults<double, 3>("DOUBLE", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResults<double, 4>("DOUBLE", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResults<double, 4>("DOUBLE", resultsAcrossRuns, false);
-		//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, true);
-		//runBpOnSetAndUpdateResults<float, 5>("FLOAT", resultsAcrossRuns, false);
+#endif //DOUBLE_PRECISION_SUPPORTED
+#ifdef HALF_PRECISION_SUPPORTED
 #ifdef COMPILING_FOR_ARM
 		runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResults<float16_t, 0>("HALF", resultsAcrossRuns, false);
@@ -157,7 +160,8 @@ int main(int argc, char** argv)
 		runBpOnSetAndUpdateResults<short, 4>("HALF", resultsAcrossRuns, false);
 		//runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, true);
 		//runBpOnSetAndUpdateResults<short, 5>("HALF", resultsAcrossRuns, false);
-#endif
+#endif //COMPILING_FOR_ARM
+#endif //HALF_PRECISION_SUPPORTED
 	}
 	else if constexpr (IMP_TO_RUN == Implementation::CUDA) {
 		runBpOnSetAndUpdateResultsCUDA<float, 0>("FLOAT", resultsAcrossRuns, true);
@@ -170,6 +174,9 @@ int main(int argc, char** argv)
 		runBpOnSetAndUpdateResultsCUDA<float, 3>("FLOAT", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResultsCUDA<float, 4>("FLOAT", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResultsCUDA<float, 4>("FLOAT", resultsAcrossRuns, false);
+		//runBpOnSetAndUpdateResultsCUDA<float, 5>("FLOAT", resultsAcrossRuns, true);
+		//runBpOnSetAndUpdateResultsCUDA<float, 5>("FLOAT", resultsAcrossRuns, false);
+#ifdef DOUBLE_PRECISION_SUPPORTED
 		runBpOnSetAndUpdateResultsCUDA<double, 0>("DOUBLE", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResultsCUDA<double, 0>("DOUBLE", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResultsCUDA<double, 1>("DOUBLE", resultsAcrossRuns, true);
@@ -180,11 +187,11 @@ int main(int argc, char** argv)
 		runBpOnSetAndUpdateResultsCUDA<double, 3>("DOUBLE", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResultsCUDA<double, 4>("DOUBLE", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResultsCUDA<double, 4>("DOUBLE", resultsAcrossRuns, false);
-		//runBpOnSetAndUpdateResultsCUDA<float, 5>("FLOAT", resultsAcrossRuns, true);
-		//runBpOnSetAndUpdateResultsCUDA<float, 5>("FLOAT", resultsAcrossRuns, false);
+#endif //DOUBLE_PRECISION_SUPPORTED
+#ifdef HALF_PRECISION_SUPPORTED
 #ifdef COMPILING_FOR_ARM
 		runBpOnSetAndUpdateResultsCUDA<float16_t, 0>("HALF", resultsAcrossRuns, true);
-		runBpOnSetAndUpdateResultsCUDA<float16_t, 0>("HALF", resultsAcrossRuns, false);
+		runBpOnSetAndUpdateResultsCUDA<, 0>("HALF", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResultsCUDA<float16_t, 1>("HALF", resultsAcrossRuns, true);
 		runBpOnSetAndUpdateResultsCUDA<float16_t, 1>("HALF", resultsAcrossRuns, false);
 		runBpOnSetAndUpdateResultsCUDA<float16_t, 2>("HALF", resultsAcrossRuns, true);
@@ -209,7 +216,8 @@ int main(int argc, char** argv)
 		//runBpOnSetAndUpdateResultsCUDA<short, 5>("HALF", resultsAcrossRuns, true);
 		//runBpOnSetAndUpdateResultsCUDA<short, 5>("HALF", resultsAcrossRuns, false);
 	}
-#endif
+#endif //COMPILING_FOR_ARM
+#endif //HALF_PRECISION_SUPPORTED
 
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 

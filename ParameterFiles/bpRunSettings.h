@@ -24,6 +24,9 @@
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
+#define HALF_PRECISION_SUPPORTED
+#define DOUBLE_PRECISION_SUPPORTED
+
 //mapping from data type to data type string
 //need to include float16_t data type if compiling for ARM architecture
 const std::map<std::type_index, std::string> DATA_TYPE_TO_NAME_MAP{

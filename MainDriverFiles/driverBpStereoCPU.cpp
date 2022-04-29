@@ -89,6 +89,7 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, false);
+#ifdef DOUBLE_PRECISION_SUPPORTED
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 1>(resultsAcrossRuns, true);
@@ -101,6 +102,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
 	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
 	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
+#endif //DOUBLE_PRECISION_SUPPORTED
+#ifdef HALF_PRECISION_SUPPORTED
 #ifdef COMPILING_FOR_ARM
 	runBpOnSetAndUpdateResults<float16_t, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 0>(resultsAcrossRuns, false);
@@ -127,7 +130,8 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, false);
 	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
 	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
-#endif
+#endif //COMPILING_FOR_ARM
+#endif //HALF_PRECISION_SUPPORTED
 
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 
