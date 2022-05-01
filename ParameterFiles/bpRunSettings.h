@@ -16,7 +16,23 @@
 #include <map>
 
 //uncomment to use C++ thread pool rather than OpenMP
-//#define USE_THREAD_POOL
+#define USE_THREAD_POOL_CHUNKS 1
+#define USE_THREAD_POOL_DISTRIBUTED 2
+#define USE_OPENMP 3
+
+//define cpu parallelization method
+#define CPU_PARALLELIZATION_METHOD USE_OPENMP
+
+//get string corresponding to CPU parallelization method
+constexpr const char* cpuParallelizationString() {
+  #if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
+    return "THREAD_POOL_CHUNKS";
+  #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
+    return "THREAD_POOL_DISTRIBUTED";
+  #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+    return "OPEN_MP";
+  #endif //CPU_PARALLELIZATION_METHOD
+}
 
 //uncomment if compiling/running on ARM architecture
 //#define COMPILING_FOR_ARM
