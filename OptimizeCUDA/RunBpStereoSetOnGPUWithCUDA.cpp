@@ -127,4 +127,19 @@ __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VA
 	return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>();
 }
 
+__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp6()
+{
+	return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>();
+}
+
+__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp6()
+{
+	return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>();
+}
+
+__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp6()
+{
+	return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>();
+}
+
 #endif //_WIN32

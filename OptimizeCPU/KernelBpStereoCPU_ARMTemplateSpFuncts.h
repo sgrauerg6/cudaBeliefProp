@@ -182,6 +182,27 @@ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<floa
 				disc_k_bp, offsetData, dataAligned, bpSettingsDispVals);
 }
 
+template<> inline
+void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+		const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardToUpdate,
+		const levelProperties& currentLevelProperties,
+		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
+		float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
+		float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
+		float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
+		const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
+{
+	runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+				xVal, yVal, checkerboardToUpdate, currentLevelProperties,
+				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				disc_k_bp, offsetData, dataAligned, bpSettingsDispVals);
+}
+
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void initializeCurrentLevelDataStereoPixel<float16_t, float16_t, 0>(
@@ -269,6 +290,19 @@ void initializeCurrentLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_
 		float16_t* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
 	initializeCurrentLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(xVal, yVal, checkerboardPart,
+			currentLevelProperties, prevLevelProperties,
+			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo, offsetNum, bpSettingsDispVals);
+}
+
+//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
+template<> inline
+void initializeCurrentLevelDataStereoPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+		const unsigned int xVal, const unsigned int yVal, const Checkerboard_Parts checkerboardPart,
+		const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties,
+		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
+{
+	initializeCurrentLevelDataStereoPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(xVal, yVal, checkerboardPart,
 			currentLevelProperties, prevLevelProperties,
 			dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo, offsetNum, bpSettingsDispVals);
 }
@@ -367,6 +401,20 @@ void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
 	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0,
+			messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
+			messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
+}
+
+template<> inline
+void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float16_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
+		float16_t* messageLPrevStereoCheckerboard0, float16_t* messageRPrevStereoCheckerboard0,
+		float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1,
+		float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+{
+	retrieveOutputDisparityCheckerboardStereoOptimizedPixel<float16_t, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0,
 			messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
 			messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }

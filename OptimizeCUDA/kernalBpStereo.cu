@@ -42,6 +42,7 @@ constexpr unsigned int DISP_VALS_2{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]};
 constexpr unsigned int DISP_VALS_3{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]};
 constexpr unsigned int DISP_VALS_4{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]};
 constexpr unsigned int DISP_VALS_5{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]};
+constexpr unsigned int DISP_VALS_6{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]};
 
 #ifdef CUDA_HALF_SUPPORT
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
@@ -271,6 +272,16 @@ __device__ inline void msgStereo<half, half, DISP_VALS_5>(const unsigned int xVa
 		half dataCosts[DISP_VALS_5], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
 {
 	msgStereoHalf<DISP_VALS_5>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
+template<>
+__device__ inline void msgStereo<half, half, DISP_VALS_6>(const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS_6],
+		half messageValsNeighbor2[DISP_VALS_6], half messageValsNeighbor3[DISP_VALS_6],
+		half dataCosts[DISP_VALS_6], half* dstMessageArray, const half disc_k_bp, const bool dataAligned)
+{
+	msgStereoHalf<DISP_VALS_6>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
 		dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 

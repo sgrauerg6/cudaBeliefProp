@@ -89,6 +89,10 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, false);
 #ifdef DOUBLE_PRECISION_SUPPORTED
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, false);
@@ -100,8 +104,10 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, false);
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef HALF_PRECISION_SUPPORTED
 #ifdef COMPILING_FOR_ARM
@@ -115,8 +121,10 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float16_t, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float16_t, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 4>(resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<float16_t, 5>(resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<float16_t, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float16_t, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float16_t, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float16_t, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float16_t, 6>(resultsAcrossRuns, false);
 #else
 	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, false);
@@ -128,8 +136,10 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, false);
 #endif //COMPILING_FOR_ARM
 #endif //HALF_PRECISION_SUPPORTED
 

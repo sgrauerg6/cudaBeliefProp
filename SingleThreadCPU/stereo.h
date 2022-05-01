@@ -347,6 +347,9 @@ extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_D
 extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp5();
 extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp5();
 extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp5(); 
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp6();
 
 #endif //_WIN32
 

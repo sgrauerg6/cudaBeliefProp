@@ -352,6 +352,8 @@ template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VA
 template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
 template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
 template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
+template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 //half precision only supported with compute capability 5.3 and higher
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
@@ -363,6 +365,7 @@ template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALU
 template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
 template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
 template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
+template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 #endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

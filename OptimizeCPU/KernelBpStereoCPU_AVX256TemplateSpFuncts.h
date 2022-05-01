@@ -310,6 +310,21 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 			messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
+// compute current message
+template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+		const unsigned int xVal, const unsigned int yVal,
+		const levelProperties& currentLevelProperties,
+		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
+		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
+		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
+		__m128i dataCosts[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
+		short* dstMessageArray, const __m128i& disc_k_bp, const bool dataAligned)
+{
+	msgStereoSIMDProcessing<short, __m128i, float, __m256, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+			xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
+			messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
+}
+
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i>(const unsigned int xVal, const unsigned int yVal,
 		const levelProperties& currentLevelProperties,
 		__m128i* messageValsNeighbor1, __m128i* messageValsNeighbor2,

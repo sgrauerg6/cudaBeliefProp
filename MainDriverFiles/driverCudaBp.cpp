@@ -103,8 +103,10 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, false);
 #ifdef DOUBLE_PRECISION_SUPPORTED
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, false);
@@ -114,8 +116,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<double, 2>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, false);
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef CUDA_HALF_SUPPORT
 	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, true);
@@ -128,8 +134,10 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, false);
-	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
-	//runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
+	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, true);
+	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, false);
 #endif //CUDA_HALF_SUPPORT
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 

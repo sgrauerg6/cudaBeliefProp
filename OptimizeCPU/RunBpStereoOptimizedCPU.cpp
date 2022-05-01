@@ -93,4 +93,16 @@ __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VA
 	return new RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>();
 }
 
+__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoOptimizedCPUFloat_KnownDisp6() {
+	return new RunBpStereoOptimizedCPU<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>();
+}
+
+__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoOptimizedCPUDouble_KnownDisp6() {
+	return new RunBpStereoOptimizedCPU<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>();
+}
+
+__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoOptimizedCPUShort_KnownDisp6() {
+	return new RunBpStereoOptimizedCPU<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>();
+}
+
 #endif //_WIN32

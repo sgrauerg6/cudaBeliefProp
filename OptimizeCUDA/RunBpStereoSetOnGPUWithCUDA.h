@@ -241,6 +241,29 @@ public:
 	}
 };
 
+template<>
+class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>
+{
+public:
+
+	std::string getBpRunDescription() override { return "CUDA"; }
+
+	//if type is specified as short, process as half on GPU
+	//note that half is considered a data type for 16-bit floats in CUDA
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+					const BPsettings& algSettings, std::ostream& resultsStream) override
+	{
+		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
+		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>();
+		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6], float*>> processImageCUDA =
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>>();
+		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
+		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
+				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+	}
+};
+
 //float16_t data type used for arm (rather than short)
 //TODO: needs to be updated with other code changes
 #ifdef COMPILING_FOR_ARM
@@ -318,6 +341,9 @@ extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_D
 extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp5();
 extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp5();
 extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp5();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp6();
 
 #endif //_WIN32
 
