@@ -17,10 +17,12 @@
 #include "./ParameterFiles/bpRunSettings.h"
 #include "./BpAndSmoothProcessing/RunBpStereoSet.h"
 
+#if ((CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS) || (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED))
+#include "../ThreadPool/thread_pool.hpp"
+#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 //needed to set number of threads for OpenMP
-#ifndef USE_THREAD_POOL
 #include <omp.h>
-#endif //USE_THREAD_POOL
+#endif //CPU_PARALLELIZATION_METHOD
 
 typedef std::filesystem::path filepathtype;
 enum bpImplementation { NAIVE_CPU, OPTIMIZED_CPU, OPTIMIZED_CUDA };
