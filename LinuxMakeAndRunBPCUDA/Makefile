@@ -34,8 +34,7 @@ ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 
 # may need to adjust to allow support for target GPU (note that can't use half precision before compute capability 5.3)
 # use native GPU by default (native flag requires CUDA 11.6 or later)
-ARCHITECTURES_GENCODE = -gencode arch=compute_37,code=sm_37
-#-arch=native
+ARCHITECTURES_GENCODE = -arch=native
 #ARCHITECTURES_GENCODE = -gencode arch=compute_80,code=sm_80
 #-gencode arch=compute_70,code=sm_70 -gencode arch=compute_80,code=sm_80
 #-gencode arch=compute_35,code=sm_35
