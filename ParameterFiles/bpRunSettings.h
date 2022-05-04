@@ -15,12 +15,25 @@
 #include <typeindex>
 #include <map>
 
+//uncomment if compiling/running on ARM architecture
+//#define COMPILING_FOR_ARM
+#ifdef COMPILING_FOR_ARM
+#include <arm_neon.h> //needed for float16_t type
+#endif
+
+//comment out corresponding define if half or double precision
+//not supported (or to not to process half or double precision) 
+#define HALF_PRECISION_SUPPORTED
+#define DOUBLE_PRECISION_SUPPORTED
+
 //uncomment to use C++ thread pool rather than OpenMP
 #define USE_THREAD_POOL_CHUNKS 1
 #define USE_THREAD_POOL_DISTRIBUTED 2
 #define USE_OPENMP 3
 
 //define cpu parallelization method
+//OpenMP set by default since it is generally faster than
+//current thread pool options
 #define CPU_PARALLELIZATION_METHOD USE_OPENMP
 
 //get string corresponding to CPU parallelization method
@@ -33,15 +46,6 @@ constexpr const char* cpuParallelizationString() {
     return "OPEN_MP";
   #endif //CPU_PARALLELIZATION_METHOD
 }
-
-//uncomment if compiling/running on ARM architecture
-//#define COMPILING_FOR_ARM
-#ifdef COMPILING_FOR_ARM
-#include <arm_neon.h> //needed for float16_t type
-#endif
-
-#define HALF_PRECISION_SUPPORTED
-#define DOUBLE_PRECISION_SUPPORTED
 
 //mapping from data type to data type string
 //need to include float16_t data type if compiling for ARM architecture
@@ -58,6 +62,7 @@ const std::map<std::type_index, std::string> DATA_TYPE_TO_NAME_MAP{
 //not currently supporting half2 data type
 #define DATA_TYPE_PROCESSING_HALF_TWO 3
 
+//enum for cpu vectorization setting
 enum class cpu_vectorization_setting {
 	NO_CPU_VECTORIZATION, USE_AVX_256, USE_AVX_512, USE_NEON
 };

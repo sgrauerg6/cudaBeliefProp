@@ -47,7 +47,6 @@ enum image_set_options
 	CONES_IMAGES_HALF_SIZE_E = 5,
 	CONES_IMAGES_FULL_SIZE_CROPPED_E = 6,
 	CONES_IMAGES_FULL_SIZE_E = 7
-	//IMAGE_SET_PARAMETERS_FROM_PYTHON_E
 };
 
 constexpr image_set_options IMAGE_SET_TO_PROCESS_E{image_set_options::CONES_IMAGES_HALF_SIZE_E};
@@ -59,7 +58,7 @@ struct BpStereoSet {
 };
 
 constexpr std::array<BpStereoSet, 8> STEREO_SETS_TO_PROCESS{
-	//declare stereo sets to process with (in order) name, num disparity values, and scale factor
+	//declare stereo sets to process with name, num disparity values, and scale factor
 	//order is the same as in image_set_options enum
 	BpStereoSet{"tsukubaSetHalfSize", 8, 32},
 	BpStereoSet{"tsukubaSet", 16, 16},
