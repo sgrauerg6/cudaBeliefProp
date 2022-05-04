@@ -49,8 +49,6 @@ enum image_set_options
 	CONES_IMAGES_FULL_SIZE_E = 7
 };
 
-constexpr image_set_options IMAGE_SET_TO_PROCESS_E{image_set_options::CONES_IMAGES_HALF_SIZE_E};
-
 struct BpStereoSet {
 	const char* name;
 	unsigned int numDispVals;
