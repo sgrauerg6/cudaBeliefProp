@@ -251,6 +251,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	//alternate between checkerboard sets 0 and 1
 	enum Checkerboard_Num { CHECKERBOARD_ZERO = 0, CHECKERBOARD_ONE = 1 };
 	Checkerboard_Num currCheckerboardSet{Checkerboard_Num::CHECKERBOARD_ZERO};
+	std::vector<std::pair<timingType, timingType>> eachLevelTiming(algSettings.numLevels_);
 
 	//run BP at each level in the "pyramid" starting on top and continuing to the bottom
 	//where the final movement values are computed...the message values are passed from
@@ -312,6 +313,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 		const auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
 		diff = timeCopyMessageValuesEnd - timeCopyMessageValuesStart;
 		totalTimeCopyData += diff.count();
+		eachLevelTiming[levelNum].first = timeBpIterStart;
+		eachLevelTiming[levelNum].second = timeCopyMessageValuesEnd;
 	}
 
 	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
@@ -342,6 +345,35 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	}
 
 	startEndTimes[Runtime_Type_BP::FINAL_FREE].second = std::chrono::system_clock::now();
+
+    startEndTimes[Runtime_Type_BP::LEVEL_0] = eachLevelTiming[0];
+	if (eachLevelTiming.size() > 1) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_1] = eachLevelTiming[1];
+	}
+	if (eachLevelTiming.size() > 2) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_2] = eachLevelTiming[2];
+	}
+	if (eachLevelTiming.size() > 3) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_3] = eachLevelTiming[3];
+	}
+	if (eachLevelTiming.size() > 4) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_4] = eachLevelTiming[4];
+	}
+	if (eachLevelTiming.size() > 5) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_5] = eachLevelTiming[5];
+	}
+	if (eachLevelTiming.size() > 6) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_6] = eachLevelTiming[6];
+	}
+	if (eachLevelTiming.size() > 7) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_7] = eachLevelTiming[7];
+	}
+	if (eachLevelTiming.size() > 8) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_8] = eachLevelTiming[8];
+	}
+	if (eachLevelTiming.size() > 9) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_9] = eachLevelTiming[9];
+	}
 
 	//add timing for each runtime segment to segmentTimings object
 	DetailedTimings<Runtime_Type_BP> segmentTimings(timingNames_BP);

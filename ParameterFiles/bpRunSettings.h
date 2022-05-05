@@ -101,6 +101,19 @@ constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_s
 constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::NO_CPU_VECTORIZATION};
 #endif
 
+//get string corresponding to CPU vectorization method
+constexpr const char* cpuVectorizationString() {
+  #if (CPU_VECTORIZATION_SETTING == NEON)
+    return "NEON";
+  #elif (CPU_VECTORIZATION_SETTING == AVX_256)
+    return "AVX_256";
+  #elif (CPU_VECTORIZATION_SETTING == AVX_512)
+    return "AVX_512";
+  #else //(CPU_VECTORIZATION_SETTING == NO_VECTORIZATION)
+    return "NO_VECTORIZATION";
+  #endif //CPU_VECTORIZATION_SETTING
+}
+
 constexpr unsigned int getBytesAlignMemory(cpu_vectorization_setting inVectSetting) {
 	//avx512 requires data to be aligned on 64 bytes
 	return (inVectSetting == cpu_vectorization_setting::USE_AVX_512) ? 64 : 16;
