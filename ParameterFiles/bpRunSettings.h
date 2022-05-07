@@ -16,7 +16,7 @@
 #include <map>
 
 //uncomment if compiling/running on ARM architecture
-#define COMPILING_FOR_ARM
+//#define COMPILING_FOR_ARM
 #ifdef COMPILING_FOR_ARM
 #include <arm_neon.h> //needed for float16_t type
 #endif
@@ -84,7 +84,7 @@ constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 #ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
 #define CPU_VECTORIZATION_SETTING NEON
 #else
-#define CPU_VECTORIZATION_SETTING AVX_512
+#define CPU_VECTORIZATION_SETTING AVX_256
 #endif
 
 #if (CPU_VECTORIZATION_SETTING == NEON)
