@@ -64,7 +64,7 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 	BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
-	resultsStream << "DataType:" << DATA_TYPE_TO_NAME_MAP.at(std::type_index(typeid(T))) << std::endl;
+	resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
 	if (isTemplatedDispVals) {
 		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
 				resultsStream, runBpStereo, NUM_SET, algSettings);

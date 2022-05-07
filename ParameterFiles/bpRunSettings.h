@@ -47,13 +47,9 @@ constexpr const char* cpuParallelizationString() {
   #endif //CPU_PARALLELIZATION_METHOD
 }
 
-//mapping from data type to data type string
-//need to include float16_t data type if compiling for ARM architecture
-const std::map<std::type_index, std::string> DATA_TYPE_TO_NAME_MAP{
-	{std::type_index(typeid(float)), "FLOAT"}, {std::type_index(typeid(double)), "DOUBLE"}, {std::type_index(typeid(short)), "HALF"}
-/*#ifdef COMPILING_FOR_ARM
-, {std::type_index(typeid(float16_t)), "HALF"}
-#endif*/
+//mapping from data size to data type string
+const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
+	{sizeof(float), "FLOAT"}, {sizeof(double), "DOUBLE"}, {sizeof(short), "HALF"}
 };
 
 #define DATA_TYPE_PROCESSING_FLOAT 0
