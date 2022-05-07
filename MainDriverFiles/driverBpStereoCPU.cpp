@@ -53,7 +53,8 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 	BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
-	resultsStream << "DataType:" << DATA_TYPE_TO_NAME_MAP.at(std::type_index(typeid(T))) << std::endl;
+    std::string dataTypeString = (DATA_TYPE_TO_NAME_MAP.count(std::type_index(typeid(T))) > 0) ? DATA_TYPE_TO_NAME_MAP.at(std::type_index(typeid(T))) : "HALF_ARM";
+	resultsStream << "DataType:" << dataTypeString << std::endl;
 	resultsStream << "CPU Parallelization:" << cpuParallelizationString() << std::endl;
 	resultsStream << "CPU Vectorization:" << cpuVectorizationString() << std::endl;
 	if (isTemplatedDispVals) {
