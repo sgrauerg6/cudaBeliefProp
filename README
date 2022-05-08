@@ -24,15 +24,17 @@ published at the 2008 IAPR Workshop on Pattern Recognition in Remote Sensing (PR
 found at the following address: http://scottgg.net/cudaBeliefProp.pdf.  Please cite this 
 work if using any of this code as part of a research paper or other work.
 
-Will note that there have been changes from the initial implementation as presented in the paper, both for optimization,
-to work on the latest NVIDIA GPUs with the latest CUDA toolkits, and to add a parallel CPU implementation.  Also, the
-motion estimation portion of the code was removed to narrow the focus of this work (though could certainly be added back
-in the future).  The additional optimizations as well as the parallel CPU implementation are described in
-http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.  The original code is available at
-http://scottgg.net/beliefPropCodePost.zip.
+Will note that there have been changes from the initial implementation as presented in the paper, both for
+optimization, to work on the latest NVIDIA GPUs with the latest CUDA toolkits, and to add a parallel CPU
+implementation.  Also, the motion estimation portion of the code was removed to narrow the focus of this
+work (though could certainly be added back in the future).  The additional optimizations as well as the
+parallel CPU implementation are described in
+http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.
 
-See "RUNTIME RESULTS USING CURRENT CODE" section at end of README for runtime info across various processors
-including the NVIDIA A100 GPU and AMD Rome 48-core/96-thread CPU.
+The original code is available at http://scottgg.net/beliefPropCodePost.zip.
+
+See "RUNTIME RESULTS USING CURRENT CODE" section at end of README for runtime info across various
+processors including the NVIDIA A100 GPU and AMD Rome 48-core/96-thread CPU.
 
 This code is distributed using the GNU General Public License, so any derivative work which 
 is distributed must also contain this license.
@@ -46,16 +48,17 @@ This code runs belief propagation for stereo vision on the CPU and GPU using CUD
 
 The parameters are defined in ParameterFiles/bpStereoParameters.h and are documented in that file and the paper.  
 In order to compile/re-compile the program, navigate to the directory LinuxMakeAndRunBPOptimizedCPU (for optimized GPU
-implementation or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".  To run the CUDA code,
-the CUDA installation must have a symbolic link to /usr/local/cuda/ for the Makefile to work as is.
+implementation or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".  To run the CUDA
+code, the CUDA installation must have a symbolic link to /usr/local/cuda/ for the Makefile to work as is.
 
-A number of stereo sets including the Tsukuba stereo are included in the "StereoSets" folder.  In order to run the implementation
-on these stereo sets using the initial parameters as defined in ParameterFiles/bpStereoParameters.h, perform the following steps:
+A number of stereo sets including the Tsukuba stereo are included in the "StereoSets" folder.  In order to run the
+implementation on these stereo sets using the initial parameters as defined in ParameterFiles/bpStereoParameters.h,
+perform the following steps:
 
 LINUX:
 
-1a.  (CUDA ONLY) If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs (usually PATH is appended
-with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64).
+1a.  (CUDA ONLY) If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs
+(usually PATH is appended with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64).
 
 1b. (CPU ONLY) Make any necessary or desired adjustments to run on target CPU:
 -If ARM CPU, uncomment the line "//#define COMPILING_FOR_ARM" in ParameterFiles/bpRunSettings.h (line 19).  This will
@@ -74,18 +77,19 @@ results with default configuration and not setting OMP_PROC_BIND.
 
 3.  Execute the commands "make clean" and "make" on the command line.
 
-4.  The executable named "driverCPUBp" or "driverCudaBp" should now be created, so call executable to run the implementation on the
-multiple stereo sets. The implementation is run multiple times to more accuracy guage the runtime.  The single-thread CPU implementation
-code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run to make it possible to compare the output disparity maps/runtimes
-from the original single-thread implementation with the optimized implementations.
+4.  Call created "driverCPUBp" or "driverCudaBp" executable to run the implementation on multiple stereo sets
+and in multiple configurations. The implementation is run multiple times to more accurately measure the runtime.
+The single-thread CPU implementation code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run to
+make it possible to compare the output disparity maps/runtimes from the original single-thread implementation with
+the optimized implementations.
 
-5.  The locations of the output disparity maps are given in the console output.  More detailed info including input stereo set and
-parameters, detailed timings, and output disparity map evaluation as compared to ground truth for each run are written to a
-outputResults.csv file; this file is in the same folder as the driverCPUBp/driverCudaBp executable.
+5.  The locations of the output disparity maps are given in the console output.  More detailed info including input
+stereo set and parameters, detailed timings, and output disparity map evaluation as compared to ground truth for each
+run are written to a outputResults.csv file; this file is in the same folder as the driverCPUBp/driverCudaBp executable.
 
 6.  In order to adjust the parameters to run on different inputs or with different parameters, set the desired parameters in 
-ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the adjusted parameters, and then call
-the executable to run the program with the adjusted parameters.
+ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the adjusted parameters,
+and then call the executable to run the program with the adjusted parameters.
 
 WINDOWS (MAY NOT CURRENTLY WORK AS IS; HASN'T BEEN TESTED FOR AWHILE):
 
@@ -115,4 +119,5 @@ NVIDIA V100: 1.8x
 AMD Milan-X (dual-CPU: 120 cores/120 threads): 1.9x
 NVIDIA A100: 2.3x
 NVIDIA RTX 3090 Ti: 2.3x
-Spreadsheet with more detailed results: https://docs.google.com/spreadsheets/d/1G9ggPg4Plf87fuDrHyc520cGopPJaVdy-ViWMLpvjRc/edit?usp=sharing
+Spreadsheet with more detailed results:
+https://docs.google.com/spreadsheets/d/1G9ggPg4Plf87fuDrHyc520cGopPJaVdy-ViWMLpvjRc/edit?usp=sharing
