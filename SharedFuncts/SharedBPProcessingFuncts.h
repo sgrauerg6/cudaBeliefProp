@@ -972,10 +972,14 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const unsigned int bpSettingsDispVals)
 {
+	//only need to copy checkerboard 1 around "edge" since updating checkerboard 1 in first belief propagation iteration
+	//(and checkerboard 0 message values are used in the iteration to update message values in checkerboard 1)
+	const bool copyCheckerboard1 = (((xVal == 0) || (yVal == 0)) || (((xVal >= (currentLevelProperties.widthCheckerboardLevel_ - 2)) || (yVal >= (currentLevelProperties.heightLevel_ - 2)))));
+	
 	unsigned int indexCopyTo, indexCopyFrom;
 	T prevValU, prevValD, prevValL, prevValR;
 	const unsigned int checkerboardPartAdjustment = (checkerboardPart == CHECKERBOARD_PART_0) ? (yVal % 2) : ((yVal + 1) % 2);
-
+	
 	if constexpr (DISP_VALS > 0) {
 		for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
 			indexCopyFrom = retrieveIndexInDataAndMessage(xVal, yVal,
@@ -1004,10 +1008,12 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 				messageLDeviceCurrentCheckerboard0[indexCopyTo] = prevValL;
 				messageRDeviceCurrentCheckerboard0[indexCopyTo] = prevValR;
 
-				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
-				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
-				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
-				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				if (copyCheckerboard1) {
+					messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+					messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+					messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+					messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				}
 			}
 
 			if (withinImageBounds(xVal*2 + checkerboardPartAdjustment, yVal*2 + 1, nextLevelProperties.widthCheckerboardLevel_, nextLevelProperties.heightLevel_)) {
@@ -1020,10 +1026,12 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 				messageLDeviceCurrentCheckerboard0[indexCopyTo] = prevValL;
 				messageRDeviceCurrentCheckerboard0[indexCopyTo] = prevValR;
 
-				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
-				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
-				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
-				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				if (copyCheckerboard1) {
+					messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+					messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+					messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+					messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				}
 			}
 		}
 	}
@@ -1055,10 +1063,12 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 				messageLDeviceCurrentCheckerboard0[indexCopyTo] = prevValL;
 				messageRDeviceCurrentCheckerboard0[indexCopyTo] = prevValR;
 
-				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
-				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
-				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
-				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				if (copyCheckerboard1) {
+					messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+					messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+					messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+					messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				}
 			}
 
 			if (withinImageBounds(xVal*2 + checkerboardPartAdjustment, yVal*2 + 1, nextLevelProperties.widthCheckerboardLevel_, nextLevelProperties.heightLevel_)) {
@@ -1071,10 +1081,12 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 				messageLDeviceCurrentCheckerboard0[indexCopyTo] = prevValL;
 				messageRDeviceCurrentCheckerboard0[indexCopyTo] = prevValR;
 
-				messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
-				messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
-				messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
-				messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				if (copyCheckerboard1) {
+					messageUDeviceCurrentCheckerboard1[indexCopyTo] = prevValU;
+					messageDDeviceCurrentCheckerboard1[indexCopyTo] = prevValD;
+					messageLDeviceCurrentCheckerboard1[indexCopyTo] = prevValL;
+					messageRDeviceCurrentCheckerboard1[indexCopyTo] = prevValR;
+				}
 			}
 		}
 	}
