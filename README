@@ -113,16 +113,17 @@ Relative speedup across various processors (AMD Rome w/ 48 cores / 96 threads us
 -Column marked as "Total runtime including data transfer time (15 timings)" in outputResults.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
 Intel Cascade Lake (24 cores/48 threads): 0.76x
-AMD Rome (48 cores/96 threads): 1.0x
-AMD Rome (48 cores/48 threads): 1.2x
-AMD Milan (48 cores/48 threads): 1.2x
-Amazon Graviton2 (64 core ARM server): 1.2x
-Intel Ice Lake (32 cores/64 threads): 1.2x
-NVIDIA P100: 1.2x
-AMD Milan-X (60 cores/60 threads): 1.7x
-NVIDIA V100: 1.8x
-AMD Milan-X (dual-CPU: 120 cores/120 threads): 1.9x
-NVIDIA A100: 2.3x
-NVIDIA RTX 3090 Ti: 2.3x
+AMD Rome (48 cores/96 threads): 1.00x
+NVIDIA P100: 1.08x
+Amazon Graviton2 (64 core ARM server): 1.16x
+Intel Ice Lake (32 cores/64 threads): 1.19x
+AMD Rome (48 cores/48 threads): 1.20x
+AMD Milan (48 cores/48 threads): 1.20x
+Intel Ice Lake (dual-CPU: 64 cores/64 threads): 1.42x
+AMD Milan-X (60 cores/60 threads): 1.52x
+NVIDIA V100: 1.56x
+AMD Milan-X (dual-CPU: 120 cores/120 threads): 1.77x
+NVIDIA RTX 3090 Ti: 2.11x
+NVIDIA A100: 2.20x
 Spreadsheet with more detailed results:
-https://docs.google.com/spreadsheets/d/1G9ggPg4Plf87fuDrHyc520cGopPJaVdy-ViWMLpvjRc/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1jcT_azVlBEyAcO1O8dfjfhbRDMBYVozyMKyfgSzgz8o/edit?usp=sharing
