@@ -77,6 +77,83 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
 }
 
+template<unsigned int DISP_VALS>
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
+		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
+		float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
+		float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+{	    
+	constexpr unsigned int numDataInSIMDVector{8u};
+	retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<float, __m256, float, __m256, DISP_VALS>(currentLevelProperties,
+		dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+		messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
+		messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
+		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
+		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+		disparityBetweenImagesDevice, bpSettingsDispVals,
+		numDataInSIMDVector);
+}
+
+template<unsigned int DISP_VALS>
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
+		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
+		short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
+		short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
+		short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+{	    
+	constexpr unsigned int numDataInSIMDVector{8u};
+	retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<short, __m128i, float, __m256, DISP_VALS>(currentLevelProperties,
+		dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+		messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
+		messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
+		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
+		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+		disparityBetweenImagesDevice, bpSettingsDispVals,
+		numDataInSIMDVector);
+}
+
+template<unsigned int DISP_VALS>
+void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
+		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
+		double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
+		double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+{	    
+	constexpr unsigned int numDataInSIMDVector{4u};
+	retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<double, __m256d, double, __m256d, DISP_VALS>(currentLevelProperties,
+		dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+		messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
+		messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
+		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
+		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+		disparityBetweenImagesDevice, bpSettingsDispVals,
+		numDataInSIMDVector);
+}
+
+template<> inline void KernelBpStereoCPU::updateBestDispBestVals<__m256>(__m256& bestDisparities, __m256& bestVals,
+	const __m256& currentDisparity, const __m256& valAtDisp) {
+	    __mmask8 maskNeedUpdate =  _mm256_cmp_ps_mask(valAtDisp, bestVals, _CMP_LT_OS);
+		bestVals = _mm256_mask_blend_ps(maskNeedUpdate, bestVals, valAtDisp);
+		bestDisparities = _mm256_mask_blend_ps(maskNeedUpdate, bestDisparities, currentDisparity);
+}
+
+template<> inline void KernelBpStereoCPU::updateBestDispBestVals<__m256d>(__m256d& bestDisparities, __m256d& bestVals,
+	const __m256d& currentDisparity, const __m256d& valAtDisp) {
+		__mmask8 maskNeedUpdate =  _mm256_cmp_pd_mask(valAtDisp, bestVals, _CMP_LT_OS);
+		bestVals = _mm256_mask_blend_pd(maskNeedUpdate, bestVals, valAtDisp);
+		bestDisparities = _mm256_mask_blend_pd(maskNeedUpdate, bestDisparities, currentDisparity);
+}
+
 template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m256d>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
 		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
@@ -135,7 +212,7 @@ template<> inline __m128i KernelBpStereoCPU::createSIMDVectorSameData<__m128i>(c
 }
 
 template<> inline __m256d KernelBpStereoCPU::createSIMDVectorSameData<__m256d>(const float data) {
-	return _mm256_set1_pd(data);
+	return _mm256_set1_pd((double)data);
 }
 
 template<> inline __m256 KernelBpStereoCPU::addVals<__m256, __m256, __m256>(const __m256& val1, const __m256& val2) {

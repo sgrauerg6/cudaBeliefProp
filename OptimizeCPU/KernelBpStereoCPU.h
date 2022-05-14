@@ -83,7 +83,7 @@ public:
 	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
 			const Checkerboard_Parts checkerboardPartUpdate, const levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
@@ -108,12 +108,53 @@ public:
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 	template<typename T, unsigned int DISP_VALS>
 	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const levelProperties& currentLevelProperties,
-			T* dataCostStereoCheckerboard1, T* dataCostStereoCheckerboard2,
+			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
+			T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 			T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 			T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
-			T* messageUPrevStereoCheckerboard2, T* messageDPrevStereoCheckerboard2,
-			T* messageLPrevStereoCheckerboard2, T* messageRPrevStereoCheckerboard2,
 			float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
+
+	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
+    template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
+	static void retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const levelProperties& currentLevelProperties,
+			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
+			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
+			T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
+			T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
+			T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
+			float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+			const unsigned int numDataInSIMDVector);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
+		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
+		float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
+		float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
+		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
+		short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
+		short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
+		short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
+		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
+		double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
+		double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
 
 	//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 	//and the output message values are save to output message arrays
@@ -234,6 +275,11 @@ public:
 	//TODO: look into defining function in .cpp file so don't need to declare inline
 	template<typename T, typename U>
 	static void dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals);
+
+	template<typename T>
+	static void updateBestDispBestVals(T& bestDisparities, T& bestVals, const T& currentDisparity, const T& valAtDisp) {
+		printf("Data type not supported for updating best disparities and values\n");
+	}
 
 	template<typename T, typename U>
 	static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
