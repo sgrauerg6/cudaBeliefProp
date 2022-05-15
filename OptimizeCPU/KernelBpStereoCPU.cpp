@@ -1245,6 +1245,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals) {
+	#if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+	//SIMD vectorization of output disparity only supported with OpenMP
 	retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors<DISP_VALS>(currentLevelProperties,
 	    dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 		messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1252,7 +1254,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 		disparityBetweenImagesDevice, bpSettingsDispVals);
-    /*#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
+    #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
 	  [&currentLevelProperties, &dataCostStereoCheckerboard0, &dataCostStereoCheckerboard1, &messageUPrevStereoCheckerboard0, &messageDPrevStereoCheckerboard0,
 	  &messageLPrevStereoCheckerboard0, &messageRPrevStereoCheckerboard0, &messageUPrevStereoCheckerboard1, &messageDPrevStereoCheckerboard1,
@@ -1290,7 +1292,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 				disparityBetweenImagesDevice, bpSettingsDispVals);
 		  }
 	  });
-	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+	//using vectorized method when using OpenMP
+	/*#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 	#pragma omp parallel for
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
@@ -1309,8 +1312,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 				disparityBetweenImagesDevice, bpSettingsDispVals);
-	}
-	#endif //CPU_PARALLELIZATION_METHOD*/
+	}*/
+	#endif //CPU_PARALLELIZATION_METHOD
 }
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
