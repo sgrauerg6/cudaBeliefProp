@@ -142,16 +142,22 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 
 template<> inline void KernelBpStereoCPU::updateBestDispBestVals<__m256>(__m256& bestDisparities, __m256& bestVals,
 	const __m256& currentDisparity, const __m256& valAtDisp) {
-	    __mmask8 maskNeedUpdate =  _mm256_cmp_ps_mask(valAtDisp, bestVals, _CMP_LT_OS);
+		__m256 maskNeedUpdate = _mm256_cmp_ps(valAtDisp, bestVals, _CMP_LT_OS);
+		bestVals = _mm256_blendv_ps(maskNeedUpdate, bestVals, valAtDisp);
+		bestDisparities = _mm256_blendv_ps(maskNeedUpdate, bestDisparities, currentDisparity);
+	   /* __mmask8 maskNeedUpdate =  _mm256_cmp_ps_mask(valAtDisp, bestVals, _CMP_LT_OS);
 		bestVals = _mm256_mask_blend_ps(maskNeedUpdate, bestVals, valAtDisp);
-		bestDisparities = _mm256_mask_blend_ps(maskNeedUpdate, bestDisparities, currentDisparity);
+		bestDisparities = _mm256_mask_blend_ps(maskNeedUpdate, bestDisparities, currentDisparity);*/
 }
 
 template<> inline void KernelBpStereoCPU::updateBestDispBestVals<__m256d>(__m256d& bestDisparities, __m256d& bestVals,
 	const __m256d& currentDisparity, const __m256d& valAtDisp) {
-		__mmask8 maskNeedUpdate =  _mm256_cmp_pd_mask(valAtDisp, bestVals, _CMP_LT_OS);
+		__m256d maskNeedUpdate = _mm256_cmp_pd(valAtDisp, bestVals, _CMP_LT_OS);
+		bestVals = _mm256_blendv_pd(maskNeedUpdate, bestVals, valAtDisp);
+		bestDisparities = _mm256_blendv_pd(maskNeedUpdate, bestDisparities, currentDisparity);
+		/*__mmask8 maskNeedUpdate =  _mm256_cmp_pd_mask(valAtDisp, bestVals, _CMP_LT_OS);
 		bestVals = _mm256_mask_blend_pd(maskNeedUpdate, bestVals, valAtDisp);
-		bestDisparities = _mm256_mask_blend_pd(maskNeedUpdate, bestDisparities, currentDisparity);
+		bestDisparities = _mm256_mask_blend_pd(maskNeedUpdate, bestDisparities, currentDisparity);*/
 }
 
 template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m256d>(
