@@ -35,6 +35,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
+//uncomment to only process smaller stereo sets
+//#define SMALLER_SETS_ONLY
+
 const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
 const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
@@ -91,10 +94,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, false);
+#endif //SMALLER_SETS_ONLY
 #ifdef DOUBLE_PRECISION_SUPPORTED
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, false);
@@ -106,10 +111,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, false);
+#endif //SMALLER_SETS_ONLY
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef HALF_PRECISION_SUPPORTED
 #ifdef COMPILING_FOR_ARM
@@ -123,10 +130,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float16_t, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float16_t, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<float16_t, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float16_t, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float16_t, 6>(resultsAcrossRuns, false);
+#endif SMALLER_SETS_ONLY
 #else
 	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, false);
@@ -138,12 +147,14 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, false);
+#endif //SMALLER_SETS_ONLY
 #endif //COMPILING_FOR_ARM
-#endif //HALF_PRECISION_SUPPORTED
+#endif //HALF_PRECISION_SUPPORTED*/
 
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 
