@@ -142,16 +142,16 @@ template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float32x4_t>(fl
 	//get mask with value 1 where current value less then current best 1, 0 otherwise
 	uint32x4_t maskUpdateVals = vcltq_f32(valAtDisp, bestVals);
 	//update best values and best disparities using mask
-	//vbslq_f32 operation uses first float32x4_t argument if mask value is 1 and seconde float32x4_t argument if mask value is 0
-	bestVals = vbslq_f32(maskUpdateVals, valAtDisp, bestVals);
-	bestDisparities = vbslq_f32(maskUpdateVals, currentDisparity, bestDisparities);
+	//vbslq_f32 operation uses first float32x4_t argument if mask value is 0 and seconde float32x4_t argument if mask value is 1
+	bestVals = vbslq_f32(maskUpdateVals, bestVals, valAtDisp);
+	bestDisparities = vbslq_f32(maskUpdateVals, bestDisparities, currentDisparity);
 }
 
 template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float64x2_t>(float64x2_t& bestDisparities, float64x2_t& bestVals,
 	const float64x2_t& currentDisparity, const float64x2_t& valAtDisp) {
 	uint64x2_t maskUpdateVals = vcltq_f64(valAtDisp, bestVals);
-	bestVals = vbslq_f64(maskUpdateVals, valAtDisp, bestVals);
-	bestDisparities = vbslq_f64(maskUpdateVals, currentDisparity, bestDisparities);
+	bestVals = vbslq_f64(maskUpdateVals, bestVals, valAtDisp);
+	bestDisparities = vbslq_f64(maskUpdateVals, bestDisparities, currentDisparity);
 }
 
 template<> inline float64x2_t KernelBpStereoCPU::loadPackedDataAligned<double, float64x2_t>(
