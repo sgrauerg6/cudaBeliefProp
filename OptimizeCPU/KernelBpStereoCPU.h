@@ -156,6 +156,18 @@ public:
 		double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
 
+#ifdef COMPILING_FOR_ARM
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+		const levelProperties& currentLevelProperties,
+		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
+		float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
+		float16_t* messageLPrevStereoCheckerboard0, float16_t* messageRPrevStereoCheckerboard0,
+		float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1,
+		float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals);
+#endif //COMPILING_FOR_ARM
+
 	//device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 	//and the output message values are save to output message arrays
 	template<typename T, typename U, unsigned int DISP_VALS>
