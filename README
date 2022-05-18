@@ -115,8 +115,8 @@ Relative speedup across various processors (AMD Rome w/ 48 cores / 96 threads us
 AMD Rome (48 cores/96 threads): 1.00x
 NVIDIA P100: 1.03x
 Amazon Graviton2 (64 core ARM server): 1.09x
-Intel Ice Lake (32 cores/64 threads): 1.22x
 AMD Rome (48 cores/48 threads): 1.15x
+Intel Ice Lake (32 cores/64 threads): 1.22x
 NVIDIA V100: 1.49x
 AMD Milan-X (120 cores/60 threads): 1.70x (dual-core w/ 60 cores/CPU...from looking at thread IDs processing seems to be on single CPU and would expect same results using single Milan-X CPU)
 NVIDIA RTX 3090 Ti: 2.03x
