@@ -44,6 +44,7 @@ const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 constexpr bool OPTIMIZE_THREAD_BLOCK_DIMS{false};
 const std::vector<std::array<unsigned int, 2>> THREAD_DIMS_OPTIONS{{32, 1}, {32, 2}, {32, 3}, {32, 4}, {32, 5}, {32, 6}, {32, 8}};
 
+//get current CUDA properties and write them to output stream
 void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 {
 	cudaDeviceProp prop;
@@ -69,7 +70,12 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 	const std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
     std::vector<std::map<std::array<unsigned int, 2>, double>> tDimsToRuntimeEachLevel(algSettings.numLevels_);
 
-	bp_cuda_params::CudaParameters currCudaParams(algSettings.numLevels_); //currCudaParams initialized with default thread block dimensions at every level
+	//currCudaParams initialized with default thread block dimensions at every level
+	bp_cuda_params::CudaParameters currCudaParams(algSettings.numLevels_);
+	
+	//if optimizing thread block dimensions, run BP for each thread block option, retrieve best thread block dimensions at each level,
+	//and then run BP with best found thread block dimensions at each level
+	//if not optimizing thread block dimension, run BP once using default thread block dimensions
 	for (unsigned int runNum=0; runNum <= threadDimsVect.size(); runNum++) {
 		const std::array<unsigned int, 2>* tBlockDims = (runNum < threadDimsVect.size()) ? (&(threadDimsVect[runNum])) : nullptr;
 		std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
