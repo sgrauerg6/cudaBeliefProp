@@ -38,8 +38,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
 const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 
-//option to optimized thread block dimensions at each level by running implementation with different block dimensions, finding the block dimensions
-//with the lowest runtime at each level, and then setting each level to the optimized thread block dimensions in the final run
+//option to optimized thread block dimensions at each level by running BP w/ each thread block dimension in THREAD_DIMS_OPTIONS,
+//finding the block dimensions with the lowest runtime at each level, and then setting each level to the optimized thread block
+//dimensions in the final run
 constexpr bool OPTIMIZE_THREAD_BLOCK_DIMS{false};
 const std::vector<std::array<unsigned int, 2>> THREAD_DIMS_OPTIONS{{32, 1}, {32, 2}, {32, 3}, {32, 4}, {32, 5}, {32, 6}, {32, 8}};
 
@@ -49,9 +50,12 @@ void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 	cudaGetDeviceProperties( &prop, numDevice);
 	int cudaDriverVersion;
 	cudaDriverGetVersion(&cudaDriverVersion);
+	int cudaRuntimeVersion;
+	cudaRuntimeGetVersion(&cudaRuntimeVersion);
 
 	resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
 	resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
+	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 }
 
 template<typename T, unsigned int NUM_SET>
@@ -70,9 +74,6 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 		const std::array<unsigned int, 2>* tBlockDims = (runNum < threadDimsVect.size()) ? (&(threadDimsVect[runNum])) : nullptr;
 		std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
 		retrieveDeviceProperties(0, resultsStream);
-		int cudaRuntimeVersion;
-		cudaRuntimeGetVersion(&cudaRuntimeVersion);
-		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
 		if (runNum < threadDimsVect.size()) {
   		  //set thread block dimensions to current tBlockDims for each BP processing level
 		  currCudaParams.blockDimsXY_ = std::vector<std::array<unsigned int, 2>>(algSettings.numLevels_, *tBlockDims);
@@ -107,11 +108,11 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 			}
 			if (runNum == (threadDimsVect.size() - 1)) {
 				//retrieve and set optimized thread block dimensions at each level for final run
-				for (unsigned int i=0; i < tDimsToRuntimeEachLevel.size(); i++) {
-					const auto iterMinRTime = std::min_element(tDimsToRuntimeEachLevel[i].begin(), tDimsToRuntimeEachLevel[i].end(),
-					                                           [](const auto& a, const auto& b) { return a.second < b.second; });
-					currCudaParams.blockDimsXY_[i] = iterMinRTime->first;
-				}
+				//std::min_element used to retrieve thread block dimensions corresponding to lowest runtime from previous runs
+				std::transform(tDimsToRuntimeEachLevel.begin(), tDimsToRuntimeEachLevel.end(), currCudaParams.blockDimsXY_.begin(),
+				               [](const auto& tDimsToRunTimeCurrLevel) -> std::array<unsigned int, 2> { 
+								   return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
+					                       [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
 		    }
 		}
 		else //(runNum == threadDimsVect.size())
