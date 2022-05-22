@@ -148,16 +148,14 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 
 void getAverageMedianSpeedup(const std::array<std::map<std::string, std::vector<std::string>>, 2>& resultsDefaultTBFinal) {
 	const std::string RUNTIME_HEADER{"Median CUDA runtime (including transfer time)"};
-	unsigned int numRuns = resultsDefaultTBFinal[0].at(RUNTIME_HEADER).size();
 	std::vector<double> speedupsVect;
-	for (unsigned int i=0; i < numRuns; i++) {
-		const double rTimeDefaultTB = std::stod(resultsDefaultTBFinal[0].at(RUNTIME_HEADER).at(i));
-		const double rTimeOptTB = std::stod(resultsDefaultTBFinal[1].at(RUNTIME_HEADER).at(i));
-		const double speedup = rTimeDefaultTB / rTimeOptTB;
-		speedupsVect.push_back(speedup);
+	for (unsigned int i=0; i < resultsDefaultTBFinal[0].at(RUNTIME_HEADER).size(); i++) {
+		speedupsVect.push_back(std::stod(resultsDefaultTBFinal[0].at(RUNTIME_HEADER).at(i)) / 
+		                       std::stod(resultsDefaultTBFinal[1].at(RUNTIME_HEADER).at(i)));
 	}
 	std::sort(speedupsVect.begin(), speedupsVect.end());
-	std::cout << "Average speedup: " << (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)numRuns) << std::endl;
+	std::cout << "Average speedup: " << 
+		(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)resultsDefaultTBFinal[0].at(RUNTIME_HEADER).size()) << std::endl;
 	const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
 	    (speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
 		speedupsVect[(speedupsVect.size() / 2)];
@@ -222,12 +220,16 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 6>(resultsDefaultTBFinal, false);
 #endif //SMALLER_SETS_ONLY
 #endif //CUDA_HALF_SUPPORT
-	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
+	
 	if constexpr (OPTIMIZE_THREAD_BLOCK_DIMS) {
+		//retrieve and print average and median speedup using optimized
+		//thread block dimensions compared to default
 		getAverageMedianSpeedup(resultsDefaultTBFinal);
 	}
 
+	//write results from default and optimized thread block runs to csv file
 	std::ofstream resultsStream(BP_ALL_RUNS_OUTPUT_CSV_FILE);
+	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 	for (const auto& currHeader : headersInOrder) {
 		resultsStream << currHeader << ",";
 	}
