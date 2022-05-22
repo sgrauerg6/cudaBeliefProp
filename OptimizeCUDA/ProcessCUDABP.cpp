@@ -62,11 +62,9 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 {
 	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
-	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
-	grid.x = (unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x); //only updating half at a time
-	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y);
+	const dim3 threads(cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]);
+	const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x), //only updating half at a time
+	          		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
 	//still is a check if start of row is aligned
@@ -143,11 +141,9 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 		const checkerboardMessages<U>& messagesDeviceCopyTo,
 		const unsigned int bpSettingsNumDispVals)
 {
-	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
-	grid.x = (unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y);
+	const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
+	const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
+					(unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
 
 	cudaDeviceSynchronize();
 	gpuErrchk(cudaPeekAtLastError());
@@ -190,12 +186,10 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSe
 
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
-	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
+	const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
 	//kernal run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
-	grid.x = (unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y);
+	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x),
+	  		        (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	//initialize the data the the "bottom" of the image pyramid
 	initializeBottomLevelDataStereo<T, DISP_VALS><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
@@ -212,9 +206,9 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
 {
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid((unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
-			  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y));
+	const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
+	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
+			  		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
 	initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
@@ -232,13 +226,11 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelPrope
 		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
 		const unsigned int bpSettingsNumDispVals)
 {
-	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
+	const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
 	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
 	//the four-connected neighbors are in the other checkerboard
-	grid.x = (unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x);
-	grid.y = (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y);
+	dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
+			  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	gpuErrchk(cudaPeekAtLastError());
 
@@ -319,11 +311,9 @@ float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 	float* resultingDisparityMapCompDevice;
 	cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_ * sizeof(float));
 
-	const dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_BP, bp_cuda_params::BLOCK_SIZE_HEIGHT_BP);
-	dim3 grid;
-
-	grid.x = (unsigned int) ceil((float) currentLevelProperties.widthCheckerboardLevel_ / (float) threads.x);
-	grid.y = (unsigned int) ceil((float) currentLevelProperties.heightLevel_ / (float) threads.y);
+	const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
+	const dim3 grid{(unsigned int) ceil((float) currentLevelProperties.widthCheckerboardLevel_ / (float) threads.x),
+					(unsigned int) ceil((float) currentLevelProperties.heightLevel_ / (float) threads.y)};
 
 	retrieveOutputDisparityCheckerboardStereoOptimized<T, DISP_VALS> <<<grid, threads>>>(currentLevelProperties,
 			dataCostDeviceCheckerboard.dataCostCheckerboard0_, dataCostDeviceCheckerboard.dataCostCheckerboard1_,

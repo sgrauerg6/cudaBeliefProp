@@ -18,8 +18,6 @@
 template <typename T=float*>
 class SmoothImageCPU : public SmoothImage<T> {
 public:
-	SmoothImageCPU() {}
-	virtual ~SmoothImageCPU() {}
 
 	//function to use the CPU-image filter to apply a guassian filter to the a single images
 	//input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)

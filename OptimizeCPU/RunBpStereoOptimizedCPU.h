@@ -21,9 +21,6 @@
 template <typename T, unsigned int DISP_VALS>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS> {
 public:
-	RunBpStereoOptimizedCPU() {}
-	virtual ~RunBpStereoOptimizedCPU() {}
-
 	std::string getBpRunDescription() override { return "Optimized CPU"; }
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired

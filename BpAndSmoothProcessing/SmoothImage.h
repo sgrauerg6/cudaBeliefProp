@@ -38,9 +38,6 @@ template <typename T=float*>
 class SmoothImage
 {
 public:
-	SmoothImage() {};
-	virtual ~SmoothImage() {};
-
 	//normalize filter mask so it integrates to one
 	void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter)
 	{

@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "bpStereoParameters.h"
 #include "bpRunSettings.h"
 #include "bpStructsAndEnums.h"
+#include <vector>
 
 //determine whether or not to support CUDA half-precision
 //comment out if not supporting CUDA half-precision
@@ -34,18 +35,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace bp_cuda_params
 {
-	//defines the width and height of the thread block used for
-	//image filtering (applying the Guassian filter in smoothImageHost)
-	const unsigned int BLOCK_SIZE_WIDTH_FILTER_IMAGES = 16;
-	const unsigned int BLOCK_SIZE_HEIGHT_FILTER_IMAGES = 16;
+	//defines the default width and height of the thread block used for
+	//kernel functions when running BP
+	constexpr unsigned int DEFAULT_BLOCK_SIZE_WIDTH_BP{32};
+	constexpr unsigned int DEFAULT_BLOCK_SIZE_HEIGHT_BP{4};
 
-	//defines the width and height of the thread block used for
-	//each kernal function when running BP (right now same thread
-	//block dimensions are used for each kernal function when running
-	//kernal function in runBpStereoHost.cu, though this could be
-	//changed)
-	const unsigned int BLOCK_SIZE_WIDTH_BP = 32;
-	const unsigned int BLOCK_SIZE_HEIGHT_BP = 4;
+    //structure containing CUDA parameters including thread block dimensions
+	//to use at each BP level
+	struct CudaParameters {
+		CudaParameters(unsigned int numLevels) : 
+		  blockDimsXY_(numLevels, {bp_cuda_params::DEFAULT_BLOCK_SIZE_WIDTH_BP, bp_cuda_params::DEFAULT_BLOCK_SIZE_HEIGHT_BP}) {}; 
+		std::vector<std::array<unsigned int, 2>> blockDimsXY_;
+		bool useSharedMemory_{false};
+    };
 }
 
 #define USE_SHARED_MEMORY 0

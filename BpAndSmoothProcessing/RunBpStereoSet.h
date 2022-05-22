@@ -36,9 +36,6 @@ struct ProcessStereoSetOutput
 template <typename T, unsigned int DISP_VALS>
 class RunBpStereoSet {
 public:
-
-	virtual ~RunBpStereoSet() {}
-
 	virtual std::string getBpRunDescription() = 0;
 
 	//pure abstract overloaded operator that must be defined in child class
@@ -93,7 +90,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
 		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
 
-		levelProperties bottomLevelProperties(widthHeightImages);
+		levelProperties bottomLevelProperties(widthHeightImages, 0, 0);
 		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
 		bpProcStore = runBpStereo->allocateMemoryOnTargetDevice(totalDataBottomLevel);
 	}

@@ -32,8 +32,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <tuple>
 #include <utility>
 
+//uncomment to only processes smaller stereo sets
+//#define SMALLER_SETS_ONLY
+
 const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
 const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
+
+//option to optimized thread block dimensions at each level by running implementation with different block dimensions, finding the block dimensions
+//with the lowest runtime at each level, and then setting each level to the optimized thread block dimensions in the final run
+constexpr bool OPTIMIZE_THREAD_BLOCK_DIMS{false};
+const std::vector<std::array<unsigned int, 2>> THREAD_DIMS_OPTIONS{{32, 1}, {32, 2}, {32, 3}, {32, 4}, {32, 5}, {32, 6}, {32, 8}};
 
 void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 {
@@ -49,40 +57,74 @@ void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 template<typename T, unsigned int NUM_SET>
 void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>& resultsAcrossRuns, const bool isTemplatedDispVals)
 {
-	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
-	retrieveDeviceProperties(0, resultsStream);
-	int cudaRuntimeVersion;
-	cudaRuntimeGetVersion(&cudaRuntimeVersion);
-	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
-
-	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
-			std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
-	};
-
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
 	BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
-	resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
-	if (isTemplatedDispVals) {
-		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-				resultsStream, runBpStereo, NUM_SET, algSettings);
-	}
-	else {
-		std::unique_ptr<RunBpStereoSet<T, 0>> optCUDADispValsNoTemplate = std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, 0>>();
-		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-				resultsStream, optCUDADispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
-	}
-	resultsStream.close();
+	//if optimizing thread block dimensions, threadDimsVect contains thread block dimension options (and is empty if not)
+	const std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
+    std::vector<std::map<std::array<unsigned int, 2>, double>> tDimsToRuntimeEachLevel(algSettings.numLevels_);
 
-	const auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
-	for (const auto& currRunResult : resultsCurrentRun) {
-		if (resultsAcrossRuns.count(currRunResult.first)) {
-			resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+	bp_cuda_params::CudaParameters currCudaParams(algSettings.numLevels_); //currCudaParams initialized with default thread block dimensions at every level
+	for (unsigned int runNum=0; runNum <= threadDimsVect.size(); runNum++) {
+		const std::array<unsigned int, 2>* tBlockDims = (runNum < threadDimsVect.size()) ? (&(threadDimsVect[runNum])) : nullptr;
+		std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
+		retrieveDeviceProperties(0, resultsStream);
+		int cudaRuntimeVersion;
+		cudaRuntimeGetVersion(&cudaRuntimeVersion);
+		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+		if (runNum < threadDimsVect.size()) {
+  		  //set thread block dimensions to current tBlockDims for each BP processing level
+		  currCudaParams.blockDimsXY_ = std::vector<std::array<unsigned int, 2>>(algSettings.numLevels_, *tBlockDims);
+		}
+
+		resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
+		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
+		  resultsStream << "Level " << std::to_string(level) << " Thread Block Width:" << currCudaParams.blockDimsXY_[level][0] << std::endl;
+		  resultsStream << "Level " << std::to_string(level) << " Thread Block Height:" << currCudaParams.blockDimsXY_[level][1] << std::endl;
+		}
+		std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
+				std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(currCudaParams),
+				std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
+		};
+		if (isTemplatedDispVals) {
+			RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+					resultsStream, runBpStereo, NUM_SET, algSettings);
 		}
 		else {
-			resultsAcrossRuns[currRunResult.first] = std::vector{currRunResult.second};
+			std::unique_ptr<RunBpStereoSet<T, 0>> optCUDADispValsNoTemplate = std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, 0>>(currCudaParams);
+			RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+					resultsStream, optCUDADispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
+		}
+		resultsStream.close();
+
+        //get resulting including runtimes for each BP level for current run
+		const auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
+		if (runNum < threadDimsVect.size()) {
+			for (unsigned int level=0; level < algSettings.numLevels_; level++) {
+				tDimsToRuntimeEachLevel[level][*tBlockDims] = std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Runtime (" + 
+				                                                       std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+			}
+			if (runNum == (threadDimsVect.size() - 1)) {
+				//retrieve and set optimized thread block dimensions at each level for final run
+				for (unsigned int i=0; i < tDimsToRuntimeEachLevel.size(); i++) {
+					const auto iterMinRTime = std::min_element(tDimsToRuntimeEachLevel[i].begin(), tDimsToRuntimeEachLevel[i].end(),
+					                                           [](const auto& a, const auto& b) { return a.second < b.second; });
+					currCudaParams.blockDimsXY_[i] = iterMinRTime->first;
+				}
+		    }
+		}
+		else //(runNum == threadDimsVect.size())
+	    {
+			//only show output for final run (which is also first run if not optimizing thread block size)
+			for (const auto& currRunResult : resultsCurrentRun) {
+				if (resultsAcrossRuns.count(currRunResult.first)) {
+					resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
+				}
+				else {
+					resultsAcrossRuns[currRunResult.first] = std::vector{currRunResult.second};
+				}
+			}
 		}
 	}
 }
@@ -103,10 +145,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<float, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<float, 6>(resultsAcrossRuns, false);
+#endif //SMALLER_SETS_ONLY
 #ifdef DOUBLE_PRECISION_SUPPORTED
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 0>(resultsAcrossRuns, false);
@@ -118,10 +162,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<double, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<double, 6>(resultsAcrossRuns, false);
+#endif //SMALLER_SETS_ONLY
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef CUDA_HALF_SUPPORT
 	runBpOnSetAndUpdateResults<short, 0>(resultsAcrossRuns, true);
@@ -134,10 +180,12 @@ int main(int argc, char** argv)
 	runBpOnSetAndUpdateResults<short, 3>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 4>(resultsAcrossRuns, false);
+#ifndef SMALLER_SETS_ONLY
 	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 5>(resultsAcrossRuns, false);
 	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, true);
 	runBpOnSetAndUpdateResults<short, 6>(resultsAcrossRuns, false);
+#endif //SMALLER_SETS_ONLY
 #endif //CUDA_HALF_SUPPORT
 	const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 

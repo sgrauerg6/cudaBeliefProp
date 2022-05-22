@@ -13,8 +13,8 @@ template <typename T>
 void SmoothImageCUDA<T>::operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage)
 {
 	// setup execution parameters
-	dim3 threads(bp_cuda_params::BLOCK_SIZE_WIDTH_FILTER_IMAGES, bp_cuda_params::BLOCK_SIZE_HEIGHT_FILTER_IMAGES);
-	dim3 grid((unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)), (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y)));
+	const dim3 threads{cudaParams_.blockDimsXY_[0][0], cudaParams_.blockDimsXY_[0][1]};
+	const dim3 grid{(unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)), (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y))};
 
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 	//of unsigned ints to an output image of float values

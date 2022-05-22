@@ -29,18 +29,18 @@ struct BPsettings
 //structure to store the properties of the current level
 struct levelProperties
 {
-	levelProperties(const std::array<unsigned int, 2>& widthHeight = {0, 0}, unsigned long offsetIntoArrays = 0) :
+	levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum) :
 		widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
 		widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
 		paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
-		offsetIntoArrays_(offsetIntoArrays) {}
+		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum) {}
 
 	//get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
 	template <typename T>
 	levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
 		const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
 		return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
-				offsetNextLevel);
+				offsetNextLevel, (levelNum_ + 1));
 	}
 
 	//get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
@@ -83,7 +83,7 @@ struct levelProperties
 	static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
 			const unsigned int totalPossibleMovements, const unsigned int numLevels)
 	{
-		levelProperties currLevelProperties(widthHeightBottomLevel);
+		levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0);
 		unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
 		for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
 			currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);
@@ -99,6 +99,7 @@ struct levelProperties
 	unsigned int widthCheckerboardLevel_;
 	unsigned int paddedWidthCheckerboardLevel_;
 	unsigned long offsetIntoArrays_;
+	unsigned int levelNum_;
 };
 
 //used to define the two checkerboard "parts" that the image is divided into

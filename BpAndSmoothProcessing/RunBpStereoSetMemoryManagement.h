@@ -8,12 +8,6 @@ template <typename T = float, typename U = float*>
 class RunBpStereoSetMemoryManagement
 {
 public:
-	RunBpStereoSetMemoryManagement() {
-	}
-
-	virtual ~RunBpStereoSetMemoryManagement() {
-	}
-
 	virtual U allocateDataOnCompDevice(const unsigned int numData) {
 		return (new T[numData]);
 	}

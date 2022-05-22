@@ -29,7 +29,6 @@ template<typename T, typename U, unsigned int DISP_VALS, typename V=float*>
 class ProcessBPOnTargetDevice {
 public:
 	ProcessBPOnTargetDevice() { }
-	virtual ~ProcessBPOnTargetDevice() { }
 
 	virtual void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) = 0;
 
@@ -165,7 +164,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	bpLevelProperties.reserve(algSettings.numLevels_);
 
 	//set level properties for bottom level that include processing of full image width/height
-	bpLevelProperties.push_back(levelProperties(widthHeightImages));
+	bpLevelProperties.push_back(levelProperties(widthHeightImages, 0, 0));
 
 	//compute level properties which includes offset for each data/message array for each level after the bottom level
 	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
