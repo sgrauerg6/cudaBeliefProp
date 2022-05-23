@@ -229,7 +229,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelPrope
 	const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
 	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
 	//the four-connected neighbors are in the other checkerboard
-	dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
+	const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
 			  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	gpuErrchk(cudaPeekAtLastError());
