@@ -70,12 +70,17 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 	BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
-	//if optimizing thread block dimensions, threadDimsVect contains thread block dimension options (and is empty if not)
-	const std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
-    std::vector<std::map<std::array<unsigned int, 2>, double>> tDimsToRuntimeEachLevel(algSettings.numLevels_);
-
 	//currCudaParams initialized with default thread block dimensions at every level
 	bp_cuda_params::CudaParameters currCudaParams(algSettings.numLevels_);
+
+	//if optimizing thread block dimensions, threadDimsVect contains thread block dimension options (and is empty if not)
+	const std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
+    //mapping of thread block dimensions to runtime for each kernel at each level
+	std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, bp_cuda_params::NUM_KERNELS> tDimsToRuntimeEachKernel;
+	for (unsigned int i=0; i < bp_cuda_params::NUM_KERNELS; i++) {
+		//set to vector length for each kernel to corresponding vector length of kernel in currCudaParams.blockDimsXYEachKernel_
+		tDimsToRuntimeEachKernel[i] = std::vector<std::map<std::array<unsigned int, 2>, double>>(currCudaParams.blockDimsXYEachKernel_[i].size()); 
+	}
 	
 	//if optimizing thread block dimensions, run BP for each thread block option, retrieve best thread block dimensions at each level,
 	//and then run BP with best found thread block dimensions at each level
@@ -86,20 +91,43 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		retrieveDeviceProperties(0, resultsStream);
 		if (runNum < threadDimsVect.size()) {
   		  //set thread block dimensions to current tBlockDims for each BP processing level
-		  currCudaParams.blockDimsXY_ = std::vector<std::array<unsigned int, 2>>(algSettings.numLevels_, *tBlockDims);
+		  currCudaParams.setThreadBlockDims(*tBlockDims, algSettings.numLevels_);
 		}
 
 		resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
+		resultsStream << "Blur Images Block Dims:" << 
+		                   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::BLUR_IMAGES][0][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::BLUR_IMAGES][0][1] << std::endl;
+		resultsStream << "Init Message Values Block Dims:" << 
+		                   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::INIT_MESSAGE_VALS][0][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::INIT_MESSAGE_VALS][0][1] << std::endl;
 		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
-		  resultsStream << "Level " << std::to_string(level) << " Thread Block Width:" << currCudaParams.blockDimsXY_[level][0] << std::endl;
-		  resultsStream << "Level " << std::to_string(level) << " Thread Block Height:" << currCudaParams.blockDimsXY_[level][1] << std::endl;
+			resultsStream << "Level " << std::to_string(level) << " Data Costs Block Dims:" << 
+		                   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][level][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][level][1] << std::endl;
 		}
+		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
+		  	resultsStream << "Level " << std::to_string(level) << " BP Thread Block Dims:" << 
+		                   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::BP_AT_LEVEL][level][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::BP_AT_LEVEL][level][1] << std::endl;
+		}
+		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
+		  	resultsStream << "Level " << std::to_string(level) << " Copy Thread Block Dims:" << 
+		                   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::COPY_AT_LEVEL][level][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::COPY_AT_LEVEL][level][1] << std::endl;
+		}
+		resultsStream << "Get Output Disparity Block Dims:" << 
+		                   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::OUTPUT_DISP][0][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::OUTPUT_DISP][0][1] << std::endl;
+		
+		//initialize objects to run belief propagation using CUDA and single thread CPU implementations
 		std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
 				std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(currCudaParams),
 				std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
 		};
 
-        //run optimized implementation only if not final run or run using default thread block size (those are the only runs that are output in final results)
+        //run optimized implementation only (and not single-threaded CPU implementation) if not final run or run is using default thread block size
+		//final run and run using default thread block size are only runs that are output in final results
 		const bool runOptImpOnly{!(((runNum == threadDimsVect.size()) || ((*tBlockDims) ==
 		                            std::array<unsigned int, 2>{bp_cuda_params::DEFAULT_BLOCK_SIZE_WIDTH_BP, bp_cuda_params::DEFAULT_BLOCK_SIZE_HEIGHT_BP})))};
 		if (isTemplatedDispVals) {
@@ -117,16 +145,34 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		const auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
 		if (runNum < threadDimsVect.size()) {
 			for (unsigned int level=0; level < algSettings.numLevels_; level++) {
-				tDimsToRuntimeEachLevel[level][*tBlockDims] = std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Runtime (" + 
-				                                                       std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+				tDimsToRuntimeEachKernel[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][level][*tBlockDims] =
+					std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Data Costs (" +
+							  std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+				tDimsToRuntimeEachKernel[bp_cuda_params::CudaKernel::BP_AT_LEVEL][level][*tBlockDims] = 
+					std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " BP Runtime (" + 
+				              std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+				tDimsToRuntimeEachKernel[bp_cuda_params::CudaKernel::COPY_AT_LEVEL][level][*tBlockDims] =
+					std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Copy Runtime (" + 
+				                                   std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
 			}
+			tDimsToRuntimeEachKernel[bp_cuda_params::CudaKernel::BLUR_IMAGES][0][*tBlockDims] =
+					std::stod(resultsCurrentRun.at("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+			tDimsToRuntimeEachKernel[bp_cuda_params::CudaKernel::INIT_MESSAGE_VALS][0][*tBlockDims] =
+					std::stod(resultsCurrentRun.at("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+			tDimsToRuntimeEachKernel[bp_cuda_params::CudaKernel::OUTPUT_DISP][0][*tBlockDims] =
+					std::stod(resultsCurrentRun.at("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+
 			if (runNum == (threadDimsVect.size() - 1)) {
-				//retrieve and set optimized thread block dimensions at each level for final run
-				//std::min_element used to retrieve thread block dimensions corresponding to lowest runtime from previous runs
-				std::transform(tDimsToRuntimeEachLevel.begin(), tDimsToRuntimeEachLevel.end(), currCudaParams.blockDimsXY_.begin(),
-				               [](const auto& tDimsToRunTimeCurrLevel) -> std::array<unsigned int, 2> { 
-								   return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
-					                       [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
+				for (unsigned int numKernelSet = 0; numKernelSet < tDimsToRuntimeEachKernel.size(); numKernelSet++) {
+					//retrieve and set optimized thread block dimensions at each level for final run
+					//std::min_element used to retrieve thread block dimensions corresponding to lowest runtime from previous runs
+					std::transform(tDimsToRuntimeEachKernel[numKernelSet].begin(),
+								   tDimsToRuntimeEachKernel[numKernelSet].end(), 
+								   currCudaParams.blockDimsXYEachKernel_[numKernelSet].begin(),
+								   [](const auto& tDimsToRunTimeCurrLevel) -> std::array<unsigned int, 2> { 
+									 return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
+											[](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
+				}
 		    }
 		}
 		if ((runNum == threadDimsVect.size()) || 

@@ -157,6 +157,9 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	const BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, void* allocatedMemForProcessing)
 {
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
+	std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
+	std::vector<std::pair<timingType, timingType>> eachLevelTimingBP(algSettings.numLevels_);
+	std::vector<std::pair<timingType, timingType>> eachLevelTimingCopy(algSettings.numLevels_);
 	double totalTimeBpIters{0.0}, totalTimeCopyData{0.0}, totalTimeCopyDataKernel{0.0};
 
 	//start at the "bottom level" and work way up to determine amount of space needed to store data costs
@@ -200,26 +203,31 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 		dataCostsDeviceAllLevels = allocateMemoryForDataCosts(dataAllLevelsEachDataMessageArr);
 	}
 
-	startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].second = std::chrono::system_clock::now();
-	startEndTimes[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].first = std::chrono::system_clock::now();
+    auto currTime = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].second = currTime;
+	eachLevelTimingDataCosts[0].first = currTime;
 
 	//initialize the data cost at the bottom level
 	initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
 
-	startEndTimes[Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL].second = std::chrono::system_clock::now();
-	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].first = std::chrono::system_clock::now();
+    currTime = std::chrono::system_clock::now();
+	eachLevelTimingDataCosts[0].second = currTime;
+	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].first = currTime;
 
 	//set the data costs at each level from the bottom level "up"
 	for (unsigned int levelNum = 1u; levelNum < algSettings.numLevels_; levelNum++)
 	{
+		eachLevelTimingDataCosts[levelNum].first = std::chrono::system_clock::now();
 		initializeDataCurrentLevel(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
 				retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
 				retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
 				algSettings.numDispVals_);
+		eachLevelTimingDataCosts[levelNum].second = std::chrono::system_clock::now();
 	}
 
-	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].second = std::chrono::system_clock::now();
-	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].first = std::chrono::system_clock::now();
+    currTime = eachLevelTimingDataCosts[algSettings.numLevels_-1].second;
+	startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].second = currTime;
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].first = currTime;
 
 	//get and use offset into data at current processing level of pyramid
 	dataCostData<U> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
@@ -244,13 +252,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	//initialize all the BP message values at every pixel for every disparity to 0
 	initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
 
-	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].second = std::chrono::system_clock::now();
-	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].second = std::chrono::system_clock::now();
+    currTime = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].second = currTime;
+	startEndTimes[Runtime_Type_BP::INIT_MESSAGES].second = currTime;
 
 	//alternate between checkerboard sets 0 and 1
 	enum Checkerboard_Num { CHECKERBOARD_ZERO = 0, CHECKERBOARD_ONE = 1 };
 	Checkerboard_Num currCheckerboardSet{Checkerboard_Num::CHECKERBOARD_ZERO};
-	std::vector<std::pair<timingType, timingType>> eachLevelTiming(algSettings.numLevels_);
 
 	//run BP at each level in the "pyramid" starting on top and continuing to the bottom
 	//where the final movement values are computed...the message values are passed from
@@ -297,6 +305,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
 			diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
 			totalTimeCopyDataKernel += diff.count();
+    		eachLevelTimingCopy[levelNum].first = timeCopyMessageValuesKernelStart;
+ 	    	eachLevelTimingCopy[levelNum].second = timeCopyMessageValuesKernelEnd;
 
 			//assuming that width includes padding
 			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
@@ -312,8 +322,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 		const auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
 		diff = timeCopyMessageValuesEnd - timeCopyMessageValuesStart;
 		totalTimeCopyData += diff.count();
-		eachLevelTiming[levelNum].first = timeBpIterStart;
-		eachLevelTiming[levelNum].second = timeCopyMessageValuesEnd;
+		eachLevelTimingBP[levelNum].first = timeBpIterStart;
+		eachLevelTimingBP[levelNum].second = timeBpIterEnd;
 	}
 
 	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
@@ -322,8 +332,9 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	const V resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
 			dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
 
-	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = std::chrono::system_clock::now();
-	startEndTimes[Runtime_Type_BP::FINAL_FREE].first = std::chrono::system_clock::now();
+    currTime = std::chrono::system_clock::now();
+	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = currTime;
+	startEndTimes[Runtime_Type_BP::FINAL_FREE].first = currTime;
 
 	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 		if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
@@ -345,33 +356,53 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
 	startEndTimes[Runtime_Type_BP::FINAL_FREE].second = std::chrono::system_clock::now();
 
-    startEndTimes[Runtime_Type_BP::LEVEL_0] = eachLevelTiming[0];
-	if (eachLevelTiming.size() > 1) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_1] = eachLevelTiming[1];
+	startEndTimes[Runtime_Type_BP::LEVEL_0_DATA_COSTS] = eachLevelTimingDataCosts[0];
+    startEndTimes[Runtime_Type_BP::LEVEL_0_BP] = eachLevelTimingBP[0];
+    startEndTimes[Runtime_Type_BP::LEVEL_0_COPY] = eachLevelTimingCopy[0];
+	if (eachLevelTimingBP.size() > 1) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_1_DATA_COSTS] = eachLevelTimingDataCosts[1];
+	  startEndTimes[Runtime_Type_BP::LEVEL_1_BP] = eachLevelTimingBP[1];
+	  startEndTimes[Runtime_Type_BP::LEVEL_1_COPY] = eachLevelTimingCopy[1];
 	}
-	if (eachLevelTiming.size() > 2) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_2] = eachLevelTiming[2];
+	if (eachLevelTimingBP.size() > 2) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_2_DATA_COSTS] = eachLevelTimingDataCosts[2];
+	  startEndTimes[Runtime_Type_BP::LEVEL_2_BP] = eachLevelTimingBP[2];
+	  startEndTimes[Runtime_Type_BP::LEVEL_2_COPY] = eachLevelTimingCopy[2];
 	}
-	if (eachLevelTiming.size() > 3) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_3] = eachLevelTiming[3];
+	if (eachLevelTimingBP.size() > 3) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_3_DATA_COSTS] = eachLevelTimingDataCosts[3];
+	  startEndTimes[Runtime_Type_BP::LEVEL_3_BP] = eachLevelTimingBP[3];
+	  startEndTimes[Runtime_Type_BP::LEVEL_3_COPY] = eachLevelTimingCopy[3];
 	}
-	if (eachLevelTiming.size() > 4) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_4] = eachLevelTiming[4];
+	if (eachLevelTimingBP.size() > 4) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_4_DATA_COSTS] = eachLevelTimingDataCosts[4];
+	  startEndTimes[Runtime_Type_BP::LEVEL_4_BP] = eachLevelTimingBP[4];
+	  startEndTimes[Runtime_Type_BP::LEVEL_4_COPY] = eachLevelTimingCopy[4];
 	}
-	if (eachLevelTiming.size() > 5) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_5] = eachLevelTiming[5];
+	if (eachLevelTimingBP.size() > 5) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_5_DATA_COSTS] = eachLevelTimingDataCosts[5];
+	  startEndTimes[Runtime_Type_BP::LEVEL_5_BP] = eachLevelTimingBP[5];
+	  startEndTimes[Runtime_Type_BP::LEVEL_5_COPY] = eachLevelTimingCopy[5];
 	}
-	if (eachLevelTiming.size() > 6) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_6] = eachLevelTiming[6];
+	if (eachLevelTimingBP.size() > 6) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_6_DATA_COSTS] = eachLevelTimingDataCosts[6];
+	  startEndTimes[Runtime_Type_BP::LEVEL_6_BP] = eachLevelTimingBP[6];
+	  startEndTimes[Runtime_Type_BP::LEVEL_6_COPY] = eachLevelTimingCopy[6];
 	}
-	if (eachLevelTiming.size() > 7) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_7] = eachLevelTiming[7];
+	if (eachLevelTimingBP.size() > 7) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_7_DATA_COSTS] = eachLevelTimingDataCosts[7];
+	  startEndTimes[Runtime_Type_BP::LEVEL_7_BP] = eachLevelTimingBP[7];
+	  startEndTimes[Runtime_Type_BP::LEVEL_7_COPY] = eachLevelTimingCopy[7];
 	}
-	if (eachLevelTiming.size() > 8) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_8] = eachLevelTiming[8];
+	if (eachLevelTimingBP.size() > 8) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_8_DATA_COSTS] = eachLevelTimingDataCosts[8];
+	  startEndTimes[Runtime_Type_BP::LEVEL_8_BP] = eachLevelTimingBP[8];
+	  startEndTimes[Runtime_Type_BP::LEVEL_8_COPY] = eachLevelTimingCopy[8];
 	}
-	if (eachLevelTiming.size() > 9) {
-	  startEndTimes[Runtime_Type_BP::LEVEL_9] = eachLevelTiming[9];
+	if (eachLevelTimingBP.size() > 9) {
+	  startEndTimes[Runtime_Type_BP::LEVEL_9_DATA_COSTS] = eachLevelTimingDataCosts[9];
+	  startEndTimes[Runtime_Type_BP::LEVEL_9_BP] = eachLevelTimingBP[9];
+	  startEndTimes[Runtime_Type_BP::LEVEL_9_COPY] = eachLevelTimingCopy[9];
 	}
 
 	//add timing for each runtime segment to segmentTimings object
@@ -387,7 +418,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	segmentTimings.addTiming(Runtime_Type_BP::COPY_DATA_KERNEL, totalTimeCopyDataKernel);
 
 	const double totalTimed = segmentTimings.getMedianTiming(Runtime_Type_BP::INIT_SETTINGS_MALLOC)
-		+ segmentTimings.getMedianTiming(Runtime_Type_BP::DATA_COSTS_BOTTOM_LEVEL)
+		+ segmentTimings.getMedianTiming(Runtime_Type_BP::LEVEL_0_DATA_COSTS)
 		+ segmentTimings.getMedianTiming(Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL) + segmentTimings.getMedianTiming(Runtime_Type_BP::INIT_MESSAGES)
 		+ totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(Runtime_Type_BP::OUTPUT_DISPARITY)
 		+ segmentTimings.getMedianTiming(Runtime_Type_BP::FINAL_FREE);

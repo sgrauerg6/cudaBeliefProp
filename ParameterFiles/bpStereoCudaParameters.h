@@ -40,12 +40,26 @@ namespace bp_cuda_params
 	constexpr unsigned int DEFAULT_BLOCK_SIZE_WIDTH_BP{32};
 	constexpr unsigned int DEFAULT_BLOCK_SIZE_HEIGHT_BP{4};
 
+	enum CudaKernel { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL,
+	                  COPY_AT_LEVEL, OUTPUT_DISP };
+    constexpr unsigned int NUM_KERNELS{6u};
+
     //structure containing CUDA parameters including thread block dimensions
 	//to use at each BP level
 	struct CudaParameters {
-		CudaParameters(unsigned int numLevels) : 
-		  blockDimsXY_(numLevels, {bp_cuda_params::DEFAULT_BLOCK_SIZE_WIDTH_BP, bp_cuda_params::DEFAULT_BLOCK_SIZE_HEIGHT_BP}) {}; 
-		std::vector<std::array<unsigned int, 2>> blockDimsXY_;
+		CudaParameters(unsigned int numLevels) {
+			setThreadBlockDims({bp_cuda_params::DEFAULT_BLOCK_SIZE_WIDTH_BP, bp_cuda_params::DEFAULT_BLOCK_SIZE_HEIGHT_BP}, numLevels);
+		  };
+		//std::vector<std::array<unsigned int, 2>> blockDimsXY_;
+		void setThreadBlockDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels) {
+			blockDimsXYEachKernel_[BLUR_IMAGES] = {tbDims};
+			blockDimsXYEachKernel_[DATA_COSTS_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+			blockDimsXYEachKernel_[INIT_MESSAGE_VALS] = {tbDims};
+			blockDimsXYEachKernel_[BP_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+			blockDimsXYEachKernel_[COPY_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+			blockDimsXYEachKernel_[OUTPUT_DISP] = {tbDims};
+		}
+		std::array<std::vector<std::array<unsigned int, 2>>, NUM_KERNELS> blockDimsXYEachKernel_;
 		bool useSharedMemory_{false};
     };
 }
