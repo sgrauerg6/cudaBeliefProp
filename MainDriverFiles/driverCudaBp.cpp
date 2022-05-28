@@ -55,7 +55,7 @@ const std::vector<std::array<unsigned int, 2>> THREAD_DIMS_OPTIONS_ADDITIONAL_DI
 void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
 {
 	cudaDeviceProp prop;
-	cudaGetDeviceProperties( &prop, numDevice);
+	cudaGetDeviceProperties(&prop, numDevice);
 	int cudaDriverVersion;
 	cudaDriverGetVersion(&cudaDriverVersion);
 	int cudaRuntimeVersion;
@@ -141,10 +141,12 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		const bool runOptImpOnly{!(((runNum == threadDimsVect.size()) || ((*tBlockDims) ==
 		                            std::array<unsigned int, 2>{bp_cuda_params::DEFAULT_BLOCK_SIZE_WIDTH_BP, bp_cuda_params::DEFAULT_BLOCK_SIZE_HEIGHT_BP})))};
 		if (isTemplatedDispVals) {
+			//run optimized implementation using templated disparity count known at compile time
 			RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
 					resultsStream, runBpStereo, NUM_SET, algSettings, runOptImpOnly);
 		}
 		else {
+			//run optimized implementation without templated disparity count and with disparity count as input parameter
 			std::unique_ptr<RunBpStereoSet<T, 0>> optCUDADispValsNoTemplate = std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, 0>>(currCudaParams);
 			RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
 					resultsStream, optCUDADispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings, runOptImpOnly);
@@ -188,7 +190,7 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		if ((runNum == threadDimsVect.size()) || 
 		    ((*tBlockDims) == std::array<unsigned int, 2>{bp_cuda_params::DEFAULT_BLOCK_SIZE_WIDTH_BP, bp_cuda_params::DEFAULT_BLOCK_SIZE_HEIGHT_BP}))
 	    {
-			//only show output for run using default thread block dimensions and final run (which is the same run if not optimizing thread block size)
+			//set output for runs using default thread block dimensions and final run (which is the same run if not optimizing thread block size)
 			auto& resultUpdate = (runNum == threadDimsVect.size()) ? resultsDefaultTBFinal[1] : resultsDefaultTBFinal[0];
 			for (const auto& currRunResult : resultsCurrentRun) {
 				if (resultUpdate.count(currRunResult.first)) {
@@ -202,6 +204,7 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 	}
 }
 
+//get average and median speedup using optimized CUDA thread block dimensions compared to default thread block dimensions
 void getAverageMedianSpeedup(const std::array<std::map<std::string, std::vector<std::string>>, 2>& resultsDefaultTBFinal) {
 	const std::string RUNTIME_HEADER{"Median CUDA runtime (including transfer time)"};
 	std::vector<double> speedupsVect;
