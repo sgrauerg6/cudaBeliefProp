@@ -44,8 +44,12 @@ const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 //finding the block dimensions with the lowest runtime at each level, and then setting each level to the optimized thread block
 //dimensions in the final run
 constexpr bool OPTIMIZE_THREAD_BLOCK_DIMS{true};
+//initial set of thread block dimensions has maximum of 256 total threads since for some stereo sets using templated disparity counts there
+//will be a "not enough resources error" (likely related to registers) if there are more than 256 threads in a thread block
 const std::vector<std::array<unsigned int, 2>> THREAD_DIMS_OPTIONS{
 	{16, 1}, {32, 1}, {32, 2}, {32, 3}, {32, 4}, {32, 5}, {32, 6}, {32, 8}, {64, 1}, {64, 2}, {64, 3}, {64, 4}, {128, 1}, {128, 2}, {256, 1}};
+//additional thread block dimensions with up to 512 total threads to use in cases where higher thread count blocks can be run
+const std::vector<std::array<unsigned int, 2>> THREAD_DIMS_OPTIONS_ADDITIONAL_DIMS{{32, 10}, {32, 12}, {32, 14}, {32, 16}, {64, 5}, {64, 6}, {64, 7}, {64, 8}, {128, 3}, {128, 4}, {256, 2}};
 
 //get current CUDA properties and write them to output stream
 void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
@@ -74,7 +78,13 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 	bp_cuda_params::CudaParameters currCudaParams(algSettings.numLevels_);
 
 	//if optimizing thread block dimensions, threadDimsVect contains thread block dimension options (and is empty if not)
-	const std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
+	std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
+	
+	//add additional thread block diminsions with up to 512 threads if first stereo set, second stereo set but not double, or not using templated disparity
+	//otherwise the additional thread block dimensions with more than 256 threads can fail to launch due to resource limitations (likely related to registers)
+	if (((NUM_SET == 0) || ((NUM_SET == 1) && (typeid(T) != typeid(double)))) || (!isTemplatedDispVals)) {
+		threadDimsVect.insert(threadDimsVect.end(), THREAD_DIMS_OPTIONS_ADDITIONAL_DIMS.begin(), THREAD_DIMS_OPTIONS_ADDITIONAL_DIMS.end());
+	}
     //mapping of thread block dimensions to runtime for each kernel at each level
 	std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, bp_cuda_params::NUM_KERNELS> tDimsToRuntimeEachKernel;
 	for (unsigned int i=0; i < bp_cuda_params::NUM_KERNELS; i++) {
