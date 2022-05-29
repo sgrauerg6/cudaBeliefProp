@@ -19,6 +19,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file defines the template specialization to perform belief propagation using half precision for
 //disparity map estimation from stereo images on CUDA
 
+//set constexpr unsigned int values for number of disparity values for each stereo set used
+constexpr unsigned int DISP_VALS_0{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]};
+constexpr unsigned int DISP_VALS_1{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]};
+constexpr unsigned int DISP_VALS_2{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]};
+constexpr unsigned int DISP_VALS_3{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]};
+constexpr unsigned int DISP_VALS_4{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]};
+constexpr unsigned int DISP_VALS_5{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]};
+constexpr unsigned int DISP_VALS_6{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]};
+
 //template specialization for processing messages with half-precision; has safeguard to check if valToNormalize goes to infinity and set output
 //for every disparity at point to be 0.0 if that's the case; this has only been observed when using more than 5 computation levels with half-precision
 template<>
