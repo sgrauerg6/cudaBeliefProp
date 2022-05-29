@@ -37,39 +37,39 @@ namespace bp_consts
 	constexpr float INF_BP = 65504.0f;     // large cost (used for "infinity"), value set to support half type
 }
 
-enum image_set_options
-{
-	TSUKUBA_IMAGES_HALF_SIZE_E = 0,
-	TSUKUBA_IMAGES_E = 1,
-	VENUS_IMAGES_E = 2,
-	BARN_1_IMAGES_E = 3,
-	CONES_IMAGES_QUARTER_SIZE_E = 4,
-	CONES_IMAGES_HALF_SIZE_E = 5,
-	CONES_IMAGES_FULL_SIZE_CROPPED_E = 6,
-	CONES_IMAGES_FULL_SIZE_E = 7
-};
-
-struct BpStereoSet {
-	const char* name;
-	unsigned int numDispVals;
-	unsigned int scaleFactor;
-};
-
-constexpr std::array<BpStereoSet, 8> STEREO_SETS_TO_PROCESS{
-	//declare stereo sets to process with name, num disparity values, and scale factor
-	//order is the same as in image_set_options enum
-	BpStereoSet{"tsukubaSetHalfSize", 8, 32},
-	BpStereoSet{"tsukubaSet", 16, 16},
-	BpStereoSet{"venus", 21, 8},
-	BpStereoSet{"barn1", 32, 8},
-	BpStereoSet{"conesQuarterSize", 64, 4},
-	BpStereoSet{"conesHalfSize", 128, 2},
-	BpStereoSet{"conesFullSizeCropped", 256, 1},
-	BpStereoSet{"conesFullSize", 256, 1}
-};
-
 namespace bp_params
 {
+	enum image_set_options
+	{
+		TSUKUBA_IMAGES_HALF_SIZE_E = 0,
+		TSUKUBA_IMAGES_E = 1,
+		VENUS_IMAGES_E = 2,
+		BARN_1_IMAGES_E = 3,
+		CONES_IMAGES_QUARTER_SIZE_E = 4,
+		CONES_IMAGES_HALF_SIZE_E = 5,
+		CONES_IMAGES_FULL_SIZE_CROPPED_E = 6,
+		CONES_IMAGES_FULL_SIZE_E = 7
+	};
+
+	struct BpStereoSet {
+		const char* name;
+		unsigned int numDispVals;
+		unsigned int scaleFactor;
+	};
+
+	constexpr std::array<BpStereoSet, 8> STEREO_SETS_TO_PROCESS{
+		//declare stereo sets to process with name, num disparity values, and scale factor
+		//order is the same as in image_set_options enum
+		BpStereoSet{"tsukubaSetHalfSize", 8, 32},
+		BpStereoSet{"tsukubaSet", 16, 16},
+		BpStereoSet{"venus", 21, 8},
+		BpStereoSet{"barn1", 32, 8},
+		BpStereoSet{"conesQuarterSize", 64, 4},
+		BpStereoSet{"conesHalfSize", 128, 2},
+		BpStereoSet{"conesFullSizeCropped", 256, 1},
+		BpStereoSet{"conesFullSize", 256, 1}
+	};
+
 	constexpr std::array<unsigned int, 8> NUM_POSSIBLE_DISPARITY_VALUES{
 		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_HALF_SIZE_E].numDispVals,
 		STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].numDispVals,

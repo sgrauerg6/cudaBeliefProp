@@ -63,8 +63,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSe
 	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	//const dim3 threads(cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]);
-	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0],
-					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0],
+					   cudaParams_.blockDimsXYEachKernel_[BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
 	const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x), //only updating half at a time
 	          		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
@@ -144,8 +144,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 		const unsigned int bpSettingsNumDispVals)
 {
 	//const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
-	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0],
-					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0],
+					   cudaParams_.blockDimsXYEachKernel_[BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][1]);
 	const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
 					(unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
 
@@ -191,8 +191,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSe
 	//setup execution parameters
 	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernel to run
 	//const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
-	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][0][0],
-					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][0][1]);
+	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[BpKernel::DATA_COSTS_AT_LEVEL][0][0],
+					   cudaParams_.blockDimsXYEachKernel_[BpKernel::DATA_COSTS_AT_LEVEL][0][1]);
 	//kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
 	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x),
 	  		        (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
@@ -213,8 +213,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const unsigned int bpSettingsNumDispVals)
 {
 	//const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
-	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::INIT_MESSAGE_VALS][0][0],
-					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::INIT_MESSAGE_VALS][0][1]);
+	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[BpKernel::INIT_MESSAGE_VALS][0][0],
+					   cudaParams_.blockDimsXYEachKernel_[BpKernel::INIT_MESSAGE_VALS][0][1]);
 	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
 			  		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
@@ -235,8 +235,8 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelPrope
 		const unsigned int bpSettingsNumDispVals)
 {
 	//const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
-	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0],
-					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0],
+					   cudaParams_.blockDimsXYEachKernel_[BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][1]);
 	//each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
 	//the four-connected neighbors are in the other checkerboard
 	const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
@@ -322,8 +322,8 @@ float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 	cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_ * sizeof(float));
 
 	//const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
-	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::OUTPUT_DISP][0][0],
-					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::OUTPUT_DISP][0][1]);
+	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[BpKernel::OUTPUT_DISP][0][0],
+					   cudaParams_.blockDimsXYEachKernel_[BpKernel::OUTPUT_DISP][0][1]);
 	const dim3 grid{(unsigned int) ceil((float) currentLevelProperties.widthCheckerboardLevel_ / (float) threads.x),
 					(unsigned int) ceil((float) currentLevelProperties.heightLevel_ / (float) threads.y)};
 

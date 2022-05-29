@@ -32,7 +32,7 @@ template<typename T, typename U, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
-	ProcessCUDABP(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) { }
+	ProcessCUDABP(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) { }
 
 	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
@@ -95,7 +95,7 @@ public:
 			const unsigned int bpSettingsNumDispVals) override;
 
 private:
-	bp_cuda_params::CudaParameters cudaParams_;
+	ParallelParameters cudaParams_;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

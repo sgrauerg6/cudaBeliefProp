@@ -19,13 +19,13 @@
 template <typename T=float*>
 class SmoothImageCUDA : public SmoothImage<T> {
 public:
-	SmoothImageCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+	SmoothImageCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	//for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
 	void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage) override;
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */

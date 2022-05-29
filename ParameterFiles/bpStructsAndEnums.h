@@ -9,6 +9,7 @@
 #define BPSTRUCTSANDENUMS_H_
 
 #include <array>
+#include <vector>
 #include "bpStereoParameters.h"
 #include "BpAndSmoothProcessing/BpUtilFuncts.h"
 #include "../BpAndSmoothProcessing/BpUtilFuncts.h"
@@ -121,6 +122,34 @@ struct dataCostData
 {
 	T dataCostCheckerboard0_;
 	T dataCostCheckerboard1_;
+};
+
+enum BpKernel { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL,
+                COPY_AT_LEVEL, OUTPUT_DISP };
+constexpr unsigned int NUM_KERNELS{6u};
+
+//defines the default width and height of the thread block used for
+//kernel functions when running BP
+constexpr unsigned int DEFAULT_BLOCK_SIZE_WIDTH_BP{32};
+constexpr unsigned int DEFAULT_BLOCK_SIZE_HEIGHT_BP{4};
+
+//structure containing parameters including parallelization parameters
+//to use at each BP level
+struct ParallelParameters {
+	ParallelParameters(unsigned int numLevels) {
+		setThreadBlockDims({DEFAULT_BLOCK_SIZE_WIDTH_BP, DEFAULT_BLOCK_SIZE_HEIGHT_BP}, numLevels);
+    };
+	//std::vector<std::array<unsigned int, 2>> blockDimsXY_;
+	void setThreadBlockDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels) {
+		blockDimsXYEachKernel_[BLUR_IMAGES] = {tbDims};
+		blockDimsXYEachKernel_[DATA_COSTS_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+		blockDimsXYEachKernel_[INIT_MESSAGE_VALS] = {tbDims};
+		blockDimsXYEachKernel_[BP_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+		blockDimsXYEachKernel_[COPY_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+		blockDimsXYEachKernel_[OUTPUT_DISP] = {tbDims};
+	}
+	std::array<std::vector<std::array<unsigned int, 2>>, NUM_KERNELS> blockDimsXYEachKernel_;
+	bool useSharedMemory_{false};
 };
 
 #endif /* BPSTRUCTSANDENUMS_H_ */

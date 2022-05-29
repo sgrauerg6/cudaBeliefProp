@@ -59,7 +59,7 @@ template <typename T, unsigned int DISP_VALS>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -81,14 +81,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, 0> : public RunBpStereoSet<short, 0>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -108,14 +108,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -135,14 +135,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -162,14 +162,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -189,14 +189,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -216,14 +216,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -243,14 +243,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -270,14 +270,14 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -296,7 +296,7 @@ public:
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 //float16_t data type used for arm (rather than short)
@@ -309,7 +309,7 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	std::string getBpRunDescription() override  { return "CUDA"; }
 
@@ -350,7 +350,7 @@ public:
 	}
 
 private:
-	const bp_cuda_params::CudaParameters cudaParams_;
+	const ParallelParameters cudaParams_;
 };
 
 #endif //HALF_PRECISION_SUPPORTED
