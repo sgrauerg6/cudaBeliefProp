@@ -157,7 +157,7 @@ __device__ void msgStereo<half2>(half2 messageValsNeighbor1[bp_params::NUM_POSSI
 //this function uses linear memory bound to textures to access the current data and message values
 /*template<>
 __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMem<half2>(int xVal, int yVal,
-		int checkerboardToUpdate, levelProperties& currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2,
+		int checkerboardToUpdate, beliefprop::levelProperties& currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2,
 		half2* messageUDeviceCurrentCheckerboard1,
 		half2* messageDDeviceCurrentCheckerboard1,
 		half2* messageLDeviceCurrentCheckerboard1,
@@ -174,11 +174,11 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 	int checkerboardAdjustment;
 
 	//checkerboardAdjustment used for indexing into current checkerboard to update
-	if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+	if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-	else //checkerboardToUpdate == CHECKERBOARD_PART_1
+	else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 	{
 		checkerboardAdjustment = ((yVal+1)%2);
 	}
@@ -195,7 +195,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 
 		half2 dataMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
-		if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+		if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 		{
 			half* messageLDeviceCurrentCheckerboard2Half = (half*)messageLDeviceCurrentCheckerboard2;
 			half* messageRDeviceCurrentCheckerboard2Half = (half*)messageRDeviceCurrentCheckerboard2;
@@ -265,7 +265,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 				}*//*
 			}
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_1
+		else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 		{
 			half* messageLDeviceCurrentCheckerboard1Half = (half*)messageLDeviceCurrentCheckerboard1;
 			half* messageRDeviceCurrentCheckerboard1Half = (half*)messageRDeviceCurrentCheckerboard1;
@@ -351,14 +351,14 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 		for (int currentDisparity = 0; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 		{
 			indexWriteTo = retrieveIndexInDataAndMessage(xVal, yVal, widthLevelCheckerboardPart, heightLevel, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES);
-			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+			if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
 				messageUDeviceCurrentCheckerboard1[indexWriteTo] = currentUMessage[currentDisparity];
 				messageDDeviceCurrentCheckerboard1[indexWriteTo] = currentDMessage[currentDisparity];
 				messageLDeviceCurrentCheckerboard1[indexWriteTo] = currentLMessage[currentDisparity];
 				messageRDeviceCurrentCheckerboard1[indexWriteTo] = currentRMessage[currentDisparity];
 			}
-			else //checkerboardToUpdate == CHECKERBOARD_PART_1
+			else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 			{
 				messageUDeviceCurrentCheckerboard2[indexWriteTo] = currentUMessage[currentDisparity];
 				messageDDeviceCurrentCheckerboard2[indexWriteTo] = currentDMessage[currentDisparity];
@@ -372,7 +372,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 /*template<>
-__global__ void retrieveOutputDisparityCheckerboardStereoOptimized<half2>(levelProperties currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
+__global__ void retrieveOutputDisparityCheckerboardStereoOptimized<half2>(beliefprop::levelProperties currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
 
 }*/
@@ -657,7 +657,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCost
 */
 
 /*template<>
-__global__ void initializeBottomLevelDataStereo<half2>(levelProperties currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
+__global__ void initializeBottomLevelDataStereo<half2>(beliefprop::levelProperties currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
     //get the x and y indices for the current CUDA thread
 	int xVal = blockIdx.x * blockDim.x + threadIdx.x;

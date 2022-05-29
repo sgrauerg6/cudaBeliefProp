@@ -16,7 +16,7 @@
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+		const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
 		float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -37,7 +37,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+		const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
 		short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -58,7 +58,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-		const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+		const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
 		double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
@@ -79,7 +79,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
 		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
@@ -100,7 +100,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
 		short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
@@ -121,7 +121,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
 		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
@@ -162,7 +162,7 @@ template<> inline void KernelBpStereoCPU::updateBestDispBestVals<__m256d>(__m256
 
 template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m256d>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
+		const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
 	return _mm256_load_pd(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
@@ -170,7 +170,7 @@ template<> inline __m256d KernelBpStereoCPU::loadPackedDataAligned<double, __m25
 
 template<> inline __m256 KernelBpStereoCPU::loadPackedDataAligned<float, __m256>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-		const levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData) {
+		const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData) {
 	return _mm256_load_ps(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
@@ -178,7 +178,7 @@ template<> inline __m256 KernelBpStereoCPU::loadPackedDataAligned<float, __m256>
 
 template<> inline __m128i KernelBpStereoCPU::loadPackedDataAligned<short, __m128i>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-		const levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData) {
+		const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData) {
 	return _mm_load_si128((__m128i *)(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity,
@@ -187,7 +187,7 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataAligned<short, __m128
 
 template<> inline __m256 KernelBpStereoCPU::loadPackedDataUnaligned<float, __m256>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-		const levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData) {
+		const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData) {
 	return _mm256_loadu_ps(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
@@ -195,7 +195,7 @@ template<> inline __m256 KernelBpStereoCPU::loadPackedDataUnaligned<float, __m25
 
 template<> inline __m128i KernelBpStereoCPU::loadPackedDataUnaligned<short, __m128i>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-		const levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData) {
+		const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData) {
 	return _mm_loadu_si128((__m128i*)(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]));
@@ -203,7 +203,7 @@ template<> inline __m128i KernelBpStereoCPU::loadPackedDataUnaligned<short, __m1
 
 template<> inline __m256d KernelBpStereoCPU::loadPackedDataUnaligned<double, __m256d>(
 		const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-		const levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
+		const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData) {
 	return _mm256_loadu_pd(&inData[retrieveIndexInDataAndMessage(
 			x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
 			currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
@@ -306,7 +306,7 @@ template<> inline void KernelBpStereoCPU::storePackedDataUnaligned<double, __m25
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]],
@@ -321,7 +321,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]],
@@ -336,7 +336,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]],
@@ -351,7 +351,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]],
@@ -366,7 +366,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]],
@@ -381,7 +381,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]],
@@ -396,7 +396,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 // compute current message
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
 		const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
 		__m128i messageValsNeighbor2[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
 		__m128i messageValsNeighbor3[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
@@ -409,7 +409,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i, bp_param
 }
 
 template<> inline void KernelBpStereoCPU::msgStereoSIMD<short, __m128i>(const unsigned int xVal, const unsigned int yVal,
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		__m128i* messageValsNeighbor1, __m128i* messageValsNeighbor2,
 		__m128i* messageValsNeighbor3, __m128i* dataCosts,
 		short* dstMessageArray, const __m128i& disc_k_bp, const bool dataAligned,

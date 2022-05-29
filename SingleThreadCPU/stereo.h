@@ -30,12 +30,12 @@ template<typename T, unsigned int DISP_VALS>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS>
 {
 public:
-	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const BPsettings& algSettings, std::ostream& resultsFile) override;
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const beliefprop::BPsettings& algSettings, std::ostream& resultsFile) override;
 	std::string getBpRunDescription() override { return "Single-Thread CPU"; }
 
 private:
 	// compute message
-	image<float[DISP_VALS]> *comp_data(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings);
+	image<float[DISP_VALS]> *comp_data(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings);
 	void msg(float s1[DISP_VALS], float s2[DISP_VALS], float s3[DISP_VALS], float s4[DISP_VALS],
 			float dst[DISP_VALS], const float disc_k_bp);
 	void dt(float f[DISP_VALS]);
@@ -45,7 +45,7 @@ private:
 	void bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
 			image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
 			image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp);
-	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
+	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
 };
 
 // dt of 1d function
@@ -101,7 +101,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::msg(float s1[DISP_VALS],
 // computation of data costs
 template<typename T, unsigned int DISP_VALS>
 inline image<float[DISP_VALS]> * RunBpStereoCPUSingleThread<T, DISP_VALS>::comp_data(
-		image<uchar> *img1, image<uchar> *img2, const BPsettings& algSettings) {
+		image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings) {
 	unsigned int width{(unsigned int)img1->width()};
 	unsigned int height{(unsigned int)img1->height()};
 	image<float[DISP_VALS]> *data = new image<float[DISP_VALS]>(width, height);
@@ -197,7 +197,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::bp_cb(image<float[DISP_VAL
 // multiscale belief propagation for image restoration
 template<typename T, unsigned int DISP_VALS>
 inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
-	const BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
+	const beliefprop::BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
 	image<float[DISP_VALS]> *u[bp_params::LEVELS_BP];
 	image<float[DISP_VALS]> *d[bp_params::LEVELS_BP];
 	image<float[DISP_VALS]> *l[bp_params::LEVELS_BP];
@@ -295,7 +295,7 @@ inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<
 
 template<typename T, unsigned int DISP_VALS>
 inline ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
-		const BPsettings& algSettings, std::ostream& resultsStream)
+		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream)
 {
 	image<uchar> *img1, *img2, *out;// *edges;
 

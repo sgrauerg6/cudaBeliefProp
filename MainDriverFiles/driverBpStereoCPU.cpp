@@ -53,7 +53,7 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 	};
 
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
-	BPsettings algSettings;
+	beliefprop::BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
 	resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;

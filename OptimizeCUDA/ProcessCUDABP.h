@@ -32,7 +32,7 @@ template<typename T, typename U, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
-	ProcessCUDABP(const ParallelParameters& cudaParams) : cudaParams_(cudaParams) { }
+	ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) { }
 
 	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
@@ -55,26 +55,26 @@ public:
 	}
 
 	//initialize the data cost at each pixel for each disparity value
-	void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
-			const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard) override;
+	void initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+			const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard) override;
 
-	void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
-			const levelProperties& prevLevelProperties,
-			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+	void initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& prevLevelProperties,
+			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
 			const unsigned int bpSettingsNumDispVals) override;
 
 	//initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
 	void initializeMessageValsToDefault(
-			const levelProperties& currentLevelProperties,
-			const checkerboardMessages<U>& messagesDevice,
+			const beliefprop::levelProperties& currentLevelProperties,
+			const beliefprop::checkerboardMessages<U>& messagesDevice,
 			const unsigned int bpSettingsNumDispVals) override;
 
 	//run the given number of iterations of BP at the current level using the given message values in global device memory
-	void runBPAtCurrentLevel(const BPsettings& algSettings,
-			const levelProperties& currentLevelProperties,
-			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice,
+	void runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+			const beliefprop::levelProperties& currentLevelProperties,
+			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+			const beliefprop::checkerboardMessages<U>& messagesDevice,
 			void* allocatedMemForProcessing) override;
 
 	//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -82,20 +82,20 @@ public:
 	//in the next level down
 	//need two different "sets" of message values to avoid read-write conflicts
 	void copyMessageValuesToNextLevelDown(
-			const levelProperties& currentLevelProperties,
-			const levelProperties& nextlevelProperties,
-			const checkerboardMessages<U>& messagesDeviceCopyFrom,
-			const checkerboardMessages<U>& messagesDeviceCopyTo,
+			const beliefprop::levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& nextlevelProperties,
+			const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
+			const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
 			const unsigned int bpSettingsNumDispVals) override;
 
 	float* retrieveOutputDisparity(
-			const levelProperties& currentLevelProperties,
-			const dataCostData<U>& dataCostDeviceCheckerboard,
-			const checkerboardMessages<U>& messagesDevice,
+			const beliefprop::levelProperties& currentLevelProperties,
+			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+			const beliefprop::checkerboardMessages<U>& messagesDevice,
 			const unsigned int bpSettingsNumDispVals) override;
 
 private:
-	ParallelParameters cudaParams_;
+	beliefprop::ParallelParameters cudaParams_;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

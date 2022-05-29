@@ -40,7 +40,7 @@ public:
 
 	//pure abstract overloaded operator that must be defined in child class
 	virtual ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-		const BPsettings& algSettings, std::ostream& resultsStream) = 0;
+		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) = 0;
 
 protected:
 
@@ -48,7 +48,7 @@ protected:
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
 	template <typename U, typename V, typename W=float, typename X = float*>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-		const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
+		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
 		const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
 		const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement = 
 		std::make_unique<RunBpStereoSetMemoryManagement<
@@ -65,7 +65,7 @@ protected:
 template<typename T, unsigned int DISP_VALS>
 template<typename U, typename V, typename W, typename X>
 ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-	const BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
+	const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
 	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement)
 {
@@ -86,11 +86,11 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 	V bpData = nullptr;
 	void* bpProcStore = nullptr;
 	if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
-		unsigned long numData = levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
+		unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
 		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
 
-		levelProperties bottomLevelProperties(widthHeightImages, 0, 0);
+		beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0);
 		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
 		bpProcStore = runBpStereo->allocateMemoryOnTargetDevice(totalDataBottomLevel);
 	}

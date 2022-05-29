@@ -89,7 +89,7 @@ public:
 	template<typename T, unsigned int DISP_VALS>
 	static void runStereoTwoImpsAndCompare(std::ostream& outStream,
 			const std::array<std::unique_ptr<RunBpStereoSet<T, DISP_VALS>>, 2>& bpProcessingImps,
-			const unsigned int numStereoSet, const BPsettings& algSettings, bool runOptImpOnly = false)
+			const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings, bool runOptImpOnly = false)
 	{
 		const unsigned int numImpsRun{runOptImpOnly ? 1u : 2u};
 		printParameters(numStereoSet, outStream);
@@ -138,7 +138,7 @@ public:
 		static void runStereoTwoImpsAndCompare(std::ostream& outStream,
 		const std::unique_ptr<RunBpStereoSet<T, 0>>& optimizedImp,
 		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS>>& singleThreadCPUImp,
-		const unsigned int numStereoSet, const BPsettings& algSettings,
+		const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
 		bool runOptImpOnly = false)
 	{
 		const unsigned int numImpsRun{runOptImpOnly ? 1u : 2u};

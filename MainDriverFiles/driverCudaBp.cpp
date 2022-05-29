@@ -71,11 +71,11 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 								const bool isTemplatedDispVals)
 {
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
-	BPsettings algSettings;
+	beliefprop::BPsettings algSettings;
 	algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
 	//currCudaParams initialized with default thread block dimensions at every level
-	ParallelParameters currCudaParams(algSettings.numLevels_);
+	beliefprop::ParallelParameters currCudaParams(algSettings.numLevels_);
 
 	//if optimizing thread block dimensions, threadDimsVect contains thread block dimension options (and is empty if not)
 	std::vector<std::array<unsigned int, 2>> threadDimsVect{OPTIMIZE_THREAD_BLOCK_DIMS ? THREAD_DIMS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
@@ -86,8 +86,8 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		threadDimsVect.insert(threadDimsVect.end(), THREAD_DIMS_OPTIONS_ADDITIONAL_DIMS.begin(), THREAD_DIMS_OPTIONS_ADDITIONAL_DIMS.end());
 	}
     //mapping of thread block dimensions to runtime for each kernel at each level
-	std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, NUM_KERNELS> tDimsToRuntimeEachKernel;
-	for (unsigned int i=0; i < NUM_KERNELS; i++) {
+	std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, beliefprop::NUM_KERNELS> tDimsToRuntimeEachKernel;
+	for (unsigned int i=0; i < beliefprop::NUM_KERNELS; i++) {
 		//set to vector length for each kernel to corresponding vector length of kernel in currCudaParams.blockDimsXYEachKernel_
 		tDimsToRuntimeEachKernel[i] = std::vector<std::map<std::array<unsigned int, 2>, double>>(currCudaParams.blockDimsXYEachKernel_[i].size()); 
 	}
@@ -106,29 +106,29 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 
 		resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
 		resultsStream << "Blur Images Block Dims:" << 
-		                   currCudaParams.blockDimsXYEachKernel_[BpKernel::BLUR_IMAGES][0][0] << " x " <<
-						   currCudaParams.blockDimsXYEachKernel_[BpKernel::BLUR_IMAGES][0][1] << std::endl;
+		                   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1] << std::endl;
 		resultsStream << "Init Message Values Block Dims:" << 
-		                   currCudaParams.blockDimsXYEachKernel_[BpKernel::INIT_MESSAGE_VALS][0][0] << " x " <<
-						   currCudaParams.blockDimsXYEachKernel_[BpKernel::INIT_MESSAGE_VALS][0][1] << std::endl;
+		                   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1] << std::endl;
 		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
 			resultsStream << "Level " << std::to_string(level) << " Data Costs Block Dims:" << 
-		                   currCudaParams.blockDimsXYEachKernel_[BpKernel::DATA_COSTS_AT_LEVEL][level][0] << " x " <<
-						   currCudaParams.blockDimsXYEachKernel_[BpKernel::DATA_COSTS_AT_LEVEL][level][1] << std::endl;
+		                   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][1] << std::endl;
 		}
 		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
 		  	resultsStream << "Level " << std::to_string(level) << " BP Thread Block Dims:" << 
-		                   currCudaParams.blockDimsXYEachKernel_[BpKernel::BP_AT_LEVEL][level][0] << " x " <<
-						   currCudaParams.blockDimsXYEachKernel_[BpKernel::BP_AT_LEVEL][level][1] << std::endl;
+		                   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][1] << std::endl;
 		}
 		for (unsigned int level=0; level < algSettings.numLevels_; level++) {
 		  	resultsStream << "Level " << std::to_string(level) << " Copy Thread Block Dims:" << 
-		                   currCudaParams.blockDimsXYEachKernel_[BpKernel::COPY_AT_LEVEL][level][0] << " x " <<
-						   currCudaParams.blockDimsXYEachKernel_[BpKernel::COPY_AT_LEVEL][level][1] << std::endl;
+		                   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][1] << std::endl;
 		}
 		resultsStream << "Get Output Disparity Block Dims:" << 
-		                   currCudaParams.blockDimsXYEachKernel_[BpKernel::OUTPUT_DISP][0][0] << " x " <<
-						   currCudaParams.blockDimsXYEachKernel_[BpKernel::OUTPUT_DISP][0][1] << std::endl;
+		                   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0] << " x " <<
+						   currCudaParams.blockDimsXYEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1] << std::endl;
 		
 		//initialize objects to run belief propagation using CUDA and single thread CPU implementations
 		std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
@@ -139,7 +139,7 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
         //run optimized implementation only (and not single-threaded CPU implementation) if not final run or run is using default thread block size
 		//final run and run using default thread block size are only runs that are output in final results
 		const bool runOptImpOnly{!(((runNum == threadDimsVect.size()) || ((*tBlockDims) ==
-		                            std::array<unsigned int, 2>{DEFAULT_BLOCK_SIZE_WIDTH_BP, DEFAULT_BLOCK_SIZE_HEIGHT_BP})))};
+		                            std::array<unsigned int, 2>{beliefprop::DEFAULT_BLOCK_SIZE_WIDTH_BP, beliefprop::DEFAULT_BLOCK_SIZE_HEIGHT_BP})))};
 		if (isTemplatedDispVals) {
 			//run optimized implementation using templated disparity count known at compile time
 			RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
@@ -157,21 +157,21 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		const auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
 		if (runNum < threadDimsVect.size()) {
 			for (unsigned int level=0; level < algSettings.numLevels_; level++) {
-				tDimsToRuntimeEachKernel[BpKernel::DATA_COSTS_AT_LEVEL][level][*tBlockDims] =
+				tDimsToRuntimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][*tBlockDims] =
 					std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Data Costs (" +
 							  std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-				tDimsToRuntimeEachKernel[BpKernel::BP_AT_LEVEL][level][*tBlockDims] = 
+				tDimsToRuntimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][*tBlockDims] = 
 					std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " BP Runtime (" + 
 				              std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-				tDimsToRuntimeEachKernel[BpKernel::COPY_AT_LEVEL][level][*tBlockDims] =
+				tDimsToRuntimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][*tBlockDims] =
 					std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Copy Runtime (" + 
 				                                   std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
 			}
-			tDimsToRuntimeEachKernel[BpKernel::BLUR_IMAGES][0][*tBlockDims] =
+			tDimsToRuntimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][*tBlockDims] =
 					std::stod(resultsCurrentRun.at("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-			tDimsToRuntimeEachKernel[BpKernel::INIT_MESSAGE_VALS][0][*tBlockDims] =
+			tDimsToRuntimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][*tBlockDims] =
 					std::stod(resultsCurrentRun.at("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-			tDimsToRuntimeEachKernel[BpKernel::OUTPUT_DISP][0][*tBlockDims] =
+			tDimsToRuntimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][*tBlockDims] =
 					std::stod(resultsCurrentRun.at("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
 
 			if (runNum == (threadDimsVect.size() - 1)) {
@@ -188,7 +188,7 @@ void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std
 		    }
 		}
 		if ((runNum == threadDimsVect.size()) || 
-		    ((*tBlockDims) == std::array<unsigned int, 2>{DEFAULT_BLOCK_SIZE_WIDTH_BP, DEFAULT_BLOCK_SIZE_HEIGHT_BP}))
+		    ((*tBlockDims) == std::array<unsigned int, 2>{beliefprop::DEFAULT_BLOCK_SIZE_WIDTH_BP, beliefprop::DEFAULT_BLOCK_SIZE_HEIGHT_BP}))
 	    {
 			//set output for runs using default thread block dimensions and final run (which is the same run if not optimizing thread block size)
 			auto& resultUpdate = (runNum == threadDimsVect.size()) ? resultsDefaultTBFinal[1] : resultsDefaultTBFinal[0];

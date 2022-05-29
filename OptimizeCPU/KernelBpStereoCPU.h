@@ -48,20 +48,20 @@ public:
 	//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 	//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 	template<typename T, unsigned int DISP_VALS>
-	static void initializeBottomLevelDataStereoCPU(const levelProperties& currentLevelProperties,
+	static void initializeBottomLevelDataStereoCPU(const beliefprop::levelProperties& currentLevelProperties,
 			float* image1PixelsDevice, float* image2PixelsDevice,
 			T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
 			const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals);
 
 	template<typename T, unsigned int DISP_VALS>
-	static void initializeCurrentLevelDataStereoCPU(const Checkerboard_Parts checkerboardPart,
-			const levelProperties& currentLevelProperties, const levelProperties& prevLevelProperties,
+	static void initializeCurrentLevelDataStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
+			const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals);
 
 	//initialize the message values at each pixel of the current level to the default value
 	template<typename T, unsigned int DISP_VALS>
-	static void initializeMessageValsToDefaultKernelCPU(const levelProperties& currentLevelProperties,
+	static void initializeMessageValsToDefaultKernelCPU(const beliefprop::levelProperties& currentLevelProperties,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 			T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
@@ -71,8 +71,8 @@ public:
 	//kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 	template<typename T, unsigned int DISP_VALS>
-	static void runBPIterationUsingCheckerboardUpdatesCPU(const Checkerboard_Parts checkerboardToUpdate,
-			const levelProperties& currentLevelProperties,
+	static void runBPIterationUsingCheckerboardUpdatesCPU(const beliefprop::Checkerboard_Parts checkerboardToUpdate,
+			const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -82,7 +82,7 @@ public:
 
 	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
-			const Checkerboard_Parts checkerboardPartUpdate, const levelProperties& currentLevelProperties,
+			const beliefprop::Checkerboard_Parts checkerboardPartUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -93,8 +93,8 @@ public:
 	//kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 	//the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 	template<typename T, unsigned int DISP_VALS>
-	static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Checkerboard_Parts checkerboardPart,
-			const levelProperties& currentLevelProperties, const levelProperties& nextLevelProperties,
+	static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
+			const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
 			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
 			T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 			T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -107,7 +107,7 @@ public:
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 	template<typename T, unsigned int DISP_VALS>
-	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const levelProperties& currentLevelProperties,
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
 			T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -117,7 +117,7 @@ public:
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
     template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
-	static void retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const levelProperties& currentLevelProperties,
+	static void retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
 			T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -128,7 +128,7 @@ public:
 
 	template<unsigned int DISP_VALS>
     static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
 		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
@@ -138,7 +138,7 @@ public:
 
 	template<unsigned int DISP_VALS>
     static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
 		short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
@@ -148,7 +148,7 @@ public:
 
 	template<unsigned int DISP_VALS>
     static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
 		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
@@ -159,7 +159,7 @@ public:
 #ifdef COMPILING_FOR_ARM
 	template<unsigned int DISP_VALS>
     static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
-		const levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& currentLevelProperties,
 		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
 		float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
 		float16_t* messageLPrevStereoCheckerboard0, float16_t* messageRPrevStereoCheckerboard0,
@@ -172,7 +172,7 @@ public:
 	//and the output message values are save to output message arrays
 	template<typename T, typename U, unsigned int DISP_VALS>
 	static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(const unsigned int xValStartProcessing,
-			const unsigned int yVal, const levelProperties& currentLevelProperties,
+			const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
 			U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
 			U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS],
 			U dataMessage[DISP_VALS],
@@ -183,7 +183,7 @@ public:
 	template<typename T, typename U>
 	static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
 			const unsigned int xValStartProcessing, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			U* prevUMessage, U* prevDMessage,
 			U* prevLMessage, U* prevRMessage,
 			U* dataMessage,
@@ -194,7 +194,7 @@ public:
 
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 			float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
 			float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -204,7 +204,7 @@ public:
 
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 			short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
 			short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -214,7 +214,7 @@ public:
 
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 			double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
 			double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
@@ -225,7 +225,7 @@ public:
 #ifdef COMPILING_FOR_ARM
 	template<unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
-			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
 			float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
 			float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
@@ -236,7 +236,7 @@ public:
 
 	template<typename T, typename U, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
-			const Checkerboard_Parts checkerboardToUpdate, const levelProperties& currentLevelProperties,
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -248,7 +248,7 @@ public:
 	// compute current message
 	template<typename T, typename U, unsigned int DISP_VALS>
 	static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
 			U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
 			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
@@ -256,7 +256,7 @@ public:
 	// compute current message
 	template<typename T, typename U>
 	static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			U* messageValsNeighbor1, U* messageValsNeighbor2,
 			U* messageValsNeighbor3, U* dataCosts,
 			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned,
@@ -265,7 +265,7 @@ public:
 	// compute current message
 	template<typename T, typename U, typename V, typename W>
 	static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			U* messageValsNeighbor1, U* messageValsNeighbor2,
 			U* messageValsNeighbor3, U* dataCosts,
 			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned,
@@ -274,7 +274,7 @@ public:
 	// compute current message
 	template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
 	static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
 			U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
 			T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
@@ -295,13 +295,13 @@ public:
 
 	template<typename T, typename U>
 	static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData) {
+			const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData) {
 		printf("Data type not supported for loading aligned data\n");
 	}
 
 	template<typename T, typename U>
 	static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-			const levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData) {
+			const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData) {
 		printf("Data type not supported for loading unaligned data\n");
 	}
 
@@ -337,7 +337,7 @@ public:
 
 	template<typename T, unsigned int DISP_VALS>
 	static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -346,7 +346,7 @@ public:
 
 	template<typename T, unsigned int DISP_VALS>
 	static void printDataAndMessageValsToPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
-			const levelProperties& currentLevelProperties,
+			const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
 			T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,

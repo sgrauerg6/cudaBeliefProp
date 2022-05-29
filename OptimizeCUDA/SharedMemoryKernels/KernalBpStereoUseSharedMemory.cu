@@ -205,7 +205,7 @@ __device__ inline void dtStereoSharedAndRegLocalMemory<half>(half* dstShared, ha
 
 template<>
 __device__ inline void msgStereo<float, float>(int xVal, int yVal,
-		levelProperties& currentLevelProperties,
+		beliefprop::levelProperties& currentLevelProperties,
 		float messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		float messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		float messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],
@@ -436,7 +436,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 template<>
 __device__ inline void msgStereo<half, half>(int xVal, int yVal,
-		levelProperties& currentLevelProperties,
+		beliefprop::levelProperties& currentLevelProperties,
 		half messageValsNeighbor1[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor2[NUM_POSSIBLE_DISPARITY_VALUES],
 		half messageValsNeighbor3[NUM_POSSIBLE_DISPARITY_VALUES],

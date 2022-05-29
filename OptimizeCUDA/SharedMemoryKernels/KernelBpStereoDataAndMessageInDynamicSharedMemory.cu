@@ -5,7 +5,7 @@
 
 template<typename T, typename U>
 __device__ inline void msgStereo(int xVal, int yVal,
-		levelProperties& currentLevelProperties,
+		beliefprop::levelProperties& currentLevelProperties,
 		T* messageValsNeighbor1Shared, T* messageValsNeighbor2Shared,
 		T* messageValsNeighbor3Shared, T* dataCostsShared,
 		T* messageValsNeighbor1, T* messageValsNeighbor2,
@@ -17,7 +17,7 @@ __device__ inline void msgStereo(int xVal, int yVal,
 
 template<>
 __device__ inline void msgStereo<half, half>(int xVal, int yVal,
-		levelProperties& currentLevelProperties,
+		beliefprop::levelProperties& currentLevelProperties,
 		half* messageValsNeighbor1Shared,
 		half* messageValsNeighbor2Shared,
 		half* messageValsNeighbor3Shared,
@@ -123,7 +123,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 template<>
 __device__ inline void msgStereo<float, float>(int xVal, int yVal,
-		levelProperties& currentLevelProperties,
+		beliefprop::levelProperties& currentLevelProperties,
 		float* messageValsNeighbor1Shared,
 				float* messageValsNeighbor2Shared,
 				float* messageValsNeighbor3Shared,
@@ -226,7 +226,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 
 template<typename T, typename U>
-ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, int yVal, levelProperties& currentLevelProperties, T* prevUMessageShared, T* prevDMessageShared,
+ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, int yVal, beliefprop::levelProperties& currentLevelProperties, T* prevUMessageShared, T* prevDMessageShared,
 		T* prevLMessageShared, T* prevRMessageShared, T* dataMessageShared, T* prevUMessage, T* prevDMessage, T* prevLMessage, T* prevRMessage, T* dataMessage,
 		T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray, U disc_k_bp, bool dataAligned)
 {
@@ -255,8 +255,8 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, in
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float, float>(
-		int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
-		levelProperties& currentLevelProperties,
+		int xVal, int yVal, beliefprop::Checkerboard_Parts checkerboardToUpdate,
+		beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
 		float* messageUDeviceCurrentCheckerboard1,
 		float* messageDDeviceCurrentCheckerboard1,
@@ -271,11 +271,11 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 	int checkerboardAdjustment;
 
 	//checkerboardAdjustment used for indexing into current checkerboard to update
-	if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+	if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-	else //checkerboardToUpdate == CHECKERBOARD_PART_1
+	else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 	{
 		checkerboardAdjustment = ((yVal+1)%2);
 	}
@@ -320,7 +320,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 		unsigned int indexIndexDstShared = startIndexDstShared;
 		for (unsigned int currentDisparity = 0; currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity++)
 		{
-			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+			if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
 				dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 				prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -328,7 +328,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 				prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 				prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 			}
-			else //checkerboardToUpdate == CHECKERBOARD_PART_1
+			else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 			{
 				dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 				prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -341,7 +341,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
 		for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+					if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 					{
 						dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 						prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -349,7 +349,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 						prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 						prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 					}
-					else //checkerboardToUpdate == CHECKERBOARD_PART_1
+					else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 					{
 						dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 						prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -360,7 +360,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 				}
 
 		//uses the previous message values and data cost to calculate the current message values and store the results
-		if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+		if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 		{
 			runBPIterationInOutDataInLocalMem<float, float>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
 					prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
@@ -371,7 +371,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 					messageRDeviceCurrentCheckerboard1, (float) disc_k_bp,
 					dataAligned);
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_1
+		else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 		{
 			runBPIterationInOutDataInLocalMem<float, float>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
 					prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
@@ -393,8 +393,8 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<half, half>(
-		int xVal, int yVal, Checkerboard_Parts checkerboardToUpdate,
-		levelProperties& currentLevelProperties,
+		int xVal, int yVal, beliefprop::Checkerboard_Parts checkerboardToUpdate,
+		beliefprop::levelProperties& currentLevelProperties,
 		half* dataCostStereoCheckerboard1, half* dataCostStereoCheckerboard2,
 		half* messageUDeviceCurrentCheckerboard1,
 		half* messageDDeviceCurrentCheckerboard1,
@@ -409,11 +409,11 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 	int checkerboardAdjustment;
 
 	//checkerboardAdjustment used for indexing into current checkerboard to update
-	if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+	if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 	{
 		checkerboardAdjustment = ((yVal)%2);
 	}
-	else //checkerboardToUpdate == CHECKERBOARD_PART_1
+	else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 	{
 		checkerboardAdjustment = ((yVal+1)%2);
 	}
@@ -461,7 +461,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
 		for (unsigned int currentDisparity = 0; currentDisparity < DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity++)
 		{
-			if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+			if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 			{
 				dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 				prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -469,7 +469,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 				prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 				prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 			}
-			else //checkerboardToUpdate == CHECKERBOARD_PART_1
+			else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 			{
 				dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 				prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -483,7 +483,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
 		for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::NUM_POSSIBLE_DISPARITY_VALUES; currentDisparity++)
 				{
-					if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+					if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 					{
 						dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 						prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -491,7 +491,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 						prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 						prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard2[retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
 					}
-					else //checkerboardToUpdate == CHECKERBOARD_PART_1
+					else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 					{
 						dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard2[retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES, offsetData)]);
 						prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::NUM_POSSIBLE_DISPARITY_VALUES)]);
@@ -502,7 +502,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 				}
 
 		//uses the previous message values and data cost to calculate the current message values and store the results
-		if (checkerboardToUpdate == CHECKERBOARD_PART_0)
+		if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
 		{
 			runBPIterationInOutDataInLocalMem<half, half>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
 					prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
@@ -513,7 +513,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 					messageRDeviceCurrentCheckerboard1, (half) disc_k_bp,
 					dataAligned);
 		}
-		else //checkerboardToUpdate == CHECKERBOARD_PART_1
+		else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 		{
 			runBPIterationInOutDataInLocalMem<half, half>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
 					prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,

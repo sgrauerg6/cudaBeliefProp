@@ -33,7 +33,7 @@ public:
 
 	//process stereo set using input implementationToRun; return pair with runtime first
 	//and file path of computed disparity map second
-	static std::pair<float, std::string> processStereoSet(const bpImplementation implementationToRun, const BPsettings& currentBPSettings = BPsettings())
+	static std::pair<float, std::string> processStereoSet(const bpImplementation implementationToRun, const beliefprop::BPsettings& currentBPSettings = BPsettings())
 	{
 		std::ofstream resultsStream("output.txt", std::ofstream::out);
 		//std::ostream resultsStream(std::cout.rdbuf());

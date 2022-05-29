@@ -81,37 +81,37 @@ public:
 #endif
 		}
 
-		void initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
-				const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard) override;
+		void initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+				const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard) override;
 
-		void initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
-				const levelProperties& prevLevelProperties,
-				const dataCostData<U>& dataCostDeviceCheckerboard,
-				const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+		void initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+				const beliefprop::levelProperties& prevLevelProperties,
+				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
 				const unsigned int bpSettingsNumDispVals) override;
 
 		void initializeMessageValsToDefault(
-				const levelProperties& currentLevelProperties,
-				const checkerboardMessages<U>& messagesDevice,
+				const beliefprop::levelProperties& currentLevelProperties,
+				const beliefprop::checkerboardMessages<U>& messagesDevice,
 				const unsigned int bpSettingsNumDispVals) override;
 
-		void runBPAtCurrentLevel(const BPsettings& algSettings,
-				const levelProperties& currentLevelProperties,
-				const dataCostData<U>& dataCostDeviceCheckerboard,
-				const checkerboardMessages<U>& messagesDevice,
+		void runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+				const beliefprop::levelProperties& currentLevelProperties,
+				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+				const beliefprop::checkerboardMessages<U>& messagesDevice,
 				void* allocatedMemForProcessing) override;
 
 		void copyMessageValuesToNextLevelDown(
-				const levelProperties& currentLevelProperties,
-				const levelProperties& nextlevelProperties,
-				const checkerboardMessages<U>& messagesDeviceCopyFrom,
-				const checkerboardMessages<U>& messagesDeviceCopyTo,
+				const beliefprop::levelProperties& currentLevelProperties,
+				const beliefprop::levelProperties& nextlevelProperties,
+				const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
+				const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
 				const unsigned int bpSettingsNumDispVals) override;
 
 		float* retrieveOutputDisparity(
-				const levelProperties& currentLevelProperties,
-				const dataCostData<U>& dataCostDeviceCheckerboard,
-				const checkerboardMessages<U>& messagesDevice,
+				const beliefprop::levelProperties& currentLevelProperties,
+				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+				const beliefprop::checkerboardMessages<U>& messagesDevice,
 				const unsigned int bpSettingsNumDispVals) override;
 };
 
@@ -119,25 +119,25 @@ public:
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BPsettings& algSettings,
-		const levelProperties& currentLevelProperties,
-		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const checkerboardMessages<U>& messagesDevice,
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+		const beliefprop::levelProperties& currentLevelProperties,
+		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+		const beliefprop::checkerboardMessages<U>& messagesDevice,
 		void* allocatedMemForProcessing)
 {
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
 	{
-		Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? CHECKERBOARD_PART_1 : CHECKERBOARD_PART_0;
+		beliefprop::Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1 : beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0;
 
 		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU<T, DISP_VALS>(
 				checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
-				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
-				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
-				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
-				messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
+				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
+				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
+				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 				algSettings.disc_k_bp_, algSettings.numDispVals_);
 	}
 }
@@ -148,34 +148,34 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const BP
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T, typename U, unsigned int DISP_VALS>
 inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
-		const levelProperties& currentLevelProperties,
-		const levelProperties& nextlevelProperties,
-		const checkerboardMessages<U>& messagesDeviceCopyFrom,
-		const checkerboardMessages<U>& messagesDeviceCopyTo,
+		const beliefprop::levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& nextlevelProperties,
+		const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
+		const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
 		const unsigned int bpSettingsNumDispVals)
 {
-	for (const auto& checkerboard_part : {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1})
+	for (const auto& checkerboard_part : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
 	{
 		//call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 		//storing the current message values
 		KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<T, DISP_VALS>(
 				checkerboard_part, currentLevelProperties, nextlevelProperties,
-				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
-				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
-				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
-				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
-				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
-				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
-				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
-				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
+				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 				bpSettingsNumDispVals);
 	}
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSettings, const levelProperties& currentLevelProperties,
-		const std::array<float*, 2>& imagesOnTargetDevice, const dataCostData<U>& dataCostDeviceCheckerboard)
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+		const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
 {
 	//initialize the data the the "bottom" of the image pyramid
 	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
@@ -187,34 +187,34 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const BP
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T, typename U, unsigned int DISP_VALS>
 void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
-		const levelProperties& currentLevelProperties,
-		const checkerboardMessages<U>& messagesDevice,
+		const beliefprop::levelProperties& currentLevelProperties,
+		const beliefprop::checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
 {
 	//initialize all the message values for each pixel at each possible movement to the default value in the kernel
 	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T, DISP_VALS>(
 			currentLevelProperties,
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 			bpSettingsNumDispVals);
 }
 
 
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(const levelProperties& currentLevelProperties,
-		const levelProperties& prevLevelProperties,
-		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+		const beliefprop::levelProperties& prevLevelProperties,
+		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
 		const unsigned int bpSettingsNumDispVals)
 {
 	size_t offsetNum = 0;
 
 	for (const auto& checkerboardAndDataCost : { std::make_pair(
-			CHECKERBOARD_PART_0,
+			beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0,
 			dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
-			std::make_pair(CHECKERBOARD_PART_1,
+			std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,
 					dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_) })
 	{
 		KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU<T, DISP_VALS>(
@@ -229,9 +229,9 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(c
 
 template<typename T, typename U, unsigned int DISP_VALS>
 inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS>::retrieveOutputDisparity(
-		const levelProperties& currentLevelProperties,
-		const dataCostData<U>& dataCostDeviceCheckerboard,
-		const checkerboardMessages<U>& messagesDevice,
+		const beliefprop::levelProperties& currentLevelProperties,
+		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+		const beliefprop::checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
 {
 	float* resultingDisparityMapCompDevice = new float[currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_];
@@ -240,10 +240,10 @@ inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS>::retrieveOutputDisparity(
 			currentLevelProperties,
 			dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1_,
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1],
-			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
+			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 			resultingDisparityMapCompDevice, bpSettingsNumDispVals);
 
 	return resultingDisparityMapCompDevice;

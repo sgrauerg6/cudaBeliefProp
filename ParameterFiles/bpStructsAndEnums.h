@@ -14,6 +14,8 @@
 #include "BpAndSmoothProcessing/BpUtilFuncts.h"
 #include "../BpAndSmoothProcessing/BpUtilFuncts.h"
 
+namespace beliefprop {
+
 //structure to store the settings for the number of levels and iterations
 struct BPsettings
 {
@@ -38,7 +40,7 @@ struct levelProperties
 
 	//get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
 	template <typename T>
-	levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
+	beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
 		const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
 		return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
 				offsetNextLevel, (levelNum_ + 1));
@@ -84,7 +86,7 @@ struct levelProperties
 	static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
 			const unsigned int totalPossibleMovements, const unsigned int numLevels)
 	{
-		levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0);
+		beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0);
 		unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
 		for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
 			currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);
@@ -106,7 +108,7 @@ struct levelProperties
 //used to define the two checkerboard "parts" that the image is divided into
 enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
-	MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
+	                  MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 
 template <class T>
@@ -150,6 +152,8 @@ struct ParallelParameters {
 	}
 	std::array<std::vector<std::array<unsigned int, 2>>, NUM_KERNELS> blockDimsXYEachKernel_;
 	bool useSharedMemory_{false};
+};
+
 };
 
 #endif /* BPSTRUCTSANDENUMS_H_ */
