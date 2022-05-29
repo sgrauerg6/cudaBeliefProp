@@ -67,4 +67,11 @@ namespace bp_cuda_params
 #define USE_SHARED_MEMORY 0
 #define DISP_INDEX_START_REG_LOCAL_MEM 0
 
+//uncomment to use template specialization functions that check if "val to normalize" in
+//message processing is valid when processing in CUDA half precision...have found with many
+//levels (maybe around 7) that value can become invalid due to lesser precision using half
+//type
+//off by default since may make processing take a little longer and complicates code a little
+//#define CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
+
 #endif // BP_STEREO_CUDA_PARAMETERS_H
