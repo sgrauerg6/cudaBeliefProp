@@ -46,6 +46,8 @@ constexpr unsigned int DISP_VALS_6{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]};
 
 #ifdef CUDA_HALF_SUPPORT
 #include "kernelBpStereoHalf.cu"
+//uncomment if supporting half2 data type in CUDA processing
+//#include "kernelBpStereoHalfTwo.cu"
 #endif //CUDA_HALF_SUPPORT
 #endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 
@@ -521,6 +523,3 @@ __device__ void printDataAndMessageValsToPointDevice(
 		}
 	}
 }
-
-//uncomment if supporting half2 data type in CUDA processing
-#include "kernelBpStereoHalfTwo.cu"
