@@ -741,7 +741,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 			currentRMessageArray, disc_k_bp, dataAligned, bpSettingsDispVals, dstProcessing, checkerboardAdjustment, offsetData);
 }
 
-//device portion of the kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the
+//device portion of the kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the
 //"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 //this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
 //this function uses linear memory bound to textures to access the current data and message values
@@ -955,8 +955,8 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 }
 
 
-//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
-//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
+//kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
+//the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPixel(
 		const unsigned int xVal, const unsigned int yVal,

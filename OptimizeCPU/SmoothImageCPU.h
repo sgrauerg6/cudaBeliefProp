@@ -27,7 +27,7 @@ public:
 		//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 		//of unsigned ints to an output image of float values
 		if (sigmaVal < MIN_SIGMA_VAL_SMOOTH) {
-			//call kernal to convert input unsigned int pixels to output float pixels on the device
+			//call kernel to convert input unsigned int pixels to output float pixels on the device
 			convertUnsignedIntImageToFloatCPU(inImage.getPointerToPixelsStart(), smoothedImage,
 					inImage.getWidth(), inImage.getHeight());
 		}

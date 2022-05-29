@@ -10,7 +10,7 @@
 
 #include "SharedUtilFuncts.h"
 
-//kernal to apply a horizontal filter on each pixel of the image in parallel
+//kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
 template <typename T>
@@ -28,7 +28,7 @@ ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(const unsigned i
 	filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
 }
 
-//kernal to apply a vertical filter on each pixel of the image in parallel
+//kernel to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
 template <typename T>

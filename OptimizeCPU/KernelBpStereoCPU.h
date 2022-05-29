@@ -16,10 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This header declares the kernal functions and constant/texture storage to run belief propagation on CUDA
+//This header declares the kernel functions and constant/texture storage to run belief propagation on CUDA
 
-#ifndef KERNAL_BP_STEREO_CPU_H
-#define KERNAL_BP_STEREO_CPU_H
+#ifndef KERNEL_BP_STEREO_CPU_H
+#define KERNEL_BP_STEREO_CPU_H
 
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
@@ -68,7 +68,7 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 			const unsigned int bpSettingsDispVals);
 
-	//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
+	//kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 	//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 	template<typename T, unsigned int DISP_VALS>
 	static void runBPIterationUsingCheckerboardUpdatesCPU(const Checkerboard_Parts checkerboardToUpdate,
@@ -90,8 +90,8 @@ public:
 			T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 			const float disc_k_bp, const unsigned int bpSettingsDispVals);
 
-	//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
-	//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
+	//kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
+	//the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 	template<typename T, unsigned int DISP_VALS>
 	static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Checkerboard_Parts checkerboardPart,
 			const levelProperties& currentLevelProperties, const levelProperties& nextLevelProperties,
@@ -374,4 +374,4 @@ public:
 
 #endif //COMPILING_FOR_ARM
 
-#endif //KERNAL_BP_STEREO_CPU_H
+#endif //KERNEL_BP_STEREO_CPU_H

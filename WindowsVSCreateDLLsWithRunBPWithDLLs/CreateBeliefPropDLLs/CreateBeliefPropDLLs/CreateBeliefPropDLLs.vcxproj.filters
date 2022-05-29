@@ -94,12 +94,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\OptimizeCUDA\kernalBpStereo.cu" />
-    <None Include="..\..\..\OptimizeCUDA\kernalBpStereoHeader.cuh" />
-    <None Include="..\..\..\OptimizeCUDA\kernalFilter.cu" />
-    <None Include="..\..\..\OptimizeCUDA\kernalFilterHeader.cuh" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernalBpStereoUseSharedMemory.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernalBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu" />
+    <None Include="..\..\..\OptimizeCUDA\kernelBpStereo.cu" />
+    <None Include="..\..\..\OptimizeCUDA\kernelBpStereoHeader.cuh" />
+    <None Include="..\..\..\OptimizeCUDA\kernelFilter.cu" />
+    <None Include="..\..\..\OptimizeCUDA\kernelFilterHeader.cuh" />
+    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu" />
+    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu" />
     <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
     <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
   </ItemGroup>

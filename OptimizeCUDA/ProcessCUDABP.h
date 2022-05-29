@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 
-//include for the kernal functions to be run on the GPU
+//include for the kernel functions to be run on the GPU
 #include <cuda_runtime.h>
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include <cuda_fp16.h>
@@ -33,7 +33,7 @@ class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
 	ProcessCUDABP(const bp_cuda_params::CudaParameters& cudaParams) : cudaParams_(cudaParams) { }
-	
+
 	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override {
 		cudaMalloc(arrayToAllocate, numBytesAllocate);
 	}

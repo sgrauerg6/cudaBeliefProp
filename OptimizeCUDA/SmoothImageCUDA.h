@@ -10,8 +10,8 @@
 
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 
-//include for the kernal functions to be run on the GPU
-#include "kernalFilterHeader.cuh"
+//include for the kernel functions to be run on the GPU
+#include "kernelFilterHeader.cuh"
 
 #include <cuda_runtime.h>
 #include "../BpAndSmoothProcessing/SmoothImage.h"

@@ -6,7 +6,7 @@
  */
 
 #include "SmoothImageCUDA.h"
-#include "kernalFilter.cu"
+#include "kernelFilter.cu"
 
 //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
 template <typename T>

@@ -16,10 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This kernal is used to filter the image with the given filter in the vertical and horizontal directions
+//This kernel is used to filter the image with the given filter in the vertical and horizontal directions
 
 
-#include "kernalFilterHeader.cuh"
+#include "kernelFilterHeader.cuh"
 
 #include <cuda_runtime.h>
 #include <cuda.h>
@@ -37,7 +37,7 @@ __device__ bool withinImageBoundsFilter(const unsigned int xVal, const unsigned 
 }
 
 
-//kernal to convert the unsigned int pixels to float pixels in an image when
+//kernel to convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //output filtered image stored in floatImagePixels
@@ -57,7 +57,7 @@ __global__ void convertUnsignedIntImageToFloat(
 }
 
 
-//kernal to apply a horizontal filter on each pixel of the image in parallel
+//kernel to apply a horizontal filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
 template<typename T>
@@ -77,7 +77,7 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 }
 
 
-//kernal to apply a vertical filter on each pixel of the image in parallel
+//kernel to apply a vertical filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
 template<typename T>

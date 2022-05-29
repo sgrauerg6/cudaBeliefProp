@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-//include for the "kernal" functions to be run on the CPU
+//include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
@@ -156,7 +156,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevel
 {
 	for (const auto& checkerboard_part : {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1})
 	{
-		//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
+		//call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 		//storing the current message values
 		KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<T, DISP_VALS>(
 				checkerboard_part, currentLevelProperties, nextlevelProperties,
@@ -191,7 +191,7 @@ void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
 {
-	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
+	//initialize all the message values for each pixel at each possible movement to the default value in the kernel
 	KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T, DISP_VALS>(
 			currentLevelProperties,
 			messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0],

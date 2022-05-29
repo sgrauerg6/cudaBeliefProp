@@ -16,10 +16,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//Header for the kernal to apply a horizontal/vertical filter to image data
+//Header for the kernel to apply a horizontal/vertical filter to image data
 
-#ifndef KERNAL_FILTER_HEADER_CUH
-#define KERNAL_FILTER_HEADER_CUH
+#ifndef KERNEL_FILTER_HEADER_CUH
+#define KERNEL_FILTER_HEADER_CUH
 
 #include <cuda_runtime.h>
 
@@ -27,25 +27,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 __device__ bool withinImageBoundsFilter(const unsigned int xVal, const unsigned int yVal,
 		const unsigned int width, const unsigned int height);
 
-//kernal to convert the unsigned int pixels to float pixels in an image when
+//kernel to convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //output filtered image stored in floatImagePixels
 __global__ void convertUnsignedIntImageToFloat(unsigned int* imagePixelsUnsignedIntToFilter,
 		float* floatImagePixels, const unsigned int widthImages, const unsigned int heightImages);
 
-//kernal to apply a horizontal filter on each pixel of the image in parallel
+//kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
 template<typename T>
 __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels,
 		const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter);
 
-//kernal to apply a vertical filter on each pixel of the image in parallel
+//kernel to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
 template<typename T>
 __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels,
 		const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter);
 
-#endif //KERNAL_FILTER_HEADER_CUH
+#endif //KERNEL_FILTER_HEADER_CUH

@@ -1051,7 +1051,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 #endif //CPU_PARALLELIZATION_METHOD
 }
 
-//kernal function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
+//kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<typename T, unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
@@ -1147,8 +1147,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 }
 
 
-//kernal to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
-//the kernal works from the point of view of the pixel at the prev level that is being copied to four different places
+//kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
+//the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<typename T, unsigned int DISP_VALS>
 void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const Checkerboard_Parts checkerboardPart,
 		const levelProperties& currentLevelProperties, const levelProperties& nextLevelProperties,

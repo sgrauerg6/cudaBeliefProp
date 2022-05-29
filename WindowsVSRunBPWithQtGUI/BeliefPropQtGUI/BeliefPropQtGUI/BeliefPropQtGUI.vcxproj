@@ -197,27 +197,27 @@
     <ClInclude Include="GuiProcessStereoSet.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\OptimizeCUDA\kernalBpStereo.cu">
+    <None Include="..\..\..\OptimizeCUDA\kernelBpStereo.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\kernalBpStereoHeader.cuh">
+    <None Include="..\..\..\OptimizeCUDA\kernelBpStereoHeader.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\kernalFilter.cu">
+    <None Include="..\..\..\OptimizeCUDA\kernelFilter.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\kernalFilterHeader.cuh">
+    <None Include="..\..\..\OptimizeCUDA\kernelFilterHeader.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernalBpStereoUseSharedMemory.cu">
+    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernalBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu">
+    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </None>

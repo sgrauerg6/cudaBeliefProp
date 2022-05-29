@@ -90,7 +90,7 @@ RunBpStereoSetOnGPUWithCUDA.o: ../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp .
 ProcessCUDABP.o: ../OptimizeCUDA/ProcessCUDABP.cpp ../OptimizeCUDA/ProcessCUDABP.h
 	$(NVCC) -x cu -c ../OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
 
-SmoothImageCUDA.o: ../OptimizeCUDA/SmoothImageCUDA.cpp ../OptimizeCUDA/SmoothImageCUDA.h ../OptimizeCUDA/kernalFilter.cu ../OptimizeCUDA/kernalFilterHeader.cuh
+SmoothImageCUDA.o: ../OptimizeCUDA/SmoothImageCUDA.cpp ../OptimizeCUDA/SmoothImageCUDA.h ../OptimizeCUDA/kernelFilter.cu ../OptimizeCUDA/kernelFilterHeader.cuh
 	$(NVCC) -x cu -c ../OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
 
 make clean:

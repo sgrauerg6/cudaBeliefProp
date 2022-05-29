@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
 #include "ProcessCUDABP.h"
-#include "kernalBpStereo.cu"
+#include "kernelBpStereo.cu"
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
@@ -154,7 +154,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 
 	for (const auto& checkerboard_part : {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1})
 	{
-		//call the kernal to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
+		//call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
 		//storing the current message values
 		copyPrevLevelToNextLevelBPCheckerboardStereo<T, DISP_VALS> <<< grid, threads >>> (checkerboard_part, currentLevelProperties, nextlevelProperties,
 				messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
@@ -189,11 +189,11 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const BPsettings& algSe
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 
 	//setup execution parameters
-	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernal to run
+	//the thread size remains constant throughout but the grid size is adjusted based on the current level/kernel to run
 	//const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
 	const dim3 threads(cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][0][0],
 					   cudaParams_.blockDimsXYEachKernel_[bp_cuda_params::CudaKernel::DATA_COSTS_AT_LEVEL][0][1]);
-	//kernal run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
+	//kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
 	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x),
 	  		        (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
@@ -218,7 +218,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
 			  		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
-	//initialize all the message values for each pixel at each possible movement to the default value in the kernal
+	//initialize all the message values for each pixel at each possible movement to the default value in the kernel
 	initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_R_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_D_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[MESSAGES_L_CHECKERBOARD_1],
