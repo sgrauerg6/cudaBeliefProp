@@ -26,6 +26,13 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+*.o
+*.exe
+
+# Outputs
+*.csv
+*.pgm
+*.txt
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
