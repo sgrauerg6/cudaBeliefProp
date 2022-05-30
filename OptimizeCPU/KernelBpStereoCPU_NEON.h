@@ -19,7 +19,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
 		float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
 		float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const unsigned int bpSettingsDispVals)
+		const float disc_k_bp, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	constexpr unsigned int numDataInSIMDVector{4u};
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<float, float32x4_t, DISP_VALS>(
@@ -29,7 +30,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
+			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals, optCPUParams);
 }
 
 template<unsigned int DISP_VALS>
@@ -40,7 +41,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
 		float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
 		float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const unsigned int bpSettingsDispVals)
+		const float disc_k_bp, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	constexpr unsigned int numDataInSIMDVector{4u};
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<float16_t, float16x4_t, DISP_VALS>(
@@ -50,7 +52,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
+			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals, optCPUParams);
 }
 
 template<unsigned int DISP_VALS>
@@ -61,7 +63,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 		double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
 		double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
 		double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const unsigned int bpSettingsDispVals)
+		const float disc_k_bp, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	constexpr unsigned int numDataInSIMDVector{2u};
 	runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<double, float64x2_t, DISP_VALS>(
@@ -71,7 +74,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
 			messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 			messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 			messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals);
+			disc_k_bp, numDataInSIMDVector, bpSettingsDispVals, optCPUParams);
 }
 
 template<unsigned int DISP_VALS>
@@ -82,7 +85,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
 		float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
 		float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
-		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {	    
 	constexpr unsigned int numDataInSIMDVector{4u};
 	retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<float, float32x4_t, float, float32x4_t, DISP_VALS>(currentLevelProperties,
@@ -92,7 +96,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 		disparityBetweenImagesDevice, bpSettingsDispVals,
-		numDataInSIMDVector);
+		numDataInSIMDVector, optCPUParams);
 }
 
 template<unsigned int DISP_VALS>
@@ -103,7 +107,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 		float16_t* messageLPrevStereoCheckerboard0, float16_t* messageRPrevStereoCheckerboard0,
 		float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1,
 		float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1,
-		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {	    
 	constexpr unsigned int numDataInSIMDVector{4u};
 	retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<float16_t, float16x4_t, float, float32x4_t, DISP_VALS>(currentLevelProperties,
@@ -113,7 +118,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 		disparityBetweenImagesDevice, bpSettingsDispVals,
-		numDataInSIMDVector);
+		numDataInSIMDVector, optCPUParams);
 }
 
 template<unsigned int DISP_VALS>
@@ -124,7 +129,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
 		double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
 		double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
-		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {	    
 	constexpr unsigned int numDataInSIMDVector{2u};
 	retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<double, float64x2_t, double, float64x2_t, DISP_VALS>(currentLevelProperties,
@@ -134,7 +140,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 		disparityBetweenImagesDevice, bpSettingsDispVals,
-		numDataInSIMDVector);
+		numDataInSIMDVector, optCPUParams);
 }
 
 template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float32x4_t>(float32x4_t& bestDisparities, float32x4_t& bestVals,

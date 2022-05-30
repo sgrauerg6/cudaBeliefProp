@@ -29,7 +29,8 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float* image1PixelsDevice, float* image2PixelsDevice,
 		T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
-		const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals)
+		const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_,
@@ -60,7 +61,8 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	#pragma omp parallel for
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -86,7 +88,8 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& prevLevelProperties,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
-		T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
+		T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
@@ -119,7 +122,8 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	#pragma omp parallel for
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -146,7 +150,8 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const unsigned int bpSettingsDispVals)
+		const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
@@ -185,7 +190,8 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	#pragma omp parallel for
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -215,7 +221,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		float disc_k_bp, const unsigned int bpSettingsDispVals)
+		float disc_k_bp, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 
@@ -266,7 +273,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	#pragma omp parallel for
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_); val++)
 #else
@@ -348,7 +356,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const float disc_k_bp, const unsigned int numDataInSIMDVector,
-		const unsigned int bpSettingsDispVals)
+		const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 	const U disc_k_bp_vector = createSIMDVectorSameData<U>(disc_k_bp);
@@ -821,7 +830,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	}
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 	if constexpr (DISP_VALS > 0) {
-		#pragma omp parallel for
+		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+		#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #else
@@ -930,7 +940,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 		}
 	}
 	else {
-		#pragma omp parallel for
+		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+		#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #else
@@ -1061,7 +1072,8 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const float disc_k_bp, const unsigned int bpSettingsNumDispVals)
+		const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_256)
 	{
@@ -1074,7 +1086,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals);
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 		else
 		{
@@ -1084,7 +1096,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals);
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
 	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_512)
@@ -1098,7 +1110,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals);
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 		else
 		{
@@ -1108,7 +1120,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals);
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
 	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_NEON)
@@ -1121,7 +1133,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals);
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 		else
 		{
@@ -1131,7 +1143,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals);
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
 	else
@@ -1142,7 +1154,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
 				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
 				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-				disc_k_bp, bpSettingsNumDispVals);
+				disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 	}
 }
 
@@ -1160,7 +1172,8 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 		T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
 		T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-		const unsigned int bpSettingsDispVals)
+		const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams)
 {
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
@@ -1211,7 +1224,8 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	#pragma omp parallel for
+	int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -1244,7 +1258,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
 		T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 		T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
-		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals) {
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams) {
 	#if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 	//SIMD vectorization of output disparity only supported with OpenMP
 	retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors<DISP_VALS>(currentLevelProperties,
@@ -1253,7 +1268,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
 		messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 		messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
-		disparityBetweenImagesDevice, bpSettingsDispVals);
+		disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
     #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
 	  [&currentLevelProperties, &dataCostStereoCheckerboard0, &dataCostStereoCheckerboard1, &messageUPrevStereoCheckerboard0, &messageDPrevStereoCheckerboard0,
@@ -1294,7 +1309,8 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 	  });
 	//using vectorized method when using OpenMP
 	/*#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	#pragma omp parallel for
+	int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -1325,7 +1341,8 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 	T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
 	T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
 	float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-	const unsigned int numDataInSIMDVector)
+	const unsigned int numDataInSIMDVector,
+	const beliefprop::ParallelParameters& optCPUParams)
 {
 	const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 
@@ -1344,7 +1361,8 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 
     for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
 	{
-	#pragma omp parallel for
+		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
+		#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #else
@@ -1694,7 +1712,8 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 	//combine output disparity maps from each checkerboard
 	//start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
 	//in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
-	#pragma omp parallel for
+	int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
+	#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 	for (int y=0; y < currentLevelProperties.heightLevel_; y++)
 #else

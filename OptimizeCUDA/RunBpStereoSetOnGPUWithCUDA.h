@@ -81,7 +81,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -108,7 +108,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -135,7 +135,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -162,7 +162,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -189,7 +189,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -216,7 +216,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -243,7 +243,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -270,7 +270,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
@@ -296,7 +296,7 @@ public:
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 //float16_t data type used for arm (rather than short)
@@ -350,7 +350,7 @@ public:
 	}
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif //HALF_PRECISION_SUPPORTED

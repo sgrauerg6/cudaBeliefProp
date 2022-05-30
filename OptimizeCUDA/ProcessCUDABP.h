@@ -95,7 +95,7 @@ public:
 			const unsigned int bpSettingsNumDispVals) override;
 
 private:
-	beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

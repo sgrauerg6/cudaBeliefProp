@@ -39,6 +39,8 @@ template<typename T, typename U, unsigned int DISP_VALS>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
+		ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
+
 		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override
 		{
 			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
@@ -113,6 +115,9 @@ public:
 				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 				const beliefprop::checkerboardMessages<U>& messagesDevice,
 				const unsigned int bpSettingsNumDispVals) override;
+
+private:
+	const beliefprop::ParallelParameters& optCPUParams_;
 };
 
 //functions definitions related to running BP to retrieve the movement between the images
@@ -138,7 +143,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const be
 				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
 				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
 				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-				algSettings.disc_k_bp_, algSettings.numDispVals_);
+				algSettings.disc_k_bp_, algSettings.numDispVals_, optCPUParams_);
 	}
 }
 
@@ -168,7 +173,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevel
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-				bpSettingsNumDispVals);
+				bpSettingsNumDispVals, optCPUParams_);
 	}
 }
 
@@ -181,7 +186,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const be
 	KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
 			imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
-			algSettings.numDispVals_);
+			algSettings.numDispVals_, optCPUParams_);
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
@@ -198,7 +203,7 @@ void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-			bpSettingsNumDispVals);
+			bpSettingsNumDispVals, optCPUParams_);
 }
 
 
@@ -223,7 +228,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(c
 					dataCostDeviceCheckerboard.dataCostCheckerboard1_,
 					checkerboardAndDataCost.second,
 					((int) offsetNum / sizeof(float)),
-					bpSettingsNumDispVals);
+					bpSettingsNumDispVals, optCPUParams_);
 	}
 }
 
@@ -244,7 +249,7 @@ inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS>::retrieveOutputDisparity(
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-			resultingDisparityMapCompDevice, bpSettingsNumDispVals);
+			resultingDisparityMapCompDevice, bpSettingsNumDispVals, optCPUParams_);
 
 	return resultingDisparityMapCompDevice;
 }

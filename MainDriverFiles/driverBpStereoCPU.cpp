@@ -45,11 +45,16 @@ template<typename T, unsigned int NUM_SET>
 void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>& resultsAcrossRuns,
 		const bool isTemplatedDispVals)
 {
+	//initialize output stream for current run
 	std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
+	
+	//initialize parallel parameters with default number of CPU threads to use in parallelization
+	//of each kernel
+	beliefprop::ParallelParameters parallelParams(bp_params::LEVELS_BP, beliefprop::DEFAULT_CPU_PARALLEL_DIMS);
 
 	std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
-			std::make_unique<RunBpStereoOptimizedCPU<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(),
-			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
+		std::make_unique<RunBpStereoOptimizedCPU<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(parallelParams),
+		std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>()
 	};
 
 	//load all the BP default settings as set in bpStereoCudaParameters.cuh
@@ -61,12 +66,13 @@ void runBpOnSetAndUpdateResults(std::map<std::string, std::vector<std::string>>&
 	resultsStream << "CPU Vectorization:" << cpuVectorizationString() << std::endl;
 	if (isTemplatedDispVals) {
 		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-				resultsStream, runBpStereo, NUM_SET, algSettings);
+			resultsStream, runBpStereo, NUM_SET, algSettings);
 	}
 	else {
-		std::unique_ptr<RunBpStereoSet<T, 0>> optCpuDispValsNoTemplate = std::make_unique<RunBpStereoOptimizedCPU<T, 0>>();
+		std::unique_ptr<RunBpStereoSet<T, 0>> optCpuDispValsNoTemplate = 
+			std::make_unique<RunBpStereoOptimizedCPU<T, 0>>(parallelParams);
 		RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-				resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
+			resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
 	}
 	resultsStream.close();
 

@@ -18,6 +18,7 @@
 template <typename T=float*>
 class SmoothImageCPU : public SmoothImage<T> {
 public:
+	SmoothImageCPU(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) {}
 
 	//function to use the CPU-image filter to apply a guassian filter to the a single images
 	//input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
@@ -29,7 +30,7 @@ public:
 		if (sigmaVal < MIN_SIGMA_VAL_SMOOTH) {
 			//call kernel to convert input unsigned int pixels to output float pixels on the device
 			convertUnsignedIntImageToFloatCPU(inImage.getPointerToPixelsStart(), smoothedImage,
-					inImage.getWidth(), inImage.getHeight());
+					inImage.getWidth(), inImage.getHeight(), optCPUParams_);
 		}
 		//otherwise apply a Guassian filter to the images
 		else
@@ -44,21 +45,24 @@ public:
 
 			//first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
 			filterImageAcrossCPU<unsigned int>(inImage.getPointerToPixelsStart(), &(intermediateImage[0]), inImage.getWidth(),
-					inImage.getHeight(), &(filter[0]), sizeFilter);
+					inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
 
 			//now use the vertical filter to complete the smoothing of image 1 on the device
 			filterImageVerticalCPU<float>(&(intermediateImage[0]), smoothedImage,
-					inImage.getWidth(), inImage.getHeight(), &(filter[0]), sizeFilter);
+					inImage.getWidth(), inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
 		}
 	}
 
 private:
+	const beliefprop::ParallelParameters& optCPUParams_;
+	
 	//convert the unsigned int pixels to float pixels in an image when
 	//smoothing is not desired but the pixels need to be converted to floats
 	//the input image is stored as unsigned ints in the texture imagePixelsUnsignedInt
 	//output filtered image stored in floatImagePixels
 	void convertUnsignedIntImageToFloatCPU(unsigned int* imagePixelsUnsignedInt, float* floatImagePixels,
-			const unsigned int widthImages, const unsigned int heightImages)
+		const unsigned int widthImages, const unsigned int heightImages,
+		const beliefprop::ParallelParameters& optCPUParams)
 	{
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, widthImages * heightImages,
@@ -81,7 +85,8 @@ private:
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		#pragma omp parallel for
+		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+		#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 		for (int val = 0; val < widthImages * heightImages; val++) {
 #else
@@ -98,8 +103,9 @@ private:
 	//apply a horizontal filter on each pixel of the image in parallel
 	template<typename U>
 	void filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
-			const unsigned int widthImages, const unsigned int heightImages,
-			float* imageFilter, const unsigned int sizeFilter)
+		const unsigned int widthImages, const unsigned int heightImages,
+		float* imageFilter, const unsigned int sizeFilter,
+		const beliefprop::ParallelParameters& optCPUParams)
 	{
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 		KernelBpStereoCPU::tPool.parallelize_loop(0, widthImages * heightImages,
@@ -124,7 +130,8 @@ private:
 		  }
 	    });
     #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		#pragma omp parallel for
+		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+		#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 		for (int val = 0; val < widthImages * heightImages; val++) {
 #else
@@ -141,8 +148,9 @@ private:
 	//apply a vertical filter on each pixel of the image in parallel
 	template<typename U>
 	void filterImageVerticalCPU(U* imagePixelsToFilter, T filteredImagePixels,
-			const unsigned int widthImages, const unsigned int heightImages,
-			float* imageFilter, const unsigned int sizeFilter)
+		const unsigned int widthImages, const unsigned int heightImages,
+		float* imageFilter, const unsigned int sizeFilter,
+		const beliefprop::ParallelParameters& optCPUParams)
 	{
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 		KernelBpStereoCPU::tPool.parallelize_loop(0, widthImages * heightImages,
@@ -167,7 +175,8 @@ private:
 		  }
 	    });
     #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		#pragma omp parallel for
+		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+		#pragma omp parallel for num_threads(numThreadsKernel)
 #ifdef _WIN32
 		for (int val = 0; val < widthImages * heightImages; val++) {
 #else

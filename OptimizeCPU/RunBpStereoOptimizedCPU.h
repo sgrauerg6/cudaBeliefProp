@@ -21,10 +21,15 @@
 template <typename T, unsigned int DISP_VALS>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS> {
 public:
+	RunBpStereoOptimizedCPU(const beliefprop::ParallelParameters& optCpuParams) : optCPUParams_(optCpuParams) {}
+
 	std::string getBpRunDescription() override { return "Optimized CPU"; }
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override;
+
+private:
+	const beliefprop::ParallelParameters& optCPUParams_;
 };
 
 template<typename T, unsigned int DISP_VALS>
@@ -52,9 +57,9 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 #endif //_WIN32*/
 
 	resultsStream << "Number of threads: " << nthreads << "\n";
-	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>();
+	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>(optCPUParams_);
 	std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCPU =
-			std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>();
+			std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(optCPUParams_);
 
 	//can use default memory management since running on CPU
 	return this->processStereoSet(refTestImagePath, algSettings,

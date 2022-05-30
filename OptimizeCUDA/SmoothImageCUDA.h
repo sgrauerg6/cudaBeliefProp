@@ -25,7 +25,7 @@ public:
 	void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage) override;
 
 private:
-	const beliefprop::ParallelParameters cudaParams_;
+	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */
