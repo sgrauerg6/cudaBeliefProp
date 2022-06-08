@@ -142,6 +142,11 @@ constexpr std::array<unsigned int, 2> DEFAULT_CUDA_TB_DIMS{DEFAULT_CUDA_TB_WIDTH
 const unsigned int DEFAULT_NUM_CPU_THREADS{std::thread::hardware_concurrency()};
 const std::array<unsigned int, 2> DEFAULT_CPU_PARALLEL_DIMS{DEFAULT_NUM_CPU_THREADS, 1u};
 
+//enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run
+//in initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster
+//on CPU
+enum class OptParallelParamsSetting { SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN };
+
 //structure containing parameters including parallelization parameters
 //to use at each BP level
 struct ParallelParameters {

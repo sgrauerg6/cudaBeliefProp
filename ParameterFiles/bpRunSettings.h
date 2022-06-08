@@ -36,6 +36,10 @@
 //current thread pool options
 #define CPU_PARALLELIZATION_METHOD USE_OPENMP
 
+//uncomment to support using different OpenMP thread counts
+//in kernels in the same run
+//#define SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+
 //get string corresponding to CPU parallelization method
 constexpr const char* cpuParallelizationString() {
   #if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)

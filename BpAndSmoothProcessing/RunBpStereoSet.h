@@ -40,7 +40,8 @@ public:
 
 	//pure abstract overloaded operator that must be defined in child class
 	virtual ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) = 0;
+		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+		const beliefprop::ParallelParameters& parallelParams) = 0;
 
 protected:
 

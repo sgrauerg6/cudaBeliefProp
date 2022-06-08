@@ -61,8 +61,12 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -122,8 +126,12 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -190,8 +198,12 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -273,8 +285,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_); val++)
 #else
@@ -830,8 +846,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	}
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 	if constexpr (DISP_VALS > 0) {
-		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+		#pragma omp parallel for
+#endif
 #ifdef _WIN32
 		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #else
@@ -940,8 +960,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 		}
 	}
 	else {
-		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+		#pragma omp parallel for
+#endif
 #ifdef _WIN32
 		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #else
@@ -1224,8 +1248,12 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -1309,8 +1337,12 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 	  });
 	//using vectorized method when using OpenMP
 	/*#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
 #else
@@ -1361,8 +1393,12 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 
     for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
 	{
-		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+		#pragma omp parallel for
+#endif
 #ifdef _WIN32
 		for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #else
@@ -1712,8 +1748,12 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 	//combine output disparity maps from each checkerboard
 	//start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
 	//in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
-	int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+	int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
 	#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+	#pragma omp parallel for
+#endif
 #ifdef _WIN32
 	for (int y=0; y < currentLevelProperties.heightLevel_; y++)
 #else

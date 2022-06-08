@@ -85,8 +85,12 @@ private:
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+		#pragma omp parallel for
+#endif
 #ifdef _WIN32
 		for (int val = 0; val < widthImages * heightImages; val++) {
 #else
@@ -130,8 +134,12 @@ private:
 		  }
 	    });
     #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+		#pragma omp parallel for
+#endif
 #ifdef _WIN32
 		for (int val = 0; val < widthImages * heightImages; val++) {
 #else
@@ -175,8 +183,12 @@ private:
 		  }
 	    });
     #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		int numThreadsKernel{optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
+#else
+		#pragma omp parallel for
+#endif
 #ifdef _WIN32
 		for (int val = 0; val < widthImages * heightImages; val++) {
 #else

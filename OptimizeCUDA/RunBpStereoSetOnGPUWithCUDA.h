@@ -59,244 +59,227 @@ template <typename T, unsigned int DISP_VALS>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-				const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+				const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+				const beliefprop::ParallelParameters& parallelParams) override
 	{
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement =
 				std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 
 		return this->processStereoSet(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, 0> : public RunBpStereoSet<short, 0>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, 0, float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, 0>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, 0>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 template<>
 class RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> : public RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream) override
+					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
+					const beliefprop::ParallelParameters& parallelParams) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(cudaParams_);
+		std::unique_ptr<SmoothImage<>> smoothImageCUDA = std::make_unique<SmoothImageCUDA<>>(parallelParams);
 		std::unique_ptr<ProcessBPOnTargetDevice<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6], float*>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>>(cudaParams_);
+				std::make_unique<ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>>(parallelParams);
 		std::unique_ptr<RunBpStereoSetMemoryManagement<>> runBPCUDAMemoryManagement = std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>();
 		return this->processStereoSet<half, half*, float, float*>(refTestImagePath, algSettings, resultsStream,
 				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
 	}
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 //float16_t data type used for arm (rather than short)
@@ -309,7 +292,7 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+    RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override  { return "CUDA"; }
 
@@ -348,9 +331,6 @@ public:
 #endif //CURRENT_DATA_TYPE_PROCESSING
 
 	}
-
-private:
-	const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif //HALF_PRECISION_SUPPORTED
