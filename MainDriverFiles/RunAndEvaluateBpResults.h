@@ -71,13 +71,11 @@ namespace RunAndEvaluateBpResults {
 
 	void printParameters(const unsigned int numStereoSet, std::ostream& resultsStream)
 	{
-		bool optLevel = USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT;
+		constexpr bool optLevel{USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT};
 		resultsStream << "Stereo Set: " << bp_params::STEREO_SET[numStereoSet] << "\n";
 		resultsStream << "Memory Optimization Level: " << optLevel << "\n";
 		resultsStream << "Indexing Optimization Level: "
 					<< OPTIMIZED_INDEXING_SETTING << "\n";
-		//resultsStream << "BP Processing Data Type: "
-		//			<< BELIEF_PROP_PROCESSING_DATA_TYPE_STRING << "\n";
 		resultsStream << "Num Possible Disparity Values: "
 					<< bp_params::NUM_POSSIBLE_DISPARITY_VALUES[numStereoSet] << "\n";
 		resultsStream << "Num BP Levels: " << bp_params::LEVELS_BP << "\n";
@@ -98,7 +96,7 @@ namespace RunAndEvaluateBpResults {
 	void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap, std::ostream& resultsStream)
 	{
 		const OutputEvaluationResults<float> outputEvalResults =
-				outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
+			outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
 		resultsStream << outputEvalResults;
 	}
 
@@ -129,7 +127,7 @@ namespace RunAndEvaluateBpResults {
 		}
 
 		std::cout << "Running belief propagation on reference image " << refTestImagePath[0] << " and test image " << refTestImagePath[1] << " on " <<
-				optimizedImp->getBpRunDescription();
+					 optimizedImp->getBpRunDescription();
 		if (!runOptImpOnly) {
 			std::cout << " and " << singleThreadCPUImp->getBpRunDescription();
 		}

@@ -32,8 +32,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
+//specify that running optimized CPU run (used in RunAndEvaluateBpResults.h)
+#define OPTIMIZED_CPU_RUN
+
 //uncomment to only process smaller stereo sets
-#define SMALLER_SETS_ONLY
+//#define SMALLER_SETS_ONLY
 
 //option to optimize parallel parameters by running BP w/ multiple parallel parameters options by
 //finding the parallel parameters with the lowest runtime, and then setting the parallel parameters
@@ -45,15 +48,14 @@ constexpr bool OPTIMIZE_PARALLEL_PARAMS{true};
 //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
 constexpr beliefprop::OptParallelParamsSetting optParallelParamsSetting{beliefprop::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
 
+//parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation
+//parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
 const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
 	{ NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1},
 	{ NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}};
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS_ADDITIONAL_PARAMS{};
 const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
-
-//specify that running optimized CPU run (used in RunAndEvaluateBpResults.h)
-#define OPTIMIZED_CPU_RUN
 
 //functions in RunAndEvaluateBpResults use above constants and function
 #include "RunAndEvaluateBpResults.h"

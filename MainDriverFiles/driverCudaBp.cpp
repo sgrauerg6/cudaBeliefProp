@@ -28,6 +28,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include "../ParameterFiles/bpStructsAndEnums.h"
 
+//specify that running optimized CUDA run (used in RunAndEvaluateBpResults.h)
+#define OPTIMIZED_CUDA_RUN
+
+//uncomment to only processes smaller stereo sets
+//#define SMALLER_SETS_ONLY
+
 //option to optimize parallel parameters by running BP w/ multiple parallel parameters options by
 //finding the parallel parameters with the lowest runtime, and then setting the parallel parameters
 //to the best found parallel parameters in the final run
@@ -38,17 +44,13 @@ constexpr bool OPTIMIZE_PARALLEL_PARAMS{true};
 //in different kernels in the optimized CUDA implementation can decrease runtime
 constexpr beliefprop::OptParallelParamsSetting optParallelParamsSetting{beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN};
 
+//parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation
+//parallel parameter corresponds to thread block dimensions in CUDA implementation
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{	{16, 1}, {32, 1}, {32, 2}, {32, 3}, {32, 4}, {32, 5},
 	{32, 6},{32, 8}, {64, 1}, {64, 2}, {64, 3}, {64, 4}, {128, 1}, {128, 2}, {256, 1}};
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS_ADDITIONAL_PARAMS{{32, 10}, {32, 12}, {32, 14}, {32, 16},
 	{64, 5}, {64, 6}, {64, 7}, {64, 8}, {128, 3}, {128, 4}, {256, 2}};
-const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
-
-//uncomment to only processes smaller stereo sets
-#define SMALLER_SETS_ONLY
-
-//specify that running optimized CUDA run (used in RunAndEvaluateBpResults.h)
-#define OPTIMIZED_CUDA_RUN
+constexpr std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
 
 //functions in RunAndEvaluateBpResults use above constants
 #include "RunAndEvaluateBpResults.h"
