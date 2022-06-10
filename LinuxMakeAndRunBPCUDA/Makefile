@@ -35,17 +35,13 @@ ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++17
 # may need to adjust to allow support for target GPU (note that can't use half precision before compute capability 5.3)
 # use native GPU by default (native flag requires CUDA 11.6 or later)
 ARCHITECTURES_GENCODE = -arch=native
-#ARCHITECTURES_GENCODE = -gencode arch=compute_80,code=sm_80
-#-gencode arch=compute_70,code=sm_70 -gencode arch=compute_80,code=sm_80
-#-gencode arch=compute_35,code=sm_35
-#ARCHITECTURES_GENCODE = -gencode arch=compute_86,code=sm_86 -gencode arch=compute_80,code=sm_80 -gencode arch=compute_75,code=sm_75 -gencode arch=compute_70,code=sm_70 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_60,code=sm_60
 
 all: impDriverCUDA
 
 impDriverCUDA: driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
 	$(CC) driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpParametersFromPython.h ../ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpParametersFromPython.h ../ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ../MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHandling.cpp ../FileProcessing/BpFileHandlingConsts.h

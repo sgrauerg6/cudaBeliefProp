@@ -8,22 +8,38 @@
 #ifndef RUNANDEVALUATEBPRESULTS_H_
 #define RUNANDEVALUATEBPRESULTS_H_
 
-#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
-//#include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
 #include <memory>
 #include <array>
 #include <fstream>
 #include <map>
 #include <vector>
-#include "../FileProcessing/BpFileHandling.h"
-#include "../ParameterFiles/bpRunSettings.h"
 #include <numeric>
 #include <algorithm>
+#include "../ParameterFiles/bpRunSettings.h"
+#include "../FileProcessing/BpFileHandling.h"
+#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "../SingleThreadCPU/stereo.h"
+
+#ifdef OPTIMIZED_CPU_RUN
+//needed to run the optimized implementation a stereo set using CPU
+#include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
+#endif //OPTIMIZED_CPU_RUN
+#ifdef OPTIMIZED_CUDA_RUN
+//needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
+#include "../ParameterFiles/bpStereoCudaParameters.h"
+//needed to run the implementation a stereo set using CUDA
+#include "../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+#endif //OPTIMIZED_CUDA_RUN
 
 typedef std::filesystem::path filepathtype;
-const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
 
 namespace RunAndEvaluateBpResults {
+	//constants for output results for individual and sets of runs
+	const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
+	const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
+	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE{"outputResultsDefaultParallelParams.csv"};
+	const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
+
 	std::pair<std::map<std::string, std::string>, std::vector<std::string>> getResultsMappingFromFile(const std::string& fileName) {
 		std::map<std::string, std::string> resultsMapping;
 		std::vector<std::string> headersInOrder;
@@ -308,6 +324,154 @@ namespace RunAndEvaluateBpResults {
 			(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
 			speedupsVect[(speedupsVect.size() / 2)];
 		std::cout << "Median speedup: " << medianSpeedup << std::endl;
+	}
+
+#ifdef OPTIMIZED_CPU_RUN
+	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP>
+	void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal) {
+		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpStereoSingleThread =
+			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+		if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
+			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> optCPUDispValsInTemplate = 
+				std::make_unique<RunBpStereoOptimizedCPU<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, optCPUDispValsInTemplate, runBpStereoSingleThread);
+		}
+		else {
+			std::unique_ptr<RunBpStereoSet<T, 0>> optCPUDispValsInTemplate = 
+				std::make_unique<RunBpStereoOptimizedCPU<T, 0>>();
+			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, optCPUDispValsInTemplate, runBpStereoSingleThread);
+		}
+	}
+#endif //OPTIMIZED_CPU_RUN
+#ifdef OPTIMIZED_CUDA_RUN
+	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP>
+	void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal) {
+		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpStereoSingleThread =
+			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+		if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
+			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> cudaDispValsInTemplate = 
+				std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, cudaDispValsInTemplate, runBpStereoSingleThread);
+		}
+		else {
+			std::unique_ptr<RunBpStereoSet<T, 0>> cudaDispValsInTemplate = 
+				std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, 0>>();
+			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, cudaDispValsInTemplate, runBpStereoSingleThread);
+		}
+	}
+#endif //OPTIMIZED_CUDA_RUN
+
+	void runBpOnStereoSets() {
+		std::array<std::map<std::string, std::vector<std::string>>, 2> resDefParParamsFinal;
+		runBpOnSetAndUpdateResults<float, 0, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 0, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 1, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 1, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 2, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 2, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 3, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 3, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 4, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 4, false>(resDefParParamsFinal);
+#ifndef SMALLER_SETS_ONLY
+		runBpOnSetAndUpdateResults<float, 5, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 5, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 6, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float, 6, false>(resDefParParamsFinal);
+#endif //SMALLER_SETS_ONLY
+#ifdef DOUBLE_PRECISION_SUPPORTED
+		runBpOnSetAndUpdateResults<double, 0, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 0, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 1, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 1, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 2, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 2, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 3, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 3, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 4, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 4, false>(resDefParParamsFinal);
+#ifndef SMALLER_SETS_ONLY
+		runBpOnSetAndUpdateResults<double, 5, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 5, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 6, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<double, 6, false>(resDefParParamsFinal);
+#endif //SMALLER_SETS_ONLY
+#endif //DOUBLE_PRECISION_SUPPORTED
+#ifdef HALF_PRECISION_SUPPORTED
+#ifdef COMPILING_FOR_ARM
+		runBpOnSetAndUpdateResults<float16_t, 0, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 0, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 1, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 1, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 2, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 2, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 3, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 3, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 4, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 4, false>(resDefParParamsFinal);
+#ifndef SMALLER_SETS_ONLY
+		runBpOnSetAndUpdateResults<float16_t, 5, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 5, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 6, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<float16_t, 6, false>(resDefParParamsFinal);
+#endif SMALLER_SETS_ONLY
+#else
+		runBpOnSetAndUpdateResults<short, 0, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 0, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 1, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 1, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 2, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 2, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 3, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 3, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 4, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 4, false>(resDefParParamsFinal);
+#ifndef SMALLER_SETS_ONLY
+		runBpOnSetAndUpdateResults<short, 5, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 5, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 6, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<short, 6, false>(resDefParParamsFinal);
+#endif //SMALLER_SETS_ONLY
+#endif //COMPILING_FOR_ARM
+#endif //HALF_PRECISION_SUPPORTED
+
+		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			//retrieve and print average and median speedup using optimized
+			//parallel parameters compared to default
+			RunAndEvaluateBpResults::getAverageMedianSpeedup(resDefParParamsFinal);
+		}
+
+		//write results from default and optimized parallel parameters runs to csv file
+		std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE),
+																std::ofstream(BP_ALL_RUNS_OUTPUT_CSV_FILE)};
+		const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
+		for (const auto& currHeader : headersInOrder) {
+			resultsStreamDefaultTBFinal[0] << currHeader << ",";
+			resultsStreamDefaultTBFinal[1] << currHeader << ",";
+		}
+		resultsStreamDefaultTBFinal[1] << "Speedup Over Default Parallel Parameters" << ",";
+
+		resultsStreamDefaultTBFinal[0] << std::endl;
+		resultsStreamDefaultTBFinal[1] << std::endl;
+
+		for (unsigned int i=0; i < resultsStreamDefaultTBFinal.size(); i++) {
+			for (unsigned int j=0; j < resDefParParamsFinal[i].begin()->second.size(); j++) {
+				for (auto& currHeader : headersInOrder) {
+					resultsStreamDefaultTBFinal[i] << resDefParParamsFinal[i].at(currHeader).at(j) << ",";
+				}
+				if (i == 1) {
+					resultsStreamDefaultTBFinal[1] << resDefParParamsFinal[i].at("Speedup Over Default Parallel Parameters").at(j) << ",";
+				}
+				resultsStreamDefaultTBFinal[i] << std::endl;
+			}
+		}
+		resultsStreamDefaultTBFinal[0].close();
+		resultsStreamDefaultTBFinal[1].close();
+
+		std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
+				<< BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
+		std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
+				<< BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE << std::endl;
 	}
 };
 
