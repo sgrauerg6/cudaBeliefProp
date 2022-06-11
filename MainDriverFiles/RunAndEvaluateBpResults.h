@@ -412,7 +412,7 @@ namespace RunAndEvaluateBpResults {
 		runBpOnSetAndUpdateResults<float16_t, 5, false>(resDefParParamsFinal);
 		runBpOnSetAndUpdateResults<float16_t, 6, true>(resDefParParamsFinal);
 		runBpOnSetAndUpdateResults<float16_t, 6, false>(resDefParParamsFinal);
-#endif SMALLER_SETS_ONLY
+#endif //SMALLER_SETS_ONLY
 #else
 		runBpOnSetAndUpdateResults<short, 0, true>(resDefParParamsFinal);
 		runBpOnSetAndUpdateResults<short, 0, false>(resDefParParamsFinal);
