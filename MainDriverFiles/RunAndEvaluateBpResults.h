@@ -179,9 +179,9 @@ namespace RunAndEvaluateBpResults {
 		std::vector<std::array<unsigned int, 2>> parallelParamsVect{OPTIMIZE_PARALLEL_PARAMS ? PARALLEL_PARAMETERS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
 		
 		//CUDA implementation only (for now):
-		//add additional parallel parameters if first stereo set, second stereo set but not double, or not using templated disparity
+		//add additional parallel parameters if first or second stereo set but not double or not using templated disparity
 		//otherwise the additional parallel parameters with more than 256 can fail to launch due to resource limitations (likely related to registers)
-		if (((NUM_SET == 0) || ((NUM_SET == 1) && (sizeof(T) != sizeof(double)))) || (DISP_VALS_TEMPLATE_OPTIMIZED == 0)) {
+		if (((NUM_SET <= 1) && (sizeof(T) != sizeof(double))) || (DISP_VALS_TEMPLATE_OPTIMIZED == 0)) {
 			parallelParamsVect.insert(parallelParamsVect.end(), PARALLEL_PARAMETERS_OPTIONS_ADDITIONAL_PARAMS.begin(), PARALLEL_PARAMETERS_OPTIONS_ADDITIONAL_PARAMS.end());
 		}
 		
