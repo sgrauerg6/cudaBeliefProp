@@ -49,9 +49,6 @@ namespace bp_cuda_device
 		int cudaRuntimeVersion;
 		cudaRuntimeGetVersion(&cudaRuntimeVersion);
 		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
-
-		resultsStream << "USE_SHARED_MEMORY: " << USE_SHARED_MEMORY << "\n";
-		resultsStream << "DISP_INDEX_START_REG_LOCAL_MEM: " << DISP_INDEX_START_REG_LOCAL_MEM << "\n";
 	}
 };
 

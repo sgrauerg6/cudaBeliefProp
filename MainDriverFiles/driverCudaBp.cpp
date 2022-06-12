@@ -55,23 +55,6 @@ constexpr std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
 //functions in RunAndEvaluateBpResults use above constants
 #include "RunAndEvaluateBpResults.h"
 
-/*
-//get current CUDA properties and write them to output stream
-void retrieveDeviceProperties(const int numDevice, std::ostream& resultsStream)
-{
-	cudaDeviceProp prop;
-	cudaGetDeviceProperties(&prop, numDevice);
-	int cudaDriverVersion;
-	cudaDriverGetVersion(&cudaDriverVersion);
-	int cudaRuntimeVersion;
-	cudaRuntimeGetVersion(&cudaRuntimeVersion);
-
-	resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
-	resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
-	resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
-}
-*/
-
 int main(int argc, char** argv)
 {
 	RunAndEvaluateBpResults::runBpOnStereoSets();
