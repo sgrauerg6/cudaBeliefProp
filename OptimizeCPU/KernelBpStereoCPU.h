@@ -377,7 +377,7 @@ public:
 
 #if (CPU_VECTORIZATION_SETTING == NEON)
 #include "KernelBpStereoCPU_NEON.h"
-#endif //CPU_OPTIMIZATION_SETTING == USE_NEON
+#endif //beliefprop::CPU_OPTIMIZATION_SETTING == USE_NEON
 
 #else
 //needed so that template specializations are used when available

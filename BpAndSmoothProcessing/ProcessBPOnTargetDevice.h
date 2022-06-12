@@ -188,8 +188,8 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
 
 	//assuming that width includes padding
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
-		if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+	if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+		if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 			std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
 					organizeDataCostsAndMessageDataAllLevels(allocatedMemForBpProcessingDevice, dataAllLevelsEachDataMessageArr);
 		}
@@ -238,7 +238,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	std::array<beliefprop::checkerboardMessages<U>, 2> messagesDevice;
 
 	//assuming that width includes padding
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+	if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 		messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
 	}
 	else {
@@ -284,7 +284,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 			dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 
 			//assuming that width includes padding
-			if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+			if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 				messagesDevice[(currCheckerboardSet + 1) % 2] = retrieveLevelMessageData(
 						messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 			}
@@ -309,7 +309,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
  	    	eachLevelTimingCopy[levelNum].second = timeCopyMessageValuesKernelEnd;
 
 			//assuming that width includes padding
-			if constexpr (!USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+			if constexpr (!beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 				//free the now-copied from computed data of the completed level
 				freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet]);
 			}
@@ -336,13 +336,13 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = currTime;
 	startEndTimes[Runtime_Type_BP::FINAL_FREE].first = currTime;
 
-	if constexpr (USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
-		if constexpr (ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+	if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+		if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
           //do nothing; memory free outside of runs
 		}
 		else {
 			//now free the allocated data space; all data in single array when
-			//USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
+			//beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
 			freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels);
 		}
 	}

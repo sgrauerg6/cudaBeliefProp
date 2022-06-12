@@ -345,3 +345,8 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+LinuxMakeAndRunBPCUDA/driverCudaBp
+LinuxMakeAndRunBPCUDA/cuda-ubuntu1804.pin
+LinuxMakeAndRunBPCUDA/cuda-repo-ubuntu1804-11-6-local_11.6.2-510.47.03-1_amd64.deb
+LinuxMakeAndRunBPCUDA/cuda_11.6.2_510.47.03_linux.run
+LinuxMakeAndRunBPOptimizedCPU/driverCPUBp

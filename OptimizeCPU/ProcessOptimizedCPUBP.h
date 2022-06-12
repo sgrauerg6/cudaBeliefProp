@@ -47,9 +47,9 @@ public:
 			//*arrayToAllocate = malloc(numBytesAllocate);
 			//necessary to align for aligned avx load instructions to work as expected
 #ifdef _WIN32
-			*arrayToAllocate = _aligned_malloc(numBytesAllocate, bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T));
+			*arrayToAllocate = _aligned_malloc(numBytesAllocate, beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T));
 #else
-			*arrayToAllocate = aligned_alloc(bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
+			*arrayToAllocate = aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
 #endif
 		}
 
@@ -66,10 +66,10 @@ public:
 		U allocateMemoryOnTargetDevice(const unsigned long numData) override
 		{
 #ifdef _WIN32
-			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T)));
+			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T)));
 			return memoryData;
 #else
-			U memoryData = static_cast<U>(std::aligned_alloc(bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
+			U memoryData = static_cast<U>(std::aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
 			return memoryData;
 #endif
 		}

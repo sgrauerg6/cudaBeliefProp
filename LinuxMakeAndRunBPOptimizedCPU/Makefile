@@ -28,7 +28,7 @@ BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHan
 DetailedTimings.o: ../RuntimeTiming/DetailedTimings.cpp ../RuntimeTiming/DetailedTimings.h
 	$(CC) ../RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverBpStereoCPU.o: ../MainDriverFiles/driverBpStereoCPU.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpParametersFromPython.h ../ParameterFiles/bpStructsAndEnums.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
+driverBpStereoCPU.o: ../MainDriverFiles/driverBpStereoCPU.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
 	$(CC) ../MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessBPOnTargetDevice.o : ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h ../RuntimeTiming/DetailedTimingBPConsts.h ../ParameterFiles/bpRunSettings.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h DetailedTimings.o
@@ -52,7 +52,7 @@ OutputEvaluationResults.o: ../OutputEvaluation/OutputEvaluationResults.cpp ../Ou
 DisparityMap.o: ../OutputEvaluation/DisparityMap.cpp ../OutputEvaluation/DisparityMap.h OutputEvaluationParameters.o OutputEvaluationResults.o
 	$(CC) ../OutputEvaluation/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: ../SingleThreadCPU/stereo.cpp ../SingleThreadCPU/stereo.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpParametersFromPython.h ../ParameterFiles/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
+stereo.o: ../SingleThreadCPU/stereo.cpp ../SingleThreadCPU/stereo.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	$(CC) ../SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 SmoothImage.o: ../BpAndSmoothProcessing/SmoothImage.cpp ../BpAndSmoothProcessing/SmoothImage.h 

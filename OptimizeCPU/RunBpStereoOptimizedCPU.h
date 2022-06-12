@@ -35,7 +35,7 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const beliefprop::ParallelParameters& parallelParams)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
-	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];//std::thread::hardware_concurrency() / 2;
+	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
 #if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 	omp_set_num_threads(nthreads);
 	#pragma omp parallel
@@ -55,6 +55,7 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 #endif //_WIN32*/
 
 	resultsStream << "Number of threads: " << nthreads << "\n";
+	resultsStream << "Vectorization: " << beliefprop::cpuVectorizationString() << "\n";
 	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>(parallelParams);
 	std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCPU =
 			std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(parallelParams);

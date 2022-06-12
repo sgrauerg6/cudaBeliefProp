@@ -195,7 +195,6 @@
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationParameters.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationResults.h" />
-    <ClInclude Include="..\..\..\ParameterFiles\bpParametersFromPython.h" />
     <ClInclude Include="..\..\..\ParameterFiles\bpRunSettings.h" />
     <ClInclude Include="..\..\..\ParameterFiles\bpStereoCudaParameters.h" />
     <ClInclude Include="..\..\..\ParameterFiles\bpStereoParameters.h" />

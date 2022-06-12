@@ -71,11 +71,11 @@ namespace RunAndEvaluateBpResults {
 
 	void printParameters(const unsigned int numStereoSet, std::ostream& resultsStream)
 	{
-		constexpr bool optLevel{USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT};
+		constexpr bool optLevel{beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT};
 		resultsStream << "Stereo Set: " << bp_params::STEREO_SET[numStereoSet] << "\n";
 		resultsStream << "Memory Optimization Level: " << optLevel << "\n";
 		resultsStream << "Indexing Optimization Level: "
-					<< OPTIMIZED_INDEXING_SETTING << "\n";
+					<< beliefprop::OPTIMIZED_INDEXING_SETTING << "\n";
 		resultsStream << "Num Possible Disparity Values: "
 					<< bp_params::NUM_POSSIBLE_DISPARITY_VALUES[numStereoSet] << "\n";
 		resultsStream << "Num BP Levels: " << bp_params::LEVELS_BP << "\n";
@@ -84,10 +84,10 @@ namespace RunAndEvaluateBpResults {
 		resultsStream << "DATA_K_BP: " << bp_params::DATA_K_BP << "\n";
 		resultsStream << "LAMBDA_BP: " << bp_params::LAMBDA_BP << "\n";
 		resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
-		resultsStream << "CPU_OPTIMIZATION_LEVEL: " << static_cast<int>(CPU_OPTIMIZATION_SETTING)
+		resultsStream << "CPU_OPTIMIZATION_LEVEL: " << static_cast<int>(beliefprop::CPU_OPTIMIZATION_SETTING)
 					<< "\n";
-		resultsStream << "BYTES_ALIGN_MEMORY: " << bp_params::BYTES_ALIGN_MEMORY << "\n";
-		resultsStream << "NUM_DATA_ALIGN_WIDTH: " << bp_params::NUM_DATA_ALIGN_WIDTH << "\n";
+		resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::BYTES_ALIGN_MEMORY << "\n";
+		resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::NUM_DATA_ALIGN_WIDTH << "\n";
 	}
 
 	//compare resulting disparity map with a ground truth (or some other disparity map...)
@@ -204,7 +204,7 @@ namespace RunAndEvaluateBpResults {
 				parallelParams.setParallelDims(*pParamsCurrRun, algSettings.numLevels_);
 			}
 
-			resultsStream << "DataType:" << DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
+			resultsStream << "DataType:" << beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
 			if constexpr (OPTIMIZE_PARALLEL_PARAMS && (optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN)) {
 				//show parallel parameters for each kernel if allowing different parallel parameters for each kernel in the same run
 				resultsStream << "Blur Images Parallel Dimensions:" << 

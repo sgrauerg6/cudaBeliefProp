@@ -1099,7 +1099,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
 		const beliefprop::ParallelParameters& optCPUParams)
 {
-	if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_256)
+	if constexpr (beliefprop::CPU_OPTIMIZATION_SETTING == beliefprop::cpu_vectorization_setting::USE_AVX_256)
 	{
 		//only use AVX-256 if width of processing checkerboard is over 10
 		if (currentLevelProperties.widthCheckerboardLevel_ > 10)
@@ -1123,7 +1123,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_AVX_512)
+	else if constexpr (beliefprop::CPU_OPTIMIZATION_SETTING == beliefprop::cpu_vectorization_setting::USE_AVX_512)
 	{
 		//only use AVX-512 if width of processing checkerboard is over 20
 		if (currentLevelProperties.widthCheckerboardLevel_ > 20)
@@ -1147,7 +1147,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (CPU_OPTIMIZATION_SETTING == cpu_vectorization_setting::USE_NEON)
+	else if constexpr (beliefprop::CPU_OPTIMIZATION_SETTING == beliefprop::cpu_vectorization_setting::USE_NEON)
 	{
 		if (currentLevelProperties.widthCheckerboardLevel_ > 5)
 		{
@@ -1380,15 +1380,15 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 
 	//initially get output for each checkerboard
 	//set width of disparity checkerboard to be a multiple of numDataInSIMDVector so that SIMD vectors can be aligned
-	unsigned int widthDispCheckerboard = ((currentLevelProperties.paddedWidthCheckerboardLevel_ % bp_params::NUM_DATA_ALIGN_WIDTH) == 0) ?
+	unsigned int widthDispCheckerboard = ((currentLevelProperties.paddedWidthCheckerboardLevel_ % beliefprop::NUM_DATA_ALIGN_WIDTH) == 0) ?
 	   currentLevelProperties.paddedWidthCheckerboardLevel_  :
 	   currentLevelProperties.paddedWidthCheckerboardLevel_ + 
-	   (bp_params::NUM_DATA_ALIGN_WIDTH - (currentLevelProperties.paddedWidthCheckerboardLevel_ % bp_params::NUM_DATA_ALIGN_WIDTH));
+	   (beliefprop::NUM_DATA_ALIGN_WIDTH - (currentLevelProperties.paddedWidthCheckerboardLevel_ % beliefprop::NUM_DATA_ALIGN_WIDTH));
 	const unsigned int numDataDispChBoard = widthDispCheckerboard * currentLevelProperties.heightLevel_;
 #ifdef _WIN32
-		V* disparityCheckboard0 = static_cast<V*>(_aligned_malloc(2 * numDataDispChBoard * sizeof(V), bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(V)));
+		V* disparityCheckboard0 = static_cast<V*>(_aligned_malloc(2 * numDataDispChBoard * sizeof(V), beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(V)));
 #else
-		V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(bp_params::NUM_DATA_ALIGN_WIDTH * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
+		V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
 #endif
 
     for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
@@ -1908,7 +1908,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
 					dstMessageArray, dst[currentDisparity]);
 		}
 
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -2015,7 +2015,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
 					dstMessageArray, dst[currentDisparity]);
 		}
 
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {

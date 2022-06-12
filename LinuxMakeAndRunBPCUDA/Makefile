@@ -3,7 +3,7 @@ CUDA_SDK_ROOT :=
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpParametersFromPython.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStructsAndEnums.h
+FILE_DEPENDENCIES = ParameterFiles/bpStereoCudaParameters.h ParameterFiles/bpStereoParameters.h ParameterFiles/bpRunSettings.h ParameterFiles/bpStructsAndEnums.h
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -41,7 +41,7 @@ all: impDriverCUDA
 impDriverCUDA: driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
 	$(CC) driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpParametersFromPython.h ../ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ../MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHandling.cpp ../FileProcessing/BpFileHandlingConsts.h
@@ -71,7 +71,7 @@ OutputEvaluationResults.o: ../OutputEvaluation/OutputEvaluationResults.cpp ../Ou
 DisparityMap.o: ../OutputEvaluation/DisparityMap.cpp ../OutputEvaluation/DisparityMap.h OutputEvaluationParameters.o OutputEvaluationResults.o
 	$(CC) ../OutputEvaluation/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: ../SingleThreadCPU/stereo.cpp ../SingleThreadCPU/stereo.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpParametersFromPython.h ../ParameterFiles/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
+stereo.o: ../SingleThreadCPU/stereo.cpp ../SingleThreadCPU/stereo.h ../ParameterFiles/bpStereoCudaParameters.h ../ParameterFiles/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	$(CC) ../SingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 SmoothImage.o: ../BpAndSmoothProcessing/SmoothImage.cpp ../BpAndSmoothProcessing/SmoothImage.h 

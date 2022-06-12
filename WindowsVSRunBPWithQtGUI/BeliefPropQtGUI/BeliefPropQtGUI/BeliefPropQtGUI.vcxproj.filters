@@ -183,9 +183,6 @@
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationResults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ParameterFiles\bpParametersFromPython.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\ParameterFiles\bpRunSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>

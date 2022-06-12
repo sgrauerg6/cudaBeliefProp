@@ -61,9 +61,9 @@ struct levelProperties
 	unsigned int getPaddedCheckerboardWidth(const unsigned int checkerboardWidth) const
 	{
 		//add "padding" to checkerboard width if necessary for alignment
-		return ((checkerboardWidth % bp_params::NUM_DATA_ALIGN_WIDTH) == 0) ?
+		return ((checkerboardWidth % beliefprop::NUM_DATA_ALIGN_WIDTH) == 0) ?
 				checkerboardWidth :
-				(checkerboardWidth + (bp_params::NUM_DATA_ALIGN_WIDTH - (checkerboardWidth % bp_params::NUM_DATA_ALIGN_WIDTH)));
+				(checkerboardWidth + (beliefprop::NUM_DATA_ALIGN_WIDTH - (checkerboardWidth % beliefprop::NUM_DATA_ALIGN_WIDTH)));
 	}
 
 	template <typename T>
@@ -74,11 +74,11 @@ struct levelProperties
 			* ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
 		unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
 
-		if ((numBytesAtLevel % bp_params::BYTES_ALIGN_MEMORY) == 0) {
+		if ((numBytesAtLevel % beliefprop::BYTES_ALIGN_MEMORY) == 0) {
 			return numDataAtLevel;
 		}
 		else {
-			numBytesAtLevel += (bp_params::BYTES_ALIGN_MEMORY - (numBytesAtLevel % bp_params::BYTES_ALIGN_MEMORY));
+			numBytesAtLevel += (beliefprop::BYTES_ALIGN_MEMORY - (numBytesAtLevel % beliefprop::BYTES_ALIGN_MEMORY));
 			return (numBytesAtLevel / sizeof(T));
 		}
 	}

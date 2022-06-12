@@ -24,7 +24,7 @@ ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const un
 		const unsigned int width, const unsigned int height, const unsigned int currentDisparity, const unsigned int totalNumDispVals,
 		const unsigned int offsetData = 0u)
 {
-	if constexpr (OPTIMIZED_INDEXING_SETTING) {
+	if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 		//indexing is performed in such a way so that the memory accesses as coalesced as much as possible
 		return (yVal * width * totalNumDispVals + width * currentDisparity + xVal) + offsetData;
 	}
@@ -39,7 +39,7 @@ ARCHITECTURE_ADDITION inline T getZeroVal() {
 }
 
 //avx512 requires data to be aligned on 64 bytes (16 float values)
-#if CPU_OPTIMIZATION_SETTING == USE_AVX_512
+#if CPU_VECTORIZATION_SETTING == USE_AVX_512
 #define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
 #else
 #define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 8
@@ -48,8 +48,8 @@ ARCHITECTURE_ADDITION inline T getZeroVal() {
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
 inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector)
 {
-	//assuming that the padded checkerboard width divides evenly by NUM_DATA_ALIGN_WIDTH_FROM_PYTHON (if that's not the case it's a bug)
-	return (((xValDataStart % numDataInSIMDVector) == 0) && ((NUM_DATA_ALIGN_WIDTH_FROM_PYTHON % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+	//assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
+	return (((xValDataStart % numDataInSIMDVector) == 0) && ((beliefprop::NUM_DATA_ALIGN_WIDTH % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
@@ -105,7 +105,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDi
 
 	for (unsigned int currentDisparity = 1; currentDisparity < bpSettingsDispVals; currentDisparity++)
 	{
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			currFArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -120,7 +120,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDi
 
 	for (int currentDisparity = (int)bpSettingsDispVals - 2; currentDisparity >= 0; currentDisparity--)
 	{
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			currFArrayIndex -= currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -178,7 +178,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 	for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
 		dst[currentDisparity] -= valToNormalize;
 		dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -232,7 +232,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 		dst[currentDisparity] -= valToNormalize;
 		dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -342,7 +342,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 		if (dstProcessing[procArrIdx] < minimum)
 			minimum = dstProcessing[procArrIdx];
 
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -367,7 +367,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 
 		valToNormalize += dstProcessing[procArrIdx];
 
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
@@ -383,7 +383,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 	for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 		dstProcessing[procArrIdx] -= valToNormalize;
 		dstMessageArray[procArrIdx] = convertValToDifferentDataTypeIfNeeded<U, T>(dstProcessing[procArrIdx]);
-		if constexpr (OPTIMIZED_INDEXING_SETTING) {
+		if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
 			procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
 		}
 		else {
