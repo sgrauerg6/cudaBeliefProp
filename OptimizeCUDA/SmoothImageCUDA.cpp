@@ -76,5 +76,3 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
 		cudaFree(filterDevice);
 	}
 }
-
-template class SmoothImageCUDA<>;
