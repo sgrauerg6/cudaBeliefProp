@@ -35,10 +35,6 @@
 //current thread pool options
 #define CPU_PARALLELIZATION_METHOD USE_OPENMP
 
-//uncomment to support using different OpenMP thread counts
-//in kernels in the same run
-//#define SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-
 #define DATA_TYPE_PROCESSING_FLOAT 0
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2
