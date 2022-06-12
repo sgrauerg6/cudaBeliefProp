@@ -79,7 +79,7 @@ public:
 				const beliefprop::levelProperties& currentLevelProperties,
 				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 				const beliefprop::checkerboardMessages<U>& messagesDevice,
-				void* allocatedMemForProcessing) override;
+				U allocatedMemForProcessing) override;
 
 		void copyMessageValuesToNextLevelDown(
 				const beliefprop::levelProperties& currentLevelProperties,
@@ -106,7 +106,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const be
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
-		void* allocatedMemForProcessing)
+		U allocatedMemForProcessing)
 {
 	//at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
 	for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)

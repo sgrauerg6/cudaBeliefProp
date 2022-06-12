@@ -80,7 +80,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 
 	//allocate data for bp processing on target device ahead of runs if option selected
 	V bpData = nullptr;
-	void* bpProcStore = nullptr;
+	V bpProcStore = nullptr;
 	if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 		unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);

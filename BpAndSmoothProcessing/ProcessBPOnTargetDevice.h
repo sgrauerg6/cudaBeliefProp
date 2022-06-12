@@ -55,7 +55,7 @@ public:
 			const beliefprop::levelProperties& currentLevelProperties,
 			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 			const beliefprop::checkerboardMessages<U>& messagesDevice,
-			void* allocatedMemForProcessing) = 0;
+			U allocatedMemForProcessing) = 0;
 
 	virtual void copyMessageValuesToNextLevelDown(
 			const beliefprop::levelProperties& currentLevelProperties,
@@ -145,7 +145,7 @@ public:
 	//output is resultingDisparityMap
 	std::pair<V, DetailedTimings<Runtime_Type_BP>> operator()(const std::array<V, 2>& imagesOnTargetDevice,
 			const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
-			U allocatedMemForBpProcessingDevice = nullptr, void* allocatedMemForProcessing = nullptr);
+			U allocatedMemForBpProcessingDevice = nullptr, U allocatedMemForProcessing = nullptr);
 };
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
@@ -153,7 +153,7 @@ public:
 //output is disparity map and processing runtimes
 template<typename T, typename U, unsigned int DISP_VALS, typename V>
 std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DISP_VALS, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
-	const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, void* allocatedMemForProcessing)
+	const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, U allocatedMemForProcessing)
 {
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
 	std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);

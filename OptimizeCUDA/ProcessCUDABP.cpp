@@ -58,7 +58,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPset
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
-		void* allocatedMemForProcessing)
+		U allocatedMemForProcessing)
 {
 	//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);

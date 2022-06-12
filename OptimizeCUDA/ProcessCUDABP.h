@@ -66,7 +66,7 @@ public:
 			const beliefprop::levelProperties& currentLevelProperties,
 			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 			const beliefprop::checkerboardMessages<U>& messagesDevice,
-			void* allocatedMemForProcessing) override;
+			U allocatedMemForProcessing) override;
 
 	//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
 	//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
