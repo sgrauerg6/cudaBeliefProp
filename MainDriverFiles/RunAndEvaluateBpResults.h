@@ -20,18 +20,27 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../SingleThreadCPU/stereo.h"
 
+typedef std::filesystem::path filepathtype;
+
+//check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
 #include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
+//set RunBpOptimized alias to correspond to optimized CPU implementation
+template <typename T, unsigned int DISP_VALS>
+using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS>;
 #endif //OPTIMIZED_CPU_RUN
+
+//check if CUDA run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CUDA_RUN
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 //needed to run the implementation a stereo set using CUDA
 #include "../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+//set RunBpOptimized alias to correspond to CUDA implementation
+template <typename T, unsigned int DISP_VALS>
+using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS>;
 #endif //OPTIMIZED_CUDA_RUN
-
-typedef std::filesystem::path filepathtype;
 
 namespace RunAndEvaluateBpResults {
 	//constants for output results for individual and sets of runs
@@ -322,40 +331,22 @@ namespace RunAndEvaluateBpResults {
 		std::cout << "Median speedup: " << medianSpeedup << std::endl;
 	}
 
-#ifdef OPTIMIZED_CPU_RUN
 	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP>
 	void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal) {
 		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpStereoSingleThread =
 			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+		//RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
 		if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
-			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> optCPUDispValsInTemplate = 
-				std::make_unique<RunBpStereoOptimizedCPU<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
-			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, optCPUDispValsInTemplate, runBpStereoSingleThread);
+			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpOptimizedImp = 
+				std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, runBpOptimizedImp, runBpStereoSingleThread);
 		}
 		else {
-			std::unique_ptr<RunBpStereoSet<T, 0>> optCPUDispValsInTemplate = 
-				std::make_unique<RunBpStereoOptimizedCPU<T, 0>>();
-			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, optCPUDispValsInTemplate, runBpStereoSingleThread);
+			std::unique_ptr<RunBpStereoSet<T, 0>> runBpOptimizedImp = 
+				std::make_unique<RunBpOptimized<T, 0>>();
+			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, runBpOptimizedImp, runBpStereoSingleThread);
 		}
 	}
-#endif //OPTIMIZED_CPU_RUN
-#ifdef OPTIMIZED_CUDA_RUN
-	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP>
-	void runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal) {
-		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpStereoSingleThread =
-			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
-		if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
-			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> cudaDispValsInTemplate = 
-				std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
-			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, cudaDispValsInTemplate, runBpStereoSingleThread);
-		}
-		else {
-			std::unique_ptr<RunBpStereoSet<T, 0>> cudaDispValsInTemplate = 
-				std::make_unique<RunBpStereoSetOnGPUWithCUDA<T, 0>>();
-			RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, cudaDispValsInTemplate, runBpStereoSingleThread);
-		}
-	}
-#endif //OPTIMIZED_CUDA_RUN
 
 	void runBpOnStereoSets() {
 		std::array<std::map<std::string, std::vector<std::string>>, 2> resDefParParamsFinal;
