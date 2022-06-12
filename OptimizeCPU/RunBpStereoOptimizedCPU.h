@@ -26,13 +26,16 @@ public:
 	std::string getBpRunDescription() override { return "Optimized CPU"; }
 
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath, const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-	                                  const beliefprop::ParallelParameters& parallelParams) override;
+	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+			const beliefprop::BPsettings& algSettings,
+			const beliefprop::ParallelParameters& parallelParams,
+			std::ostream& resultsStream) override;
 };
 
 template<typename T, unsigned int DISP_VALS>
 inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const beliefprop::ParallelParameters& parallelParams)
+		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams,
+		std::ostream& resultsStream)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
 	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];

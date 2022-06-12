@@ -141,12 +141,12 @@ namespace RunAndEvaluateBpResults {
 		std::cout << std::endl;
 		std::array<ProcessStereoSetOutput, 2> run_output;
 
-		run_output[0] = optimizedImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, outStream, parallelParams);
+		run_output[0] = optimizedImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams, outStream);
 		run_output[0].outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
 		outStream << OPTIMIZED_RUNTIME_HEADER << ":" << run_output[0].runTime << std::endl;
 
         if (!runOptImpOnly) {
-			run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, outStream, parallelParams);
+			run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams, outStream);
 			run_output[1].outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
 			outStream << OPTIMIZED_RUNTIME_HEADER << ":" << run_output[1].runTime << std::endl;
 		}

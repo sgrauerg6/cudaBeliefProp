@@ -25,6 +25,9 @@
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
+//Abstract class to process belief propagation on target device
+//Some of the class functions need to be overridden to for processing on
+//target device
 template<typename T, typename U, unsigned int DISP_VALS, typename V=float*>
 class ProcessBPOnTargetDevice {
 public:
@@ -149,9 +152,9 @@ public:
 			U allocatedMemForBpProcessingDevice = nullptr, void* allocatedMemForProcessing = nullptr);
 };
 
-//run the belief propagation algorithm with on a set of stereo images to generate a disparity map
-//input is images image1Pixels and image1Pixels
-//output is resultingDisparityMap
+//run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
+//input is images on target device for computation
+//output is disparity map and processing runtimes
 template<typename T, typename U, unsigned int DISP_VALS, typename V>
 std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DISP_VALS, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
 	const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, void* allocatedMemForProcessing)

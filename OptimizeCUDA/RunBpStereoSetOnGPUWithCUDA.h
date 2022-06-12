@@ -62,8 +62,9 @@ public:
 
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-				const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-				const beliefprop::ParallelParameters& parallelParams) override
+				const beliefprop::BPsettings& algSettings, 
+				const beliefprop::ParallelParameters& parallelParams,
+				std::ostream& resultsStream) override
 	{
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
@@ -90,8 +91,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -115,8 +117,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -140,8 +143,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -165,8 +169,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -190,8 +195,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -215,8 +221,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -240,8 +247,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
@@ -265,8 +273,9 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-					const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-					const beliefprop::ParallelParameters& parallelParams) override
+					const beliefprop::BPsettings& algSettings,
+					const beliefprop::ParallelParameters& parallelParams,
+					std::ostream& resultsStream) override
 	{
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);

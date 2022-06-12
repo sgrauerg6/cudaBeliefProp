@@ -40,14 +40,15 @@ public:
 
 	//pure abstract overloaded operator that must be defined in child class
 	virtual ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream,
-		const beliefprop::ParallelParameters& parallelParams) = 0;
+		const beliefprop::BPsettings& algSettings, 
+		const beliefprop::ParallelParameters& parallelParams,
+		std::ostream& resultsStream) = 0;
 
 protected:
 
 	//protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
-	template <typename U, typename V, typename W=float, typename X = float*>
+	template <typename U, typename V, typename W=float, typename X=float*>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
 		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
 		const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
