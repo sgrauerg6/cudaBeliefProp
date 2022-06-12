@@ -59,7 +59,7 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 
 	resultsStream << "Number of threads: " << nthreads << "\n";
 	resultsStream << "Vectorization: " << beliefprop::cpuVectorizationString() << "\n";
-	std::unique_ptr<SmoothImage<>> smoothImageCPU = std::make_unique<SmoothImageCPU<>>(parallelParams);
+	std::unique_ptr<SmoothImage> smoothImageCPU = std::make_unique<SmoothImageCPU>(parallelParams);
 	std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCPU =
 			std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(parallelParams);
 

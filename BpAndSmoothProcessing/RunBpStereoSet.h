@@ -48,28 +48,22 @@ protected:
 
 	//protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
-	template <typename U, typename V, typename W=float, typename X=float*>
+	template <typename U, typename V>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
+		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage,
 		const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
-		const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement = 
-		std::make_unique<RunBpStereoSetMemoryManagement<
-		#ifdef _WIN32
-		float, float*
-		#else
-		W, X
-		#endif
-		>>() );
+		const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement = 
+		std::make_unique<RunBpStereoSetMemoryManagement>());
 
 };
 
 
 template<typename T, unsigned int DISP_VALS>
-template<typename U, typename V, typename W, typename X>
+template<typename U, typename V>
 ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-	const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage<X>>& smoothImage,
+	const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage,
 	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
-	const std::unique_ptr<RunBpStereoSetMemoryManagement<W, X>>& runBPMemoryMangement)
+	const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement)
 {
 	//retrieve the images as well as the width and height
 	const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refTestImagePath[0]), BpImage<unsigned int>(refTestImagePath[1])};
@@ -100,7 +94,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
 	{
 		//allocate the device memory to store and x and y smoothed images
-		std::array<X, 2> smoothedImages{
+		std::array<float*, 2> smoothedImages{
 			runBPMemoryMangement->allocateDataOnCompDevice(totNumPixelsImages),
 			runBPMemoryMangement->allocateDataOnCompDevice(totNumPixelsImages)};
 

@@ -34,7 +34,7 @@ constexpr float WIDTH_SIGMA_1{4.0f};
 //constexpr unsigned int MAX_SIZE_FILTER{25u};
 
 //functions relating to smoothing the images before running BP
-template <typename T=float*>
+//Smoothing image always uses float data type
 class SmoothImage
 {
 public:
@@ -69,7 +69,7 @@ public:
 	//input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
 	//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
 	//normalize mask so it integrates to one
-	virtual void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage) = 0;
+	virtual void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) = 0;
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

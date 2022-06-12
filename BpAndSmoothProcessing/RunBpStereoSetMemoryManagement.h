@@ -14,23 +14,24 @@
 
 //Class for memory management with functions defined for standard memory allocation using CPU
 //Class functions can be overridden to support other computation devices such as GPU
-template <typename T = float, typename U = float*>
+//only processing that uses RunBpStereoSetMemoryManagement is the input stereo
+//images and output disparity map that always uses float data type
 class RunBpStereoSetMemoryManagement
 {
 public:
-	virtual U allocateDataOnCompDevice(const unsigned int numData) {
-		return (new T[numData]);
+	virtual float* allocateDataOnCompDevice(const unsigned int numData) {
+		return (new float[numData]);
 	}
 
-	virtual void freeDataOnCompDevice(U arrayToFree) {
+	virtual void freeDataOnCompDevice(float* arrayToFree) {
 		delete [] arrayToFree;
 	}
 
-	virtual void transferDataFromCompDeviceToHost(T* destArray, const U inArray, const unsigned int numDataTransfer) {
+	virtual void transferDataFromCompDeviceToHost(float* destArray, const float* inArray, const unsigned int numDataTransfer) {
 		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 
-	virtual void transferDataFromCompHostToDevice(U destArray, const T* inArray, const unsigned int numDataTransfer) {
+	virtual void transferDataFromCompHostToDevice(float* destArray, const float* inArray, const unsigned int numDataTransfer) {
 		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 };

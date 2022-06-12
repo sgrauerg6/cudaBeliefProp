@@ -9,8 +9,7 @@
 #include "kernelFilter.cu"
 
 //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-template <typename T>
-void SmoothImageCUDA<T>::operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage)
+void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage)
 {
 	// setup execution parameters
 	const dim3 threads{cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0],

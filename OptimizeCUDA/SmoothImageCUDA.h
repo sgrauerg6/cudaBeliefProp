@@ -16,13 +16,12 @@
 #include <cuda_runtime.h>
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 
-template <typename T=float*>
-class SmoothImageCUDA : public SmoothImage<T> {
+class SmoothImageCUDA : public SmoothImage {
 public:
 	SmoothImageCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	//for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-	void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage) override;
+	void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) override;
 
 private:
 	const beliefprop::ParallelParameters& cudaParams_;

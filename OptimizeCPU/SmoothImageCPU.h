@@ -15,15 +15,14 @@
 #include "KernelBpStereoCPU.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-template <typename T=float*>
-class SmoothImageCPU : public SmoothImage<T> {
+class SmoothImageCPU : public SmoothImage {
 public:
 	SmoothImageCPU(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) {}
 
 	//function to use the CPU-image filter to apply a guassian filter to the a single images
 	//input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
 	//output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-	void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, T smoothedImage) override
+	void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) override
 	{
 		//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
 		//of unsigned ints to an output image of float values
@@ -155,7 +154,7 @@ private:
 
 	//apply a vertical filter on each pixel of the image in parallel
 	template<typename U>
-	void filterImageVerticalCPU(U* imagePixelsToFilter, T filteredImagePixels,
+	void filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
 		const unsigned int widthImages, const unsigned int heightImages,
 		float* imageFilter, const unsigned int sizeFilter,
 		const beliefprop::ParallelParameters& optCPUParams)

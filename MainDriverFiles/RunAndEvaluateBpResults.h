@@ -29,6 +29,12 @@ typedef std::filesystem::path filepathtype;
 //set RunBpOptimized alias to correspond to optimized CPU implementation
 template <typename T, unsigned int DISP_VALS>
 using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS>;
+//set data type used for half-precision
+#ifdef COMPILING_FOR_ARM
+using halftype = float16_t;
+#else
+using halftype = short;
+#endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
@@ -40,6 +46,8 @@ using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS>;
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <typename T, unsigned int DISP_VALS>
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS>;
+//set data type used for half-precision with CUDA
+using halftype = half;
 #endif //OPTIMIZED_CUDA_RUN
 
 namespace RunAndEvaluateBpResults {
@@ -385,41 +393,22 @@ namespace RunAndEvaluateBpResults {
 #endif //SMALLER_SETS_ONLY
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef HALF_PRECISION_SUPPORTED
-#ifdef COMPILING_FOR_ARM
-		runBpOnSetAndUpdateResults<float16_t, 0, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 0, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 1, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 1, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 2, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 2, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 3, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 3, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 4, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 4, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 0, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 0, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 1, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 1, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 2, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 2, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 3, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 3, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 4, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 4, false>(resDefParParamsFinal);
 #ifndef SMALLER_SETS_ONLY
-		runBpOnSetAndUpdateResults<float16_t, 5, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 5, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 6, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<float16_t, 6, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 5, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 5, false>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 6, true>(resDefParParamsFinal);
+		runBpOnSetAndUpdateResults<halftype, 6, false>(resDefParParamsFinal);
 #endif //SMALLER_SETS_ONLY
-#else
-		runBpOnSetAndUpdateResults<short, 0, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 0, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 1, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 1, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 2, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 2, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 3, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 3, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 4, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 4, false>(resDefParParamsFinal);
-#ifndef SMALLER_SETS_ONLY
-		runBpOnSetAndUpdateResults<short, 5, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 5, false>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 6, true>(resDefParParamsFinal);
-		runBpOnSetAndUpdateResults<short, 6, false>(resDefParParamsFinal);
-#endif //SMALLER_SETS_ONLY
-#endif //COMPILING_FOR_ARM
 #endif //HALF_PRECISION_SUPPORTED
 
 		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
