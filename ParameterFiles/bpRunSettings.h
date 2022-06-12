@@ -53,14 +53,14 @@
 #define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
 
 //define and set CPU vectorization options using preprocessor (since needed to determine what code gets compiled to support vectorization)
-#define AVX_256 0
-#define AVX_512 1
-#define NEON 2
+#define AVX_256_DEFINE 0
+#define AVX_512_DEFINE 1
+#define NEON_DEFINE 2
 #define NO_VECTORIZATION 3
 #ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
-#define CPU_VECTORIZATION_SETTING NEON
+#define CPU_VECTORIZATION_DEFINE NEON_DEFINE
 #else
-#define CPU_VECTORIZATION_SETTING AVX_256
+#define CPU_VECTORIZATION_DEFINE AVX_256_DEFINE
 #endif
 
 namespace beliefprop {
@@ -71,18 +71,18 @@ const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
 };
 
 //enum for cpu vectorization setting
-enum class cpu_vectorization_setting {
-	NO_CPU_VECTORIZATION, USE_AVX_256, USE_AVX_512, USE_NEON
+enum class CPUVectorization {
+	NONE, AVX256, AVX512, NEON
 };
 
-#if (CPU_VECTORIZATION_SETTING == NEON)
-constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_NEON};
-#elif (CPU_VECTORIZATION_SETTING == AVX_256)
-constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_256};
-#elif (CPU_VECTORIZATION_SETTING == AVX_512)
-constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::USE_AVX_512};
+#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
+constexpr CPUVectorization CPU_VECTORIZATION{CPUVectorization::NEON};
+#elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
+constexpr CPUVectorization CPU_VECTORIZATION{CPUVectorization::AVX256};
+#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+constexpr CPUVectorization CPU_VECTORIZATION{CPUVectorization::AVX512};
 #else
-constexpr cpu_vectorization_setting CPU_OPTIMIZATION_SETTING{cpu_vectorization_setting::NO_CPU_VECTORIZATION};
+constexpr CPUVectorization CPU_VECTORIZATION{CPUVectorization::NONE};
 #endif
 
 constexpr bool OPTIMIZED_INDEXING_SETTING{true};
@@ -102,29 +102,29 @@ constexpr const char* cpuParallelizationString() {
 
 //get string corresponding to CPU vectorization method
 constexpr const char* cpuVectorizationString() {
-  #if (CPU_VECTORIZATION_SETTING == NEON)
+  #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
     return "NEON";
-  #elif (CPU_VECTORIZATION_SETTING == AVX_256)
+  #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
     return "AVX_256";
-  #elif (CPU_VECTORIZATION_SETTING == AVX_512)
+  #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     return "AVX_512";
-  #else //(CPU_VECTORIZATION_SETTING == NO_VECTORIZATION)
+  #else //(CPU_VECTORIZATION_DEFINE == NO_VECTORIZATION)
     return "NO_VECTORIZATION";
-  #endif //CPU_VECTORIZATION_SETTING
+  #endif //CPU_VECTORIZATION_DEFINE
 }
 
-constexpr unsigned int getBytesAlignMemory(const cpu_vectorization_setting inVectSetting) {
+constexpr unsigned int getBytesAlignMemory(const CPUVectorization inVectSetting) {
 	//avx512 requires data to be aligned on 64 bytes
-	return (inVectSetting == cpu_vectorization_setting::USE_AVX_512) ? 64 : 16;
+	return (inVectSetting == CPUVectorization::AVX512) ? 64 : 16;
 }
 
-constexpr unsigned int getNumDataAlignWidth(const cpu_vectorization_setting inVectSetting) {
+constexpr unsigned int getNumDataAlignWidth(const CPUVectorization inVectSetting) {
 	//align width with 16 data values in AVX512
-	return (inVectSetting == cpu_vectorization_setting::USE_AVX_512) ? 16 : 8;
+	return (inVectSetting == CPUVectorization::AVX512) ? 16 : 8;
 }
 
-constexpr unsigned int BYTES_ALIGN_MEMORY = getBytesAlignMemory(CPU_OPTIMIZATION_SETTING);
-constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_OPTIMIZATION_SETTING);
+constexpr unsigned int BYTES_ALIGN_MEMORY = getBytesAlignMemory(CPU_VECTORIZATION);
+constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_VECTORIZATION);
 
 };
 

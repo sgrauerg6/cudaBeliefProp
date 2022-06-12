@@ -375,17 +375,17 @@ public:
 #ifdef COMPILING_FOR_ARM
 #include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
 
-#if (CPU_VECTORIZATION_SETTING == NEON)
+#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
 #include "KernelBpStereoCPU_NEON.h"
-#endif //beliefprop::CPU_OPTIMIZATION_SETTING == USE_NEON
+#endif //CPU_VECTORIZATION_DEFINE == NEON_DEFINE
 
 #else
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
-#if (CPU_VECTORIZATION_SETTING == AVX_256)
+#if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-#elif (CPU_VECTORIZATION_SETTING == AVX_512)
+#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 #endif
 

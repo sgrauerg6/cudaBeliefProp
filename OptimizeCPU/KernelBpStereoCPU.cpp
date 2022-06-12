@@ -1099,7 +1099,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
 		const beliefprop::ParallelParameters& optCPUParams)
 {
-	if constexpr (beliefprop::CPU_OPTIMIZATION_SETTING == beliefprop::cpu_vectorization_setting::USE_AVX_256)
+	if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::AVX256)
 	{
 		//only use AVX-256 if width of processing checkerboard is over 10
 		if (currentLevelProperties.widthCheckerboardLevel_ > 10)
@@ -1123,7 +1123,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (beliefprop::CPU_OPTIMIZATION_SETTING == beliefprop::cpu_vectorization_setting::USE_AVX_512)
+	else if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::AVX512)
 	{
 		//only use AVX-512 if width of processing checkerboard is over 20
 		if (currentLevelProperties.widthCheckerboardLevel_ > 20)
@@ -1147,7 +1147,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (beliefprop::CPU_OPTIMIZATION_SETTING == beliefprop::cpu_vectorization_setting::USE_NEON)
+	else if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::NEON)
 	{
 		if (currentLevelProperties.widthCheckerboardLevel_ > 5)
 		{

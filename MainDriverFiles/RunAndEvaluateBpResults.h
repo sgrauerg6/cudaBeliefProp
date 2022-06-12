@@ -84,8 +84,6 @@ namespace RunAndEvaluateBpResults {
 		resultsStream << "DATA_K_BP: " << bp_params::DATA_K_BP << "\n";
 		resultsStream << "LAMBDA_BP: " << bp_params::LAMBDA_BP << "\n";
 		resultsStream << "SIGMA_BP: " << bp_params::SIGMA_BP << "\n";
-		resultsStream << "CPU_OPTIMIZATION_LEVEL: " << static_cast<int>(beliefprop::CPU_OPTIMIZATION_SETTING)
-					<< "\n";
 		resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::BYTES_ALIGN_MEMORY << "\n";
 		resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::NUM_DATA_ALIGN_WIDTH << "\n";
 	}

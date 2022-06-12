@@ -66,7 +66,7 @@ LINUX:
 make the necessary configuration changes to support processing on ARM CPUs.
 
 -If x86 CPU, set vectorization to AVX-256 or AVX-512 in line
-"#define CPU_VECTORIZATION_SETTING {SETTING}" in ParameterFiles/bpRunSettings.h (line 87).
+"#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 87).
 
 -Can adjust number of threads in line "unsigned int nthreads = std::thread::hardware_concurrency();"
 in RunBpStereoOptimizedCPU.h (line 38).
