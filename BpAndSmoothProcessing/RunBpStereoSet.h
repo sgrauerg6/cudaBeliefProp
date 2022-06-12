@@ -150,7 +150,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 	//management set to be done outside of runs
 	if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 		runBpStereo->freeMemoryOnTargetDevice(bpData);
-		runBpStereo->freeRawMemoryOnTargetDevice(bpProcStore);
+		runBpStereo->freeMemoryOnTargetDevice(bpProcStore);
 	}
 
 	resultsStream << "Image Width: " << widthHeightImages[0] << "\nImage Height: " << widthHeightImages[1] << "\n";

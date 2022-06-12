@@ -34,17 +34,8 @@ class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 public:
 	ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) { }
 
-	void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override {
-		cudaMalloc(arrayToAllocate, numBytesAllocate);
-	}
-
-	void freeRawMemoryOnTargetDevice(void* arrayToFree) override {
-		cudaFree(arrayToFree);
-	}
-
 	U allocateMemoryOnTargetDevice(const unsigned long numData) override
 	{
-		//alignment in this case may not be guaranteed like with aligned_alloc, so may want to look into that
 		U arrayToAllocate;
 		cudaMalloc((void**)&arrayToAllocate, numData*sizeof(T));
 		return arrayToAllocate;

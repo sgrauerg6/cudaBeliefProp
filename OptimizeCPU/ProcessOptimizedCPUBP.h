@@ -41,28 +41,6 @@ class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 public:
 		ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
 
-		void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) override
-		{
-			//std::cout << "RUN ALLOC: " << numBytesAllocate << "\n";
-			//*arrayToAllocate = malloc(numBytesAllocate);
-			//necessary to align for aligned avx load instructions to work as expected
-#ifdef _WIN32
-			*arrayToAllocate = _aligned_malloc(numBytesAllocate, beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T));
-#else
-			*arrayToAllocate = aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T), numBytesAllocate);
-#endif
-		}
-
-		void freeRawMemoryOnTargetDevice(void* arrayToFree) override
-		{
-#ifdef _WIN32
-			_aligned_free(arrayToFree);
-#else
-			free(arrayToFree);
-#endif
-
-		}
-
 		U allocateMemoryOnTargetDevice(const unsigned long numData) override
 		{
 #ifdef _WIN32

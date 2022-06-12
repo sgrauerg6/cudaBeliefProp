@@ -33,11 +33,7 @@ class ProcessBPOnTargetDevice {
 public:
 	ProcessBPOnTargetDevice() { }
 
-	virtual void allocateRawMemoryOnTargetDevice(void** arrayToAllocate, const unsigned long numBytesAllocate) = 0;
-
 	virtual U allocateMemoryOnTargetDevice(const unsigned long numData) = 0;
-
-	virtual void freeRawMemoryOnTargetDevice(void* arrayToFree) = 0;
 
 	virtual void freeMemoryOnTargetDevice(U memoryToFree) = 0;
 
