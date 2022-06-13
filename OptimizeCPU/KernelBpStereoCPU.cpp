@@ -1442,6 +1442,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 					for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
 						if (checkerboardGetDispMap == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
 							if (dataAlignedAtXValProcess) {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard1),
@@ -1456,14 +1457,9 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 									loadPackedDataAligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0));
-								/*dataMessage = loadPackedDataAligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
-								prevUMessage = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard1);
-								prevDMessage = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageDPrevStereoCheckerboard1);*/
 							}
 							else {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard1),
@@ -1478,27 +1474,12 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0));
-								/*dataMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
-									currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
-								prevUMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard1);
-								prevDMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageDPrevStereoCheckerboard1);*/
 							}
-							/*valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageLPrevStereoCheckerboard1));
-							valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageRPrevStereoCheckerboard1));*/
-							/*prevLMessage = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageLPrevStereoCheckerboard1);
-							prevRMessage = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageRPrevStereoCheckerboard1);*/
 						}
 						else //checkerboardGetDispMap == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 						{
 							if (dataAlignedAtXValProcess) {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard0),
@@ -1513,14 +1494,9 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 									loadPackedDataAligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1));
-								/*dataMessage = loadPackedDataAligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
-								prevUMessage = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard0);
-								prevDMessage = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageDPrevStereoCheckerboard0);*/
 							}
 							else {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard0),
@@ -1535,29 +1511,8 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 								    loadPackedDataUnaligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1));
-								/*dataMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
-								prevUMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard0);
-								prevDMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageDPrevStereoCheckerboard0);*/
 							}
-							/*valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageLPrevStereoCheckerboard0));
-							valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageRPrevStereoCheckerboard0));*/
-							/*prevLMessage = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageLPrevStereoCheckerboard0);
-							prevRMessage = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, DISP_VALS, messageRPrevStereoCheckerboard0);*/
 						}
-						//add message and data values together
-						/*W valAtDisp = addVals<U, U, W>(prevUMessage, prevDMessage);
-						valAtDisp = addVals<W, U, W>(valAtDisp, prevLMessage);
-						valAtDisp = addVals<W, U, W>(valAtDisp, prevRMessage);
-						valAtDisp = addVals<W, U, W>(valAtDisp, dataMessage);*/
 						if (currentDisparity == 0) {
 							bestVals = valAtDisp;
 							//set disp at min vals to all 0
@@ -1593,6 +1548,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 					for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
 						if (checkerboardGetDispMap == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
 							if (dataAlignedAtXValProcess) {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard1),
@@ -1607,14 +1563,9 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp,
 								    loadPackedDataAligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0));
-								/*dataMessage = loadPackedDataAligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0);
-								prevUMessage = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard1);
-								prevDMessage = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDPrevStereoCheckerboard1);*/	
 							}
 							else {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard1),
@@ -1629,27 +1580,12 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0));
-								/*dataMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0);
-								prevUMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard1);
-								prevDMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDPrevStereoCheckerboard1);*/
 							}
-							/*valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLPrevStereoCheckerboard1));
-							valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard1));*/
-							/*prevLMessage = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLPrevStereoCheckerboard1);
-							prevRMessage = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard1);*/
 						}
 						else //checkerboardGetDispMap == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
 						{
 							if (dataAlignedAtXValProcess) {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>( 
 									loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard0),
@@ -1664,14 +1600,9 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 								    loadPackedDataAligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1));
-								/*dataMessage = loadPackedDataAligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1);
-								prevUMessage = loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard0);
-								prevDMessage = loadPackedDataAligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDPrevStereoCheckerboard0);*/
 							}
 							else {
+								//retrieve and get sum of message and data values
 								valAtDisp = addVals<U, U, W>( 
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard0),
@@ -1686,29 +1617,8 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<W, U, W>(valAtDisp,
 								    loadPackedDataUnaligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1));
-								/*dataMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1);
-								prevUMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard0);
-								prevDMessage = loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDPrevStereoCheckerboard0);*/
 							}
-							/*valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLPrevStereoCheckerboard0));
-							valAtDisp = addVals<W, U, W>(valAtDisp, 
-									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard0));*/
-							/*prevLMessage = loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageLPrevStereoCheckerboard0);
-							prevRMessage = loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
-										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard0);*/
 						}
-						//add message and data values together
-						/*W valAtDisp = addVals<U, U, W>(prevUMessage, prevDMessage);
-						valAtDisp = addVals<W, U, W>(valAtDisp, prevLMessage);
-						valAtDisp = addVals<W, U, W>(valAtDisp, prevRMessage);
-						valAtDisp = addVals<W, U, W>(valAtDisp, dataMessage);*/
 						if (currentDisparity == 0) {
 							bestVals = valAtDisp;
 							//set disp at min vals to all 0
