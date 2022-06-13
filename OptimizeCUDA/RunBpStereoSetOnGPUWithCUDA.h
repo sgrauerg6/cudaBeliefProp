@@ -70,6 +70,8 @@ public:
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
 
+		//generate struct with pointers to objects for running CUDA implementation and call
+		//function to run CUDA implementation
 		return this->processStereoSet(refTestImagePath, algSettings,
 			BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCUDA>(parallelParams),
 										 std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),

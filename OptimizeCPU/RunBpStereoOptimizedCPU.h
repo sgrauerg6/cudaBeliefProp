@@ -60,7 +60,8 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 	resultsStream << "Number of threads: " << nthreads << "\n";
 	resultsStream << "Vectorization: " << beliefprop::cpuVectorizationString() << "\n";
 
-	//can use default memory management since running on CPU
+	//generate struct with pointers to objects for running optimized CPU implementation and call
+	//function to run optimized CPU implementation
 	return this->processStereoSet(refTestImagePath, algSettings, 
 		BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCPU>(parallelParams),
 									 std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(parallelParams),
