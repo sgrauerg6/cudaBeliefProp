@@ -69,14 +69,13 @@ public:
 		//using SmoothImageCUDA::SmoothImage;
 		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
 		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-		std::unique_ptr<SmoothImage> smoothImageCUDA = std::make_unique<SmoothImageCUDA>(parallelParams);
-		std::unique_ptr<ProcessBPOnTargetDevice<T, T*, DISP_VALS>> processImageCUDA =
-				std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams);
-		std::unique_ptr<RunBpStereoSetMemoryManagement> runBPCUDAMemoryManagement =
-				std::make_unique<RunBpStereoSetCUDAMemoryManagement>();
 
-		return this->processStereoSet(refTestImagePath, algSettings, resultsStream,
-				smoothImageCUDA, processImageCUDA, runBPCUDAMemoryManagement);
+		return this->processStereoSet(refTestImagePath, algSettings,
+			BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCUDA>(parallelParams),
+										 std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
+										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
+										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()},
+			resultsStream);
 	}
 };
 
@@ -97,7 +96,7 @@ public:
 	//if type is specified as short, process as half on GPU
 	//note that half is considered a data type for 16-bit floats in CUDA
 	ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
-			const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* runBPMemoryMangement = nullptr) override
+			const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
 	{
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
@@ -112,14 +111,14 @@ public:
 				resultsStream,
 				smoothImage,
 				&runCUDABPHalfPrecision,
-				runBPMemoryMangement);
+				memManagementImages);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
 		//std::cout << "Processing as half2 on GPU\n";
 		RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
 		ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
-		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, runBPMemoryMangement);
+		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, memManagementImages);
 
 #else
 

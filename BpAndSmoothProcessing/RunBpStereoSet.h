@@ -33,6 +33,14 @@ struct ProcessStereoSetOutput
 	DisparityMap<float> outDisparityMap;
 };
 
+template <typename U, typename V, unsigned int DISP_VALS>
+struct BpOnDevice {
+	const std::unique_ptr<SmoothImage>& smoothImage;
+	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo;
+	const std::unique_ptr<RunBpStereoSetMemoryManagement<>>& memManagementImages;
+	const std::unique_ptr<RunBpStereoSetMemoryManagement<U>>& memManagementBpRun;
+};
+
 template <typename T, unsigned int DISP_VALS>
 class RunBpStereoSet {
 public:
@@ -48,22 +56,17 @@ protected:
 
 	//protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
-	template <typename U, typename V>
+	template <typename U=T*>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage,
-		const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
-		const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement = 
-		std::make_unique<RunBpStereoSetMemoryManagement>());
-
+		const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice,
+		std::ostream& resultsStream);
 };
 
 
 template<typename T, unsigned int DISP_VALS>
-template<typename U, typename V>
+template<typename U>
 ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-	const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, const std::unique_ptr<SmoothImage>& smoothImage,
-	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo,
-	const std::unique_ptr<RunBpStereoSetMemoryManagement>& runBPMemoryMangement)
+	const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice, std::ostream& resultsStream)
 {
 	//retrieve the images as well as the width and height
 	const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refTestImagePath[0]), BpImage<unsigned int>(refTestImagePath[1])};
@@ -79,24 +82,24 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 	DisparityMap<float> output_disparity_map(widthHeightImages);
 
 	//allocate data for bp processing on target device ahead of runs if option selected
-	V bpData = nullptr;
-	V bpProcStore = nullptr;
+	U bpData = nullptr;
+	U bpProcStore = nullptr;
 	if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
 		unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
-		bpData = runBpStereo->allocateMemoryOnTargetDevice(10u*numData);
+		bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData);
 
 		beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0);
 		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
-		bpProcStore = runBpStereo->allocateMemoryOnTargetDevice(totalDataBottomLevel);
+		bpProcStore = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(totalDataBottomLevel);
 	}
 
 	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
 	{
 		//allocate the device memory to store and x and y smoothed images
 		std::array<float*, 2> smoothedImages{
-			runBPMemoryMangement->allocateDataOnCompDevice(totNumPixelsImages),
-			runBPMemoryMangement->allocateDataOnCompDevice(totNumPixelsImages)};
+			runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages),
+			runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages)};
 
 		//set start timer for specified runtime segments at time before smoothing images
 		runtime_start_end_timings[Runtime_Type_BP::SMOOTHING].first = std::chrono::system_clock::now();
@@ -106,7 +109,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 		//first smooth the images using the Gaussian filter with the given SIGMA_BP value
 		//smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
 		for (unsigned int i = 0; i < 2u; i++) {
-			(*smoothImage)(inputImages[i], algSettings.smoothingSigma_, smoothedImages[i]);
+			(*(runBpOnDevice.smoothImage))(inputImages[i], algSettings.smoothingSigma_, smoothedImages[i]);
 		}
 
 		//end timer for image smoothing and add to image smoothing timings
@@ -117,13 +120,14 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 
 		//run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
 		//returns detailed timings for bp run
-		auto rpBpStereoOutput = (*runBpStereo)(smoothedImages, algSettings, widthHeightImages, bpData, bpProcStore);
+		auto rpBpStereoOutput = (*(runBpOnDevice.runBpStereo))(smoothedImages, algSettings, widthHeightImages,
+			bpData, bpProcStore, runBpOnDevice.memManagementBpRun);
 
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_BP].second = std::chrono::system_clock::now();
 		runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
 		//transfer the disparity map estimation on the device to the host for output
-		runBPMemoryMangement->transferDataFromCompDeviceToHost(
+		runBpOnDevice.memManagementImages->transferDataFromDeviceToHost(
 				output_disparity_map.getPointerToPixelsStart(), rpBpStereoOutput.first, totNumPixelsImages);
 
 		//compute timings for each portion of interest and add to vector timings
@@ -140,17 +144,17 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 		detailedBPTimings.addToCurrentTimings(rpBpStereoOutput.second);
 
 		//free the space allocated to the resulting disparity map and smoothed images on the computation device
-		runBPMemoryMangement->freeDataOnCompDevice(rpBpStereoOutput.first);
+		runBpOnDevice.memManagementImages->freeMemoryOnDevice(rpBpStereoOutput.first);
 		for (auto& smoothedImage : smoothedImages) {
-			runBPMemoryMangement->freeDataOnCompDevice(smoothedImage);
+			runBpOnDevice.memManagementImages->freeMemoryOnDevice(smoothedImage);
 		}
 	}
 
 	//free data for bp processing on target device if this memory
 	//management set to be done outside of runs
 	if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
-		runBpStereo->freeMemoryOnTargetDevice(bpData);
-		runBpStereo->freeMemoryOnTargetDevice(bpProcStore);
+		runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpData);
+		runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpProcStore);
 	}
 
 	resultsStream << "Image Width: " << widthHeightImages[0] << "\nImage Height: " << widthHeightImages[1] << "\n";

@@ -6,26 +6,38 @@
 
 //only processing that uses RunBpStereoSetCUDAMemoryManagement is the input stereo
 //images and output disparity map that always uses float data type
-class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement
+template <typename T=float>
+class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement<T>
 {
 public:
-	float* allocateDataOnCompDevice(const unsigned int numData) {
+	T* allocateMemoryOnDevice(const unsigned int numData) override {
 		//allocate the space for the disparity map estimation
-		float* arrayToAllocate;
-		cudaMalloc((void **) &arrayToAllocate, numData * sizeof(float));
+		T* arrayToAllocate;
+		cudaMalloc((void **) &arrayToAllocate, numData * sizeof(T));
 		return arrayToAllocate;
 	}
 
-	void freeDataOnCompDevice(float* arrayToFree) {
+	void freeMemoryOnDevice(T* arrayToFree) override {
 		cudaFree(arrayToFree);
 	}
 
-	void transferDataFromCompDeviceToHost(float* destArray, const float* inArray, const unsigned int numDataTransfer) {
-		cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(float), cudaMemcpyDeviceToHost);
+	T* allocateAlignedMemoryOnDevice(const unsigned long numData) override
+	{
+		T* arrayToAllocate;
+		cudaMalloc((void**)&arrayToAllocate, numData*sizeof(T));
+		return arrayToAllocate;
 	}
 
-	void transferDataFromCompHostToDevice(float* destArray, const float* inArray, const unsigned int numDataTransfer) {
-		cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(float), cudaMemcpyHostToDevice);
+	void freeAlignedMemoryOnDevice(T* memoryToFree) override {
+		cudaFree(memoryToFree);
+	}
+
+	void transferDataFromDeviceToHost(T* destArray, const T* inArray, const unsigned int numDataTransfer) override {
+		cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyDeviceToHost);
+	}
+
+	void transferDataFromHostToDevice(T* destArray, const T* inArray, const unsigned int numDataTransfer) override {
+		cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyHostToDevice);
 	}
 };
 

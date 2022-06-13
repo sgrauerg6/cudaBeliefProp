@@ -16,22 +16,43 @@
 //Class functions can be overridden to support other computation devices such as GPU
 //only processing that uses RunBpStereoSetMemoryManagement is the input stereo
 //images and output disparity map that always uses float data type
+template <typename T=float>
 class RunBpStereoSetMemoryManagement
 {
 public:
-	virtual float* allocateDataOnCompDevice(const unsigned int numData) {
-		return (new float[numData]);
+	virtual T* allocateMemoryOnDevice(const unsigned int numData) {
+		return (new T[numData]);
 	}
 
-	virtual void freeDataOnCompDevice(float* arrayToFree) {
+	virtual void freeMemoryOnDevice(T* arrayToFree) {
 		delete [] arrayToFree;
 	}
 
-	virtual void transferDataFromCompDeviceToHost(float* destArray, const float* inArray, const unsigned int numDataTransfer) {
+	virtual T* allocateAlignedMemoryOnDevice(const unsigned long numData)
+	{
+#ifdef _WIN32
+		T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T)));
+		return memoryData;
+#else
+		T* memoryData = static_cast<T*>(std::aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
+		return memoryData;
+#endif
+	}
+
+	virtual void freeAlignedMemoryOnDevice(T* memoryToFree)
+	{
+#ifdef _WIN32
+		_aligned_free(memoryToFree);
+#else
+		free(memoryToFree);
+#endif
+	}
+
+	virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, const unsigned int numDataTransfer) {
 		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 
-	virtual void transferDataFromCompHostToDevice(float* destArray, const float* inArray, const unsigned int numDataTransfer) {
+	virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, const unsigned int numDataTransfer) {
 		std::copy(inArray, inArray + numDataTransfer, destArray);
 	}
 };

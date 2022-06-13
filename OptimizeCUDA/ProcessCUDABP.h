@@ -32,18 +32,7 @@ template<typename T, typename U, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 {
 public:
-	ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) { }
-
-	U allocateMemoryOnTargetDevice(const unsigned long numData) override
-	{
-		U arrayToAllocate;
-		cudaMalloc((void**)&arrayToAllocate, numData*sizeof(T));
-		return arrayToAllocate;
-	}
-
-	void freeMemoryOnTargetDevice(U memoryToFree) override {
-		cudaFree(memoryToFree);
-	}
+	ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
 	//initialize the data cost at each pixel for each disparity value
 	void initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,

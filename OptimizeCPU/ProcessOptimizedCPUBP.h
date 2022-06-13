@@ -41,26 +41,6 @@ class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 public:
 		ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
 
-		U allocateMemoryOnTargetDevice(const unsigned long numData) override
-		{
-#ifdef _WIN32
-			U memoryData = static_cast<U>(_aligned_malloc(numData * sizeof(T), beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T)));
-			return memoryData;
-#else
-			U memoryData = static_cast<U>(std::aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
-			return memoryData;
-#endif
-		}
-
-		void freeMemoryOnTargetDevice(U memoryToFree) override
-		{
-#ifdef _WIN32
-			_aligned_free(memoryToFree);
-#else
-			free(memoryToFree);
-#endif
-		}
-
 		void initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
 				const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard) override;
 
