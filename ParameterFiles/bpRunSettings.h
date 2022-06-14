@@ -8,8 +8,7 @@
 #ifndef BPRUNSETTINGS_H_
 #define BPRUNSETTINGS_H_
 
-#include "bpStereoParameters.h"
-#include <fstream>
+#include <iostream>
 #include <typeinfo>
 #include <typeindex>
 #include <map>
@@ -121,6 +120,14 @@ constexpr unsigned int getNumDataAlignWidth(const CPUVectorization inVectSetting
 
 constexpr unsigned int BYTES_ALIGN_MEMORY = getBytesAlignMemory(CPU_VECTORIZATION);
 constexpr unsigned int NUM_DATA_ALIGN_WIDTH = getNumDataAlignWidth(CPU_VECTORIZATION);
+
+inline void writeRunSettingsToStream(std::ostream& resultsStream)
+{
+	resultsStream << "Memory Optimization Level: " << beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT << "\n";
+	resultsStream << "Indexing Optimization Level: " << beliefprop::OPTIMIZED_INDEXING_SETTING << "\n";
+	resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::BYTES_ALIGN_MEMORY << "\n";
+	resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::NUM_DATA_ALIGN_WIDTH << "\n";
+}
 
 };
 

@@ -11,6 +11,7 @@
 #include <array>
 #include <vector>
 #include <thread>
+#include <iostream>
 #include "bpStereoParameters.h"
 #include "BpAndSmoothProcessing/BpUtilFuncts.h"
 #include "../BpAndSmoothProcessing/BpUtilFuncts.h"
@@ -20,6 +21,17 @@ namespace beliefprop {
 //structure to store the settings for the number of levels and iterations
 struct BPsettings
 {
+	void writeToStream(std::ostream& resultsStream)
+	{
+		resultsStream << "Num Possible Disparity Values: " << numDispVals_ << "\n";
+		resultsStream << "Num BP Levels: " << numLevels_ << "\n";
+		resultsStream << "Num BP Iterations: " << numIterations_ << "\n";
+		resultsStream << "DISC_K_BP: " << disc_k_bp_ << "\n";
+		resultsStream << "DATA_K_BP: " << data_k_bp_ << "\n";
+		resultsStream << "LAMBDA_BP: " << lambda_bp_ << "\n";
+		resultsStream << "SIGMA_BP: " << smoothingSigma_ << "\n";
+	}
+
 	//initally set to default values
 	unsigned int numLevels_{bp_params::LEVELS_BP};
 	unsigned int numIterations_{bp_params::ITER_BP};
@@ -154,7 +166,8 @@ struct ParallelParameters {
 	ParallelParameters(unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims) {
 		setParallelDims(defaultPDims, numLevels);
     };
-	//std::vector<std::array<unsigned int, 2>> blockDimsXY_;
+
+	//set parallel parameters for each kernel to the same input dimensions
 	void setParallelDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels) {
 		parallelDimsEachKernel_[BLUR_IMAGES] = {tbDims};
 		parallelDimsEachKernel_[DATA_COSTS_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
@@ -163,6 +176,36 @@ struct ParallelParameters {
 		parallelDimsEachKernel_[COPY_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
 		parallelDimsEachKernel_[OUTPUT_DISP] = {tbDims};
 	}
+
+	//write current parallel parameters to stream
+	void writeToStream(std::ostream& os) const {
+		//show parallel parameters for each kernel
+		os << "Blur Images Parallel Dimensions:" << 
+						parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0] << " x " <<
+						parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1] << std::endl;
+		os << "Init Message Values Parallel Dimensions:" << 
+						parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0] << " x " <<
+						parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1] << std::endl;
+		for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL].size(); level++) {
+			os << "Level " << std::to_string(level) << " Data Costs Parallel Dimensions:" << 
+						parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][0] << " x " <<
+						parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][1] << std::endl;
+		}
+		for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL].size(); level++) {
+			os << "Level " << std::to_string(level) << " BP Thread Parallel Dimensions:" << 
+						parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][0] << " x " <<
+						parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][1] << std::endl;
+		}
+		for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL].size(); level++) {
+			os << "Level " << std::to_string(level) << " Copy Thread Parallel Dimensions:" << 
+						parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][0] << " x " <<
+						parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][1] << std::endl;
+		}
+		os << "Get Output Disparity Parallel Dimensions:" << 
+						parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0] << " x " <<
+						parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1] << std::endl;
+	}
+
 	std::array<std::vector<std::array<unsigned int, 2>>, NUM_KERNELS> parallelDimsEachKernel_;
 };
 
