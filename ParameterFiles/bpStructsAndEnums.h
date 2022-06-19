@@ -21,17 +21,6 @@ namespace beliefprop {
 //structure to store the settings for the number of levels and iterations
 struct BPsettings
 {
-	void writeToStream(std::ostream& resultsStream)
-	{
-		resultsStream << "Num Possible Disparity Values: " << numDispVals_ << "\n";
-		resultsStream << "Num BP Levels: " << numLevels_ << "\n";
-		resultsStream << "Num BP Iterations: " << numIterations_ << "\n";
-		resultsStream << "DISC_K_BP: " << disc_k_bp_ << "\n";
-		resultsStream << "DATA_K_BP: " << data_k_bp_ << "\n";
-		resultsStream << "LAMBDA_BP: " << lambda_bp_ << "\n";
-		resultsStream << "SIGMA_BP: " << smoothingSigma_ << "\n";
-	}
-
 	//initally set to default values
 	unsigned int numLevels_{bp_params::LEVELS_BP};
 	unsigned int numIterations_{bp_params::ITER_BP};
@@ -40,7 +29,22 @@ struct BPsettings
 	float data_k_bp_{bp_params::DATA_K_BP};
 	float disc_k_bp_{bp_params::DISC_K_BP[0]};
 	unsigned int numDispVals_{0};
+
+	friend std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings);
 };
+
+inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings) {
+	resultsStream << "Num Possible Disparity Values: " << bpSettings.numDispVals_ << "\n";
+	resultsStream << "Num BP Levels: " << bpSettings.numLevels_ << "\n";
+	resultsStream << "Num BP Iterations: " << bpSettings.numIterations_ << "\n";
+	resultsStream << "DISC_K_BP: " << bpSettings.disc_k_bp_ << "\n";
+	resultsStream << "DATA_K_BP: " << bpSettings.data_k_bp_ << "\n";
+	resultsStream << "LAMBDA_BP: " << bpSettings.lambda_bp_ << "\n";
+	resultsStream << "SIGMA_BP: " << bpSettings.smoothingSigma_ << "\n";
+	
+	return resultsStream;	
+}
+
 
 //structure to store the properties of the current level
 struct levelProperties

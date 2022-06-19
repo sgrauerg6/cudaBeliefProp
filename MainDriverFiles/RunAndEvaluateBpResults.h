@@ -194,7 +194,7 @@ namespace RunAndEvaluateBpResults {
 			std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
 			resultsStream << "DataType: " << beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
 			resultsStream << "Stereo Set: " << bp_params::STEREO_SET[NUM_SET] << "\n";
-			algSettings.writeToStream(resultsStream);
+			resultsStream << algSettings;
 			beliefprop::writeRunSettingsToStream(resultsStream);
 			const std::string dispValsTemplatedStr{(DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES"};
 			resultsStream << "DISP_VALS_TEMPLATED: " << dispValsTemplatedStr << std::endl;
