@@ -66,12 +66,7 @@ LINUX:
 make the necessary configuration changes to support processing on ARM CPUs.
 
 -If x86 CPU, set vectorization to AVX-256 or AVX-512 in line
-"#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 87).
-
--Can adjust number of threads in line "unsigned int nthreads = std::thread::hardware_concurrency();"
-in RunBpStereoOptimizedCPU.h (line 38).
-  -Have been able to get a speedup in some cases using one thread per core rather than the default of
-   two threads per core on Intel / AMD CPUs, but that is not always the case.
+"#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 58).
 
 -May also want to adjust environment variables OMP_PLACES and OMP_PROC_BIND to optimize OpenMP thread configuration.
 In some tests have gotten faster results with setting OMP_PROC_BIND=true but in other tests have gotten better
@@ -109,18 +104,19 @@ Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and w
 
 RUNTIME RESULTS USING CURRENT CODE:
 
-Relative speedup across various processors (AMD Rome w/ 48 cores / 96 threads used as baseline):
+Relative speedup across various processors (AMD Rome w/ 48 cores used as baseline):
 -Column marked as "Total runtime including data transfer time (15 timings)" in outputResults.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
--CUDA speedup is with thread block optimization enabled (via OPTIMIZE_THREAD_BLOCK_DIMS in MainDriverFiles/driverCudaBp.cpp set to true)
-AMD Rome (48 cores/96 threads): 1.00x
-NVIDIA P100: 1.07x
-Amazon Graviton2 (64 core ARM server): 1.09x
-AMD Rome (48 cores/48 threads): 1.15x
-Intel Ice Lake (32 cores/64 threads): 1.22x
-NVIDIA V100: 1.55x
-AMD Milan-X (120 cores/60 threads): 1.70x (dual-core w/ 60 cores/CPU...from looking at thread IDs processing seems to be on single CPU and would expect same results using single Milan-X CPU)
-NVIDIA RTX 3090 Ti: 2.15x
-NVIDIA A100: 2.25x
+-CPU and CUDA runs are with thread count / thread block optimization enabled (via OPTIMIZE_PARALLEL_PARAMS in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
+NVIDIA P100: 0.88x
+Amazon Graviton2 (64 core ARM server): 0.94x
+AMD Rome (48 cores): 1.00x
+Intel Ice Lake (32 cores): 1.03x
+Amazon Graviton3 (64 core ARM server): 1.24x
+Intel Ice Lake (64 cores / 2 sockets): 1.26x
+NVIDIA V100: 1.37x
+AMD Milan-X (120 cores / 2 sockets): 1.52x (dual-core w/ 60 cores/CPU...best found configurations are usually with a thread count <= 60 with processing on single CPU based on thread ids so would expect similar results using single Milan-X CPU)
+NVIDIA RTX 3090 Ti: 1.82x
+NVIDIA A100: 1.97x
 Spreadsheet with more detailed results:
-https://docs.google.com/spreadsheets/d/1XleQk1CYsReLj9edRy7UV_EbChkHJuJxT-csI5BL23g/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1-YDUYoMULrkDqCVvWf69Maow1cIZwNHz7qWEuIXWKLI/edit?usp=sharing
