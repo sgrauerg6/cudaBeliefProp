@@ -12,7 +12,9 @@
 #include <vector>
 #include <thread>
 #include <iostream>
+#include <cmath>
 #include "bpStereoParameters.h"
+#include "bpRunSettings.h"
 
 namespace beliefprop {
 
