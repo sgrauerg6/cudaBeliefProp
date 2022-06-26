@@ -13,8 +13,6 @@
 #include <thread>
 #include <iostream>
 #include "bpStereoParameters.h"
-#include "BpAndSmoothProcessing/BpUtilFuncts.h"
-#include "../BpAndSmoothProcessing/BpUtilFuncts.h"
 
 namespace beliefprop {
 

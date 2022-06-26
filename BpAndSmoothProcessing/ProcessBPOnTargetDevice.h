@@ -21,7 +21,6 @@
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
 #include "RunBpStereoSetMemoryManagement.h"
-#include "BpUtilFuncts.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
