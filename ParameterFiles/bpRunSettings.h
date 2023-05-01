@@ -55,7 +55,7 @@
 #ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
 #define CPU_VECTORIZATION_DEFINE NEON_DEFINE
 #else
-#define CPU_VECTORIZATION_DEFINE AVX_512_DEFINE
+#define CPU_VECTORIZATION_DEFINE NO_VECTORIZATION
 #endif
 
 namespace beliefprop {
