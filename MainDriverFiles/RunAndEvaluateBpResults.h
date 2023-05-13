@@ -166,9 +166,10 @@ namespace RunAndEvaluateBpResults {
 		//parallel parameters initialized with default thread count dimensions at every level
 		beliefprop::ParallelParameters parallelParams(algSettings.numLevels_, PARALLEL_PARAMS_DEFAULT);
 
-		//if optimizing parallel parameters, parallelParamsVect contains parallel parameter settings to run (and is empty if not)
+		//if optimizing parallel parameters, parallelParamsVect contains parallel parameter settings to run
+		//(and contains only the default parallel parameters if not)
 		std::vector<std::array<unsigned int, 2>> parallelParamsVect{
-			OPTIMIZE_PARALLEL_PARAMS ? PARALLEL_PARAMETERS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
+			OPTIMIZE_PARALLEL_PARAMS ? PARALLEL_PARAMETERS_OPTIONS : std::vector<std::array<unsigned int, 2>>{PARALLEL_PARAMS_DEFAULT}};
 		
 		//CUDA implementation only (for now):
 		//add additional parallel parameters if first or second stereo set but not double or not using templated disparity
@@ -385,36 +386,48 @@ namespace RunAndEvaluateBpResults {
 		}
 
 		//write results from default and optimized parallel parameters runs to csv file
-		std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE),
-																std::ofstream(BP_ALL_RUNS_OUTPUT_CSV_FILE)};
+		std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE : BP_ALL_RUNS_OUTPUT_CSV_FILE),
+															 	 OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(BP_ALL_RUNS_OUTPUT_CSV_FILE) : std::ofstream()};
 		const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 		for (const auto& currHeader : headersInOrder) {
 			resultsStreamDefaultTBFinal[0] << currHeader << ",";
-			resultsStreamDefaultTBFinal[1] << currHeader << ",";
+			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			  resultsStreamDefaultTBFinal[1] << currHeader << ",";
+			}
 		}
-		resultsStreamDefaultTBFinal[1] << "Speedup Over Default Parallel Parameters" << ",";
 
 		resultsStreamDefaultTBFinal[0] << std::endl;
-		resultsStreamDefaultTBFinal[1] << std::endl;
+		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+		  resultsStreamDefaultTBFinal[1] << "Speedup Over Default Parallel Parameters" << ",";
+		  resultsStreamDefaultTBFinal[1] << std::endl;
+		}
 
-		for (unsigned int i=0; i < resultsStreamDefaultTBFinal.size(); i++) {
+		for (unsigned int i=0; i < (OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() : 1); i++) {
 			for (unsigned int j=0; j < resDefParParamsFinal[i].begin()->second.size(); j++) {
 				for (auto& currHeader : headersInOrder) {
 					resultsStreamDefaultTBFinal[i] << resDefParParamsFinal[i].at(currHeader).at(j) << ",";
 				}
-				if (i == 1) {
+				if ((i == 1) && OPTIMIZE_PARALLEL_PARAMS) {
 					resultsStreamDefaultTBFinal[1] << resDefParParamsFinal[i].at("Speedup Over Default Parallel Parameters").at(j) << ",";
 				}
 				resultsStreamDefaultTBFinal[i] << std::endl;
 			}
 		}
 		resultsStreamDefaultTBFinal[0].close();
-		resultsStreamDefaultTBFinal[1].close();
+		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+		  resultsStreamDefaultTBFinal[1].close();
+		}
 
-		std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
-				<< BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
-		std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
-				<< BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE << std::endl;
+        if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
+					<< BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
+			std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
+					<< BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE << std::endl;
+		}
+		else {
+			std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run using default parallel parameters in "
+					  << BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
+		}
 	}
 };
 
