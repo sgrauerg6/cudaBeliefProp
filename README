@@ -108,15 +108,14 @@ Relative speedup across various processors (AMD Rome w/ 48 cores used as baselin
 -Column marked as "Total runtime including data transfer time (15 timings)" in outputResults.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
 -CPU and CUDA runs are with thread count / thread block optimization enabled (via OPTIMIZE_PARALLEL_PARAMS in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
-NVIDIA P100: 0.88x
-Amazon Graviton2 (64 core ARM server): 0.94x
+NVIDIA P100: 0.79x
+Intel Ice Lake (32 cores): 0.90x
+Amazon Graviton2 (64 core ARM server): 0.91x
 AMD Rome (48 cores): 1.00x
-Intel Ice Lake (32 cores): 1.03x
-Amazon Graviton3 (64 core ARM server): 1.24x
-Intel Ice Lake (64 cores / 2 sockets): 1.26x
-NVIDIA V100: 1.37x
-AMD Milan-X (120 cores / 2 sockets): 1.52x (dual-core w/ 60 cores/CPU...best found configurations are usually with a thread count <= 60 with processing on single CPU based on thread ids so would expect similar results using single Milan-X CPU)
-NVIDIA RTX 3090 Ti: 1.82x
-NVIDIA A100: 1.97x
+NVIDIA V100: 1.19x
+Amazon Graviton3 (64 core ARM server): 1.21x
+AMD Milan-X (120 cores / 2 sockets...limited to 60 threads with OpenMP threads pinned to socket so should be using single 60 core CPU): 1.40x
+NVIDIA RTX 3090 Ti: 1.65x
+NVIDIA A100: 1.80x
 Spreadsheet with more detailed results:
-https://docs.google.com/spreadsheets/d/1-YDUYoMULrkDqCVvWf69Maow1cIZwNHz7qWEuIXWKLI/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1TSIrbxvwuFmvZqzUc3E1sIizMNIwe4sLdqgZ3ucIc60/edit?usp=sharing
