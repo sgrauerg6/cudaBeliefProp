@@ -21,14 +21,23 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"
 #include "../ParameterFiles/bpStereoCudaParameters.h"
+#include <iostream>
 
-#define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
-inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
-{
-   if (code != cudaSuccess) {
-      fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+
+template<typename T, typename U, unsigned int DISP_VALS>
+inline beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::errorCheck(const char *file, int line, bool abort) {
+	auto code = cudaPeekAtLastError();
+	if (code != cudaSuccess) {
+      //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+	  std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
+	  cudaGetLastError();
+	  cudaDeviceReset();
+	  cudaDeviceSynchronize();
+	  cudaSetDevice(0);
       if (abort) exit(code);
+	  return beliefprop::Status::ERROR;
    }
+   return beliefprop::Status::NO_ERROR;
 }
 
 /* May be needed if using half2
@@ -54,7 +63,7 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T, typename U, unsigned int DISP_VALS>
-void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
@@ -128,9 +137,12 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPset
 #endif
 
 		cudaDeviceSynchronize();
-		gpuErrchk( cudaPeekAtLastError() );
+		if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+			return beliefprop::Status::ERROR;
+		}
 		//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 	}
+	return beliefprop::Status::NO_ERROR;
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -138,7 +150,7 @@ void ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPset
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T, typename U, unsigned int DISP_VALS>
-void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
+beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& nextlevelProperties,
 		const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
@@ -152,7 +164,9 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 					(unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
 
 	cudaDeviceSynchronize();
-	gpuErrchk(cudaPeekAtLastError());
+	if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+		return beliefprop::Status::ERROR;
+	}
 
 	for (const auto& checkerboard_part : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
 	{
@@ -178,15 +192,22 @@ void ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 			bpSettingsNumDispVals);
 
 		cudaDeviceSynchronize();
-		gpuErrchk(cudaPeekAtLastError());
+		if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+			return beliefprop::Status::ERROR;
+		}
 	}
+	return beliefprop::Status::NO_ERROR;
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T, typename U, unsigned int DISP_VALS>
-void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
 		const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
 {
+	if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+		return beliefprop::Status::ERROR;
+	}
+
 	//since this is first kernel run in BP, set to prefer L1 cache for now since no shared memory is used by default
 	cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 
@@ -205,11 +226,17 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPset
 		dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
 		algSettings.numDispVals_);
 	cudaDeviceSynchronize();
+	
+	if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+		return beliefprop::Status::ERROR;
+	}
+
+	return beliefprop::Status::NO_ERROR;
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T, typename U, unsigned int DISP_VALS>
-void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
+beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
@@ -225,12 +252,17 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0],
 		messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1],
 		messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1], bpSettingsNumDispVals);
-
 	cudaDeviceSynchronize();
+	
+	if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+		return beliefprop::Status::ERROR;
+	}
+
+	return beliefprop::Status::NO_ERROR;
 }
 
 template<typename T, typename U, unsigned int DISP_VALS>
-void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& prevLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
@@ -244,7 +276,9 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop
 	const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
 			  		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
-	gpuErrchk(cudaPeekAtLastError());
+	if (errorCheck(__FILE__, __LINE__ ) != beliefprop::Status::NO_ERROR) {
+		return beliefprop::Status::ERROR;
+	}
 
 	const size_t offsetNum{0};
 	for (const auto& checkerboardAndDataCost : {
@@ -259,15 +293,18 @@ void ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop
 			bpSettingsNumDispVals);
 
 		cudaDeviceSynchronize();
-		gpuErrchk(cudaPeekAtLastError());
+		if (errorCheck(__FILE__, __LINE__ ) != beliefprop::Status::NO_ERROR) {
+			return beliefprop::Status::ERROR;
+		}
 	}
+	return beliefprop::Status::NO_ERROR;
 }
 
 #if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO)
 
 //due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
 template<>
-void ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
+beliefprop::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
 	const beliefprop::levelProperties& currentLevelProperties,
 	const beliefprop::levelProperties& nextlevelProperties,
 	const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyFrom,
@@ -293,11 +330,12 @@ void ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
 			(half*)messagesDeviceCopyTo.messagesD_Checkerboard1,
 			(half*)messagesDeviceCopyTo.messagesL_Checkerboard1,
 			(half*)messagesDeviceCopyTo.messagesR_Checkerboard1);*/
+	return beliefprop::Status::NO_ERROR;
 }
 
 //due to indexing, need to convert to half* and use half arrays for this function
 template<>
-void ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
 	const beliefprop::levelProperties& prevLevelProperties,
 	const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboard,
 	const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboardWriteTo)
@@ -309,6 +347,7 @@ void ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::
 			(half*)dataCostStereoCheckerboard2,
 			(half*)dataCostDeviceToWriteToCheckerboard1,
 			(half*)dataCostDeviceToWriteToCheckerboard2);*/
+	return beliefprop::Status::NO_ERROR;
 }
 
 #endif
@@ -337,7 +376,9 @@ float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
 		messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 		resultingDisparityMapCompDevice, bpSettingsNumDispVals);
 	cudaDeviceSynchronize();
-	gpuErrchk(cudaPeekAtLastError());
+	if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+		return nullptr;
+	}
 
 	return resultingDisparityMapCompDevice;
 }

@@ -41,27 +41,27 @@ class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
 public:
 		ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
 
-		void initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+		beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
 				const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard) override;
 
-		void initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+		beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
 				const beliefprop::levelProperties& prevLevelProperties,
 				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
 				const unsigned int bpSettingsNumDispVals) override;
 
-		void initializeMessageValsToDefault(
+		beliefprop::Status initializeMessageValsToDefault(
 				const beliefprop::levelProperties& currentLevelProperties,
 				const beliefprop::checkerboardMessages<U>& messagesDevice,
 				const unsigned int bpSettingsNumDispVals) override;
 
-		void runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+		beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
 				const beliefprop::levelProperties& currentLevelProperties,
 				const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 				const beliefprop::checkerboardMessages<U>& messagesDevice,
 				U allocatedMemForProcessing) override;
 
-		void copyMessageValuesToNextLevelDown(
+		beliefprop::Status copyMessageValuesToNextLevelDown(
 				const beliefprop::levelProperties& currentLevelProperties,
 				const beliefprop::levelProperties& nextlevelProperties,
 				const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
@@ -82,7 +82,7 @@ private:
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
@@ -103,6 +103,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const be
 				messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 				algSettings.disc_k_bp_, algSettings.numDispVals_, optCPUParams_);
 	}
+	return beliefprop::Status::NO_ERROR;
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -110,7 +111,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const be
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& nextlevelProperties,
 		const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
@@ -133,11 +134,12 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevel
 				messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 				bpSettingsNumDispVals, optCPUParams_);
 	}
+	return beliefprop::Status::NO_ERROR;
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
 		const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
 {
 	//initialize the data the the "bottom" of the image pyramid
@@ -145,11 +147,12 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const be
 			imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
 			algSettings.numDispVals_, optCPUParams_);
+	return beliefprop::Status::NO_ERROR;
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T, typename U, unsigned int DISP_VALS>
-void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
@@ -162,11 +165,12 @@ void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
 			messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1], messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
 			bpSettingsNumDispVals, optCPUParams_);
+	return beliefprop::Status::NO_ERROR;
 }
 
 
 template<typename T, typename U, unsigned int DISP_VALS>
-inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& prevLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
@@ -188,6 +192,7 @@ inline void ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(c
 					((int) offsetNum / sizeof(float)),
 					bpSettingsNumDispVals, optCPUParams_);
 	}
+	return beliefprop::Status::NO_ERROR;
 }
 
 template<typename T, typename U, unsigned int DISP_VALS>
