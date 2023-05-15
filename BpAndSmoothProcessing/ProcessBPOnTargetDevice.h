@@ -66,7 +66,7 @@ public:
 			const beliefprop::checkerboardMessages<U>& messagesDevice,
 			const unsigned int bpSettingsNumDispVals) = 0;
 	
-	virtual beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) {
+	virtual beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
 		return beliefprop::Status::NO_ERROR;
 	}
 
@@ -164,8 +164,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, U allocatedMemForProcessing,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 {
-	auto errCode = errorCheck();
-	if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+	if (errorCheck() != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 
 	std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
 	std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
@@ -219,7 +218,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	eachLevelTimingDataCosts[0].first = currTime;
 
 	//initialize the data cost at the bottom level
-	errCode = initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
+	auto errCode = initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
 	if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 
     currTime = std::chrono::system_clock::now();
@@ -356,7 +355,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
 	if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
 		if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
-          //do nothing; memory free outside of runs
+        	//do nothing; memory free outside of runs
 		}
 		else {
 			//now free the allocated data space; all data in single array when

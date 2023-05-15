@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 
 template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::errorCheck(const char *file, int line, bool abort) {
-	auto code = cudaPeekAtLastError();
+inline beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
+	const auto code = cudaPeekAtLastError();
 	if (code != cudaSuccess) {
       //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
 	  std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;

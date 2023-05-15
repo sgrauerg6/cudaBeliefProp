@@ -88,14 +88,12 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 		unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
 		bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData);
-		auto errCode = runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__);
-  		if (errCode != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+  		if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
 
 		beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0);
 		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
 		bpProcStore = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(totalDataBottomLevel);
-		errCode = runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__);
-	    if (errCode != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+	    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
 	}
 
 	for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
@@ -105,8 +103,9 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 			runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages),
 			runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages)};
 		
-		auto errCode = runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__);
-  		if (errCode != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+  		if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
+			return {0.0, DisparityMap<float>()};
+		}
 
 		//set start timer for specified runtime segments at time before smoothing images
 		runtime_start_end_timings[Runtime_Type_BP::SMOOTHING].first = std::chrono::system_clock::now();
@@ -117,8 +116,9 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 		//smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
 		for (unsigned int i = 0; i < 2u; i++) {
 			(*(runBpOnDevice.smoothImage))(inputImages[i], algSettings.smoothingSigma_, smoothedImages[i]);
-			auto errCode = runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__);
-   	        if (errCode != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+   	        if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
+				return {0.0, DisparityMap<float>()};
+			}
 		}
 
 		//end timer for image smoothing and add to image smoothing timings

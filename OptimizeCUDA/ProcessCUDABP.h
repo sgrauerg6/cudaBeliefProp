@@ -74,7 +74,7 @@ public:
 			const beliefprop::checkerboardMessages<U>& messagesDevice,
 			const unsigned int bpSettingsNumDispVals) override;
 	
-	beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) override;
+	beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;
 
 private:
 	const beliefprop::ParallelParameters& cudaParams_;
