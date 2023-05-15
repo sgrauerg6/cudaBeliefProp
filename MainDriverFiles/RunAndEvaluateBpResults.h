@@ -371,12 +371,10 @@ namespace RunAndEvaluateBpResults {
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 3, false>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 4, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 4, false>(resDefParParamsFinal));
-#ifndef SMALLER_SETS_ONLY
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 5, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 5, false>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 6, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 6, false>(resDefParParamsFinal));
-#endif //SMALLER_SETS_ONLY
 #ifdef DOUBLE_PRECISION_SUPPORTED
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 0, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 0, false>(resDefParParamsFinal));
@@ -388,12 +386,10 @@ namespace RunAndEvaluateBpResults {
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 3, false>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 4, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 4, false>(resDefParParamsFinal));
-#ifndef SMALLER_SETS_ONLY
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 5, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 5, false>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 6, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 6, false>(resDefParParamsFinal));
-#endif //SMALLER_SETS_ONLY
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef HALF_PRECISION_SUPPORTED
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 0, true>(resDefParParamsFinal));
@@ -406,12 +402,10 @@ namespace RunAndEvaluateBpResults {
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 3, false>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 4, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 4, false>(resDefParParamsFinal));
-#ifndef SMALLER_SETS_ONLY
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 5, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 5, false>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 6, true>(resDefParParamsFinal));
 		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 6, false>(resDefParParamsFinal));
-#endif //SMALLER_SETS_ONLY
 #endif //HALF_PRECISION_SUPPORTED
 
         if (headersInOrder.size() > 0) {
