@@ -13,8 +13,10 @@
 #include <thread>
 #include <iostream>
 #include <cmath>
+#include <string>
 #include "bpStereoParameters.h"
 #include "bpRunSettings.h"
+#include "../OutputEvaluation/RunData.h"
 
 namespace beliefprop {
 
@@ -29,6 +31,19 @@ struct BPsettings
 	float data_k_bp_{bp_params::DATA_K_BP};
 	float disc_k_bp_{bp_params::DISC_K_BP[0]};
 	unsigned int numDispVals_{0};
+
+	RunData runData() const {
+		RunData currRunData;
+		currRunData.addDataWHeader("Num Possible Disparity Values", std::to_string(numDispVals_));
+		currRunData.addDataWHeader("Num BP Levels", std::to_string(numLevels_));
+		currRunData.addDataWHeader("Num BP Iterations", std::to_string(numIterations_));
+		currRunData.addDataWHeader("DISC_K_BP", std::to_string(disc_k_bp_));
+		currRunData.addDataWHeader("DATA_K_BP", std::to_string(data_k_bp_));
+		currRunData.addDataWHeader("LAMBDA_BP", std::to_string(lambda_bp_));
+		currRunData.addDataWHeader("SIGMA_BP", std::to_string(smoothingSigma_));
+
+		return currRunData;
+	}
 
 	friend std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings);
 };
@@ -209,6 +224,38 @@ struct ParallelParameters {
 		os << "Get Output Disparity Parallel Dimensions:" << 
 						parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0] << " x " <<
 						parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1] << std::endl;
+	}
+
+	//add current parallel parameters to data for current run
+	RunData runData() const {
+		RunData currRunData;
+		//show parallel parameters for each kernel
+		currRunData.addDataWHeader("Blur Images Parallel Dimensions",
+			std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]) + " x " +
+			std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1]));
+		currRunData.addDataWHeader("Init Message Values Parallel Dimensions",
+			std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0]) + " x " +
+			std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1]));
+		for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL].size(); level++) {
+			currRunData.addDataWHeader("Level " + std::to_string(level) + " Data Costs Parallel Dimensions",
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][0]) + " x " +
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][1]));
+		}
+		for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL].size(); level++) {
+			currRunData.addDataWHeader("Level " + std::to_string(level) + " BP Thread Parallel Dimensions",
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][0]) + " x " +
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][1]));
+		}
+		for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL].size(); level++) {
+			currRunData.addDataWHeader("Level " + std::to_string(level) + " Copy Thread Parallel Dimensions",
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][0]) + " x " +
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][1]));
+		}
+		currRunData.addDataWHeader("Get Output Disparity Parallel Dimensions",
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]) + " x " +
+				std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1]));
+
+		return currRunData;
 	}
 
 	std::array<std::vector<std::array<unsigned int, 2>>, NUM_KERNELS> parallelDimsEachKernel_;

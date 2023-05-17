@@ -15,11 +15,13 @@
 #include <vector>
 #include <numeric>
 #include <algorithm>
+#include <set>
 #include "../ParameterFiles/bpRunSettings.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../FileProcessing/BpFileHandling.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../SingleThreadCPU/stereo.h"
+#include "../OutputEvaluation/RunData.h"
 
 typedef std::filesystem::path filepathtype;
 
@@ -53,15 +55,15 @@ using halftype = half;
 
 namespace RunAndEvaluateBpResults {
 	//constants for output results for individual and sets of runs
-	const std::string BP_RUN_OUTPUT_FILE{"output.txt"};
+	const std::string BP_RUN_OUTPUT_RESULTS_FILE{"outputResultsForRun.txt"};
 	const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE{"outputResultsDefaultParallelParams.csv"};
 	const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
 	std::vector<std::string> headersInOrder;
 
-	std::pair<std::map<std::string, std::string>, std::vector<std::string>> getResultsMappingFromFile(const std::string& fileName) {
-		std::map<std::string, std::string> resultsMapping;
-		std::vector<std::string> currResultHeadersInOrder;
+	std::vector<std::array<std::string, 2>> getResultsMappingFromFile(const std::string& fileName) {
+		std::vector<std::array<std::string, 2>> dataWHeaders;
+		std::set<std::string> headersSet;
 		std::ifstream resultsFile(fileName);
 
 		std::string line;
@@ -76,16 +78,16 @@ namespace RunAndEvaluateBpResults {
 			if (header.size() > 0) {
 				unsigned int i{0u};
 				const std::string origHeader{header};
-				while (resultsMapping.count(header) > 0) {
+				while (headersSet.count(header) > 0) {
 					i++;
 					header = origHeader + "_" + std::to_string(i);
 				}
-				resultsMapping[header] = result;
-				currResultHeadersInOrder.push_back(header);
+				headersSet.insert(header);
+				dataWHeaders.push_back({header, result});
 			}
 		}
 
-		return {resultsMapping, currResultHeadersInOrder};
+		return dataWHeaders;
 	}
 
 	//compare resulting disparity map with a ground truth (or some other disparity map...)
@@ -175,11 +177,25 @@ namespace RunAndEvaluateBpResults {
 		resultsStream << "DISP_VALS_TEMPLATED: " << dispValsTemplatedStr << std::endl;
 	}
 
+	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED>
+	RunData inputAndParamsRunData(const beliefprop::BPsettings& algSettings) {
+		RunData currRunData;
+		currRunData.addDataWHeader("DataType", beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
+		currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
+		currRunData.appendData(algSettings.runData());
+		currRunData.appendData(beliefprop::runSettings());
+		const std::string dispValsTemplatedStr{(DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES"};
+		currRunData.addDataWHeader("DISP_VALS_TEMPLATED", dispValsTemplatedStr);
+		return currRunData;
+	}
+
 	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
 	beliefprop::Status runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal,
 								const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED>>& optimizedImp,
 								const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD>>& singleThreadCPUImp)
 	{
+		enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
+		std::array<std::array<std::map<std::string, std::string>, 2>, 2> inParamsResultsDefOptRuns;
 		//load all the BP default settings
 		beliefprop::BPsettings algSettings;
 		algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
@@ -190,7 +206,7 @@ namespace RunAndEvaluateBpResults {
 		//if optimizing parallel parameters, parallelParamsVect contains parallel parameter settings to run
 		//(and contains only the default parallel parameters if not)
 		std::vector<std::array<unsigned int, 2>> parallelParamsVect{
-			OPTIMIZE_PARALLEL_PARAMS ? PARALLEL_PARAMETERS_OPTIONS : std::vector<std::array<unsigned int, 2>>{PARALLEL_PARAMS_DEFAULT}};
+			OPTIMIZE_PARALLEL_PARAMS ? PARALLEL_PARAMETERS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
 		
 		//mapping of parallel parameters to runtime for each kernel at each level and total runtime
 		std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::NUM_KERNELS + 1)> pParamsToRunTimeEachKernel;
@@ -203,50 +219,78 @@ namespace RunAndEvaluateBpResults {
 		//if optimizing parallel parameters, run BP for each parallel parameters option, retrieve best parameters for each kernel or overall for the run,
 		//and then run BP with best found parallel parameters
 		//if not optimizing parallel parameters, run BP once using default parallel parameters
-		for (unsigned int runNum=0; runNum < (OPTIMIZE_PARALLEL_PARAMS ? (parallelParamsVect.size() + 1) : parallelParamsVect.size()); runNum++) {
-			std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
-			addInputAndParamsToStream<T, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED>(algSettings, resultsStream);
+		for (unsigned int runNum=0; runNum < (parallelParamsVect.size() + 1); runNum++) {
+			//initialize current run type to specify if current run is only run, run with default params, test params run, or final run with optiized params
+			RunType currRunType{RunType::TEST_PARAMS};
+			if constexpr (!OPTIMIZE_PARALLEL_PARAMS) {
+				currRunType = RunType::ONLY_RUN;
+			}
+			else if (runNum == parallelParamsVect.size()) {
+				currRunType = RunType::OPTIMIZED_RUN;
+			}
 
 			//get and set parallel parameters for current run if not final run that uses optimized parameters
-			//final run uses default parameters if not optimizing parallel parameters
-			const std::array<unsigned int, 2>* pParamsCurrRun = (runNum < parallelParamsVect.size()) ? (&(parallelParamsVect[runNum])) : nullptr;
-			if (pParamsCurrRun) {
-				//set parallel parameters to current parameters for each BP processing level
-				parallelParams.setParallelDims(*pParamsCurrRun, algSettings.numLevels_);
+			std::array<unsigned int, 2> pParamsCurrRun{PARALLEL_PARAMS_DEFAULT};
+			if (currRunType == RunType::ONLY_RUN) {
+				parallelParams.setParallelDims(PARALLEL_PARAMS_DEFAULT, algSettings.numLevels_);
+			}
+			else if (currRunType == RunType::TEST_PARAMS) {
+				//set parallel parameters to parameters corresponding to current run for each BP processing level
+				pParamsCurrRun = parallelParamsVect[runNum];
+				parallelParams.setParallelDims(pParamsCurrRun, algSettings.numLevels_);
+				if (pParamsCurrRun == PARALLEL_PARAMS_DEFAULT) {
+					//set run type to default parameters if current run uses default parameters
+					currRunType = RunType::DEFAULT_PARAMS;
+				}
 			}
 
-			if constexpr (OPTIMIZE_PARALLEL_PARAMS &&
-				(optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
-			{
-				//write parallel parameters for each kernel to output stream if allowing different parallel parameters for each kernel in the same run
-				parallelParams.writeToStream(resultsStream);
+			//store input params data if using default parallel parameters or final run with optimized parameters
+			RunData currRunData;
+			if (currRunType != RunType::TEST_PARAMS) {
+				currRunData.appendData(inputAndParamsRunData<T, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED>(algSettings));
+				if constexpr (OPTIMIZE_PARALLEL_PARAMS &&
+					(optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
+				{
+					//add parallel parameters for each kernel to current input data if allowing different parallel parameters for each kernel in the same run
+					currRunData.appendData(parallelParams.runData());
+				}
 			}
 
-			//run optimized implementation only (and not single-threaded CPU implementation) if not final run or run is using default parameter parameters
-			//final run and run using default parallel parameters are only runs that are output in final results
-			const bool runOptImpOnly{(!((runNum == parallelParamsVect.size()) || ((*pParamsCurrRun) == PARALLEL_PARAMS_DEFAULT)))};
+			//run optimized implementation only if not final run or run is using default parameter parameters
+			const bool runOptImpOnly{currRunType == RunType::TEST_PARAMS};
+			std::ofstream resultsStream(BP_RUN_OUTPUT_RESULTS_FILE, std::ofstream::out);
+			//run belief propagation implementation(s) and return whether or not error in run
+			//detailed results stored to file that is generated using stream
 			const auto errCode = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD>(
 				resultsStream, optimizedImp, singleThreadCPUImp, NUM_SET, algSettings, parallelParams, runOptImpOnly);
+  			currRunData.addDataWHeader("Run Success", (errCode == beliefprop::Status::NO_ERROR) ? "Yes" : "No");
 			resultsStream.close();
 
-			//if error using default parameters, exit function with error
-			if (pParamsCurrRun && (((*pParamsCurrRun) == PARALLEL_PARAMS_DEFAULT) && (errCode != beliefprop::Status::NO_ERROR))) {
+			//if error in run and run is any type other than for testing parameters, exit function with error
+			if ((errCode != beliefprop::Status::NO_ERROR) && (currRunType != RunType::TEST_PARAMS)) {
 				return beliefprop::Status::ERROR;
 			}
 
-			//retrieve and store results from current run if using default parallel parameters or is final run w/ optimized parallel parameters
-			if ((runNum == parallelParamsVect.size()) || ((*pParamsCurrRun) == PARALLEL_PARAMS_DEFAULT))
-			{
+			//retrieve results from current run
+			const auto resultsDataCurrRun = getResultsMappingFromFile(BP_RUN_OUTPUT_RESULTS_FILE);
+			for (const auto& currResultWHeader : resultsDataCurrRun) {
+				currRunData.addDataWHeader(currResultWHeader[0], currResultWHeader[1]);
+			}
+
+            //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
+			if (currRunType != RunType::TEST_PARAMS) {
+				//retrieve and store headers in output if not already retrieved to use for final output
+				if (headersInOrder.size() == 0) {
+					headersInOrder = currRunData.getHeadersInOrder();
+				}
 				//set output for runs using default parallel parameters and final run (which is the same run if not optimizing parallel parameters)
-				const auto resultsCurrentRun = getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
-				//set output for run using default parallel parameters or final run if run was valid
-				auto& resultUpdate = (runNum == parallelParamsVect.size()) ? resDefParParamsFinal[1] : resDefParParamsFinal[0];
-				for (const auto& currRunResult : resultsCurrentRun) {
-					if (resultUpdate.count(currRunResult.first)) {
-						resultUpdate[currRunResult.first].push_back(currRunResult.second);
+				auto& allDataUpdate = (currRunType == RunType::OPTIMIZED_RUN) ? resDefParParamsFinal[1] : resDefParParamsFinal[0];
+				for (const auto& currRunResult : currRunData.getAllData()) {
+					if (allDataUpdate.count(currRunResult.first)) {
+						allDataUpdate[currRunResult.first].push_back(currRunResult.second);
 					}
 					else {
-						resultUpdate[currRunResult.first] = std::vector{currRunResult.second};
+						allDataUpdate[currRunResult.first] = std::vector{currRunResult.second};
 					}
 				}
 			}
@@ -256,30 +300,29 @@ namespace RunAndEvaluateBpResults {
 				//total runtime for current run
 				//if error in run, don't add results for current parallel parameters to results set
 				if (errCode == beliefprop::Status::NO_ERROR) {
-					const auto resultsCurrentRun = getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
-					if (runNum < parallelParamsVect.size()) {
+					if (currRunType != RunType::OPTIMIZED_RUN) {
 						if constexpr (optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
 							for (unsigned int level=0; level < algSettings.numLevels_; level++) {
-								pParamsToRunTimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][*pParamsCurrRun] =
-									std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Data Costs (" +
+								pParamsToRunTimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
+									std::stod(currRunData.getData("Level " + std::to_string(level) + " Data Costs (" +
 											std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-								pParamsToRunTimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][*pParamsCurrRun] = 
-									std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " BP Runtime (" + 
+								pParamsToRunTimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
+									std::stod(currRunData.getData("Level " + std::to_string(level) + " BP Runtime (" + 
 											std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-								pParamsToRunTimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][*pParamsCurrRun] =
-									std::stod(resultsCurrentRun.at("Level " + std::to_string(level) + " Copy Runtime (" + 
+								pParamsToRunTimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][pParamsCurrRun] =
+									std::stod(currRunData.getData("Level " + std::to_string(level) + " Copy Runtime (" + 
 																std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
 							}
-							pParamsToRunTimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][*pParamsCurrRun] =
-									std::stod(resultsCurrentRun.at("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-							pParamsToRunTimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][*pParamsCurrRun] =
-									std::stod(resultsCurrentRun.at("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
-							pParamsToRunTimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][*pParamsCurrRun] =
-									std::stod(resultsCurrentRun.at("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+							pParamsToRunTimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][pParamsCurrRun] =
+									std::stod(currRunData.getData("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+							pParamsToRunTimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][pParamsCurrRun] =
+									std::stod(currRunData.getData("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+							pParamsToRunTimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][pParamsCurrRun] =
+									std::stod(currRunData.getData("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
 						}
 						//get total runtime
-						pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][*pParamsCurrRun] =
-								std::stod(resultsCurrentRun.at(OPTIMIZED_RUNTIME_HEADER));
+						pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =
+								std::stod(currRunData.getData(OPTIMIZED_RUNTIME_HEADER));
 					}
 				}
 
@@ -351,10 +394,7 @@ namespace RunAndEvaluateBpResults {
 				return beliefprop::Status::ERROR;
 			}
 		}
-		//retrieve and store headers in output if not already retrieved to use for final output
-		if (headersInOrder.size() == 0) {
-			headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
-		}
+
 		return beliefprop::Status::NO_ERROR;
 	}
 

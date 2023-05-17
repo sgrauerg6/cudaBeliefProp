@@ -132,7 +132,6 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 		auto rpBpStereoOutput = (*(runBpOnDevice.runBpStereo))(smoothedImages, algSettings, widthHeightImages,
 			bpData, bpProcStore, runBpOnDevice.memManagementBpRun);
 		if (rpBpStereoOutput.first == nullptr) {
-			std::cout << "ERROR RunBpStereoSet" << std::endl;
 			return {0.0, DisparityMap<float>()};
 		}
 

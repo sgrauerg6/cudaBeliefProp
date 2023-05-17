@@ -12,6 +12,7 @@
 #include <typeinfo>
 #include <typeindex>
 #include <map>
+#include "../OutputEvaluation/RunData.h"
 
 //uncomment if compiling/running on ARM architecture
 //#define COMPILING_FOR_ARM
@@ -127,6 +128,16 @@ inline void writeRunSettingsToStream(std::ostream& resultsStream)
 	resultsStream << "Indexing Optimization Level: " << beliefprop::OPTIMIZED_INDEXING_SETTING << "\n";
 	resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::BYTES_ALIGN_MEMORY << "\n";
 	resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::NUM_DATA_ALIGN_WIDTH << "\n";
+}
+
+inline RunData runSettings()  {
+    RunData currRunData;
+		currRunData.addDataWHeader("Memory Optimization Level", std::to_string(beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
+		currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(beliefprop::OPTIMIZED_INDEXING_SETTING));
+		currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(beliefprop::BYTES_ALIGN_MEMORY));
+		currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(beliefprop::NUM_DATA_ALIGN_WIDTH));
+
+    return currRunData;
 }
 
 };
