@@ -35,7 +35,6 @@ template<typename T, unsigned int DISP_VALS>
 inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
 		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
-	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
 	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
 #if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 	omp_set_num_threads(nthreads);
@@ -56,6 +55,7 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 #endif //_WIN32*/
 
 	RunData runData;
+	runData.addDataWHeader("CURRENT RUN", "OPTIMIZED CPU");
 	runData.addDataWHeader("Number of threads", std::to_string(nthreads));
 	runData.addDataWHeader("Vectorization", beliefprop::cpuVectorizationString());
 
@@ -65,8 +65,7 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 		BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCPU>(parallelParams),
 									 std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(parallelParams),
 								  	 std::make_unique<RunBpStereoSetMemoryManagement<>>(),
-							 		 std::make_unique<RunBpStereoSetMemoryManagement<T>>()},
-		resultsStream);
+							 		 std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
 	runData.appendData(procSetOutput.runData);
 	procSetOutput.runData = runData;
 
