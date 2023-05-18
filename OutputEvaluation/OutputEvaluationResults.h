@@ -11,6 +11,7 @@
 #include <map>
 #include <iostream>
 #include "OutputEvaluationParameters.h"
+#include "RunData.h"
 
 template<class T>
 class OutputEvaluationResults {
@@ -40,6 +41,19 @@ public:
 		for (const auto& output_diff_threshold : evalParams.output_diff_thresholds_) {
 			numSigDiffPixelsAtThresholds[output_diff_threshold] = 0;
 		}
+	}
+
+	RunData runData() const {
+		RunData evalRunData;
+		evalRunData.addDataWHeader("Average RMS error", std::to_string(averageDispAbsDiffNoMax));
+		evalRunData.addDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparityErrorCap) + ")",
+		  std::to_string(averageDispAbsDiffNoMax));
+		for (const auto& propBadPixelsAtThreshold : propSigDiffPixelsAtThresholds) {
+			evalRunData.addDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
+										std::to_string(propBadPixelsAtThreshold.second));
+		}
+
+		return evalRunData;
 	}
 
 	template<class U>

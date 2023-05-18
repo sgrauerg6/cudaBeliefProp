@@ -28,14 +28,12 @@ public:
 	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 			const beliefprop::BPsettings& algSettings,
-			const beliefprop::ParallelParameters& parallelParams,
-			std::ostream& resultsStream) override;
+			const beliefprop::ParallelParameters& parallelParams) override;
 };
 
 template<typename T, unsigned int DISP_VALS>
 inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams,
-		std::ostream& resultsStream)
+		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
 	resultsStream << "CURRENT RUN: OPTIMIZED CPU\n";
 	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
@@ -57,17 +55,22 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
     }
 #endif //_WIN32*/
 
-	resultsStream << "Number of threads: " << nthreads << "\n";
-	resultsStream << "Vectorization: " << beliefprop::cpuVectorizationString() << "\n";
+	RunData runData;
+	runData.addDataWHeader("Number of threads", std::to_string(nthreads));
+	runData.addDataWHeader("Vectorization", beliefprop::cpuVectorizationString());
 
 	//generate struct with pointers to objects for running optimized CPU implementation and call
 	//function to run optimized CPU implementation
-	return this->processStereoSet(refTestImagePath, algSettings, 
+	auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings, 
 		BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCPU>(parallelParams),
 									 std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(parallelParams),
 								  	 std::make_unique<RunBpStereoSetMemoryManagement<>>(),
 							 		 std::make_unique<RunBpStereoSetMemoryManagement<T>>()},
 		resultsStream);
+	runData.appendData(procSetOutput.runData);
+	procSetOutput.runData = runData;
+
+	return procSetOutput;
 }
 
 #ifdef _WIN32

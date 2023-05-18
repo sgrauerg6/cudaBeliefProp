@@ -16,6 +16,7 @@
 #include <chrono>
 #include <iostream>
 #include <array>
+#include <utility>
 #include "image.h"
 #include "misc.h"
 #include "pnmfile.h"
@@ -32,8 +33,7 @@ class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS>
 public:
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 			const beliefprop::BPsettings& algSettings,
-			const beliefprop::ParallelParameters& parallelParams,
-			std::ostream& resultsStream) override;
+			const beliefprop::ParallelParameters& parallelParams) override;
 	std::string getBpRunDescription() override { return "Single-Thread CPU"; }
 
 private:
@@ -48,7 +48,7 @@ private:
 	void bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
 			image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
 			image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp);
-	image<uchar> *stereo_ms(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings, std::ostream& resultsFile, float& runtime);
+	std::pair<image<uchar>*, RunData> stereo_ms(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings, float& runtime);
 };
 
 // dt of 1d function
@@ -199,8 +199,8 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::bp_cb(image<float[DISP_VAL
 
 // multiscale belief propagation for image restoration
 template<typename T, unsigned int DISP_VALS>
-inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
-	const beliefprop::BPsettings& algSettings, std::ostream& resultsFile, float& runtime) {
+inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
+	const beliefprop::BPsettings& algSettings, float& runtime) {
 	image<float[DISP_VALS]> *u[bp_params::LEVELS_BP];
 	image<float[DISP_VALS]> *d[bp_params::LEVELS_BP];
 	image<float[DISP_VALS]> *l[bp_params::LEVELS_BP];
@@ -283,9 +283,8 @@ inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<
 	auto timeEnd = std::chrono::system_clock::now();
 	std::chrono::duration<double> diff = timeEnd-timeStart;
 
-	resultsFile << "AVERAGE CPU RUN TIME: " << diff.count() << "\n";
-	//std::cout << "CPU RUN TIME: << diff.count() << std::endl;
-	runtime = diff.count();
+	RunData runData;
+	runData.addDataWHeader("AVERAGE CPU RUN TIME", std::to_string(diff.count()));
 
 	delete u[0];
 	delete d[0];
@@ -293,12 +292,12 @@ inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<
 	delete r[0];
 	delete data[0];
 
-	return out;
+	return {out, runData};
 }
 
 template<typename T, unsigned int DISP_VALS>
 inline ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams, std::ostream& resultsStream)
+		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
 	image<uchar> *img1, *img2, *out;// *edges;
 
@@ -308,7 +307,8 @@ inline ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator
 	float runtime = 0.0f;
 
 	// compute disparities
-	out = stereo_ms(img1, img2, algSettings, resultsStream, runtime);
+	auto outStereo = stereo_ms(img1, img2, algSettings, runtime);
+	out = outStereo.first;
 
 	DisparityMap<float> outDispMap(std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
 
@@ -322,6 +322,7 @@ inline ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator
 	ProcessStereoSetOutput output;
 	output.runTime = runtime;
 	output.outDisparityMap = std::move(outDispMap);
+	output.runData = outStereo.second;
 
 	delete img1;
 	delete img2;

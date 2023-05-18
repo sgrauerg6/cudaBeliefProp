@@ -14,6 +14,7 @@
 #include <map>
 #include <iostream>
 #include "DetailedTimingBPConsts.h"
+#include "../OutputEvaluation/RunData.h"
 
 //Class to store timings
 //Not that there is currently no check that the input segment index for timing is valid; currently is assumed
@@ -80,6 +81,19 @@ public:
 				os << " (No timings) : No timings" << std::endl; }
 			});
 		return os;
+	}
+
+	RunData runData() const {
+		RunData timingsRunData;
+		std::for_each(timings.begin(), timings.end(), [this, &timingsRunData](auto currentTiming) {
+			std::sort(currentTiming.second.begin(), currentTiming.second.end());
+			std::string headerStart = numToString.at(currentTiming.first);
+			if (currentTiming.second.size() > 0) {
+				timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) + " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2])); }
+			else {
+				timingsRunData.addDataWHeader(headerStart + " (No timings) ", "No timings"); }
+			});
+		return timingsRunData;
 	}
 
 private:

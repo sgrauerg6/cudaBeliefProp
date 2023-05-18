@@ -19,23 +19,27 @@
 class RunData {
 public:
     void addDataWHeader(const std::string& header, const std::string& data) {
-        headersWData_[header] = data;
-        if (std::find(headersInOrder_.begin(), headersInOrder_.end(), header) == headersInOrder_.end()) {
-            headersInOrder_.push_back(header);
+        const auto origHeader = header;
+        auto headerToAdd = origHeader;
+        unsigned int num{0};
+        while (std::find(headersInOrder_.begin(), headersInOrder_.end(), headerToAdd) != headersInOrder_.end()) {
+            //add "_{num}" to header if header already in data
+            num++;
+            headerToAdd = origHeader + "_" + std::to_string(num);
         }
+        headersInOrder_.push_back(headerToAdd);
+        headersWData_[headerToAdd] = data;
     }
 
     const std::vector<std::string>& getHeadersInOrder() const { return headersInOrder_; }
     const std::map<std::string, std::string>& getAllData() const { return headersWData_; }
-    bool isData(const std::string& header) { 
+    bool isData(const std::string& header) const { 
         return (std::find(headersInOrder_.begin(), headersInOrder_.end(), header) != headersInOrder_.end()); }
     const std::string getData(const std::string& header) const { return headersWData_.at(header); }
     void appendData(const RunData& inRunData) {
-        const auto& inHeaders = inRunData.getHeadersInOrder();
-        const auto& inData = inRunData.getAllData();
-        headersInOrder_.insert(headersInOrder_.end(), inHeaders.begin(), inHeaders.end());
-        for (const auto& dataWHeader : inData) {
-            headersWData_[dataWHeader.first] = dataWHeader.second;
+        const auto& inRunDataMapping = inRunData.getAllData();
+        for (const auto& header : inRunData.getHeadersInOrder()) {
+            addDataWHeader(header, inRunDataMapping.at(header));
         }
     }
 

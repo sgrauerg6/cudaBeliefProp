@@ -37,18 +37,21 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace bp_cuda_device
 {
-	void retrieveDeviceProperties(int numDevice, std::ostream& resultsStream)
+	RunData retrieveDeviceProperties(int numDevice)
 	{
 		cudaDeviceProp prop;
 		cudaGetDeviceProperties(&prop, numDevice);
 		int cudaDriverVersion;
 		cudaDriverGetVersion(&cudaDriverVersion);
-
-		resultsStream << "Device " << numDevice << ": " << prop.name << " with " << prop.multiProcessorCount << " multiprocessors\n";
-		resultsStream << "Cuda version: " << cudaDriverVersion << "\n";
 		int cudaRuntimeVersion;
 		cudaRuntimeGetVersion(&cudaRuntimeVersion);
-		resultsStream << "Cuda Runtime Version: " << cudaRuntimeVersion << "\n";
+
+		RunData runData;
+		runData.addDataWHeader("Device " + std::to_string(numDevice),
+			std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) + " multiprocessors");
+		runData.addDataWHeader("Cuda version", std::to_string(cudaDriverVersion));
+		runData.addDataWHeader("Cuda Runtime Version", std::to_string(cudaRuntimeVersion));
+		return runData;
 	}
 };
 
@@ -63,21 +66,23 @@ public:
 	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 				const beliefprop::BPsettings& algSettings, 
-				const beliefprop::ParallelParameters& parallelParams,
-				std::ostream& resultsStream) override
+				const beliefprop::ParallelParameters& parallelParams) override
 	{
 		//using SmoothImageCUDA::SmoothImage;
-		resultsStream << "CURRENT RUN: GPU WITH CUDA\n";
-		bp_cuda_device::retrieveDeviceProperties(0, resultsStream);
-
 		//generate struct with pointers to objects for running CUDA implementation and call
 		//function to run CUDA implementation
-		return this->processStereoSet(refTestImagePath, algSettings,
+		RunData runData;
+		runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
+		runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
+		auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
 			BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCUDA>(parallelParams),
 										 std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
 										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
-										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()},
-			resultsStream);
+										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});
+		runData.appendData(procSetOutput.runData);
+		procSetOutput.runData = runData;
+		
+		return procSetOutput;
 	}
 };
 

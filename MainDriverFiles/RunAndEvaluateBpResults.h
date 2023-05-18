@@ -93,19 +93,18 @@ namespace RunAndEvaluateBpResults {
 	//compare resulting disparity map with a ground truth (or some other disparity map...)
 	//this function takes as input the file names of a two disparity maps and the factor
 	//that each disparity was scaled by in the generation of the disparity map image
-	void compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap,
-						 std::ostream& resultsStream)
+	RunData compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap)
 	{
 		const OutputEvaluationResults<float> outputEvalResults =
 			outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
-		resultsStream << outputEvalResults;
+		return outputEvalResults.runData();
 	}
 
 	//run and compare output disparity maps using the given optimized and single-threaded stereo implementations
 	//on the reference and test images specified by numStereoSet
 	//run only optimized implementation if runOptImpOnly is true
 	template<typename T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD>
-		beliefprop::Status runStereoTwoImpsAndCompare(std::ostream& outStream,
+		std::pair<beliefprop::Status, RunData> runStereoTwoImpsAndCompare(
 		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED>>& optimizedImp,
 		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD>>& singleThreadCPUImp,
 		const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
@@ -128,21 +127,23 @@ namespace RunAndEvaluateBpResults {
 		std::cout << std::endl;
 
 		std::array<ProcessStereoSetOutput, 2> run_output;
+		RunData runData;
 		//run optimized implementation and retrieve structure with runtime and output disparity map
-		run_output[0] = optimizedImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams, outStream);
+		run_output[0] = optimizedImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams);
 		//check if error in run
 		if ((run_output[0].runTime == 0.0) || (run_output[0].outDisparityMap.getHeight() == 0)) {
-        	return beliefprop::Status::ERROR;
+        	return {beliefprop::Status::ERROR, runData};
 		}
+		runData.appendData(run_output[0].runData);
 		//save resulting disparity map
 		run_output[0].outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
-		outStream << OPTIMIZED_RUNTIME_HEADER << ":" << run_output[0].runTime << std::endl;
+		runData.addDataWHeader(OPTIMIZED_RUNTIME_HEADER, std::to_string(run_output[0].runTime));
 
         if (!runOptImpOnly) {
 			//run single-threaded implementation and retrieve structure with runtime and output disparity map
-			run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams, outStream);
+			run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams);
 			run_output[1].outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
-			outStream << OPTIMIZED_RUNTIME_HEADER << ":" << run_output[1].runTime << std::endl;
+	 		runData.appendData(run_output[1].runData);
 		}
 
 		for (unsigned int i = 0; i < numImpsRun; i++) {
@@ -154,17 +155,17 @@ namespace RunAndEvaluateBpResults {
         //compare resulting disparity maps with ground truth and to each other
 		const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
 		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
-		outStream << std::endl << optimizedImp->getBpRunDescription() << " output vs. Ground Truth result:\n";
-		compareDispMaps(run_output[0].outDisparityMap, groundTruthDisparityMap, outStream);
+		runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
+		runData.appendData(compareDispMaps(run_output[0].outDisparityMap, groundTruthDisparityMap));
         if (!runOptImpOnly) {
-			outStream << std::endl << singleThreadCPUImp->getBpRunDescription() << " output vs. Ground Truth result:\n";
-			compareDispMaps(run_output[1].outDisparityMap, groundTruthDisparityMap, outStream);
+			runData.addDataWHeader(singleThreadCPUImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
+			runData.appendData(compareDispMaps(run_output[1].outDisparityMap, groundTruthDisparityMap));
 
-			outStream << std::endl << optimizedImp->getBpRunDescription() << " output vs. " << singleThreadCPUImp->getBpRunDescription() << " result:\n";
-			compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap, outStream);
+			runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. " + singleThreadCPUImp->getBpRunDescription() + " result", std::string());
+			runData.appendData(compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap));
 		}
 
-		return beliefprop::Status::NO_ERROR;
+		return {beliefprop::Status::NO_ERROR, runData};
 	}
 
 	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED>
@@ -259,24 +260,19 @@ namespace RunAndEvaluateBpResults {
 
 			//run optimized implementation only if not final run or run is using default parameter parameters
 			const bool runOptImpOnly{currRunType == RunType::TEST_PARAMS};
-			std::ofstream resultsStream(BP_RUN_OUTPUT_RESULTS_FILE, std::ofstream::out);
 			//run belief propagation implementation(s) and return whether or not error in run
 			//detailed results stored to file that is generated using stream
-			const auto errCode = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD>(
-				resultsStream, optimizedImp, singleThreadCPUImp, NUM_SET, algSettings, parallelParams, runOptImpOnly);
-  			currRunData.addDataWHeader("Run Success", (errCode == beliefprop::Status::NO_ERROR) ? "Yes" : "No");
-			resultsStream.close();
+			const auto runImpsECodeData = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD>(
+				optimizedImp, singleThreadCPUImp, NUM_SET, algSettings, parallelParams, runOptImpOnly);
+  			currRunData.addDataWHeader("Run Success", (runImpsECodeData.first == beliefprop::Status::NO_ERROR) ? "Yes" : "No");
 
 			//if error in run and run is any type other than for testing parameters, exit function with error
-			if ((errCode != beliefprop::Status::NO_ERROR) && (currRunType != RunType::TEST_PARAMS)) {
+			if ((runImpsECodeData.first != beliefprop::Status::NO_ERROR) && (currRunType != RunType::TEST_PARAMS)) {
 				return {beliefprop::Status::ERROR, {currRunData}};
 			}
 
 			//retrieve results from current run
-			const auto resultsDataCurrRun = getResultsMappingFromFile(BP_RUN_OUTPUT_RESULTS_FILE);
-			for (const auto& currResultWHeader : resultsDataCurrRun) {
-				currRunData.addDataWHeader(currResultWHeader[0], currResultWHeader[1]);
-			}
+			currRunData.appendData(runImpsECodeData.second);
 
             //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
 			if (currRunType != RunType::TEST_PARAMS) {
@@ -293,26 +289,26 @@ namespace RunAndEvaluateBpResults {
 				//retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
 				//total runtime for current run
 				//if error in run, don't add results for current parallel parameters to results set
-				if (errCode == beliefprop::Status::NO_ERROR) {
+				if (runImpsECodeData.first == beliefprop::Status::NO_ERROR) {
 					if (currRunType != RunType::OPTIMIZED_RUN) {
 						if constexpr (optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
 							for (unsigned int level=0; level < algSettings.numLevels_; level++) {
 								pParamsToRunTimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
 									std::stod(currRunData.getData("Level " + std::to_string(level) + " Data Costs (" +
-											std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+											std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
 								pParamsToRunTimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
 									std::stod(currRunData.getData("Level " + std::to_string(level) + " BP Runtime (" + 
-											std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+											std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
 								pParamsToRunTimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][pParamsCurrRun] =
 									std::stod(currRunData.getData("Level " + std::to_string(level) + " Copy Runtime (" + 
-																std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+																std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
 							}
 							pParamsToRunTimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][pParamsCurrRun] =
-									std::stod(currRunData.getData("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+									std::stod(currRunData.getData("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
 							pParamsToRunTimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][pParamsCurrRun] =
-									std::stod(currRunData.getData("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+									std::stod(currRunData.getData("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
 							pParamsToRunTimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][pParamsCurrRun] =
-									std::stod(currRunData.getData("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings) "));
+									std::stod(currRunData.getData("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
 						}
 						//get total runtime
 						pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =

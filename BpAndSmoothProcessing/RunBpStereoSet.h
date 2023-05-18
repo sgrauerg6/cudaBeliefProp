@@ -25,12 +25,14 @@
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../ImageDataAndProcessing/BpImage.h"
+#include "../OutputEvaluation/RunData.h"
 
 //stereo processing output
 struct ProcessStereoSetOutput
 {
 	float runTime = 0.0;
 	DisparityMap<float> outDisparityMap;
+	RunData runData;
 };
 
 template <typename U, typename V, unsigned int DISP_VALS>
@@ -49,8 +51,7 @@ public:
 	//pure abstract overloaded operator that must be defined in child class
 	virtual ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
 		const beliefprop::BPsettings& algSettings, 
-		const beliefprop::ParallelParameters& parallelParams,
-		std::ostream& resultsStream) = 0;
+		const beliefprop::ParallelParameters& parallelParams) = 0;
 
 protected:
 
@@ -58,15 +59,14 @@ protected:
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
 	template <typename U=T*>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice,
-		std::ostream& resultsStream);
+		const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice);
 };
 
 
 template<typename T, unsigned int DISP_VALS>
 template<typename U>
 ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-	const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice, std::ostream& resultsStream)
+	const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice)
 {
 	//retrieve the images as well as the width and height
 	const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refTestImagePath[0]), BpImage<unsigned int>(refTestImagePath[1])};
@@ -169,11 +169,13 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 		runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpProcStore);
 	}
 
-	resultsStream << "Image Width: " << widthHeightImages[0] << "\nImage Height: " << widthHeightImages[1] << "\n";
-	resultsStream << detailedBPTimings;
+	RunData runData;
+	runData.addDataWHeader("Image Width", std::to_string(widthHeightImages[0]));
+	runData.addDataWHeader("Image Height", std::to_string(widthHeightImages[1]));
+	runData.appendData(detailedBPTimings.runData());
 
 	//construct and return ProcessStereoSetOutput object
-	return {(float)detailedBPTimings.getMedianTiming(Runtime_Type_BP::TOTAL_WITH_TRANSFER), std::move(output_disparity_map)};
+	return {(float)detailedBPTimings.getMedianTiming(Runtime_Type_BP::TOTAL_WITH_TRANSFER), std::move(output_disparity_map), runData};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */
