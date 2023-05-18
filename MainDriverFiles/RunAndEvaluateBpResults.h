@@ -59,7 +59,7 @@ namespace RunAndEvaluateBpResults {
 	const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
 	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE{"outputResultsDefaultParallelParams.csv"};
 	const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
-	std::vector<std::string> headersInOrder;
+	const std::string SPEEDUP_HEADER{"Speedup Over Default Parallel Parameters"};
 
 	std::vector<std::array<std::string, 2>> getResultsMappingFromFile(const std::string& fileName) {
 		std::vector<std::array<std::string, 2>> dataWHeaders;
@@ -190,10 +190,11 @@ namespace RunAndEvaluateBpResults {
 	}
 
 	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
-	beliefprop::Status runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal,
-								const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED>>& optimizedImp,
-								const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD>>& singleThreadCPUImp)
+	std::pair<beliefprop::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED>>& optimizedImp,
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD>>& singleThreadCPUImp)
 	{
+		std::vector<RunData> outRunData(OPTIMIZE_PARALLEL_PARAMS ? 2 : 1);
 		enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
 		std::array<std::array<std::map<std::string, std::string>, 2>, 2> inParamsResultsDefOptRuns;
 		//load all the BP default settings
@@ -268,7 +269,7 @@ namespace RunAndEvaluateBpResults {
 
 			//if error in run and run is any type other than for testing parameters, exit function with error
 			if ((errCode != beliefprop::Status::NO_ERROR) && (currRunType != RunType::TEST_PARAMS)) {
-				return beliefprop::Status::ERROR;
+				return {beliefprop::Status::ERROR, {currRunData}};
 			}
 
 			//retrieve results from current run
@@ -279,19 +280,12 @@ namespace RunAndEvaluateBpResults {
 
             //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
 			if (currRunType != RunType::TEST_PARAMS) {
-				//retrieve and store headers in output if not already retrieved to use for final output
-				if (headersInOrder.size() == 0) {
-					headersInOrder = currRunData.getHeadersInOrder();
-				}
 				//set output for runs using default parallel parameters and final run (which is the same run if not optimizing parallel parameters)
-				auto& allDataUpdate = (currRunType == RunType::OPTIMIZED_RUN) ? resDefParParamsFinal[1] : resDefParParamsFinal[0];
-				for (const auto& currRunResult : currRunData.getAllData()) {
-					if (allDataUpdate.count(currRunResult.first)) {
-						allDataUpdate[currRunResult.first].push_back(currRunResult.second);
-					}
-					else {
-						allDataUpdate[currRunResult.first] = std::vector{currRunResult.second};
-					}
+				if (currRunType == RunType::OPTIMIZED_RUN) {
+					outRunData[1] = currRunData;
+				}
+				else {
+					outRunData[0] = currRunData;
 				}
 			}
 
@@ -352,143 +346,142 @@ namespace RunAndEvaluateBpResults {
 			}
 		}
 		
-		return beliefprop::Status::NO_ERROR;
+		return {beliefprop::Status::NO_ERROR, outRunData};
 	}
 
 	//get average and median speedup using optimized parallel parameters compared to default parallel parameters
-	void getAverageMedianSpeedup(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal) {
+	void getAverageMedianSpeedup(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput) {
 		std::vector<double> speedupsVect;
-		resDefParParamsFinal[1]["Speedup Over Default Parallel Parameters"] = std::vector<std::string>();
-		for (unsigned int i=0; i < resDefParParamsFinal[0].at(OPTIMIZED_RUNTIME_HEADER).size(); i++) {
-			speedupsVect.push_back(std::stod(resDefParParamsFinal[0].at(OPTIMIZED_RUNTIME_HEADER).at(i)) / 
-								std::stod(resDefParParamsFinal[1].at(OPTIMIZED_RUNTIME_HEADER).at(i)));
-			resDefParParamsFinal[1]["Speedup Over Default Parallel Parameters"].push_back(std::to_string(speedupsVect.back()));
+		for (unsigned int i=0; i < runOutput.size(); i++) {
+			if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
+				speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(OPTIMIZED_RUNTIME_HEADER)) / 
+								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+				runOutput[i].second[1].addDataWHeader(SPEEDUP_HEADER, std::to_string(speedupsVect.back()));
+			}
 		}
-		std::sort(speedupsVect.begin(), speedupsVect.end());
-		std::cout << "Average speedup: " << 
-			(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)resDefParParamsFinal[0].at(OPTIMIZED_RUNTIME_HEADER).size()) << std::endl;
-		const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
-			(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
-			speedupsVect[(speedupsVect.size() / 2)];
-		std::cout << "Median speedup: " << medianSpeedup << std::endl;
+		if (speedupsVect.size() > 0) {
+			std::sort(speedupsVect.begin(), speedupsVect.end());
+			std::cout << "Average speedup: " << 
+				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
+			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
+				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+				speedupsVect[(speedupsVect.size() / 2)];
+			std::cout << "Median speedup: " << medianSpeedup << std::endl;
+		}
 	}
 
 	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP>
-	beliefprop::Status runBpOnSetAndUpdateResults(std::array<std::map<std::string, std::vector<std::string>>, 2>& resDefParParamsFinal) {
+	std::pair<beliefprop::Status, std::vector<RunData>> runBpOnSetAndUpdateResults() {
 		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpStereoSingleThread =
 			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
 		//RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
 		if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
 			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpOptimizedImp = 
 				std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
-			const auto errCode = RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, runBpOptimizedImp, runBpStereoSingleThread);
-			if (errCode != beliefprop::Status::NO_ERROR) {
-				return beliefprop::Status::ERROR;
-			}
+			return RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(runBpOptimizedImp, runBpStereoSingleThread);
 		}
 		else {
 			std::unique_ptr<RunBpStereoSet<T, 0>> runBpOptimizedImp = 
 				std::make_unique<RunBpOptimized<T, 0>>();
-			const auto errCode = RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(resDefParParamsFinal, runBpOptimizedImp, runBpStereoSingleThread);
-			if (errCode != beliefprop::Status::NO_ERROR) {
-				return beliefprop::Status::ERROR;
-			}
+			return RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(runBpOptimizedImp, runBpStereoSingleThread);
 		}
-
-		return beliefprop::Status::NO_ERROR;
 	}
 
 	void runBpOnStereoSets() {
-		std::array<std::map<std::string, std::vector<std::string>>, 2> resDefParParamsFinal;
-		std::vector<beliefprop::Status> runSuccess;
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 0, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 0, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 1, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 1, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 2, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 2, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 3, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 3, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 4, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 4, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 5, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 5, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 6, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<float, 6, false>(resDefParParamsFinal));
+		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runOutput;
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, false>());
 #ifdef DOUBLE_PRECISION_SUPPORTED
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 0, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 0, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 1, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 1, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 2, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 2, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 3, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 3, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 4, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 4, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 5, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 5, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 6, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<double, 6, false>(resDefParParamsFinal));
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, false>());
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef HALF_PRECISION_SUPPORTED
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 0, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 0, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 1, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 1, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 2, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 2, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 3, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 3, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 4, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 4, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 5, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 5, false>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 6, true>(resDefParParamsFinal));
-		runSuccess.push_back(runBpOnSetAndUpdateResults<halftype, 6, false>(resDefParParamsFinal));
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, true>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, false>());
 #endif //HALF_PRECISION_SUPPORTED
 
-        if (headersInOrder.size() > 0) {
+        //get iterator to first run with success
+		const auto firstSuccessRun = std::find_if(runOutput.begin(), runOutput.end(), [](const auto& runResult)
+			{ return (runResult.first == beliefprop::Status::NO_ERROR); } );
+		
+		//check if there was at least one successful run
+		if (firstSuccessRun != runOutput.end()) {
+			//get headers from first successful run
+			const auto headersInOrder = firstSuccessRun->second[0].getHeadersInOrder();
+
 			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
 				//retrieve and print average and median speedup using optimized
 				//parallel parameters compared to default
-				RunAndEvaluateBpResults::getAverageMedianSpeedup(resDefParParamsFinal);
+				RunAndEvaluateBpResults::getAverageMedianSpeedup(runOutput);
 			}
 
 			//write results from default and optimized parallel parameters runs to csv file
 			std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE : BP_ALL_RUNS_OUTPUT_CSV_FILE),
-																	OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(BP_ALL_RUNS_OUTPUT_CSV_FILE) : std::ofstream()};
+															 		OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(BP_ALL_RUNS_OUTPUT_CSV_FILE) : std::ofstream()};
 			for (const auto& currHeader : headersInOrder) {
 				resultsStreamDefaultTBFinal[0] << currHeader << ",";
-				if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			}
+			resultsStreamDefaultTBFinal[0] << std::endl;
+
+			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+				for (const auto& currHeader : headersInOrder) {
 					resultsStreamDefaultTBFinal[1] << currHeader << ",";
 				}
-			}
-
-			resultsStreamDefaultTBFinal[0] << std::endl;
-			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
-				resultsStreamDefaultTBFinal[1] << "Speedup Over Default Parallel Parameters" << ",";
-				resultsStreamDefaultTBFinal[1] << std::endl;
+				resultsStreamDefaultTBFinal[1] << SPEEDUP_HEADER << "," << std::endl;
 			}
 
 			for (unsigned int i=0; i < (OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() : 1); i++) {
-				unsigned int numRunWOutput{0};
-				for (unsigned int j=0; j < runSuccess.size(); j++) {
+				for (unsigned int runNum=0; runNum < runOutput.size(); runNum++) {
+					//if run not successful only have single set of output data from run
+					const unsigned int runResultIdx = (runOutput[runNum].first == beliefprop::Status::NO_ERROR) ? i : 0;
 					for (const auto& currHeader : headersInOrder) {
-						if (runSuccess[j] == beliefprop::Status::ERROR) {
-							resultsStreamDefaultTBFinal[i] << "Error in run" << ",";
+						if (!(runOutput[runNum].second[runResultIdx].isData(currHeader))) {
+							resultsStreamDefaultTBFinal[i] << "No Data" << ",";
 						}
 						else {
-							resultsStreamDefaultTBFinal[i] << resDefParParamsFinal[i].at(currHeader).at(numRunWOutput) << ",";
+							resultsStreamDefaultTBFinal[i] << runOutput[runNum].second[runResultIdx].getData(currHeader) << ",";
 						}
 					}
-					if ((runSuccess[j] == beliefprop::Status::NO_ERROR) && ((i == 1) && OPTIMIZE_PARALLEL_PARAMS)) {
-						resultsStreamDefaultTBFinal[1] << resDefParParamsFinal[i].at("Speedup Over Default Parallel Parameters").at(numRunWOutput) << ",";
+					if ((runOutput[runNum].first == beliefprop::Status::NO_ERROR) && ((i == 1) && OPTIMIZE_PARALLEL_PARAMS)) {
+						resultsStreamDefaultTBFinal[1] << runOutput[runNum].second[i].getData(SPEEDUP_HEADER) << ",";
 					}
 					resultsStreamDefaultTBFinal[i] << std::endl;
-					if (runSuccess[j] == beliefprop::Status::NO_ERROR) {
-						numRunWOutput++;
-					}
 				}
 			}
 			resultsStreamDefaultTBFinal[0].close();
