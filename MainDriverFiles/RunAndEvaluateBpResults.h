@@ -401,7 +401,7 @@ namespace RunAndEvaluateBpResults {
 		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, false, OPT_IMP_ACCEL>());
 		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, true, OPT_IMP_ACCEL>());
 		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, false, OPT_IMP_ACCEL>());
-/*#ifdef DOUBLE_PRECISION_SUPPORTED
+#ifdef DOUBLE_PRECISION_SUPPORTED
 		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, true, OPT_IMP_ACCEL>());
 		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, false, OPT_IMP_ACCEL>());
 		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, true, OPT_IMP_ACCEL>());
@@ -432,7 +432,7 @@ namespace RunAndEvaluateBpResults {
 		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, false, OPT_IMP_ACCEL>());
 		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, true, OPT_IMP_ACCEL>());
 		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, false, OPT_IMP_ACCEL>());
-#endif //HALF_PRECISION_SUPPORTED*/
+#endif //HALF_PRECISION_SUPPORTED
 
         //get iterator to first run with success
 		const auto firstSuccessRun = std::find_if(runOutput.begin(), runOutput.end(), [](const auto& runResult)
