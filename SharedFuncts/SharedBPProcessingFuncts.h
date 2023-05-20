@@ -38,18 +38,12 @@ ARCHITECTURE_ADDITION inline T getZeroVal() {
 	return (T)0.0;
 }
 
-//avx512 requires data to be aligned on 64 bytes (16 float values)
-#if CPU_VECTORIZATION_DEFINE == AVX512
-#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 16
-#else
-#define DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT 8
-#endif
-
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth)
+inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth,
+  unsigned int divPaddedChBoardWidthForAlign)
 {
 	//assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
-	return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+	return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % divPaddedChBoardWidthForAlign) == 0));
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")

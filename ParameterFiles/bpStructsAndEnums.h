@@ -72,23 +72,24 @@ struct levelProperties
 		numDataAlignWidth_(beliefprop::getNumDataAlignWidth(accSetting)),
 		widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
 		paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
-		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum) {}
+		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum),
+		divPaddedChBoardWAlign_{(accSetting == beliefprop::AccSetting::AVX512) ? 16u : 8u} {}
 	
 	levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
-	    unsigned int bytesAlignMemory, unsigned int numDataAlignWidth) :
+	    unsigned int bytesAlignMemory, unsigned int numDataAlignWidth, unsigned int divPaddedChBoardWAlign) :
 		widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
 		bytesAlignMemory_(bytesAlignMemory),
 		numDataAlignWidth_(numDataAlignWidth),
 		widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
 		paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
-		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum) {}
+		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum), divPaddedChBoardWAlign_(divPaddedChBoardWAlign) {}
 
 	//get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
 	template <typename T>
 	beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
 		const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
 		return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
-				offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_);
+				offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_, divPaddedChBoardWAlign_);
 	}
 
 	//get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
@@ -150,6 +151,9 @@ struct levelProperties
 	unsigned int paddedWidthCheckerboardLevel_;
 	unsigned long offsetIntoArrays_;
 	unsigned int levelNum_;
+	//avx512 requires data to be aligned on 64 bytes (16 float values); otherwise data set to be
+	//aligned on 32 bytes (8 float values)
+	unsigned int divPaddedChBoardWAlign_;
 };
 
 //used to define the two checkerboard "parts" that the image is divided into

@@ -66,7 +66,7 @@ LINUX:
 make the necessary configuration changes to support processing on ARM CPUs.
 
 -If x86 CPU, set vectorization to AVX-256 or AVX-512 in line
-"#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 58).
+"#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 59).
 
 -May also want to adjust environment variables OMP_PLACES and OMP_PROC_BIND to optimize OpenMP thread configuration.
 In some tests have gotten faster results with setting OMP_PROC_BIND=true but in other tests have gotten better

@@ -92,9 +92,9 @@ constexpr const char* accelerationString() {
   if constexpr (ACCELERATION_SETTING == AccSetting::NEON)
     return "NEON";
   else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256)
-    return "AVX_256";
+    return "AVX256";
   else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512)
-    return "AVX_512";
+    return "AVX512";
   else if constexpr (ACCELERATION_SETTING == AccSetting::CUDA)
     return "CUDA";
   else
