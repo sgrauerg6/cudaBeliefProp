@@ -35,8 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
-template<typename T, typename U, unsigned int DISP_VALS>
-class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, U, DISP_VALS, VECTORIZATION>
 {
 public:
 		ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
@@ -81,8 +81,8 @@ private:
 //functions definitions related to running BP to retrieve the movement between the images
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS, VECTORIZATION>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
@@ -93,7 +93,7 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrent
 	{
 		beliefprop::Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1 : beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0;
 
-		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU<T, DISP_VALS>(
+		KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU<T, DISP_VALS, VECTORIZATION>(
 				checkboardPartUpdate, currentLevelProperties,
 				dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 				dataCostDeviceCheckerboard.dataCostCheckerboard1_,
@@ -110,8 +110,8 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::runBPAtCurrent
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS, VECTORIZATION>::copyMessageValuesToNextLevelDown(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& nextlevelProperties,
 		const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
@@ -138,8 +138,8 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::copyMessageVal
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS, VECTORIZATION>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
 		const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
 {
 	//initialize the data the the "bottom" of the image pyramid
@@ -151,8 +151,8 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeData
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMessageValsToDefault(
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS, VECTORIZATION>::initializeMessageValsToDefault(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
 		const unsigned int bpSettingsNumDispVals)
@@ -169,8 +169,8 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeMess
 }
 
 
-template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS, VECTORIZATION>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::levelProperties& prevLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
@@ -195,8 +195,8 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, U, DISP_VALS>::initializeData
 	return beliefprop::Status::NO_ERROR;
 }
 
-template<typename T, typename U, unsigned int DISP_VALS>
-inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS>::retrieveOutputDisparity(
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS, VECTORIZATION>::retrieveOutputDisparity(
 		const beliefprop::levelProperties& currentLevelProperties,
 		const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
 		const beliefprop::checkerboardMessages<U>& messagesDevice,
@@ -204,7 +204,7 @@ inline float* ProcessOptimizedCPUBP<T, U, DISP_VALS>::retrieveOutputDisparity(
 {
 	float* resultingDisparityMapCompDevice = new float[currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_];
 
-	KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T, DISP_VALS>(
+	KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>(
 			currentLevelProperties,
 			dataCostDeviceCheckerboard.dataCostCheckerboard0_,
 			dataCostDeviceCheckerboard.dataCostCheckerboard1_,

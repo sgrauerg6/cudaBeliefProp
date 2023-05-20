@@ -18,8 +18,8 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 
-template <typename T, unsigned int DISP_VALS>
-class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS> {
+template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
 public:
 	RunBpStereoOptimizedCPU() {}
 
@@ -31,8 +31,8 @@ public:
 			const beliefprop::ParallelParameters& parallelParams) override;
 };
 
-template<typename T, unsigned int DISP_VALS>
-inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
+template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
 		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
 	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
@@ -57,13 +57,13 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS>::operator()(
 	RunData runData;
 	runData.addDataWHeader("CURRENT RUN", "OPTIMIZED CPU");
 	runData.addDataWHeader("Number of threads", std::to_string(nthreads));
-	runData.addDataWHeader("Vectorization", beliefprop::cpuVectorizationString());
+	runData.addDataWHeader("Vectorization", beliefprop::accelerationString<VECTORIZATION>());
 
 	//generate struct with pointers to objects for running optimized CPU implementation and call
 	//function to run optimized CPU implementation
 	auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings, 
-		BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCPU>(parallelParams),
-									 std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS>>(parallelParams),
+		BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCPU>(parallelParams),
+									 std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS, VECTORIZATION>>(parallelParams),
 								  	 std::make_unique<RunBpStereoSetMemoryManagement<>>(),
 							 		 std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
 	runData.appendData(procSetOutput.runData);

@@ -35,15 +35,15 @@ struct ProcessStereoSetOutput
 	RunData runData;
 };
 
-template <typename U, typename V, unsigned int DISP_VALS>
+template <typename U, typename V, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 struct BpOnDevice {
 	const std::unique_ptr<SmoothImage>& smoothImage;
-	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS>>& runBpStereo;
+	const std::unique_ptr<ProcessBPOnTargetDevice<U, V, DISP_VALS, ACCELERATION>>& runBpStereo;
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<>>& memManagementImages;
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<U>>& memManagementBpRun;
 };
 
-template <typename T, unsigned int DISP_VALS>
+template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 class RunBpStereoSet {
 public:
 	virtual std::string getBpRunDescription() = 0;
@@ -59,14 +59,14 @@ protected:
 	//using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
 	template <typename U=T*>
 	ProcessStereoSetOutput processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice);
+		const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS, ACCELERATION>& runBpOnDevice);
 };
 
 
-template<typename T, unsigned int DISP_VALS>
+template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 template<typename U>
-ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
-	const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS>& runBpOnDevice)
+ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
+	const beliefprop::BPsettings& algSettings, const BpOnDevice<T, U, DISP_VALS, ACCELERATION>& runBpOnDevice)
 {
 	//retrieve the images as well as the width and height
 	const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refTestImagePath[0]), BpImage<unsigned int>(refTestImagePath[1])};
@@ -85,14 +85,14 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS>::processStereoSet(const std:
 	U bpData = nullptr;
 	U bpProcStore = nullptr;
 	if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
-		unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U>(
+		unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U, ACCELERATION>(
 				widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
-		bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData);
+		bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
   		if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
 
-		beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0);
+		beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0, ACCELERATION);
 		unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
-		bpProcStore = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(totalDataBottomLevel);
+		bpProcStore = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(totalDataBottomLevel, ACCELERATION);
 	    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
 	}
 

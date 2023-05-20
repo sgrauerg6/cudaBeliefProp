@@ -28,7 +28,7 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 //Abstract class to process belief propagation on target device
 //Some of the class functions need to be overridden to for processing on
 //target device
-template<typename T, typename U, unsigned int DISP_VALS, typename V=float*>
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING, typename V=float*>
 class ProcessBPOnTargetDevice {
 public:
 	ProcessBPOnTargetDevice() { }
@@ -84,7 +84,7 @@ public:
 		beliefprop::checkerboardMessages<U> outputCheckerboardMessages;
 		std::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel_.begin(), outputCheckerboardMessages.checkerboardMessagesAtLevel_.end(),
 			[this, numDataAllocatePerMessage, &memManagementBpRun](auto& checkerboardMessagesSet) {
-			checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage); });
+			checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACC_SETTING); });
 
 		return outputCheckerboardMessages;
 	}
@@ -108,15 +108,15 @@ public:
 
 	virtual beliefprop::dataCostData<U> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard,
 	    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun) {
-		return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard), 
-				memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard)};
+		return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING), 
+				memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING)};
 	}
 
 	virtual std::pair<beliefprop::dataCostData<U>, beliefprop::checkerboardMessages<U>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
 			const unsigned long numDataAllocatePerDataCostsMessageDataArray,
 			const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 	{
-		U dataAllLevels = memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray);
+		U dataAllLevels = memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray, ACC_SETTING);
 		return organizeDataCostsAndMessageDataAllLevels(dataAllLevels, numDataAllocatePerDataCostsMessageDataArray);
 	}
 
@@ -159,8 +159,8 @@ public:
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
 //input is images on target device for computation
 //output is disparity map and processing runtimes
-template<typename T, typename U, unsigned int DISP_VALS, typename V>
-std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DISP_VALS, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
+template<typename T, typename U, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING, typename V>
+std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DISP_VALS, ACC_SETTING, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
 	const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, U allocatedMemForBpProcessingDevice, U allocatedMemForProcessing,
 	const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 {
@@ -177,7 +177,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 	bpLevelProperties.reserve(algSettings.numLevels_);
 
 	//set level properties for bottom level that include processing of full image width/height
-	bpLevelProperties.push_back(beliefprop::levelProperties(widthHeightImages, 0, 0));
+	bpLevelProperties.push_back(beliefprop::levelProperties(widthHeightImages, 0, 0, ACC_SETTING));
 
 	//compute level properties which includes offset for each data/message array for each level after the bottom level
 	for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {

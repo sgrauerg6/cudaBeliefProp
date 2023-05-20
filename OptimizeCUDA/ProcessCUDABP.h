@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_fp16.h>
 
 template<typename T, typename U, unsigned int DISP_VALS>
-class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS>
+class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS, beliefprop::AccSetting::CUDA>
 {
 public:
 	ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}

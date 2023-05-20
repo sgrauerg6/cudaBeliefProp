@@ -55,8 +55,8 @@ namespace bp_cuda_device
 	}
 };
 
-template <typename T, unsigned int DISP_VALS>
-class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS>
+template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
 {
 public:
     RunBpStereoSetOnGPUWithCUDA() {}
@@ -75,7 +75,7 @@ public:
 		runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
 		runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
 		auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
-			BpOnDevice<T, T*, DISP_VALS>{std::make_unique<SmoothImageCUDA>(parallelParams),
+			BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCUDA>(parallelParams),
 										 std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
 										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
 										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});

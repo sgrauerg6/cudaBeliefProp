@@ -28,7 +28,7 @@
 #include "../ParameterFiles/bpRunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
-class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS>
+class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, beliefprop::AccSetting::NONE>
 {
 public:
 	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,

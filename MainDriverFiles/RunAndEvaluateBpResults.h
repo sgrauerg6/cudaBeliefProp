@@ -30,8 +30,8 @@ typedef std::filesystem::path filepathtype;
 //needed to run the optimized implementation a stereo set using CPU
 #include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
-template <typename T, unsigned int DISP_VALS>
-using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS>;
+template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 //set data type used for half-precision
 #ifdef COMPILING_FOR_ARM
 using halftype = float16_t;
@@ -47,8 +47,8 @@ using halftype = short;
 //needed to run the implementation a stereo set using CUDA
 #include "../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
-template <typename T, unsigned int DISP_VALS>
-using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS>;
+template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, beliefprop::AccSetting::CUDA>;
 //set data type used for half-precision with CUDA
 using halftype = half;
 #endif //OPTIMIZED_CUDA_RUN
@@ -56,8 +56,9 @@ using halftype = half;
 namespace RunAndEvaluateBpResults {
 	//constants for output results for individual and sets of runs
 	const std::string BP_RUN_OUTPUT_RESULTS_FILE{"outputResultsForRun.txt"};
-	const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{"outputResults.csv"};
-	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE{"outputResultsDefaultParallelParams.csv"};
+	const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START{"outputResults"};
+	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START{"outputResultsDefaultParallelParams"};
+	const std::string CSV_FILE_EXTENSION{".csv"};
 	const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
 	const std::string SPEEDUP_HEADER{"Speedup Over Default Parallel Parameters"};
 
@@ -103,10 +104,10 @@ namespace RunAndEvaluateBpResults {
 	//run and compare output disparity maps using the given optimized and single-threaded stereo implementations
 	//on the reference and test images specified by numStereoSet
 	//run only optimized implementation if runOptImpOnly is true
-	template<typename T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD>
+	template<typename T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, beliefprop::AccSetting OPT_IMP_ACCEL>
 		std::pair<beliefprop::Status, RunData> runStereoTwoImpsAndCompare(
-		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED>>& optimizedImp,
-		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD>>& singleThreadCPUImp,
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, beliefprop::AccSetting::NONE>>& singleThreadCPUImp,
 		const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
 		const beliefprop::ParallelParameters& parallelParams,
 		bool runOptImpOnly = false)
@@ -168,32 +169,32 @@ namespace RunAndEvaluateBpResults {
 		return {beliefprop::Status::NO_ERROR, runData};
 	}
 
-	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED>
+	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, beliefprop::AccSetting ACC_SETTING>
 	void addInputAndParamsToStream(const beliefprop::BPsettings& algSettings, std::ofstream& resultsStream) {
 		resultsStream << "DataType: " << beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) << std::endl;
 		resultsStream << "Stereo Set: " << bp_params::STEREO_SET[NUM_SET] << "\n";
 		resultsStream << algSettings;
-		beliefprop::writeRunSettingsToStream(resultsStream);
+		beliefprop::writeRunSettingsToStream<ACC_SETTING>(resultsStream);
 		const std::string dispValsTemplatedStr{(DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES"};
 		resultsStream << "DISP_VALS_TEMPLATED: " << dispValsTemplatedStr << std::endl;
 	}
 
-	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED>
+	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, beliefprop::AccSetting ACC_SETTING>
 	RunData inputAndParamsRunData(const beliefprop::BPsettings& algSettings) {
 		RunData currRunData;
 		currRunData.addDataWHeader("DataType", beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
 		currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
 		currRunData.appendData(algSettings.runData());
-		currRunData.appendData(beliefprop::runSettings());
+		currRunData.appendData(beliefprop::runSettings<ACC_SETTING>());
 		const std::string dispValsTemplatedStr{(DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES"};
 		currRunData.addDataWHeader("DISP_VALS_TEMPLATED", dispValsTemplatedStr);
 		return currRunData;
 	}
 
-	template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
+	template<typename T, unsigned int NUM_SET, beliefprop::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
 	std::pair<beliefprop::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
-		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED>>& optimizedImp,
-		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD>>& singleThreadCPUImp)
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
+		const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, beliefprop::AccSetting::NONE>>& singleThreadCPUImp)
 	{
 		std::vector<RunData> outRunData(OPTIMIZE_PARALLEL_PARAMS ? 2 : 1);
 		enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
@@ -249,7 +250,7 @@ namespace RunAndEvaluateBpResults {
 			//store input params data if using default parallel parameters or final run with optimized parameters
 			RunData currRunData;
 			if (currRunType != RunType::TEST_PARAMS) {
-				currRunData.appendData(inputAndParamsRunData<T, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED>(algSettings));
+				currRunData.appendData(inputAndParamsRunData<T, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>(algSettings));
 				if constexpr (OPTIMIZE_PARALLEL_PARAMS &&
 					(optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
 				{
@@ -262,7 +263,7 @@ namespace RunAndEvaluateBpResults {
 			const bool runOptImpOnly{currRunType == RunType::TEST_PARAMS};
 			//run belief propagation implementation(s) and return whether or not error in run
 			//detailed results stored to file that is generated using stream
-			const auto runImpsECodeData = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD>(
+			const auto runImpsECodeData = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD, OPT_IMP_ACCEL>(
 				optimizedImp, singleThreadCPUImp, NUM_SET, algSettings, parallelParams, runOptImpOnly);
   			currRunData.addDataWHeader("Run Success", (runImpsECodeData.first == beliefprop::Status::NO_ERROR) ? "Yes" : "No");
 
@@ -366,70 +367,71 @@ namespace RunAndEvaluateBpResults {
 		}
 	}
 
-	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP>
+	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, beliefprop::AccSetting OPT_IMP_ACCEL>
 	std::pair<beliefprop::Status, std::vector<RunData>> runBpOnSetAndUpdateResults() {
-		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpStereoSingleThread =
+		std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], beliefprop::AccSetting::NONE>> runBpStereoSingleThread =
 			std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
 		//RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
 		if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
-			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>> runBpOptimizedImp = 
-				std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
-			return RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(runBpOptimizedImp, runBpStereoSingleThread);
+			std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>> runBpOptimizedImp = 
+				std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>>();
+			return RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread);
 		}
 		else {
-			std::unique_ptr<RunBpStereoSet<T, 0>> runBpOptimizedImp = 
-				std::make_unique<RunBpOptimized<T, 0>>();
-			return RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET>(runBpOptimizedImp, runBpStereoSingleThread);
+			std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> runBpOptimizedImp = 
+				std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
+			return RunAndEvaluateBpResults::runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread);
 		}
 	}
 
+	template <beliefprop::AccSetting OPT_IMP_ACCEL>
 	void runBpOnStereoSets() {
 		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runOutput;
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, false, OPT_IMP_ACCEL>());
 #ifdef DOUBLE_PRECISION_SUPPORTED
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, false, OPT_IMP_ACCEL>());
 #endif //DOUBLE_PRECISION_SUPPORTED
 #ifdef HALF_PRECISION_SUPPORTED
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, false>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, true>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, false>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, false, OPT_IMP_ACCEL>());
 #endif //HALF_PRECISION_SUPPORTED
 
         //get iterator to first run with success
@@ -448,8 +450,12 @@ namespace RunAndEvaluateBpResults {
 			}
 
 			//write results from default and optimized parallel parameters runs to csv file
-			std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE : BP_ALL_RUNS_OUTPUT_CSV_FILE),
-															 		OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(BP_ALL_RUNS_OUTPUT_CSV_FILE) : std::ofstream()};
+			const std::string optResultsFileName{BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START + "_" + 
+				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + beliefprop::accelerationString<OPT_IMP_ACCEL>() + CSV_FILE_EXTENSION};
+			const std::string defaultParamsResultsFileName{BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START + "_" +
+				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + beliefprop::accelerationString<OPT_IMP_ACCEL>() + CSV_FILE_EXTENSION};
+			std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),
+															 		 OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(optResultsFileName) : std::ofstream()};
 			for (const auto& currHeader : headersInOrder) {
 				resultsStreamDefaultTBFinal[0] << currHeader << ",";
 			}
@@ -487,13 +493,13 @@ namespace RunAndEvaluateBpResults {
 
 			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
 				std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
-						<< BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
+						<< optResultsFileName << std::endl;
 				std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
-						<< BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE << std::endl;
+						<< defaultParamsResultsFileName << std::endl;
 			}
 			else {
 				std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run using default parallel parameters in "
-						<< BP_ALL_RUNS_OUTPUT_CSV_FILE << std::endl;
+						<< optResultsFileName << std::endl;
 			}
 		}
 		else {

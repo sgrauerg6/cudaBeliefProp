@@ -240,7 +240,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 
 	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
 	//still is a check if start of row is aligned
-	const bool dataAligned = MemoryAlignedAtDataStart(0, 1);
+	const bool dataAligned = MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_);
 
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_,
@@ -409,7 +409,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				xValProcess = std::max(startX, xValProcess);
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//initialize arrays for data and message values
 				U dataMessage[DISP_VALS], prevUMessage[DISP_VALS], prevDMessage[DISP_VALS], prevLMessage[DISP_VALS], prevRMessage[DISP_VALS];
@@ -520,7 +520,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				xValProcess = std::max(startX, xValProcess);
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//initialize arrays for data and message values
 				U* dataMessage = new U[bpSettingsDispVals];
@@ -642,7 +642,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				xValProcess = std::max(startX, xValProcess);
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//initialize arrays for data and message values
 				U dataMessage[DISP_VALS], prevUMessage[DISP_VALS], prevDMessage[DISP_VALS], prevLMessage[DISP_VALS], prevRMessage[DISP_VALS];
@@ -753,7 +753,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				xValProcess = std::max(startX, xValProcess);
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//initialize arrays for data and message values
 				U* dataMessage = new U[bpSettingsDispVals];
@@ -879,7 +879,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				xValProcess = std::max(startX, xValProcess);
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//initialize arrays for data and message values
 				U dataMessage[DISP_VALS], prevUMessage[DISP_VALS], prevDMessage[DISP_VALS], prevLMessage[DISP_VALS], prevRMessage[DISP_VALS];
@@ -993,7 +993,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 				xValProcess = std::max(startX, xValProcess);
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//initialize arrays for data and message values
 				U* dataMessage = new U[bpSettingsDispVals];
@@ -1088,7 +1088,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 
 //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-template<typename T, unsigned int DISP_VALS>
+template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -1099,7 +1099,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
 		const beliefprop::ParallelParameters& optCPUParams)
 {
-	if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::AVX256)
+	if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX256)
 	{
 		//only use AVX-256 if width of processing checkerboard is over 10
 		if (currentLevelProperties.widthCheckerboardLevel_ > 10)
@@ -1123,7 +1123,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::AVX512)
+	else if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX512)
 	{
 		//only use AVX-512 if width of processing checkerboard is over 20
 		if (currentLevelProperties.widthCheckerboardLevel_ > 20)
@@ -1147,7 +1147,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::NEON)
+	else if constexpr (VECTORIZATION == beliefprop::AccSetting::NEON)
 	{
 		if (currentLevelProperties.widthCheckerboardLevel_ > 5)
 		{
@@ -1278,7 +1278,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 	#endif //CPU_PARALLELIZATION_METHOD
 }
 
-template<typename T, unsigned int DISP_VALS>
+template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		const beliefprop::levelProperties& currentLevelProperties,
 		T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -1289,7 +1289,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
 		const beliefprop::ParallelParameters& optCPUParams) {
 #if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	if constexpr (beliefprop::CPU_VECTORIZATION == beliefprop::CPUVectorization::NONE) {
+	if constexpr (VECTORIZATION == beliefprop::AccSetting::NONE) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
@@ -1408,15 +1408,15 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 
 	//initially get output for each checkerboard
 	//set width of disparity checkerboard to be a multiple of numDataInSIMDVector so that SIMD vectors can be aligned
-	unsigned int widthDispCheckerboard = ((currentLevelProperties.paddedWidthCheckerboardLevel_ % beliefprop::NUM_DATA_ALIGN_WIDTH) == 0) ?
+	unsigned int widthDispCheckerboard = ((currentLevelProperties.paddedWidthCheckerboardLevel_ % currentLevelProperties.numDataAlignWidth_) == 0) ?
 	   currentLevelProperties.paddedWidthCheckerboardLevel_  :
 	   currentLevelProperties.paddedWidthCheckerboardLevel_ + 
-	   (beliefprop::NUM_DATA_ALIGN_WIDTH - (currentLevelProperties.paddedWidthCheckerboardLevel_ % beliefprop::NUM_DATA_ALIGN_WIDTH));
+	   (currentLevelProperties.numDataAlignWidth_ - (currentLevelProperties.paddedWidthCheckerboardLevel_ % currentLevelProperties.numDataAlignWidth_));
 	const unsigned int numDataDispChBoard = widthDispCheckerboard * currentLevelProperties.heightLevel_;
 #ifdef _WIN32
-		V* disparityCheckboard0 = static_cast<V*>(_aligned_malloc(2 * numDataDispChBoard * sizeof(V), beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(V)));
+		V* disparityCheckboard0 = static_cast<V*>(_aligned_malloc(2 * numDataDispChBoard * sizeof(V), currentLevelProperties.numDataAlignWidth_ * sizeof(V)));
 #else
-		V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
+		V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(currentLevelProperties.numDataAlignWidth_ * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
 #endif
 
     for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
@@ -1457,7 +1457,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 				const unsigned int indexOutput = (yVal * widthDispCheckerboard) + xValProcess;
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
-				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector);
+				const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_);
 
 				//declare SIMD vectors for data and message values at each disparity
 				//U dataMessage, prevUMessage, prevDMessage, prevLMessage, prevRMessage;

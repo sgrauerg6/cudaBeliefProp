@@ -62,10 +62,23 @@ inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& b
 
 
 //structure to store the properties of the current level
+//
 struct levelProperties
 {
-	levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum) :
+	levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
+	   beliefprop::AccSetting accSetting) :
 		widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
+		bytesAlignMemory_(beliefprop::getBytesAlignMemory(accSetting)),
+		numDataAlignWidth_(beliefprop::getNumDataAlignWidth(accSetting)),
+		widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
+		paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
+		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum) {}
+	
+	levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
+	    unsigned int bytesAlignMemory, unsigned int numDataAlignWidth) :
+		widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
+		bytesAlignMemory_(bytesAlignMemory),
+		numDataAlignWidth_(numDataAlignWidth),
 		widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
 		paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
 		offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum) {}
@@ -75,7 +88,7 @@ struct levelProperties
 	beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
 		const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
 		return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
-				offsetNextLevel, (levelNum_ + 1));
+				offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_);
 	}
 
 	//get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
@@ -92,9 +105,9 @@ struct levelProperties
 	unsigned int getPaddedCheckerboardWidth(const unsigned int checkerboardWidth) const
 	{
 		//add "padding" to checkerboard width if necessary for alignment
-		return ((checkerboardWidth % beliefprop::NUM_DATA_ALIGN_WIDTH) == 0) ?
+		return ((checkerboardWidth % numDataAlignWidth_) == 0) ?
 				checkerboardWidth :
-				(checkerboardWidth + (beliefprop::NUM_DATA_ALIGN_WIDTH - (checkerboardWidth % beliefprop::NUM_DATA_ALIGN_WIDTH)));
+				(checkerboardWidth + (numDataAlignWidth_ - (checkerboardWidth % numDataAlignWidth_)));
 	}
 
 	template <typename T>
@@ -105,20 +118,20 @@ struct levelProperties
 			* ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
 		unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
 
-		if ((numBytesAtLevel % beliefprop::BYTES_ALIGN_MEMORY) == 0) {
+		if ((numBytesAtLevel % bytesAlignMemory_) == 0) {
 			return numDataAtLevel;
 		}
 		else {
-			numBytesAtLevel += (beliefprop::BYTES_ALIGN_MEMORY - (numBytesAtLevel % beliefprop::BYTES_ALIGN_MEMORY));
+			numBytesAtLevel += (bytesAlignMemory_ - (numBytesAtLevel % bytesAlignMemory_));
 			return (numBytesAtLevel / sizeof(T));
 		}
 	}
 
-	template <typename T>
+	template <typename T, beliefprop::AccSetting ACC_SETTING>
 	static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
 			const unsigned int totalPossibleMovements, const unsigned int numLevels)
 	{
-		beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0);
+		beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACC_SETTING);
 		unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
 		for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
 			currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);
@@ -131,6 +144,8 @@ struct levelProperties
 
 	unsigned int widthLevel_;
 	unsigned int heightLevel_;
+	unsigned int bytesAlignMemory_;
+	unsigned int numDataAlignWidth_;
 	unsigned int widthCheckerboardLevel_;
 	unsigned int paddedWidthCheckerboardLevel_;
 	unsigned long offsetIntoArrays_;

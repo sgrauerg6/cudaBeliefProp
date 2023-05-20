@@ -28,13 +28,13 @@ public:
 		delete [] arrayToFree;
 	}
 
-	virtual T* allocateAlignedMemoryOnDevice(const unsigned long numData)
+	virtual T* allocateAlignedMemoryOnDevice(const unsigned long numData, beliefprop::AccSetting accSetting)
 	{
 #ifdef _WIN32
-		T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T)));
+		T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), beliefprop::getNumDataAlignWidth(accSetting) * sizeof(T)));
 		return memoryData;
 #else
-		T* memoryData = static_cast<T*>(std::aligned_alloc(beliefprop::NUM_DATA_ALIGN_WIDTH * sizeof(T), numData * sizeof(T)));
+		T* memoryData = static_cast<T*>(std::aligned_alloc(beliefprop::getNumDataAlignWidth(accSetting) * sizeof(T), numData * sizeof(T)));
 		return memoryData;
 #endif
 	}

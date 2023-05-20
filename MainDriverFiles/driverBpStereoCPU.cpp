@@ -54,11 +54,24 @@ const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS_ADDITIONAL_PARAMS{};
 const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
 
+#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
+constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::NEON};
+#elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
+constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::AVX256};
+#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::AVX512};
+#else
+constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::NONE};
+#endif
+
+//name of processor used for running optimized implementation
+const std::string PROCESSOR_NAME{""};
+
 //functions in RunAndEvaluateBpResults use above constants and function
 #include "RunAndEvaluateBpResults.h"
 
 int main(int argc, char** argv)
 {
-	RunAndEvaluateBpResults::runBpOnStereoSets();
+	RunAndEvaluateBpResults::runBpOnStereoSets<CPU_VECTORIZATION>();
 	return 0;
 }

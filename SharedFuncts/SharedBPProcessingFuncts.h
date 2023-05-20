@@ -46,10 +46,10 @@ ARCHITECTURE_ADDITION inline T getZeroVal() {
 #endif
 
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector)
+inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth)
 {
 	//assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
-	return (((xValDataStart % numDataInSIMDVector) == 0) && ((beliefprop::NUM_DATA_ALIGN_WIDTH % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
+	return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % DIVISOR_FOR_PADDED_CHECKERBOARD_WIDTH_FOR_ALIGNMENT) == 0));
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")

@@ -48,11 +48,14 @@ const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{	{16,
 	{64, 5}, {64, 6}, {64, 7}, {64, 8}, {128, 3}, {128, 4}, {256, 2}};
 constexpr std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
 
+//name of processor used for running optimized implementation
+const std::string PROCESSOR_NAME{""};
+
 //functions in RunAndEvaluateBpResults use above constants
 #include "RunAndEvaluateBpResults.h"
 
 int main(int argc, char** argv)
 {
-	RunAndEvaluateBpResults::runBpOnStereoSets();
+	RunAndEvaluateBpResults::runBpOnStereoSets<beliefprop::AccSetting::CUDA>();
 	return 0;
 }
