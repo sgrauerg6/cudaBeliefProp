@@ -60,7 +60,10 @@ namespace RunAndEvaluateBpResults {
 	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START{"outputResultsDefaultParallelParams"};
 	const std::string CSV_FILE_EXTENSION{".csv"};
 	const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
-	const std::string SPEEDUP_HEADER{"Speedup Over Default Parallel Parameters"};
+	const std::string SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default Parallel Parameters"};
+	const std::string SPEEDUP_DOUBLE{"Speedup Using Doubles Compared To Floats (Actually Slowdown)"};
+	const std::string SPEEDUP_HALF{"Speedup Using Halfs Compared To Floats"};
+	const std::string SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup When Disparity Count Given As Template Parameter"};
 
 	std::vector<std::array<std::string, 2>> getResultsMappingFromFile(const std::string& fileName) {
 		std::vector<std::array<std::string, 2>> dataWHeaders;
@@ -347,23 +350,70 @@ namespace RunAndEvaluateBpResults {
 	}
 
 	//get average and median speedup using optimized parallel parameters compared to default parallel parameters
-	void getAverageMedianSpeedup(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput) {
+	void getAvgMedSpeedupOptPParams(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput,
+		const std::string& speedupHeader) {
 		std::vector<double> speedupsVect;
 		for (unsigned int i=0; i < runOutput.size(); i++) {
 			if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
 				speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(OPTIMIZED_RUNTIME_HEADER)) / 
 								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
-				runOutput[i].second[1].addDataWHeader(SPEEDUP_HEADER, std::to_string(speedupsVect.back()));
+				runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
 		}
 		if (speedupsVect.size() > 0) {
 			std::sort(speedupsVect.begin(), speedupsVect.end());
-			std::cout << "Average speedup: " << 
+			std::cout << "Average " << speedupHeader << ": " << 
 				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
 			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
 				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
 				speedupsVect[(speedupsVect.size() / 2)];
-			std::cout << "Median speedup: " << medianSpeedup << std::endl;
+			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+		}
+	}
+
+	void getAvgMedSpeedup(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutputBase,
+		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutputTarget,
+		const std::string& speedupHeader) {
+		std::vector<double> speedupsVect;
+		for (unsigned int i=0; i < runOutputBase.size(); i++) {
+			if ((runOutputBase[i].first == beliefprop::Status::NO_ERROR) && (runOutputTarget[i].first == beliefprop::Status::NO_ERROR))  {
+				speedupsVect.push_back(std::stod(runOutputBase[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)) / 
+								       std::stod(runOutputTarget[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+				runOutputBase[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+			}
+		}
+		if (speedupsVect.size() > 0) {
+			std::sort(speedupsVect.begin(), speedupsVect.end());
+			std::cout << "Average " << speedupHeader << ": " << 
+				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
+			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
+				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+				speedupsVect[(speedupsVect.size() / 2)];
+			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+		}
+	}
+
+	void getAvgMedSpeedupDispValsInTemplate(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput,
+		const std::string& speedupHeader) {
+		std::vector<double> speedupsVect;
+		//assumine that runs with and without disparity count given in template parameter are consectutive with the run with the
+		//disparity count given in template being first
+		for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
+			if ((runOutput[i].first == beliefprop::Status::NO_ERROR) && (runOutput[i+1].first == beliefprop::Status::NO_ERROR))  {
+				speedupsVect.push_back(std::stod(runOutput[i+1].second[1].getData(OPTIMIZED_RUNTIME_HEADER)) / 
+								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+			}
+		}
+		if (speedupsVect.size() > 0) {
+			std::sort(speedupsVect.begin(), speedupsVect.end());
+			std::cout << "Average " << speedupHeader << ": " << 
+				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
+			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
+				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+				speedupsVect[(speedupsVect.size() / 2)];
+			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
 		}
 	}
 
@@ -384,78 +434,31 @@ namespace RunAndEvaluateBpResults {
 		}
 	}
 
-	template <beliefprop::AccSetting OPT_IMP_ACCEL>
-	void runBpOnStereoSets() {
-		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runOutput;
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 0, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 1, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 2, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 3, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 4, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 5, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<float, 6, false, OPT_IMP_ACCEL>());
-#ifdef DOUBLE_PRECISION_SUPPORTED
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 0, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 1, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 2, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 3, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 4, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 5, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<double, 6, false, OPT_IMP_ACCEL>());
-#endif //DOUBLE_PRECISION_SUPPORTED
-#ifdef HALF_PRECISION_SUPPORTED
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 0, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 1, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 2, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 3, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 4, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 5, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<halftype, 6, false, OPT_IMP_ACCEL>());
-#endif //HALF_PRECISION_SUPPORTED
-
-        //get iterator to first run with success
+	template <beliefprop::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, typename T = void>
+	void writeRunOutput(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput) {
+		//get iterator to first run with success
 		const auto firstSuccessRun = std::find_if(runOutput.begin(), runOutput.end(), [](const auto& runResult)
 			{ return (runResult.first == beliefprop::Status::NO_ERROR); } );
 		
 		//check if there was at least one successful run
 		if (firstSuccessRun != runOutput.end()) {
-			//get headers from first successful run
-			const auto headersInOrder = firstSuccessRun->second[0].getHeadersInOrder();
-
-			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
-				//retrieve and print average and median speedup using optimized
-				//parallel parameters compared to default
-				RunAndEvaluateBpResults::getAverageMedianSpeedup(runOutput);
-			}
-
 			//write results from default and optimized parallel parameters runs to csv file
+	        std::string dataTypeStr;
+			if constexpr (MULT_DATA_TYPES) {
+				dataTypeStr = "MULT_DATA_TYPES";
+			} 
+			else {
+				dataTypeStr = beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
+			}
+			const auto accelStr = beliefprop::accelerationString<OPT_IMP_ACCEL>();
 			const std::string optResultsFileName{BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START + "_" + 
-				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + beliefprop::accelerationString<OPT_IMP_ACCEL>() + CSV_FILE_EXTENSION};
+				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
 			const std::string defaultParamsResultsFileName{BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START + "_" +
-				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + beliefprop::accelerationString<OPT_IMP_ACCEL>() + CSV_FILE_EXTENSION};
+				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
 			std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),
 															 		 OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(optResultsFileName) : std::ofstream()};
+			//get headers from first successful run
+			const auto headersInOrder = firstSuccessRun->second.back().getHeadersInOrder();
 			for (const auto& currHeader : headersInOrder) {
 				resultsStreamDefaultTBFinal[0] << currHeader << ",";
 			}
@@ -465,8 +468,8 @@ namespace RunAndEvaluateBpResults {
 				for (const auto& currHeader : headersInOrder) {
 					resultsStreamDefaultTBFinal[1] << currHeader << ",";
 				}
-				resultsStreamDefaultTBFinal[1] << SPEEDUP_HEADER << "," << std::endl;
 			}
+			resultsStreamDefaultTBFinal[1] << std::endl;
 
 			for (unsigned int i=0; i < (OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() : 1); i++) {
 				for (unsigned int runNum=0; runNum < runOutput.size(); runNum++) {
@@ -479,9 +482,6 @@ namespace RunAndEvaluateBpResults {
 						else {
 							resultsStreamDefaultTBFinal[i] << runOutput[runNum].second[runResultIdx].getData(currHeader) << ",";
 						}
-					}
-					if ((runOutput[runNum].first == beliefprop::Status::NO_ERROR) && ((i == 1) && OPTIMIZE_PARALLEL_PARAMS)) {
-						resultsStreamDefaultTBFinal[1] << runOutput[runNum].second[i].getData(SPEEDUP_HEADER) << ",";
 					}
 					resultsStreamDefaultTBFinal[i] << std::endl;
 				}
@@ -505,6 +505,56 @@ namespace RunAndEvaluateBpResults {
 		else {
 			std::cout << "Error, no runs completed successfully" << std::endl;
 		}
+	}
+
+	template <typename T, beliefprop::AccSetting OPT_IMP_ACCEL>
+	std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runBpOnStereoSets() {
+		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runOutput;
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 0, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 0, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 1, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 1, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 2, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 2, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 3, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 3, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 4, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 4, false, OPT_IMP_ACCEL>());
+		/*runOutput.push_back(runBpOnSetAndUpdateResults<T, 5, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 5, false, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 6, true, OPT_IMP_ACCEL>());
+		runOutput.push_back(runBpOnSetAndUpdateResults<T, 6, false, OPT_IMP_ACCEL>());*/
+
+		//get speedup info for using optimized parallel parameters and disparity count as template parameter
+		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runOutput, SPEEDUP_OPT_PAR_PARAMS_HEADER);
+		}
+		RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runOutput, SPEEDUP_DISP_COUNT_TEMPLATE);
+		
+		//write output corresponding to results for current data type
+		constexpr bool MULT_DATA_TYPES{false};
+		writeRunOutput<OPT_IMP_ACCEL, MULT_DATA_TYPES, T>(runOutput);
+
+		return runOutput;
+	}
+
+	template <beliefprop::AccSetting OPT_IMP_ACCEL>
+	void runBpOnStereoSets() {
+		//initially store output for floating-point runs separate from output using doubles and halfs
+		auto runOutput = runBpOnStereoSets<float, OPT_IMP_ACCEL>();
+		auto runOutputDouble = runBpOnStereoSets<double, OPT_IMP_ACCEL>();
+		RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput, runOutputDouble, SPEEDUP_DOUBLE);
+#ifdef HALF_PRECISION_SUPPORTED
+		auto runOutputHalf = runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
+		RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput, runOutputHalf, SPEEDUP_HALF);
+#endif //HALF_PRECISION_SUPPORTED
+		//add output for double and half precision runs to output of floating-point runs to write
+		//final output with all data
+		runOutput.insert(runOutput.end(), runOutputDouble.begin(), runOutputDouble.end());
+		runOutput.insert(runOutput.end(), runOutputHalf.begin(), runOutputHalf.end());
+		//write output corresponding to results for all data types
+		constexpr bool MULT_DATA_TYPES{true};
+		writeRunOutput<OPT_IMP_ACCEL, MULT_DATA_TYPES>(runOutput);
 	}
 };
 
