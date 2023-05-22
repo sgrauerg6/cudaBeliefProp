@@ -25,6 +25,8 @@
 
 typedef std::filesystem::path filepathtype;
 
+#define SMALLER_SETS_ONLY
+
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
@@ -53,6 +55,9 @@ using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, beliefprop::Acc
 using halftype = half;
 #endif //OPTIMIZED_CUDA_RUN
 
+using MultRunData = std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>;
+using MultRunSpeedup = std::pair<std::string, std::pair<double, double>>;
+
 namespace RunAndEvaluateBpResults {
 	//constants for output results for individual and sets of runs
 	const std::string BP_RUN_OUTPUT_RESULTS_FILE{"outputResultsForRun.txt"};
@@ -60,10 +65,116 @@ namespace RunAndEvaluateBpResults {
 	const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START{"outputResultsDefaultParallelParams"};
 	const std::string CSV_FILE_EXTENSION{".csv"};
 	const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
-	const std::string SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default Parallel Parameters"};
-	const std::string SPEEDUP_DOUBLE{"Speedup Using Doubles Compared To Floats (Actually Slowdown)"};
-	const std::string SPEEDUP_HALF{"Speedup Using Halfs Compared To Floats"};
-	const std::string SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup When Disparity Count Given As Template Parameter"};
+	const std::string SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
+	const std::string SPEEDUP_DOUBLE{"Speedup using double-precision relative to float (actually slowdown)"};
+	const std::string SPEEDUP_HALF{"Speedup using half-precision relative to float"};
+	const std::string SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup w/ templated disparity count (known at compile-time)"};
+	const std::string SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
+#ifdef SMALLER_SETS_ONLY
+	const std::string BASELINE_RUNTIMES_FILE_PATH{"../baselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
+#else
+	const std::string BASELINE_RUNTIMES_FILE_PATH{"../baselineRuntimes/baselineRuntimes.txt"};
+#endif //SMALLER_SETS_ONLY
+
+	std::pair<std::string, std::vector<double>> getBaselineRuntimeData() {
+		std::ifstream baselineData(BASELINE_RUNTIMES_FILE_PATH);
+		std::string line;
+		//first line of data is string with baseline processor description and all subsequent data is runtimes
+		//on that processor in same order as runtimes from runBpOnStereoSets() function
+		std::pair<std::string, std::vector<double>> baselineNameData;
+		bool firstLine{true};
+		while (std::getline(baselineData, line))
+		{
+			if (firstLine) {
+				baselineNameData.first = line;
+				firstLine = false;
+			}
+			else {
+				baselineNameData.second.push_back(std::stod(line));
+			}
+		}
+
+		return baselineNameData;
+	}
+
+	std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+		const std::string& dataTypeStr) {
+		std::vector<double> speedupsVect;
+		const auto baselineRunData = getBaselineRuntimeData();
+		const std::string speedupHeader = "Speedup relative to " + baselineRunData.first + " - " + dataTypeStr + " only";
+		const auto baselineRuntimes = baselineRunData.second;
+		std::vector<MultRunSpeedup> speedupData;
+		for (unsigned int i=0; i < runOutput.size(); i++) {
+			if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
+				speedupsVect.push_back(baselineRuntimes[i] / 
+								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+				runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+			}
+		}
+		if (speedupsVect.size() > 0) {
+			const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+			std::cout << "Average " << speedupHeader << ": " << averageSpeedup << std::endl;
+			std::sort(speedupsVect.begin(), speedupsVect.end());
+			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
+				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+				speedupsVect[(speedupsVect.size() / 2)];
+			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+			speedupData.push_back({speedupHeader, {averageSpeedup, medianSpeedup}});
+		}
+		else {
+			return {MultRunSpeedup()};
+		}
+		//if processing floats, also get results for 3 smallest and 3 largest stereo sets
+		if (dataTypeStr == beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(float))) {
+			speedupsVect.clear();
+			std::string speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 smallest stereo sets - " + dataTypeStr + " only";
+			for (unsigned int i=0; i < 6; i++) {
+				if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
+					speedupsVect.push_back(baselineRuntimes[i] / 
+										std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+					runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+					runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+				}
+			}
+			if (speedupsVect.size() > 0) {
+				const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+				std::cout << "Average " << speedupHeader << ": " << averageSpeedup << std::endl;
+				std::sort(speedupsVect.begin(), speedupsVect.end());
+				const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
+					(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+					speedupsVect[(speedupsVect.size() / 2)];
+				std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+				speedupData.push_back({speedupHeader, {averageSpeedup, medianSpeedup}});
+			}
+#ifndef SMALLER_SETS_ONLY
+			speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 largest stereo sets - " + dataTypeStr + " only";
+			for (unsigned int i=9; i < 15; i++) {
+#else
+			speedupHeader = "Speedup relative to " + baselineRunData.first + " on largest stereo set - " + dataTypeStr + " only";
+			speedupsVect.clear();
+			for (unsigned int i=9; i < 11; i++) {
+#endif //SMALLER_SETS_ONLY
+				if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
+					speedupsVect.push_back(baselineRuntimes[i] / 
+										std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+					runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+					runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+				}
+			}
+			if (speedupsVect.size() > 0) {
+				const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+				std::cout << "Average " << speedupHeader << ": " << averageSpeedup << std::endl;
+				std::sort(speedupsVect.begin(), speedupsVect.end());
+				const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
+					(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+					speedupsVect[(speedupsVect.size() / 2)];
+				std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+				speedupData.push_back({speedupHeader, {averageSpeedup, medianSpeedup}});
+			}
+		}
+		return speedupData;
+	}
 
 	std::vector<std::array<std::string, 2>> getResultsMappingFromFile(const std::string& fileName) {
 		std::vector<std::array<std::string, 2>> dataWHeaders;
@@ -350,7 +461,7 @@ namespace RunAndEvaluateBpResults {
 	}
 
 	//get average and median speedup using optimized parallel parameters compared to default parallel parameters
-	void getAvgMedSpeedupOptPParams(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput,
+	MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput,
 		const std::string& speedupHeader) {
 		std::vector<double> speedupsVect;
 		for (unsigned int i=0; i < runOutput.size(); i++) {
@@ -362,59 +473,65 @@ namespace RunAndEvaluateBpResults {
 			}
 		}
 		if (speedupsVect.size() > 0) {
+			const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+			std::cout << "Average " << speedupHeader << ": " << averageSpeedup << std::endl;
 			std::sort(speedupsVect.begin(), speedupsVect.end());
-			std::cout << "Average " << speedupHeader << ": " << 
-				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
 			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
 				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
 				speedupsVect[(speedupsVect.size() / 2)];
 			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+			return {speedupHeader, {averageSpeedup, medianSpeedup}};
 		}
+		return MultRunSpeedup();
 	}
 
-	void getAvgMedSpeedup(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutputBase,
-		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutputTarget,
+	MultRunSpeedup getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
 		const std::string& speedupHeader) {
 		std::vector<double> speedupsVect;
 		for (unsigned int i=0; i < runOutputBase.size(); i++) {
 			if ((runOutputBase[i].first == beliefprop::Status::NO_ERROR) && (runOutputTarget[i].first == beliefprop::Status::NO_ERROR))  {
-				speedupsVect.push_back(std::stod(runOutputBase[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)) / 
-								       std::stod(runOutputTarget[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+				speedupsVect.push_back(std::stod(runOutputBase[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
+								       std::stod(runOutputTarget[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
 				runOutputBase[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+				runOutputTarget[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
 		}
 		if (speedupsVect.size() > 0) {
+			const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+			std::cout << "Average " << speedupHeader << ": " << averageSpeedup << std::endl;
 			std::sort(speedupsVect.begin(), speedupsVect.end());
-			std::cout << "Average " << speedupHeader << ": " << 
-				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
 			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
 				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
 				speedupsVect[(speedupsVect.size() / 2)];
 			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+			return {speedupHeader, {averageSpeedup, medianSpeedup}};
 		}
+		return {speedupHeader, {0.0, 0.0}};
 	}
 
-	void getAvgMedSpeedupDispValsInTemplate(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput,
+	MultRunSpeedup getAvgMedSpeedupDispValsInTemplate(MultRunData& runOutput,
 		const std::string& speedupHeader) {
 		std::vector<double> speedupsVect;
 		//assumine that runs with and without disparity count given in template parameter are consectutive with the run with the
 		//disparity count given in template being first
 		for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
 			if ((runOutput[i].first == beliefprop::Status::NO_ERROR) && (runOutput[i+1].first == beliefprop::Status::NO_ERROR))  {
-				speedupsVect.push_back(std::stod(runOutput[i+1].second[1].getData(OPTIMIZED_RUNTIME_HEADER)) / 
-								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+				speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
+								       std::stod(runOutput[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
 				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
 		}
 		if (speedupsVect.size() > 0) {
+			const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+			std::cout << "Average " << speedupHeader << ": " << averageSpeedup << std::endl;
 			std::sort(speedupsVect.begin(), speedupsVect.end());
-			std::cout << "Average " << speedupHeader << ": " << 
-				(std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size()) << std::endl;
 			const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
 				(speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
 				speedupsVect[(speedupsVect.size() / 2)];
 			std::cout << "Median " << speedupHeader << ": " << medianSpeedup << std::endl;
+			return {speedupHeader, {averageSpeedup, medianSpeedup}};
 		}
+		return MultRunSpeedup();
 	}
 
 	template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, beliefprop::AccSetting OPT_IMP_ACCEL>
@@ -434,22 +551,18 @@ namespace RunAndEvaluateBpResults {
 		}
 	}
 
+	//write data for file corresponding to runs for a specified data type or across all data type
+	//includes results for each run as well as average and median speedup data across multiple runs
 	template <beliefprop::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, typename T = void>
-	void writeRunOutput(std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>& runOutput) {
+	void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput) {
 		//get iterator to first run with success
-		const auto firstSuccessRun = std::find_if(runOutput.begin(), runOutput.end(), [](const auto& runResult)
+		const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
 			{ return (runResult.first == beliefprop::Status::NO_ERROR); } );
 		
 		//check if there was at least one successful run
-		if (firstSuccessRun != runOutput.end()) {
+		if (firstSuccessRun != runOutput.first.end()) {
 			//write results from default and optimized parallel parameters runs to csv file
-	        std::string dataTypeStr;
-			if constexpr (MULT_DATA_TYPES) {
-				dataTypeStr = "MULT_DATA_TYPES";
-			} 
-			else {
-				dataTypeStr = beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
-			}
+	        const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
 			const auto accelStr = beliefprop::accelerationString<OPT_IMP_ACCEL>();
 			const std::string optResultsFileName{BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START + "_" + 
 				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
@@ -472,20 +585,32 @@ namespace RunAndEvaluateBpResults {
 			resultsStreamDefaultTBFinal[1] << std::endl;
 
 			for (unsigned int i=0; i < (OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() : 1); i++) {
-				for (unsigned int runNum=0; runNum < runOutput.size(); runNum++) {
+				for (unsigned int runNum=0; runNum < runOutput.first.size(); runNum++) {
 					//if run not successful only have single set of output data from run
-					const unsigned int runResultIdx = (runOutput[runNum].first == beliefprop::Status::NO_ERROR) ? i : 0;
+					const unsigned int runResultIdx = (runOutput.first[runNum].first == beliefprop::Status::NO_ERROR) ? i : 0;
 					for (const auto& currHeader : headersInOrder) {
-						if (!(runOutput[runNum].second[runResultIdx].isData(currHeader))) {
+						if (!(runOutput.first[runNum].second[runResultIdx].isData(currHeader))) {
 							resultsStreamDefaultTBFinal[i] << "No Data" << ",";
 						}
 						else {
-							resultsStreamDefaultTBFinal[i] << runOutput[runNum].second[runResultIdx].getData(currHeader) << ",";
+							resultsStreamDefaultTBFinal[i] << runOutput.first[runNum].second[runResultIdx].getData(currHeader) << ",";
 						}
 					}
 					resultsStreamDefaultTBFinal[i] << std::endl;
 				}
 			}
+
+			//write speedup results
+			const unsigned int indexBestResults{(OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() - 1 : 0)};
+			resultsStreamDefaultTBFinal[indexBestResults] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
+			for (const auto& speedup : runOutput.second) {
+				resultsStreamDefaultTBFinal[indexBestResults] << speedup.first;
+				if (speedup.second.first > 0) {
+					resultsStreamDefaultTBFinal[indexBestResults] << "," << speedup.second.first << "," << speedup.second.second;
+				}
+				resultsStreamDefaultTBFinal[indexBestResults] << std::endl;			
+			}
+
 			resultsStreamDefaultTBFinal[0].close();
 			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
 				resultsStreamDefaultTBFinal[1].close();
@@ -507,51 +632,119 @@ namespace RunAndEvaluateBpResults {
 		}
 	}
 
+	//perform runs on multiple data sets using specified data type and acceleration method
 	template <typename T, beliefprop::AccSetting OPT_IMP_ACCEL>
-	std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runBpOnStereoSets() {
-		std::vector<std::pair<beliefprop::Status, std::vector<RunData>>> runOutput;
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 0, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 0, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 1, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 1, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 2, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 2, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 3, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 3, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 4, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 4, false, OPT_IMP_ACCEL>());
-		/*runOutput.push_back(runBpOnSetAndUpdateResults<T, 5, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 5, false, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 6, true, OPT_IMP_ACCEL>());
-		runOutput.push_back(runBpOnSetAndUpdateResults<T, 6, false, OPT_IMP_ACCEL>());*/
+	std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpOnStereoSets() {
+		MultRunData runData;
+		runData.push_back(runBpOnSetAndUpdateResults<T, 0, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 0, false, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 1, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 1, false, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 2, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 2, false, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 3, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 3, false, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 4, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 4, false, OPT_IMP_ACCEL>());
+#ifndef SMALLER_SETS_ONLY
+		runData.push_back(runBpOnSetAndUpdateResults<T, 5, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 5, false, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 6, true, OPT_IMP_ACCEL>());
+		runData.push_back(runBpOnSetAndUpdateResults<T, 6, false, OPT_IMP_ACCEL>());
+#endif //SMALLER_SETS_ONLY
+
+		//initialize speedup results
+		std::vector<MultRunSpeedup> speedupResults;
 
 		//get speedup info for using optimized parallel parameters and disparity count as template parameter
-		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
-			RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runOutput, SPEEDUP_OPT_PAR_PARAMS_HEADER);
+		if (sizeof(T) == sizeof(float)) {
+			const auto speedupOverBaseline = RunAndEvaluateBpResults::getAvgMedSpeedupOverBaseline(runData, beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
+			speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
 		}
-		RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runOutput, SPEEDUP_DISP_COUNT_TEMPLATE);
+		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			speedupResults.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runData, SPEEDUP_OPT_PAR_PARAMS_HEADER + " - " +
+				beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) + " only"));
+		}
+		speedupResults.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runData, SPEEDUP_DISP_COUNT_TEMPLATE + " - " +
+			beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)) + " only"));
 		
 		//write output corresponding to results for current data type
 		constexpr bool MULT_DATA_TYPES{false};
-		writeRunOutput<OPT_IMP_ACCEL, MULT_DATA_TYPES, T>(runOutput);
+		writeRunOutput<OPT_IMP_ACCEL, MULT_DATA_TYPES, T>({runData, speedupResults});
 
-		return runOutput;
+		//return data for each run and multiple average and median speedup results across the data
+		return {runData, speedupResults};
+	}
+
+	//perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
+	//CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
+	template <typename T, beliefprop::AccSetting OPT_IMP_ACCEL>
+	std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, MultRunSpeedup> getNoVectDataVectSpeedup(
+		const std::string& speedupHeader, MultRunData& runOutput) {
+		if constexpr ((OPT_IMP_ACCEL == beliefprop::AccSetting::CUDA) || (OPT_IMP_ACCEL == beliefprop::AccSetting::NONE)) {
+			return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(),
+					{speedupHeader, {0.0, 0.0}}};
+		}
+		else {
+			auto runOutputNoVect = runBpOnStereoSets<T, beliefprop::AccSetting::NONE>();
+			auto speedupWVectorization = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputNoVect.first, runOutput, speedupHeader);
+			return {runOutputNoVect, speedupWVectorization};
+		}
 	}
 
 	template <beliefprop::AccSetting OPT_IMP_ACCEL>
 	void runBpOnStereoSets() {
+		//perform runs with and without vectorization using floating point
 		//initially store output for floating-point runs separate from output using doubles and halfs
 		auto runOutput = runBpOnStereoSets<float, OPT_IMP_ACCEL>();
+		//get results and speedup for not using vectorization (only applies to CPU)
+		const auto noVectDataVectSpeedupFl = getNoVectDataVectSpeedup<float, OPT_IMP_ACCEL>(SPEEDUP_VECTORIZATION + "- FLOAT only", runOutput.first);
+		//get run data portion of results 
+		auto runOutputNoVect = noVectDataVectSpeedupFl.first;
+
+		//perform runs with and without vectorization using double-precision
 		auto runOutputDouble = runBpOnStereoSets<double, OPT_IMP_ACCEL>();
-		RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput, runOutputDouble, SPEEDUP_DOUBLE);
+		const auto doublesSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputDouble.first, SPEEDUP_DOUBLE);
+		const auto noVectDataVectSpeedupDbl = getNoVectDataVectSpeedup<double, OPT_IMP_ACCEL>(SPEEDUP_VECTORIZATION + " - DOUBLE only", runOutputDouble.first);
+		for (const auto& runData : noVectDataVectSpeedupDbl.first.first) {
+			runOutputNoVect.first.push_back(runData);
+		}
 #ifdef HALF_PRECISION_SUPPORTED
+		//perform runs with and without vectorization using half-precision
 		auto runOutputHalf = runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
-		RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput, runOutputHalf, SPEEDUP_HALF);
+		const auto halfSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, SPEEDUP_HALF);
+		const auto noVectDataVectSpeedupHalf = getNoVectDataVectSpeedup<halftype, OPT_IMP_ACCEL>(SPEEDUP_VECTORIZATION + " - HALF only", runOutputHalf.first);
+		for (const auto& runData : noVectDataVectSpeedupHalf.first.first) {
+			runOutputNoVect.first.push_back(runData);
+		}
 #endif //HALF_PRECISION_SUPPORTED
 		//add output for double and half precision runs to output of floating-point runs to write
 		//final output with all data
-		runOutput.insert(runOutput.end(), runOutputDouble.begin(), runOutputDouble.end());
-		runOutput.insert(runOutput.end(), runOutputHalf.begin(), runOutputHalf.end());
+		runOutput.first.insert(runOutput.first.end(), runOutputDouble.first.begin(), runOutputDouble.first.end());
+		runOutput.first.insert(runOutput.first.end(), runOutputHalf.first.begin(), runOutputHalf.first.end());
+		//get speedup using vectorization across all runs
+		const auto vectorizationSpeedupAll = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputNoVect.first, runOutput.first, SPEEDUP_VECTORIZATION + " - All Runs");
+		//add speedup data from double and half precision runs to overall data so they are included in final results
+		runOutput.second.push_back(noVectDataVectSpeedupFl.second);
+		runOutput.second.insert(runOutput.second.end(), runOutputDouble.second.begin(), runOutputDouble.second.end());
+		runOutput.second.push_back(noVectDataVectSpeedupDbl.second);
+#ifdef HALF_PRECISION_SUPPORTED
+		runOutput.second.insert(runOutput.second.end(), runOutputHalf.second.begin(), runOutputHalf.second.end());
+		runOutput.second.push_back(noVectDataVectSpeedupHalf.second);
+#endif //HALF_PRECISION_SUPPORTED
+
+		//get speedup info for using optimized parallel parameters and disparity count as template parameter across all data types
+		const auto speedupOverBaseline = RunAndEvaluateBpResults::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs");
+		runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+		if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			runOutput.second.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runOutput.first, SPEEDUP_OPT_PAR_PARAMS_HEADER + " - All Runs"));
+		}
+		//add more speedup data to overall data for inclusion in final results
+		runOutput.second.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runOutput.first, SPEEDUP_DISP_COUNT_TEMPLATE + " - All Runs"));
+		runOutput.second.push_back(vectorizationSpeedupAll);
+		runOutput.second.push_back(doublesSpeedup);
+		runOutput.second.push_back(halfSpeedup);
+
 		//write output corresponding to results for all data types
 		constexpr bool MULT_DATA_TYPES{true};
 		writeRunOutput<OPT_IMP_ACCEL, MULT_DATA_TYPES>(runOutput);
