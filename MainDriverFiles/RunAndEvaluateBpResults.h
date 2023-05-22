@@ -25,7 +25,8 @@
 
 typedef std::filesystem::path filepathtype;
 
-#define SMALLER_SETS_ONLY
+//remove comment to only process on smaller stereo sets (reduces runtime)
+//#define SMALLER_SETS_ONLY
 
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
@@ -71,9 +72,9 @@ namespace RunAndEvaluateBpResults {
 	const std::string SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup w/ templated disparity count (known at compile-time)"};
 	const std::string SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
 #ifdef SMALLER_SETS_ONLY
-	const std::string BASELINE_RUNTIMES_FILE_PATH{"../baselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
+	const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
 #else
-	const std::string BASELINE_RUNTIMES_FILE_PATH{"../baselineRuntimes/baselineRuntimes.txt"};
+	const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimes.txt"};
 #endif //SMALLER_SETS_ONLY
 
 	std::pair<std::string, std::vector<double>> getBaselineRuntimeData() {
