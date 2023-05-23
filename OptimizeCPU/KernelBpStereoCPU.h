@@ -133,9 +133,9 @@ public:
 			float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
 			const unsigned int numDataInSIMDVector,
 			const beliefprop::ParallelParameters& optCPUParams);
-
+	
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -146,7 +146,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
 		const beliefprop::levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -157,7 +157,62 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+		const beliefprop::levelProperties& currentLevelProperties,
+		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
+		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
+		double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
+		double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+		const beliefprop::levelProperties& currentLevelProperties,
+		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
+		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
+		float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
+		float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+		const beliefprop::levelProperties& currentLevelProperties,
+		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
+		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
+		short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
+		short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
+		short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+		const beliefprop::levelProperties& currentLevelProperties,
+		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
+		double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
+		double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
+		double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+		const beliefprop::levelProperties& currentLevelProperties,
+		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
+		float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
+		float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
+		float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
+		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
+		const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
 		const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -169,7 +224,7 @@ public:
 
 #ifdef COMPILING_FOR_ARM
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors(
+    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
 		float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
@@ -203,9 +258,9 @@ public:
 			T* currentLMessageArray, T* currentRMessageArray,
 			const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing,
 			const unsigned int bpSettingsDispVals);
-
+	
 	template<unsigned int DISP_VALS>
-	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX256(
 			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 			float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -216,7 +271,7 @@ public:
 			const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX256(
 			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 			short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -227,7 +282,62 @@ public:
 			const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX256(
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+			double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+			double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
+			double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
+			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
+			double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp, const unsigned int bpSettingsDispVals,
+			const beliefprop::ParallelParameters& optCPUParams);
+	
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX512(
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+			float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+			float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
+			float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
+			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
+			float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp, const unsigned int bpSettingsDispVals,
+			const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX512(
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+			short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
+			short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
+			short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
+			short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
+			short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp, const unsigned int bpSettingsDispVals,
+			const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX512(
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+			double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
+			double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
+			double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
+			double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
+			double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp, const unsigned int bpSettingsDispVals,
+			const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+			float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
+			float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
+			float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
+			float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
+			float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+			const float disc_k_bp, const unsigned int bpSettingsDispVals,
+			const beliefprop::ParallelParameters& optCPUParams);
+
+	template<unsigned int DISP_VALS>
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
 			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 			double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -239,7 +349,7 @@ public:
 
 #ifdef COMPILING_FOR_ARM
 	template<unsigned int DISP_VALS>
-	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors(
+	static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
 			const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
 			float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
 			float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
@@ -386,6 +496,7 @@ public:
 #if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 #endif
 

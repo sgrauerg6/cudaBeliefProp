@@ -1110,7 +1110,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		//only use AVX-256 if width of processing checkerboard is over 10
 		if (currentLevelProperties.widthCheckerboardLevel_ > 10)
 		{
-			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<DISP_VALS>(checkerboardToUpdate,
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX256<DISP_VALS>(checkerboardToUpdate,
 					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -1134,7 +1134,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		//only use AVX-512 if width of processing checkerboard is over 20
 		if (currentLevelProperties.widthCheckerboardLevel_ > 20)
 		{
-			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<DISP_VALS>(checkerboardToUpdate,
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX512<DISP_VALS>(checkerboardToUpdate,
 					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -1157,7 +1157,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 	{
 		if (currentLevelProperties.widthCheckerboardLevel_ > 5)
 		{
-			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectors<DISP_VALS>(checkerboardToUpdate,
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON<DISP_VALS>(checkerboardToUpdate,
 					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -1322,14 +1322,34 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		}
 	}
 	else {
- 	 	//SIMD vectorization of output disparity only supported with OpenMP
-		retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectors<DISP_VALS>(currentLevelProperties,
-		    dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-			messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
-			messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
-			messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
-			messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
-			disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
+		//SIMD vectorization of output disparity only supported with OpenMP
+		if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX512) {
+			retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
+				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
+				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
+				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
+				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+				disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
+		}
+		else if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX256) {
+			retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256<DISP_VALS>(currentLevelProperties,
+				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
+				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
+				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
+				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+				disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
+		}
+		else {
+			retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON<DISP_VALS>(currentLevelProperties,
+				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
+				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
+				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
+				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+				disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
+		}
 	}
 #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
