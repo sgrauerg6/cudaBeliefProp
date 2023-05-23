@@ -77,7 +77,7 @@ namespace RunAndEvaluateBpResults {
 	const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
 	const std::string SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
 #else
-	const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
+	const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimes.txt"};
 	const std::string SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/singleThreadBaselineRuntimes.txt"};
 #endif //SMALLER_SETS_ONLY
 
