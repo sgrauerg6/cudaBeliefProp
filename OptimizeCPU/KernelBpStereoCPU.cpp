@@ -1105,6 +1105,41 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 		const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
 		const beliefprop::ParallelParameters& optCPUParams)
 {
+#ifdef COMPILING_FOR_ARM
+if constexpr (VECTORIZATION == beliefprop::AccSetting::NEON)
+	{
+		if (currentLevelProperties.widthCheckerboardLevel_ > 5)
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON<DISP_VALS>(checkerboardToUpdate,
+					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
+		}
+		else
+		{
+			runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T, DISP_VALS>(checkerboardToUpdate,
+					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
+		}
+	}
+	else
+	{
+		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T, DISP_VALS>(checkerboardToUpdate,
+				currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
+				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+				messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
+				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+				disc_k_bp, bpSettingsNumDispVals, optCPUParams);
+	}
+#else
 	if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX256)
 	{
 		//only use AVX-256 if width of processing checkerboard is over 10
@@ -1153,29 +1188,6 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 		}
 	}
-	else if constexpr (VECTORIZATION == beliefprop::AccSetting::NEON)
-	{
-		if (currentLevelProperties.widthCheckerboardLevel_ > 5)
-		{
-			runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON<DISP_VALS>(checkerboardToUpdate,
-					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
-		}
-		else
-		{
-			runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T, DISP_VALS>(checkerboardToUpdate,
-					currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-					messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-					messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-					messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-					messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-					disc_k_bp, bpSettingsNumDispVals, optCPUParams);
-		}
-	}
 	else
 	{
 		runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions<T, DISP_VALS>(checkerboardToUpdate,
@@ -1186,6 +1198,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
 				messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
 				disc_k_bp, bpSettingsNumDispVals, optCPUParams);
 	}
+#endif //COMPILING_FOR_ARM
 }
 
 
@@ -1322,6 +1335,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 		}
 	}
 	else {
+#ifndef COMPILING_FOR_ARM
 		//SIMD vectorization of output disparity only supported with OpenMP
 		if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX512) {
 			retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
@@ -1341,7 +1355,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 				disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
 		}
-		else {
+#else
 			retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON<DISP_VALS>(currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1349,7 +1363,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 				messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
 				messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
 				disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
-		}
+#endif //COMPILING_FOR_ARM
 	}
 #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 	KernelBpStereoCPU::tPool.parallelize_loop(0, currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_,
