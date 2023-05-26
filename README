@@ -34,7 +34,7 @@ http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pdf.
 The original code is available at http://scottgg.net/beliefPropCodePost.zip.
 
 See "RUNTIME RESULTS USING CURRENT CODE" section at end of README for runtime info across various
-processors including the NVIDIA A100 GPU and AMD Rome 48-core/96-thread CPU.
+processors including the NVIDIA A100 and H100 GPUs, AMD Rome and Milan-X CPUs, and Intel Ice Lake CPU.
 
 This code is distributed using the GNU General Public License, so any derivative work which 
 is distributed must also contain this license.
@@ -106,10 +106,11 @@ Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and w
 
 RUNTIME RESULTS USING CURRENT CODE:
 
-Relative speedup across various processors (previous run using AMD Rome w/ 48 cores used as baseline):
+Relative speedup across various processors using float type w/ prior run using AMD Rome (48 cores) used as baseline:
 -Column marked as "Total runtime including data transfer time (15 timings)" in outputResults.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
 -CPU and CUDA runs are with thread count / thread block optimization enabled (via OPTIMIZE_PARALLEL_PARAMS in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
+Intel Cascade Lake (24 cores): 0.63x
 NVIDIA P100: 0.785x
 Amazon Graviton2 (64 core ARM server): 0.925x
 AMD Rome (48 cores): 0.97x
