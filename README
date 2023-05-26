@@ -65,7 +65,7 @@ LINUX:
 -If ARM CPU, uncomment the line "//#define COMPILING_FOR_ARM" in ParameterFiles/bpRunSettings.h (line 19).  This will
 make the necessary configuration changes to support processing on ARM CPUs.
 
--If x86 CPU, set vectorization to AVX-256 or AVX-512 in line
+-If x86 CPU, set vectorization to AVX-256 if AVX-512 is not supported on target CPU in line
 "#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 59).
 
 -May also want to adjust environment variables OMP_PLACES and OMP_PROC_BIND to optimize OpenMP thread configuration.
@@ -84,8 +84,9 @@ make it possible to compare the output disparity maps/runtimes from the original
 the optimized implementations.
 
 5.  The locations of the output disparity maps are given in the console output.  More detailed info including input
-stereo set and parameters, detailed timings, and output disparity map evaluation as compared to ground truth for each
-run are written to a outputResults.csv file; this file is in the same folder as the driverCPUBp/driverCudaBp executable.
+stereo set and parameters, detailed timings along with overall speedup data, and output disparity map evaluation as
+compared to ground truth for each run are written to a outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv
+file; this file is in the same folder as the driverCPUBp/driverCudaBp executable.
 
 6.  In order to adjust the parameters to run on different inputs or with different parameters, set the desired
 parameters in ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the
@@ -104,18 +105,19 @@ Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and w
 
 RUNTIME RESULTS USING CURRENT CODE:
 
-Relative speedup across various processors (AMD Rome w/ 48 cores used as baseline):
+Relative speedup across various processors (previous run using AMD Rome w/ 48 cores used as baseline):
 -Column marked as "Total runtime including data transfer time (15 timings)" in outputResults.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
 -CPU and CUDA runs are with thread count / thread block optimization enabled (via OPTIMIZE_PARALLEL_PARAMS in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
-NVIDIA P100: 0.79x
-Intel Ice Lake (32 cores): 0.90x
-Amazon Graviton2 (64 core ARM server): 0.91x
-AMD Rome (48 cores): 1.00x
-NVIDIA V100: 1.19x
+NVIDIA P100: 0.785x
+Amazon Graviton2 (64 core ARM server): 0.925x
+AMD Rome (48 cores): 0.97x
+Intel Ice Lake (32 cores): 0.975x
+NVIDIA V100: 1.14x
 Amazon Graviton3 (64 core ARM server): 1.21x
-AMD Milan-X (120 cores / 2 sockets...limited to 60 threads with OpenMP threads pinned to socket so should be using single 60 core CPU): 1.40x
+AMD Milan-X (120 cores / 2 sockets...limited to 60 threads with OpenMP threads pinned to socket so should be using single 60 core CPU): 1.35x
 NVIDIA RTX 3090 Ti: 1.65x
 NVIDIA A100: 1.80x
+NVIDIA H100: 2.40x
 Spreadsheet with more detailed results:
-https://docs.google.com/spreadsheets/d/1TSIrbxvwuFmvZqzUc3E1sIizMNIwe4sLdqgZ3ucIc60/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
