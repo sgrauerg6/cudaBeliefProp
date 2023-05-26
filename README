@@ -93,7 +93,7 @@ the driverCPUBp/driverCudaBp executable.
 parameters in ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the
 adjusted parameters, and then call the executable to run the program with the adjusted parameters.
 
-WINDOWS (MAY NOT CURRENTLY WORK AS IS; HASN'T BEEN TESTED FOR AWHILE):
+WINDOWS (OUTDATED...HASN'T BEEN MAINTAINED FOR AWHILE):
 
 1. Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
 
