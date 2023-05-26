@@ -121,5 +121,5 @@ AMD Milan-X (120 cores / 2 sockets...limited to 60 threads with OpenMP threads p
 NVIDIA RTX 3090 Ti: 1.65x
 NVIDIA A100: 1.80x
 NVIDIA H100: 2.40x
-Spreadsheet with more detailed results:
+Spreadsheet with detailed results:
 https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
