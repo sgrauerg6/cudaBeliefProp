@@ -85,8 +85,9 @@ the optimized implementations.
 
 5.  The locations of the output disparity maps are given in the console output.  More detailed info including input
 stereo set and parameters, detailed timings along with overall speedup data, and output disparity map evaluation as
-compared to ground truth for each run are written to a outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv
-file; this file is in the same folder as the driverCPUBp/driverCudaBp executable.
+compared to ground truth for each run are written to a
+outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv file; this file is in the same folder as
+the driverCPUBp/driverCudaBp executable.
 
 6.  In order to adjust the parameters to run on different inputs or with different parameters, set the desired
 parameters in ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the
