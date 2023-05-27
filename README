@@ -115,6 +115,7 @@ NVIDIA P100: 0.785x
 Amazon Graviton2 (64 core ARM server): 0.925x
 AMD Rome (48 cores): 0.97x
 Intel Ice Lake (32 cores): 0.975x
+Amphere Altra (80 cores): 1.00x
 NVIDIA V100: 1.14x
 Amazon Graviton3 (64 core ARM server): 1.21x
 AMD Milan-X (120 cores / 2 sockets...limited to 60 threads with OpenMP threads pinned to socket so should be using single 60 core CPU): 1.35x
