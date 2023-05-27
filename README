@@ -127,7 +127,7 @@ https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9V
 
 ADDITIONAL NOTE:
 
-There is a known bug where the output disparity map from the CUDA-accelerated code is not at all similar to the single-thread
-output disparity map in the test with conesFullSizeCropped at half precision when run using CUDA acceleration...likely reason
-for this is that half-precision value(s) in processing in the CUDA kernels become either infinity or NaN...could make changes
-to address this but it would make the code a little less general.
+There is a known bug where the output disparity map from the CUDA-accelerated code is not at all similar to the
+single-thread output disparity map in the test with conesFullSizeCropped at half precision when run using CUDA
+acceleration...likely reason for this is that half-precision value(s) in processing in the CUDA kernels become
+either infinity or NaN...could make changes to address this but it would make the code a little less general.
