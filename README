@@ -125,8 +125,9 @@ NVIDIA H100: 2.40x
 Spreadsheet with detailed results:
 https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
 
-*Run on 120 cores across two 60-core CPUs but with limit of 60 threads w/ OMP threads pinned to socket
-using commands shown below so should be using single 60 core CPU:
+*Run on 120 cores across two 60-core CPUs but with limit of 60 threads w/ threads pinned to socket
+so should be using single 60 core CPU.
+Commands to pin OMP threads to socket:
 export OMP_PLACES="sockets"
 export OMP_PROC_BIND=true
 
