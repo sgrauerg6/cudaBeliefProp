@@ -79,7 +79,7 @@ In some tests have gotten faster results with setting OMP_PROC_BIND=true but in 
 results with default configuration and not setting OMP_PROC_BIND.
 
 2.  If running optimized CPU implementation, navigate to the folder LinuxMakeAndRunBPOptimizedCPU.
-    If running CUDA implemenetation, navigate to folder LinuxMakeAndRunBPCUDA CUDA implementation Makefile.
+    If running CUDA implemenetation, navigate to folder LinuxMakeAndRunBPCUDA.
 
 3.  Execute the commands "make clean" and "make" on the command line.
 
