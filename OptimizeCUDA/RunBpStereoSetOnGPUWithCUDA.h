@@ -109,8 +109,8 @@ public:
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
 		//std::cout << "Processing as half on GPU\n";
-		RunBpStereoSetOnGPUWithCUDA<half> runCUDABpStereoSet;
-		ProcessCUDABP<half> runCUDABPHalfPrecision;
+		RunBpStereoSetOnGPUWithCUDA<halftype> runCUDABpStereoSet;
+		ProcessCUDABP<halftype> runCUDABPHalfPrecision;
 		return runCUDABpStereoSet(refImagePath,
 				testImagePath,
 				algSettings,

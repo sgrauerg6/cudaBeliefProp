@@ -52,8 +52,6 @@ using halftype = short;
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, beliefprop::AccSetting::CUDA>;
-//set data type used for half-precision with CUDA
-using halftype = half;
 #endif //OPTIMIZED_CUDA_RUN
 
 using MultRunData = std::vector<std::pair<beliefprop::Status, std::vector<RunData>>>;

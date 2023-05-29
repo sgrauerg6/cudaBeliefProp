@@ -403,14 +403,14 @@ template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
 #ifdef CUDA_HALF_SUPPORT
-template class ProcessCUDABP<half, half*, 0>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<half, half*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<halftype, halftype*, 0>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
+template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 #endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;
