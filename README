@@ -98,21 +98,22 @@ adjusted parameters, and then call the executable to run the program with the ad
 RUNTIME RESULTS USING CURRENT CODE:
 
 Relative speedup across various processors using float type w/ prior run using AMD Rome (48 cores) used as baseline:
--Column marked as "Total runtime including data transfer time (15 timings)" in outputResults.csv used for runtime comparison.
+-Column marked as "Total runtime including data transfer time (15 timings)" in 
+outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
 -CPU and CUDA runs are with thread count / thread block optimization enabled (via OPTIMIZE_PARALLEL_PARAMS in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
-Intel Cascade Lake (24 cores): 0.63x
-NVIDIA P100: 0.785x
-Amazon Graviton2 (64 core ARM server): 0.925x
-AMD Rome (48 cores): 0.97x
-Intel Ice Lake (32 cores): 0.975x
-Amphere Altra (80 cores): 1.00x
-NVIDIA V100: 1.14x
-Amazon Graviton3 (64 core ARM server): 1.21x
-AMD Milan-X (60 cores*): 1.35x
-NVIDIA RTX 3090 Ti: 1.65x
-NVIDIA A100: 1.80x
 NVIDIA H100: 2.41x
+NVIDIA A100: 1.80x
+NVIDIA RTX 3090 Ti: 1.65x
+AMD Milan-X (60 cores*): 1.35x
+Amazon Graviton3 (64 core ARM server): 1.21x
+NVIDIA V100: 1.14x
+Amphere Altra (80 cores): 1.00x
+Intel Ice Lake (32 cores): 0.975x
+AMD Rome (48 cores): 0.97x
+Amazon Graviton2 (64 core ARM server): 0.925x
+NVIDIA P100: 0.785x
+Intel Cascade Lake (24 cores): 0.63x
 Spreadsheet with detailed results:
 https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
 
