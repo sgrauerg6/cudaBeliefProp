@@ -42,34 +42,29 @@ is distributed must also contain this license.
 Please email comments and bug reports to: sgrauerg@gmail.com
 
 
-USAGE:
+LINUX USAGE AND INSTRUCTIONS:
 
-This code runs belief propagation for stereo vision on the CPU and GPU using CUDA on Windows and Linux-based systems.
+This code runs belief propagation for stereo vision on the CPU and GPU using CUDA on Linux-based systems.
 
 The parameters are defined in ParameterFiles/bpStereoParameters.h and are documented in that file and the paper.  
 In order to compile/re-compile the program, navigate to the directory LinuxMakeAndRunBPOptimizedCPU (for optimized GPU
-implementation or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".  To run the CUDA
-code, the CUDA installation must have a symbolic link to /usr/local/cuda/ for the Makefile to work as is.
+implementation) or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".
 
 A number of stereo sets including the Tsukuba stereo are included in the "StereoSets" folder.  In order to run the
 implementation on these stereo sets using the initial parameters as defined in ParameterFiles/bpStereoParameters.h,
 perform the following steps:
 
-LINUX:
-
 1a.  (CUDA ONLY) If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs
-(usually PATH is appended with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib or LD_LIBRARY_PATH=$CUDA_DIR/lib64).
+(usually PATH is appended with $CUDA_DIR/bin and LD_LIBRARY_PATH=$CUDA_DIR/lib64).
 
 -If using a CUDA device of Compute Capability 8.0 or higher, can switch half-precision processing from the
 default "half" datatype to the bfloat16 datatype by removing the comment in the line 
 "//#define USE_BFLOAT16_FOR_HALF_PRECISION" in ParameterFiles/bpStereoCudaParameters.h (line 36)...this change
-fixes a bug with processing of conesFullSizeCropped at half-precision using CUDA (see "ADDITIONAL NOTE"
-at bottom of README).
+fixes a bug with processing of conesFullSizeCropped at half-precision using CUDA (see "ADDITIONAL NOTE").
 
 1b.  (CPU ONLY) Make any necessary or desired adjustments to run on target CPU:
 
--If ARM CPU, uncomment the line "//#define COMPILING_FOR_ARM" in ParameterFiles/bpRunSettings.h (line 19).  This will
-make the necessary configuration changes to support processing on ARM CPUs.
+-If ARM CPU, uncomment the line "//#define COMPILING_FOR_ARM" in ParameterFiles/bpRunSettings.h (line 19).
 
 -If x86 CPU, set vectorization to AVX-256 if AVX-512 is not supported on target CPU in line
 "#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 59).
@@ -84,10 +79,10 @@ results with default configuration and not setting OMP_PROC_BIND.
 3.  Execute the commands "make clean" and "make" on the command line.
 
 4.  Call created "driverCPUBp" or "driverCudaBp" executable to run the implementation on multiple stereo sets
-and in multiple configurations. The implementation is run multiple times to more accurately measure the runtime.
+and in multiple configurations.  Implementation is run multiple times to more accurately measure the runtime.
 The single-thread CPU implementation code from http://cs.brown.edu/people/pfelzens/bp/index.html is also run to
-make it possible to compare the output disparity maps/runtimes from the original single-thread implementation with
-the optimized implementations.
+compare the output disparity maps/runtimes from the original single-thread implementation with the optimized
+implementations.
 
 5.  The locations of the output disparity maps are given in the console output.  More detailed info including input
 stereo set and parameters, detailed timings along with overall speedup data, and output disparity map evaluation as
@@ -95,19 +90,9 @@ compared to ground truth for each run are written to a
 outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv file; this file is in the same folder as
 the driverCPUBp/driverCudaBp executable.
 
-6.  In order to adjust the parameters to run on different inputs or with different parameters, set the desired
+6.  To adjust the program to run on different inputs or with different parameters, set the desired
 parameters in ParameterFiles/bpStereoParameters.h, run "make clean" and "make" to compile the program with the
 adjusted parameters, and then call the executable to run the program with the adjusted parameters.
-
-WINDOWS (OUTDATED...HASN'T BEEN MAINTAINED FOR AWHILE):
-
-1.  Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
-
-2.  Select to compile then run the application.  The solution will first compile the single-thread CPU, optimized CPU, 
-and CUDA implementations into DLLs, then the main program in the solution will load the DLLs and run the program.  The
-program output shows the optimized CPU and CUDA implementation results compared to the single-thread CPU implementation results.
-
-Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and will need to re-compile to see results with adjusted parameters.
 
 
 RUNTIME RESULTS USING CURRENT CODE:
@@ -147,3 +132,14 @@ a CUDA device with compute capability 8.0 or later, can switch CUDA processing a
 datatype to the bfloat16 datatype to fix this bug (at least in the conesFullSizeCropped test) by removing the
 comment in the line "//#define USE_BFLOAT16_FOR_HALF_PRECISION" in ParameterFiles/bpStereoCudaParameters.h
 (line 36).
+
+
+WINDOWS INSTRUCTIONS (OUTDATED...HASN'T BEEN MAINTAINED FOR AWHILE):
+
+1.  Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
+
+2.  Select to compile then run the application.  The solution will first compile the single-thread CPU, optimized CPU, 
+and CUDA implementations into DLLs, then the main program in the solution will load the DLLs and run the program.  The
+program output shows the optimized CPU and CUDA implementation results compared to the single-thread CPU implementation results.
+
+Parameters can be adjusted in the ParameterFiles/bpStereoParameters.h file and will need to re-compile to see results with adjusted parameters.
