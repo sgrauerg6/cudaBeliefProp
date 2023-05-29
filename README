@@ -66,7 +66,7 @@ default "half" datatype to the bfloat16 datatype by removing the comment in the 
 fixes a bug with processing of conesFullSizeCropped at half-precision using CUDA (see "ADDITIONAL NOTE"
 at bottom of README).
 
-1b. (CPU ONLY) Make any necessary or desired adjustments to run on target CPU:
+1b.  (CPU ONLY) Make any necessary or desired adjustments to run on target CPU:
 
 -If ARM CPU, uncomment the line "//#define COMPILING_FOR_ARM" in ParameterFiles/bpRunSettings.h (line 19).  This will
 make the necessary configuration changes to support processing on ARM CPUs.
@@ -101,9 +101,9 @@ adjusted parameters, and then call the executable to run the program with the ad
 
 WINDOWS (OUTDATED...HASN'T BEEN MAINTAINED FOR AWHILE):
 
-1. Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
+1.  Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
 
-2. Select to compile then run the application.  The solution will first compile the single-thread CPU, optimized CPU, 
+2.  Select to compile then run the application.  The solution will first compile the single-thread CPU, optimized CPU, 
 and CUDA implementations into DLLs, then the main program in the solution will load the DLLs and run the program.  The
 program output shows the optimized CPU and CUDA implementation results compared to the single-thread CPU implementation results.
 
