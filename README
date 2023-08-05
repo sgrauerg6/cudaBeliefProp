@@ -119,8 +119,9 @@ Intel Cascade Lake (24 cores): 0.63x
 Spreadsheet with detailed results:
 https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
 
-*Run on system with 2 socketed CPUs with total of 2x listed core count across CPUs and with SMT disabled...benchmarked runs are with
-max number of threads limited to core count on single CPU w/ threads pinned to socket so should be using single CPU in the run.
+*Run on system with 2 socketed CPUs with total of 2x listed core count across CPUs and with SMT disabled...benchmarked
+runs are with max number of threads limited to core count on single CPU w/ threads pinned to socket so should be using
+single CPU in the run.
 Commands to pin OMP threads to socket:
 export OMP_PLACES="sockets"
 export OMP_PROC_BIND=true
