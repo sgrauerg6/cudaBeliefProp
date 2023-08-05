@@ -103,8 +103,10 @@ outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv used 
 -Speedup given is average across a number of input stereo sets and configurations.
 -CPU and CUDA runs are with thread count / thread block optimization enabled (via OPTIMIZE_PARALLEL_PARAMS in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
 NVIDIA H100: 2.41x
+AMD Genoa-X (88 Cores*): 2.17x
 NVIDIA A100: 1.80x
 NVIDIA RTX 3090 Ti: 1.65x
+Intel Sapphire Rapids (48 cores): 1.52x
 AMD Milan-X (60 cores*): 1.35x
 Amazon Graviton3 (64 core ARM server): 1.21x
 NVIDIA V100: 1.14x
@@ -117,8 +119,8 @@ Intel Cascade Lake (24 cores): 0.63x
 Spreadsheet with detailed results:
 https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
 
-*Run on 120 cores across two 60-core CPUs but with limit of 60 threads w/ threads pinned to socket
-so should be using single 60 core CPU.
+*Run on system with 2 socketed CPUs with total of 2x listed core count across CPUs and with SMT disabled...benchmarked runs are with
+max number of threads limited to core count on single CPU w/ threads pinned to socket so should be using single CPU in the run.
 Commands to pin OMP threads to socket:
 export OMP_PLACES="sockets"
 export OMP_PROC_BIND=true
