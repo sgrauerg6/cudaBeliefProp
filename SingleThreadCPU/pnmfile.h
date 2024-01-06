@@ -63,7 +63,7 @@ static void write_packed(unsigned char *data, int size, std::ofstream &f) {
 }
 
 /* read PNM field, skipping comments */ 
-static void pnm_read(std::ifstream &file, char *buf) {
+static void pnm_read(std::ifstream &file, std::string& buf) {
   char doc[BUF_SIZE];
   char c;
   
@@ -80,18 +80,18 @@ static void pnm_read(std::ifstream &file, char *buf) {
 }
 
 static image<uchar> *loadPBM(const char *name) {
-  char buf[BUF_SIZE];
+  std::string buf;
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
-  if (strncmp(buf, "P4", 2))
+  if (strncmp(buf.c_str(), "P4", 2))
     throw pnm_error();
     
   pnm_read(file, buf);
-  int width = atoi(buf);
+  int width = std::stoi(buf);
   pnm_read(file, buf);
-  int height = atoi(buf);
+  int height = std::stoi(buf);
   
   /* read data */
   image<uchar> *im = new image<uchar>(width, height);
@@ -112,21 +112,21 @@ static void savePBM(image<uchar> *im, const char *name) {
 }
 
 static image<uchar> *loadPGM(const char *name) {
-  char buf[BUF_SIZE];
+  std::string buf;
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
-  if (strncmp(buf, "P5", 2))
+  if (strncmp(buf.c_str(), "P5", 2))
     throw pnm_error();
 
   pnm_read(file, buf);
-  int width = atoi(buf);
+  int width = std::stoi(buf);
   pnm_read(file, buf);
-  int height = atoi(buf);
+  int height = std::stoi(buf);
 
   pnm_read(file, buf);
-  if (atoi(buf) > UCHAR_MAX)
+  if (std::stoi(buf) > UCHAR_MAX)
     throw pnm_error();
 
   /* read data */
@@ -146,21 +146,21 @@ static void savePGM(image<uchar> *im, const char *name) {
 }
 
 static image<rgb> *loadPPM(const char *name) {
-  char buf[BUF_SIZE];
+  std::string buf;
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
-  if (strncmp(buf, "P6", 2))
+  if (strncmp(buf.c_str(), "P6", 2))
     throw pnm_error();
 
   pnm_read(file, buf);
-  int width = atoi(buf);
+  int width = std::stoi(buf);
   pnm_read(file, buf);
-  int height = atoi(buf);
+  int height = std::stoi(buf);
 
   pnm_read(file, buf);
-  if (atoi(buf) > UCHAR_MAX)
+  if (std::stoi(buf) > UCHAR_MAX)
     throw pnm_error();
 
   /* read data */
@@ -171,21 +171,21 @@ static image<rgb> *loadPPM(const char *name) {
 }
 
 static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
-  char buf[BUF_SIZE];
+  std::string buf;
 
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
-  if (strncmp(buf, "P6", 2))
+  if (strncmp(buf.c_str(), "P6", 2))
     throw pnm_error();
 
   pnm_read(file, buf);
-  int width = atoi(buf);
+  int width = std::stoi(buf);
   pnm_read(file, buf);
-  int height = atoi(buf);
+  int height = std::stoi(buf);
 
   pnm_read(file, buf);
-  if (atoi(buf) > UCHAR_MAX)
+  if (std::stoi(buf) > UCHAR_MAX)
     throw pnm_error();
 
   /* read data */
@@ -278,18 +278,18 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 
 template <class T>
 void load_image(image<T> **im, const char *name) {
-  char buf[BUF_SIZE];
+  std::string buf;
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
-  if (strncmp(buf, "VLIB", 9))
+  if (strncmp(buf.c_str(), "VLIB", 9))
     throw pnm_error();
 
   pnm_read(file, buf);
-  int width = atoi(buf);
+  int width = std::stoi(buf);
   pnm_read(file, buf);
-  int height = atoi(buf);
+  int height = std::stoi(buf);
 
   /* read data */
   *im = new image<T>(width, height);
