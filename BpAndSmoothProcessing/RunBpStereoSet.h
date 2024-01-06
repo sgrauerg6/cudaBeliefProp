@@ -86,9 +86,9 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
   U bpProcStore = nullptr;
   if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
     unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<U, ACCELERATION>(
-        widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
+      widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
     bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
-      if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
 
     beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0, ACCELERATION);
     unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<U>(algSettings.numDispVals_);
@@ -103,7 +103,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
       runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages),
       runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages)};
     
-      if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
+    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
       return {0.0, DisparityMap<float>()};
     }
 
@@ -140,15 +140,15 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
 
     //transfer the disparity map estimation on the device to the host for output
     runBpOnDevice.memManagementImages->transferDataFromDeviceToHost(
-        output_disparity_map.getPointerToPixelsStart(), rpBpStereoOutput.first, totNumPixelsImages);
+      output_disparity_map.getPointerToPixelsStart(), rpBpStereoOutput.first, totNumPixelsImages);
 
     //compute timings for each portion of interest and add to vector timings
     runtime_start_end_timings[Runtime_Type_BP::TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
 
     //retrieve the timing for each runtime segment and add to vector in timings map
     std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
-        [&detailedBPTimings] (const auto& currentRuntimeNameAndTiming) {
-      detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
+      [&detailedBPTimings] (const auto& currentRuntimeNameAndTiming) {
+        detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
           (timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
     });
 

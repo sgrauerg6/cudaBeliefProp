@@ -42,8 +42,8 @@ __device__ bool withinImageBoundsFilter(const unsigned int xVal, const unsigned 
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //output filtered image stored in floatImagePixels
 __global__ void convertUnsignedIntImageToFloat(
-    unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages)
+  unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
+  const unsigned int widthImages, const unsigned int heightImages)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -62,8 +62,8 @@ __global__ void convertUnsignedIntImageToFloat(
 //output filtered image stored in filteredImagePixels
 template<typename T>
 __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages,
-    float* imageFilter, const unsigned int sizeFilter)
+  const unsigned int widthImages, const unsigned int heightImages,
+  float* imageFilter, const unsigned int sizeFilter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -72,7 +72,7 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
   //make sure that (xVal, yVal) is within image bounds
   if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
     filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-                     widthImages, heightImages, imageFilter, sizeFilter);
+      widthImages, heightImages, imageFilter, sizeFilter);
   }
 }
 
@@ -82,7 +82,7 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 //output filtered image stored in filteredImagePixels
 template<typename T>
 __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter)
+  const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -91,6 +91,6 @@ __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImage
   //make sure that (xVal, yVal) is within image bounds
   if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
     filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-                       widthImages, heightImages, imageFilter, sizeFilter);
+      widthImages, heightImages, imageFilter, sizeFilter);
   }
 }

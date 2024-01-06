@@ -27,13 +27,13 @@ public:
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-      const beliefprop::BPsettings& algSettings,
-      const beliefprop::ParallelParameters& parallelParams) override;
+    const beliefprop::BPsettings& algSettings,
+    const beliefprop::ParallelParameters& parallelParams) override;
 };
 
 template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
-    const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
+  const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
   unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
 #if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
@@ -62,10 +62,11 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATIO
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
   auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings, 
-    BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCPU>(parallelParams),
-                   std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS, VECTORIZATION>>(parallelParams),
-                     std::make_unique<RunBpStereoSetMemoryManagement<>>(),
-                    std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
+    BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{
+      std::make_unique<SmoothImageCPU>(parallelParams),
+      std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS, VECTORIZATION>>(parallelParams),
+      std::make_unique<RunBpStereoSetMemoryManagement<>>(),
+      std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
   runData.appendData(procSetOutput.runData);
   procSetOutput.runData = runData;
 

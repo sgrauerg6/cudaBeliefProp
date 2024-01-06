@@ -34,7 +34,7 @@ inline beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::errorCheck(const char 
     cudaDeviceReset();
     cudaDeviceSynchronize();
     cudaSetDevice(0);
-    if (abort) exit(code);
+    if (abort) { exit(code); }
     return beliefprop::Status::ERROR;
    }
    return beliefprop::Status::NO_ERROR;
@@ -64,18 +64,18 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<typename T, typename U, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<U>& messagesDevice,
-    U allocatedMemForProcessing)
+  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+  const beliefprop::checkerboardMessages<U>& messagesDevice,
+  U allocatedMemForProcessing)
 {
   //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
   //const dim3 threads(cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]);
   const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0],
-             cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+                     cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
   const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x), //only updating half at a time
-            (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
+                  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
   //in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
   //still is a check if start of row is aligned
@@ -84,7 +84,8 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const bel
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
   for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
   {
-    beliefprop::Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ?
+    beliefprop::Checkerboard_Parts checkboardPartUpdate =
+      ((iterationNum % 2) == 0) ?
       beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1 :
       beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0;
     cudaDeviceSynchronize();
@@ -151,17 +152,17 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const bel
 //need two different "sets" of message values to avoid read-write conflicts
 template<typename T, typename U, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& nextlevelProperties,
-    const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
-    const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
-    const unsigned int bpSettingsNumDispVals)
+  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::levelProperties& nextlevelProperties,
+  const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
+  const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
+  const unsigned int bpSettingsNumDispVals)
 {
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
   const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0],
-             cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+                     cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][1]);
   const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
-          (unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
+                  (unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
 
   cudaDeviceSynchronize();
   if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
@@ -202,7 +203,7 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelD
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<typename T, typename U, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
+  const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
 {
   if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
     return beliefprop::Status::ERROR;
@@ -215,10 +216,10 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const bel
   //the thread size remains constant throughout but the grid size is adjusted based on the current level/kernel to run
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
   const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][0],
-             cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][1]);
+                     cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][1]);
   //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
   const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x),
-            (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
+                  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
   //initialize the data the the "bottom" of the image pyramid
   initializeBottomLevelDataStereo<T, DISP_VALS><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
@@ -237,15 +238,15 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const bel
 //initialize the message values with no previous message values...all message values are set to 0
 template<typename T, typename U, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::checkerboardMessages<U>& messagesDevice,
-    const unsigned int bpSettingsNumDispVals)
+  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::checkerboardMessages<U>& messagesDevice,
+  const unsigned int bpSettingsNumDispVals)
 {
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
   const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0],
-             cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1]);
+                     cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1]);
   const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
-            (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
+                  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
   initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (currentLevelProperties, messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
@@ -263,18 +264,18 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefaul
 
 template<typename T, typename U, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& prevLevelProperties,
-    const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-    const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
-    const unsigned int bpSettingsNumDispVals)
+  const beliefprop::levelProperties& prevLevelProperties,
+  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+  const unsigned int bpSettingsNumDispVals)
 {
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
   const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0],
-             cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+                     cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][1]);
   //each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
   //the four-connected neighbors are in the other checkerboard
   const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
-            (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
+                  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
   if (errorCheck(__FILE__, __LINE__ ) != beliefprop::Status::NO_ERROR) {
     return beliefprop::Status::ERROR;
@@ -282,8 +283,8 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(co
 
   const size_t offsetNum{0};
   for (const auto& checkerboardAndDataCost : {
-      std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
-      std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,  dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
+         std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
+         std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,  dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
   {
     initializeCurrentLevelDataStereo<T, DISP_VALS> <<<grid, threads>>>(checkerboardAndDataCost.first,
       currentLevelProperties, prevLevelProperties,
@@ -354,19 +355,19 @@ beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(cons
 
 template<typename T, typename U, unsigned int DISP_VALS>
 float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<U>& messagesDevice,
-    const unsigned int bpSettingsNumDispVals)
+  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+  const beliefprop::checkerboardMessages<U>& messagesDevice,
+  const unsigned int bpSettingsNumDispVals)
 {
   float* resultingDisparityMapCompDevice;
   cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_ * sizeof(float));
 
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
   const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0],
-             cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1]);
-  const dim3 grid{(unsigned int) ceil((float) currentLevelProperties.widthCheckerboardLevel_ / (float) threads.x),
-          (unsigned int) ceil((float) currentLevelProperties.heightLevel_ / (float) threads.y)};
+                     cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1]);
+  const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
+                  (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
   retrieveOutputDisparityCheckerboardStereoOptimized<T, DISP_VALS> <<<grid, threads>>>(currentLevelProperties,
     dataCostDeviceCheckerboard.dataCostCheckerboard0_, dataCostDeviceCheckerboard.dataCostCheckerboard1_,

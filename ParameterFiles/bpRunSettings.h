@@ -122,13 +122,13 @@ inline void writeRunSettingsToStream(std::ostream& resultsStream)
 
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
-    RunData currRunData;
-    currRunData.addDataWHeader("Memory Optimization Level", std::to_string(beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
-    currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(beliefprop::OPTIMIZED_INDEXING_SETTING));
-    currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(beliefprop::getBytesAlignMemory(ACCELERATION_SETTING)));
-    currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING)));
+  RunData currRunData;
+  currRunData.addDataWHeader("Memory Optimization Level", std::to_string(beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
+  currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(beliefprop::OPTIMIZED_INDEXING_SETTING));
+  currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(beliefprop::getBytesAlignMemory(ACCELERATION_SETTING)));
+  currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING)));
 
-    return currRunData;
+  return currRunData;
 }
 
 };

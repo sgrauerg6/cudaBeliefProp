@@ -29,7 +29,7 @@ public:
     if (sigmaVal < MIN_SIGMA_VAL_SMOOTH) {
       //call kernel to convert input unsigned int pixels to output float pixels on the device
       convertUnsignedIntImageToFloatCPU(inImage.getPointerToPixelsStart(), smoothedImage,
-          inImage.getWidth(), inImage.getHeight(), optCPUParams_);
+        inImage.getWidth(), inImage.getHeight(), optCPUParams_);
     }
     //otherwise apply a Guassian filter to the images
     else
@@ -44,11 +44,11 @@ public:
 
       //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
       filterImageAcrossCPU<unsigned int>(inImage.getPointerToPixelsStart(), &(intermediateImage[0]), inImage.getWidth(),
-          inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
+        inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
 
       //now use the vertical filter to complete the smoothing of image 1 on the device
       filterImageVerticalCPU<float>(&(intermediateImage[0]), smoothedImage,
-          inImage.getWidth(), inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
+        inImage.getWidth(), inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
     }
   }
 
@@ -97,8 +97,7 @@ private:
 #endif //_WIN32
       const unsigned int yVal = val / widthImages;
       const unsigned int xVal = val % widthImages;
-      floatImagePixels[yVal * widthImages + xVal] =
-          1.0f * imagePixelsUnsignedInt[yVal * widthImages + xVal];
+      floatImagePixels[yVal * widthImages + xVal] = 1.0f * imagePixelsUnsignedInt[yVal * widthImages + xVal];
     }
   #endif //CPU_PARALLELIZATION_METHOD
   }
@@ -116,7 +115,7 @@ private:
     (const unsigned int &a, const unsigned int &b) {
       for (unsigned int val = a; val < b; val++) {
         const unsigned int yVal = val / widthImages;
-          const unsigned int xVal = val % widthImages;
+        const unsigned int xVal = val % widthImages;
         filterImageAcrossProcessPixel<U>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
           widthImages, heightImages, imageFilter, sizeFilter);
       }
@@ -127,7 +126,7 @@ private:
     (const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
       for (unsigned int val = a; val < b; val += numBlocks) {
         const unsigned int yVal = val / widthImages;
-          const unsigned int xVal = val % widthImages;
+        const unsigned int xVal = val % widthImages;
         filterImageAcrossProcessPixel<U>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
           widthImages, heightImages, imageFilter, sizeFilter);
       }
@@ -147,7 +146,7 @@ private:
       const unsigned int yVal = val / widthImages;
       const unsigned int xVal = val % widthImages;
       filterImageAcrossProcessPixel<U>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-          widthImages, heightImages, imageFilter, sizeFilter);
+        widthImages, heightImages, imageFilter, sizeFilter);
     }
   #endif //CPU_PARALLELIZATION_METHOD
   }
@@ -165,7 +164,7 @@ private:
     (const unsigned int &a, const unsigned int &b) {
       for (unsigned int val = a; val < b; val++) {
         const unsigned int yVal = val / widthImages;
-          const unsigned int xVal = val % widthImages;
+        const unsigned int xVal = val % widthImages;
         filterImageVerticalProcessPixel<U>(xVal, yVal, imagePixelsToFilter,
           filteredImagePixels, widthImages, heightImages, imageFilter, sizeFilter);
       }
@@ -176,7 +175,7 @@ private:
     (const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
       for (unsigned int val = a; val < b; val += numBlocks) {
         const unsigned int yVal = val / widthImages;
-          const unsigned int xVal = val % widthImages;
+        const unsigned int xVal = val % widthImages;
         filterImageVerticalProcessPixel<U>(xVal, yVal, imagePixelsToFilter,
           filteredImagePixels, widthImages, heightImages, imageFilter, sizeFilter);
       }
@@ -196,7 +195,7 @@ private:
       const unsigned int yVal = val / widthImages;
       const unsigned int xVal = val % widthImages;
       filterImageVerticalProcessPixel<U>(xVal, yVal, imagePixelsToFilter,
-          filteredImagePixels, widthImages, heightImages, imageFilter, sizeFilter);
+        filteredImagePixels, widthImages, heightImages, imageFilter, sizeFilter);
     }
   #endif //CPU_PARALLELIZATION_METHOD
   }

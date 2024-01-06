@@ -36,15 +36,15 @@ public:
   void addToCurrentTimings(const DetailedTimings& inDetailedTimings)
   {
     std::for_each(inDetailedTimings.timings.begin(), inDetailedTimings.timings.end(),
-        [this](const auto& currentTiming) {
-          auto iter = this->timings.find(currentTiming.first);
-          if (iter != this->timings.end()) {
-            iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
-          }
-          else {
-            this->timings[currentTiming.first] = currentTiming.second;
-          }
-        });
+                  [this](const auto& currentTiming) {
+                    auto iter = this->timings.find(currentTiming.first);
+                    if (iter != this->timings.end()) {
+                      iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
+                    }
+                    else {
+                      this->timings[currentTiming.first] = currentTiming.second;
+                    }
+                  });
   }
 
   //add timing by segment index
@@ -72,26 +72,32 @@ public:
       const DetailedTimings& inTimingObj)
   {
     os << "Median Timings\n";
-    std::for_each(inTimingObj.timings.begin(), inTimingObj.timings.end(), [&os, &inTimingObj](auto currentTiming) {
-      std::sort(currentTiming.second.begin(), currentTiming.second.end());
-      os << inTimingObj.numToString.at(currentTiming.first);
-      if (currentTiming.second.size() > 0) {
-        os << " (" << currentTiming.second.size() << " timings) : " << currentTiming.second[currentTiming.second.size() / 2] << std::endl; }
-      else {
-        os << " (No timings) : No timings" << std::endl; }
+    std::for_each(inTimingObj.timings.begin(), inTimingObj.timings.end(),
+      [&os, &inTimingObj](auto currentTiming) {
+        std::sort(currentTiming.second.begin(), currentTiming.second.end());
+        os << inTimingObj.numToString.at(currentTiming.first);
+        if (currentTiming.second.size() > 0) {
+          os << " (" << currentTiming.second.size() << " timings) : " << currentTiming.second[currentTiming.second.size() / 2] << std::endl;
+        }
+        else {
+          os << " (No timings) : No timings" << std::endl;
+        }
       });
     return os;
   }
 
   RunData runData() const {
     RunData timingsRunData;
-    std::for_each(timings.begin(), timings.end(), [this, &timingsRunData](auto currentTiming) {
-      std::sort(currentTiming.second.begin(), currentTiming.second.end());
-      std::string headerStart = numToString.at(currentTiming.first);
-      if (currentTiming.second.size() > 0) {
-        timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) + " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2])); }
-      else {
-        timingsRunData.addDataWHeader(headerStart + " (No timings) ", "No timings"); }
+    std::for_each(timings.begin(), timings.end(),
+      [this, &timingsRunData](auto currentTiming) {
+        std::sort(currentTiming.second.begin(), currentTiming.second.end());
+        std::string headerStart = numToString.at(currentTiming.first);
+        if (currentTiming.second.size() > 0) {
+          timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) + " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2]));
+        }
+        else {
+          timingsRunData.addDataWHeader(headerStart + " (No timings) ", "No timings"); 
+        }
       });
     return timingsRunData;
   }

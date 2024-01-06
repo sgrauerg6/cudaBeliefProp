@@ -66,7 +66,7 @@ inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& b
 struct levelProperties
 {
   levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
-     beliefprop::AccSetting accSetting) :
+    beliefprop::AccSetting accSetting) :
     widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
     bytesAlignMemory_(beliefprop::getBytesAlignMemory(accSetting)),
     numDataAlignWidth_(beliefprop::getNumDataAlignWidth(accSetting)),
@@ -89,7 +89,7 @@ struct levelProperties
   beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
     const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
     return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
-        offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_, divPaddedChBoardWAlign_);
+      offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_, divPaddedChBoardWAlign_);
   }
 
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
@@ -107,16 +107,16 @@ struct levelProperties
   {
     //add "padding" to checkerboard width if necessary for alignment
     return ((checkerboardWidth % numDataAlignWidth_) == 0) ?
-        checkerboardWidth :
-        (checkerboardWidth + (numDataAlignWidth_ - (checkerboardWidth % numDataAlignWidth_)));
+           checkerboardWidth :
+           (checkerboardWidth + (numDataAlignWidth_ - (checkerboardWidth % numDataAlignWidth_)));
   }
 
   template <typename T>
   unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& widthHeightLevel,
       const unsigned int totalPossibleMovements) const
   {
-    const unsigned long numDataAtLevel = (unsigned long)getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(widthHeightLevel[0]))
-      * ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
+    const unsigned long numDataAtLevel = (unsigned long)getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(widthHeightLevel[0])) *
+      ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
     unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
 
     if ((numBytesAtLevel % bytesAlignMemory_) == 0) {
@@ -130,7 +130,7 @@ struct levelProperties
 
   template <typename T, beliefprop::AccSetting ACC_SETTING>
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
-      const unsigned int totalPossibleMovements, const unsigned int numLevels)
+    const unsigned int totalPossibleMovements, const unsigned int numLevels)
   {
     beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACC_SETTING);
     unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
@@ -159,7 +159,7 @@ struct levelProperties
 //used to define the two checkerboard "parts" that the image is divided into
 enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
-            MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
+                      MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 enum class Status { NO_ERROR, ERROR };
 
@@ -180,7 +180,7 @@ struct dataCostData
 
 //enum corresponding to each kernel in belief propagation that can be run in parallel
 enum BpKernel { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL,
-        COPY_AT_LEVEL, OUTPUT_DISP };
+                COPY_AT_LEVEL, OUTPUT_DISP };
 constexpr unsigned int NUM_KERNELS{6u};
 
 //defines the default width and height of the thread block used for

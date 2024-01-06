@@ -17,7 +17,7 @@ template<class T>
 class OutputEvaluationResults {
 public:
   OutputEvaluationResults() : totalDispAbsDiffNoMax((T)0), totalDispAbsDiffWithMax((T)0), disparityErrorCap((T)9999),
-                averageDispAbsDiffNoMax(0.0f), averageDispAbsDiffWithMax(0.0f) {}
+                              averageDispAbsDiffNoMax(0.0f), averageDispAbsDiffWithMax(0.0f) {}
   virtual ~OutputEvaluationResults() {}
 
   //total value of the absolute difference between the disparity values for all pixels in disparity images 1 and 2 (not including border regions)
@@ -47,10 +47,10 @@ public:
     RunData evalRunData;
     evalRunData.addDataWHeader("Average RMS error", std::to_string(averageDispAbsDiffNoMax));
     evalRunData.addDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparityErrorCap) + ")",
-      std::to_string(averageDispAbsDiffNoMax));
+                               std::to_string(averageDispAbsDiffNoMax));
     for (const auto& propBadPixelsAtThreshold : propSigDiffPixelsAtThresholds) {
       evalRunData.addDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
-                    std::to_string(propBadPixelsAtThreshold.second));
+                                 std::to_string(propBadPixelsAtThreshold.second));
     }
 
     return evalRunData;

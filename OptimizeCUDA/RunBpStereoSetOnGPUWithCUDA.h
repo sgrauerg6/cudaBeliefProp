@@ -65,8 +65,8 @@ public:
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-        const beliefprop::BPsettings& algSettings, 
-        const beliefprop::ParallelParameters& parallelParams) override
+    const beliefprop::BPsettings& algSettings, 
+    const beliefprop::ParallelParameters& parallelParams) override
   {
     //using SmoothImageCUDA::SmoothImage;
     //generate struct with pointers to objects for running CUDA implementation and call
@@ -75,10 +75,11 @@ public:
     runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
     runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
     auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
-      BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCUDA>(parallelParams),
-                     std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
-                     std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
-                     std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});
+      BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{
+        std::make_unique<SmoothImageCUDA>(parallelParams),
+        std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
+        std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
+        std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});
     runData.appendData(procSetOutput.runData);
     procSetOutput.runData = runData;
     
@@ -103,7 +104,7 @@ public:
   //if type is specified as short, process as half on GPU
   //note that half is considered a data type for 16-bit floats in CUDA
   ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
-      const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
+    const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
   {
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
@@ -112,13 +113,13 @@ public:
     RunBpStereoSetOnGPUWithCUDA<halftype> runCUDABpStereoSet;
     ProcessCUDABP<halftype> runCUDABPHalfPrecision;
     return runCUDABpStereoSet(refImagePath,
-        testImagePath,
-        algSettings,
-        saveDisparityMapImagePath,
-        resultsStream,
-        smoothImage,
-        &runCUDABPHalfPrecision,
-        memManagementImages);
+      testImagePath,
+      algSettings,
+      saveDisparityMapImagePath,
+      resultsStream,
+      smoothImage,
+      &runCUDABPHalfPrecision,
+      memManagementImages);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 

@@ -82,7 +82,9 @@ namespace RunAndEvaluateBpResults {
   enum class BaselineData { OPTIMIZED, SINGLE_THREAD };
 
   std::pair<std::string, std::vector<double>> getBaselineRuntimeData(BaselineData baselineDataType) {
-    std::ifstream baselineData((baselineDataType == BaselineData::SINGLE_THREAD) ? SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH : BASELINE_RUNTIMES_FILE_PATH);
+    std::ifstream baselineData((baselineDataType == BaselineData::SINGLE_THREAD) ?
+                               SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH :
+                               BASELINE_RUNTIMES_FILE_PATH);
     std::string line;
     //first line of data is string with baseline processor description and all subsequent data is runtimes
     //on that processor in same order as runtimes from runBpOnStereoSets() function
@@ -107,8 +109,8 @@ namespace RunAndEvaluateBpResults {
     const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
     std::sort(speedupsVect.begin(), speedupsVect.end());
     const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
-        (speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
-        speedupsVect[(speedupsVect.size() / 2)];
+      (speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
+      speedupsVect[(speedupsVect.size() / 2)];
     return {averageSpeedup, medianSpeedup};
   }
 
@@ -122,8 +124,7 @@ namespace RunAndEvaluateBpResults {
     std::vector<MultRunSpeedup> speedupData;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimes[i] / 
-                     std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -140,8 +141,7 @@ namespace RunAndEvaluateBpResults {
     const auto baselineRuntimesSThread = baselineRunDataSThread.second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimesSThread[i] / 
-                     std::stod(runOutput[i].second[1].getData(SINGLE_THREAD_RUNTIME_HEADER)));
+        speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(runOutput[i].second[1].getData(SINGLE_THREAD_RUNTIME_HEADER)));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -155,8 +155,7 @@ namespace RunAndEvaluateBpResults {
       speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 smallest stereo sets - " + dataTypeStr;
       for (unsigned int i=0; i < 6; i++) {
         if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-          speedupsVect.push_back(baselineRuntimes[i] / 
-                    std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
           runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
           runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         }
@@ -173,8 +172,7 @@ namespace RunAndEvaluateBpResults {
       for (unsigned int i=9; i < 11; i++) {
 #endif //SMALLER_SETS_ONLY
         if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-          speedupsVect.push_back(baselineRuntimes[i] / 
-                    std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
           runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
           runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         }
@@ -215,8 +213,8 @@ namespace RunAndEvaluateBpResults {
       output_disp[i] = bpFileSettings.getCurrentOutputDisparityFilePathAndIncrement();
     }
 
-    std::cout << "Running belief propagation on reference image " << refTestImagePath[0] << " and test image " << refTestImagePath[1] << " on " <<
-           optimizedImp->getBpRunDescription();
+    std::cout << "Running belief propagation on reference image " << refTestImagePath[0] << " and test image "
+              << refTestImagePath[1] << " on " << optimizedImp->getBpRunDescription();
     if (!runOptImpOnly) {
       std::cout << " and " << singleThreadCPUImp->getBpRunDescription();
     }
@@ -241,7 +239,7 @@ namespace RunAndEvaluateBpResults {
       //run single-threaded implementation and retrieve structure with runtime and output disparity map
       run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams);
       run_output[1].outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
-       runData.appendData(run_output[1].runData);
+      runData.appendData(run_output[1].runData);
     }
 
     for (unsigned int i = 0; i < numImpsRun; i++) {
@@ -388,24 +386,24 @@ namespace RunAndEvaluateBpResults {
               for (unsigned int level=0; level < algSettings.numLevels_; level++) {
                 pParamsToRunTimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
                   std::stod(currRunData.getData("Level " + std::to_string(level) + " Data Costs (" +
-                      std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
                 pParamsToRunTimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
                   std::stod(currRunData.getData("Level " + std::to_string(level) + " BP Runtime (" + 
-                      std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
                 pParamsToRunTimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][pParamsCurrRun] =
                   std::stod(currRunData.getData("Level " + std::to_string(level) + " Copy Runtime (" + 
-                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
               }
               pParamsToRunTimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][pParamsCurrRun] =
-                  std::stod(currRunData.getData("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                std::stod(currRunData.getData("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
               pParamsToRunTimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][pParamsCurrRun] =
-                  std::stod(currRunData.getData("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                std::stod(currRunData.getData("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
               pParamsToRunTimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][pParamsCurrRun] =
-                  std::stod(currRunData.getData("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                std::stod(currRunData.getData("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
             }
             //get total runtime
             pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =
-                std::stod(currRunData.getData(OPTIMIZED_RUNTIME_HEADER));
+              std::stod(currRunData.getData(OPTIMIZED_RUNTIME_HEADER));
           }
         }
 
@@ -416,19 +414,19 @@ namespace RunAndEvaluateBpResults {
               //retrieve and set optimized parallel parameters for final run
               //std::min_element used to retrieve parallel parameters corresponding to lowest runtime from previous runs
               std::transform(pParamsToRunTimeEachKernel[numKernelSet].begin(),
-                       pParamsToRunTimeEachKernel[numKernelSet].end(), 
-                       parallelParams.parallelDimsEachKernel_[numKernelSet].begin(),
-                       [](const auto& tDimsToRunTimeCurrLevel) -> std::array<unsigned int, 2> { 
-                         return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
-                          [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
+                             pParamsToRunTimeEachKernel[numKernelSet].end(), 
+                             parallelParams.parallelDimsEachKernel_[numKernelSet].begin(),
+                             [](const auto& tDimsToRunTimeCurrLevel) -> std::array<unsigned int, 2> { 
+                               return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
+                                                        [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
             }
           }
           else {
             //set optimized parallel parameters for all kernels to parallel parameters that got the best runtime across all kernels
             //seems like setting different parallel parameters for different kernels on GPU decrease runtime but increases runtime on CPU
             const auto bestParallelParams = std::min_element(pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0].begin(),
-                                      pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0].end(),
-                                     [](const auto& a, const auto& b) { return a.second < b.second; })->first;
+                                                             pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0].end(),
+                                                             [](const auto& a, const auto& b) { return a.second < b.second; })->first;
             parallelParams.setParallelDims(bestParallelParams, algSettings.numLevels_);
           }
         }
@@ -445,7 +443,7 @@ namespace RunAndEvaluateBpResults {
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
         speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(OPTIMIZED_RUNTIME_HEADER)) / 
-                     std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+                               std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -462,7 +460,7 @@ namespace RunAndEvaluateBpResults {
     for (unsigned int i=0; i < runOutputBase.size(); i++) {
       if ((runOutputBase[i].first == beliefprop::Status::NO_ERROR) && (runOutputTarget[i].first == beliefprop::Status::NO_ERROR))  {
         speedupsVect.push_back(std::stod(runOutputBase[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
-                     std::stod(runOutputTarget[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
+                               std::stod(runOutputTarget[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
         runOutputBase[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutputTarget[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -481,7 +479,7 @@ namespace RunAndEvaluateBpResults {
     for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
       if ((runOutput[i].first == beliefprop::Status::NO_ERROR) && (runOutput[i+1].first == beliefprop::Status::NO_ERROR))  {
         speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
-                     std::stod(runOutput[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
+                               std::stod(runOutput[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
     }
@@ -525,8 +523,9 @@ namespace RunAndEvaluateBpResults {
         (PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
       const std::string defaultParamsResultsFileName{BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START + "_" +
         (PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
-      std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),
-                                    OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(optResultsFileName) : std::ofstream()};
+      std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
+        std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),
+        OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(optResultsFileName) : std::ofstream()};
       //get headers from first successful run
       const auto headersInOrder = firstSuccessRun->second.back().getHeadersInOrder();
       for (const auto& currHeader : headersInOrder) {
@@ -575,13 +574,13 @@ namespace RunAndEvaluateBpResults {
 
       if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
         std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
-            << optResultsFileName << std::endl;
+                  << optResultsFileName << std::endl;
         std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
-            << defaultParamsResultsFileName << std::endl;
+                  << defaultParamsResultsFileName << std::endl;
       }
       else {
         std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run using default parallel parameters in "
-            << optResultsFileName << std::endl;
+                  << optResultsFileName << std::endl;
       }
     }
     else {
@@ -643,8 +642,7 @@ namespace RunAndEvaluateBpResults {
     if constexpr ((OPT_IMP_ACCEL == beliefprop::AccSetting::CUDA) || (OPT_IMP_ACCEL == beliefprop::AccSetting::NONE)) {
       multRunSpeedupVect.push_back({speedupHeader, {0.0, 0.0}});
       multRunSpeedupVect.push_back({speedupVsAVX256Str, {0.0, 0.0}});
-      return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(),
-          multRunSpeedupVect};
+      return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
     }
     else {
       //if initial speedup is AVX512, also run AVX256
@@ -660,8 +658,7 @@ namespace RunAndEvaluateBpResults {
             }
           }
         }
-        const auto speedupOverAVX256 = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputAVX256.first, runOutputData,
-          speedupVsAVX256Str);
+        const auto speedupOverAVX256 = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputAVX256.first, runOutputData, speedupVsAVX256Str);
         multRunSpeedupVect.push_back(speedupOverAVX256);
       }
       else {

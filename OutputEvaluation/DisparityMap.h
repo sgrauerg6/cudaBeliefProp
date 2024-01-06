@@ -25,7 +25,7 @@ public:
   DisparityMap(const std::array<unsigned int, 2>& widthHeight) : BpImage<T>(widthHeight) {}
 
   DisparityMap(const std::array<unsigned int, 2>& widthHeight, const T* input_disparity_map_vals,
-      const unsigned int disparity_map_vals_scale = 1) : BpImage<T>(widthHeight, input_disparity_map_vals)
+    const unsigned int disparity_map_vals_scale = 1) : BpImage<T>(widthHeight, input_disparity_map_vals)
   {
     std::copy(input_disparity_map_vals, input_disparity_map_vals + this->getTotalPixels(), this->pixels_.get());
     if (disparity_map_vals_scale > 1u) {
@@ -42,7 +42,7 @@ public:
 
   template<class U>
   const OutputEvaluationResults<T> getOuputComparison(const DisparityMap& disparity_map_to_compare,
-      const OutputEvaluationParameters<U>& evaluation_parameters) const;
+    const OutputEvaluationParameters<U>& evaluation_parameters) const;
 
   void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const;
 
@@ -54,7 +54,7 @@ private:
     if (disparity_map_vals_scale > 1) {
       //divide each disparity value by disparity_map_vals_scale
       std::for_each(this->pixels_.get(), this->pixels_.get() + this->getTotalPixels(),
-          [disparity_map_vals_scale](T& disp_val) { disp_val /= disparity_map_vals_scale; });
+                    [disparity_map_vals_scale](T& disp_val) { disp_val /= disparity_map_vals_scale; });
     }
   }
 };
@@ -63,8 +63,8 @@ private:
 template<class T>
 template<class U>
 const OutputEvaluationResults<T> DisparityMap<T>::getOuputComparison(
-    const DisparityMap& disparity_map_to_compare,
-    const OutputEvaluationParameters<U>& evaluation_parameters) const
+  const DisparityMap& disparity_map_to_compare,
+  const OutputEvaluationParameters<U>& evaluation_parameters) const
 {
   //initialize output evaluation with evaluation parameters
   OutputEvaluationResults<T> output_evaluation;
@@ -82,13 +82,15 @@ const OutputEvaluationResults<T> DisparityMap<T>::getOuputComparison(
 
     output_evaluation.totalDispAbsDiffNoMax += absDiff;
     output_evaluation.totalDispAbsDiffWithMax += std::min(absDiff,
-        evaluation_parameters.max_diff_cap_);
+      evaluation_parameters.max_diff_cap_);
 
     //increment number of pixels that differ greater than threshold for each threshold
     std::for_each(evaluation_parameters.output_diff_thresholds_.begin(), evaluation_parameters.output_diff_thresholds_.end(),
-        [absDiff, &output_evaluation](const float threshold) {
-      if (absDiff > threshold) {
-        output_evaluation.numSigDiffPixelsAtThresholds[threshold]++; }});
+      [absDiff, &output_evaluation](const float threshold) {
+        if (absDiff > threshold) {
+          output_evaluation.numSigDiffPixelsAtThresholds[threshold]++;
+        }
+      });
   }
 
   output_evaluation.averageDispAbsDiffNoMax = output_evaluation.totalDispAbsDiffNoMax / this->getTotalPixels();
@@ -97,10 +99,10 @@ const OutputEvaluationResults<T> DisparityMap<T>::getOuputComparison(
   //need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
   //typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type needed to get data type for each mapping; for c++14 can be changed to auto
   std::for_each(output_evaluation.numSigDiffPixelsAtThresholds.begin(), output_evaluation.numSigDiffPixelsAtThresholds.end(),
-      [this, &output_evaluation](typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type sigDiffPixelAtThresholdMap)
-      {  output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] =
-          ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels()));
-      });
+    [this, &output_evaluation](typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type sigDiffPixelAtThresholdMap) {
+      output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] =
+        ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels()));
+    });
 
   return output_evaluation;
 }

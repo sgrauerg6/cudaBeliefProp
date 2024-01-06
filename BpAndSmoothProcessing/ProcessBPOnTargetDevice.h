@@ -109,7 +109,7 @@ public:
   virtual beliefprop::dataCostData<U> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard,
     const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun) {
     return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING), 
-        memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING)};
+            memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING)};
   }
 
   virtual std::pair<beliefprop::dataCostData<U>, beliefprop::checkerboardMessages<U>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
@@ -126,12 +126,12 @@ public:
     beliefprop::dataCostData<U> dataCostsDeviceCheckerboardAllLevels;
     dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_ = dataAllLevels;
     dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard1_ =
-        &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[1 * (numDataAllocatePerDataCostsMessageDataArray)]);
+      &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[1 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
     beliefprop::checkerboardMessages<U> messagesDeviceAllLevels;
     for (unsigned int i = 0; i < messagesDeviceAllLevels.checkerboardMessagesAtLevel_.size(); i++) {
       messagesDeviceAllLevels.checkerboardMessagesAtLevel_[i] =
-          &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
+        &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
     }
 
     return {dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels};
@@ -144,7 +144,7 @@ public:
 
   virtual beliefprop::dataCostData<U> retrieveLevelDataCosts(const beliefprop::dataCostData<U>& allDataCosts, const unsigned long offsetIntoAllDataCosts) {
     return {&(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]),
-        &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
+            &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
   }
 
   //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
@@ -195,18 +195,18 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
   //data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
   const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.numLevels_-1].offsetIntoArrays_ +
-      bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
+    bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
 
   //assuming that width includes padding
   if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
     if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
       std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
-          organizeDataCostsAndMessageDataAllLevels(allocatedMemForBpProcessingDevice, dataAllLevelsEachDataMessageArr);
+        organizeDataCostsAndMessageDataAllLevels(allocatedMemForBpProcessingDevice, dataAllLevelsEachDataMessageArr);
     }
     else {
       //call function that allocates all data in single array and then set offsets in array for data costs and message data locations
       std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
-          allocateAndOrganizeDataCostsAndMessageDataAllLevels(dataAllLevelsEachDataMessageArr, memManagementBpRun);
+        allocateAndOrganizeDataCostsAndMessageDataAllLevels(dataAllLevelsEachDataMessageArr, memManagementBpRun);
     }
   }
   else {
@@ -230,9 +230,9 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
   {
     eachLevelTimingDataCosts[levelNum].first = std::chrono::system_clock::now();
     errCode = initializeDataCurrentLevel(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
-          retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
-          retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
-          algSettings.numDispVals_);
+      retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
+      retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
+      algSettings.numDispVals_);
     if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 
     eachLevelTimingDataCosts[levelNum].second = std::chrono::system_clock::now();
@@ -244,7 +244,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
   //get and use offset into data at current processing level of pyramid
   beliefprop::dataCostData<U> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
-      dataCostsDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
+    dataCostsDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
 
   //declare the space to pass the BP messages; need to have two "sets" of checkerboards because the message
   //data at the "higher" level in the image pyramid need copied to a lower level without overwriting values
@@ -257,7 +257,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
   else {
     //allocate the space for the message values in the first checkboard set at the current level
     messagesDevice[0] = allocateMemoryForCheckerboardMessages(
-        bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_), memManagementBpRun);
+      bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_), memManagementBpRun);
   }
 
   startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
@@ -285,7 +285,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
     //need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
     errCode = runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], allocatedMemForProcessing);
-       if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 
     const auto timeBpIterEnd = std::chrono::system_clock::now();
     diff = timeBpIterEnd - timeBpIterStart;
@@ -316,7 +316,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
       errCode = copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
           messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2],
           algSettings.numDispVals_);
-       if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+      if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
       diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
@@ -346,7 +346,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, U, DIS
 
   //assume in bottom level when retrieving output disparity
   const V resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
-      dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
+    dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
   if (resultingDisparityMapCompDevice == nullptr) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 
   currTime = std::chrono::system_clock::now();

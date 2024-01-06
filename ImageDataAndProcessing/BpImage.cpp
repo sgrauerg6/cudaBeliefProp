@@ -38,7 +38,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
 
   //convert each pixel in dataRead to data type T and place in imageData array in same location
   std::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + getTotalPixels(),
-      &(pixels_[0]), [] (const unsigned char i) -> T {return (T)i;});
+    &(pixels_[0]), [] (const unsigned char i) -> T {return (T)i;});
 }
 
 template<class T>
@@ -59,7 +59,8 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 
 template<class T>
 BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
-    const image_type imageType, const bool weightedRGBConversion) const {
+  const image_type imageType, const bool weightedRGBConversion) const
+{
   std::string buf;
 
   /* read header */
@@ -84,7 +85,8 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
     /* read data */
     file.read((char*) (outImage.getPointerToPixelsStart()),
         (cols * rows * sizeof(char)));
-  } else if (imageType == image_type::PPM_IMAGE) {
+  }
+  else if (imageType == image_type::PPM_IMAGE) {
     std::unique_ptr<char[]> rgbImagePtr = std::make_unique<char[]>(3 * cols * rows);
 
     /* read data */
@@ -103,11 +105,11 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
         bChannelWeight = 0.587f;
         gChannelWeight = 0.114f;
       }
-      outImage.getPointerToPixelsStart()[i] = (unsigned char) std::floor(
-          rChannelWeight * ((float) rgbImagePtr[i * 3])
-              + gChannelWeight * ((float) rgbImagePtr[i * 3 + 1])
-              + bChannelWeight * ((float) rgbImagePtr[i * 3 + 2])
-              + 0.5f);
+      outImage.getPointerToPixelsStart()[i] = (unsigned char)std::floor(
+        rChannelWeight * ((float) rgbImagePtr[i * 3]) +
+        gChannelWeight * ((float) rgbImagePtr[i * 3 + 1]) +
+        bChannelWeight * ((float) rgbImagePtr[i * 3 + 2]) +
+        0.5f);
     }
   }
 
