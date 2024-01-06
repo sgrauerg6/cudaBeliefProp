@@ -63,12 +63,12 @@ namespace beliefprop {
 
 //mapping from data size to data type string
 const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
-	{sizeof(float), "FLOAT"}, {sizeof(double), "DOUBLE"}, {sizeof(short), "HALF"}
+  {sizeof(float), "FLOAT"}, {sizeof(double), "DOUBLE"}, {sizeof(short), "HALF"}
 };
 
 //enum for acceleration setting
 enum class AccSetting {
-	NONE, AVX256, AVX512, NEON, CUDA
+  NONE, AVX256, AVX512, NEON, CUDA
 };
 
 constexpr bool OPTIMIZED_INDEXING_SETTING{true};
@@ -77,58 +77,58 @@ constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 
 //get string corresponding to CPU parallelization method
 constexpr const char* cpuParallelizationString() {
-	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
-		return "THREAD_POOL_CHUNKS";
-	#elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
-		return "THREAD_POOL_DISTRIBUTED";
-	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-		return "OPEN_MP";
-	#endif //CPU_PARALLELIZATION_METHOD
+  #if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
+    return "THREAD_POOL_CHUNKS";
+  #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
+    return "THREAD_POOL_DISTRIBUTED";
+  #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+    return "OPEN_MP";
+  #endif //CPU_PARALLELIZATION_METHOD
 }
 
 //get string corresponding to acceleration method
 template <AccSetting ACCELERATION_SETTING>
 constexpr const char* accelerationString() {
-	if constexpr (ACCELERATION_SETTING == AccSetting::NEON)
-		return "NEON";
-	else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256)
-		return "AVX256";
-	else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512)
-		return "AVX512";
-	else if constexpr (ACCELERATION_SETTING == AccSetting::CUDA)
-		return "CUDA";
-	else
-		return "NO_VECTORIZATION";
+  if constexpr (ACCELERATION_SETTING == AccSetting::NEON)
+    return "NEON";
+  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256)
+    return "AVX256";
+  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512)
+    return "AVX512";
+  else if constexpr (ACCELERATION_SETTING == AccSetting::CUDA)
+    return "CUDA";
+  else
+    return "NO_VECTORIZATION";
 }
 
 inline unsigned int getBytesAlignMemory(beliefprop::AccSetting accelSetting) {
-	//avx512 requires data to be aligned on 64 bytes
-	return (accelSetting == AccSetting::AVX512) ? 64 : 16;
+  //avx512 requires data to be aligned on 64 bytes
+  return (accelSetting == AccSetting::AVX512) ? 64 : 16;
 }
 
 inline unsigned int getNumDataAlignWidth(beliefprop::AccSetting accelSetting) {
-	//align width with 16 data values in AVX512
-	return (accelSetting == AccSetting::AVX512) ? 16 : 8;
+  //align width with 16 data values in AVX512
+  return (accelSetting == AccSetting::AVX512) ? 16 : 8;
 }
 
 template <AccSetting ACCELERATION_SETTING>
 inline void writeRunSettingsToStream(std::ostream& resultsStream)
 {
-	resultsStream << "Memory Optimization Level: " << beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT << "\n";
-	resultsStream << "Indexing Optimization Level: " << beliefprop::OPTIMIZED_INDEXING_SETTING << "\n";
-	resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::getBytesAlignMemory(ACCELERATION_SETTING) << "\n";
-	resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING) << "\n";
+  resultsStream << "Memory Optimization Level: " << beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT << "\n";
+  resultsStream << "Indexing Optimization Level: " << beliefprop::OPTIMIZED_INDEXING_SETTING << "\n";
+  resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::getBytesAlignMemory(ACCELERATION_SETTING) << "\n";
+  resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING) << "\n";
 }
 
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
-		RunData currRunData;
-		currRunData.addDataWHeader("Memory Optimization Level", std::to_string(beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
-		currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(beliefprop::OPTIMIZED_INDEXING_SETTING));
-		currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(beliefprop::getBytesAlignMemory(ACCELERATION_SETTING)));
-		currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING)));
+    RunData currRunData;
+    currRunData.addDataWHeader("Memory Optimization Level", std::to_string(beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
+    currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(beliefprop::OPTIMIZED_INDEXING_SETTING));
+    currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(beliefprop::getBytesAlignMemory(ACCELERATION_SETTING)));
+    currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING)));
 
-		return currRunData;
+    return currRunData;
 }
 
 };

@@ -19,15 +19,15 @@
 
 class BeliefPropQtGUI : public QMainWindow
 {
-	Q_OBJECT
+  Q_OBJECT
 
 public:
-	BeliefPropQtGUI(QWidget* parent = Q_NULLPTR);
-	void processButtonPress();
+  BeliefPropQtGUI(QWidget* parent = Q_NULLPTR);
+  void processButtonPress();
 
 private:
-	Ui::BeliefPropQtGUIClass ui;
-	bool stereo_processing_run_;
+  Ui::BeliefPropQtGUIClass ui;
+  bool stereo_processing_run_;
 };
 
 
@@ -38,11 +38,11 @@ private:
 
 class BeliefPropQtGUI : public QMainWindow
 {
-	Q_OBJECT
+  Q_OBJECT
 
 public:
-	BeliefPropQtGUI(QWidget *parent = Q_NULLPTR);
+  BeliefPropQtGUI(QWidget *parent = Q_NULLPTR);
 
 private:
-	Ui::BeliefPropQtGUIClass ui;
+  Ui::BeliefPropQtGUIClass ui;
 };*/

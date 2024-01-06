@@ -32,52 +32,52 @@ template<typename T, typename U, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, U, DISP_VALS, beliefprop::AccSetting::CUDA>
 {
 public:
-	ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+  ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
-	//initialize the data cost at each pixel for each disparity value
-	beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-			const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard) override;
+  //initialize the data cost at each pixel for each disparity value
+  beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+      const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard) override;
 
-	beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-			const beliefprop::levelProperties& prevLevelProperties,
-			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
-			const unsigned int bpSettingsNumDispVals) override;
+  beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+      const beliefprop::levelProperties& prevLevelProperties,
+      const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+      const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+      const unsigned int bpSettingsNumDispVals) override;
 
-	//initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
-	beliefprop::Status initializeMessageValsToDefault(
-			const beliefprop::levelProperties& currentLevelProperties,
-			const beliefprop::checkerboardMessages<U>& messagesDevice,
-			const unsigned int bpSettingsNumDispVals) override;
+  //initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
+  beliefprop::Status initializeMessageValsToDefault(
+      const beliefprop::levelProperties& currentLevelProperties,
+      const beliefprop::checkerboardMessages<U>& messagesDevice,
+      const unsigned int bpSettingsNumDispVals) override;
 
-	//run the given number of iterations of BP at the current level using the given message values in global device memory
-	beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
-			const beliefprop::levelProperties& currentLevelProperties,
-			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-			const beliefprop::checkerboardMessages<U>& messagesDevice,
-			U allocatedMemForProcessing) override;
+  //run the given number of iterations of BP at the current level using the given message values in global device memory
+  beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+      const beliefprop::levelProperties& currentLevelProperties,
+      const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+      const beliefprop::checkerboardMessages<U>& messagesDevice,
+      U allocatedMemForProcessing) override;
 
-	//copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
-	//pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
-	//in the next level down
-	//need two different "sets" of message values to avoid read-write conflicts
-	beliefprop::Status copyMessageValuesToNextLevelDown(
-			const beliefprop::levelProperties& currentLevelProperties,
-			const beliefprop::levelProperties& nextlevelProperties,
-			const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
-			const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
-			const unsigned int bpSettingsNumDispVals) override;
+  //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
+  //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
+  //in the next level down
+  //need two different "sets" of message values to avoid read-write conflicts
+  beliefprop::Status copyMessageValuesToNextLevelDown(
+      const beliefprop::levelProperties& currentLevelProperties,
+      const beliefprop::levelProperties& nextlevelProperties,
+      const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
+      const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
+      const unsigned int bpSettingsNumDispVals) override;
 
-	float* retrieveOutputDisparity(
-			const beliefprop::levelProperties& currentLevelProperties,
-			const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-			const beliefprop::checkerboardMessages<U>& messagesDevice,
-			const unsigned int bpSettingsNumDispVals) override;
-	
-	beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;
+  float* retrieveOutputDisparity(
+      const beliefprop::levelProperties& currentLevelProperties,
+      const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
+      const beliefprop::checkerboardMessages<U>& messagesDevice,
+      const unsigned int bpSettingsNumDispVals) override;
+  
+  beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;
 
 private:
-	const beliefprop::ParallelParameters& cudaParams_;
+  const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

@@ -21,55 +21,55 @@
 template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
 public:
-	RunBpStereoOptimizedCPU() {}
+  RunBpStereoOptimizedCPU() {}
 
-	std::string getBpRunDescription() override { return "Optimized CPU"; }
+  std::string getBpRunDescription() override { return "Optimized CPU"; }
 
-	//run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-			const beliefprop::BPsettings& algSettings,
-			const beliefprop::ParallelParameters& parallelParams) override;
+  //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
+  ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+      const beliefprop::BPsettings& algSettings,
+      const beliefprop::ParallelParameters& parallelParams) override;
 };
 
 template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
-		const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
+    const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
-	unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
+  unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
 #if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-	omp_set_num_threads(nthreads);
-	#pragma omp parallel
-	{
-		nthreads = omp_get_num_threads();
-	}
+  omp_set_num_threads(nthreads);
+  #pragma omp parallel
+  {
+    nthreads = omp_get_num_threads();
+  }
 #endif //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 
 //uncomment to print CPU number of each thread
 /*#ifndef _WIN32
-	#pragma omp parallel
-	{
-		int thread_num = omp_get_thread_num();
-		int cpu_num = sched_getcpu();
-		std::printf("Thread %3d is running on CPU %3d\n", thread_num, cpu_num);
-	}
+  #pragma omp parallel
+  {
+    int thread_num = omp_get_thread_num();
+    int cpu_num = sched_getcpu();
+    std::printf("Thread %3d is running on CPU %3d\n", thread_num, cpu_num);
+  }
 #endif //_WIN32*/
 
-	RunData runData;
-	runData.addDataWHeader("CURRENT RUN", "OPTIMIZED CPU");
-	runData.addDataWHeader("Number of threads", std::to_string(nthreads));
-	runData.addDataWHeader("Vectorization", beliefprop::accelerationString<VECTORIZATION>());
+  RunData runData;
+  runData.addDataWHeader("CURRENT RUN", "OPTIMIZED CPU");
+  runData.addDataWHeader("Number of threads", std::to_string(nthreads));
+  runData.addDataWHeader("Vectorization", beliefprop::accelerationString<VECTORIZATION>());
 
-	//generate struct with pointers to objects for running optimized CPU implementation and call
-	//function to run optimized CPU implementation
-	auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings, 
-		BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCPU>(parallelParams),
-									 std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS, VECTORIZATION>>(parallelParams),
-								  	 std::make_unique<RunBpStereoSetMemoryManagement<>>(),
-							 		 std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
-	runData.appendData(procSetOutput.runData);
-	procSetOutput.runData = runData;
+  //generate struct with pointers to objects for running optimized CPU implementation and call
+  //function to run optimized CPU implementation
+  auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings, 
+    BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCPU>(parallelParams),
+                   std::make_unique<ProcessOptimizedCPUBP<T, T*, DISP_VALS, VECTORIZATION>>(parallelParams),
+                     std::make_unique<RunBpStereoSetMemoryManagement<>>(),
+                    std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
+  runData.appendData(procSetOutput.runData);
+  procSetOutput.runData = runData;
 
-	return procSetOutput;
+  return procSetOutput;
 }
 
 #ifdef _WIN32

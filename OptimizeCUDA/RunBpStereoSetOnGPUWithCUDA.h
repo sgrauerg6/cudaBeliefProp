@@ -37,53 +37,53 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace bp_cuda_device
 {
-	RunData retrieveDeviceProperties(int numDevice)
-	{
-		cudaDeviceProp prop;
-		cudaGetDeviceProperties(&prop, numDevice);
-		int cudaDriverVersion;
-		cudaDriverGetVersion(&cudaDriverVersion);
-		int cudaRuntimeVersion;
-		cudaRuntimeGetVersion(&cudaRuntimeVersion);
+  RunData retrieveDeviceProperties(int numDevice)
+  {
+    cudaDeviceProp prop;
+    cudaGetDeviceProperties(&prop, numDevice);
+    int cudaDriverVersion;
+    cudaDriverGetVersion(&cudaDriverVersion);
+    int cudaRuntimeVersion;
+    cudaRuntimeGetVersion(&cudaRuntimeVersion);
 
-		RunData runData;
-		runData.addDataWHeader("Device " + std::to_string(numDevice),
-			std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) + " multiprocessors");
-		runData.addDataWHeader("Cuda version", std::to_string(cudaDriverVersion));
-		runData.addDataWHeader("Cuda Runtime Version", std::to_string(cudaRuntimeVersion));
-		return runData;
-	}
+    RunData runData;
+    runData.addDataWHeader("Device " + std::to_string(numDevice),
+      std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) + " multiprocessors");
+    runData.addDataWHeader("Cuda version", std::to_string(cudaDriverVersion));
+    runData.addDataWHeader("Cuda Runtime Version", std::to_string(cudaRuntimeVersion));
+    return runData;
+  }
 };
 
 template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
 {
 public:
-	RunBpStereoSetOnGPUWithCUDA() {}
+  RunBpStereoSetOnGPUWithCUDA() {}
 
-	std::string getBpRunDescription() override { return "CUDA"; }
+  std::string getBpRunDescription() override { return "CUDA"; }
 
-	//run the disparity map estimation BP on a set of stereo images and save the results between each set of images
-	ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
-				const beliefprop::BPsettings& algSettings, 
-				const beliefprop::ParallelParameters& parallelParams) override
-	{
-		//using SmoothImageCUDA::SmoothImage;
-		//generate struct with pointers to objects for running CUDA implementation and call
-		//function to run CUDA implementation
-		RunData runData;
-		runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
-		runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
-		auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
-			BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCUDA>(parallelParams),
-										 std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
-										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
-										 std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});
-		runData.appendData(procSetOutput.runData);
-		procSetOutput.runData = runData;
-		
-		return procSetOutput;
-	}
+  //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
+  ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+        const beliefprop::BPsettings& algSettings, 
+        const beliefprop::ParallelParameters& parallelParams) override
+  {
+    //using SmoothImageCUDA::SmoothImage;
+    //generate struct with pointers to objects for running CUDA implementation and call
+    //function to run CUDA implementation
+    RunData runData;
+    runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
+    runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
+    auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
+      BpOnDevice<T, T*, DISP_VALS, VECTORIZATION>{std::make_unique<SmoothImageCUDA>(parallelParams),
+                     std::make_unique<ProcessCUDABP<T, T*, DISP_VALS>>(parallelParams),
+                     std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
+                     std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});
+    runData.appendData(procSetOutput.runData);
+    procSetOutput.runData = runData;
+    
+    return procSetOutput;
+  }
 };
 
 //float16_t data type used for arm (rather than short)
@@ -96,45 +96,45 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
 {
 public:
-	RunBpStereoSetOnGPUWithCUDA() {}
+  RunBpStereoSetOnGPUWithCUDA() {}
 
-	std::string getBpRunDescription() override  { return "CUDA"; }
+  std::string getBpRunDescription() override  { return "CUDA"; }
 
-	//if type is specified as short, process as half on GPU
-	//note that half is considered a data type for 16-bit floats in CUDA
-	ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
-			const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
-	{
+  //if type is specified as short, process as half on GPU
+  //note that half is considered a data type for 16-bit floats in CUDA
+  ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
+      const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
+  {
 
 #if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
 
-		//std::cout << "Processing as half on GPU\n";
-		RunBpStereoSetOnGPUWithCUDA<halftype> runCUDABpStereoSet;
-		ProcessCUDABP<halftype> runCUDABPHalfPrecision;
-		return runCUDABpStereoSet(refImagePath,
-				testImagePath,
-				algSettings,
-				saveDisparityMapImagePath,
-				resultsStream,
-				smoothImage,
-				&runCUDABPHalfPrecision,
-				memManagementImages);
+    //std::cout << "Processing as half on GPU\n";
+    RunBpStereoSetOnGPUWithCUDA<halftype> runCUDABpStereoSet;
+    ProcessCUDABP<halftype> runCUDABPHalfPrecision;
+    return runCUDABpStereoSet(refImagePath,
+        testImagePath,
+        algSettings,
+        saveDisparityMapImagePath,
+        resultsStream,
+        smoothImage,
+        &runCUDABPHalfPrecision,
+        memManagementImages);
 
 #elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
 
-		//std::cout << "Processing as half2 on GPU\n";
-		RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
-		ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
-		return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, memManagementImages);
+    //std::cout << "Processing as half2 on GPU\n";
+    RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
+    ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
+    return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, memManagementImages);
 
 #else
 
-		std::cout << "ERROR IN DATA TYPE\n";
-		return ProcessStereoSetOutput();
+    std::cout << "ERROR IN DATA TYPE\n";
+    return ProcessStereoSetOutput();
 
 #endif //CURRENT_DATA_TYPE_PROCESSING
 
-	}
+  }
 };
 
 #endif //HALF_PRECISION_SUPPORTED

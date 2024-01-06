@@ -35,15 +35,15 @@ const float MAX_ABS_DIFF_BETWEEN_CORR_DISP = 65504.0f;
 
 template <class T>
 struct OutputEvaluationParameters {
-	std::vector<T> output_diff_thresholds_;
-	T max_diff_cap_;
-	unsigned int x_border_eval_;
-	unsigned int y_border_eval_;
+  std::vector<T> output_diff_thresholds_;
+  T max_diff_cap_;
+  unsigned int x_border_eval_;
+  unsigned int y_border_eval_;
 
-	OutputEvaluationParameters() : output_diff_thresholds_{SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2,
-		SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4}, max_diff_cap_(MAX_DIFF_CAP),
-		x_border_eval_(X_BORDER_SIZE_STEREO_EVAL), y_border_eval_(Y_BORDER_SIZE_STEREO_EVAL)
-	{ };
+  OutputEvaluationParameters() : output_diff_thresholds_{SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2,
+    SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3, SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4}, max_diff_cap_(MAX_DIFF_CAP),
+    x_border_eval_(X_BORDER_SIZE_STEREO_EVAL), y_border_eval_(Y_BORDER_SIZE_STEREO_EVAL)
+  { };
 };
 
 #endif /* OUTPUTEVALUATIONPARAMETERS_H_ */

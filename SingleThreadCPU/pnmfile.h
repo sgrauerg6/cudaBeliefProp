@@ -55,9 +55,9 @@ static void write_packed(unsigned char *data, int size, std::ofstream &f) {
       c = c | (data[pos] << bitshift);
       bitshift--;
       if ((bitshift == -1) || (pos == size-1)) {
-	f.put(c);
-	bitshift = 7;
-	c = 0;
+  f.put(c);
+  bitshift = 7;
+  c = 0;
       }
   }
 }
@@ -198,17 +198,17 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
   float bChannelWeight = 1.0f / 3.0f;
   if (USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION_PNMFILE)
   {
-      		  rChannelWeight = 0.299f;
-      		  gChannelWeight = 0.114f;
-      		  bChannelWeight = 0.587f;
+            rChannelWeight = 0.299f;
+            gChannelWeight = 0.114f;
+            bChannelWeight = 0.587f;
   }
 
   for (int i=0; i<width; i++)
   {
-	  for (int j=0; j<height; j++)
-	  {
-		  imRef(imGrayScale, i, j) = floor(((float)imRef(im, i, j).r)*rChannelWeight + ((float)imRef(im, i, j).g)*gChannelWeight + ((float)imRef(im, i, j).b)*bChannelWeight + 0.5f);
-	  }
+    for (int j=0; j<height; j++)
+    {
+      imRef(imGrayScale, i, j) = floor(((float)imRef(im, i, j).r)*rChannelWeight + ((float)imRef(im, i, j).g)*gChannelWeight + ((float)imRef(im, i, j).b)*bChannelWeight + 0.5f);
+    }
   }
   delete im;
 
@@ -226,54 +226,54 @@ static void savePPM(image<rgb> *im, const char *name) {
 }
 
 static image<uchar> *loadPGMOrPPMImage(const char *name) {
-	char pgmExtension[] = "pgm";
-	char ppmExtension[] = "ppm";
-	char* filePathImageCopy = new char[strlen(name) + 1]{};
-	std::copy(name, name + strlen(name), filePathImageCopy);
+  char pgmExtension[] = "pgm";
+  char ppmExtension[] = "ppm";
+  char* filePathImageCopy = new char[strlen(name) + 1]{};
+  std::copy(name, name + strlen(name), filePathImageCopy);
 
-	//check if PGM or PPM image (types currently supported)
+  //check if PGM or PPM image (types currently supported)
 #ifdef _WIN32
-	char* next_token;
-	char* token;
-	token = strtok_s(filePathImageCopy, ".", &next_token);
+  char* next_token;
+  char* token;
+  token = strtok_s(filePathImageCopy, ".", &next_token);
 #else
-	char* token = strtok(filePathImageCopy, ".");
+  char* token = strtok(filePathImageCopy, ".");
 #endif //_WIN32
-	char* lastToken = new char[strlen(token) + 1]{};
-	std::copy(token, token + strlen(token), lastToken);
-	while( token != NULL )
-	{
-		delete [] lastToken;
-		lastToken = new char[strlen(token) + 1]{};
-		std::copy(token, token + strlen(token), lastToken);
+  char* lastToken = new char[strlen(token) + 1]{};
+  std::copy(token, token + strlen(token), lastToken);
+  while( token != NULL )
+  {
+    delete [] lastToken;
+    lastToken = new char[strlen(token) + 1]{};
+    std::copy(token, token + strlen(token), lastToken);
 #ifdef _WIN32
-		token = strtok_s(NULL, ".", &next_token);
+    token = strtok_s(NULL, ".", &next_token);
 #else
-		token = strtok(NULL, ".");
+    token = strtok(NULL, ".");
 #endif //_WIN32
-	}
+  }
 
-	//last token after "." is file extension
-	if (strcmp(lastToken, pgmExtension) == 0)
-	{
-		delete [] filePathImageCopy;
+  //last token after "." is file extension
+  if (strcmp(lastToken, pgmExtension) == 0)
+  {
+    delete [] filePathImageCopy;
 
-		// load input pgm image
-		return loadPGM(name);
-	}
-	else if (strcmp(lastToken, ppmExtension) == 0)
-	{
-		delete [] filePathImageCopy;
+    // load input pgm image
+    return loadPGM(name);
+  }
+  else if (strcmp(lastToken, ppmExtension) == 0)
+  {
+    delete [] filePathImageCopy;
 
-		// load input ppm image
-		return loadPPMAndConvertToGrayScale(name);
-	}
-	else
-	{
-		delete [] filePathImageCopy;
-		std::cout << "CPU ERROR, IMAGE FILE " << name << " NOT SUPPORTED\n";
-		return NULL;
-	}
+    // load input ppm image
+    return loadPPMAndConvertToGrayScale(name);
+  }
+  else
+  {
+    delete [] filePathImageCopy;
+    std::cout << "CPU ERROR, IMAGE FILE " << name << " NOT SUPPORTED\n";
+    return NULL;
+  }
 }
 
 template <class T>

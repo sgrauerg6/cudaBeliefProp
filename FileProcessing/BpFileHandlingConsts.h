@@ -12,12 +12,12 @@
 
 namespace bp_file_handling
 {
-	const std::string REF_IMAGE_NAME = "refImage";
-	const std::string TEST_IMAGE_NAME = "testImage";
-	const std::string IN_IMAGE_POSS_EXTENSIONS[] = {"pgm", "ppm"};
-	const std::string GROUND_TRUTH_DISP_FILE = "groundTruthDisparity.pgm";
-	const std::string OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
-	const std::string STEREO_SETS_DIRECTORY_NAME = "StereoSets";
+  const std::string REF_IMAGE_NAME = "refImage";
+  const std::string TEST_IMAGE_NAME = "testImage";
+  const std::string IN_IMAGE_POSS_EXTENSIONS[] = {"pgm", "ppm"};
+  const std::string GROUND_TRUTH_DISP_FILE = "groundTruthDisparity.pgm";
+  const std::string OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
+  const std::string STEREO_SETS_DIRECTORY_NAME = "StereoSets";
 }
 
 #endif /* BPFILEHANDLINGCONSTS_H_ */
