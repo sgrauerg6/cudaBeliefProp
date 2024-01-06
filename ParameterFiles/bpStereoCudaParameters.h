@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //comment out if not supporting CUDA half-precision
 //remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
 //half precision currently only supported on CPU if using GPU with compute capability under 5.3
-//#define CUDA_HALF_SUPPORT
+#define CUDA_HALF_SUPPORT
 
 //uncomment to use bfloat16 data type for half precision in CUDA (only supported in compute capability sm_80 and later)
 //#define USE_BFLOAT16_FOR_HALF_PRECISION
