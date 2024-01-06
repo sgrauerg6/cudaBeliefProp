@@ -123,7 +123,7 @@ namespace RunAndEvaluateBpResults {
 		for (unsigned int i=0; i < runOutput.size(); i++) {
 			if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
 				speedupsVect.push_back(baselineRuntimes[i] / 
-								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+									   std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
 				runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
@@ -141,7 +141,7 @@ namespace RunAndEvaluateBpResults {
 		for (unsigned int i=0; i < runOutput.size(); i++) {
 			if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
 				speedupsVect.push_back(baselineRuntimesSThread[i] / 
-								       std::stod(runOutput[i].second[1].getData(SINGLE_THREAD_RUNTIME_HEADER)));
+									   std::stod(runOutput[i].second[1].getData(SINGLE_THREAD_RUNTIME_HEADER)));
 				runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
@@ -229,7 +229,7 @@ namespace RunAndEvaluateBpResults {
 		//check if error in run
 		RunData runData;
 		if ((run_output[0].runTime == 0.0) || (run_output[0].outDisparityMap.getHeight() == 0)) {
-        	return {beliefprop::Status::ERROR, runData};
+			return {beliefprop::Status::ERROR, runData};
 		}
 		runData.appendData(run_output[0].runData);
 
@@ -237,7 +237,7 @@ namespace RunAndEvaluateBpResults {
 		run_output[0].outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
 		runData.addDataWHeader(OPTIMIZED_RUNTIME_HEADER, std::to_string(run_output[0].runTime));
 
-        if (!runOptImpOnly) {
+		if (!runOptImpOnly) {
 			//run single-threaded implementation and retrieve structure with runtime and output disparity map
 			run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams);
 			run_output[1].outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
@@ -250,12 +250,12 @@ namespace RunAndEvaluateBpResults {
 		}
 		std::cout << std::endl;
 
-        //compare resulting disparity maps with ground truth and to each other
+		//compare resulting disparity maps with ground truth and to each other
 		const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
 		DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
 		runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
 		runData.appendData(compareDispMaps(run_output[0].outDisparityMap, groundTruthDisparityMap));
-        if (!runOptImpOnly) {
+		if (!runOptImpOnly) {
 			runData.addDataWHeader(singleThreadCPUImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
 			runData.appendData(compareDispMaps(run_output[1].outDisparityMap, groundTruthDisparityMap));
 
@@ -367,7 +367,7 @@ namespace RunAndEvaluateBpResults {
 			//retrieve results from current run
 			currRunData.appendData(runImpsECodeData.second);
 
-            //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
+			//add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
 			if (currRunType != RunType::TEST_PARAMS) {
 				//set output for runs using default parallel parameters and final run (which is the same run if not optimizing parallel parameters)
 				if (currRunType == RunType::OPTIMIZED_RUN) {
@@ -378,7 +378,7 @@ namespace RunAndEvaluateBpResults {
 				}
 			}
 
-            if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+			if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
 				//retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
 				//total runtime for current run
 				//if error in run, don't add results for current parallel parameters to results set
@@ -445,7 +445,7 @@ namespace RunAndEvaluateBpResults {
 		for (unsigned int i=0; i < runOutput.size(); i++) {
 			if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
 				speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(OPTIMIZED_RUNTIME_HEADER)) / 
-								       std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+									   std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
 				runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
@@ -462,7 +462,7 @@ namespace RunAndEvaluateBpResults {
 		for (unsigned int i=0; i < runOutputBase.size(); i++) {
 			if ((runOutputBase[i].first == beliefprop::Status::NO_ERROR) && (runOutputTarget[i].first == beliefprop::Status::NO_ERROR))  {
 				speedupsVect.push_back(std::stod(runOutputBase[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
-								       std::stod(runOutputTarget[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
+									   std::stod(runOutputTarget[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
 				runOutputBase[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 				runOutputTarget[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
@@ -481,7 +481,7 @@ namespace RunAndEvaluateBpResults {
 		for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
 			if ((runOutput[i].first == beliefprop::Status::NO_ERROR) && (runOutput[i+1].first == beliefprop::Status::NO_ERROR))  {
 				speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
-								       std::stod(runOutput[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
+									   std::stod(runOutput[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
 				runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
 			}
 		}
@@ -519,7 +519,7 @@ namespace RunAndEvaluateBpResults {
 		//check if there was at least one successful run
 		if (firstSuccessRun != runOutput.first.end()) {
 			//write results from default and optimized parallel parameters runs to csv file
-	        const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
+			const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
 			const auto accelStr = beliefprop::accelerationString<OPT_IMP_ACCEL>();
 			const std::string optResultsFileName{BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START + "_" + 
 				(PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};

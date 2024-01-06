@@ -28,13 +28,13 @@ template<typename T, typename U, unsigned int DISP_VALS>
 inline beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
 	const auto code = cudaPeekAtLastError();
 	if (code != cudaSuccess) {
-      //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+	  //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
 	  std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
 	  cudaGetLastError();
 	  cudaDeviceReset();
 	  cudaDeviceSynchronize();
 	  cudaSetDevice(0);
-      if (abort) exit(code);
+	  if (abort) exit(code);
 	  return beliefprop::Status::ERROR;
    }
    return beliefprop::Status::NO_ERROR;
@@ -75,7 +75,7 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const bel
 	const dim3 threads(cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0],
 					   cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
 	const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x), //only updating half at a time
-	          		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
+			  		(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	//in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
 	//still is a check if start of row is aligned
@@ -218,7 +218,7 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const bel
 					   cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][1]);
 	//kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
 	const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x),
-	  		        (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
+	  				(unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
 	//initialize the data the the "bottom" of the image pyramid
 	initializeBottomLevelDataStereo<T, DISP_VALS><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],

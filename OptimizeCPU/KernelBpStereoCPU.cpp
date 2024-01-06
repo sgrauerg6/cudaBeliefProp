@@ -38,12 +38,12 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 	  &dataCostDeviceStereoCheckerboard1, &lambda_bp, &data_k_bp, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / currentLevelProperties.widthLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthLevel_;
 
-		      initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
-		  	      image1PixelsDevice, image2PixelsDevice,
-			      dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
-		          lambda_bp, data_k_bp, bpSettingsDispVals);
+			  initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
+		  		  image1PixelsDevice, image2PixelsDevice,
+				  dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
+				  lambda_bp, data_k_bp, bpSettingsDispVals);
 		  }
 	  });
 	#elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
@@ -52,12 +52,12 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 	  &dataCostDeviceStereoCheckerboard1, &lambda_bp, &data_k_bp, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / currentLevelProperties.widthLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthLevel_;
 
-		      initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
-		  	      image1PixelsDevice, image2PixelsDevice,
-			      dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
-		          lambda_bp, data_k_bp, bpSettingsDispVals);
+			  initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
+		  		  image1PixelsDevice, image2PixelsDevice,
+				  dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
+				  lambda_bp, data_k_bp, bpSettingsDispVals);
 		  }
 	  });
 	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
@@ -101,9 +101,9 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 	  &dataCostStereoCheckerboard1, &dataCostDeviceToWriteTo, &offsetNum, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-		      initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
+			  initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardPart,
 				currentLevelProperties, prevLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -116,9 +116,9 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 	  &dataCostStereoCheckerboard1, &dataCostDeviceToWriteTo, &offsetNum, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-		      initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
+			  initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardPart,
 				currentLevelProperties, prevLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -168,9 +168,9 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
 	  &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
 
-		      initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
+			  initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
 				xValInCheckerboard, yVal, currentLevelProperties,
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -186,9 +186,9 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
 	  &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
 
-		      initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
+			  initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
 				xValInCheckerboard, yVal, currentLevelProperties,
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
 				messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -251,9 +251,9 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 	  &widthCheckerboardRunProcessing, &dataAligned](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / widthCheckerboardRunProcessing;
-		      const unsigned int xVal = val % widthCheckerboardRunProcessing;
+			  const unsigned int xVal = val % widthCheckerboardRunProcessing;
 
-		      runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+			  runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardPartUpdate, currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -272,9 +272,9 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 	  &widthCheckerboardRunProcessing, &dataAligned](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / widthCheckerboardRunProcessing;
-		      const unsigned int xVal = val % widthCheckerboardRunProcessing;
+			  const unsigned int xVal = val % widthCheckerboardRunProcessing;
 
-		      runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+			  runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
 				xVal, yVal, checkerboardPartUpdate, currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -382,10 +382,10 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	  if constexpr (DISP_VALS > 0) {
 		KernelBpStereoCPU::tPool.parallelize_loop(1, currentLevelProperties.heightLevel_ - 1,
 		[&checkerboardToUpdate, &currentLevelProperties, &dataCostStereoCheckerboard0, &dataCostStereoCheckerboard1,
-	     &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
-    	 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
-	     &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
-	     &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b) {
+		 &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
+		 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
+		 &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
+		 &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int yVal = a; yVal < b; yVal++) {
 			//checkerboardAdjustment used for indexing into current checkerboard to update
 			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
@@ -492,12 +492,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	  });
 	}
 	else {
-        KernelBpStereoCPU::tPool.parallelize_loop(1, currentLevelProperties.heightLevel_ - 1,
+		KernelBpStereoCPU::tPool.parallelize_loop(1, currentLevelProperties.heightLevel_ - 1,
 		[&checkerboardToUpdate, &currentLevelProperties, &dataCostStereoCheckerboard0, &dataCostStereoCheckerboard1,
-	     &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
-    	 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
-	     &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
-	     &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b) {
+		 &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
+		 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
+		 &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
+		 &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int yVal = a; yVal < b; yVal++) {
 			//checkerboardAdjustment used for indexing into current checkerboard to update
 			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
@@ -617,10 +617,10 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	  if constexpr (DISP_VALS > 0) {
 		KernelBpStereoCPU::tPool.parallelize_loop_distribute_iters(1, currentLevelProperties.heightLevel_ - 1,
 		[&checkerboardToUpdate, &currentLevelProperties, &dataCostStereoCheckerboard0, &dataCostStereoCheckerboard1,
-	     &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
-    	 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
-	     &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
-	     &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
+		 &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
+		 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
+		 &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
+		 &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int yVal = a; yVal < b; yVal += numBlocks) {
 			//checkerboardAdjustment used for indexing into current checkerboard to update
 			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
@@ -727,12 +727,12 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 	  });
 	}
 	else {
-        KernelBpStereoCPU::tPool.parallelize_loop_distribute_iters(1, currentLevelProperties.heightLevel_ - 1,
+		KernelBpStereoCPU::tPool.parallelize_loop_distribute_iters(1, currentLevelProperties.heightLevel_ - 1,
 		[&checkerboardToUpdate, &currentLevelProperties, &dataCostStereoCheckerboard0, &dataCostStereoCheckerboard1,
-	     &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
-    	 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
-	     &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
-	     &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
+		 &messageUDeviceCurrentCheckerboard0, &messageDDeviceCurrentCheckerboard0, &messageLDeviceCurrentCheckerboard0,
+		 &messageRDeviceCurrentCheckerboard0, &messageUDeviceCurrentCheckerboard1, &messageDDeviceCurrentCheckerboard1,
+		 &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &disc_k_bp, &numDataInSIMDVector,
+		 &bpSettingsDispVals, &widthCheckerboardRunProcessing, &disc_k_bp_vector](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int yVal = a; yVal < b; yVal += numBlocks) {
 			//checkerboardAdjustment used for indexing into current checkerboard to update
 			const unsigned int checkerboardAdjustment = (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
@@ -1227,9 +1227,9 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 	  &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-     		  copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
+	 		  copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
 				checkerboardPart, currentLevelProperties, nextLevelProperties,
 				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
 				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1251,9 +1251,9 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 	  &messageLDeviceCurrentCheckerboard1, &messageRDeviceCurrentCheckerboard1, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-     		  copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
+	 		  copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
 				checkerboardPart, currentLevelProperties, nextLevelProperties,
 				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
 				messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1372,9 +1372,9 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 	  &messageLPrevStereoCheckerboard1, &messageRPrevStereoCheckerboard1, &disparityBetweenImagesDevice, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-		      retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
+			  retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
 				xVal, yVal, currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1391,9 +1391,9 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 	  &messageLPrevStereoCheckerboard1, &messageRPrevStereoCheckerboard1, &disparityBetweenImagesDevice, &bpSettingsDispVals](const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-		      const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+			  const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-		      retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
+			  retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
 				xVal, yVal, currentLevelProperties,
 				dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
 				messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1459,7 +1459,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 		V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(currentLevelProperties.numDataAlignWidth_ * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
 #endif
 
-    for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
+	for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
 	{
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
@@ -1493,7 +1493,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 				//not processing at x=0 if startX is 1 (this will cause this processing to be less aligned than ideal for this iteration)
 				xValProcess = std::max(startX, xValProcess);
 
-                //get index for output into disparity map corresponding to checkerboard
+				//get index for output into disparity map corresponding to checkerboard
 				const unsigned int indexOutput = (yVal * widthDispCheckerboard) + xValProcess;
 
 				//check if the memory is aligned for AVX instructions at xValProcess location
@@ -1569,7 +1569,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageUPrevStereoCheckerboard0),
-								    loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
+									loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageDPrevStereoCheckerboard0));
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 									loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
@@ -1578,7 +1578,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
 										currentDisparity, currentLevelProperties, DISP_VALS, messageRPrevStereoCheckerboard0));
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
-								    loadPackedDataUnaligned<T, U>(xValProcess, yVal,
+									loadPackedDataUnaligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1));
 							}
 						}
@@ -1630,7 +1630,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard1));
 								valAtDisp = addVals<W, U, W>(valAtDisp,
-								    loadPackedDataAligned<T, U>(xValProcess, yVal,
+									loadPackedDataAligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0));
 							}
 							else {
@@ -1638,7 +1638,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 								valAtDisp = addVals<U, U, W>(
 									loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageUPrevStereoCheckerboard1),
-								    loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
+									loadPackedDataUnaligned<T, U>(xValProcess, yVal - 1,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageDPrevStereoCheckerboard1));
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
 									loadPackedDataUnaligned<T, U>(xValProcess + checkerboardAdjustment, yVal,
@@ -1667,7 +1667,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard0));
 								valAtDisp = addVals<W, U, W>(valAtDisp, 
-								    loadPackedDataAligned<T, U>(xValProcess, yVal,
+									loadPackedDataAligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1));
 							}
 							else {
@@ -1684,7 +1684,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 									loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRPrevStereoCheckerboard0));
 								valAtDisp = addVals<W, U, W>(valAtDisp,
-								    loadPackedDataUnaligned<T, U>(xValProcess, yVal,
+									loadPackedDataUnaligned<T, U>(xValProcess, yVal,
 										currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1));
 							}
 						}
@@ -1752,11 +1752,11 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] = 0;
 					}
 					else {
-					    disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] =
+						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] =
 						  (float)disparityCheckboard0[chBoardIdx];
 					}
 					if ((x + 1) == (currentLevelProperties.widthLevel_ - 1)) {
-                        disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
+						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
 					}
 					else if ((x + 1) < currentLevelProperties.widthLevel_) {
 					  disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] =
@@ -1768,19 +1768,19 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] = 0;
 					}
 					else {
-					    disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] =
+						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] =
 							(float)disparityCheckboard0[numDataDispChBoard + chBoardIdx];
 					}
 					if ((x + 1) == (currentLevelProperties.widthLevel_ - 1)) {
-                        disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
+						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
 					}
 					else if ((x + 1) < currentLevelProperties.widthLevel_) {
-					    disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] =
-						    (float)disparityCheckboard0[chBoardIdx];
+						disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] =
+							(float)disparityCheckboard0[chBoardIdx];
 					}
 				}
 				//increment checkerboard index for next x-value
-			    chBoardIdx++;
+				chBoardIdx++;
 			}
 		}
 	}

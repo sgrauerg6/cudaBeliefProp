@@ -59,7 +59,7 @@ template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATI
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA() {}
+	RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override { return "CUDA"; }
 
@@ -96,7 +96,7 @@ template<>
 class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
 {
 public:
-    RunBpStereoSetOnGPUWithCUDA() {}
+	RunBpStereoSetOnGPUWithCUDA() {}
 
 	std::string getBpRunDescription() override  { return "CUDA"; }
 

@@ -53,12 +53,12 @@ __global__ void initializeBottomLevelDataStereo(
 		T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
 		const float lambda_bp, float data_k_bp, const unsigned int bpSettingsDispVals)
 {
-    //get the x and y indices for the current CUDA thread
-    const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-    const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+	//get the x and y indices for the current CUDA thread
+	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
+	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
 	//get the x value within the current "checkerboard"
-    const unsigned int xInCheckerboard = xVal / 2;
+	const unsigned int xInCheckerboard = xVal / 2;
 
 	if (withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
 	{
@@ -79,7 +79,7 @@ __global__ void initializeCurrentLevelDataStereo(
 		T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
 		const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -109,7 +109,7 @@ __global__ void initializeMessageValsToDefaultKernel(
 		T* messageRDeviceCurrentCheckerboard1,
 		const unsigned int bpSettingsDispVals)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	const unsigned int xValInCheckerboard = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -138,7 +138,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const float disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -167,7 +167,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 		const float disc_k_bp, const bool dataAligned, const unsigned int bpSettingsDispVals,
 		void* dstProcessing)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -202,7 +202,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 		T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
 		const unsigned int bpSettingsDispVals)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -234,7 +234,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 		T* messageRPrevStereoCheckerboard1,
 		float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-    //get x and y indices for the current CUDA thread
+	//get x and y indices for the current CUDA thread
 	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 

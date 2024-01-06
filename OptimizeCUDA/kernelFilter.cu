@@ -45,7 +45,7 @@ __global__ void convertUnsignedIntImageToFloat(
 		unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
 		const unsigned int widthImages, const unsigned int heightImages)
 {
-    //get x and y indices corresponding to current CUDA thread
+	//get x and y indices corresponding to current CUDA thread
 	const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -72,7 +72,7 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
 		filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-		                                 widthImages, heightImages, imageFilter, sizeFilter);
+										 widthImages, heightImages, imageFilter, sizeFilter);
 	}
 }
 
@@ -91,6 +91,6 @@ __global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImage
 	//make sure that (xVal, yVal) is within image bounds
 	if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
 		filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-		                                   widthImages, heightImages, imageFilter, sizeFilter);
+										   widthImages, heightImages, imageFilter, sizeFilter);
 	}
 }

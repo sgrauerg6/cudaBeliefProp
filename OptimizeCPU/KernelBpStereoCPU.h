@@ -41,7 +41,7 @@ class KernelBpStereoCPU
 {
 public:
 #if ((CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS) || (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED))
-    //initialize thread pool with default number of threads
+	//initialize thread pool with default number of threads
 	inline static thread_pool tPool;
 #endif //CPU_PARALLELIZATION_METHOD
 
@@ -123,7 +123,7 @@ public:
 			const beliefprop::ParallelParameters& optCPUParams);
 
 	//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
-    template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
+	template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
 	static void retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const beliefprop::levelProperties& currentLevelProperties,
 			T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
 			T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -135,7 +135,7 @@ public:
 			const beliefprop::ParallelParameters& optCPUParams);
 	
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -146,7 +146,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
 		const beliefprop::levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -157,7 +157,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
 		const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -168,7 +168,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -179,7 +179,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
 		const beliefprop::levelProperties& currentLevelProperties,
 		short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
 		short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -190,7 +190,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
 		const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -201,7 +201,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
 		float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -212,7 +212,7 @@ public:
 		const beliefprop::ParallelParameters& optCPUParams);
 
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
 		const beliefprop::levelProperties& currentLevelProperties,
 		double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
 		double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -224,7 +224,7 @@ public:
 
 #ifdef COMPILING_FOR_ARM
 	template<unsigned int DISP_VALS>
-    static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+	static void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
 		const beliefprop::levelProperties& currentLevelProperties,
 		float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
 		float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,

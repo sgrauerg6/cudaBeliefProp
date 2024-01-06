@@ -47,11 +47,11 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATIO
 //uncomment to print CPU number of each thread
 /*#ifndef _WIN32
 	#pragma omp parallel
-    {
-        int thread_num = omp_get_thread_num();
-        int cpu_num = sched_getcpu();
-        std::printf("Thread %3d is running on CPU %3d\n", thread_num, cpu_num);
-    }
+	{
+		int thread_num = omp_get_thread_num();
+		int cpu_num = sched_getcpu();
+		std::printf("Thread %3d is running on CPU %3d\n", thread_num, cpu_num);
+	}
 #endif //_WIN32*/
 
 	RunData runData;

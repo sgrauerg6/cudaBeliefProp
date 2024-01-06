@@ -76,7 +76,7 @@ struct levelProperties
 		divPaddedChBoardWAlign_{(accSetting == beliefprop::AccSetting::AVX512) ? 16u : 8u} {}
 	
 	levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
-	    unsigned int bytesAlignMemory, unsigned int numDataAlignWidth, unsigned int divPaddedChBoardWAlign) :
+		unsigned int bytesAlignMemory, unsigned int numDataAlignWidth, unsigned int divPaddedChBoardWAlign) :
 		widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
 		bytesAlignMemory_(bytesAlignMemory),
 		numDataAlignWidth_(numDataAlignWidth),
@@ -159,7 +159,7 @@ struct levelProperties
 //used to define the two checkerboard "parts" that the image is divided into
 enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
-	                  MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
+					  MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 enum class Status { NO_ERROR, ERROR };
 
@@ -180,7 +180,7 @@ struct dataCostData
 
 //enum corresponding to each kernel in belief propagation that can be run in parallel
 enum BpKernel { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL,
-                COPY_AT_LEVEL, OUTPUT_DISP };
+				COPY_AT_LEVEL, OUTPUT_DISP };
 constexpr unsigned int NUM_KERNELS{6u};
 
 //defines the default width and height of the thread block used for
@@ -204,7 +204,7 @@ struct ParallelParameters {
 	//constructor to set parallel parameters with default dimensions for each kernel
 	ParallelParameters(unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims) {
 		setParallelDims(defaultPDims, numLevels);
-    };
+	};
 
 	//set parallel parameters for each kernel to the same input dimensions
 	void setParallelDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels) {

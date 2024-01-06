@@ -112,7 +112,7 @@ private:
 	{
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 		KernelBpStereoCPU::tPool.parallelize_loop(0, widthImages * heightImages,
-	    [&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
+		[&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
 		(const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / widthImages;
@@ -120,10 +120,10 @@ private:
 			  filterImageAcrossProcessPixel<U>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
 					widthImages, heightImages, imageFilter, sizeFilter);
 		  }
-	    });
+		});
 	#elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
 		KernelBpStereoCPU::tPool.parallelize_loop_distribute_iters(0, widthImages * heightImages,
-	    [&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
+		[&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
 		(const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / widthImages;
@@ -131,8 +131,8 @@ private:
 			  filterImageAcrossProcessPixel<U>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
 					widthImages, heightImages, imageFilter, sizeFilter);
 		  }
-	    });
-    #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+		});
+	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)
@@ -161,7 +161,7 @@ private:
 	{
 	#if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
 		KernelBpStereoCPU::tPool.parallelize_loop(0, widthImages * heightImages,
-	    [&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
+		[&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
 		(const unsigned int &a, const unsigned int &b) {
 		  for (unsigned int val = a; val < b; val++) {
 			  const unsigned int yVal = val / widthImages;
@@ -169,10 +169,10 @@ private:
 			  filterImageVerticalProcessPixel<U>(xVal, yVal, imagePixelsToFilter,
 					filteredImagePixels, widthImages, heightImages, imageFilter, sizeFilter);
 		  }
-	    });
+		});
 	#elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
 		KernelBpStereoCPU::tPool.parallelize_loop_distribute_iters(0, widthImages * heightImages,
-	    [&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
+		[&imagePixelsToFilter, &filteredImagePixels, &widthImages, &heightImages, &imageFilter, &sizeFilter]
 		(const unsigned int &a, const unsigned int &b, const unsigned int &numBlocks) {
 		  for (unsigned int val = a; val < b; val += numBlocks) {
 			  const unsigned int yVal = val / widthImages;
@@ -180,8 +180,8 @@ private:
 			  filterImageVerticalProcessPixel<U>(xVal, yVal, imagePixelsToFilter,
 					filteredImagePixels, widthImages, heightImages, imageFilter, sizeFilter);
 		  }
-	    });
-    #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
+		});
+	#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
 		int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
 		#pragma omp parallel for num_threads(numThreadsKernel)

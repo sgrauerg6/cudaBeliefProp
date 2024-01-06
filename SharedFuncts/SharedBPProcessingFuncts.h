@@ -1189,10 +1189,10 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptim
 			}
 
 			disparityBetweenImagesDevice[yVal*currentLevelProperties.widthLevel_ +
-			                             (xValInCheckerboardPart * 2 + checkerboardPartAdjustment)] = bestDisparity;
+										 (xValInCheckerboardPart * 2 + checkerboardPartAdjustment)] = bestDisparity;
 		} else {
 			disparityBetweenImagesDevice[yVal* currentLevelProperties.widthLevel_ +
-			                             (xValInCheckerboardPart * 2 + checkerboardPartAdjustment)] = 0;
+										 (xValInCheckerboardPart * 2 + checkerboardPartAdjustment)] = 0;
 		}
 	}
 
@@ -1286,10 +1286,10 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptim
 			}
 
 			disparityBetweenImagesDevice[yVal * currentLevelProperties.widthLevel_ +
-			                             (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
+										 (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = bestDisparity;
 		} else {
 			disparityBetweenImagesDevice[yVal * currentLevelProperties.widthLevel_ +
-			                             (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
+										 (xValInCheckerboardPart*2 + checkerboardPartAdjustment)] = 0;
 		}
 	}
 }

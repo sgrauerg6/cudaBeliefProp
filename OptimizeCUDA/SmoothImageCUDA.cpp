@@ -13,7 +13,7 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
 {
 	// setup execution parameters
 	const dim3 threads{cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0],
-	                   cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1]};
+					   cudaParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1]};
 	const dim3 grid{(unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)), (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y))};
 
 	//if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image

@@ -458,7 +458,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereo(T* dataCostStereoCheck
 template<>
 __global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice, int widthLevel, int heightLevel)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
@@ -659,7 +659,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCost
 /*template<>
 __global__ void initializeBottomLevelDataStereo<half2>(beliefprop::levelProperties currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
-    //get the x and y indices for the current CUDA thread
+	//get the x and y indices for the current CUDA thread
 	int xVal = blockIdx.x * blockDim.x + threadIdx.x;
 	int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 

@@ -180,7 +180,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
 		}
 	}
 
-    //if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
+	//if valToNormalize is infinite or NaN (observed when using more than 5 computation levels with half-precision),
 	//set destination vector to 0 for all disparities
 	//note that may cause results to differ a little from ideal
 	if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
