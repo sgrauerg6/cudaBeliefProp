@@ -62,5 +62,4 @@ const std::unordered_map<Runtime_Type_BP, std::string> timingNames_BP = {
   {Runtime_Type_BP::TOTAL_NO_TRANSFER, "Total Runtime not including data transfer time"},
   {Runtime_Type_BP::TOTAL_WITH_TRANSFER, "Total runtime including data transfer time"}};
 
-
 #endif /* DETAILEDTIMINGBPCONSTS_H_ */

@@ -21,6 +21,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNEL_BP_STEREO_CPU_H
 #define KERNEL_BP_STEREO_CPU_H
 
+#ifdef _WIN32
+#include <intrin.h>
+#else
+#include <x86intrin.h>
+#endif
+
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
@@ -37,6 +43,43 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h>
 #endif //COMPILING_FOR_ARM
 
+//define concepts of allowed data types for belief propagation data storage and processing
+template <typename T>
+concept BpDataStore_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
+
+template <typename T>
+concept BpDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double>;
+
+//SIMD types differ depending on architecture and CPU vectorization setting
+#ifdef COMPILING_FOR_ARM
+template <typename T>
+concept BpDataVectStore_t = std::is_same_v<T, float64x2_t> || std::is_same_v<T, float32x4_t> || std::is_same_v<T, float16x4_t>;
+
+template <typename T>
+concept BpDataVectProcess_t = std::is_same_v<T, float64x2_t> || std::is_same_v<T, float32x4_t>;
+#else
+#if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
+template <typename T>
+concept BpDataVectStore_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m128i>;
+
+template <typename T>
+concept BpDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256>;
+#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+template <typename T>
+concept BpDataVectStore_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m128i> || std::is_same_v<T, __m512d> || std::is_same_v<T, __m512> || std::is_same_v<T, __m256i>;
+
+template <typename T>
+concept BpDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m512d> || std::is_same_v<T, __m512>;
+#endif
+#endif
+
+//concepts that allow both single and vectorized types
+template <typename T>
+concept BpDataStoreSingOrVect_t = BpDataStore_t<T> || BpDataVectStore_t<T>;
+
+template <typename T>
+concept BpDataProcessSingOrVect_t = BpDataProcess_t<T> || BpDataVectProcess_t<T>;
+
 class KernelBpStereoCPU
 {
 public:
@@ -47,14 +90,14 @@ public:
 
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
   //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void initializeBottomLevelDataStereoCPU(const beliefprop::levelProperties& currentLevelProperties,
     float* image1PixelsDevice, float* image2PixelsDevice,
     T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
     const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
     const beliefprop::ParallelParameters& optCPUParams);
 
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void initializeCurrentLevelDataStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -62,7 +105,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //initialize the message values at each pixel of the current level to the default value
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void initializeMessageValsToDefaultKernelCPU(const beliefprop::levelProperties& currentLevelProperties,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -73,7 +116,7 @@ public:
 
   //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-  template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+  template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
   static void runBPIterationUsingCheckerboardUpdatesCPU(const beliefprop::Checkerboard_Parts checkerboardToUpdate,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -84,7 +127,7 @@ public:
     const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
     const beliefprop::ParallelParameters& optCPUParams);
 
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
     const beliefprop::Checkerboard_Parts checkerboardPartUpdate, const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -97,7 +140,7 @@ public:
 
   //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -112,7 +155,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-  template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+  template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
   static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -123,7 +166,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
-  template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
+  template<BpDataStore_t T, BpDataVectStore_t U, BpDataProcess_t V, BpDataVectProcess_t W, unsigned int DISP_VALS>
   static void retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -237,7 +280,7 @@ public:
 
   //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
   //and the output message values are save to output message arrays
-  template<typename T, typename U, unsigned int DISP_VALS>
+  template<BpDataStore_t T, BpDataVectStore_t U, unsigned int DISP_VALS>
   static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(const unsigned int xValStartProcessing,
     const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
     U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
@@ -247,7 +290,7 @@ public:
     T* currentLMessageArray, T* currentRMessageArray,
     const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing);
 
-  template<typename T, typename U>
+  template<BpDataStore_t T, BpDataVectStore_t U>
   static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
     const unsigned int xValStartProcessing, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
@@ -360,7 +403,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 #endif //COMPILING_FOR_ARM
 
-  template<typename T, typename U, unsigned int DISP_VALS>
+  template<BpDataStore_t T, BpDataVectStore_t U, unsigned int DISP_VALS>
   static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
     const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -373,7 +416,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   // compute current message
-  template<typename T, typename U, unsigned int DISP_VALS>
+  template<BpDataStore_t T, BpDataVectStore_t U, unsigned int DISP_VALS>
   static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
@@ -381,7 +424,7 @@ public:
     T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
 
   // compute current message
-  template<typename T, typename U>
+  template<BpDataStore_t T, BpDataVectStore_t U>
   static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U* messageValsNeighbor1, U* messageValsNeighbor2,
@@ -390,7 +433,7 @@ public:
     const unsigned int bpSettingsDispVals);
 
   // compute current message
-  template<typename T, typename U, typename V, typename W>
+  template<BpDataStore_t T, BpDataVectStore_t U, BpDataProcess_t V, BpDataVectProcess_t W>
   static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U* messageValsNeighbor1, U* messageValsNeighbor2,
@@ -399,7 +442,7 @@ public:
     const unsigned int bpSettingsDispVals);
 
   // compute current message
-  template<typename T, typename U, typename V, typename W, unsigned int DISP_VALS>
+  template<BpDataStore_t T, BpDataVectStore_t U, BpDataProcess_t V, BpDataVectProcess_t W, unsigned int DISP_VALS>
   static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
@@ -407,64 +450,64 @@ public:
     T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
 
   //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-  template<typename T, typename U, unsigned int DISP_VALS>
+  template<BpDataProcess_t T, BpDataVectProcess_t U, unsigned int DISP_VALS>
   static void dtStereoSIMD(U f[DISP_VALS]);
 
   //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
   //TODO: look into defining function in .cpp file so don't need to declare inline
-  template<typename T, typename U>
+  template<BpDataProcess_t T, BpDataVectProcess_t U>
   static void dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals);
 
-  template<typename T>
+  template<BpDataVectProcess_t T>
   static void updateBestDispBestVals(T& bestDisparities, T& bestVals, const T& currentDisparity, const T& valAtDisp) {
     printf("Data type not supported for updating best disparities and values\n");
   }
 
-  template<typename T, typename U>
+  template<BpDataStore_t T, BpDataVectStore_t U>
   static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
     const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
   {
     printf("Data type not supported for loading aligned data\n");
   }
 
-  template<typename T, typename U>
+  template<BpDataStore_t T, BpDataVectStore_t U>
   static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
     const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
   {
     printf("Data type not supported for loading unaligned data\n");
   }
 
-  template<typename T>
+  template<BpDataVectStore_t T>
   static T createSIMDVectorSameData(const float data) {
     printf("Data type not supported for creating simd vector\n");
   }
 
-  template<typename T, typename U, typename V>
+  template<BpDataStoreSingOrVect_t T, BpDataStoreSingOrVect_t U, BpDataStoreSingOrVect_t V>
   static V addVals(const T& val1, const U& val2) { return (val1 + val2); }
 
-  template<typename T, typename U, typename V>
+  template<BpDataStoreSingOrVect_t T, BpDataStoreSingOrVect_t U, BpDataStoreSingOrVect_t V>
   static V subtractVals(const T& val1, const U& val2) { return (val1 - val2); }
 
-  template<typename T, typename U, typename V>
+  template<BpDataStoreSingOrVect_t T, BpDataStoreSingOrVect_t U, BpDataStoreSingOrVect_t V>
   static V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
 
-  template<typename T, typename V>
+  template<BpDataStoreSingOrVect_t T, BpDataStoreSingOrVect_t V>
   static T convertValToDatatype(const V val) { return (T)val; }
 
-  template<typename T>
+  template<BpDataStoreSingOrVect_t T>
   static T getMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }
 
-  template<typename T, typename U>
+  template<BpDataStore_t T, BpDataVectProcess_t U>
   static void storePackedDataAligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 
-  template<typename T, typename U>
+  template<BpDataStore_t T, BpDataVectProcess_t U>
   static void storePackedDataUnaligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -473,7 +516,7 @@ public:
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 
-  template<typename T, unsigned int DISP_VALS>
+  template<BpDataStore_t T, unsigned int DISP_VALS>
   static void printDataAndMessageValsToPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,

@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <map>
 #include <iostream>
+#include <type_traits>
 #include "DetailedTimingBPConsts.h"
 #include "../OutputEvaluation/RunData.h"
 
@@ -20,7 +21,8 @@
 //Not that there is currently no check that the input segment index for timing is valid; currently is assumed
 //that only valid segment numbers (added in the constructor) will be used when adding timings and retrieving median timing
 //If enum is used as T and every enum value is mapped with a string in the constructor parameter input, then no issue with invalid index
-template <class T>
+template <typename T>
+requires std::is_enum_v<T>
 class DetailedTimings {
 public:
 

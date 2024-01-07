@@ -26,14 +26,14 @@
 typedef std::filesystem::path filepathtype;
 
 //remove comment to only process on smaller stereo sets (reduces runtime)
-//#define SMALLER_SETS_ONLY
+#define SMALLER_SETS_ONLY
 
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
 #include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
-template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template <BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 //set data type used for half-precision
 #ifdef COMPILING_FOR_ARM
@@ -50,7 +50,7 @@ using halftype = short;
 //needed to run the implementation a stereo set using CUDA
 #include "../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
-template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template <BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, beliefprop::AccSetting::CUDA>;
 #endif //OPTIMIZED_CUDA_RUN
 
@@ -197,7 +197,7 @@ namespace RunAndEvaluateBpResults {
   //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
   //on the reference and test images specified by numStereoSet
   //run only optimized implementation if runOptImpOnly is true
-  template<typename T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, beliefprop::AccSetting OPT_IMP_ACCEL>
+  template<BpDataStore_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, beliefprop::AccSetting OPT_IMP_ACCEL>
     std::pair<beliefprop::Status, RunData> runStereoTwoImpsAndCompare(
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, beliefprop::AccSetting::NONE>>& singleThreadCPUImp,
@@ -266,7 +266,7 @@ namespace RunAndEvaluateBpResults {
   }
 
   //get current run inputs and parameters in RunData structure
-  template<typename T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, beliefprop::AccSetting ACC_SETTING>
+  template<BpDataStore_t T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, beliefprop::AccSetting ACC_SETTING>
   RunData inputAndParamsRunData(const beliefprop::BPsettings& algSettings) {
     RunData currRunData;
     currRunData.addDataWHeader("DataType", beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
@@ -280,7 +280,7 @@ namespace RunAndEvaluateBpResults {
 
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters
   //returns data from runs using default and optimized parallel parameters
-  template<typename T, unsigned int NUM_SET, beliefprop::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
+  template<BpDataStore_t T, unsigned int NUM_SET, beliefprop::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
   std::pair<beliefprop::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, beliefprop::AccSetting::NONE>>& singleThreadCPUImp)
@@ -489,7 +489,7 @@ namespace RunAndEvaluateBpResults {
     return {speedupHeader, {0.0, 0.0}};
   }
 
-  template<typename T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, beliefprop::AccSetting OPT_IMP_ACCEL>
+  template<BpDataStore_t T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, beliefprop::AccSetting OPT_IMP_ACCEL>
   std::pair<beliefprop::Status, std::vector<RunData>> runBpOnSetAndUpdateResults() {
     std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], beliefprop::AccSetting::NONE>> runBpStereoSingleThread =
       std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
@@ -508,7 +508,7 @@ namespace RunAndEvaluateBpResults {
 
   //write data for file corresponding to runs for a specified data type or across all data type
   //includes results for each run as well as average and median speedup data across multiple runs
-  template <beliefprop::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, typename T = void>
+  template <beliefprop::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, BpDataStore_t T = float>
   void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput) {
     //get iterator to first run with success
     const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
@@ -589,7 +589,7 @@ namespace RunAndEvaluateBpResults {
   }
 
   //perform runs on multiple data sets using specified data type and acceleration method
-  template <typename T, beliefprop::AccSetting OPT_IMP_ACCEL>
+  template <BpDataStore_t T, beliefprop::AccSetting OPT_IMP_ACCEL>
   std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpOnStereoSets() {
     MultRunData runData;
     runData.push_back(runBpOnSetAndUpdateResults<T, 0, true, OPT_IMP_ACCEL>());
@@ -634,7 +634,7 @@ namespace RunAndEvaluateBpResults {
 
   //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
-  template <typename T, beliefprop::AccSetting OPT_IMP_ACCEL>
+  template <BpDataStore_t T, beliefprop::AccSetting OPT_IMP_ACCEL>
   std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getNoVectDataVectSpeedup(MultRunData& runOutputData) {
     const std::string speedupHeader{SPEEDUP_VECTORIZATION + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
     const std::string speedupVsAVX256Str{SPEEDUP_VS_AVX256_VECTORIZATION + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};

@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 
 
-template<typename T, typename U, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
+template<BpDataStore_t T, unsigned int DISP_VALS>
+inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
     //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
@@ -62,12 +62,12 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<typename T, typename U, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+template<BpDataStore_t T, unsigned int DISP_VALS>
+beliefprop::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-  const beliefprop::checkerboardMessages<U>& messagesDevice,
-  U allocatedMemForProcessing)
+  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
+  const beliefprop::checkerboardMessages<T*>& messagesDevice,
+  T* allocatedMemForProcessing)
 {
   //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
@@ -150,12 +150,12 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::runBPAtCurrentLevel(const bel
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<typename T, typename U, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelDown(
+template<BpDataStore_t T, unsigned int DISP_VALS>
+beliefprop::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
-  const beliefprop::checkerboardMessages<U>& messagesDeviceCopyFrom,
-  const beliefprop::checkerboardMessages<U>& messagesDeviceCopyTo,
+  const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
+  const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
   const unsigned int bpSettingsNumDispVals)
 {
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
@@ -201,9 +201,9 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::copyMessageValuesToNextLevelD
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<typename T, typename U, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-  const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard)
+template<BpDataStore_t T, unsigned int DISP_VALS>
+beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+  const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
 {
   if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
     return beliefprop::Status::ERROR;
@@ -236,10 +236,10 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCosts(const bel
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<typename T, typename U, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefault(
+template<BpDataStore_t T, unsigned int DISP_VALS>
+beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::checkerboardMessages<U>& messagesDevice,
+  const beliefprop::checkerboardMessages<T*>& messagesDevice,
   const unsigned int bpSettingsNumDispVals)
 {
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
@@ -262,11 +262,11 @@ beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeMessageValsToDefaul
   return beliefprop::Status::NO_ERROR;
 }
 
-template<typename T, typename U, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, U, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+template<BpDataStore_t T, unsigned int DISP_VALS>
+beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
-  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboardWriteTo,
+  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
+  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
   const unsigned int bpSettingsNumDispVals)
 {
   //const dim3 threads{cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][0], cudaParams_.blockDimsXY_[currentLevelProperties.levelNum_][1]};
@@ -353,11 +353,11 @@ beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(cons
 
 #endif
 
-template<typename T, typename U, unsigned int DISP_VALS>
-float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
+template<BpDataStore_t T, unsigned int DISP_VALS>
+float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::dataCostData<U>& dataCostDeviceCheckerboard,
-  const beliefprop::checkerboardMessages<U>& messagesDevice,
+  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
+  const beliefprop::checkerboardMessages<T*>& messagesDevice,
   const unsigned int bpSettingsNumDispVals)
 {
   float* resultingDisparityMapCompDevice;
@@ -384,34 +384,34 @@ float* ProcessCUDABP<T, U, DISP_VALS>::retrieveOutputDisparity(
   return resultingDisparityMapCompDevice;
 }
 
-template class ProcessCUDABP<float, float*, 0>;
-template class ProcessCUDABP<double, double*, 0>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<float, float*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
-template class ProcessCUDABP<double, double*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<float, 0>;
+template class ProcessCUDABP<double, 0>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 //half precision only supported with compute capability 5.3 and higher
 //TODO: not sure if using CUDA_ARCH works as intended here since it's host code
 //may need to define whether or not to process half-precision elsewhere
 #ifdef CUDA_HALF_SUPPORT
-template class ProcessCUDABP<halftype, halftype*, 0>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<halftype, halftype*, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<halftype, 0>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 #endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

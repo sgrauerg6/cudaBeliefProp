@@ -15,6 +15,9 @@
 #include "KernelBpStereoCPU.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
+template <typename T>
+concept imData_t = std::is_same_v<T, float> || std::is_same_v<T, unsigned int>;
+
 class SmoothImageCPU : public SmoothImage {
 public:
   SmoothImageCPU(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) {}
@@ -103,7 +106,7 @@ private:
   }
 
   //apply a horizontal filter on each pixel of the image in parallel
-  template<typename U>
+  template<imData_t U>
   void filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
     float* imageFilter, const unsigned int sizeFilter,
@@ -152,7 +155,7 @@ private:
   }
 
   //apply a vertical filter on each pixel of the image in parallel
-  template<typename U>
+  template<imData_t U>
   void filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
     float* imageFilter, const unsigned int sizeFilter,
