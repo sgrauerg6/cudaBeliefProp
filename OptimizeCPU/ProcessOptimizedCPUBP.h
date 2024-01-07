@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
@@ -81,7 +81,7 @@ private:
 //functions definitions related to running BP to retrieve the movement between the images
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -110,7 +110,7 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::ru
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
@@ -138,7 +138,7 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::co
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
   const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
 {
@@ -151,7 +151,7 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::in
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
@@ -169,7 +169,7 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::in
 }
 
 
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -195,7 +195,7 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::in
   return beliefprop::Status::NO_ERROR;
 }
 
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline float* ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,

@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 
 
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
@@ -62,7 +62,7 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -150,7 +150,7 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(const belief
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
@@ -201,7 +201,7 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
   const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
 {
@@ -236,7 +236,7 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(const belief
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
@@ -262,7 +262,7 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
   return beliefprop::Status::NO_ERROR;
 }
 
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -353,7 +353,7 @@ beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(cons
 
 #endif
 
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,

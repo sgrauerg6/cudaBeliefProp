@@ -30,12 +30,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //define concepts of allowed data types for belief propagation data storage and processing
 template <typename T>
-concept BpDataStore_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, half>;
+concept BpData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, half>;
 
 template <typename T>
 concept BpDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, half>;
 
-template<BpDataStore_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, beliefprop::AccSetting::CUDA>
 {
 public:

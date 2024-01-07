@@ -18,7 +18,7 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 
-template <BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
 public:
   RunBpStereoOptimizedCPU() {}
@@ -31,7 +31,7 @@ public:
     const beliefprop::ParallelParameters& parallelParams) override;
 };
 
-template<BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
   const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {

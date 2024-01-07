@@ -55,7 +55,7 @@ namespace bp_cuda_device
   }
 };
 
-template <BpDataStore_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
 {
 public:
