@@ -18,14 +18,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the optimized CPU BP implementation
 
-#include <memory>
-#include <fstream>
-#include <map>
-#include <string>
-#include <tuple>
-#include <utility>
-#include <numeric>
-#include <algorithm>
+#include <array>
+#include <vector>
+#include <thread>
+#include <string_view>
 #include "../ParameterFiles/bpStructsAndEnums.h"
 
 #ifdef COMPILING_FOR_ARM
@@ -65,7 +61,7 @@ constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::NONE}
 #endif
 
 //name of processor used for running optimized implementation
-const std::string PROCESSOR_NAME{""};
+constexpr std::string_view PROCESSOR_NAME{""};
 
 //functions in RunAndEvaluateBpResults use above constants and function
 #include "RunAndEvaluateBpResults.h"

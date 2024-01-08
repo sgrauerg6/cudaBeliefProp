@@ -78,8 +78,8 @@ public:
       BpOnDevice<T, DISP_VALS, VECTORIZATION>{
         std::make_unique<SmoothImageCUDA>(parallelParams),
         std::make_unique<ProcessCUDABP<T, DISP_VALS>>(parallelParams),
-        std::make_unique<RunBpStereoSetCUDAMemoryManagement<>>(),
-        std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>()});
+        std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>(),
+        std::make_unique<RunBpStereoSetCUDAMemoryManagement<float>>()});
     runData.appendData(procSetOutput.runData);
     procSetOutput.runData = runData;
     

@@ -18,11 +18,12 @@
 #include <sstream>
 #include <cmath>
 #include <array>
+#include <string_view>
 
 enum class image_type { PGM_IMAGE, PPM_IMAGE };
-const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
-const std::string PGM_EXTENSION = "pgm";
-const std::string PPM_EXTENSION = "ppm";
+constexpr bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
+constexpr std::string_view PGM_EXTENSION = "pgm";
+constexpr std::string_view PPM_EXTENSION = "ppm";
 
 template <class T>
 class BpImage {

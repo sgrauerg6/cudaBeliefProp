@@ -39,8 +39,8 @@ template <typename U, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATIO
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smoothImage;
   const std::unique_ptr<ProcessBPOnTargetDevice<U, DISP_VALS, ACCELERATION>>& runBpStereo;
-  const std::unique_ptr<RunBpStereoSetMemoryManagement<>>& memManagementImages;
   const std::unique_ptr<RunBpStereoSetMemoryManagement<U>>& memManagementBpRun;
+  const std::unique_ptr<RunBpStereoSetMemoryManagement<float>>& memManagementImages;
 };
 
 template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>

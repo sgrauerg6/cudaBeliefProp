@@ -14,9 +14,7 @@
 
 //Class for memory management with functions defined for standard memory allocation using CPU
 //Class functions can be overridden to support other computation devices such as GPU
-//only processing that uses RunBpStereoSetMemoryManagement is the input stereo
-//images and output disparity map that always uses float data type
-template <typename T=float>
+template <typename T>
 class RunBpStereoSetMemoryManagement
 {
 public:

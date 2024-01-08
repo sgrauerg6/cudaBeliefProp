@@ -16,6 +16,7 @@
 #include <numeric>
 #include <algorithm>
 #include <set>
+#include <string_view>
 #include "../ParameterFiles/bpRunSettings.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../FileProcessing/BpFileHandling.h"
@@ -59,32 +60,31 @@ using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
 
 namespace RunAndEvaluateBpResults {
   //constants for output results for individual and sets of runs
-  const std::string BP_RUN_OUTPUT_RESULTS_FILE{"outputResultsForRun.txt"};
-  const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START{"outputResults"};
-  const std::string BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START{"outputResultsDefaultParallelParams"};
-  const std::string CSV_FILE_EXTENSION{".csv"};
-  const std::string OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
-  const std::string SINGLE_THREAD_RUNTIME_HEADER{"AVERAGE CPU RUN TIME"};
-  const std::string SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
-  const std::string SPEEDUP_DOUBLE{"Speedup using double-precision relative to float (actually slowdown)"};
-  const std::string SPEEDUP_HALF{"Speedup using half-precision relative to float"};
-  const std::string SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup w/ templated disparity count (known at compile-time)"};
-  const std::string SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
-  const std::string SPEEDUP_VS_AVX256_VECTORIZATION{"Speedup over AVX256 CPU vectorization"};
+  constexpr std::string_view BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START{"outputResults"};
+  constexpr std::string_view BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START{"outputResultsDefaultParallelParams"};
+  constexpr std::string_view CSV_FILE_EXTENSION{".csv"};
+  constexpr std::string_view OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
+  constexpr std::string_view SINGLE_THREAD_RUNTIME_HEADER{"AVERAGE CPU RUN TIME"};
+  constexpr std::string_view SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
+  constexpr std::string_view SPEEDUP_DOUBLE{"Speedup using double-precision relative to float (actually slowdown)"};
+  constexpr std::string_view SPEEDUP_HALF{"Speedup using half-precision relative to float"};
+  constexpr std::string_view SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup w/ templated disparity count (known at compile-time)"};
+  constexpr std::string_view SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
+  constexpr std::string_view SPEEDUP_VS_AVX256_VECTORIZATION{"Speedup over AVX256 CPU vectorization"};
 #ifdef SMALLER_SETS_ONLY
-  const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
-  const std::string SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
+  constexpr std::string_view BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
+  constexpr std::string_view SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
 #else
-  const std::string BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimes.txt"};
-  const std::string SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/singleThreadBaselineRuntimes.txt"};
+  constexpr std::string_view BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/baselineRuntimes.txt"};
+  constexpr std::string_view SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BaselineRuntimes/singleThreadBaselineRuntimes.txt"};
 #endif //SMALLER_SETS_ONLY
 
   enum class BaselineData { OPTIMIZED, SINGLE_THREAD };
 
   std::pair<std::string, std::vector<double>> getBaselineRuntimeData(BaselineData baselineDataType) {
     std::ifstream baselineData((baselineDataType == BaselineData::SINGLE_THREAD) ?
-                               SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH :
-                               BASELINE_RUNTIMES_FILE_PATH);
+                               std::string(SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH) :
+                               std::string(BASELINE_RUNTIMES_FILE_PATH));
     std::string line;
     //first line of data is string with baseline processor description and all subsequent data is runtimes
     //on that processor in same order as runtimes from runBpOnStereoSets() function
@@ -124,7 +124,7 @@ namespace RunAndEvaluateBpResults {
     std::vector<MultRunSpeedup> speedupData;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -141,7 +141,7 @@ namespace RunAndEvaluateBpResults {
     const auto baselineRuntimesSThread = baselineRunDataSThread.second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(runOutput[i].second[1].getData(SINGLE_THREAD_RUNTIME_HEADER)));
+        speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(runOutput[i].second[1].getData(std::string(SINGLE_THREAD_RUNTIME_HEADER))));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -155,7 +155,7 @@ namespace RunAndEvaluateBpResults {
       speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 smallest stereo sets - " + dataTypeStr;
       for (unsigned int i=0; i < 6; i++) {
         if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
           runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
           runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         }
@@ -172,7 +172,7 @@ namespace RunAndEvaluateBpResults {
       for (unsigned int i=9; i < 11; i++) {
 #endif //SMALLER_SETS_ONLY
         if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
           runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
           runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         }
@@ -233,7 +233,7 @@ namespace RunAndEvaluateBpResults {
 
     //save resulting disparity map
     run_output[0].outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
-    runData.addDataWHeader(OPTIMIZED_RUNTIME_HEADER, std::to_string(run_output[0].runTime));
+    runData.addDataWHeader(std::string(OPTIMIZED_RUNTIME_HEADER), std::to_string(run_output[0].runTime));
 
     if (!runOptImpOnly) {
       //run single-threaded implementation and retrieve structure with runtime and output disparity map
@@ -273,8 +273,8 @@ namespace RunAndEvaluateBpResults {
     currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
     currRunData.appendData(algSettings.runData());
     currRunData.appendData(beliefprop::runSettings<ACC_SETTING>());
-    const std::string dispValsTemplatedStr{(DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES"};
-    currRunData.addDataWHeader("DISP_VALS_TEMPLATED", dispValsTemplatedStr);
+    currRunData.addDataWHeader("DISP_VALS_TEMPLATED",
+                              (DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES");
     return currRunData;
   }
 
@@ -403,7 +403,7 @@ namespace RunAndEvaluateBpResults {
             }
             //get total runtime
             pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =
-              std::stod(currRunData.getData(OPTIMIZED_RUNTIME_HEADER));
+              std::stod(currRunData.getData(std::string(OPTIMIZED_RUNTIME_HEADER)));
           }
         }
 
@@ -442,8 +442,8 @@ namespace RunAndEvaluateBpResults {
     std::vector<double> speedupsVect;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == beliefprop::Status::NO_ERROR) {
-        speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(OPTIMIZED_RUNTIME_HEADER)) / 
-                               std::stod(runOutput[i].second[1].getData(OPTIMIZED_RUNTIME_HEADER)));
+        speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
+                               std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -459,8 +459,8 @@ namespace RunAndEvaluateBpResults {
     std::vector<double> speedupsVect;
     for (unsigned int i=0; i < runOutputBase.size(); i++) {
       if ((runOutputBase[i].first == beliefprop::Status::NO_ERROR) && (runOutputTarget[i].first == beliefprop::Status::NO_ERROR))  {
-        speedupsVect.push_back(std::stod(runOutputBase[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
-                               std::stod(runOutputTarget[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
+        speedupsVect.push_back(std::stod(runOutputBase[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
+                               std::stod(runOutputTarget[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
         runOutputBase[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         runOutputTarget[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
@@ -478,8 +478,8 @@ namespace RunAndEvaluateBpResults {
     //disparity count given in template being first
     for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
       if ((runOutput[i].first == beliefprop::Status::NO_ERROR) && (runOutput[i+1].first == beliefprop::Status::NO_ERROR))  {
-        speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(OPTIMIZED_RUNTIME_HEADER)) / 
-                               std::stod(runOutput[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER)));
+        speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
+                               std::stod(runOutput[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
         runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
       }
     }
@@ -519,10 +519,10 @@ namespace RunAndEvaluateBpResults {
       //write results from default and optimized parallel parameters runs to csv file
       const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
       const auto accelStr = beliefprop::accelerationString<OPT_IMP_ACCEL>();
-      const std::string optResultsFileName{BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START + "_" + 
-        (PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
-      const std::string defaultParamsResultsFileName{BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START + "_" +
-        (PROCESSOR_NAME.size() > 0 ? PROCESSOR_NAME + "_" : "") + dataTypeStr + "_" + accelStr + CSV_FILE_EXTENSION};
+      const std::string optResultsFileName{std::string(BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
+        (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
+      const std::string defaultParamsResultsFileName{std::string(BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
+        (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
       std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
         std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),
         OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(optResultsFileName) : std::ofstream()};
@@ -618,10 +618,10 @@ namespace RunAndEvaluateBpResults {
       speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
     }
     if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
-      speedupResults.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runData, SPEEDUP_OPT_PAR_PARAMS_HEADER + " - " +
+      speedupResults.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runData, std::string(SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
         beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
     }
-    speedupResults.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runData, SPEEDUP_DISP_COUNT_TEMPLATE + " - " +
+    speedupResults.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runData, std::string(SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
       beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
     
     //write output corresponding to results for current data type
@@ -636,8 +636,8 @@ namespace RunAndEvaluateBpResults {
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
   template <BpData_t T, beliefprop::AccSetting OPT_IMP_ACCEL>
   std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getNoVectDataVectSpeedup(MultRunData& runOutputData) {
-    const std::string speedupHeader{SPEEDUP_VECTORIZATION + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
-    const std::string speedupVsAVX256Str{SPEEDUP_VS_AVX256_VECTORIZATION + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
+    const std::string speedupHeader{std::string(SPEEDUP_VECTORIZATION) + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
+    const std::string speedupVsAVX256Str{std::string(SPEEDUP_VS_AVX256_VECTORIZATION) + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
     std::vector<MultRunSpeedup> multRunSpeedupVect;
     if constexpr ((OPT_IMP_ACCEL == beliefprop::AccSetting::CUDA) || (OPT_IMP_ACCEL == beliefprop::AccSetting::NONE)) {
       multRunSpeedupVect.push_back({speedupHeader, {0.0, 0.0}});
@@ -651,8 +651,8 @@ namespace RunAndEvaluateBpResults {
         //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
         for (unsigned int i = 0; i < runOutputData.size(); i++) {
           if ((runOutputData[i].first == beliefprop::Status::NO_ERROR) && (runOutputAVX256.first[i].first == beliefprop::Status::NO_ERROR)) {
-            const double initResultTime = std::stod(runOutputData[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER));
-            const double avx256ResultTime = std::stod(runOutputAVX256.first[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER));
+            const double initResultTime = std::stod(runOutputData[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER)));
+            const double avx256ResultTime = std::stod(runOutputAVX256.first[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER)));
             if (avx256ResultTime < initResultTime) {
               runOutputData[i] = runOutputAVX256.first[i];
             }
@@ -668,8 +668,8 @@ namespace RunAndEvaluateBpResults {
       //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
       for (unsigned int i = 0; i < runOutputData.size(); i++) {
         if ((runOutputData[i].first == beliefprop::Status::NO_ERROR) && (runOutputNoVect.first[i].first == beliefprop::Status::NO_ERROR)) {
-          const double initResultTime = std::stod(runOutputData[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER));
-          const double noVectResultTime = std::stod(runOutputNoVect.first[i].second.back().getData(OPTIMIZED_RUNTIME_HEADER));
+          const double initResultTime = std::stod(runOutputData[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER)));
+          const double noVectResultTime = std::stod(runOutputNoVect.first[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER)));
           if (noVectResultTime < initResultTime) {
             runOutputData[i] = runOutputNoVect.first[i];
           }
@@ -693,7 +693,7 @@ namespace RunAndEvaluateBpResults {
 
     //perform runs with and without vectorization using double-precision
     auto runOutputDouble = runBpOnStereoSets<double, OPT_IMP_ACCEL>();
-    const auto doublesSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputDouble.first, SPEEDUP_DOUBLE);
+    const auto doublesSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputDouble.first, std::string(SPEEDUP_DOUBLE));
     const auto noVectDataVectSpeedupDbl = getNoVectDataVectSpeedup<double, OPT_IMP_ACCEL>(runOutputDouble.first);
     for (const auto& runData : noVectDataVectSpeedupDbl.first.first) {
       runOutputNoVect.first.push_back(runData);
@@ -701,7 +701,7 @@ namespace RunAndEvaluateBpResults {
 #ifdef HALF_PRECISION_SUPPORTED
     //perform runs with and without vectorization using half-precision
     auto runOutputHalf = runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
-    const auto halfSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, SPEEDUP_HALF);
+    const auto halfSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, std::string(SPEEDUP_HALF));
     const auto noVectDataVectSpeedupHalf = getNoVectDataVectSpeedup<halftype, OPT_IMP_ACCEL>(runOutputHalf.first);
     for (const auto& runData : noVectDataVectSpeedupHalf.first.first) {
       runOutputNoVect.first.push_back(runData);
@@ -712,7 +712,7 @@ namespace RunAndEvaluateBpResults {
     runOutput.first.insert(runOutput.first.end(), runOutputDouble.first.begin(), runOutputDouble.first.end());
     runOutput.first.insert(runOutput.first.end(), runOutputHalf.first.begin(), runOutputHalf.first.end());
     //get speedup using vectorization across all runs
-    const auto vectorizationSpeedupAll = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputNoVect.first, runOutput.first, SPEEDUP_VECTORIZATION + " - All Runs");
+    const auto vectorizationSpeedupAll = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputNoVect.first, runOutput.first, std::string(SPEEDUP_VECTORIZATION) + " - All Runs");
     //add speedup data from double and half precision runs to overall data so they are included in final results
     runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupFl.second.begin(), noVectDataVectSpeedupFl.second.end());
     runOutput.second.insert(runOutput.second.end(), runOutputDouble.second.begin(), runOutputDouble.second.end());
@@ -726,10 +726,10 @@ namespace RunAndEvaluateBpResults {
     const auto speedupOverBaseline = RunAndEvaluateBpResults::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs");
     runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
     if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
-      runOutput.second.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runOutput.first, SPEEDUP_OPT_PAR_PARAMS_HEADER + " - All Runs"));
+      runOutput.second.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupOptPParams(runOutput.first, std::string(SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
     }
     //add more speedup data to overall data for inclusion in final results
-    runOutput.second.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runOutput.first, SPEEDUP_DISP_COUNT_TEMPLATE + " - All Runs"));
+    runOutput.second.push_back(RunAndEvaluateBpResults::getAvgMedSpeedupDispValsInTemplate(runOutput.first, std::string(SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
     runOutput.second.push_back(vectorizationSpeedupAll);
     runOutput.second.push_back(doublesSpeedup);
     runOutput.second.push_back(halfSpeedup);

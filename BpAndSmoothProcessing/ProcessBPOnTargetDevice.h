@@ -28,13 +28,13 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 //Abstract class to process belief propagation on target device
 //Some of the class functions need to be overridden to for processing on
 //target device
-template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING, typename V=float*>
+template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
 class ProcessBPOnTargetDevice {
 public:
   ProcessBPOnTargetDevice() { }
 
   virtual beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-      const std::array<V, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) = 0;
+      const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) = 0;
 
   virtual beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
       const beliefprop::levelProperties& prevLevelProperties,
@@ -60,7 +60,7 @@ public:
       const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
       const unsigned int bpSettingsNumDispVals) = 0;
 
-  virtual V retrieveOutputDisparity(
+  virtual float* retrieveOutputDisparity(
       const beliefprop::levelProperties& levelProperties,
       const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
       const beliefprop::checkerboardMessages<T*>& messagesDevice,
@@ -150,7 +150,7 @@ public:
   //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
   //input is images image1Pixels and image1Pixels
   //output is resultingDisparityMap
-  std::pair<V, DetailedTimings<Runtime_Type_BP>> operator()(const std::array<V, 2>& imagesOnTargetDevice,
+  std::pair<float*, DetailedTimings<Runtime_Type_BP>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
       const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
       T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
       const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun);
@@ -159,8 +159,8 @@ public:
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
 //input is images on target device for computation
 //output is disparity map and processing runtimes
-template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING, typename V>
-std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING, V>::operator()(const std::array<V, 2> & imagesOnTargetDevice,
+template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
+std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
   const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 {
@@ -345,7 +345,7 @@ std::pair<V, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, DISP_V
   startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
 
   //assume in bottom level when retrieving output disparity
-  const V resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
+  float* resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
     dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
   if (resultingDisparityMapCompDevice == nullptr) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
 

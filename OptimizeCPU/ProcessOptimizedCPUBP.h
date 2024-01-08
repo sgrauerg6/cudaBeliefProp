@@ -39,40 +39,40 @@ template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATIO
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
-    ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
+  ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
 
-    beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-      const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
+  beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
 
-    beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-      const beliefprop::levelProperties& prevLevelProperties,
-      const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-      const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
-      const unsigned int bpSettingsNumDispVals) override;
+  beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::levelProperties& prevLevelProperties,
+    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
+    const unsigned int bpSettingsNumDispVals) override;
 
-    beliefprop::Status initializeMessageValsToDefault(
-      const beliefprop::levelProperties& currentLevelProperties,
-      const beliefprop::checkerboardMessages<T*>& messagesDevice,
-      const unsigned int bpSettingsNumDispVals) override;
+  beliefprop::Status initializeMessageValsToDefault(
+    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const unsigned int bpSettingsNumDispVals) override;
 
-    beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
-      const beliefprop::levelProperties& currentLevelProperties,
-      const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-      const beliefprop::checkerboardMessages<T*>& messagesDevice,
-      T* allocatedMemForProcessing) override;
+  beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    T* allocatedMemForProcessing) override;
 
-    beliefprop::Status copyMessageValuesToNextLevelDown(
-      const beliefprop::levelProperties& currentLevelProperties,
-      const beliefprop::levelProperties& nextlevelProperties,
-      const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
-      const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
-      const unsigned int bpSettingsNumDispVals) override;
+  beliefprop::Status copyMessageValuesToNextLevelDown(
+    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::levelProperties& nextlevelProperties,
+    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
+    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
+    const unsigned int bpSettingsNumDispVals) override;
 
-    float* retrieveOutputDisparity(
-      const beliefprop::levelProperties& currentLevelProperties,
-      const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-      const beliefprop::checkerboardMessages<T*>& messagesDevice,
-      const unsigned int bpSettingsNumDispVals) override;
+  float* retrieveOutputDisparity(
+    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const unsigned int bpSettingsNumDispVals) override;
 
 private:
   const beliefprop::ParallelParameters& optCPUParams_;

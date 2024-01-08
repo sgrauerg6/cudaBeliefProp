@@ -18,14 +18,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the CUDA BP implementation
 
-#include <memory>
-#include <fstream>
-#include <map>
-#include <string>
-#include <tuple>
-#include <utility>
-#include <numeric>
-#include <algorithm>
+#include <array>
+#include <vector>
+#include <thread>
+#include <string_view>
 #include "../ParameterFiles/bpStructsAndEnums.h"
 
 //specify that running optimized CUDA run (used in RunAndEvaluateBpResults.h)
@@ -49,7 +45,7 @@ const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{  {16
 constexpr std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
 
 //name of processor used for running optimized implementation
-const std::string PROCESSOR_NAME{""};
+constexpr std::string_view PROCESSOR_NAME{""};
 
 //functions in RunAndEvaluateBpResults use above constants
 #include "RunAndEvaluateBpResults.h"

@@ -65,8 +65,8 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATIO
     BpOnDevice<T, DISP_VALS, VECTORIZATION>{
       std::make_unique<SmoothImageCPU>(parallelParams),
       std::make_unique<ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>>(parallelParams),
-      std::make_unique<RunBpStereoSetMemoryManagement<>>(),
-      std::make_unique<RunBpStereoSetMemoryManagement<T>>()});
+      std::make_unique<RunBpStereoSetMemoryManagement<T>>(),
+      std::make_unique<RunBpStereoSetMemoryManagement<float>>()});
   runData.appendData(procSetOutput.runData);
   procSetOutput.runData = runData;
 
