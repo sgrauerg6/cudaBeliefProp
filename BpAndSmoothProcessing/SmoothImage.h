@@ -29,9 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 constexpr float MIN_SIGMA_VAL_SMOOTH{0.1f}; //don't smooth input images if SIGMA_BP below this
 
-//more parameters for smoothing
+//parameter for smoothing
 constexpr float WIDTH_SIGMA_1{4.0f};
-//constexpr unsigned int MAX_SIZE_FILTER{25u};
 
 //functions relating to smoothing the images before running BP
 //Smoothing image always uses float data type

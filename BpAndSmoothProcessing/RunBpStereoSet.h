@@ -8,8 +8,6 @@
 #ifndef RUNBPSTEREOSET_H_
 #define RUNBPSTEREOSET_H_
 
-#include <cstring>
-#include <iostream>
 #include <unordered_map>
 #include <memory>
 #include <array>

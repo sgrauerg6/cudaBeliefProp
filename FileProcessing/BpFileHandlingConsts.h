@@ -8,7 +8,6 @@
 #ifndef BPFILEHANDLINGCONSTS_H_
 #define BPFILEHANDLINGCONSTS_H_
 
-#include <filesystem>
 #include <string_view>
 
 namespace bp_file_handling
