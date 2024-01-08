@@ -189,8 +189,8 @@ namespace RunAndEvaluateBpResults {
   //that each disparity was scaled by in the generation of the disparity map image
   RunData compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap)
   {
-    const OutputEvaluationResults<float> outputEvalResults =
-      outputDisparityMap.getOuputComparison(groundTruthDisparityMap, OutputEvaluationParameters<float>());
+    const OutputEvaluationResults outputEvalResults =
+      outputDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters());
     return outputEvalResults.runData();
   }
 

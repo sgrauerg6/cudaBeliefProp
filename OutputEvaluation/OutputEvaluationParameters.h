@@ -33,10 +33,9 @@ constexpr float Y_BORDER_SIZE_STEREO_EVAL = DEFAULT_Y_BORDER_GROUND_TRUTH_DISPAR
 //(make this infinity if you don't want to cap this value)
 constexpr float MAX_ABS_DIFF_BETWEEN_CORR_DISP = 65504.0f;
 
-template <class T>
 struct OutputEvaluationParameters {
-  std::vector<T> output_diff_thresholds_;
-  T max_diff_cap_;
+  std::vector<float> output_diff_thresholds_;
+  const float max_diff_cap_;
   unsigned int x_border_eval_;
   unsigned int y_border_eval_;
 
