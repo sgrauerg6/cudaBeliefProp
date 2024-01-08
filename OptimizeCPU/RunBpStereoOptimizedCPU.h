@@ -36,13 +36,11 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATIO
   const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
   unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
-#if (CPU_PARALLELIZATION_METHOD == USE_OPENMP)
   omp_set_num_threads(nthreads);
   #pragma omp parallel
   {
     nthreads = omp_get_num_threads();
   }
-#endif //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 
 //uncomment to print CPU number of each thread
 /*#ifndef _WIN32

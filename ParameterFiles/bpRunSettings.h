@@ -25,16 +25,6 @@
 #define HALF_PRECISION_SUPPORTED
 #define DOUBLE_PRECISION_SUPPORTED
 
-//uncomment to use C++ thread pool rather than OpenMP
-#define USE_THREAD_POOL_CHUNKS 1
-#define USE_THREAD_POOL_DISTRIBUTED 2
-#define USE_OPENMP 3
-
-//define cpu parallelization method
-//OpenMP set by default since it is generally faster than
-//current thread pool options
-#define CPU_PARALLELIZATION_METHOD USE_OPENMP
-
 #define DATA_TYPE_PROCESSING_FLOAT 0
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2
@@ -76,14 +66,9 @@ constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
 constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 
 //get string corresponding to CPU parallelization method
+//currently only OpenMP CPU parallelization supported
 constexpr const char* cpuParallelizationString() {
-  #if (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS)
-    return "THREAD_POOL_CHUNKS";
-  #elif (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED)
-    return "THREAD_POOL_DISTRIBUTED";
-  #else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
-    return "OPEN_MP";
-  #endif //CPU_PARALLELIZATION_METHOD
+  return "OPEN_MP";
 }
 
 //get string corresponding to acceleration method

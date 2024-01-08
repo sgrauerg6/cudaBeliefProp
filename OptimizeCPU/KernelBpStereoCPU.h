@@ -31,11 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
 #include <math.h>
-#if ((CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS) || (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED))
-#include "../ThreadPool/thread_pool.hpp"
-#else //(CPU_PARALLELIZATION_METHOD == USE_OPENMP)
 #include <omp.h>
-#endif //CPU_PARALLELIZATION_METHOD
 #include <algorithm>
 
 //headers to include differ depending on architecture and CPU vectorization setting
@@ -90,10 +86,6 @@ concept BpDataProcessSingOrVect_t = BpDataProcess_t<T> || BpDataVectProcess_t<T>
 class KernelBpStereoCPU
 {
 public:
-#if ((CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_CHUNKS) || (CPU_PARALLELIZATION_METHOD == USE_THREAD_POOL_DISTRIBUTED))
-  //initialize thread pool with default number of threads
-  inline static thread_pool tPool;
-#endif //CPU_PARALLELIZATION_METHOD
 
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
   //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
