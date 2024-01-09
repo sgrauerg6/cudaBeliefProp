@@ -9,17 +9,34 @@
 #define SHAREDUTILFUNCTS_H_
 
 #ifdef PROCESSING_ON_GPU
+#include "../ParameterFiles/bpStereoCudaParameters.h"
+//added to indicate that function is device function to be processed on GPU
 #define ARCHITECTURE_ADDITION __device__
+//define concept of allowed data types for belief propagation kernel processing on GPU
+template <typename T>
+concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, halftype>;
 #else
 #define ARCHITECTURE_ADDITION
+//define concept of allowed data types for belief propagation kernel processing on CPU
+#ifdef COMPILING_FOR_ARM
+//float16_t is used for half data type in ARM processing
+template <typename T>
+concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, float16_t>;
+#else
+//short is used for half data type in x86 processing
+template <typename T>
+concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
+#endif //COMPILING_FOR_ARM
 #endif
 
 template<typename T>
+requires std::is_arithmetic_v<T>
 ARCHITECTURE_ADDITION inline T getMin(const T val1, const T val2) {
   return ((val1 < val2) ? val1 : val2);
 }
 
 template<typename T>
+requires std::is_arithmetic_v<T>
 ARCHITECTURE_ADDITION inline T getMax(const T val1, const T val2) {
   return ((val1 > val2) ? val1 : val2);
 }

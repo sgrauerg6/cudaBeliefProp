@@ -15,9 +15,6 @@
 #include "KernelBpStereoCPU.h"
 #include "../ParameterFiles/bpRunSettings.h"
 
-template <typename T>
-concept imData_t = std::is_same_v<T, float> || std::is_same_v<T, unsigned int>;
-
 class SmoothImageCPU : public SmoothImage {
 public:
   SmoothImageCPU(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) {}

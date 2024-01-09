@@ -10,10 +10,13 @@
 
 #include "SharedUtilFuncts.h"
 
+template <typename T>
+concept imData_t = std::is_same_v<T, float> || std::is_same_v<T, unsigned int>;
+
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-template <typename T>
+template <imData_t T>
 ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(const unsigned int xVal, const unsigned int yVal,
   T* imagePixelsToFilter, float* filteredImagePixels, const unsigned int widthImages, const unsigned int heightImages,
   float* imageFilter, const unsigned int sizeFilter)
@@ -31,7 +34,7 @@ ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(const unsigned i
 //kernel to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-template <typename T>
+template <imData_t T>
 ARCHITECTURE_ADDITION inline void filterImageVerticalProcessPixel(const unsigned int xVal, const unsigned int yVal,
   T* imagePixelsToFilter, float* filteredImagePixels, const unsigned int widthImages, const unsigned int heightImages,
   float* imageFilter, const unsigned int sizeFilter)

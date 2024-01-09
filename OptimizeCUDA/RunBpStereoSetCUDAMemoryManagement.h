@@ -4,9 +4,8 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
 #include <cuda_runtime.h>
 
-//only processing that uses RunBpStereoSetCUDAMemoryManagement is the input stereo
-//images and output disparity map that always uses float data type
-template <typename T=float>
+//functions to manage memory on CUDA device including transferring data between host and CUDA device
+template <typename T>
 class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement<T>
 {
 public:

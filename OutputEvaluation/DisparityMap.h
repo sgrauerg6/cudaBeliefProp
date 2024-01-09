@@ -95,9 +95,8 @@ const OutputEvaluationResults DisparityMap<T>::getOutputComparison(
   output_evaluation.averageDispAbsDiffWithMax = output_evaluation.totalDispAbsDiffWithMax / this->getTotalPixels();
 
   //need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
-  //typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type needed to get data type for each mapping; for c++14 can be changed to auto
   std::for_each(output_evaluation.numSigDiffPixelsAtThresholds.begin(), output_evaluation.numSigDiffPixelsAtThresholds.end(),
-    [this, &output_evaluation](typename decltype(output_evaluation.numSigDiffPixelsAtThresholds)::value_type sigDiffPixelAtThresholdMap) {
+    [this, &output_evaluation](const auto& sigDiffPixelAtThresholdMap) {
       output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] =
         ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels()));
     });
