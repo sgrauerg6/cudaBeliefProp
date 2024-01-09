@@ -84,7 +84,7 @@ protected:
   void pnm_read(std::ifstream &file, std::string& buf) const;
 
   BpImage<unsigned char> imageRead(const std::string& fileName,
-      const image_type imageType, const bool weightedRGBConversion = true) const;
+    const image_type imageType, const bool weightedRGBConversion = true) const;
 
   //currently assuming single channel
   inline unsigned int getTotalPixels(/*const unsigned int numChannels = 1*/) const {

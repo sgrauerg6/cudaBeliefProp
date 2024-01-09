@@ -84,7 +84,7 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
   if (imageType == image_type::PGM_IMAGE) {
     /* read data */
     file.read((char*) (outImage.getPointerToPixelsStart()),
-        (cols * rows * sizeof(char)));
+      (cols * rows * sizeof(char)));
   }
   else if (imageType == image_type::PPM_IMAGE) {
     std::unique_ptr<char[]> rgbImagePtr = std::make_unique<char[]>(3 * cols * rows);

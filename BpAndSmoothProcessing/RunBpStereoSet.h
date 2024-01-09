@@ -108,11 +108,11 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
     runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].first = std::chrono::system_clock::now();
     runtime_start_end_timings[Runtime_Type_BP::TOTAL_WITH_TRANSFER].first = std::chrono::system_clock::now();
 
-    //first smooth the images using the Gaussian filter with the given SIGMA_BP value
-    //smoothed images are stored on the target device at locations smoothedImage1 and smoothedImage2
+    //first smooth the images using the Gaussian filter with the given smoothing sigma value
+    //smoothed images are stored on the target device
     for (unsigned int i = 0; i < 2u; i++) {
       (*(runBpOnDevice.smoothImage))(inputImages[i], algSettings.smoothingSigma_, smoothedImages[i]);
-         if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
+      if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
         return {0.0, DisparityMap<float>()};
       }
     }
