@@ -1090,10 +1090,8 @@ void KernelBpStereoCPU::dtStereoSIMD(U f[DISP_VALS])
 template<BpData_t T, BpDataVect_t U, BpDataProcess_t V, BpDataVectProcess_t W, unsigned int DISP_VALS>
 void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
-  U messageValsNeighbor1[DISP_VALS],
-  U messageValsNeighbor2[DISP_VALS],
-  U messageValsNeighbor3[DISP_VALS],
-  U dataCosts[DISP_VALS],
+  U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
+  U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
   T* dstMessageArray, const U& disc_k_bp, const bool dataAligned)
 {
   // aggregate and find min
@@ -1271,10 +1269,8 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
 template<BpData_t T, BpDataVect_t U, unsigned int DISP_VALS>
 void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
-  U messageValsNeighbor1[DISP_VALS],
-  U messageValsNeighbor2[DISP_VALS],
-  U messageValsNeighbor3[DISP_VALS],
-  U dataCosts[DISP_VALS],
+  U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
+  U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
   T* dstMessageArray, const U& disc_k_bp, const bool dataAligned)
 {
   msgStereoSIMDProcessing<T, U, T, U, DISP_VALS>(xVal, yVal,
