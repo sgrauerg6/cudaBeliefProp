@@ -33,7 +33,7 @@ const bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION_PNMFILE = true;
 
 class pnm_error { };
 
-static void read_packed(unsigned char *data, int size, std::ifstream &f) {
+/*static void read_packed(unsigned char *data, int size, std::ifstream &f) {
   unsigned char c = 0;
   
   int bitshift = -1;
@@ -45,9 +45,9 @@ static void read_packed(unsigned char *data, int size, std::ifstream &f) {
     data[pos] = (c >> bitshift) & 1;
     bitshift--;
     }
-}
+}*/
 
-static void write_packed(unsigned char *data, int size, std::ofstream &f) {
+/*static void write_packed(unsigned char *data, int size, std::ofstream &f) {
   unsigned char c = 0;
   
   int bitshift = 7;
@@ -60,7 +60,7 @@ static void write_packed(unsigned char *data, int size, std::ofstream &f) {
   c = 0;
       }
   }
-}
+}*/
 
 /* read PNM field, skipping comments */ 
 static void pnm_read(std::ifstream &file, std::string& buf) {
@@ -79,10 +79,10 @@ static void pnm_read(std::ifstream &file, std::string& buf) {
   file.ignore();
 }
 
-static image<uchar> *loadPBM(const char *name) {
+/*static image<uchar> *loadPBM(const char *name) {
   std::string buf;
   
-  /* read header */
+  //read header
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "P4", 2))
@@ -93,15 +93,15 @@ static image<uchar> *loadPBM(const char *name) {
   pnm_read(file, buf);
   int height = std::stoi(buf);
   
-  /* read data */
+  //read data
   image<uchar> *im = new image<uchar>(width, height);
   for (int i = 0; i < height; i++)
     read_packed(imPtr(im, 0, i), width, file);
   
   return im;
-}
+}*/
 
-static void savePBM(image<uchar> *im, const char *name) {
+/*static void savePBM(image<uchar> *im, const char *name) {
   int width = im->width();
   int height = im->height();
   std::ofstream file(name, std::ios::out | std::ios::binary);
@@ -109,7 +109,7 @@ static void savePBM(image<uchar> *im, const char *name) {
   file << "P4\n" << width << " " << height << "\n";
   for (int i = 0; i < height; i++)
     write_packed(imPtr(im, 0, i), width, file);
-}
+}*/
 
 static image<uchar> *loadPGM(const char *name) {
   std::string buf;
@@ -136,19 +136,19 @@ static image<uchar> *loadPGM(const char *name) {
   return im;
 }
 
-static void savePGM(image<uchar> *im, const char *name) {
+/*static void savePGM(image<uchar> *im, const char *name) {
   int width = im->width();
   int height = im->height();
   std::ofstream file(name, std::ios::out | std::ios::binary);
 
   file << "P5\n" << width << " " << height << "\n" << UCHAR_MAX << "\n";
   file.write((char *)imPtr(im, 0, 0), width * height * sizeof(uchar));
-}
+}*/
 
-static image<rgb> *loadPPM(const char *name) {
+/*static image<rgb> *loadPPM(const char *name) {
   std::string buf;
   
-  /* read header */
+  //read header
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "P6", 2))
@@ -163,12 +163,12 @@ static image<rgb> *loadPPM(const char *name) {
   if (std::stoi(buf) > UCHAR_MAX)
     throw pnm_error();
 
-  /* read data */
+  //read data
   image<rgb> *im = new image<rgb>(width, height);
   file.read((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
 
   return im;
-}
+}*/
 
 static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
   std::string buf;
@@ -216,14 +216,14 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
 }
 
 
-static void savePPM(image<rgb> *im, const char *name) {
+/*static void savePPM(image<rgb> *im, const char *name) {
   int width = im->width();
   int height = im->height();
   std::ofstream file(name, std::ios::out | std::ios::binary);
 
   file << "P6\n" << width << " " << height << "\n" << UCHAR_MAX << "\n";
   file.write((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
-}
+}*/
 
 static image<uchar> *loadPGMOrPPMImage(const char *name) {
   char pgmExtension[] = "pgm";

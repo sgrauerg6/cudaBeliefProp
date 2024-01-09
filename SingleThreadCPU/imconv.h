@@ -26,7 +26,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "imutil.h"
 #include "misc.h"
 
-#define  RED_WEIGHT  0.299
+static image<float> *imageUCHARtoFLOAT(image<uchar> *input) {
+  int width = input->width();
+  int height = input->height();
+  image<float> *output = new image<float>(width, height, false);
+
+  for (int y = 0; y < height; y++) {
+    for (int x = 0; x < width; x++) {
+      imRef(output, x, y) = imRef(input, x, y);
+    }
+  }
+  return output;  
+}
+
+/*#define RED_WEIGHT  0.299
 #define GREEN_WEIGHT  0.587
 #define BLUE_WEIGHT  0.114
 
@@ -56,19 +69,6 @@ static image<rgb> *imageGRAYtoRGB(image<uchar> *input) {
       imRef(output, x, y).r = imRef(input, x, y);
       imRef(output, x, y).g = imRef(input, x, y);
       imRef(output, x, y).b = imRef(input, x, y);
-    }
-  }
-  return output;  
-}
-
-static image<float> *imageUCHARtoFLOAT(image<uchar> *input) {
-  int width = input->width();
-  int height = input->height();
-  image<float> *output = new image<float>(width, height, false);
-
-  for (int y = 0; y < height; y++) {
-    for (int x = 0; x < width; x++) {
-      imRef(output, x, y) = imRef(input, x, y);
     }
   }
   return output;  
@@ -172,6 +172,6 @@ static image<uchar> *imageSHORTtoUCHAR(image<short> *input) {
   short min, max;
   min_max(input, &min, &max);
   return imageSHORTtoUCHAR(input, min, max);
-}
+}*/
 
 #endif
