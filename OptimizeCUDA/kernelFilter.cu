@@ -30,7 +30,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #undef PROCESSING_ON_GPU
 
 //checks if the current point is within the image bounds
-__device__ bool withinImageBoundsFilter(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height)
+__device__ bool withinImageBoundsFilter(
+  const unsigned int xVal, const unsigned int yVal,
+  const unsigned int width, const unsigned int height)
 {
   //xVal and yVal unsigned so no need to compare with zero
   return ((xVal < width) && (yVal < height));
@@ -61,7 +63,8 @@ __global__ void convertUnsignedIntImageToFloat(
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
 template<imData_t T>
-__global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePixels,
+__global__ void filterImageAcross(
+  T* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,
   float* imageFilter, const unsigned int sizeFilter)
 {
@@ -81,8 +84,10 @@ __global__ void filterImageAcross(T* imagePixelsToFilter, float* filteredImagePi
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
 template<imData_t T>
-__global__ void filterImageVertical(T* imagePixelsToFilter, float* filteredImagePixels,
-  const unsigned int widthImages, const unsigned int heightImages, float* imageFilter, const unsigned int sizeFilter)
+__global__ void filterImageVertical(
+  T* imagePixelsToFilter, float* filteredImagePixels,
+  const unsigned int widthImages, const unsigned int heightImages,
+  float* imageFilter, const unsigned int sizeFilter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;

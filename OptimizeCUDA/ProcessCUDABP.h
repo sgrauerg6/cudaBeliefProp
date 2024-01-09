@@ -42,10 +42,14 @@ public:
   ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
 
   //initialize the data cost at each pixel for each disparity value
-  beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
+  beliefprop::Status initializeDataCosts(
+    const beliefprop::BPsettings& algSettings,
+    const beliefprop::levelProperties& currentLevelProperties,
+    const std::array<float*, 2>& imagesOnTargetDevice,
+    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
 
-  beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+  beliefprop::Status initializeDataCurrentLevel(
+    const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::levelProperties& prevLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
@@ -58,7 +62,8 @@ public:
     const unsigned int bpSettingsNumDispVals) override;
 
   //run the given number of iterations of BP at the current level using the given message values in global device memory
-  beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+  beliefprop::Status runBPAtCurrentLevel(
+    const beliefprop::BPsettings& algSettings,
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
