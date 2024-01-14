@@ -18,28 +18,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file defines the methods to perform belief propagation for disparity map estimation from stereo images on CUDA
 
-
-//#include "kernelBpStereoHeader.cuh"
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 #define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
 #undef PROCESSING_ON_GPU
-
-#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
-#include "SharedMemoryKernels/KernelBpStereoUseSharedMemory.cu"
-#elif ((USE_SHARED_MEMORY == 2) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
-#include "SharedMemoryKernels/KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu"
-#elif ((USE_SHARED_MEMORY == 3) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
-#include "SharedMemoryKernels/KernelBpStereoUseDynamicSharedMemory.cu"
-#elif ((USE_SHARED_MEMORY == 4) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
-#include "SharedMemoryKernels/KernelBpStereoDataAndMessageInDynamicSharedMemory.cu"
-#else
-#ifdef CUDA_HALF_SUPPORT
 #include "kernelBpStereoHalf.cu"
-//uncomment if supporting half2 data type in CUDA processing
-//#include "kernelBpStereoHalfTwo.cu"
-#endif //CUDA_HALF_SUPPORT
-#endif //#if ((USE_SHARED_MEMORY == 1) && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
 
 //uncomment for CUDA kernel debug functions for belief propagation processing
 //#include "kernelBpStereoDebug.h"

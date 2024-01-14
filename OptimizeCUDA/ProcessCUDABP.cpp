@@ -20,7 +20,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"
-#include "../ParameterFiles/bpStereoCudaParameters.h"
 #include <iostream>
 
 template<BpData_t T, unsigned int DISP_VALS>
@@ -418,10 +417,6 @@ template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>
 template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
-//half precision only supported with compute capability 5.3 and higher
-//TODO: not sure if using CUDA_ARCH works as intended here since it's host code
-//may need to define whether or not to process half-precision elsewhere
-#ifdef CUDA_HALF_SUPPORT
 template class ProcessCUDABP<halftype, 0>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
@@ -430,6 +425,5 @@ template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
-#endif //CUDA_HALF_SUPPORT
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;

@@ -24,9 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string_view>
 #include "../ParameterFiles/bpStructsAndEnums.h"
 
-//specify that running optimized CUDA run (used in RunAndEvaluateBpResults.h)
-#define OPTIMIZED_CUDA_RUN
-
 //option to optimize parallel parameters by running BP w/ multiple parallel parameters options by
 //finding the parallel parameters with the lowest runtime, and then setting the parallel parameters
 //to the best found parallel parameters in the final run

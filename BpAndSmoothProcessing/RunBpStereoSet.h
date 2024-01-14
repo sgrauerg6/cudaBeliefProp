@@ -24,6 +24,7 @@
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../ImageDataAndProcessing/BpImage.h"
 #include "../OutputEvaluation/RunData.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 
 //stereo processing output
 struct ProcessStereoSetOutput
@@ -33,7 +34,7 @@ struct ProcessStereoSetOutput
   RunData runData;
 };
 
-template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smoothImage;
   const std::unique_ptr<ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>>& runBpStereo;
@@ -41,7 +42,7 @@ struct BpOnDevice {
   const std::unique_ptr<RunBpStereoSetMemoryManagement<float>>& memManagementImages;
 };
 
-template <typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 class RunBpStereoSet {
 public:
   virtual std::string getBpRunDescription() = 0;
@@ -60,7 +61,7 @@ protected:
 };
 
 
-template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
 ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
   const beliefprop::BPsettings& algSettings, const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice)
 {

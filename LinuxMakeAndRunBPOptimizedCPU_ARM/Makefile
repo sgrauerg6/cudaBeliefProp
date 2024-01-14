@@ -14,7 +14,7 @@ OPENMP_LIB := -fopenmp
 CC := g++
 
 # have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -O3 -std=c++20 -Wall -march=native
+COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM -O3 -std=c++20 -Wall -march=native
 DBG    = -g
 
 all: impDriverCPU

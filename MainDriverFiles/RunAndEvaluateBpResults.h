@@ -23,6 +23,7 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../SingleThreadCPU/stereo.h"
 #include "../OutputEvaluation/RunData.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 
 typedef std::filesystem::path filepathtype;
 
@@ -38,6 +39,7 @@ template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATIO
 using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 //set data type used for half-precision
 #ifdef COMPILING_FOR_ARM
+#include <arm_neon.h> //needed for float16_t type
 using halftype = float16_t;
 #else
 using halftype = short;

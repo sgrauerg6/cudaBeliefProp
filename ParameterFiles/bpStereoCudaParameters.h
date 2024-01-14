@@ -21,21 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef BP_STEREO_CUDA_PARAMETERS_H
 #define BP_STEREO_CUDA_PARAMETERS_H
 
-#include "bpStereoParameters.h"
-#include "bpRunSettings.h"
-#include "bpStructsAndEnums.h"
-#include <vector>
-
-//determine whether or not to support CUDA half-precision
-//comment out if not supporting CUDA half-precision
-//remove (or don't use) capability for half precision if using GPU with compute capability under 5.3
-//half precision currently only supported on CPU if using GPU with compute capability under 5.3
-#define CUDA_HALF_SUPPORT
-
-//uncomment to use bfloat16 data type for half precision in CUDA (only supported in compute capability sm_80 and later)
-//#define USE_BFLOAT16_FOR_HALF_PRECISION
-
-#ifdef CUDA_HALF_SUPPORT
 //set data type used for half-precision with CUDA
 #ifdef USE_BFLOAT16_FOR_HALF_PRECISION
 #include <cuda_bf16.h>
@@ -44,7 +29,6 @@ using halftype = __nv_bfloat16;
 #include <cuda_fp16.h>
 using halftype = half;
 #endif //USE_BFLOAT16_FOR_HALF_PRECISION
-#endif //CUDA_HALF_SUPPORT
 
 #define USE_SHARED_MEMORY 0
 #define DISP_INDEX_START_REG_LOCAL_MEM 0

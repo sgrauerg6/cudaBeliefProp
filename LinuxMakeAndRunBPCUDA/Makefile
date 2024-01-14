@@ -24,12 +24,18 @@ LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart -l
 NVCC := $(CUDA_DIR)/bin/nvcc
 CC    = g++
 
+# uncomment to use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
+BFLOAT_DATA_TYPE_SETTING = #-DUSE_BFLOAT16_FOR_HALF_PRECISION
+
+# defines to add for CUDA processing
+CUDA_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING}
+
 # have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX
+COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX ${CUDA_RUN_DEFINES}
 
 # include the optimization level
 COMPILE_FLAGS += -O3 -std=c++20 -Wall
-CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -O3 -std=c++20
+CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX ${CUDA_RUN_DEFINES} -O3 -std=c++20
 ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++20
 
 # may need to adjust to allow support for target GPU (note that can't use half precision before compute capability 5.3)

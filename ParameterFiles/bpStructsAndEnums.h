@@ -16,6 +16,7 @@
 #include <string>
 #include "bpStereoParameters.h"
 #include "bpRunSettings.h"
+#include "bpTypeConstraints.h"
 #include "../OutputEvaluation/RunData.h"
 
 namespace beliefprop {
@@ -85,7 +86,7 @@ struct levelProperties
     offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum), divPaddedChBoardWAlign_(divPaddedChBoardWAlign) {}
 
   //get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
-  template <typename T>
+  template <BpData_t T>
   beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
     const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
     return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
@@ -94,7 +95,7 @@ struct levelProperties
 
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
   //with the given number of possible movements
-  template <typename T>
+  template <BpData_t T>
   unsigned int getNumDataInBpArrays(const unsigned int numDisparityValues) const {
     return getNumDataForAlignedMemoryAtLevel<T>({widthLevel_, heightLevel_}, numDisparityValues);
   }
@@ -111,7 +112,7 @@ struct levelProperties
            (checkerboardWidth + (numDataAlignWidth_ - (checkerboardWidth % numDataAlignWidth_)));
   }
 
-  template <typename T>
+  template <BpData_t T>
   unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& widthHeightLevel,
       const unsigned int totalPossibleMovements) const
   {
@@ -128,7 +129,7 @@ struct levelProperties
     }
   }
 
-  template <typename T, beliefprop::AccSetting ACC_SETTING>
+  template <BpData_t T, beliefprop::AccSetting ACC_SETTING>
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
     const unsigned int totalPossibleMovements, const unsigned int numLevels)
   {
@@ -163,7 +164,11 @@ enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, 
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 enum class Status { NO_ERROR, ERROR };
 
-template <class T>
+//belief propagation checkerboard messages and data costs must be pointers to a bp data type
+template <typename T>
+concept BpData_ptr = BpData_t<std::remove_pointer_t<T>> && std::is_pointer_v<T>;
+
+template <BpData_ptr T>
 struct checkerboardMessages
 {
   //each checkerboard messages element corresponds to separate Message_Arrays enum that go from 0 to 7 (8 total)
@@ -171,7 +176,7 @@ struct checkerboardMessages
   std::array<T, 8> checkerboardMessagesAtLevel_;
 };
 
-template <class T>
+template <BpData_ptr T>
 struct dataCostData
 {
   T dataCostCheckerboard0_;

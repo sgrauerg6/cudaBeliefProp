@@ -18,6 +18,7 @@
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpRunSettings.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
 #include "RunBpStereoSetMemoryManagement.h"
@@ -28,7 +29,7 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 //Abstract class to process belief propagation on target device
 //Some of the class functions need to be overridden to for processing on
 //target device
-template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
 class ProcessBPOnTargetDevice {
 public:
   ProcessBPOnTargetDevice() { }
@@ -162,7 +163,7 @@ public:
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
 //input is images on target device for computation
 //output is disparity map and processing runtimes
-template<typename T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
+template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
 std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
   const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)

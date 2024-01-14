@@ -2,10 +2,11 @@
 #define RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
 
 #include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 #include <cuda_runtime.h>
 
 //functions to manage memory on CUDA device including transferring data between host and CUDA device
-template <typename T>
+template <BpData_t T>
 class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement<T>
 {
 public:

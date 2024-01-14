@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
@@ -39,17 +40,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h>
 #endif //COMPILING_FOR_ARM
 
-//define concepts of allowed data types for belief propagation data storage and processing
-#ifdef COMPILING_FOR_ARM
-//float16_t is used for half data type in ARM processing
-template <typename T>
-concept BpData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, float16_t>;
-#else
-//short is used for half data type in x86 processing
-template <typename T>
-concept BpData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
-#endif //COMPILING_FOR_ARM
-
+//data processing on CPU only uses float or double
+//half type gets converted to float for processing and then back to half for storage
 template <typename T>
 concept BpDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double>;
 

@@ -17,6 +17,7 @@
 #include "ProcessOptimizedCPUBP.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 
 template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {

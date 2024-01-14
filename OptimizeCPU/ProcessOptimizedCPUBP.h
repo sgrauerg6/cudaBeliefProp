@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/bpTypeConstraints.h"
 
 //include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.cpp"

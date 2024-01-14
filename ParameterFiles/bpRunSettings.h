@@ -14,8 +14,7 @@
 #include <map>
 #include "../OutputEvaluation/RunData.h"
 
-//uncomment if compiling/running on ARM architecture
-//#define COMPILING_FOR_ARM
+//check if running on ARM architecture
 #ifdef COMPILING_FOR_ARM
 #include <arm_neon.h> //needed for float16_t type
 #endif
