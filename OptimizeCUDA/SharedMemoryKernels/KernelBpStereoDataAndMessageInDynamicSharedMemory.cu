@@ -247,7 +247,6 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(int xVal, in
       currentLMessageArray, disc_k_bp, dataAligned);
 }
 
-#if CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON == DATA_TYPE_PROCESSING_FLOAT
 
 //device portion of the kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the
 //"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -384,8 +383,6 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
     }
   }
 }
-
-#elif CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON == DATA_TYPE_PROCESSING_HALF
 
 //device portion of the kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the
 //"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -526,6 +523,3 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
     }
   }
 }
-
-#endif
-

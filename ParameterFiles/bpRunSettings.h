@@ -30,13 +30,6 @@
 //not currently supporting half2 data type
 #define DATA_TYPE_PROCESSING_HALF_TWO 3
 
-//by default, 32-bit float data is used with optimized GPU memory management and optimized indexing
-//See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these optimizations (note that the optimized indexing was present in the initial implementation)
-//Can remove optimized GPU memory management (making the processing more similar to the initial work) by setting beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT to false
-//May be able to speed up processing by switching to using 16-bit half data by setting CURRENT_DATA_TYPE_PROCESSING to DATA_TYPE_PROCESSING_HALF
-//Optimized indexing can be turned off by changing the beliefprop::OPTIMIZED_INDEXING_SETTING value to false (not recommended; this slows down processing)
-#define CURRENT_DATA_TYPE_PROCESSING DATA_TYPE_PROCESSING_FLOAT
-
 //define and set CPU vectorization options using preprocessor (since needed to determine what code gets compiled to support vectorization)
 #define AVX_256_DEFINE 0
 #define AVX_512_DEFINE 1
@@ -68,8 +61,15 @@ enum class AccSetting {
   NONE, AVX256, AVX512, NEON, CUDA
 };
 
-constexpr bool OPTIMIZED_INDEXING_SETTING{true};
+//by default, optimized GPU memory management and optimized indexing used
+//See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these
+//optimizations (note that the optimized indexing was present in the initial implementation)
+//Can remove optimized GPU memory management (making the processing more similar to the initial work)
+//by setting USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT to false
+//Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to false
+//(not recommended; this slows down processing)
 constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
+constexpr bool OPTIMIZED_INDEXING_SETTING{true};
 constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 
 //get string corresponding to CPU parallelization method

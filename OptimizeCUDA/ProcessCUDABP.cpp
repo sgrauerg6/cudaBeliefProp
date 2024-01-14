@@ -39,8 +39,6 @@ inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *fi
 }
 
 /* May be needed if using half2
-#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
-
 template<>
 int ProcessCUDABP<half2>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
       return (int)ceil(((ceil(((float)widthLevelActualIntegerSize) / 2.0)) / 2.0));
@@ -51,8 +49,6 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
   ProcessCUDABP<half2> processCUDABPHalf;
   return processCUDABPHalf.getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize) * 2;
 }
-
-#endif
 */
 
 //functions directed related to running BP to retrieve the movement between the images

@@ -202,8 +202,6 @@ __device__ inline void dtStereoSharedAndRegLocalMemory<half>(half* dstShared, ha
 #endif
 }
 
-#if CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON == DATA_TYPE_PROCESSING_FLOAT
-
 template<>
 __device__ inline void msgStereo<float, float>(int xVal, int yVal,
     beliefprop::levelProperties& currentLevelProperties,
@@ -436,8 +434,6 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #endif
 }
-
-#elif CURRENT_DATA_TYPE_PROCESSING_FROM_PYTHON == DATA_TYPE_PROCESSING_HALF
 
 template<>
 __device__ inline void msgStereo<half, half>(int xVal, int yVal,
@@ -733,15 +729,3 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #endif
 }
-#endif
-
-
-
-
-
-
-
-
-
-
-

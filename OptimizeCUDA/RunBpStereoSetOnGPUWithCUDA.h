@@ -21,10 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
-#if ((CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF) || (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO))
-#include <cuda_fp16.h>
-#endif
-
 #include <cuda_runtime.h>
 #include "ProcessCUDABP.h"
 #include <iostream>
@@ -108,8 +104,6 @@ public:
     const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
   {
 
-#if CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF
-
     //std::cout << "Processing as half on GPU\n";
     RunBpStereoSetOnGPUWithCUDA<halftype> runCUDABpStereoSet;
     ProcessCUDABP<halftype> runCUDABPHalfPrecision;
@@ -121,21 +115,6 @@ public:
       smoothImage,
       &runCUDABPHalfPrecision,
       memManagementImages);
-
-#elif CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO
-
-    //std::cout << "Processing as half2 on GPU\n";
-    RunBpStereoSetOnGPUWithCUDA<half2> runCUDABpStereoSet;
-    ProcessCUDABP<half2> runCUDABPHalfTwoDataType;
-    return runCUDABpStereoSet(refImagePath, testImagePath, algSettings, saveDisparityMapImagePath, resultsStream, smoothImage, &runCUDABPHalfTwoDataType, memManagementImages);
-
-#else
-
-    std::cout << "ERROR IN DATA TYPE\n";
-    return ProcessStereoSetOutput();
-
-#endif //CURRENT_DATA_TYPE_PROCESSING
-
   }
 };
 
