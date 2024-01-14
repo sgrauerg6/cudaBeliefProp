@@ -700,7 +700,6 @@ namespace RunAndEvaluateBpResults {
     for (const auto& runData : noVectDataVectSpeedupDbl.first.first) {
       runOutputNoVect.first.push_back(runData);
     }
-#ifdef HALF_PRECISION_SUPPORTED
     //perform runs with and without vectorization using half-precision
     auto runOutputHalf = runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
     const auto halfSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, std::string(SPEEDUP_HALF));
@@ -708,7 +707,6 @@ namespace RunAndEvaluateBpResults {
     for (const auto& runData : noVectDataVectSpeedupHalf.first.first) {
       runOutputNoVect.first.push_back(runData);
     }
-#endif //HALF_PRECISION_SUPPORTED
     //add output for double and half precision runs to output of floating-point runs to write
     //final output with all data
     runOutput.first.insert(runOutput.first.end(), runOutputDouble.first.begin(), runOutputDouble.first.end());
@@ -719,10 +717,8 @@ namespace RunAndEvaluateBpResults {
     runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupFl.second.begin(), noVectDataVectSpeedupFl.second.end());
     runOutput.second.insert(runOutput.second.end(), runOutputDouble.second.begin(), runOutputDouble.second.end());
     runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupDbl.second.begin(), noVectDataVectSpeedupDbl.second.end());
-#ifdef HALF_PRECISION_SUPPORTED
     runOutput.second.insert(runOutput.second.end(), runOutputHalf.second.begin(), runOutputHalf.second.end());
     runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupHalf.second.begin(), noVectDataVectSpeedupHalf.second.end());
-#endif //HALF_PRECISION_SUPPORTED
 
     //get speedup info for using optimized parallel parameters and disparity count as template parameter across all data types
     const auto speedupOverBaseline = RunAndEvaluateBpResults::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs");

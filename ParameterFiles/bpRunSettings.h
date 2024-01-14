@@ -19,11 +19,6 @@
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
-//comment out corresponding define if half or double precision
-//not supported (or to not to process half or double precision) 
-#define HALF_PRECISION_SUPPORTED
-#define DOUBLE_PRECISION_SUPPORTED
-
 #define DATA_TYPE_PROCESSING_FLOAT 0
 #define DATA_TYPE_PROCESSING_DOUBLE 1
 #define DATA_TYPE_PROCESSING_HALF 2

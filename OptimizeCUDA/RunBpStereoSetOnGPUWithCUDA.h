@@ -88,8 +88,6 @@ public:
 //TODO: needs to be updated with other code changes
 #ifdef COMPILING_FOR_ARM
 
-#ifdef HALF_PRECISION_SUPPORTED
-
 template<>
 class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
 {
@@ -117,8 +115,6 @@ public:
       memManagementImages);
   }
 };
-
-#endif //HALF_PRECISION_SUPPORTED
 
 #endif //COMPILING_FOR_ARM
 
