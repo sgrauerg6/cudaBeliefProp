@@ -48,7 +48,8 @@ This code runs belief propagation for stereo vision on the CPU and GPU using CUD
 
 The parameters are defined in ParameterFiles/bpStereoParameters.h and are documented in that file and the paper.  
 In order to compile/re-compile the program, navigate to the directory LinuxMakeAndRunBPOptimizedCPU (for optimized GPU
-implementation) or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".
+implementation on x86 processors), the directory LinuxMakeAndRunBPOptimizedCPU (for optimized CPU implementation on ARM
+processors), or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".
 
 A number of stereo sets including the Tsukuba stereo are included in the "StereoSets" folder.  In order to run the
 implementation on these stereo sets using the initial parameters as defined in ParameterFiles/bpStereoParameters.h,
@@ -59,12 +60,10 @@ perform the following steps:
 
 -If using a CUDA device of Compute Capability 8.0 or higher, can switch half-precision processing from the
 default "half" datatype to the bfloat16 datatype by removing the comment in the line 
-"//#define USE_BFLOAT16_FOR_HALF_PRECISION" in ParameterFiles/bpStereoCudaParameters.h (line 36)...this change
+"BFLOAT_DATA_TYPE_SETTING = #-DUSE_BFLOAT16_FOR_HALF_PRECISION" in LinuxMakeAndRunBPCUDA/Makefile (line 28)...this change
 fixes a bug with processing of conesFullSizeCropped at half-precision using CUDA (see "ADDITIONAL NOTE").
 
 1b.  (CPU ONLY) Make any necessary or desired adjustments to run on target CPU:
-
--If ARM CPU, uncomment the line "//#define COMPILING_FOR_ARM" in ParameterFiles/bpRunSettings.h (line 19).
 
 -If x86 CPU, set vectorization to AVX-256 if AVX-512 is not supported on target CPU in line
 "#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 59).
@@ -73,7 +72,8 @@ fixes a bug with processing of conesFullSizeCropped at half-precision using CUDA
 In some tests have gotten faster results with setting OMP_PROC_BIND=true but in other tests have gotten better
 results with default configuration and not setting OMP_PROC_BIND.
 
-2.  If running optimized CPU implementation, navigate to the folder LinuxMakeAndRunBPOptimizedCPU.
+2.  If running optimized CPU implementation on x86 CPU, navigate to the folder LinuxMakeAndRunBPOptimizedCPU.
+    If running optimized CPU implementation on ARM CPU, navigate to the folder LinuxMakeAndRunBPOptimizedCPU_ARM.
     If running CUDA implemenetation, navigate to folder LinuxMakeAndRunBPCUDA.
 
 3.  Execute the commands "make clean" and "make" on the command line.
@@ -134,8 +134,8 @@ single-thread output disparity map in the test with conesFullSizeCropped at half
 this is that half-precision value(s) in processing in the CUDA kernels become either infinity or NaN.  If using 
 a CUDA device with compute capability 8.0 or later, can switch CUDA processing at half precision from the "half"
 datatype to the bfloat16 datatype to fix this bug (at least in the conesFullSizeCropped test) by removing the
-comment in the line "//#define USE_BFLOAT16_FOR_HALF_PRECISION" in ParameterFiles/bpStereoCudaParameters.h
-(line 36).
+comment in the line "BFLOAT_DATA_TYPE_SETTING = #-DUSE_BFLOAT16_FOR_HALF_PRECISION" in
+LinuxMakeAndRunBPCUDA/Makefile (line 28).
 
 
 WINDOWS INSTRUCTIONS (OUTDATED...HASN'T BEEN MAINTAINED FOR AWHILE):
