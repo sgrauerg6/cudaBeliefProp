@@ -65,8 +65,9 @@ fixes a bug with processing of conesFullSizeCropped at half-precision using CUDA
 
 1b.  (CPU ONLY) Make any necessary or desired adjustments to run on target CPU:
 
--If x86 CPU, set vectorization to AVX-256 if AVX-512 is not supported on target CPU in line
-"#define CPU_VECTORIZATION_DEFINE {SETTING}" in ParameterFiles/bpRunSettings.h (line 59).
+-On x86 CPU, AVX-512 vectorization is used by default.  If AVX-512 is not supported on target CPU, set vectorization
+to AVX-256 by changing line 18 of LinuxMakeAndRunBPOptimizedCPU/Makefile.h from
+"CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION" (line 18) to "CPU_VECTORIZATION_DEFINE = -DAVX_256_VECTORIZATION".
 
 -May also want to adjust environment variables OMP_PLACES and OMP_PROC_BIND to optimize OpenMP thread configuration.
 In some tests have gotten faster results with setting OMP_PROC_BIND=true but in other tests have gotten better

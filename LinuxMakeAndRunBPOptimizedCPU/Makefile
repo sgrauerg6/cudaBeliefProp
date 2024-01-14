@@ -13,8 +13,12 @@ OPENMP_LIB := -fopenmp
 # define the path for the compiler
 CC := g++
 
+# setting for CPU vectorization
+# switch to -DAVX_256_VECTORIZATION if AVX 512 not supported on target CPU
+CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
+
 # have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -O3 -std=c++20 -Wall -march=native
+COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION} -O3 -std=c++20 -Wall -march=native
 DBG    = -g
 
 all: impDriverCPU
