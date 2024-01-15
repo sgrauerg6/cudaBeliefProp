@@ -164,10 +164,6 @@ enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, 
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 enum class Status { NO_ERROR, ERROR };
 
-//belief propagation checkerboard messages and data costs must be pointers to a bp data type
-template <typename T>
-concept BpData_ptr = BpData_t<std::remove_pointer_t<T>> && std::is_pointer_v<T>;
-
 template <BpData_ptr T>
 struct checkerboardMessages
 {
@@ -176,6 +172,7 @@ struct checkerboardMessages
   std::array<T, 8> checkerboardMessagesAtLevel_;
 };
 
+//belief propagation checkerboard messages and data costs must be pointers to a bp data type
 template <BpData_ptr T>
 struct dataCostData
 {

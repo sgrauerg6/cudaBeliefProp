@@ -93,4 +93,8 @@ concept BpDataProcessSingOrVect_t = BpDataProcess_t<T> || BpDataVectProcess_t<T>
 
 #endif //defined(OPTIMIZED_CUDA_RUN)
 
+//constraint for pointer to BpData_t
+template <typename T>
+concept BpData_ptr = std::is_pointer_v<T> && BpData_t<std::remove_pointer_t<T>>;
+
 #endif //BP_TYPE_CONSTRAINTS_H_
