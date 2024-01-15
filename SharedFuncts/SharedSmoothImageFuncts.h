@@ -9,9 +9,7 @@
 #define SHAREDSMOOTHIMAGEFUNCTS_H_
 
 #include "SharedUtilFuncts.h"
-
-template <typename T>
-concept imData_t = std::is_same_v<T, float> || std::is_same_v<T, unsigned int>;
+#include "../ParameterFiles/bpTypeConstraints.h"
 
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture

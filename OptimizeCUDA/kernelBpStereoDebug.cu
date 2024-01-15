@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file defines CUDA kernel functions for debugging belief propagation processing
 
-template<BpKernelData_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 __global__ void printDataAndMessageValsAtPointKernel(
   const unsigned int xVal, const unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -84,7 +84,7 @@ __global__ void printDataAndMessageValsAtPointKernel(
 }
 
 
-template<BpKernelData_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 __device__ void printDataAndMessageValsAtPointDevice(
   const unsigned int xVal, const unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -150,7 +150,7 @@ __device__ void printDataAndMessageValsAtPointDevice(
 }
 
 
-template<BpKernelData_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 __global__ void printDataAndMessageValsToPointKernel(
   const unsigned int xVal, const unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -217,7 +217,7 @@ __global__ void printDataAndMessageValsToPointKernel(
 }
 
 
-template<BpKernelData_t T, unsigned int DISP_VALS>
+template<BpData_t T, unsigned int DISP_VALS>
 __device__ void printDataAndMessageValsToPointDevice(
   const unsigned int xVal, const unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,

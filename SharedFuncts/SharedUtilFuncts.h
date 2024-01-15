@@ -9,24 +9,10 @@
 #define SHAREDUTILFUNCTS_H_
 
 #ifdef OPTIMIZED_CUDA_RUN
-#include "../ParameterFiles/bpStereoCudaParameters.h"
 //added in front of function header to indicate that function is device function to be processed on GPU
 #define ARCHITECTURE_ADDITION __device__
-//define concept of allowed data types for belief propagation kernel processing on GPU
-template <typename T>
-concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, halftype>;
 #else
 #define ARCHITECTURE_ADDITION
-//define concept of allowed data types for belief propagation kernel processing on CPU
-#ifdef COMPILING_FOR_ARM
-//float16_t is used for half data type in ARM processing
-template <typename T>
-concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, float16_t>;
-#else
-//short is used for half data type in x86 processing
-template <typename T>
-concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
-#endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CUDA_RUN
 
 template<typename T>

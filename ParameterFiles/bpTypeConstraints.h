@@ -5,6 +5,10 @@
 #ifndef BP_TYPE_CONSTRAINTS_H_
 #define BP_TYPE_CONSTRAINTS_H_
 
+//constraint for data type when smoothing images
+template <typename T>
+concept imData_t = std::is_same_v<T, float> || std::is_same_v<T, unsigned int>;
+
 //define concepts of allowed data types for belief propagation data storage and processing
 #if defined(OPTIMIZED_CUDA_RUN)
 
