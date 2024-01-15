@@ -186,16 +186,6 @@ namespace RunAndEvaluateBpResults {
     return speedupData;
   }
 
-  //compare resulting disparity map with a ground truth (or some other disparity map...)
-  //this function takes as input the file names of a two disparity maps and the factor
-  //that each disparity was scaled by in the generation of the disparity map image
-  RunData compareDispMaps(const DisparityMap<float>& outputDisparityMap, const DisparityMap<float>& groundTruthDisparityMap)
-  {
-    const OutputEvaluationResults outputEvalResults =
-      outputDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters());
-    return outputEvalResults.runData();
-  }
-
   //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
   //on the reference and test images specified by numStereoSet
   //run only optimized implementation if runOptImpOnly is true
@@ -254,13 +244,13 @@ namespace RunAndEvaluateBpResults {
     const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
     DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
     runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
-    runData.appendData(compareDispMaps(run_output[0].outDisparityMap, groundTruthDisparityMap));
+    runData.appendData(run_output[0].outDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters()).runData());
     if (!runOptImpOnly) {
       runData.addDataWHeader(singleThreadCPUImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
-      runData.appendData(compareDispMaps(run_output[1].outDisparityMap, groundTruthDisparityMap));
+      runData.appendData(run_output[1].outDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters()).runData());
 
       runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. " + singleThreadCPUImp->getBpRunDescription() + " result", std::string());
-      runData.appendData(compareDispMaps(run_output[0].outDisparityMap, run_output[1].outDisparityMap));
+      runData.appendData(run_output[0].outDisparityMap.getOutputComparison(run_output[1].outDisparityMap, OutputEvaluationParameters()).runData());
     }
 
     //return structure indicating that run succeeded along with data from run
