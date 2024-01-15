@@ -17,6 +17,7 @@
 #include <cmath>
 #include <array>
 #include <string_view>
+#include <type_traits>
 
 enum class image_type { PGM_IMAGE, PPM_IMAGE };
 constexpr bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
@@ -24,6 +25,7 @@ constexpr std::string_view PGM_EXTENSION = "pgm";
 constexpr std::string_view PPM_EXTENSION = "ppm";
 
 template <class T>
+requires std::is_arithmetic_v<T>
 class BpImage {
 public:
   BpImage() : widthHeight_{0, 0} {}

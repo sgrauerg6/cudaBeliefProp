@@ -11,10 +11,11 @@
 
 #include <new>
 #include <algorithm>
+#include "../ParameterFiles/bpTypeConstraints.h"
 
 //Class for memory management with functions defined for standard memory allocation using CPU
 //Class functions can be overridden to support other computation devices such as GPU
-template <typename T>
+template <BpData_t T>
 class RunBpStereoSetMemoryManagement
 {
 public:

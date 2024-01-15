@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define KERNEL_FILTER_HEADER_CUH
 
 #include <cuda_runtime.h>
+#include <type_traits>
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBoundsFilter(
@@ -39,7 +40,7 @@ __global__ void convertUnsignedIntImageToFloat(
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-template<typename T>
+template<imData_t T>
 __global__ void filterImageAcross(
   T* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,
@@ -48,7 +49,7 @@ __global__ void filterImageAcross(
 //kernel to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
-template<typename T>
+template<imData_t T>
 __global__ void filterImageVertical(
   T* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,

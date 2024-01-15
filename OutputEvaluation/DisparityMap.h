@@ -18,6 +18,7 @@
 #include "OutputEvaluationParameters.h"
 
 template<class T>
+requires std::is_arithmetic_v<T>
 class DisparityMap : public BpImage<T> {
 public:
   DisparityMap() : BpImage<T>() {}
