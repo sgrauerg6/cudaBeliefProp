@@ -19,12 +19,6 @@
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
-#define DATA_TYPE_PROCESSING_FLOAT 0
-#define DATA_TYPE_PROCESSING_DOUBLE 1
-#define DATA_TYPE_PROCESSING_HALF 2
-//not currently supporting half2 data type
-#define DATA_TYPE_PROCESSING_HALF_TWO 3
-
 //define and set CPU vectorization options using preprocessor (since needed to determine what code gets compiled to support vectorization)
 #define AVX_256_DEFINE 0
 #define AVX_512_DEFINE 1

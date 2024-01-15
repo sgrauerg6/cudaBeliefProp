@@ -311,58 +311,6 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const
   return beliefprop::Status::NO_ERROR;
 }
 
-#if (CURRENT_DATA_TYPE_PROCESSING == DATA_TYPE_PROCESSING_HALF_TWO)
-
-//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
-template<>
-beliefprop::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& nextlevelProperties,
-  const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyFrom,
-  const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyTo)
-{
-  /*ProcessCUDABP<half> processCUDABPHalf;
-  processCUDABPHalf.copyMessageValuesToNextLevelDown(
-      prevlevelProperties,
-      currentLevelProperties,
-      (half*)messagesDeviceCopyFrom.messagesU_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesD_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesL_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesR_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesU_Checkerboard1,
-      (half*)messagesDeviceCopyFrom.messagesD_Checkerboard1,
-      (half*)messagesDeviceCopyFrom.messagesL_Checkerboard1,
-      (half*)messagesDeviceCopyFrom.messagesR_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesU_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesD_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesL_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesR_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesU_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesD_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesL_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesR_Checkerboard1);*/
-  return beliefprop::Status::NO_ERROR;
-}
-
-//due to indexing, need to convert to half* and use half arrays for this function
-template<>
-beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& prevLevelProperties,
-  const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboard,
-  const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboardWriteTo)
-{
-  /*ProcessCUDABP<half> processCUDABPHalf;
-  processCUDABPHalf.initializeDataCurrentLevel(currentLevelProperties,
-      prevLevelProperties,
-      (half*)dataCostStereoCheckerboard1,
-      (half*)dataCostStereoCheckerboard2,
-      (half*)dataCostDeviceToWriteToCheckerboard1,
-      (half*)dataCostDeviceToWriteToCheckerboard2);*/
-  return beliefprop::Status::NO_ERROR;
-}
-
-#endif
-
 template<BpData_t T, unsigned int DISP_VALS>
 float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
@@ -423,3 +371,51 @@ template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;
+
+//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
+/*template<>
+beliefprop::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
+  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::levelProperties& nextlevelProperties,
+  const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyFrom,
+  const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyTo)
+{
+  /*ProcessCUDABP<half> processCUDABPHalf;
+  processCUDABPHalf.copyMessageValuesToNextLevelDown(
+      prevlevelProperties,
+      currentLevelProperties,
+      (half*)messagesDeviceCopyFrom.messagesU_Checkerboard0,
+      (half*)messagesDeviceCopyFrom.messagesD_Checkerboard0,
+      (half*)messagesDeviceCopyFrom.messagesL_Checkerboard0,
+      (half*)messagesDeviceCopyFrom.messagesR_Checkerboard0,
+      (half*)messagesDeviceCopyFrom.messagesU_Checkerboard1,
+      (half*)messagesDeviceCopyFrom.messagesD_Checkerboard1,
+      (half*)messagesDeviceCopyFrom.messagesL_Checkerboard1,
+      (half*)messagesDeviceCopyFrom.messagesR_Checkerboard1,
+      (half*)messagesDeviceCopyTo.messagesU_Checkerboard0,
+      (half*)messagesDeviceCopyTo.messagesD_Checkerboard0,
+      (half*)messagesDeviceCopyTo.messagesL_Checkerboard0,
+      (half*)messagesDeviceCopyTo.messagesR_Checkerboard0,
+      (half*)messagesDeviceCopyTo.messagesU_Checkerboard1,
+      (half*)messagesDeviceCopyTo.messagesD_Checkerboard1,
+      (half*)messagesDeviceCopyTo.messagesL_Checkerboard1,
+      (half*)messagesDeviceCopyTo.messagesR_Checkerboard1);
+  return beliefprop::Status::NO_ERROR;
+}
+
+//due to indexing, need to convert to half* and use half arrays for this function
+template<>
+beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::levelProperties& prevLevelProperties,
+  const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboard,
+  const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboardWriteTo)
+{
+  ProcessCUDABP<half> processCUDABPHalf;
+  processCUDABPHalf.initializeDataCurrentLevel(currentLevelProperties,
+      prevLevelProperties,
+      (half*)dataCostStereoCheckerboard1,
+      (half*)dataCostStereoCheckerboard2,
+      (half*)dataCostDeviceToWriteToCheckerboard1,
+      (half*)dataCostDeviceToWriteToCheckerboard2);
+  return beliefprop::Status::NO_ERROR;
+}*/
