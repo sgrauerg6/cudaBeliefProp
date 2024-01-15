@@ -19,9 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file defines the methods to perform belief propagation for disparity map estimation from stereo images on CUDA
 
 #include "../ParameterFiles/bpStereoCudaParameters.h"
-#define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedBPProcessingFuncts.h"
-#undef PROCESSING_ON_GPU
 #include "kernelBpStereoHalf.cu"
 
 //uncomment for CUDA kernel debug functions for belief propagation processing

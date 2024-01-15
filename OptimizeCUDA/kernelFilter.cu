@@ -18,16 +18,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This kernel is used to filter the image with the given filter in the vertical and horizontal directions
 
-
 #include "kernelFilterHeader.cuh"
-
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include "../ParameterFiles/bpStereoCudaParameters.h"
-
-#define PROCESSING_ON_GPU
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"
-#undef PROCESSING_ON_GPU
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBoundsFilter(

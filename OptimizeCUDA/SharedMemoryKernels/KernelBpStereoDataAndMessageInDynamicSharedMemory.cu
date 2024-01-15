@@ -1,7 +1,5 @@
-#define PROCESSING_ON_GPU
 #include "../../SharedFuncts/SharedBPProcessingFuncts.h"
 #include "../../bpStereoCudaParameters.h"
-#undef PROCESSING_ON_GPU
 
 template<typename T, typename U>
 __device__ inline void msgStereo(int xVal, int yVal,

@@ -8,9 +8,9 @@
 #ifndef SHAREDUTILFUNCTS_H_
 #define SHAREDUTILFUNCTS_H_
 
-#ifdef PROCESSING_ON_GPU
+#ifdef OPTIMIZED_CUDA_RUN
 #include "../ParameterFiles/bpStereoCudaParameters.h"
-//added to indicate that function is device function to be processed on GPU
+//added in front of function header to indicate that function is device function to be processed on GPU
 #define ARCHITECTURE_ADDITION __device__
 //define concept of allowed data types for belief propagation kernel processing on GPU
 template <typename T>
@@ -27,7 +27,7 @@ concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> |
 template <typename T>
 concept BpKernelData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
 #endif //COMPILING_FOR_ARM
-#endif
+#endif //OPTIMIZED_CUDA_RUN
 
 template<typename T>
 requires std::is_arithmetic_v<T>

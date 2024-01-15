@@ -21,12 +21,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNEL_BP_H
 #define KERNEL_BP_H
 
-#include "ParameterFiles/bpStereoCudaParameters.h"
 #include <cuda_fp16.h>
-
-#define PROCESSING_ON_GPU
+#include "ParameterFiles/bpStereoCudaParameters.h"
 #include "../SharedFuncts/SharedUtilFuncts.h"
-#undef PROCESSING_ON_GPU
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBounds(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height);

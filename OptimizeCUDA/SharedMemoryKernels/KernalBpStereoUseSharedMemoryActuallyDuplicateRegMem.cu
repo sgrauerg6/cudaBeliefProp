@@ -1,10 +1,8 @@
 //code for using shared memory in the belief prop function; seems to work but is generally slower than not using shared memory,
 //so currently not using except for testing
 
-#define PROCESSING_ON_GPU
 #include "../../SharedFuncts/SharedBPProcessingFuncts.h"
 #include "../../bpStereoCudaParameters.h"
-#undef PROCESSING_ON_GPU
 
 template<typename T>
 __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMemActuallyReg, T* dst) {

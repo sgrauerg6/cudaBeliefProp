@@ -38,19 +38,6 @@ inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *fi
    return beliefprop::Status::NO_ERROR;
 }
 
-/* May be needed if using half2
-template<>
-int ProcessCUDABP<half2>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
-      return (int)ceil(((ceil(((float)widthLevelActualIntegerSize) / 2.0)) / 2.0));
-}
-
-template<>
-int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
-  ProcessCUDABP<half2> processCUDABPHalf;
-  return processCUDABPHalf.getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize) * 2;
-}
-*/
-
 //functions directed related to running BP to retrieve the movement between the images
 
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
@@ -372,8 +359,19 @@ template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[
 //not currently supporting half2 data type
 //template class ProcessCUDABP<half2>;
 
-//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
 /*template<>
+int ProcessCUDABP<half2>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
+      return (int)ceil(((ceil(((float)widthLevelActualIntegerSize) / 2.0)) / 2.0));
+}
+
+template<>
+int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
+  ProcessCUDABP<half2> processCUDABPHalf;
+  return processCUDABPHalf.getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize) * 2;
+}
+
+//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
+template<>
 beliefprop::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
