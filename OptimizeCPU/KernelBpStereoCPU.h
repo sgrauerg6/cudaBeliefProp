@@ -21,12 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNEL_BP_STEREO_CPU_H
 #define KERNEL_BP_STEREO_CPU_H
 
-#ifdef _WIN32
-#include <intrin.h>
-#else
-#include <x86intrin.h>
-#endif
-
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpRunSettings.h"
@@ -34,46 +28,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
-
-//headers to include differ depending on architecture and CPU vectorization setting
-#ifdef COMPILING_FOR_ARM
-#include <arm_neon.h>
-#endif //COMPILING_FOR_ARM
-
-//data processing on CPU only uses float or double
-//half type gets converted to float for processing and then back to half for storage
-template <typename T>
-concept BpDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double>;
-
-//SIMD types differ depending on architecture and CPU vectorization setting
-#ifdef COMPILING_FOR_ARM
-template <typename T>
-concept BpDataVect_t = std::is_same_v<T, float64x2_t> || std::is_same_v<T, float32x4_t> || std::is_same_v<T, float16x4_t>;
-
-template <typename T>
-concept BpDataVectProcess_t = std::is_same_v<T, float64x2_t> || std::is_same_v<T, float32x4_t>;
-#else
-#if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-template <typename T>
-concept BpDataVect_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m128i>;
-
-template <typename T>
-concept BpDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256>;
-#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-template <typename T>
-concept BpDataVect_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m128i> || std::is_same_v<T, __m512d> || std::is_same_v<T, __m512> || std::is_same_v<T, __m256i>;
-
-template <typename T>
-concept BpDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m512d> || std::is_same_v<T, __m512>;
-#endif //CPU_VECTORIZATION_DEFINE
-#endif //COMPILING_FOR_ARM
-
-//concepts that allow both single and vectorized types
-template <typename T>
-concept BpDataSingOrVect_t = BpData_t<T> || BpDataVect_t<T>;
-
-template <typename T>
-concept BpDataProcessSingOrVect_t = BpDataProcess_t<T> || BpDataVectProcess_t<T>;
 
 class KernelBpStereoCPU
 {
