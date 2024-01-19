@@ -24,6 +24,7 @@
 #include "../SingleThreadCPU/stereo.h"
 #include "../OutputEvaluation/RunData.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RuntimeTiming/DetailedTimingBPConsts.h"
 
 typedef std::filesystem::path filepathtype;
 
@@ -372,26 +373,24 @@ namespace RunAndEvaluateBpResults {
         //retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
         //total runtime for current run
         //if error in run, don't add results for current parallel parameters to results set
+        const std::string NUM_RUNS_IN_PARENS{"(" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"};
         if (runImpsECodeData.first == beliefprop::Status::NO_ERROR) {
           if (currRunType != RunType::OPTIMIZED_RUN) {
             if constexpr (optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
               for (unsigned int level=0; level < algSettings.numLevels_; level++) {
                 pParamsToRunTimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
-                  std::stod(currRunData.getData("Level " + std::to_string(level) + " Data Costs (" +
-                                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                  std::stod(currRunData.getData(LEVEL_DCOST_BPTIME_CTIME_NAMES[level][0] + " " + NUM_RUNS_IN_PARENS));
                 pParamsToRunTimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
-                  std::stod(currRunData.getData("Level " + std::to_string(level) + " BP Runtime (" + 
-                                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                  std::stod(currRunData.getData(LEVEL_DCOST_BPTIME_CTIME_NAMES[level][1] + " " + NUM_RUNS_IN_PARENS));
                 pParamsToRunTimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][pParamsCurrRun] =
-                  std::stod(currRunData.getData("Level " + std::to_string(level) + " Copy Runtime (" + 
-                                                std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                  std::stod(currRunData.getData(LEVEL_DCOST_BPTIME_CTIME_NAMES[level][2] + " " + NUM_RUNS_IN_PARENS));
               }
               pParamsToRunTimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][pParamsCurrRun] =
-                std::stod(currRunData.getData("Smoothing Runtime (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                std::stod(currRunData.getData(timingNames_BP.at(Runtime_Type_BP::SMOOTHING) + " " + NUM_RUNS_IN_PARENS));
               pParamsToRunTimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][pParamsCurrRun] =
-                std::stod(currRunData.getData("Time to init message values (kernel portion only) (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                std::stod(currRunData.getData(timingNames_BP.at(Runtime_Type_BP::INIT_MESSAGES_KERNEL) + " " + NUM_RUNS_IN_PARENS));
               pParamsToRunTimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][pParamsCurrRun] =
-                std::stod(currRunData.getData("Time get output disparity (" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"));
+                std::stod(currRunData.getData(timingNames_BP.at(Runtime_Type_BP::OUTPUT_DISPARITY) + " " + NUM_RUNS_IN_PARENS));
             }
             //get total runtime
             pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =
@@ -408,7 +407,7 @@ namespace RunAndEvaluateBpResults {
               std::transform(pParamsToRunTimeEachKernel[numKernelSet].begin(),
                              pParamsToRunTimeEachKernel[numKernelSet].end(), 
                              parallelParams.parallelDimsEachKernel_[numKernelSet].begin(),
-                             [](const auto& tDimsToRunTimeCurrLevel) -> std::array<unsigned int, 2> { 
+                             [](const auto& tDimsToRunTimeCurrLevel) /*-> std::array<unsigned int, 2>*/ { 
                                return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
                                                         [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
             }
@@ -627,7 +626,7 @@ namespace RunAndEvaluateBpResults {
   //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
   template <BpData_t T, beliefprop::AccSetting OPT_IMP_ACCEL>
-  std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getNoVectDataVectSpeedup(MultRunData& runOutputData) {
+  std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getAltAndNoVectSpeedup(MultRunData& runOutputData) {
     const std::string speedupHeader{std::string(SPEEDUP_VECTORIZATION) + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
     const std::string speedupVsAVX256Str{std::string(SPEEDUP_VS_AVX256_VECTORIZATION) + " - " + beliefprop::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
     std::vector<MultRunSpeedup> multRunSpeedupVect;
@@ -640,7 +639,7 @@ namespace RunAndEvaluateBpResults {
       //if initial speedup is AVX512, also run AVX256
       if (OPT_IMP_ACCEL == beliefprop::AccSetting::AVX512) {
         auto runOutputAVX256 = runBpOnStereoSets<T, beliefprop::AccSetting::AVX256>();
-        //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
+        //go through each result and replace initial run data with AVX256 run data if AVX256 run is faster
         for (unsigned int i = 0; i < runOutputData.size(); i++) {
           if ((runOutputData[i].first == beliefprop::Status::NO_ERROR) && (runOutputAVX256.first[i].first == beliefprop::Status::NO_ERROR)) {
             const double initResultTime = std::stod(runOutputData[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER)));
@@ -678,37 +677,37 @@ namespace RunAndEvaluateBpResults {
     //perform runs with and without vectorization using floating point
     //initially store output for floating-point runs separate from output using doubles and halfs
     auto runOutput = runBpOnStereoSets<float, OPT_IMP_ACCEL>();
-    //get results and speedup for not using vectorization (only applies to CPU)
-    const auto noVectDataVectSpeedupFl = getNoVectDataVectSpeedup<float, OPT_IMP_ACCEL>(runOutput.first);
+    //get results and speedup for using potentially alternate and no vectorization (only applies to CPU)
+    const auto altAndNoVectSpeedupFl = getAltAndNoVectSpeedup<float, OPT_IMP_ACCEL>(runOutput.first);
     //get run data portion of results 
-    auto runOutputNoVect = noVectDataVectSpeedupFl.first;
+    auto runOutputAltAndNoVect = altAndNoVectSpeedupFl.first;
 
     //perform runs with and without vectorization using double-precision
     auto runOutputDouble = runBpOnStereoSets<double, OPT_IMP_ACCEL>();
     const auto doublesSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputDouble.first, std::string(SPEEDUP_DOUBLE));
-    const auto noVectDataVectSpeedupDbl = getNoVectDataVectSpeedup<double, OPT_IMP_ACCEL>(runOutputDouble.first);
-    for (const auto& runData : noVectDataVectSpeedupDbl.first.first) {
-      runOutputNoVect.first.push_back(runData);
+    const auto altAndNoVectSpeedupDbl = getAltAndNoVectSpeedup<double, OPT_IMP_ACCEL>(runOutputDouble.first);
+    for (const auto& runData : altAndNoVectSpeedupDbl.first.first) {
+      runOutputAltAndNoVect.first.push_back(runData);
     }
     //perform runs with and without vectorization using half-precision
     auto runOutputHalf = runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
     const auto halfSpeedup = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, std::string(SPEEDUP_HALF));
-    const auto noVectDataVectSpeedupHalf = getNoVectDataVectSpeedup<halftype, OPT_IMP_ACCEL>(runOutputHalf.first);
-    for (const auto& runData : noVectDataVectSpeedupHalf.first.first) {
-      runOutputNoVect.first.push_back(runData);
+    const auto altAndNoVectSpeedupHalf = getAltAndNoVectSpeedup<halftype, OPT_IMP_ACCEL>(runOutputHalf.first);
+    for (const auto& runData : altAndNoVectSpeedupHalf.first.first) {
+      runOutputAltAndNoVect.first.push_back(runData);
     }
     //add output for double and half precision runs to output of floating-point runs to write
     //final output with all data
     runOutput.first.insert(runOutput.first.end(), runOutputDouble.first.begin(), runOutputDouble.first.end());
     runOutput.first.insert(runOutput.first.end(), runOutputHalf.first.begin(), runOutputHalf.first.end());
     //get speedup using vectorization across all runs
-    const auto vectorizationSpeedupAll = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputNoVect.first, runOutput.first, std::string(SPEEDUP_VECTORIZATION) + " - All Runs");
+    const auto vectorizationSpeedupAll = RunAndEvaluateBpResults::getAvgMedSpeedup(runOutputAltAndNoVect.first, runOutput.first, std::string(SPEEDUP_VECTORIZATION) + " - All Runs");
     //add speedup data from double and half precision runs to overall data so they are included in final results
-    runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupFl.second.begin(), noVectDataVectSpeedupFl.second.end());
+    runOutput.second.insert(runOutput.second.end(), altAndNoVectSpeedupFl.second.begin(), altAndNoVectSpeedupFl.second.end());
     runOutput.second.insert(runOutput.second.end(), runOutputDouble.second.begin(), runOutputDouble.second.end());
-    runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupDbl.second.begin(), noVectDataVectSpeedupDbl.second.end());
+    runOutput.second.insert(runOutput.second.end(), altAndNoVectSpeedupDbl.second.begin(), altAndNoVectSpeedupDbl.second.end());
     runOutput.second.insert(runOutput.second.end(), runOutputHalf.second.begin(), runOutputHalf.second.end());
-    runOutput.second.insert(runOutput.second.end(), noVectDataVectSpeedupHalf.second.begin(), noVectDataVectSpeedupHalf.second.end());
+    runOutput.second.insert(runOutput.second.end(), altAndNoVectSpeedupHalf.second.begin(), altAndNoVectSpeedupHalf.second.end());
 
     //get speedup info for using optimized parallel parameters and disparity count as template parameter across all data types
     const auto speedupOverBaseline = RunAndEvaluateBpResults::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs");
