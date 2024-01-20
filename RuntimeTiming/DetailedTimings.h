@@ -13,7 +13,6 @@
 #include <unordered_map>
 #include <map>
 #include <iostream>
-#include "DetailedTimingBPConsts.h"
 #include "../OutputEvaluation/RunData.h"
 
 //Class to store timings
@@ -24,8 +23,11 @@ class DetailedTimings {
 public:
 
   //initialize each timing segment
-  DetailedTimings(const std::unordered_map<T, std::string>& timingSegments = beliefprop::timingNames) : numToString(timingSegments) {
-    std::for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment.first] = std::vector<double>(); });
+  DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : numToString(timingSegments) {
+    std::for_each(timingSegments.begin(), timingSegments.end(),
+      [this](const auto& segment) {
+        this->timings[segment.first] = std::vector<double>(); 
+      });
   }
 
   void resetTiming() {
@@ -35,15 +37,15 @@ public:
   void addToCurrentTimings(const DetailedTimings& inDetailedTimings)
   {
     std::for_each(inDetailedTimings.timings.begin(), inDetailedTimings.timings.end(),
-                  [this](const auto& currentTiming) {
-                    auto iter = this->timings.find(currentTiming.first);
-                    if (iter != this->timings.end()) {
-                      iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
-                    }
-                    else {
-                      this->timings[currentTiming.first] = currentTiming.second;
-                    }
-                  });
+      [this](const auto& currentTiming) {
+        auto iter = this->timings.find(currentTiming.first);
+        if (iter != this->timings.end()) {
+          iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
+        }
+        else {
+          this->timings[currentTiming.first] = currentTiming.second;
+        }
+      });
   }
 
   //add timing by segment index
@@ -75,7 +77,8 @@ public:
         std::sort(currentTiming.second.begin(), currentTiming.second.end());
         os << inTimingObj.numToString.at(currentTiming.first);
         if (currentTiming.second.size() > 0) {
-          os << " (" << currentTiming.second.size() << " timings) : " << currentTiming.second[currentTiming.second.size() / 2] << std::endl;
+          os << " (" << currentTiming.second.size() << " timings) : " <<
+                currentTiming.second[currentTiming.second.size() / 2] << std::endl;
         }
         else {
           os << " (No timings) : No timings" << std::endl;
@@ -91,7 +94,8 @@ public:
         std::sort(currentTiming.second.begin(), currentTiming.second.end());
         std::string headerStart = numToString.at(currentTiming.first);
         if (currentTiming.second.size() > 0) {
-          timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) + " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2]));
+          timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) +
+            " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2]));
         }
         else {
           timingsRunData.addDataWHeader(headerStart + " (No timings) ", "No timings"); 

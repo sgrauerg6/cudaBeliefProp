@@ -31,13 +31,13 @@ DetailedTimings.o: ../RuntimeTiming/DetailedTimings.cpp ../RuntimeTiming/Detaile
 driverBpStereoCPU.o: ../MainDriverFiles/driverBpStereoCPU.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
 	$(CC) ../MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessBPOnTargetDevice.o : ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h ../RuntimeTiming/DetailedTimingBPConsts.h ../RunSettingsEval/RunSettings.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h DetailedTimings.o
+ProcessBPOnTargetDevice.o : ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h ../ParameterFiles/DetailedTimingBPConsts.h ../RunSettingsEval/RunSettings.h ../ParameterFiles/bpStereoParameters.h ../ParameterFiles/bpStructsAndEnums.h DetailedTimings.o
 	$(CC) ../BpAndSmoothProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessOptimizedCPUBP.o : ../OptimizeCPU/ProcessOptimizedCPUBP.cpp ../OptimizeCPU/ProcessOptimizedCPUBP.h ../OptimizeCPU/KernelBpStereoCPU.h ../OptimizeCPU/KernelBpStereoCPU.cpp ProcessBPOnTargetDevice.o
 	$(CC) ../OptimizeCPU/ProcessOptimizedCPUBP.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSet.o: ../BpAndSmoothProcessing/RunBpStereoSet.cpp ../BpAndSmoothProcessing/RunBpStereoSet.h ../ParameterFiles/bpStereoParameters.h ../RunSettingsEval/RunSettings.h ../ParameterFiles/bpStructsAndEnums.h ../RuntimeTiming/DetailedTimingBPConsts.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o
+RunBpStereoSet.o: ../BpAndSmoothProcessing/RunBpStereoSet.cpp ../BpAndSmoothProcessing/RunBpStereoSet.h ../ParameterFiles/bpStereoParameters.h ../RunSettingsEval/RunSettings.h ../ParameterFiles/bpStructsAndEnums.h ../ParameterFiles/DetailedTimingBPConsts.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o
 	$(CC) ../BpAndSmoothProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpImage.o: ../ImageDataAndProcessing/BpImage.cpp ../ImageDataAndProcessing/BpImage.h

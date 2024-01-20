@@ -14,16 +14,17 @@
 namespace beliefprop {
 
 const std::array<std::array<std::string, 3>, 10> LEVEL_DCOST_BPTIME_CTIME_NAMES{
-    std::array<std::string, 3>{"Level 0 Data Costs", "Level 0 BP Runtime", "Level 0 Copy Runtime"},
-    std::array<std::string, 3>{"Level 1 Data Costs", "Level 1 BP Runtime", "Level 1 Copy Runtime"},
-    std::array<std::string, 3>{"Level 2 Data Costs", "Level 2 BP Runtime", "Level 2 Copy Runtime"},
-    std::array<std::string, 3>{"Level 3 Data Costs", "Level 3 BP Runtime", "Level 3 Copy Runtime"},
-    std::array<std::string, 3>{"Level 4 Data Costs", "Level 4 BP Runtime", "Level 4 Copy Runtime"},
-    std::array<std::string, 3>{"Level 5 Data Costs", "Level 5 BP Runtime", "Level 5 Copy Runtime"},
-    std::array<std::string, 3>{"Level 6 Data Costs", "Level 6 BP Runtime", "Level 6 Copy Runtime"},
-    std::array<std::string, 3>{"Level 7 Data Costs", "Level 7 BP Runtime", "Level 7 Copy Runtime"},
-    std::array<std::string, 3>{"Level 8 Data Costs", "Level 8 BP Runtime", "Level 8 Copy Runtime"},
-    std::array<std::string, 3>{"Level 9 Data Costs", "Level 9 BP Runtime", "Level 9 Copy Runtime"}};
+  std::array<std::string, 3>{"Level 0 Data Costs", "Level 0 BP Runtime", "Level 0 Copy Runtime"},
+  std::array<std::string, 3>{"Level 1 Data Costs", "Level 1 BP Runtime", "Level 1 Copy Runtime"},
+  std::array<std::string, 3>{"Level 2 Data Costs", "Level 2 BP Runtime", "Level 2 Copy Runtime"},
+  std::array<std::string, 3>{"Level 3 Data Costs", "Level 3 BP Runtime", "Level 3 Copy Runtime"},
+  std::array<std::string, 3>{"Level 4 Data Costs", "Level 4 BP Runtime", "Level 4 Copy Runtime"},
+  std::array<std::string, 3>{"Level 5 Data Costs", "Level 5 BP Runtime", "Level 5 Copy Runtime"},
+  std::array<std::string, 3>{"Level 6 Data Costs", "Level 6 BP Runtime", "Level 6 Copy Runtime"},
+  std::array<std::string, 3>{"Level 7 Data Costs", "Level 7 BP Runtime", "Level 7 Copy Runtime"},
+  std::array<std::string, 3>{"Level 8 Data Costs", "Level 8 BP Runtime", "Level 8 Copy Runtime"},
+  std::array<std::string, 3>{"Level 9 Data Costs", "Level 9 BP Runtime", "Level 9 Copy Runtime"}
+};
 
 enum class Runtime_Type { INIT_SETTINGS_MALLOC, LEVEL_0_DATA_COSTS, LEVEL_1_DATA_COSTS, LEVEL_2_DATA_COSTS,
   LEVEL_3_DATA_COSTS, LEVEL_4_DATA_COSTS, LEVEL_5_DATA_COSTS, LEVEL_6_DATA_COSTS,

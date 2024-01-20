@@ -20,7 +20,7 @@
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
 #include "../OutputEvaluation/DisparityMap.h"
-#include "../RuntimeTiming/DetailedTimingBPConsts.h"
+#include "../ParameterFiles/DetailedTimingBPConsts.h"
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../ImageDataAndProcessing/BpImage.h"
 #include "../OutputEvaluation/RunData.h"

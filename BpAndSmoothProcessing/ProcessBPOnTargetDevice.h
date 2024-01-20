@@ -21,7 +21,7 @@
 #include "../ParameterFiles/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RuntimeTiming/DetailedTimings.h"
-#include "../RuntimeTiming/DetailedTimingBPConsts.h"
+#include "../ParameterFiles/DetailedTimingBPConsts.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunBpStereoSetMemoryManagement.h"
 
@@ -170,7 +170,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
   const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 {
-  if (errorCheck() != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (errorCheck() != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
   std::unordered_map<beliefprop::Runtime_Type, std::pair<timingType, timingType>> startEndTimes;
   std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
@@ -225,7 +225,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
   //initialize the data cost at the bottom level
   auto errCode = initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
-  if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
   currTime = std::chrono::system_clock::now();
   eachLevelTimingDataCosts[0].second = currTime;
@@ -239,7 +239,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
       algSettings.numDispVals_);
-    if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+    if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
     eachLevelTimingDataCosts[levelNum].second = std::chrono::system_clock::now();
   }
@@ -270,7 +270,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
   //initialize all the BP message values at every pixel for every disparity to 0
   errCode = initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
-  if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
   currTime = std::chrono::system_clock::now();
   startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL].second = currTime;
@@ -291,7 +291,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
     //need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
     errCode = runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], allocatedMemForProcessing);
-    if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+    if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
     const auto timeBpIterEnd = std::chrono::system_clock::now();
     diff = timeBpIterEnd - timeBpIterStart;
@@ -322,7 +322,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       errCode = copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
         messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2],
         algSettings.numDispVals_);
-      if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+      if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
       diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
@@ -353,7 +353,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   //assume in bottom level when retrieving output disparity
   float* resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
     dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
-  if (resultingDisparityMapCompDevice == nullptr) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (resultingDisparityMapCompDevice == nullptr) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
   currTime = std::chrono::system_clock::now();
   startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].second = currTime;

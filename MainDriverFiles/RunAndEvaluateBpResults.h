@@ -24,7 +24,7 @@
 #include "../OutputEvaluation/RunData.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RuntimeTiming/DetailedTimingBPConsts.h"
+#include "../ParameterFiles/DetailedTimingBPConsts.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
 #include "../RunSettingsEval/RunEvalUtils.h"
 
