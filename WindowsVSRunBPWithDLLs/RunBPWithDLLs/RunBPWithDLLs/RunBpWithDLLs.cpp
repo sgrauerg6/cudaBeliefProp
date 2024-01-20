@@ -6,7 +6,7 @@
 #include <fstream>
 #include <windows.h>
 #include <iostream>
-#include "ParameterFiles/bpStereoParameters.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
 
 //needed for consts and functions for running bp using DLLs
 #include "GetDllFuncts/RunBpWithDLLsHelpers.h"

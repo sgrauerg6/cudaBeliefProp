@@ -9,7 +9,7 @@
 #define SHAREDSMOOTHIMAGEFUNCTS_H_
 
 #include "SharedUtilFuncts.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 
 //kernel to apply a horizontal filter on each pixel of the image in parallel

@@ -66,13 +66,13 @@
     <ClInclude Include="..\..\..\ImageDataAndProcessing\BpImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ParameterFiles\RunSettings.h">
+    <ClInclude Include="..\..\..\BpConstsAndParams\RunSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ParameterFiles\bpStereoParameters.h">
+    <ClInclude Include="..\..\..\BpConstsAndParams\bpStereoParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ParameterFiles\bpStructsAndEnums.h">
+    <ClInclude Include="..\..\..\BpConstsAndParams\bpStructsAndEnums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h">

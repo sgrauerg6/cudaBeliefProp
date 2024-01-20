@@ -15,13 +15,13 @@
 #include <vector>
 #include <array>
 #include <utility>
-#include "../ParameterFiles/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
 #include "../RunSettingsEval/RunSettings.h"
-#include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RuntimeTiming/DetailedTimings.h"
-#include "../ParameterFiles/DetailedTimingBPConsts.h"
+#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunBpStereoSetMemoryManagement.h"
 

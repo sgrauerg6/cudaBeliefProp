@@ -23,8 +23,8 @@
 #include "filter.h"
 #include "imconv.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
-#include "../ParameterFiles/bpStereoParameters.h"
-#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
 #include "../RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>

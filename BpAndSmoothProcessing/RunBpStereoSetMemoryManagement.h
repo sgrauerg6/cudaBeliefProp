@@ -11,7 +11,7 @@
 
 #include <new>
 #include <algorithm>
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 
 //Class for memory management with functions defined for standard memory allocation using CPU

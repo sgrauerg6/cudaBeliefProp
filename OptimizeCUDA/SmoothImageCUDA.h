@@ -8,8 +8,8 @@
 #ifndef SMOOTHIMAGECUDA_H_
 #define SMOOTHIMAGECUDA_H_
 
-#include "../ParameterFiles/bpStereoCudaParameters.h"
-#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpStereoCudaParameters.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
 
 //include for the kernel functions to be run on the GPU
 #include "kernelFilterHeader.cuh"

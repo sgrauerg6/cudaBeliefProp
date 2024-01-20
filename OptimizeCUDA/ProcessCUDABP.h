@@ -23,9 +23,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../ParameterFiles/bpStereoCudaParameters.h"
+#include "../BpConstsAndParams/bpStereoCudaParameters.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
 

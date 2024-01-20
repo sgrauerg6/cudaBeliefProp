@@ -25,8 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include <iostream>
 #include <memory>
-#include "../ParameterFiles/bpStereoCudaParameters.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpStereoCudaParameters.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "SmoothImageCUDA.h"

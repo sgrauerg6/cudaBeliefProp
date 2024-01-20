@@ -17,10 +17,10 @@
 #include <algorithm>
 #include <set>
 #include "../RunSettingsEval/RunSettings.h"
-#include "../ParameterFiles/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
 #include "../FileProcessing/BpFileHandling.h"
 #include "../OutputEvaluation/RunData.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
 

@@ -8,8 +8,8 @@
 #include <iostream>
 #include <map>
 
-#include "ParameterFiles/RunSettings.h"
-#include "ParameterFiles/bpStereoParameters.h"
+#include "BpConstsAndParams/RunSettings.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpAndSmoothProcessing/RunBpStereoSet.h"
 
 //typedef RunBpStereoSet<float>* (__cdecl *RunBpStereoSet_factory)();

@@ -176,10 +176,10 @@
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationParameters.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationResults.h" />
-    <ClInclude Include="..\..\..\ParameterFiles\RunSettings.h" />
-    <ClInclude Include="..\..\..\ParameterFiles\bpStereoCudaParameters.h" />
-    <ClInclude Include="..\..\..\ParameterFiles\bpStereoParameters.h" />
-    <ClInclude Include="..\..\..\ParameterFiles\bpStructsAndEnums.h" />
+    <ClInclude Include="..\..\..\BpConstsAndParams\RunSettings.h" />
+    <ClInclude Include="..\..\..\BpConstsAndParams\bpStereoCudaParameters.h" />
+    <ClInclude Include="..\..\..\BpConstsAndParams\bpStereoParameters.h" />
+    <ClInclude Include="..\..\..\BpConstsAndParams\bpStructsAndEnums.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h" />
     <ClInclude Include="..\..\..\SharedFuncts\SharedBPProcessingFuncts.h" />

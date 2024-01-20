@@ -9,10 +9,10 @@
 #define SHAREDBPPROCESSINGFUNCTS_H_
 
 #include "SharedUtilFuncts.h"
-#include "../ParameterFiles/bpStereoParameters.h"
-#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
 #include "../RunSettingsEval/RunSettings.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 
 //T is input type, U is output type

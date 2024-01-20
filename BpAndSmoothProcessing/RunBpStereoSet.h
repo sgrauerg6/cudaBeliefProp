@@ -13,18 +13,18 @@
 #include <array>
 #include <string>
 #include "SmoothImage.h"
-#include "../ParameterFiles/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
 #include "../RunSettingsEval/RunSettings.h"
-#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
 #include "../OutputEvaluation/DisparityMap.h"
-#include "../ParameterFiles/DetailedTimingBPConsts.h"
+#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../ImageDataAndProcessing/BpImage.h"
 #include "../OutputEvaluation/RunData.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
 

@@ -17,7 +17,7 @@
 #include "ProcessOptimizedCPUBP.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>

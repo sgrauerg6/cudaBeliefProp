@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <utility>
 #include <numeric>
 #include <algorithm>
-#include "../ParameterFiles/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
 
 #ifdef COMPILING_FOR_ARM
 #include <arm_neon.h> //needed for float16_t type

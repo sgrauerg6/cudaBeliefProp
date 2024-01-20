@@ -17,14 +17,14 @@
 #include <algorithm>
 #include <set>
 #include "../RunSettingsEval/RunSettings.h"
-#include "../ParameterFiles/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
 #include "../FileProcessing/BpFileHandling.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../SingleThreadCPU/stereo.h"
 #include "../OutputEvaluation/RunData.h"
-#include "../ParameterFiles/bpTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../ParameterFiles/DetailedTimingBPConsts.h"
+#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
 #include "../RunSettingsEval/RunEvalUtils.h"
 
@@ -49,7 +49,7 @@ using halftype = short;
 //check if CUDA run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CUDA_RUN
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
-#include "../ParameterFiles/bpStereoCudaParameters.h"
+#include "../BpConstsAndParams/bpStereoCudaParameters.h"
 //needed to run the implementation a stereo set using CUDA
 #include "../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation

@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define KERNEL_BP_H
 
 #include <cuda_fp16.h>
-#include "ParameterFiles/bpStereoCudaParameters.h"
+#include "BpConstsAndParams/bpStereoCudaParameters.h"
 #include "../SharedFuncts/SharedUtilFuncts.h"
 
 //checks if the current point is within the image bounds
