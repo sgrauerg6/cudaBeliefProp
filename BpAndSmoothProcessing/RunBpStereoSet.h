@@ -72,8 +72,8 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
   //get total number of pixels in input images
   const unsigned int totNumPixelsImages{widthHeightImages[0] * widthHeightImages[1]};
 
-  std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> runtime_start_end_timings;
-  DetailedTimings detailedBPTimings(timingNames_BP);
+  std::unordered_map<beliefprop::Runtime_Type, std::pair<timingType, timingType>> runtime_start_end_timings;
+  DetailedTimings detailedBPTimings(beliefprop::timingNames);
 
   //generate output disparity map object
   DisparityMap<float> output_disparity_map(widthHeightImages);
@@ -105,9 +105,9 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
     }
 
     //set start timer for specified runtime segments at time before smoothing images
-    runtime_start_end_timings[Runtime_Type_BP::SMOOTHING].first = std::chrono::system_clock::now();
-    runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].first = std::chrono::system_clock::now();
-    runtime_start_end_timings[Runtime_Type_BP::TOTAL_WITH_TRANSFER].first = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::SMOOTHING].first = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_NO_TRANSFER].first = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_WITH_TRANSFER].first = std::chrono::system_clock::now();
 
     //first smooth the images using the Gaussian filter with the given smoothing sigma value
     //smoothed images are stored on the target device
@@ -119,10 +119,10 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
     }
 
     //end timer for image smoothing and add to image smoothing timings
-    runtime_start_end_timings[Runtime_Type_BP::SMOOTHING].second = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::SMOOTHING].second = std::chrono::system_clock::now();
 
     //get runtime before bp processing
-    runtime_start_end_timings[Runtime_Type_BP::TOTAL_BP].first = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_BP].first = std::chrono::system_clock::now();
 
     //run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object runBpStereo
     //returns detailed timings for bp run
@@ -132,15 +132,15 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
       return {0.0, DisparityMap<float>()};
     }
 
-    runtime_start_end_timings[Runtime_Type_BP::TOTAL_BP].second = std::chrono::system_clock::now();
-    runtime_start_end_timings[Runtime_Type_BP::TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_BP].second = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_NO_TRANSFER].second = std::chrono::system_clock::now();
 
     //transfer the disparity map estimation on the device to the host for output
     runBpOnDevice.memManagementImages->transferDataFromDeviceToHost(
       output_disparity_map.getPointerToPixelsStart(), rpBpStereoOutput.first, totNumPixelsImages);
 
     //compute timings for each portion of interest and add to vector timings
-    runtime_start_end_timings[Runtime_Type_BP::TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
 
     //retrieve the timing for each runtime segment and add to vector in timings map
     std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
@@ -172,7 +172,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
   runData.appendData(detailedBPTimings.runData());
 
   //construct and return ProcessStereoSetOutput object
-  return {(float)detailedBPTimings.getMedianTiming(Runtime_Type_BP::TOTAL_WITH_TRANSFER), std::move(output_disparity_map), runData};
+  return {(float)detailedBPTimings.getMedianTiming(beliefprop::Runtime_Type::TOTAL_WITH_TRANSFER), std::move(output_disparity_map), runData};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */

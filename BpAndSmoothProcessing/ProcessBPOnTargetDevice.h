@@ -154,7 +154,7 @@ public:
   //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
   //input is images image1Pixels and image1Pixels
   //output is resultingDisparityMap
-  std::pair<float*, DetailedTimings<Runtime_Type_BP>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
+  std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
     const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
     T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
     const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun);
@@ -164,13 +164,13 @@ public:
 //input is images on target device for computation
 //output is disparity map and processing runtimes
 template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
-std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
+std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
   const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 {
-  if (errorCheck() != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+  if (errorCheck() != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
-  std::unordered_map<Runtime_Type_BP, std::pair<timingType, timingType>> startEndTimes;
+  std::unordered_map<beliefprop::Runtime_Type, std::pair<timingType, timingType>> startEndTimes;
   std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
   std::vector<std::pair<timingType, timingType>> eachLevelTimingBP(algSettings.numLevels_);
   std::vector<std::pair<timingType, timingType>> eachLevelTimingCopy(algSettings.numLevels_);
@@ -189,7 +189,7 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
     bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(algSettings.numDispVals_));
   }
 
-  startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
 
   //declare and allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
   //as well as the message data used for bp processing
@@ -218,16 +218,16 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
   }
 
   auto currTime = std::chrono::system_clock::now();
-  startEndTimes[Runtime_Type_BP::INIT_SETTINGS_MALLOC].second = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC].second = currTime;
   eachLevelTimingDataCosts[0].first = currTime;
 
   //initialize the data cost at the bottom level
   auto errCode = initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
-  if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+  if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
   currTime = std::chrono::system_clock::now();
   eachLevelTimingDataCosts[0].second = currTime;
-  startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].first = currTime;
+  startEndTimes[beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL].first = currTime;
 
   //set the data costs at each level from the bottom level "up"
   for (unsigned int levelNum = 1u; levelNum < algSettings.numLevels_; levelNum++)
@@ -237,14 +237,14 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
       algSettings.numDispVals_);
-    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
     eachLevelTimingDataCosts[levelNum].second = std::chrono::system_clock::now();
   }
 
   currTime = eachLevelTimingDataCosts[algSettings.numLevels_-1].second;
-  startEndTimes[Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL].second = currTime;
-  startEndTimes[Runtime_Type_BP::INIT_MESSAGES].first = currTime;
+  startEndTimes[beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL].second = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES].first = currTime;
 
   //get and use offset into data at current processing level of pyramid
   beliefprop::dataCostData<T*> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
@@ -264,15 +264,15 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
       bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_), memManagementBpRun);
   }
 
-  startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
 
   //initialize all the BP message values at every pixel for every disparity to 0
   errCode = initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
-  if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+  if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
   currTime = std::chrono::system_clock::now();
-  startEndTimes[Runtime_Type_BP::INIT_MESSAGES_KERNEL].second = currTime;
-  startEndTimes[Runtime_Type_BP::INIT_MESSAGES].second = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL].second = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES].second = currTime;
 
   //alternate between checkerboard sets 0 and 1
   enum Checkerboard_Num { CHECKERBOARD_ZERO = 0, CHECKERBOARD_ONE = 1 };
@@ -289,7 +289,7 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
 
     //need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
     errCode = runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], allocatedMemForProcessing);
-    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
     const auto timeBpIterEnd = std::chrono::system_clock::now();
     diff = timeBpIterEnd - timeBpIterStart;
@@ -320,7 +320,7 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
       errCode = copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
         messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2],
         algSettings.numDispVals_);
-      if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+      if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
       diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
@@ -346,16 +346,16 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
     eachLevelTimingBP[levelNum].second = timeBpIterEnd;
   }
 
-  startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
 
   //assume in bottom level when retrieving output disparity
   float* resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
     dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
-  if (resultingDisparityMapCompDevice == nullptr) { return {nullptr, DetailedTimings<Runtime_Type_BP>()}; }
+  if (resultingDisparityMapCompDevice == nullptr) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
   currTime = std::chrono::system_clock::now();
-  startEndTimes[Runtime_Type_BP::OUTPUT_DISPARITY].second = currTime;
-  startEndTimes[Runtime_Type_BP::FINAL_FREE].first = currTime;
+  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].second = currTime;
+  startEndTimes[beliefprop::Runtime_Type::FINAL_FREE].first = currTime;
 
   if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
     if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
@@ -375,75 +375,75 @@ std::pair<float*, DetailedTimings<Runtime_Type_BP>> ProcessBPOnTargetDevice<T, D
     freeDataCostsMemory(dataCostsDeviceAllLevels, memManagementBpRun);
   }
 
-  startEndTimes[Runtime_Type_BP::FINAL_FREE].second = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::FINAL_FREE].second = std::chrono::system_clock::now();
 
-  startEndTimes[Runtime_Type_BP::LEVEL_0_DATA_COSTS] = eachLevelTimingDataCosts[0];
-  startEndTimes[Runtime_Type_BP::LEVEL_0_BP] = eachLevelTimingBP[0];
-  startEndTimes[Runtime_Type_BP::LEVEL_0_COPY] = eachLevelTimingCopy[0];
+  startEndTimes[beliefprop::Runtime_Type::LEVEL_0_DATA_COSTS] = eachLevelTimingDataCosts[0];
+  startEndTimes[beliefprop::Runtime_Type::LEVEL_0_BP] = eachLevelTimingBP[0];
+  startEndTimes[beliefprop::Runtime_Type::LEVEL_0_COPY] = eachLevelTimingCopy[0];
   if (eachLevelTimingBP.size() > 1) {
-    startEndTimes[Runtime_Type_BP::LEVEL_1_DATA_COSTS] = eachLevelTimingDataCosts[1];
-    startEndTimes[Runtime_Type_BP::LEVEL_1_BP] = eachLevelTimingBP[1];
-    startEndTimes[Runtime_Type_BP::LEVEL_1_COPY] = eachLevelTimingCopy[1];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_1_DATA_COSTS] = eachLevelTimingDataCosts[1];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_1_BP] = eachLevelTimingBP[1];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_1_COPY] = eachLevelTimingCopy[1];
   }
   if (eachLevelTimingBP.size() > 2) {
-    startEndTimes[Runtime_Type_BP::LEVEL_2_DATA_COSTS] = eachLevelTimingDataCosts[2];
-    startEndTimes[Runtime_Type_BP::LEVEL_2_BP] = eachLevelTimingBP[2];
-    startEndTimes[Runtime_Type_BP::LEVEL_2_COPY] = eachLevelTimingCopy[2];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_2_DATA_COSTS] = eachLevelTimingDataCosts[2];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_2_BP] = eachLevelTimingBP[2];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_2_COPY] = eachLevelTimingCopy[2];
   }
   if (eachLevelTimingBP.size() > 3) {
-    startEndTimes[Runtime_Type_BP::LEVEL_3_DATA_COSTS] = eachLevelTimingDataCosts[3];
-    startEndTimes[Runtime_Type_BP::LEVEL_3_BP] = eachLevelTimingBP[3];
-    startEndTimes[Runtime_Type_BP::LEVEL_3_COPY] = eachLevelTimingCopy[3];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_3_DATA_COSTS] = eachLevelTimingDataCosts[3];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_3_BP] = eachLevelTimingBP[3];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_3_COPY] = eachLevelTimingCopy[3];
   }
   if (eachLevelTimingBP.size() > 4) {
-    startEndTimes[Runtime_Type_BP::LEVEL_4_DATA_COSTS] = eachLevelTimingDataCosts[4];
-    startEndTimes[Runtime_Type_BP::LEVEL_4_BP] = eachLevelTimingBP[4];
-    startEndTimes[Runtime_Type_BP::LEVEL_4_COPY] = eachLevelTimingCopy[4];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_4_DATA_COSTS] = eachLevelTimingDataCosts[4];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_4_BP] = eachLevelTimingBP[4];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_4_COPY] = eachLevelTimingCopy[4];
   }
   if (eachLevelTimingBP.size() > 5) {
-    startEndTimes[Runtime_Type_BP::LEVEL_5_DATA_COSTS] = eachLevelTimingDataCosts[5];
-    startEndTimes[Runtime_Type_BP::LEVEL_5_BP] = eachLevelTimingBP[5];
-    startEndTimes[Runtime_Type_BP::LEVEL_5_COPY] = eachLevelTimingCopy[5];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_5_DATA_COSTS] = eachLevelTimingDataCosts[5];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_5_BP] = eachLevelTimingBP[5];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_5_COPY] = eachLevelTimingCopy[5];
   }
   if (eachLevelTimingBP.size() > 6) {
-    startEndTimes[Runtime_Type_BP::LEVEL_6_DATA_COSTS] = eachLevelTimingDataCosts[6];
-    startEndTimes[Runtime_Type_BP::LEVEL_6_BP] = eachLevelTimingBP[6];
-    startEndTimes[Runtime_Type_BP::LEVEL_6_COPY] = eachLevelTimingCopy[6];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_6_DATA_COSTS] = eachLevelTimingDataCosts[6];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_6_BP] = eachLevelTimingBP[6];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_6_COPY] = eachLevelTimingCopy[6];
   }
   if (eachLevelTimingBP.size() > 7) {
-    startEndTimes[Runtime_Type_BP::LEVEL_7_DATA_COSTS] = eachLevelTimingDataCosts[7];
-    startEndTimes[Runtime_Type_BP::LEVEL_7_BP] = eachLevelTimingBP[7];
-    startEndTimes[Runtime_Type_BP::LEVEL_7_COPY] = eachLevelTimingCopy[7];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_7_DATA_COSTS] = eachLevelTimingDataCosts[7];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_7_BP] = eachLevelTimingBP[7];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_7_COPY] = eachLevelTimingCopy[7];
   }
   if (eachLevelTimingBP.size() > 8) {
-    startEndTimes[Runtime_Type_BP::LEVEL_8_DATA_COSTS] = eachLevelTimingDataCosts[8];
-    startEndTimes[Runtime_Type_BP::LEVEL_8_BP] = eachLevelTimingBP[8];
-    startEndTimes[Runtime_Type_BP::LEVEL_8_COPY] = eachLevelTimingCopy[8];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_8_DATA_COSTS] = eachLevelTimingDataCosts[8];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_8_BP] = eachLevelTimingBP[8];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_8_COPY] = eachLevelTimingCopy[8];
   }
   if (eachLevelTimingBP.size() > 9) {
-    startEndTimes[Runtime_Type_BP::LEVEL_9_DATA_COSTS] = eachLevelTimingDataCosts[9];
-    startEndTimes[Runtime_Type_BP::LEVEL_9_BP] = eachLevelTimingBP[9];
-    startEndTimes[Runtime_Type_BP::LEVEL_9_COPY] = eachLevelTimingCopy[9];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_9_DATA_COSTS] = eachLevelTimingDataCosts[9];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_9_BP] = eachLevelTimingBP[9];
+    startEndTimes[beliefprop::Runtime_Type::LEVEL_9_COPY] = eachLevelTimingCopy[9];
   }
 
   //add timing for each runtime segment to segmentTimings object
-  DetailedTimings segmentTimings(timingNames_BP);
+  DetailedTimings segmentTimings(beliefprop::timingNames);
   std::for_each(startEndTimes.begin(), startEndTimes.end(),
     [&segmentTimings](const auto& currentRuntimeNameAndTiming) {
     segmentTimings.addTiming(currentRuntimeNameAndTiming.first,
       (timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
   });
 
-  segmentTimings.addTiming(Runtime_Type_BP::BP_ITERS, totalTimeBpIters);
-  segmentTimings.addTiming(Runtime_Type_BP::COPY_DATA, totalTimeCopyData);
-  segmentTimings.addTiming(Runtime_Type_BP::COPY_DATA_KERNEL, totalTimeCopyDataKernel);
+  segmentTimings.addTiming(beliefprop::Runtime_Type::BP_ITERS, totalTimeBpIters);
+  segmentTimings.addTiming(beliefprop::Runtime_Type::COPY_DATA, totalTimeCopyData);
+  segmentTimings.addTiming(beliefprop::Runtime_Type::COPY_DATA_KERNEL, totalTimeCopyDataKernel);
 
-  const double totalTimed = segmentTimings.getMedianTiming(Runtime_Type_BP::INIT_SETTINGS_MALLOC)
-    + segmentTimings.getMedianTiming(Runtime_Type_BP::LEVEL_0_DATA_COSTS)
-    + segmentTimings.getMedianTiming(Runtime_Type_BP::DATA_COSTS_HIGHER_LEVEL) + segmentTimings.getMedianTiming(Runtime_Type_BP::INIT_MESSAGES)
-    + totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(Runtime_Type_BP::OUTPUT_DISPARITY)
-    + segmentTimings.getMedianTiming(Runtime_Type_BP::FINAL_FREE);
-  segmentTimings.addTiming(Runtime_Type_BP::TOTAL_TIMED, totalTimed);
+  const double totalTimed = segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC)
+    + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::LEVEL_0_DATA_COSTS)
+    + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL) + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_MESSAGES)
+    + totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::OUTPUT_DISPARITY)
+    + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::FINAL_FREE);
+  segmentTimings.addTiming(beliefprop::Runtime_Type::TOTAL_TIMED, totalTimed);
 
   return {resultingDisparityMapCompDevice, segmentTimings};
 }

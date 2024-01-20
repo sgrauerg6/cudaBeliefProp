@@ -24,7 +24,7 @@ class DetailedTimings {
 public:
 
   //initialize each timing segment
-  DetailedTimings(const std::unordered_map<T, std::string>& timingSegments = timingNames_BP) : numToString(timingSegments) {
+  DetailedTimings(const std::unordered_map<T, std::string>& timingSegments = beliefprop::timingNames) : numToString(timingSegments) {
     std::for_each(timingSegments.begin(), timingSegments.end(), [this](const auto& segment) { this->timings[segment.first] = std::vector<double>(); });
   }
 
