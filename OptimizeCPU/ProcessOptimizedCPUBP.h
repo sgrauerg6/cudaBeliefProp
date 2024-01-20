@@ -29,15 +29,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/RunSettings.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
-#include "../RunEval/RunEvalConstsEnums.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
+#include "../RunSettingsEval/RunEvalConstsEnums.h"
 
 //include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
@@ -83,7 +84,7 @@ private:
 //functions definitions related to running BP to retrieve the movement between the images
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -116,7 +117,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
@@ -152,7 +153,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copy
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCosts(
   const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
   const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
@@ -166,7 +167,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
@@ -188,7 +189,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
 }
 
 
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCurrentLevel(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
@@ -215,7 +216,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
   return run_eval::Status::NO_ERROR;
 }
 
-template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline float* ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,

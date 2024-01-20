@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void initializeBottomLevelDataStereo(
   const beliefprop::levelProperties currentLevelProperties,
   float* image1PixelsDevice, float* image2PixelsDevice,
@@ -52,7 +52,7 @@ __global__ void initializeBottomLevelDataStereo(
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void initializeCurrentLevelDataStereo(
   const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties currentLevelProperties,
@@ -75,7 +75,7 @@ __global__ void initializeCurrentLevelDataStereo(
 
 
 //initialize the message values at each pixel of the current level to the default value
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void initializeMessageValsToDefaultKernel(
   const beliefprop::levelProperties currentLevelProperties,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
@@ -104,7 +104,7 @@ __global__ void initializeMessageValsToDefaultKernel(
 
 //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void runBPIterationUsingCheckerboardUpdates(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -132,7 +132,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 }
 
 
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void runBPIterationUsingCheckerboardUpdates(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -163,7 +163,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
   const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties currentLevelProperties,
@@ -200,7 +200,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
   const beliefprop::levelProperties currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,

@@ -16,11 +16,12 @@
 #include <numeric>
 #include <algorithm>
 #include <set>
-#include "../ParameterFiles/RunSettings.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../FileProcessing/BpFileHandling.h"
 #include "../OutputEvaluation/RunData.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
 
 using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
@@ -29,7 +30,7 @@ using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
 namespace run_eval {
 
 //get current run inputs and parameters in RunData structure
-template<BpData_t T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+template<RunData_t T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
 RunData inputAndParamsRunData(const beliefprop::BPsettings& algSettings) {
   RunData currRunData;
   currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
@@ -199,7 +200,7 @@ MultRunSpeedup getAvgMedSpeedupDispValsInTemplate(MultRunData& runOutput,
 
 //write data for file corresponding to runs for a specified data type or across all data type
 //includes results for each run as well as average and median speedup data across multiple runs
-template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, BpData_t T = float>
+template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, RunData_t T = float>
 void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput) {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)

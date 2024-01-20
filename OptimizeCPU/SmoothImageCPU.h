@@ -13,7 +13,7 @@
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 #include "KernelBpStereoCPU.h"
-#include "../ParameterFiles/RunSettings.h"
+#include "../RunSettingsEval/RunSettings.h"
 
 class SmoothImageCPU : public SmoothImage {
 public:
@@ -81,7 +81,7 @@ private:
   }
 
   //apply a horizontal filter on each pixel of the image in parallel
-  template<imData_t U>
+  template<BpImData_t U>
   void filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
     float* imageFilter, const unsigned int sizeFilter,
@@ -106,7 +106,7 @@ private:
   }
 
   //apply a vertical filter on each pixel of the image in parallel
-  template<imData_t U>
+  template<BpImData_t U>
   void filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
     float* imageFilter, const unsigned int sizeFilter,

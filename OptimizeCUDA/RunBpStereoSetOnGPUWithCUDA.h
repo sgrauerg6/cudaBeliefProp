@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <memory>
 #include "../ParameterFiles/bpStereoCudaParameters.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "SmoothImageCUDA.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
@@ -52,7 +53,7 @@ namespace bp_cuda_device
   }
 };
 
-template <BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
 {
 public:

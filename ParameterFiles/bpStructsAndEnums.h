@@ -15,8 +15,9 @@
 #include <cmath>
 #include <string>
 #include "bpStereoParameters.h"
-#include "RunSettings.h"
 #include "bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../OutputEvaluation/RunData.h"
 
 namespace beliefprop {
@@ -86,7 +87,7 @@ struct levelProperties
     offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum), divPaddedChBoardWAlign_(divPaddedChBoardWAlign) {}
 
   //get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
-  template <BpData_t T>
+  template <RunData_t T>
   beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
     const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
     return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
@@ -95,7 +96,7 @@ struct levelProperties
 
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
   //with the given number of possible movements
-  template <BpData_t T>
+  template <RunData_t T>
   unsigned int getNumDataInBpArrays(const unsigned int numDisparityValues) const {
     return getNumDataForAlignedMemoryAtLevel<T>({widthLevel_, heightLevel_}, numDisparityValues);
   }
@@ -112,7 +113,7 @@ struct levelProperties
            (checkerboardWidth + (numDataAlignWidth_ - (checkerboardWidth % numDataAlignWidth_)));
   }
 
-  template <BpData_t T>
+  template <RunData_t T>
   unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& widthHeightLevel,
       const unsigned int totalPossibleMovements) const
   {
@@ -129,7 +130,7 @@ struct levelProperties
     }
   }
 
-  template <BpData_t T, run_environment::AccSetting ACC_SETTING>
+  template <RunData_t T, run_environment::AccSetting ACC_SETTING>
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
     const unsigned int totalPossibleMovements, const unsigned int numLevels)
   {
@@ -163,7 +164,7 @@ enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, 
                       MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 
-template <BpData_ptr T>
+template <RunData_ptr T>
 struct checkerboardMessages
 {
   //each checkerboard messages element corresponds to separate Message_Arrays enum that go from 0 to 7 (8 total)
@@ -172,7 +173,7 @@ struct checkerboardMessages
 };
 
 //belief propagation checkerboard messages and data costs must be pointers to a bp data type
-template <BpData_ptr T>
+template <RunData_ptr T>
 struct dataCostData
 {
   T dataCostCheckerboard0_;

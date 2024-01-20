@@ -57,7 +57,7 @@ __global__ void convertUnsignedIntImageToFloat(
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-template<imData_t T>
+template<BpImData_t T>
 __global__ void filterImageAcross(
   T* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,
@@ -78,7 +78,7 @@ __global__ void filterImageAcross(
 //kernel to apply a vertical filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
 //output filtered image stored in filteredImagePixels
-template<imData_t T>
+template<BpImData_t T>
 __global__ void filterImageVertical(
   T* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,

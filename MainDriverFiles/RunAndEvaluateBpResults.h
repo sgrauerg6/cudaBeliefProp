@@ -16,16 +16,17 @@
 #include <numeric>
 #include <algorithm>
 #include <set>
-#include "../ParameterFiles/RunSettings.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../FileProcessing/BpFileHandling.h"
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../SingleThreadCPU/stereo.h"
 #include "../OutputEvaluation/RunData.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
-#include "../RunEval/RunEvalConstsEnums.h"
-#include "../RunEval/RunEvalUtils.h"
+#include "../RunSettingsEval/RunEvalConstsEnums.h"
+#include "../RunSettingsEval/RunEvalUtils.h"
 
 typedef std::filesystem::path filepathtype;
 
@@ -34,7 +35,7 @@ typedef std::filesystem::path filepathtype;
 //needed to run the optimized implementation a stereo set using CPU
 #include "../OptimizeCPU/RunBpStereoOptimizedCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
-template <BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 //set data type used for half-precision
 #ifdef COMPILING_FOR_ARM
@@ -52,7 +53,7 @@ using halftype = short;
 //needed to run the implementation a stereo set using CUDA
 #include "../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
-template <BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment::AccSetting::CUDA>;
 #endif //OPTIMIZED_CUDA_RUN
 
@@ -64,7 +65,7 @@ namespace RunAndEvaluateBpResults {
 //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
 //on the reference and test images specified by numStereoSet
 //run only optimized implementation if runOptImpOnly is true
-template<BpData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, run_environment::AccSetting OPT_IMP_ACCEL>
+template<RunData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, run_environment::AccSetting OPT_IMP_ACCEL>
   std::pair<run_eval::Status, RunData> runStereoTwoImpsAndCompare(
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
@@ -135,7 +136,7 @@ template<BpData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SI
 
 //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters
 //returns data from runs using default and optimized parallel parameters
-template<BpData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
+template<RunData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
 std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp)
@@ -289,7 +290,7 @@ std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
   return {run_eval::Status::NO_ERROR, outRunData};
 }
 
-template<BpData_t T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, run_environment::AccSetting OPT_IMP_ACCEL>
+template<RunData_t T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, run_environment::AccSetting OPT_IMP_ACCEL>
 std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults() {
   std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], run_environment::AccSetting::NONE>> runBpStereoSingleThread =
     std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
@@ -307,7 +308,7 @@ std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults() {
 }
 
 //perform runs on multiple data sets using specified data type and acceleration method
-template <BpData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
 std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpOnStereoSets() {
   MultRunData runData;
   runData.push_back(runBpOnSetAndUpdateResults<T, 0, true, OPT_IMP_ACCEL>());
@@ -352,7 +353,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpOnStereoSets() {
 
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
 //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
-template <BpData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
 std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getAltAndNoVectSpeedup(MultRunData& runOutputData) {
   const std::string speedupHeader{std::string(run_eval::SPEEDUP_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
   const std::string speedupVsAVX256Str{std::string(run_eval::SPEEDUP_VS_AVX256_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};

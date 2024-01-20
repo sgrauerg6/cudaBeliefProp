@@ -23,8 +23,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/RunSettings.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
@@ -35,14 +36,14 @@ public:
 
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
   //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void initializeBottomLevelDataStereoCPU(const beliefprop::levelProperties& currentLevelProperties,
     float* image1PixelsDevice, float* image2PixelsDevice,
     T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
     const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
     const beliefprop::ParallelParameters& optCPUParams);
 
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void initializeCurrentLevelDataStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -50,7 +51,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //initialize the message values at each pixel of the current level to the default value
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void initializeMessageValsToDefaultKernelCPU(const beliefprop::levelProperties& currentLevelProperties,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -61,7 +62,7 @@ public:
 
   //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-  template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   static void runBPIterationUsingCheckerboardUpdatesCPU(const beliefprop::Checkerboard_Parts checkerboardToUpdate,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -72,7 +73,7 @@ public:
     const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
     const beliefprop::ParallelParameters& optCPUParams);
 
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
     const beliefprop::Checkerboard_Parts checkerboardPartUpdate, const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -85,7 +86,7 @@ public:
 
   //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -100,7 +101,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-  template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -111,7 +112,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
-  template<BpData_t T, BpDataVect_t U, BpDataProcess_t V, BpDataVectProcess_t W, unsigned int DISP_VALS>
+  template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
   static void retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -225,7 +226,7 @@ public:
 
   //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
   //and the output message values are save to output message arrays
-  template<BpData_t T, BpDataVect_t U, unsigned int DISP_VALS>
+  template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(const unsigned int xValStartProcessing,
     const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
     U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
@@ -235,7 +236,7 @@ public:
     T* currentLMessageArray, T* currentRMessageArray,
     const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing);
 
-  template<BpData_t T, BpDataVect_t U>
+  template<RunData_t T, RunDataVect_t U>
   static void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
     const unsigned int xValStartProcessing, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
@@ -348,7 +349,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 #endif //COMPILING_FOR_ARM
 
-  template<BpData_t T, BpDataVect_t U, unsigned int DISP_VALS>
+  template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   static void runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
     const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -361,7 +362,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   // compute current message
-  template<BpData_t T, BpDataVect_t U, unsigned int DISP_VALS>
+  template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
@@ -369,7 +370,7 @@ public:
     T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
 
   // compute current message
-  template<BpData_t T, BpDataVect_t U>
+  template<RunData_t T, RunDataVect_t U>
   static void msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U* messageValsNeighbor1, U* messageValsNeighbor2,
@@ -378,7 +379,7 @@ public:
     const unsigned int bpSettingsDispVals);
 
   // compute current message
-  template<BpData_t T, BpDataVect_t U, BpDataProcess_t V, BpDataVectProcess_t W>
+  template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
   static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U* messageValsNeighbor1, U* messageValsNeighbor2,
@@ -387,7 +388,7 @@ public:
     const unsigned int bpSettingsDispVals);
 
   // compute current message
-  template<BpData_t T, BpDataVect_t U, BpDataProcess_t V, BpDataVectProcess_t W, unsigned int DISP_VALS>
+  template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
   static void msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
@@ -395,64 +396,64 @@ public:
     T* dstMessageArray, const U& disc_k_bp, const bool dataAligned);
 
   //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-  template<BpDataProcess_t T, BpDataVectProcess_t U, unsigned int DISP_VALS>
+  template<RunDataProcess_t T, RunDataVectProcess_t U, unsigned int DISP_VALS>
   static void dtStereoSIMD(U f[DISP_VALS]);
 
   //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
   //TODO: look into defining function in .cpp file so don't need to declare inline
-  template<BpDataProcess_t T, BpDataVectProcess_t U>
+  template<RunDataProcess_t T, RunDataVectProcess_t U>
   static void dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals);
 
-  template<BpDataVectProcess_t T>
+  template<RunDataVectProcess_t T>
   static void updateBestDispBestVals(T& bestDisparities, T& bestVals, const T& currentDisparity, const T& valAtDisp) {
     printf("Data type not supported for updating best disparities and values\n");
   }
 
-  template<BpData_t T, BpDataVect_t U>
+  template<RunData_t T, RunDataVect_t U>
   static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
     const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
   {
     printf("Data type not supported for loading aligned data\n");
   }
 
-  template<BpData_t T, BpDataVect_t U>
+  template<RunData_t T, RunDataVect_t U>
   static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
     const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
   {
     printf("Data type not supported for loading unaligned data\n");
   }
 
-  template<BpDataVect_t T>
+  template<RunDataVect_t T>
   static T createSIMDVectorSameData(const float data) {
     printf("Data type not supported for creating simd vector\n");
   }
 
-  template<BpDataSingOrVect_t T, BpDataSingOrVect_t U, BpDataSingOrVect_t V>
+  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   static V addVals(const T& val1, const U& val2) { return (val1 + val2); }
 
-  template<BpDataSingOrVect_t T, BpDataSingOrVect_t U, BpDataSingOrVect_t V>
+  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   static V subtractVals(const T& val1, const U& val2) { return (val1 - val2); }
 
-  template<BpDataSingOrVect_t T, BpDataSingOrVect_t U, BpDataSingOrVect_t V>
+  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   static V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
 
-  template<BpDataSingOrVect_t T, BpDataSingOrVect_t V>
+  template<RunDataSingOrVect_t T, RunDataSingOrVect_t V>
   static T convertValToDatatype(const V val) { return (T)val; }
 
-  template<BpDataSingOrVect_t T>
+  template<RunDataSingOrVect_t T>
   static T getMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }
 
-  template<BpData_t T, BpDataVectProcess_t U>
+  template<RunData_t T, RunDataVectProcess_t U>
   static void storePackedDataAligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 
-  template<BpData_t T, BpDataVectProcess_t U>
+  template<RunData_t T, RunDataVectProcess_t U>
   static void storePackedDataUnaligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -461,7 +462,7 @@ public:
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1);
 
-  template<BpData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS>
   static void printDataAndMessageValsToPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,

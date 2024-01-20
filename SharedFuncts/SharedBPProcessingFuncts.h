@@ -11,11 +11,12 @@
 #include "SharedUtilFuncts.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/RunSettings.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
 
 //T is input type, U is output type
-template<BpData_t T, BpData_t U>
+template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(const T data) {
   return data; //by default assume same data type and just return data
 }
@@ -34,7 +35,7 @@ ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const un
   }
 }
 
-template<BpData_t T>
+template<RunData_t T>
 ARCHITECTURE_ADDITION inline T getZeroVal() {
   return (T)0.0;
 }
@@ -48,7 +49,7 @@ inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const uns
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void dtStereo(T f[DISP_VALS])
 {
   T prev;
@@ -67,7 +68,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T f[DISP_VALS])
   }
 }
 
-template<BpData_t T>
+template<RunData_t T>
 ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDispVals)
 {
   T prev;
@@ -86,7 +87,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDi
   }
 }
 
-template<BpData_t T>
+template<RunData_t T>
 ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDispVals,
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties)
 {
@@ -129,7 +130,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDi
   }
 }
 
-template<BpData_t T, BpData_t U, unsigned int DISP_VALS>
+template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
   U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
@@ -183,7 +184,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 }
 
 
-template<BpData_t T, BpData_t U>
+template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U* messageValsNeighbor1, U* messageValsNeighbor2,
   U* messageValsNeighbor3, U* dataCosts,
@@ -238,7 +239,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
   delete [] dst;
 }
 
-template<BpData_t T, BpData_t U, beliefprop::messageComp M>
+template<RunData_t T, RunData_t U, beliefprop::messageComp M>
 ARCHITECTURE_ADDITION void inline setInitDstProcessing(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   T* prevUMessageArray, T* prevDMessageArray,
@@ -308,7 +309,7 @@ ARCHITECTURE_ADDITION void inline setInitDstProcessing(const unsigned int xVal, 
 }
 
 //TODO: may need to specialize for half-precision to account for possible NaN/inf vals
-template<BpData_t T, BpData_t U, beliefprop::messageComp M>
+template<RunData_t T, RunData_t U, beliefprop::messageComp M>
 ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   T* prevUMessageArray, T* prevDMessageArray,
@@ -390,7 +391,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties, float* image1PixelsDevice,
   float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard0,
@@ -499,7 +500,7 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(const uns
 
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
-template<BpData_t T, BpData_t U, unsigned int DISP_VALS>
+template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
@@ -565,7 +566,7 @@ ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
 }
 
 //initialize the message values at each pixel of the current level to the default value
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(
   const unsigned int xValInCheckerboard, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
@@ -664,7 +665,7 @@ ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(
 
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 //and the output message values are stored in local memory
-template<BpData_t T, BpData_t U, unsigned int DISP_VALS>
+template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
@@ -688,7 +689,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 }
 
 
-template<BpData_t T, BpData_t U>
+template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U* prevUMessage, U* prevDMessage,
@@ -711,7 +712,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
     currentLMessageArray, disc_k_bp, dataAligned, bpSettingsDispVals);
 }
 
-template<BpData_t T, BpData_t U>
+template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   T* prevUMessageArray, T* prevDMessageArray,
@@ -740,7 +741,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 //"checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 //this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
 //this function uses linear memory bound to textures to access the current data and message values
-template<BpData_t T, BpData_t U, unsigned int DISP_VALS>
+template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
@@ -905,7 +906,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
   }
 }
 
-template<BpData_t T, BpData_t U, unsigned int DISP_VALS>
+template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
@@ -952,7 +953,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPixel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardPart, const beliefprop::levelProperties& currentLevelProperties,
@@ -1087,7 +1088,7 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
   }
 }
 
-template<BpData_t T, BpData_t U, unsigned int DISP_VALS>
+template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptimizedPixel(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -1300,7 +1301,7 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptim
 }
 
 
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
@@ -1366,7 +1367,7 @@ ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(
   }
 }
 
-template<BpData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void printDataAndMessageValsToPointKernel(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
