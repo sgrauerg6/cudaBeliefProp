@@ -13,7 +13,7 @@
 #include "SingleThreadCPU/stereo.h"
 #include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
 #include "OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
-#include "./FileProcessing/BpFileHandling.h"
+#include "./BpFileProcessing/BpFileHandling.h"
 #include "./BpConstsAndParams/RunSettings.h"
 #include "./BpAndSmoothProcessing/RunBpStereoSet.h"
 

@@ -108,7 +108,7 @@
     <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.cpp" />
     <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.cpp" />
     <ClCompile Include="..\..\..\BpAndSmoothProcessing\SmoothImage.cpp" />
-    <ClCompile Include="..\..\..\FileProcessing\BpFileHandling.cpp" />
+    <ClCompile Include="..\..\..\BpFileProcessing\BpFileHandling.cpp" />
     <ClCompile Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -150,8 +150,8 @@
     <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.h" />
     <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.h" />
     <ClInclude Include="..\..\..\BpAndSmoothProcessing\SmoothImage.h" />
-    <ClInclude Include="..\..\..\FileProcessing\BpFileHandling.h" />
-    <ClInclude Include="..\..\..\FileProcessing\BpFileHandlingConsts.h" />
+    <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandling.h" />
+    <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandlingConsts.h" />
     <ClInclude Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.h" />
     <ClInclude Include="..\..\..\ImageDataAndProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.h" />

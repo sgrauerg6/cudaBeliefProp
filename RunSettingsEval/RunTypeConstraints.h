@@ -1,11 +1,11 @@
 //RunTypeConstraints.h
 //
-//Define constraints for data type in belief propagation processing
+//Define constraints for data type in processing
 
 #ifndef RUN_TYPE_CONSTRAINTS_H_
 #define RUN_TYPE_CONSTRAINTS_H_
 
-//define concepts of allowed data types for belief propagation data storage and processing
+//define concepts of allowed data types for data storage and processing
 #if defined(OPTIMIZED_CUDA_RUN)
 
 //set data type used for half-precision with CUDA

@@ -50,8 +50,8 @@ impDriverCUDA: driverCudaBp.o BpFileHandling.o DisparityMap.o OutputEvaluationRe
 driverCudaBp.o: ../MainDriverFiles/driverCudaBp.cpp ../MainDriverFiles/RunAndEvaluateBpResults.h ../BpConstsAndParams/bpStereoCudaParameters.h ../BpConstsAndParams/bpStereoParameters.h ../BpConstsAndParams/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ../MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-BpFileHandling.o: ../FileProcessing/BpFileHandling.h ../FileProcessing/BpFileHandling.cpp ../FileProcessing/BpFileHandlingConsts.h
-	$(CC) ../FileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+BpFileHandling.o: ../BpFileProcessing/BpFileHandling.h ../BpFileProcessing/BpFileHandling.cpp ../BpFileProcessing/BpFileHandlingConsts.h
+	$(CC) ../BpFileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 DetailedTimings.o: ../RuntimeTiming/DetailedTimings.cpp ../RuntimeTiming/DetailedTimings.h
 	$(CC) ../RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
