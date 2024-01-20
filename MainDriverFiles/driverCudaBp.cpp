@@ -49,6 +49,6 @@ constexpr std::string_view PROCESSOR_NAME{""};
 
 int main(int argc, char** argv)
 {
-  RunAndEvaluateBpResults::runBpOnStereoSets<beliefprop::AccSetting::CUDA>();
+  RunAndEvaluateBpResults::runBpOnStereoSets<run_environment::AccSetting::CUDA>();
   return 0;
 }

@@ -180,7 +180,7 @@
     <ClInclude Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\SmoothImageCPU.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h" />
-    <ClInclude Include="..\..\..\ParameterFiles\bpRunSettings.h" />
+    <ClInclude Include="..\..\..\ParameterFiles\RunSettings.h" />
     <ClInclude Include="..\..\..\ParameterFiles\bpStereoParameters.h" />
     <ClInclude Include="..\..\..\ParameterFiles\bpStructsAndEnums.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h" />

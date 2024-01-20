@@ -29,40 +29,41 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunEval/RunEvalConstsEnums.h"
 
 //include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
   ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
 
-  beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+  run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
     const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
 
-  beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+  run_eval::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::levelProperties& prevLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
     const unsigned int bpSettingsNumDispVals) override;
 
-  beliefprop::Status initializeMessageValsToDefault(
+  run_eval::Status initializeMessageValsToDefault(
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     const unsigned int bpSettingsNumDispVals) override;
 
-  beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+  run_eval::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     T* allocatedMemForProcessing) override;
 
-  beliefprop::Status copyMessageValuesToNextLevelDown(
+  run_eval::Status copyMessageValuesToNextLevelDown(
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::levelProperties& nextlevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
@@ -82,8 +83,8 @@ private:
 //functions definitions related to running BP to retrieve the movement between the images
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
@@ -108,15 +109,15 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::ru
       messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
       algSettings.disc_k_bp_, algSettings.numDispVals_, optCPUParams_);
   }
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copyMessageValuesToNextLevelDown(
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
@@ -147,12 +148,12 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::co
       messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
       bpSettingsNumDispVals, optCPUParams_);
   }
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCosts(
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCosts(
   const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
   const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
 {
@@ -161,12 +162,12 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::in
     imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
     dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
     algSettings.numDispVals_, optCPUParams_);
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeMessageValsToDefault(
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
   const unsigned int bpSettingsNumDispVals)
@@ -183,12 +184,12 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::in
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
     bpSettingsNumDispVals, optCPUParams_);
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
-inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCurrentLevel(
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCurrentLevel(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -211,10 +212,10 @@ inline beliefprop::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::in
       ((int) offsetNum / sizeof(float)),
       bpSettingsNumDispVals, optCPUParams_);
   }
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline float* ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,

@@ -21,9 +21,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"
 #include <iostream>
+#include "../RunEval/RunEvalConstsEnums.h"
 
 template<BpData_t T, unsigned int DISP_VALS>
-inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
+inline run_eval::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
     //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
@@ -33,9 +34,9 @@ inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *fi
     cudaDeviceSynchronize();
     cudaSetDevice(0);
     if (abort) { exit(code); }
-    return beliefprop::Status::ERROR;
+    return run_eval::Status::ERROR;
    }
-   return beliefprop::Status::NO_ERROR;
+   return run_eval::Status::NO_ERROR;
 }
 
 //functions directed related to running BP to retrieve the movement between the images
@@ -44,7 +45,7 @@ inline beliefprop::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *fi
 //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<BpData_t T, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
+run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
   const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -130,12 +131,12 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
 #endif
 
     cudaDeviceSynchronize();
-    if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
-      return beliefprop::Status::ERROR;
+    if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
+      return run_eval::Status::ERROR;
     }
     //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
   }
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -143,7 +144,7 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<BpData_t T, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
+run_eval::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
@@ -156,8 +157,8 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown
                   (unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
 
   cudaDeviceSynchronize();
-  if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
-    return beliefprop::Status::ERROR;
+  if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
+    return run_eval::Status::ERROR;
   }
 
   for (const auto& checkerboard_part : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
@@ -184,23 +185,23 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown
       bpSettingsNumDispVals);
 
     cudaDeviceSynchronize();
-    if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
-      return beliefprop::Status::ERROR;
+    if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
+      return run_eval::Status::ERROR;
     }
   }
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<BpData_t T, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
+run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
   const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const std::array<float*, 2>& imagesOnTargetDevice,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
 {
-  if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
-    return beliefprop::Status::ERROR;
+  if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
+    return run_eval::Status::ERROR;
   }
 
   //since this is first kernel run in BP, set to prefer L1 cache for now since no shared memory is used by default
@@ -221,16 +222,16 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
     algSettings.numDispVals_);
   cudaDeviceSynchronize();
   
-  if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
-    return beliefprop::Status::ERROR;
+  if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
+    return run_eval::Status::ERROR;
   }
 
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<BpData_t T, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
+run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
   const unsigned int bpSettingsNumDispVals)
@@ -253,15 +254,15 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
     bpSettingsNumDispVals);
   cudaDeviceSynchronize();
   
-  if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
-    return beliefprop::Status::ERROR;
+  if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
+    return run_eval::Status::ERROR;
   }
 
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 template<BpData_t T, unsigned int DISP_VALS>
-beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
@@ -274,8 +275,8 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const
   const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
-  if (errorCheck(__FILE__, __LINE__ ) != beliefprop::Status::NO_ERROR) {
-    return beliefprop::Status::ERROR;
+  if (errorCheck(__FILE__, __LINE__ ) != run_eval::Status::NO_ERROR) {
+    return run_eval::Status::ERROR;
   }
 
   const size_t offsetNum{0};
@@ -291,11 +292,11 @@ beliefprop::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const
       bpSettingsNumDispVals);
 
     cudaDeviceSynchronize();
-    if (errorCheck(__FILE__, __LINE__ ) != beliefprop::Status::NO_ERROR) {
-      return beliefprop::Status::ERROR;
+    if (errorCheck(__FILE__, __LINE__ ) != run_eval::Status::NO_ERROR) {
+      return run_eval::Status::ERROR;
     }
   }
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 template<BpData_t T, unsigned int DISP_VALS>
@@ -325,7 +326,7 @@ float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
     resultingDisparityMapCompDevice, bpSettingsNumDispVals);
   cudaDeviceSynchronize();
-  if (errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) {
+  if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
     return nullptr;
   }
 
@@ -372,7 +373,7 @@ int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIn
 
 //due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
 template<>
-beliefprop::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
+run_eval::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
   const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyFrom,
@@ -398,12 +399,12 @@ beliefprop::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDow
       (half*)messagesDeviceCopyTo.messagesD_Checkerboard1,
       (half*)messagesDeviceCopyTo.messagesL_Checkerboard1,
       (half*)messagesDeviceCopyTo.messagesR_Checkerboard1);
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }
 
 //due to indexing, need to convert to half* and use half arrays for this function
 template<>
-beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+run_eval::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
   const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboard,
   const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboardWriteTo)
@@ -415,5 +416,5 @@ beliefprop::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(cons
       (half*)dataCostStereoCheckerboard2,
       (half*)dataCostDeviceToWriteToCheckerboard1,
       (half*)dataCostDeviceToWriteToCheckerboard2);
-  return beliefprop::Status::NO_ERROR;
+  return run_eval::Status::NO_ERROR;
 }*/

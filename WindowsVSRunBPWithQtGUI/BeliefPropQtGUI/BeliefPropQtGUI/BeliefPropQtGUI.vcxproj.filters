@@ -183,7 +183,7 @@
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationResults.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ParameterFiles\bpRunSettings.h">
+    <ClInclude Include="..\..\..\ParameterFiles\RunSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\ParameterFiles\bpStereoCudaParameters.h">

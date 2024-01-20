@@ -25,10 +25,10 @@
 #include "../BpAndSmoothProcessing/RunBpStereoSet.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
-class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, beliefprop::AccSetting::NONE>
+class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::NONE>
 {
 public:
   ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,

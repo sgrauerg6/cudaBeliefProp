@@ -16,11 +16,12 @@
 #include <array>
 #include <utility>
 #include "../ParameterFiles/bpStereoParameters.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
 #include "../RuntimeTiming/DetailedTimings.h"
 #include "../RuntimeTiming/DetailedTimingBPConsts.h"
+#include "../RunEval/RunEvalConstsEnums.h"
 #include "RunBpStereoSetMemoryManagement.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
@@ -29,32 +30,32 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 //Abstract class to process belief propagation on target device
 //Some of the class functions need to be overridden to for processing on
 //target device
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
 class ProcessBPOnTargetDevice {
 public:
   ProcessBPOnTargetDevice() { }
 
-  virtual beliefprop::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
+  virtual run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
     const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) = 0;
 
-  virtual beliefprop::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+  virtual run_eval::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::levelProperties& prevLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
     const unsigned int bpSettingsNumDispVals) = 0;
 
-  virtual beliefprop::Status initializeMessageValsToDefault(
+  virtual run_eval::Status initializeMessageValsToDefault(
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     const unsigned int bpSettingsNumDispVals) = 0;
 
-  virtual beliefprop::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
+  virtual run_eval::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     T* allocatedMemForProcessing) = 0;
 
-  virtual beliefprop::Status copyMessageValuesToNextLevelDown(
+  virtual run_eval::Status copyMessageValuesToNextLevelDown(
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::levelProperties& nextlevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
@@ -67,8 +68,8 @@ public:
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     const unsigned int bpSettingsNumDispVals) = 0;
   
-  virtual beliefprop::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
-    return beliefprop::Status::NO_ERROR;
+  virtual run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
+    return run_eval::Status::NO_ERROR;
   }
 
   virtual void freeCheckerboardMessagesMemory(const beliefprop::checkerboardMessages<T*>& checkerboardMessagesToFree,
@@ -163,12 +164,12 @@ public:
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
 //input is images on target device for computation
 //output is disparity map and processing runtimes
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACC_SETTING>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
 std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
   const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
 {
-  if (errorCheck() != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (errorCheck() != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
   std::unordered_map<beliefprop::Runtime_Type, std::pair<timingType, timingType>> startEndTimes;
   std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
@@ -202,8 +203,8 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
     bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
 
   //assuming that width includes padding
-  if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
-    if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+    if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
       std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
         organizeDataCostsAndMessageDataAllLevels(allocatedMemForBpProcessingDevice, dataAllLevelsEachDataMessageArr);
     }
@@ -223,7 +224,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
   //initialize the data cost at the bottom level
   auto errCode = initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
-  if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
   currTime = std::chrono::system_clock::now();
   eachLevelTimingDataCosts[0].second = currTime;
@@ -237,7 +238,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
       algSettings.numDispVals_);
-    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+    if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
     eachLevelTimingDataCosts[levelNum].second = std::chrono::system_clock::now();
   }
@@ -255,7 +256,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   std::array<beliefprop::checkerboardMessages<T*>, 2> messagesDevice;
 
   //assuming that width includes padding
-  if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+  if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
     messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
   }
   else {
@@ -268,7 +269,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
   //initialize all the BP message values at every pixel for every disparity to 0
   errCode = initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
-  if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+  if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
   currTime = std::chrono::system_clock::now();
   startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL].second = currTime;
@@ -289,7 +290,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
     //need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
     errCode = runBPAtCurrentLevel(algSettings, bpLevelProperties[(unsigned int)levelNum], dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], allocatedMemForProcessing);
-    if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+    if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
     const auto timeBpIterEnd = std::chrono::system_clock::now();
     diff = timeBpIterEnd - timeBpIterStart;
@@ -303,7 +304,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 
       //assuming that width includes padding
-      if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+      if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
         messagesDevice[(currCheckerboardSet + 1) % 2] = retrieveLevelMessageData(
           messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
       }
@@ -320,7 +321,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       errCode = copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
         messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2],
         algSettings.numDispVals_);
-      if (errCode != beliefprop::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
+      if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>()}; }
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
       diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
@@ -329,7 +330,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       eachLevelTimingCopy[levelNum].second = timeCopyMessageValuesKernelEnd;
 
       //assuming that width includes padding
-      if constexpr (!beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+      if constexpr (!run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
         //free the now-copied from computed data of the completed level
         freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet], memManagementBpRun);
       }
@@ -357,13 +358,13 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].second = currTime;
   startEndTimes[beliefprop::Runtime_Type::FINAL_FREE].first = currTime;
 
-  if constexpr (beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
-    if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+    if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
       //do nothing; memory free outside of runs
     }
     else {
       //now free the allocated data space; all data in single array when
-      //beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
+      //run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
       freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels, memManagementBpRun);
     }
   }

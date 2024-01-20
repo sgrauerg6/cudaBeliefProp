@@ -14,7 +14,7 @@
 #include <string>
 #include "SmoothImage.h"
 #include "../ParameterFiles/bpStereoParameters.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
 #include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
 #include "../RuntimeTiming/DetailedTimings.h"
@@ -25,6 +25,7 @@
 #include "../ImageDataAndProcessing/BpImage.h"
 #include "../OutputEvaluation/RunData.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
+#include "../RunEval/RunEvalConstsEnums.h"
 
 //stereo processing output
 struct ProcessStereoSetOutput
@@ -34,7 +35,7 @@ struct ProcessStereoSetOutput
   RunData runData;
 };
 
-template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template <BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smoothImage;
   const std::unique_ptr<ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>>& runBpStereo;
@@ -42,7 +43,7 @@ struct BpOnDevice {
   const std::unique_ptr<RunBpStereoSetMemoryManagement<float>>& memManagementImages;
 };
 
-template <BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template <BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpStereoSet {
 public:
   virtual std::string getBpRunDescription() = 0;
@@ -61,7 +62,7 @@ protected:
 };
 
 
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting ACCELERATION>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
   const beliefprop::BPsettings& algSettings, const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice)
 {
@@ -81,16 +82,16 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
   //allocate data for bp processing on target device ahead of runs if option selected
   T* bpData = nullptr;
   T* bpProcStore = nullptr;
-  if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
     unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
       widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
     bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
-    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
 
     beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0, ACCELERATION);
     unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<T>(algSettings.numDispVals_);
     bpProcStore = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(totalDataBottomLevel, ACCELERATION);
-    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
+    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) { return {0.0, DisparityMap<float>()}; }
   }
 
   for (unsigned int numRun = 0; numRun < bp_params::NUM_BP_STEREO_RUNS; numRun++)
@@ -100,7 +101,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
       runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages),
       runBpOnDevice.memManagementImages->allocateMemoryOnDevice(totNumPixelsImages)};
     
-    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
+    if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) { 
       return {0.0, DisparityMap<float>()};
     }
 
@@ -113,7 +114,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
     //smoothed images are stored on the target device
     for (unsigned int i = 0; i < 2u; i++) {
       (*(runBpOnDevice.smoothImage))(inputImages[i], algSettings.smoothingSigma_, smoothedImages[i]);
-      if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != beliefprop::Status::NO_ERROR) { 
+      if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) { 
         return {0.0, DisparityMap<float>()};
       }
     }
@@ -161,7 +162,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
 
   //free data for bp processing on target device if this memory
   //management set to be done outside of runs
-  if constexpr (beliefprop::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
     runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpData);
     runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpProcStore);
   }

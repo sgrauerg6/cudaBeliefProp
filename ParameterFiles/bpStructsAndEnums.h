@@ -15,7 +15,7 @@
 #include <cmath>
 #include <string>
 #include "bpStereoParameters.h"
-#include "bpRunSettings.h"
+#include "RunSettings.h"
 #include "bpTypeConstraints.h"
 #include "../OutputEvaluation/RunData.h"
 
@@ -67,14 +67,14 @@ inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& b
 struct levelProperties
 {
   levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
-    beliefprop::AccSetting accSetting) :
+    run_environment::AccSetting accSetting) :
     widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
-    bytesAlignMemory_(beliefprop::getBytesAlignMemory(accSetting)),
-    numDataAlignWidth_(beliefprop::getNumDataAlignWidth(accSetting)),
+    bytesAlignMemory_(run_environment::getBytesAlignMemory(accSetting)),
+    numDataAlignWidth_(run_environment::getNumDataAlignWidth(accSetting)),
     widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
     paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
     offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum),
-    divPaddedChBoardWAlign_{(accSetting == beliefprop::AccSetting::AVX512) ? 16u : 8u} {}
+    divPaddedChBoardWAlign_{(accSetting == run_environment::AccSetting::AVX512) ? 16u : 8u} {}
   
   levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
     unsigned int bytesAlignMemory, unsigned int numDataAlignWidth, unsigned int divPaddedChBoardWAlign) :
@@ -129,7 +129,7 @@ struct levelProperties
     }
   }
 
-  template <BpData_t T, beliefprop::AccSetting ACC_SETTING>
+  template <BpData_t T, run_environment::AccSetting ACC_SETTING>
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
     const unsigned int totalPossibleMovements, const unsigned int numLevels)
   {
@@ -162,7 +162,6 @@ enum Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 enum Message_Arrays { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
                       MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
-enum class Status { NO_ERROR, ERROR };
 
 template <BpData_ptr T>
 struct checkerboardMessages

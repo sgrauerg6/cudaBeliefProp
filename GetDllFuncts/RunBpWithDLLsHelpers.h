@@ -8,7 +8,7 @@
 #include <iostream>
 #include <map>
 
-#include "ParameterFiles/bpRunSettings.h"
+#include "ParameterFiles/RunSettings.h"
 #include "ParameterFiles/bpStereoParameters.h"
 #include "BpAndSmoothProcessing/RunBpStereoSet.h"
 

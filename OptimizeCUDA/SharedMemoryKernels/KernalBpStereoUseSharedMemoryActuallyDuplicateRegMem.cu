@@ -190,12 +190,12 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
       //indexIntervalNextHalfIndexSharedVals = !indexIntervalNextHalfIndexSharedVals;
       //indexIndexDstShared += BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP;
 
-#if beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#if run_environment::OPTIMIZED_INDEXING_SETTING == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#endif //run_environment::OPTIMIZED_INDEXING_SETTING == 1
     }
 #endif
 //#pragma unroll 64
@@ -207,12 +207,12 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity
           - DISP_INDEX_START_REG_LOCAL_MEM];
 
-#if beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#if run_environment::OPTIMIZED_INDEXING_SETTING == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#endif //run_environment::OPTIMIZED_INDEXING_SETTING == 1
     }
 }
 
@@ -332,12 +332,12 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
         currentDisparity < NUM_POSSIBLE_DISPARITY_VALUES;
         currentDisparity++) {
       dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-#if beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#if run_environment::OPTIMIZED_INDEXING_SETTING == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#endif //run_environment::OPTIMIZED_INDEXING_SETTING == 1
     }
   }
   else
@@ -363,12 +363,12 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
       //indexIntervalNextHalfIndexSharedVals = !indexIntervalNextHalfIndexSharedVals;
       //indexIndexDstShared += BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP;
 
-#if beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#if run_environment::OPTIMIZED_INDEXING_SETTING == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#endif //run_environment::OPTIMIZED_INDEXING_SETTING == 1
     }
 #endif
 //#pragma unroll 64
@@ -380,12 +380,12 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity
           - DISP_INDEX_START_REG_LOCAL_MEM];
 
-#if beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#if run_environment::OPTIMIZED_INDEXING_SETTING == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //beliefprop::OPTIMIZED_INDEXING_SETTING == 1
+#endif //run_environment::OPTIMIZED_INDEXING_SETTING == 1
     }
   }
 }

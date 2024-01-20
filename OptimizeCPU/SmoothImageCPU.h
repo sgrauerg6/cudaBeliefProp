@@ -13,7 +13,7 @@
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"
 #include "../BpAndSmoothProcessing/SmoothImage.h"
 #include "KernelBpStereoCPU.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 
 class SmoothImageCPU : public SmoothImage {
 public:

@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
 #include <math.h>
 #include <omp.h>
@@ -61,7 +61,7 @@ public:
 
   //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-  template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+  template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   static void runBPIterationUsingCheckerboardUpdatesCPU(const beliefprop::Checkerboard_Parts checkerboardToUpdate,
     const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -100,7 +100,7 @@ public:
     const beliefprop::ParallelParameters& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-  template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+  template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   static void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,

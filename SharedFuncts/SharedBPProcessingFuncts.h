@@ -11,7 +11,7 @@
 #include "SharedUtilFuncts.h"
 #include "../ParameterFiles/bpStereoParameters.h"
 #include "../ParameterFiles/bpStructsAndEnums.h"
-#include "../ParameterFiles/bpRunSettings.h"
+#include "../ParameterFiles/RunSettings.h"
 #include "../ParameterFiles/bpTypeConstraints.h"
 
 //T is input type, U is output type
@@ -25,7 +25,7 @@ ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const un
   const unsigned int width, const unsigned int height, const unsigned int currentDisparity, const unsigned int totalNumDispVals,
   const unsigned int offsetData = 0u)
 {
-  if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+  if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
     //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
     return (yVal * width * totalNumDispVals + width * currentDisparity + xVal) + offsetData;
   }
@@ -100,7 +100,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDi
 
   for (unsigned int currentDisparity = 1; currentDisparity < bpSettingsDispVals; currentDisparity++)
   {
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       currFArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -115,7 +115,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, const unsigned int bpSettingsDi
 
   for (int currentDisparity = (int)bpSettingsDispVals - 2; currentDisparity >= 0; currentDisparity--)
   {
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       currFArrayIndex -= currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -173,7 +173,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
   for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
     dst[currentDisparity] -= valToNormalize;
     dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -227,7 +227,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
     dst[currentDisparity] -= valToNormalize;
     dstMessageArray[destMessageArrayIndex] = convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -337,7 +337,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
     if (dstProcessing[procArrIdx] < minimum)
       minimum = dstProcessing[procArrIdx];
 
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -362,7 +362,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 
     valToNormalize += dstProcessing[procArrIdx];
 
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -378,7 +378,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
     dstProcessing[procArrIdx] -= valToNormalize;
     dstMessageArray[procArrIdx] = convertValToDifferentDataTypeIfNeeded<U, T>(dstProcessing[procArrIdx]);
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {

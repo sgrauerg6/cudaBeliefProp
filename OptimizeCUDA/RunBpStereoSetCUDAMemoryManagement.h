@@ -21,7 +21,7 @@ public:
     cudaFree(arrayToFree);
   }
 
-  T* allocateAlignedMemoryOnDevice(const unsigned long numData, beliefprop::AccSetting accSetting) override
+  T* allocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting accSetting) override
   {
     T* arrayToAllocate;
     cudaMalloc((void**)&arrayToAllocate, numData*sizeof(T));

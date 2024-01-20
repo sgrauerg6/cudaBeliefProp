@@ -44,13 +44,13 @@ const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS_ADDIT
 const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
 
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
-constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::NEON};
+constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NEON};
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::AVX256};
+constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX256};
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::AVX512};
+constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX512};
 #else
-constexpr beliefprop::AccSetting CPU_VECTORIZATION{beliefprop::AccSetting::NONE};
+constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NONE};
 #endif
 
 //name of processor used for running optimized implementation

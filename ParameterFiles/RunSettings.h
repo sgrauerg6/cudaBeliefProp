@@ -1,12 +1,12 @@
 /*
- * bpRunSettings.h
+ * RunSettings.h
  *
  *  Created on: Sep 21, 2019
  *      Author: scott
  */
 
-#ifndef BPRUNSETTINGS_H_
-#define BPRUNSETTINGS_H_
+#ifndef RUNSETTINGS_H_
+#define RUNSETTINGS_H_
 
 #include <iostream>
 #include <typeinfo>
@@ -38,7 +38,7 @@
 #endif //defined(AVX_512_VECTORIZATION)
 #endif //COMPILING_FOR_ARM
 
-namespace beliefprop {
+namespace run_environment {
 
 //mapping from data size to data type string
 const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
@@ -82,12 +82,12 @@ constexpr const char* accelerationString() {
     return "NO_VECTORIZATION";
 }
 
-inline unsigned int getBytesAlignMemory(beliefprop::AccSetting accelSetting) {
+inline unsigned int getBytesAlignMemory(AccSetting accelSetting) {
   //avx512 requires data to be aligned on 64 bytes
   return (accelSetting == AccSetting::AVX512) ? 64 : 16;
 }
 
-inline unsigned int getNumDataAlignWidth(beliefprop::AccSetting accelSetting) {
+inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
   //align width with 16 data values in AVX512
   return (accelSetting == AccSetting::AVX512) ? 16 : 8;
 }
@@ -95,23 +95,23 @@ inline unsigned int getNumDataAlignWidth(beliefprop::AccSetting accelSetting) {
 template <AccSetting ACCELERATION_SETTING>
 inline void writeRunSettingsToStream(std::ostream& resultsStream)
 {
-  resultsStream << "Memory Optimization Level: " << beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT << "\n";
-  resultsStream << "Indexing Optimization Level: " << beliefprop::OPTIMIZED_INDEXING_SETTING << "\n";
-  resultsStream << "BYTES_ALIGN_MEMORY: " << beliefprop::getBytesAlignMemory(ACCELERATION_SETTING) << "\n";
-  resultsStream << "NUM_DATA_ALIGN_WIDTH: " << beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING) << "\n";
+  resultsStream << "Memory Optimization Level: " << USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT << "\n";
+  resultsStream << "Indexing Optimization Level: " << OPTIMIZED_INDEXING_SETTING << "\n";
+  resultsStream << "BYTES_ALIGN_MEMORY: " << getBytesAlignMemory(ACCELERATION_SETTING) << "\n";
+  resultsStream << "NUM_DATA_ALIGN_WIDTH: " << getNumDataAlignWidth(ACCELERATION_SETTING) << "\n";
 }
 
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
   RunData currRunData;
-  currRunData.addDataWHeader("Memory Optimization Level", std::to_string(beliefprop::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
-  currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(beliefprop::OPTIMIZED_INDEXING_SETTING));
-  currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(beliefprop::getBytesAlignMemory(ACCELERATION_SETTING)));
-  currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(beliefprop::getNumDataAlignWidth(ACCELERATION_SETTING)));
+  currRunData.addDataWHeader("Memory Optimization Level", std::to_string(USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
+  currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(OPTIMIZED_INDEXING_SETTING));
+  currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(getBytesAlignMemory(ACCELERATION_SETTING)));
+  currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(getNumDataAlignWidth(ACCELERATION_SETTING)));
 
   return currRunData;
 }
 
 };
 
-#endif /* BPRUNSETTINGS_H_ */
+#endif /* RUNSETTINGS_H_ */

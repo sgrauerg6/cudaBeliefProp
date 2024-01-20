@@ -479,7 +479,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 
 //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -491,7 +491,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
   const beliefprop::ParallelParameters& optCPUParams)
 {
 #ifdef COMPILING_FOR_ARM
-if constexpr (VECTORIZATION == beliefprop::AccSetting::NEON)
+if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
   {
     if (currentLevelProperties.widthCheckerboardLevel_ > 5)
     {
@@ -525,7 +525,7 @@ if constexpr (VECTORIZATION == beliefprop::AccSetting::NEON)
       disc_k_bp, bpSettingsNumDispVals, optCPUParams);
   }
 #else
-  if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX256)
+  if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256)
   {
     //only use AVX-256 if width of processing checkerboard is over 10
     if (currentLevelProperties.widthCheckerboardLevel_ > 10)
@@ -549,7 +549,7 @@ if constexpr (VECTORIZATION == beliefprop::AccSetting::NEON)
         disc_k_bp, bpSettingsNumDispVals, optCPUParams);
     }
   }
-  else if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX512)
+  else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512)
   {
     //only use AVX-512 if width of processing checkerboard is over 20
     if (currentLevelProperties.widthCheckerboardLevel_ > 20)
@@ -632,7 +632,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
   }
 }
 
-template<BpData_t T, unsigned int DISP_VALS, beliefprop::AccSetting VECTORIZATION>
+template<BpData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
   const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -643,7 +643,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
   const beliefprop::ParallelParameters& optCPUParams)
 {
-  if constexpr (VECTORIZATION == beliefprop::AccSetting::NONE) {
+  if constexpr (VECTORIZATION == run_environment::AccSetting::NONE) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
@@ -672,7 +672,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
   else {
 #ifndef COMPILING_FOR_ARM
     //SIMD vectorization of output disparity
-    if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX512) {
+    if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512) {
       retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -681,7 +681,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
         messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
         disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
     }
-    else if constexpr (VECTORIZATION == beliefprop::AccSetting::AVX256) {
+    else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256) {
       retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1151,7 +1151,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
       storePackedDataUnaligned<T, W>(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
     }
 
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -1254,7 +1254,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
       storePackedDataUnaligned<T, W>(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
     }
 
-    if constexpr (beliefprop::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {

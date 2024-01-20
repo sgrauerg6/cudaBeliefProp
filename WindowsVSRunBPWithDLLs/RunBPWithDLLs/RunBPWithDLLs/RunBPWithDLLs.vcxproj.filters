@@ -53,7 +53,7 @@
     <ClInclude Include="..\..\..\FileProcessing\BpFileHandlingConsts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ParameterFiles\bpRunSettings.h">
+    <ClInclude Include="..\..\..\ParameterFiles\RunSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\ParameterFiles\bpStereoCudaParameters.h">
