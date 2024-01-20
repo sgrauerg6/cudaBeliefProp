@@ -21,14 +21,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNEL_BP_STEREO_CPU_H
 #define KERNEL_BP_STEREO_CPU_H
 
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
-#include "../RunSettingsEval/RunSettings.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
+#include "../BpConstsAndParams/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
+#include "../RunSettingsEval/RunSettings.h"
 
 class KernelBpStereoCPU
 {

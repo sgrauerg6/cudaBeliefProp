@@ -8,12 +8,12 @@
 #ifndef SHAREDBPPROCESSINGFUNCTS_H_
 #define SHAREDBPPROCESSINGFUNCTS_H_
 
-#include "SharedUtilFuncts.h"
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
+#include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RunSettingsEval/RunSettings.h"
 #include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
+#include "../BpConstsAndParams/bpStereoParameters.h"
+#include "../BpConstsAndParams/bpStructsAndEnums.h"
+#include "SharedUtilFuncts.h"
 
 //T is input type, U is output type
 template<RunData_t T, RunData_t U>

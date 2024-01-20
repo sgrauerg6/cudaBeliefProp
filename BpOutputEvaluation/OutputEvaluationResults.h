@@ -10,8 +10,8 @@
 
 #include <map>
 #include <iostream>
-#include "OutputEvaluationParameters.h"
 #include "../RunSettingsEval/RunData.h"
+#include "OutputEvaluationParameters.h"
 
 class OutputEvaluationResults {
 public:

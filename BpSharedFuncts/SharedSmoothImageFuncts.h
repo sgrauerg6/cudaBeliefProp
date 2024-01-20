@@ -8,9 +8,9 @@
 #ifndef SHAREDSMOOTHIMAGEFUNCTS_H_
 #define SHAREDSMOOTHIMAGEFUNCTS_H_
 
-#include "SharedUtilFuncts.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
+#include "../BpConstsAndParams/bpTypeConstraints.h"
+#include "SharedUtilFuncts.h"
 
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture

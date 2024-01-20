@@ -12,7 +12,7 @@
 #include <typeinfo>
 #include <typeindex>
 #include <map>
-#include "../RunSettingsEval/RunData.h"
+#include "RunData.h"
 
 //check if running on ARM architecture
 #ifdef COMPILING_FOR_ARM

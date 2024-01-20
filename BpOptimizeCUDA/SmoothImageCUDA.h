@@ -8,14 +8,14 @@
 #ifndef SMOOTHIMAGECUDA_H_
 #define SMOOTHIMAGECUDA_H_
 
+#include <cuda_runtime.h>
+
 #include "../BpConstsAndParams/bpStereoCudaParameters.h"
 #include "../BpConstsAndParams/bpStructsAndEnums.h"
+#include "../BpImageProcessing/SmoothImage.h"
 
 //include for the kernel functions to be run on the GPU
 #include "kernelFilterHeader.cuh"
-
-#include <cuda_runtime.h>
-#include "../BpImageProcessing/SmoothImage.h"
 
 class SmoothImageCUDA : public SmoothImage {
 public:

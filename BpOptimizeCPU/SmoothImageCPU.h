@@ -12,8 +12,8 @@
 #include <memory>
 #include "../BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "../BpImageProcessing/SmoothImage.h"
-#include "KernelBpStereoCPU.h"
 #include "../RunSettingsEval/RunSettings.h"
+#include "KernelBpStereoCPU.h"
 
 class SmoothImageCPU : public SmoothImage {
 public:

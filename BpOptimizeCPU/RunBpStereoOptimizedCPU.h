@@ -13,12 +13,12 @@
 #include <memory>
 #include <array>
 #include <thread>
-#include "SmoothImageCPU.h"
-#include "ProcessOptimizedCPUBP.h"
 #include "../BpRunProcessing/RunBpStereoSet.h"
 #include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
+#include "SmoothImageCPU.h"
+#include "ProcessOptimizedCPUBP.h"
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
