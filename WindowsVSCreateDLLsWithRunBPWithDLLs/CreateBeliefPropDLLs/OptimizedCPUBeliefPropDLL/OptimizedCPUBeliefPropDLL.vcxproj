@@ -165,11 +165,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\SmoothImage.h" />
-    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h" />
+    <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h" />
@@ -189,11 +189,11 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\SmoothImage.cpp" />
-    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp" />
+    <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.cpp" />

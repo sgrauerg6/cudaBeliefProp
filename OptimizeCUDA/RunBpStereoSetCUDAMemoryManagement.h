@@ -1,7 +1,7 @@
 #ifndef RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
 #define RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
 
-#include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
+#include "../BpRunProcessing/RunBpStereoSetMemoryManagement.h"
 #include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include <cuda_runtime.h>

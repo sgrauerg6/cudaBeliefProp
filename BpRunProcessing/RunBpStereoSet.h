@@ -12,21 +12,20 @@
 #include <memory>
 #include <array>
 #include <string>
-#include "SmoothImage.h"
 #include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../RunSettingsEval/RunSettings.h"
 #include "../BpConstsAndParams/bpStructsAndEnums.h"
-#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
-#include "../RuntimeTiming/DetailedTimings.h"
-#include "../BpAndSmoothProcessing/RunBpStereoSetMemoryManagement.h"
-#include "../BpOutputEvaluation/DisparityMap.h"
-#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
-#include "../RuntimeTiming/DetailedTimings.h"
-#include "../BpImageDataAndProcessing/BpImage.h"
-#include "../RunSettingsEval/RunData.h"
 #include "../BpConstsAndParams/bpTypeConstraints.h"
+#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "../BpImageProcessing/BpImage.h"
+#include "../BpImageProcessing/DisparityMap.h"
+#include "../BpImageProcessing/SmoothImage.h"
+#include "../RuntimeTiming/DetailedTimings.h"
+#include "../RunSettingsEval/RunData.h"
+#include "../RunSettingsEval/RunSettings.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RunSettingsEval/RunEvalConstsEnums.h"
+#include "ProcessBPOnTargetDevice.h"
+#include "RunBpStereoSetMemoryManagement.h"
 
 //stereo processing output
 struct ProcessStereoSetOutput

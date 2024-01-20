@@ -27,16 +27,16 @@
     <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.h">
+    <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.h">
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.h">
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\SmoothImage.h">
+    <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h">
@@ -54,7 +54,7 @@
     <ClInclude Include="..\..\..\SharedFuncts\SharedUtilFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h">
+    <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h">
@@ -71,22 +71,22 @@
     <ClCompile Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.cpp">
+    <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.cpp">
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.cpp">
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\SmoothImage.cpp">
+    <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\RuntimeTiming\DetailedTimings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp">
+    <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\OutputEvaluation\DisparityMap.cpp">

@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <memory>
 #include "../SharedFuncts/SharedSmoothImageFuncts.h"
-#include "../BpAndSmoothProcessing/SmoothImage.h"
+#include "../BpImageProcessing/SmoothImage.h"
 #include "KernelBpStereoCPU.h"
 #include "../RunSettingsEval/RunSettings.h"
 

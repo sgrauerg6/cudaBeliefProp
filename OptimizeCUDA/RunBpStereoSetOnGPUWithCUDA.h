@@ -28,9 +28,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "../BpConstsAndParams/bpStereoCudaParameters.h"
 #include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "../BpRunProcessing/RunBpStereoSet.h"
 #include "SmoothImageCUDA.h"
-#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
+#include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "RunBpStereoSetCUDAMemoryManagement.h"
 
 namespace bp_cuda_device

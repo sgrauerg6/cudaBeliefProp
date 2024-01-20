@@ -22,7 +22,7 @@
 #include "pnmfile.h"
 #include "filter.h"
 #include "imconv.h"
-#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "../BpRunProcessing/RunBpStereoSet.h"
 #include "../BpConstsAndParams/bpStereoParameters.h"
 #include "../BpConstsAndParams/bpStructsAndEnums.h"
 #include "../RunSettingsEval/RunSettings.h"

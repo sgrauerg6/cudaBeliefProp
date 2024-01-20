@@ -104,16 +104,16 @@
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\SmoothImage.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp" />
     <ClCompile Include="..\..\..\BpFileProcessing\BpFileHandling.cpp" />
     <ClCompile Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp" />
+    <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.cpp" />
@@ -131,7 +131,7 @@
     <ClCompile Include="..\..\..\OutputEvaluation\OutputEvaluationParameters.cpp" />
     <ClCompile Include="..\..\..\OutputEvaluation\OutputEvaluationResults.cpp" />
     <ClCompile Include="..\..\..\RuntimeTiming\DetailedTimings.cpp" />
-    <ClCompile Include="..\..\..\SingleThreadCPU\stereo.cpp" />
+    <ClCompile Include="..\..\..\BpSingleThreadCPU\stereo.cpp" />
     <ClCompile Include="BeliefPropQtGUI.cpp" />
     <ClCompile Include="GuiProcessStereoSet.cpp" />
     <ClCompile Include="main.cpp" />
@@ -146,14 +146,14 @@
     <QtRcc Include="BeliefPropQtGUI.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\SmoothImage.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h" />
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandling.h" />
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandlingConsts.h" />
     <ClInclude Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.h" />
-    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h" />
+    <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h" />
@@ -185,14 +185,14 @@
     <ClInclude Include="..\..\..\SharedFuncts\SharedBPProcessingFuncts.h" />
     <ClInclude Include="..\..\..\SharedFuncts\SharedSmoothImageFuncts.h" />
     <ClInclude Include="..\..\..\SharedFuncts\SharedUtilFuncts.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\convolve.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\filter.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\image.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\imconv.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\imutil.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\misc.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\pnmfile.h" />
-    <ClInclude Include="..\..\..\SingleThreadCPU\stereo.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\convolve.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\filter.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\image.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\imconv.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\imutil.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\misc.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\pnmfile.h" />
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\stereo.h" />
     <ClInclude Include="GuiProcessStereoSet.h" />
   </ItemGroup>
   <ItemGroup>

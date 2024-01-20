@@ -167,11 +167,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.h" />
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\SmoothImage.h" />
-    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h" />
+    <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h" />
     <CudaCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.h">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
@@ -192,11 +192,11 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\ProcessBPOnTargetDevice.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSetMemoryManagement.cpp" />
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\SmoothImage.cpp" />
-    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp" />
+    <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp" />
     <CudaCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.cpp">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>

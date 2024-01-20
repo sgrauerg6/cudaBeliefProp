@@ -21,31 +21,31 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\convolve.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\convolve.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\filter.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\filter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\image.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\imconv.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\imconv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\imutil.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\imutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\misc.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\pnmfile.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\pnmfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SingleThreadCPU\stereo.h">
+    <ClInclude Include="..\..\..\BpSingleThreadCPU\stereo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.h">
+    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,10 +56,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\SingleThreadCPU\stereo.cpp">
+    <ClCompile Include="..\..\..\BpSingleThreadCPU\stereo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpAndSmoothProcessing\RunBpStereoSet.cpp">
+    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,8 +15,8 @@
 #include <thread>
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
-#include "../BpAndSmoothProcessing/RunBpStereoSet.h"
-#include "../BpAndSmoothProcessing/ProcessBPOnTargetDevice.h"
+#include "../BpRunProcessing/RunBpStereoSet.h"
+#include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "../BpConstsAndParams/bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 

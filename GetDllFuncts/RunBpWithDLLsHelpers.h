@@ -10,7 +10,7 @@
 
 #include "BpConstsAndParams/RunSettings.h"
 #include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "BpRunProcessing/RunBpStereoSet.h"
 
 //typedef RunBpStereoSet<float>* (__cdecl *RunBpStereoSet_factory)();
 template <typename T, unsigned int NUM_DISP>
@@ -19,7 +19,7 @@ using RunBpStereoSet_factory = RunBpStereoSet<T, NUM_DISP>* (__cdecl*)();
 namespace run_bp_dlls
 {
   enum class device_run { SINGLE_THREAD_CPU, OPTIMIZED_CPU, CUDA };
-  const std::map<device_run, std::string> DLL_FILE_NAMES = { {device_run::SINGLE_THREAD_CPU, "SingleThreadCPUBeliefPropDLL.dll"},
+  const std::map<device_run, std::string> DLL_FILE_NAMES = { {device_run::SINGLE_THREAD_CPU, "BpSingleThreadCPUBeliefPropDLL.dll"},
                                 {device_run::OPTIMIZED_CPU, "OptimizedCPUBeliefPropDLL.dll"},
                                 {device_run::CUDA, "CUDABeliefPropDLL.dll"} };
 }

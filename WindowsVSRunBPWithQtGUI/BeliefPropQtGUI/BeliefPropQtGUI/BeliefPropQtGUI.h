@@ -10,12 +10,12 @@
 #include "./BpConstsAndParams/bpStructsAndEnums.h"
 
 //needed to run the each of the bp implementations
-#include "SingleThreadCPU/stereo.h"
+#include "BpSingleThreadCPU/stereo.h"
 #include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
 #include "OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 #include "./BpFileProcessing/BpFileHandling.h"
 #include "./BpConstsAndParams/RunSettings.h"
-#include "./BpAndSmoothProcessing/RunBpStereoSet.h"
+#include "./BpRunProcessing/RunBpStereoSet.h"
 
 class BeliefPropQtGUI : public QMainWindow
 {

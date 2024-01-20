@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CUDABeliefPropDLL", "CreateBeliefPropDLLs\CreateBeliefPropDLLs.vcxproj", "{73A5D499-C8F1-4E22-980F-D709C0F4AEC6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SingleThreadCPUBeliefPropDLL", "SingleThreadCPUBeliefPropDLL\SingleThreadCPUBeliefPropDLL.vcxproj", "{67401E38-B722-4947-AD59-46CA5B3817A2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BpSingleThreadCPUBeliefPropDLL", "BpSingleThreadCPUBeliefPropDLL\BpSingleThreadCPUBeliefPropDLL.vcxproj", "{67401E38-B722-4947-AD59-46CA5B3817A2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OptimizedCPUBeliefPropDLL", "OptimizedCPUBeliefPropDLL\OptimizedCPUBeliefPropDLL.vcxproj", "{DF2DF6AB-D8AB-4366-9807-6D0341E480D7}"
 EndProject

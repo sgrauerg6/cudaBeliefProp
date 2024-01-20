@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <memory>
 #include <utility>
 #include <algorithm>
-#include "../BpImageDataAndProcessing/BpImage.h"
+#include "../BpImageProcessing/BpImage.h"
 
 constexpr float MIN_SIGMA_VAL_SMOOTH{0.1f}; //don't smooth input images if SIGMA_BP below this
 
