@@ -11,16 +11,13 @@
 #include <memory>
 #include <array>
 #include <fstream>
-#include <map>
 #include <vector>
-#include <numeric>
 #include <algorithm>
-#include <set>
-#include "../RunSettingsEval/RunSettings.h"
 #include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../RunSettingsEval/RunData.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
+#include "RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
+#include "RunSettings.h"
+#include "RunData.h"
 
 using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
 using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
