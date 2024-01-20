@@ -17,7 +17,7 @@ namespace bp_file_handling
   constexpr std::string_view IN_IMAGE_POSS_EXTENSIONS[] = {"pgm", "ppm"};
   constexpr std::string_view GROUND_TRUTH_DISP_FILE = "groundTruthDisparity.pgm";
   constexpr std::string_view OUT_DISP_IMAGE_NAME_BASE = "computedDisparity";
-  constexpr std::string_view STEREO_SETS_DIRECTORY_NAME = "StereoSets";
+  constexpr std::string_view STEREO_SETS_DIRECTORY_NAME = "BpStereoSets";
 }
 
 #endif /* BPFILEHANDLINGCONSTS_H_ */

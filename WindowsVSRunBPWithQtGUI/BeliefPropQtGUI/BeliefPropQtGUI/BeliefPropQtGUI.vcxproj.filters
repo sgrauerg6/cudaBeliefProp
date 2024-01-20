@@ -55,25 +55,25 @@
     <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\ProcessOptimizedCPUBP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\RunBpStereoOptimizedCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\SmoothImageCPU.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\SmoothImageCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCUDA\SmoothImageCUDA.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\OutputEvaluation\DisparityMap.cpp">
@@ -135,43 +135,43 @@
     <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX512TemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_AVX512TemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_NEON.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_NEON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_TemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_TemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\ProcessOptimizedCPUBP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\RunBpStereoOptimizedCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\SmoothImageCPU.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\SmoothImageCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCUDA\ProcessCUDABP.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCUDA\SmoothImageCUDA.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h">
@@ -201,13 +201,13 @@
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SharedFuncts\SharedBPProcessingFuncts.h">
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedBPProcessingFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SharedFuncts\SharedSmoothImageFuncts.h">
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedSmoothImageFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SharedFuncts\SharedUtilFuncts.h">
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedUtilFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpSingleThreadCPU\convolve.h">
@@ -236,13 +236,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\OptimizeCUDA\kernelBpStereo.cu" />
-    <None Include="..\..\..\OptimizeCUDA\kernelBpStereoHeader.cuh" />
-    <None Include="..\..\..\OptimizeCUDA\kernelFilter.cu" />
-    <None Include="..\..\..\OptimizeCUDA\kernelFilterHeader.cuh" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelBpStereo.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelBpStereoHeader.cuh" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelFilter.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelFilterHeader.cuh" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
   </ItemGroup>
 </Project>

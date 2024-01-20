@@ -21,31 +21,31 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX512TemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_AVX512TemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_NEON.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_NEON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_TemplateSpFuncts.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU_TemplateSpFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\ProcessOptimizedCPUBP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\RunBpStereoOptimizedCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCPU\SmoothImageCPU.h">
+    <ClInclude Include="..\..\..\BpOptimizeCPU\SmoothImageCPU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h">
@@ -89,16 +89,16 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\ProcessOptimizedCPUBP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\RunBpStereoOptimizedCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCPU\SmoothImageCPU.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCPU\SmoothImageCPU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\OutputEvaluation\DisparityMap.cpp">

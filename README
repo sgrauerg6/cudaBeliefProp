@@ -51,7 +51,7 @@ In order to compile/re-compile the program, navigate to the directory LinuxMakeA
 implementation on x86 processors), the directory LinuxMakeAndRunBPOptimizedCPU (for optimized CPU implementation on ARM
 processors), or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".
 
-A number of stereo sets including the Tsukuba stereo are included in the "StereoSets" folder.  In order to run the
+A number of stereo sets including the Tsukuba stereo are included in the "BpStereoSets" folder.  In order to run the
 implementation on these stereo sets using the initial parameters as defined in BpConstsAndParams/bpStereoParameters.h,
 perform the following steps:
 

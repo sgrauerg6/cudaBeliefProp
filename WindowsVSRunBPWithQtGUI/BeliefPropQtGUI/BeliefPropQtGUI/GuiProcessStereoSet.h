@@ -11,8 +11,8 @@
 
 //needed to run the each of the bp implementations
 #include "BpSingleThreadCPU/stereo.h"
-#include "OptimizeCPU/RunBpStereoOptimizedCPU.h"
-#include "OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+#include "BpOptimizeCPU/RunBpStereoOptimizedCPU.h"
+#include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 #include "./BpFileProcessing/BpFileHandling.h"
 #include "./BpConstsAndParams/RunSettings.h"
 #include "./BpRunProcessing/RunBpStereoSet.h"

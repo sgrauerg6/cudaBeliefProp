@@ -21,10 +21,10 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h">
@@ -45,13 +45,13 @@
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SharedFuncts\SharedBPProcessingFuncts.h">
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedBPProcessingFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SharedFuncts\SharedSmoothImageFuncts.h">
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedSmoothImageFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\SharedFuncts\SharedUtilFuncts.h">
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedUtilFuncts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h">
@@ -68,7 +68,7 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp">
@@ -94,26 +94,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\OptimizeCUDA\kernelBpStereo.cu" />
-    <None Include="..\..\..\OptimizeCUDA\kernelBpStereoHeader.cuh" />
-    <None Include="..\..\..\OptimizeCUDA\kernelFilter.cu" />
-    <None Include="..\..\..\OptimizeCUDA\kernelFilterHeader.cuh" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelBpStereo.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelBpStereoHeader.cuh" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelFilter.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\kernelFilterHeader.cuh" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.h">
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.h">
       <Filter>Header Files</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\..\OptimizeCUDA\SmoothImageCUDA.h">
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.h">
       <Filter>Header Files</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.cpp">
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.cpp">
       <Filter>Source Files</Filter>
     </CudaCompile>
-    <CudaCompile Include="..\..\..\OptimizeCUDA\SmoothImageCUDA.cpp">
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.cpp">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

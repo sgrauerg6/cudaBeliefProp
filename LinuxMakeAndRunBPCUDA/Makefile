@@ -59,8 +59,8 @@ DetailedTimings.o: ../RuntimeTiming/DetailedTimings.cpp ../RuntimeTiming/Detaile
 ProcessBPOnTargetDevice.o : ../BpRunProcessing/ProcessBPOnTargetDevice.cpp ../BpRunProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o ../BpConstsAndParams/DetailedTimingBPConsts.h ../RunSettingsEval/RunSettings.h ../BpConstsAndParams/bpStereoParameters.h ../BpConstsAndParams/bpStructsAndEnums.h
 	$(CC) ../BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessOptimizedCPUBP.o : ../OptimizeCPU/ProcessOptimizedCPUBP.cpp ../OptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o ../OptimizeCPU/KernelBpStereoCPU.h ../OptimizeCPU/KernelBpStereoCPU.cpp
-	$(CC) ../OptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessOptimizedCPUBP.o : ../BpOptimizeCPU/ProcessOptimizedCPUBP.cpp ../BpOptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o ../BpOptimizeCPU/KernelBpStereoCPU.h ../BpOptimizeCPU/KernelBpStereoCPU.cpp
+	$(CC) ../BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunBpStereoSet.o: ../BpRunProcessing/RunBpStereoSet.cpp ../BpRunProcessing/RunBpStereoSet.h ../BpConstsAndParams/bpStereoParameters.h ../RunSettingsEval/RunSettings.h ../BpConstsAndParams/bpStructsAndEnums.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o ../BpConstsAndParams/DetailedTimingBPConsts.h
 	$(CC) ../BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -83,14 +83,14 @@ stereo.o: ../BpSingleThreadCPU/stereo.cpp ../BpSingleThreadCPU/stereo.h ../BpCon
 SmoothImage.o: ../BpImageProcessing/SmoothImage.cpp ../BpImageProcessing/SmoothImage.h 
 	$(CC) ../BpImageProcessing/SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSetOnGPUWithCUDA.o: ../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp ../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h ProcessCUDABP.o SmoothImageCUDA.o RunBpStereoSet.o ProcessBPOnTargetDevice.o
-	$(CC) ../OptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+RunBpStereoSetOnGPUWithCUDA.o: ../BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp ../BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h ProcessCUDABP.o SmoothImageCUDA.o RunBpStereoSet.o ProcessBPOnTargetDevice.o
+	$(CC) ../BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessCUDABP.o: ../OptimizeCUDA/ProcessCUDABP.cpp ../OptimizeCUDA/ProcessCUDABP.h
-	$(NVCC) -x cu -c ../OptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
+ProcessCUDABP.o: ../BpOptimizeCUDA/ProcessCUDABP.cpp ../BpOptimizeCUDA/ProcessCUDABP.h
+	$(NVCC) -x cu -c ../BpOptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
 
-SmoothImageCUDA.o: ../OptimizeCUDA/SmoothImageCUDA.cpp ../OptimizeCUDA/SmoothImageCUDA.h ../OptimizeCUDA/kernelFilter.cu ../OptimizeCUDA/kernelFilterHeader.cuh
-	$(NVCC) -x cu -c ../OptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
+SmoothImageCUDA.o: ../BpOptimizeCUDA/SmoothImageCUDA.cpp ../BpOptimizeCUDA/SmoothImageCUDA.h ../BpOptimizeCUDA/kernelFilter.cu ../BpOptimizeCUDA/kernelFilterHeader.cuh
+	$(NVCC) -x cu -c ../BpOptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
 
 make clean:
 	rm *.o driverCudaBp driverCPUBp

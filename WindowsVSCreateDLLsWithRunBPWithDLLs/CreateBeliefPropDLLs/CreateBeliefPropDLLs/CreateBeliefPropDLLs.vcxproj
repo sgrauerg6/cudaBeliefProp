@@ -172,22 +172,22 @@
     <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h" />
     <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h" />
     <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h" />
-    <CudaCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.h">
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.h">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
     </CudaCompile>
-    <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h" />
-    <ClInclude Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h" />
-    <CudaCompile Include="..\..\..\OptimizeCUDA\SmoothImageCUDA.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h" />
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.h">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
     </CudaCompile>
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimingBPConsts.h" />
     <ClInclude Include="..\..\..\RuntimeTiming\DetailedTimings.h" />
-    <ClInclude Include="..\..\..\SharedFuncts\SharedBPProcessingFuncts.h" />
-    <ClInclude Include="..\..\..\SharedFuncts\SharedSmoothImageFuncts.h" />
-    <ClInclude Include="..\..\..\SharedFuncts\SharedUtilFuncts.h" />
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedBPProcessingFuncts.h" />
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedSmoothImageFuncts.h" />
+    <ClInclude Include="..\..\..\BpSharedFuncts\SharedUtilFuncts.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -197,12 +197,12 @@
     <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp" />
     <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp" />
     <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp" />
-    <CudaCompile Include="..\..\..\OptimizeCUDA\ProcessCUDABP.cpp">
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.cpp">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
     </CudaCompile>
-    <ClCompile Include="..\..\..\OptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp" />
-    <CudaCompile Include="..\..\..\OptimizeCUDA\SmoothImageCUDA.cpp">
+    <ClCompile Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.cpp" />
+    <CudaCompile Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.cpp">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_75,sm_75</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_75,sm_75</CodeGeneration>
     </CudaCompile>
@@ -217,32 +217,32 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\OptimizeCUDA\kernelBpStereo.cu">
+    <None Include="..\..\..\BpOptimizeCUDA\kernelBpStereo.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\kernelBpStereoHeader.cuh">
+    <None Include="..\..\..\BpOptimizeCUDA\kernelBpStereoHeader.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\kernelFilter.cu">
+    <None Include="..\..\..\BpOptimizeCUDA\kernelFilter.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\kernelFilterHeader.cuh">
+    <None Include="..\..\..\BpOptimizeCUDA\kernelFilterHeader.cuh">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu">
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemory.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu">
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseSharedMemoryActuallyDuplicateRegMem.cu">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </None>
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
-    <None Include="..\..\..\OptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoDataAndMessageInDynamicSharedMemory.cu" />
+    <None Include="..\..\..\BpOptimizeCUDA\SharedMemoryKernels\KernelBpStereoUseDynamicSharedMemory.cu" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

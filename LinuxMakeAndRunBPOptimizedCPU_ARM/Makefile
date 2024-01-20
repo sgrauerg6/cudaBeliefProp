@@ -34,8 +34,8 @@ driverBpStereoCPU.o: ../MainDriverFiles/driverBpStereoCPU.cpp ../MainDriverFiles
 ProcessBPOnTargetDevice.o : ../BpRunProcessing/ProcessBPOnTargetDevice.cpp ../BpRunProcessing/ProcessBPOnTargetDevice.h ../BpConstsAndParams/DetailedTimingBPConsts.h ../RunSettingsEval/RunSettings.h ../BpConstsAndParams/bpStereoParameters.h ../BpConstsAndParams/bpStructsAndEnums.h DetailedTimings.o
 	$(CC) ../BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessOptimizedCPUBP.o : ../OptimizeCPU/ProcessOptimizedCPUBP.cpp ../OptimizeCPU/ProcessOptimizedCPUBP.h ../OptimizeCPU/KernelBpStereoCPU.h ../OptimizeCPU/KernelBpStereoCPU.cpp ProcessBPOnTargetDevice.o
-	$(CC) ../OptimizeCPU/ProcessOptimizedCPUBP.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessOptimizedCPUBP.o : ../BpOptimizeCPU/ProcessOptimizedCPUBP.cpp ../BpOptimizeCPU/ProcessOptimizedCPUBP.h ../BpOptimizeCPU/KernelBpStereoCPU.h ../BpOptimizeCPU/KernelBpStereoCPU.cpp ProcessBPOnTargetDevice.o
+	$(CC) ../BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunBpStereoSet.o: ../BpRunProcessing/RunBpStereoSet.cpp ../BpRunProcessing/RunBpStereoSet.h ../BpConstsAndParams/bpStereoParameters.h ../RunSettingsEval/RunSettings.h ../BpConstsAndParams/bpStructsAndEnums.h ../BpConstsAndParams/DetailedTimingBPConsts.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o
 	$(CC) ../BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -58,11 +58,11 @@ stereo.o: ../BpSingleThreadCPU/stereo.cpp ../BpSingleThreadCPU/stereo.h ../BpCon
 SmoothImage.o: ../BpImageProcessing/SmoothImage.cpp ../BpImageProcessing/SmoothImage.h 
 	$(CC) ../BpImageProcessing/SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-SmoothImageCPU.o: ../OptimizeCPU/SmoothImageCPU.cpp ../OptimizeCPU/SmoothImageCPU.h SmoothImage.o
-	$(CC) ../OptimizeCPU/SmoothImageCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+SmoothImageCPU.o: ../BpOptimizeCPU/SmoothImageCPU.cpp ../BpOptimizeCPU/SmoothImageCPU.h SmoothImage.o
+	$(CC) ../BpOptimizeCPU/SmoothImageCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoOptimizedCPU.o: ../OptimizeCPU/RunBpStereoOptimizedCPU.cpp ../OptimizeCPU/RunBpStereoOptimizedCPU.h SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
-	$(CC) ../OptimizeCPU/RunBpStereoOptimizedCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+RunBpStereoOptimizedCPU.o: ../BpOptimizeCPU/RunBpStereoOptimizedCPU.cpp ../BpOptimizeCPU/RunBpStereoOptimizedCPU.h SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
+	$(CC) ../BpOptimizeCPU/RunBpStereoOptimizedCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 make clean:
 	rm *.o driverCPUBp
