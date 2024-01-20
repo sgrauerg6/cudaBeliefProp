@@ -18,7 +18,7 @@
 #include "bpTypeConstraints.h"
 #include "../RunSettingsEval/RunTypeConstraints.h"
 #include "../RunSettingsEval/RunSettings.h"
-#include "../OutputEvaluation/RunData.h"
+#include "../RunSettingsEval/RunData.h"
 
 namespace beliefprop {
 

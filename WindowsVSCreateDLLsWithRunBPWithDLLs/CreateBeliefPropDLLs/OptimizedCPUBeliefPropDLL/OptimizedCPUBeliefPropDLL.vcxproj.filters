@@ -63,7 +63,7 @@
     <ClInclude Include="..\..\..\BpAndSmoothProcessing\SmoothImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\ImageDataAndProcessing\BpImage.h">
+    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpConstsAndParams\RunSettings.h">
@@ -116,7 +116,7 @@
     <ClCompile Include="..\..\..\BpAndSmoothProcessing\SmoothImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\ImageDataAndProcessing\BpImage.cpp">
+    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\RuntimeTiming\DetailedTimings.cpp">

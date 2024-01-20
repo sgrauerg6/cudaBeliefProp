@@ -13,7 +13,7 @@
 #include <string>
 #include <iterator>
 #include <iostream>
-#include "../ImageDataAndProcessing/BpImage.h"
+#include "../BpImageDataAndProcessing/BpImage.h"
 #include "OutputEvaluationResults.h"
 #include "OutputEvaluationParameters.h"
 

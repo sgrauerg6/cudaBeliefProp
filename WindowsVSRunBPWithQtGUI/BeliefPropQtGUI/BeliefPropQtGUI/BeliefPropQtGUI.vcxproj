@@ -113,7 +113,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\ImageDataAndProcessing\BpImage.cpp" />
+    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\ProcessOptimizedCPUBP.cpp" />
     <ClCompile Include="..\..\..\OptimizeCPU\RunBpStereoOptimizedCPU.cpp" />
@@ -153,7 +153,7 @@
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandling.h" />
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandlingConsts.h" />
     <ClInclude Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.h" />
-    <ClInclude Include="..\..\..\ImageDataAndProcessing\BpImage.h" />
+    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_ARMTemplateSpFuncts.h" />
     <ClInclude Include="..\..\..\OptimizeCPU\KernelBpStereoCPU_AVX256TemplateSpFuncts.h" />

@@ -178,7 +178,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\BpFileProcessing\BpFileHandling.cpp" />
     <ClCompile Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.cpp" />
-    <ClCompile Include="..\..\..\ImageDataAndProcessing\BpImage.cpp" />
+    <ClCompile Include="..\..\..\BpImageDataAndProcessing\BpImage.cpp" />
     <ClCompile Include="..\..\..\MainDriverFiles\RunAndEvaluateBpResults.cpp" />
     <ClCompile Include="..\..\..\OutputEvaluation\DisparityMap.cpp" />
     <ClCompile Include="..\..\..\OutputEvaluation\OutputEvaluationParameters.cpp" />
@@ -190,7 +190,7 @@
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandling.h" />
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandlingConsts.h" />
     <ClInclude Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.h" />
-    <ClInclude Include="..\..\..\ImageDataAndProcessing\BpImage.h" />
+    <ClInclude Include="..\..\..\BpImageDataAndProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\MainDriverFiles\RunAndEvaluateBpResults.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\DisparityMap.h" />
     <ClInclude Include="..\..\..\OutputEvaluation\OutputEvaluationParameters.h" />
