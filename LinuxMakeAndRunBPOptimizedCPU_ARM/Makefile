@@ -1,5 +1,8 @@
 OSLOWER := $(shell uname -s 2>/dev/null | tr [:upper:] [:lower:])
 
+TOP_DIR = ..
+BP_PATH = ${TOP_DIR}/BeliefProp
+
 # contains the directories to include...
 INCLUDE_DIRS := -I. -I./ -I./.. -I./../BeliefProp -I$(COMMONDIR)/inc -I$(SHAREDDIR)/inc
 
@@ -22,47 +25,47 @@ all: impDriverCPU
 impDriverCPU: driverBpStereoCPU.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
 	$(CC) driverBpStereoCPU.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o driverCPUBp -O
 
-BpFileHandling.o: BpFileProcessing/BpFileHandling.h BpFileProcessing/BpFileHandling.cpp BpFileProcessing/BpFileHandlingConsts.h
-	$(CC) BpFileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+BpFileHandling.o:
+	$(CC) ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 	
-DetailedTimings.o: RuntimeTiming/DetailedTimings.cpp RuntimeTiming/DetailedTimings.h
-	$(CC) RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+DetailedTimings.o:
+	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverBpStereoCPU.o: MainDriverFiles/driverBpStereoCPU.cpp MainDriverFiles/RunAndEvaluateBpResults.h BpConstsAndParams/bpStereoParameters.h BpConstsAndParams/bpStructsAndEnums.h BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
-	$(CC) MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+driverBpStereoCPU.o: BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
+	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessBPOnTargetDevice.o : BpRunProcessing/ProcessBPOnTargetDevice.cpp BpRunProcessing/ProcessBPOnTargetDevice.h BpConstsAndParams/DetailedTimingBPConsts.h RunSettingsEval/RunSettings.h BpConstsAndParams/bpStereoParameters.h BpConstsAndParams/bpStructsAndEnums.h DetailedTimings.o
-	$(CC) BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessBPOnTargetDevice.o : DetailedTimings.o
+	$(CC) ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessOptimizedCPUBP.o : BpOptimizeCPU/ProcessOptimizedCPUBP.cpp BpOptimizeCPU/ProcessOptimizedCPUBP.h BpOptimizeCPU/KernelBpStereoCPU.h BpOptimizeCPU/KernelBpStereoCPU.cpp ProcessBPOnTargetDevice.o
-	$(CC) BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+ProcessOptimizedCPUBP.o : ProcessBPOnTargetDevice.o
+	$(CC) ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSet.o: BpRunProcessing/RunBpStereoSet.cpp BpRunProcessing/RunBpStereoSet.h BpConstsAndParams/bpStereoParameters.h RunSettingsEval/RunSettings.h BpConstsAndParams/bpStructsAndEnums.h BpConstsAndParams/DetailedTimingBPConsts.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o
-	$(CC) BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+RunBpStereoSet.o: SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o
+	$(CC) ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-BpImage.o: BpImageProcessing/BpImage.cpp BpImageProcessing/BpImage.h
-	$(CC) BpImageProcessing/BpImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+BpImage.o:
+	$(CC) ${BP_PATH}/BpImageProcessing/BpImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-OutputEvaluationParameters.o: BpOutputEvaluation/OutputEvaluationParameters.cpp BpOutputEvaluation/OutputEvaluationParameters.h
-	$(CC) BpOutputEvaluation/OutputEvaluationParameters.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+OutputEvaluationParameters.o:
+	$(CC) ${BP_PATH}/BpOutputEvaluation/OutputEvaluationParameters.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-OutputEvaluationResults.o: BpOutputEvaluation/OutputEvaluationResults.cpp BpOutputEvaluation/OutputEvaluationResults.h
-	$(CC) BpOutputEvaluation/OutputEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+OutputEvaluationResults.o:
+	$(CC) ${BP_PATH}/BpOutputEvaluation/OutputEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
-DisparityMap.o: BpImageProcessing/DisparityMap.cpp BpImageProcessing/DisparityMap.h OutputEvaluationParameters.o OutputEvaluationResults.o
-	$(CC) BpImageProcessing/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+DisparityMap.o: OutputEvaluationParameters.o OutputEvaluationResults.o
+	$(CC) ${BP_PATH}/BpImageProcessing/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: BpSingleThreadCPU/stereo.cpp BpSingleThreadCPU/stereo.h BpConstsAndParams/bpStereoCudaParameters.h BpConstsAndParams/bpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
-	$(CC) BpSingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+stereo.o: ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
+	$(CC) ${BP_PATH}/BpSingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-SmoothImage.o: BpImageProcessing/SmoothImage.cpp BpImageProcessing/SmoothImage.h 
-	$(CC) BpImageProcessing/SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+SmoothImage.o:
+	$(CC) ${BP_PATH}/BpImageProcessing/SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-SmoothImageCPU.o: BpOptimizeCPU/SmoothImageCPU.cpp BpOptimizeCPU/SmoothImageCPU.h SmoothImage.o
-	$(CC) BpOptimizeCPU/SmoothImageCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+SmoothImageCPU.o: SmoothImage.o
+	$(CC) ${BP_PATH}/BpOptimizeCPU/SmoothImageCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoOptimizedCPU.o: BpOptimizeCPU/RunBpStereoOptimizedCPU.cpp BpOptimizeCPU/RunBpStereoOptimizedCPU.h SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
-	$(CC) BpOptimizeCPU/RunBpStereoOptimizedCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+RunBpStereoOptimizedCPU.o: SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
+	$(CC) ${BP_PATH}/BpOptimizeCPU/RunBpStereoOptimizedCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 make clean:
 	rm *.o driverCPUBp
