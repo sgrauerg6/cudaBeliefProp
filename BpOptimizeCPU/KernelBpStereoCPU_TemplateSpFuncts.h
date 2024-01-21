@@ -9,7 +9,7 @@
 #else
 #include <x86intrin.h>
 #endif
-#include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
 
 //used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
 //for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio

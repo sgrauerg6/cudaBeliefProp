@@ -10,9 +10,9 @@
 
 #include <algorithm>
 #include <memory>
-#include "../BpSharedFuncts/SharedSmoothImageFuncts.h"
-#include "../BpImageProcessing/SmoothImage.h"
-#include "../RunSettingsEval/RunSettings.h"
+#include "BpSharedFuncts/SharedSmoothImageFuncts.h"
+#include "BpImageProcessing/SmoothImage.h"
+#include "RunSettingsEval/RunSettings.h"
 #include "KernelBpStereoCPU.h"
 
 class SmoothImageCPU : public SmoothImage {

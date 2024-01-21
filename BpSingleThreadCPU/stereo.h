@@ -22,10 +22,10 @@
 #include "pnmfile.h"
 #include "filter.h"
 #include "imconv.h"
-#include "../BpRunProcessing/RunBpStereoSet.h"
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
-#include "../RunSettingsEval/RunSettings.h"
+#include "BpRunProcessing/RunBpStereoSet.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
+#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::NONE>

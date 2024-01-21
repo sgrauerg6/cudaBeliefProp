@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <map>
 #include <iostream>
-#include "../RunSettingsEval/RunData.h"
+#include "RunSettingsEval/RunData.h"
 
 //Class to store timings
 //Index for timing segments must be enum type (either scoped via "enum class" or not scoped)

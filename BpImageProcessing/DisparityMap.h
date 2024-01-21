@@ -14,8 +14,8 @@
 #include <iterator>
 #include <iostream>
 #include "BpImage.h"
-#include "../BpOutputEvaluation/OutputEvaluationResults.h"
-#include "../BpOutputEvaluation/OutputEvaluationParameters.h"
+#include "BpOutputEvaluation/OutputEvaluationResults.h"
+#include "BpOutputEvaluation/OutputEvaluationParameters.h"
 
 template<class T>
 requires std::is_arithmetic_v<T>

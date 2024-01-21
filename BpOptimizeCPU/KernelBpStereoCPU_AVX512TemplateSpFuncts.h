@@ -12,7 +12,7 @@
 #else
 #include <x86intrin.h>
 #endif
-#include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
 
 template<unsigned int DISP_VALS>
 void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsAVX512(

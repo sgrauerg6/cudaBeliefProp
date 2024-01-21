@@ -1,8 +1,8 @@
 //code for using shared memory in the belief prop function; seems to work but is generally slower than not using shared memory,
 //so currently not using except for testing
 
-#include "../../BpSharedFuncts/SharedBPProcessingFuncts.h"
-#include "../../bpStereoCudaParameters.h"
+#include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "../bpStereoCudaParameters.h"
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<typename T>

@@ -10,7 +10,7 @@
 
 #include <map>
 #include <iostream>
-#include "../RunSettingsEval/RunData.h"
+#include "RunSettingsEval/RunData.h"
 #include "OutputEvaluationParameters.h"
 
 class OutputEvaluationResults {

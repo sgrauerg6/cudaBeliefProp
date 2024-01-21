@@ -16,9 +16,9 @@
 #include <string>
 #include "bpStereoParameters.h"
 #include "bpTypeConstraints.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RunSettingsEval/RunSettings.h"
-#include "../RunSettingsEval/RunData.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsEval/RunData.h"
 
 namespace beliefprop {
 

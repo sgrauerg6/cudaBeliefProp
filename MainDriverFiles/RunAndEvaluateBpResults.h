@@ -16,24 +16,24 @@
 #include <numeric>
 #include <algorithm>
 #include <set>
-#include "../BpFileProcessing/BpFileHandling.h"
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RunSettingsEval/RunEvalConstsEnums.h"
-#include "../RunSettingsEval/RunSettings.h"
-#include "../RunSettingsEval/RunData.h"
-#include "../RunSettingsEval/RunEvalUtils.h"
-#include "../BpSingleThreadCPU/stereo.h"
-#include "../BpRunProcessing/RunBpStereoSet.h"
+#include "BpFileProcessing/BpFileHandling.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunEvalConstsEnums.h"
+#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsEval/RunData.h"
+#include "RunSettingsEval/RunEvalUtils.h"
+#include "BpSingleThreadCPU/stereo.h"
+#include "BpRunProcessing/RunBpStereoSet.h"
 
 typedef std::filesystem::path filepathtype;
 
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
-#include "../BpOptimizeCPU/RunBpStereoOptimizedCPU.h"
+#include "BpOptimizeCPU/RunBpStereoOptimizedCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
@@ -49,9 +49,9 @@ using halftype = short;
 //check if CUDA run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CUDA_RUN
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
-#include "../BpConstsAndParams/bpStereoCudaParameters.h"
+#include "BpConstsAndParams/bpStereoCudaParameters.h"
 //needed to run the implementation a stereo set using CUDA
-#include "../BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+#include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment::AccSetting::CUDA>;

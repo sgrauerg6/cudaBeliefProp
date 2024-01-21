@@ -24,11 +24,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RunSettingsEval/RunSettings.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
+#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunSettings.h"
 
 class KernelBpStereoCPU
 {

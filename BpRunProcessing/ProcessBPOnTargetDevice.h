@@ -15,14 +15,14 @@
 #include <vector>
 #include <array>
 #include <utility>
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../BpConstsAndParams/DetailedTimingBPConsts.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RunSettingsEval/RunSettings.h"
-#include "../RunSettingsEval/RunEvalConstsEnums.h"
-#include "../RuntimeTiming/DetailedTimings.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
+#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsEval/RunEvalConstsEnums.h"
+#include "RuntimeTiming/DetailedTimings.h"
 #include "RunBpStereoSetMemoryManagement.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;

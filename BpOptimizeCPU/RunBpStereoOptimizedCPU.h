@@ -13,10 +13,10 @@
 #include <memory>
 #include <array>
 #include <thread>
-#include "../BpRunProcessing/RunBpStereoSet.h"
-#include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
+#include "BpRunProcessing/RunBpStereoSet.h"
+#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
 

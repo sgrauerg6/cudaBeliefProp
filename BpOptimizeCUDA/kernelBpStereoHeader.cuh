@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_fp16.h>
 #include "BpConstsAndParams/bpStereoCudaParameters.h"
-#include "../BpSharedFuncts/SharedUtilFuncts.h"
+#include "BpSharedFuncts/SharedUtilFuncts.h"
 
 //checks if the current point is within the image bounds
 __device__ bool withinImageBounds(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height);

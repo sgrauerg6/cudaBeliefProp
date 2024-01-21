@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <thread>
 #include <string_view>
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/bpStructsAndEnums.h"
 
 //option to optimize parallel parameters by running BP w/ multiple parallel parameters options by
 //finding the parallel parameters with the lowest runtime, and then setting the parallel parameters

@@ -23,11 +23,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../BpConstsAndParams/bpStereoCudaParameters.h"
-#include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RunSettingsEval/RunEvalConstsEnums.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/bpStereoCudaParameters.h"
+#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunEvalConstsEnums.h"
 
 template<RunData_t T, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>

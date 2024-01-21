@@ -24,11 +24,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include <iostream>
 #include <memory>
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../BpConstsAndParams/bpStereoCudaParameters.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../BpRunProcessing/RunBpStereoSet.h"
-#include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "BpConstsAndParams/bpStereoCudaParameters.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpRunProcessing/RunBpStereoSet.h"
+#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "ProcessCUDABP.h"
 #include "RunBpStereoSetCUDAMemoryManagement.h"
 #include "SmoothImageCUDA.h"

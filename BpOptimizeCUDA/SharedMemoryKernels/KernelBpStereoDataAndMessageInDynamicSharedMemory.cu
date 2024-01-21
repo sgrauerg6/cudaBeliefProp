@@ -1,5 +1,5 @@
-#include "../../BpSharedFuncts/SharedBPProcessingFuncts.h"
-#include "../../bpStereoCudaParameters.h"
+#include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "../bpStereoCudaParameters.h"
 
 template<typename T, typename U>
 __device__ inline void msgStereo(int xVal, int yVal,

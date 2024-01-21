@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 
 #include "KernelBpStereoCPU.h"
-#include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo

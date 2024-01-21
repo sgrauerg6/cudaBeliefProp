@@ -26,13 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include <chrono>
 #include <stdlib.h>
-#include "../BpRunProcessing/ProcessBPOnTargetDevice.h"
-#include "../BpConstsAndParams/bpStereoParameters.h"
-#include "../BpConstsAndParams/bpStructsAndEnums.h"
-#include "../RunSettingsEval/RunSettings.h"
-#include "../BpConstsAndParams/bpTypeConstraints.h"
-#include "../RunSettingsEval/RunTypeConstraints.h"
-#include "../RunSettingsEval/RunEvalConstsEnums.h"
+#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpConstsAndParams/bpStereoParameters.h"
+#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunEvalConstsEnums.h"
 
 //include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.cpp"
