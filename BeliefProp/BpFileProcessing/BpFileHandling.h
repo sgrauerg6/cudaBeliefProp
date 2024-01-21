@@ -31,11 +31,11 @@ public:
       //create directory iterator corresponding to current path
       std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator(currentPath);
 
-      //check if any of the directories in the current path correspond to the stereo sets directory;
+      //check if any of the directories in the current path correspond to the belief prop directory;
       //if so return iterator to directory; otherwise return iterator to end indicating that directory not
       //found in current path
       std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dirIt), std::filesystem::end(dirIt), 
-        [](const auto &p) { return p.path().stem() == bp_file_handling::STEREO_SETS_DIRECTORY_NAME; });
+        [](const auto &p) { return p.path().stem() == bp_file_handling::BELIEF_PROP_DIRECTORY_NAME; });
 
       //check if return from find_if at iterator end and therefore didn't find stereo sets directory;
       //if that's the case continue to outer directory
@@ -44,14 +44,19 @@ public:
       {
         //if current path same as parent path, then can't continue and throw error
         if (currentPath == currentPath.parent_path()) {
-          throw std::filesystem::filesystem_error("Stereo set directory not found", std::error_code());
+          throw std::filesystem::filesystem_error("Belief prop directory not found", std::error_code());
         }
 
         currentPath = currentPath.parent_path();
       }
       else {
-        std::filesystem::path stereoSetPath = it->path();
-        return stereoSetPath;
+        std::filesystem::path stereoSetPath = it->path() / bp_file_handling::STEREO_SETS_DIRECTORY_NAME;
+        if (std::filesystem::is_directory(stereoSetPath)) {
+          return stereoSetPath;
+        }
+        else {
+          throw std::filesystem::filesystem_error("Stereo set directory not found in belief prop directory", std::error_code());
+        }      
       }
     }
 
