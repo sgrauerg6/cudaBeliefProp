@@ -31,11 +31,11 @@ namespace run_eval {
   constexpr std::string_view SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
   constexpr std::string_view SPEEDUP_VS_AVX256_VECTORIZATION{"Speedup over AVX256 CPU vectorization"};
 #ifdef SMALLER_SETS_ONLY
-  constexpr std::string_view BASELINE_RUNTIMES_FILE_PATH{"../BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
-  constexpr std::string_view SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
+  constexpr std::string_view BASELINE_RUNTIMES_FILE_PATH{"../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt"};
+  constexpr std::string_view SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
 #else
-  constexpr std::string_view BASELINE_RUNTIMES_FILE_PATH{"../BpBaselineRuntimes/baselineRuntimes.txt"};
-  constexpr std::string_view SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
+  constexpr std::string_view BASELINE_RUNTIMES_FILE_PATH{"../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt"};
+  constexpr std::string_view SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH{"../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
 #endif //SMALLER_SETS_ONLY
 
 }
