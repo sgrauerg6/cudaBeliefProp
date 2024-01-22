@@ -13,7 +13,6 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
-#include "BpConstsAndParams/bpStereoParameters.h"
 #include "RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"
@@ -22,11 +21,19 @@
 using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
 using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
 
+//parameters type requires runData() function to return the parameters as a
+//RunData object
+template <typename T>
+concept Params_t =
+  requires(T t) {
+    { t.runData() } -> std::same_as<RunData>;
+  };
+
 namespace run_eval {
 
 //get current run inputs and parameters in RunData structure
-template<RunData_t T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
-RunData inputAndParamsRunData(const beliefprop::BPsettings& algSettings) {
+template<RunData_t T, Params_t U, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+RunData inputAndParamsRunData(const U& algSettings) {
   RunData currRunData;
   currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
   currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
@@ -37,10 +44,8 @@ RunData inputAndParamsRunData(const beliefprop::BPsettings& algSettings) {
   return currRunData;
 }
 
-std::pair<std::string, std::vector<double>> getBaselineRuntimeData(BaselineData baselineDataType) {
-  std::ifstream baselineData((baselineDataType == BaselineData::SINGLE_THREAD) ?
-                             std::string(SINGLE_THREAD_BASELINE_RUNTIMES_FILE_PATH) :
-                             std::string(BASELINE_RUNTIMES_FILE_PATH));
+std::pair<std::string, std::vector<double>> getBaselineRuntimeData(const std::string& baselineDataPath) {
+  std::ifstream baselineData(baselineDataPath);
   std::string line;
   //first line of data is string with baseline processor description and all subsequent data is runtimes
   //on that processor in same order as runtimes from runBpOnStereoSets() function
@@ -72,9 +77,10 @@ std::array<double, 2> getAvgMedSpeedup(std::vector<double>& speedupsVect) {
 
 //get average and median speedup of current runs compared to baseline data from file
 std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
-  const std::string& dataTypeStr) {
+  const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd) {
+  //get speedup over baseline for optimized runs
   std::vector<double> speedupsVect;
-  const auto baselineRunData = getBaselineRuntimeData(BaselineData::OPTIMIZED);
+  const auto baselineRunData = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[0]));
   std::string speedupHeader = "Speedup relative to " + baselineRunData.first + " - " + dataTypeStr;
   const auto baselineRuntimes = baselineRunData.second;
   std::vector<MultRunSpeedup> speedupData;
@@ -92,8 +98,9 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   else {
     return {MultRunSpeedup()};
   }
+  //get speedup over baseline for single thread runs
   speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + baselineRunData.first + " - " + dataTypeStr;
-  const auto baselineRunDataSThread = getBaselineRuntimeData(BaselineData::SINGLE_THREAD);
+  const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[1]));
   const auto baselineRuntimesSThread = baselineRunDataSThread.second;
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i].first == run_eval::Status::NO_ERROR) {
@@ -108,8 +115,8 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   }
   //if processing floats, also get results for 3 smallest and 3 largest stereo sets
   if (dataTypeStr == run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(float))) {
-    speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 smallest stereo sets - " + dataTypeStr;
-    for (unsigned int i=0; i < 6; i++) {
+    speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 smallest inputs - " + dataTypeStr;
+    for (unsigned int i=0; i < std::min((size_t)6u, baselineRuntimes.size()); i++) {
       if (runOutput[i].first == run_eval::Status::NO_ERROR) {
         speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
@@ -120,13 +127,10 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
       speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
       speedupsVect.clear();
     }
-#ifndef SMALLER_SETS_ONLY
-    speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 largest stereo sets - " + dataTypeStr;
-    for (unsigned int i=9; i < 15; i++) {
-#else
-    speedupHeader = "Speedup relative to " + baselineRunData.first + " on largest stereo set - " + dataTypeStr;
-    for (unsigned int i=9; i < 11; i++) {
-#endif //SMALLER_SETS_ONLY
+
+    speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 largest inputs - " + dataTypeStr;
+    unsigned int sizeData = std::min(baselineRuntimes.size(), runOutput.size());
+    for (unsigned int i=std::max(0u, sizeData - (3*2)); i < sizeData; i++) {
       if (runOutput[i].first == run_eval::Status::NO_ERROR) {
         speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
         runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
@@ -206,9 +210,9 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     //write results from default and optimized parallel parameters runs to csv file
     const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
     const auto accelStr = run_environment::accelerationString<OPT_IMP_ACCEL>();
-    const std::string optResultsFileName{std::string(BP_ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
+    const std::string optResultsFileName{std::string(ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
       (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
-    const std::string defaultParamsResultsFileName{std::string(BP_ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
+    const std::string defaultParamsResultsFileName{std::string(ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
       (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
       std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),

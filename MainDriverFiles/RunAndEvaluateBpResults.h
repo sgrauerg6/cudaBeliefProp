@@ -30,6 +30,9 @@
 
 typedef std::filesystem::path filepathtype;
 
+//remove comment to only process on smaller stereo sets (reduces runtime)
+#define SMALLER_SETS_ONLY
+
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
@@ -59,6 +62,17 @@ using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment
 
 using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
 using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
+
+#ifdef SMALLER_SETS_ONLY
+  constexpr std::array<std::string_view, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
+    "../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt",
+    "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
+#else
+  constexpr std::array<std::string_view, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
+    "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
+    "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
+#endif //SMALLER_SETS_ONLY
+
 
 namespace RunAndEvaluateBpResults {
 
@@ -195,7 +209,7 @@ std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
     //store input params data if using default parallel parameters or final run with optimized parameters
     RunData currRunData;
     if (currRunType != RunType::TEST_PARAMS) {
-      currRunData.appendData(run_eval::inputAndParamsRunData<T, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>(algSettings));
+      currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>(algSettings));
       if constexpr (OPTIMIZE_PARALLEL_PARAMS &&
         (optParallelParamsSetting == beliefprop::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
       {
@@ -333,7 +347,9 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpOnStereoSets() {
 
   //get speedup info for using optimized parallel parameters and disparity count as template parameter
   if (sizeof(T) == sizeof(float)) {
-    const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
+    const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
+      runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)),
+      BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD);
     speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   }
   if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
@@ -438,7 +454,8 @@ void runBpOnStereoSets() {
   runOutput.second.insert(runOutput.second.end(), altAndNoVectSpeedupHalf.second.begin(), altAndNoVectSpeedupHalf.second.end());
 
   //get speedup info for using optimized parallel parameters and disparity count as template parameter across all data types
-  const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs");
+  const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs",
+    BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD);
   runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
     runOutput.second.push_back(run_eval::getAvgMedSpeedupOptPParams(runOutput.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
