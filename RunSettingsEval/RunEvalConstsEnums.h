@@ -12,7 +12,6 @@
 
 namespace run_eval {
 
-  enum class BaselineData { OPTIMIZED, SINGLE_THREAD };
   enum class Status { NO_ERROR, ERROR };
 
   //constants for output results for individual and sets of runs
