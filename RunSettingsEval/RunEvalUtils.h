@@ -66,18 +66,22 @@ std::pair<std::string, std::vector<double>> getBaselineRuntimeData(const std::st
 }
 
 //get average and median speedup from vector of speedup values
-std::array<double, 2> getAvgMedSpeedup(std::vector<double>& speedupsVect) {
+std::array<double, 2> getAvgMedSpeedup(const std::vector<double>& speedupsVect) {
   const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
-  std::sort(speedupsVect.begin(), speedupsVect.end());
-  const double medianSpeedup = ((speedupsVect.size() % 2) == 0) ? 
-    (speedupsVect[(speedupsVect.size() / 2) - 1] + speedupsVect[(speedupsVect.size() / 2)]) / 2.0 : 
-    speedupsVect[(speedupsVect.size() / 2)];
+  auto speedupsVectSorted = speedupsVect;
+  std::sort(speedupsVectSorted.begin(), speedupsVectSorted.end());
+  const double medianSpeedup = ((speedupsVectSorted.size() % 2) == 0) ? 
+    (speedupsVectSorted[(speedupsVectSorted.size() / 2) - 1] + speedupsVectSorted[(speedupsVectSorted.size() / 2)]) / 2.0 : 
+    speedupsVectSorted[(speedupsVectSorted.size() / 2)];
   return {averageSpeedup, medianSpeedup};
 }
 
 //get average and median speedup of current runs compared to baseline data from file
 std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
-  const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd) {
+  const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
+  const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices = 
+  std::vector<std::pair<std::string, std::vector<unsigned int>>>())
+{
   //get speedup over baseline for optimized runs
   std::vector<double> speedupsVect;
   const auto baselineRunData = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[0]));
@@ -87,8 +91,9 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i].first == run_eval::Status::NO_ERROR) {
       speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-      runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-      runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+      for (auto& runData : runOutput[i].second) {
+        runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+      }
     }
   }
   if (speedupsVect.size() > 0) {
@@ -98,6 +103,24 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   else {
     return {MultRunSpeedup()};
   }
+
+  //retrieve speedup data for any subsets of optimized runs
+  for (const auto& currSubsetStrIndices : subsetStrIndices) {
+    speedupHeader = "Speedup relative to " + baselineRunData.first + " on " + currSubsetStrIndices.first + " - " + dataTypeStr;
+    for (unsigned int i : currSubsetStrIndices.second) {
+      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
+        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+        for (auto& runData : runOutput[i].second) {
+          runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+        }
+      }
+    }
+    if (speedupsVect.size() > 0) {
+      speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
+      speedupsVect.clear();
+    }
+  }
+
   //get speedup over baseline for single thread runs
   speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + baselineRunData.first + " - " + dataTypeStr;
   const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[1]));
@@ -105,42 +128,16 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i].first == run_eval::Status::NO_ERROR) {
       speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(runOutput[i].second[1].getData(std::string(SINGLE_THREAD_RUNTIME_HEADER))));
-      runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-      runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+      for (auto& runData : runOutput[i].second) {
+        runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+      }
     }
   }
   if (speedupsVect.size() > 0) {
     speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
     speedupsVect.clear();
   }
-  //if processing floats, also get results for 3 smallest and 3 largest stereo sets
-  if (dataTypeStr == run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(float))) {
-    speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 smallest inputs - " + dataTypeStr;
-    for (unsigned int i=0; i < std::min((size_t)6u, baselineRuntimes.size()); i++) {
-      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-        runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-        runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-      }
-    }
-    if (speedupsVect.size() > 0) {
-      speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
-      speedupsVect.clear();
-    }
 
-    speedupHeader = "Speedup relative to " + baselineRunData.first + " on 3 largest inputs - " + dataTypeStr;
-    unsigned int sizeData = std::min(baselineRuntimes.size(), runOutput.size());
-    for (unsigned int i=std::max(0u, sizeData - (3*2)); i < sizeData; i++) {
-      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-        runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-        runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-      }
-    }
-    if (speedupsVect.size() > 0) {
-      speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
-    }
-  }
   return speedupData;
 }
 

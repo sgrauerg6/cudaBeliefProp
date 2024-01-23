@@ -347,9 +347,17 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpOnStereoSets() {
 
   //get speedup info for using optimized parallel parameters and disparity count as template parameter
   if (sizeof(T) == sizeof(float)) {
+    const std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetsStrIndices = {
+      {"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
+#ifndef SMALLER_SETS_ONLY
+      {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}
+#else
+      {"largest stereo set", {8, 9}}
+#endif //SMALLER_SETS_ONLY
+    };
     const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
-      runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)),
-      BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD);
+      runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)), BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD,
+      subsetsStrIndices);
     speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   }
   if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
