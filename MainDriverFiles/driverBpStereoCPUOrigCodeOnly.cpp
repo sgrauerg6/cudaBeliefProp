@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
-//specify that running original code only (used in RunAndEvaluateBpResults.h)
+//specify that running original code only (used in RunEvalImp.h)
 #define ORIG_CODE_CPU_RUN
 
 //option to optimize parallel parameters by running BP w/ multiple parallel parameters options by
@@ -49,16 +49,16 @@ constexpr beliefprop::OptParallelParamsSetting optParallelParamsSetting{beliefpr
 //parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
 const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
-\s\s{ NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1}/*,
-\s\s{ NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}*/};
+  { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1}/*,
+  { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}*/};
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS_ADDITIONAL_PARAMS{};
 const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
 
-//functions in RunAndEvaluateBpResults use above constants and function
-#include "RunAndEvaluateBpResults.h"
+//functions in RunEvalImp use above constants and function
+#include "RunEvalImp.h"
 
 int main(int argc, char** argv)
 {
-\s\sRunAndEvaluateBpResults::runBpOnStereoSets();
-\s\sreturn 0;
+   RunEvalImp::runBpOnStereoSets();
+   return 0;
 }

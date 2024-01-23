@@ -56,11 +56,13 @@ constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSett
 //name of processor used for running optimized implementation
 constexpr std::string_view PROCESSOR_NAME{""};
 
-//functions in RunAndEvaluateBpResults use above constants and function
-#include "RunAndEvaluateBpResults.h"
+//functions in RunEvalImp use above constants and function
+#include "RunEvalImp.h"
+#include "BpRunImp/RunEvalBpImp.h"
 
 int main(int argc, char** argv)
 {
-  RunAndEvaluateBpResults::runBpOnStereoSets<CPU_VECTORIZATION>();
+  std::unique_ptr<RunEvalBpImp> runBpImp = std::make_unique<RunEvalBpImp>();
+  RunAndEvaluateImp::runBpOnStereoSets<CPU_VECTORIZATION>(runBpImp);
   return 0;
 }

@@ -44,11 +44,12 @@ constexpr std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
 //name of processor used for running optimized implementation
 constexpr std::string_view PROCESSOR_NAME{""};
 
-//functions in RunAndEvaluateBpResults use above constants
-#include "RunAndEvaluateBpResults.h"
+//functions in RunEvalImp use above constants
+#include "RunEvalImp.h"
 
 int main(int argc, char** argv)
 {
-  RunAndEvaluateBpResults::runBpOnStereoSets<run_environment::AccSetting::CUDA>();
+  std::unique_ptr<RunEvalBpImp> runBpImp = std::make_unique<RunEvalBpImp>();
+  RunAndEvaluateImp::runBpOnStereoSets<run_environment::AccSetting::CUDA>(runBpImp);
   return 0;
 }

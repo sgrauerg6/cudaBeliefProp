@@ -12,7 +12,7 @@
 #include "GetDllFuncts/RunBpWithDLLsHelpers.h"
 
 //needed to run the implementation a stereo set using CUDA
-#include "MainDriverFiles/RunAndEvaluateBpResults.h"
+#include "MainDriverFiles/RunEvalImp.h"
 
 const std::string BP_RUN_OUTPUT_FILE{ "output.txt" };
 const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{ "outputResults.csv" };
@@ -39,19 +39,19 @@ void runBpOnSetAndUpdateResultsCUDA(const std::string& dataTypeName, std::map<st
 
   resultsStream << "DataType:" << dataTypeName << std::endl;
   if (isTemplatedDispVals) {
-    RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
       resultsStream, runBpStereo, NUM_SET, algSettings);
   }
   else {
     auto runBpFactoryFuncts_dispValNotTemplated = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, 0>(-1);
     std::unique_ptr<RunBpStereoSet<T, 0>> optCpuDispValsNoTemplate =
       std::unique_ptr<RunBpStereoSet<T, 0>>(runBpFactoryFuncts_dispValNotTemplated[run_bp_dlls::device_run::CUDA]());
-    RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
       resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
   }
   resultsStream.close();
 
-  auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
+  auto resultsCurrentRun = RunEvalImp::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
   for (auto& currRunResult : resultsCurrentRun) {
     if (resultsAcrossRuns.count(currRunResult.first)) {
       resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
@@ -82,19 +82,19 @@ void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::s
 
   resultsStream << "DataType:" << dataTypeName << std::endl;
   if (isTemplatedDispVals) {
-    RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
       resultsStream, runBpStereo, NUM_SET, algSettings);
   }
   else {
     auto runBpFactoryFuncts_dispValNotTemplated = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, 0>(-1);
     std::unique_ptr<RunBpStereoSet<T, 0>> optCpuDispValsNoTemplate = 
       std::unique_ptr<RunBpStereoSet<T, 0>>(runBpFactoryFuncts_dispValNotTemplated[run_bp_dlls::device_run::OPTIMIZED_CPU]());
-    RunAndEvaluateBpResults::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
       resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
   }
   resultsStream.close();
 
-  auto resultsCurrentRun = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
+  auto resultsCurrentRun = RunEvalImp::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).first;
   for (auto& currRunResult : resultsCurrentRun) {
     if (resultsAcrossRuns.count(currRunResult.first)) {
       resultsAcrossRuns[currRunResult.first].push_back(currRunResult.second);
@@ -231,7 +231,7 @@ int main(int argc, char** argv)
   }
 #endif //COMPILING_FOR_ARM
 
-  const auto headersInOrder = RunAndEvaluateBpResults::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
+  const auto headersInOrder = RunEvalImp::getResultsMappingFromFile(BP_RUN_OUTPUT_FILE).second;
 
   std::ofstream resultsStream(BP_ALL_RUNS_OUTPUT_CSV_FILE);
   for (const auto& currHeader : headersInOrder) {

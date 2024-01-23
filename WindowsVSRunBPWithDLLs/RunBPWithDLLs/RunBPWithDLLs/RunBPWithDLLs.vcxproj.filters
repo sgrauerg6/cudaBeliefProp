@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\MainDriverFiles\RunAndEvaluateBpResults.cpp">
+    <ClCompile Include="..\..\..\MainDriverFiles\RunEvalImp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\BpFileProcessing\BpFileHandling.cpp">
@@ -44,7 +44,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\MainDriverFiles\RunAndEvaluateBpResults.h">
+    <ClInclude Include="..\..\..\MainDriverFiles\RunEvalImp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandling.h">
