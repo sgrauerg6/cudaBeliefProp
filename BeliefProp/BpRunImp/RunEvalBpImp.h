@@ -75,28 +75,33 @@ using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
 
 using namespace beliefprop;
 
+enum class TemplatedDispSetting {
+  RUN_ONLY_TEMPLATED,
+  RUN_ONLY_NON_TEMPLATED,
+  RUN_TEMPLATED_AND_NOT_TEMPLATED
+};
+
 class RunEvalBpImp {
 public:
   //perform runs on multiple data sets using specified data type and acceleration method
-  template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+  template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, TemplatedDispSetting TEMPLATE_RUN_SETTINGS = TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED>
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()() const {
     MultRunData runData;
-    runData.push_back(runBpOnSetAndUpdateResults<T, 0, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 0, false, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 1, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 1, false, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 2, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 2, false, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 3, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 3, false, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 4, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 4, false, OPT_IMP_ACCEL>());
+    std::vector<MultRunData> runResultsEachInput;
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 0, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 1, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 2, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 3, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 4, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
 #ifndef SMALLER_SETS_ONLY
-    runData.push_back(runBpOnSetAndUpdateResults<T, 5, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 5, false, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 6, true, OPT_IMP_ACCEL>());
-    runData.push_back(runBpOnSetAndUpdateResults<T, 6, false, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 5, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 6, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
 #endif //SMALLER_SETS_ONLY
+
+    //add run results for each input to overall results
+    for (auto& runResult : runResultsEachInput) {
+      runData.insert(runData.end(), runResult.begin(), runResult.end());
+    }
 
     //initialize speedup results
     std::vector<MultRunSpeedup> speedupResults;
@@ -120,8 +125,10 @@ public:
       speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runData, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
         run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
     }
-    speedupResults.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(runData, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
-      run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
+    if constexpr (TEMPLATE_RUN_SETTINGS == TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+      speedupResults.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(runData, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
+        run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
+    }
     
     //write output corresponding to results for current data type
     constexpr bool MULT_DATA_TYPES{false};
@@ -360,21 +367,23 @@ private:
     return {run_eval::Status::NO_ERROR, outRunData};
   }
 
-  template<RunData_t T, unsigned int NUM_SET, bool TEMPLATED_DISP_IN_OPT_IMP, run_environment::AccSetting OPT_IMP_ACCEL>
-  std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults() const {
+  template<RunData_t T, unsigned int NUM_SET, TemplatedDispSetting TEMPLATED_DISP_IN_OPT_IMP, run_environment::AccSetting OPT_IMP_ACCEL>
+  MultRunData runBpOnSetAndUpdateResults() const {
     std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], run_environment::AccSetting::NONE>> runBpStereoSingleThread =
       std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
+    MultRunData runResults;
     //RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
-    if constexpr (TEMPLATED_DISP_IN_OPT_IMP) {
+    if constexpr (TEMPLATED_DISP_IN_OPT_IMP != TemplatedDispSetting::RUN_ONLY_NON_TEMPLATED) {
       std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>> runBpOptimizedImp = 
         std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>>();
-      return runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread);
+      runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread));
     }
-    else {
+    if constexpr (TEMPLATED_DISP_IN_OPT_IMP != TemplatedDispSetting::RUN_ONLY_TEMPLATED) {
       std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> runBpOptimizedImp = 
         std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
-      return runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread);
+      runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread));
     }
+    return runResults;
   }
 };
 
