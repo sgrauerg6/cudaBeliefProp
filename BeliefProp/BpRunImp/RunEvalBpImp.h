@@ -84,18 +84,18 @@ enum class TemplatedDispSetting {
 class RunEvalBpImp {
 public:
   //perform runs on multiple data sets using specified data type and acceleration method
-  template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, TemplatedDispSetting TEMPLATE_RUN_SETTINGS = TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED>
+  template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, TemplatedDispSetting TEMPLATED_LOOP_ITERS_SETTING>
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()() const {
     MultRunData runData;
     std::vector<MultRunData> runResultsEachInput;
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 0, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 1, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 2, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 3, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 4, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 0, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 1, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 2, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 3, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 4, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
 #ifndef SMALLER_SETS_ONLY
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 5, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
-    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 6, TEMPLATE_RUN_SETTINGS, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 5, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
+    runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 6, TEMPLATED_LOOP_ITERS_SETTING, OPT_IMP_ACCEL>());
 #endif //SMALLER_SETS_ONLY
 
     //add run results for each input to overall results
@@ -107,25 +107,29 @@ public:
     std::vector<MultRunSpeedup> speedupResults;
 
     //get speedup info for using optimized parallel parameters and disparity count as template parameter
-    if (sizeof(T) == sizeof(float)) {
-      const std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetsStrIndices = {
-        {"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
-#ifndef SMALLER_SETS_ONLY
-        {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}
-#else
-        {"largest stereo set", {8, 9}}
-#endif //SMALLER_SETS_ONLY
-      };
-      const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
-        runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)), BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD,
-        subsetsStrIndices);
-      speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+    if constexpr (std::is_same_v<T, float>) {
+      //get speedup over baseline runtimes on a previous run...assumes that templated and not templated runs have been done
+      //so not used with a different setting for templates
+      if constexpr (TEMPLATED_LOOP_ITERS_SETTING == TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+        const std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetsStrIndices = {
+          {"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
+  #ifndef SMALLER_SETS_ONLY
+          {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}
+  #else
+          {"largest stereo set", {8, 9}}
+  #endif //SMALLER_SETS_ONLY
+        };
+        const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
+          runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)), BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD,
+          subsetsStrIndices);
+        speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+      }
     }
     if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
       speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runData, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
         run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
     }
-    if constexpr (TEMPLATE_RUN_SETTINGS == TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+    if constexpr (TEMPLATED_LOOP_ITERS_SETTING == TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
       speedupResults.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(runData, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
         run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
     }
@@ -245,7 +249,7 @@ private:
     //and then run BP with best found parallel parameters
     //if not optimizing parallel parameters, run BP once using default parallel parameters
     for (unsigned int runNum=0; runNum < (parallelParamsVect.size() + 1); runNum++) {
-      //initialize current run type to specify if current run is only run, run with default params, test params run, or final run with optiized params
+      //initialize current run type to specify if current run is only run, run with default params, test params run, or final run with optimized params
       RunType currRunType{RunType::TEST_PARAMS};
       if constexpr (!OPTIMIZE_PARALLEL_PARAMS) {
         currRunType = RunType::ONLY_RUN;
@@ -367,18 +371,18 @@ private:
     return {run_eval::Status::NO_ERROR, outRunData};
   }
 
-  template<RunData_t T, unsigned int NUM_SET, TemplatedDispSetting TEMPLATED_DISP_IN_OPT_IMP, run_environment::AccSetting OPT_IMP_ACCEL>
+  template<RunData_t T, unsigned int NUM_SET, TemplatedDispSetting TEMPLATED_LOOP_ITERS_SETTING, run_environment::AccSetting OPT_IMP_ACCEL>
   MultRunData runBpOnSetAndUpdateResults() const {
     std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], run_environment::AccSetting::NONE>> runBpStereoSingleThread =
       std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
     MultRunData runResults;
     //RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
-    if constexpr (TEMPLATED_DISP_IN_OPT_IMP != TemplatedDispSetting::RUN_ONLY_NON_TEMPLATED) {
+    if constexpr (TEMPLATED_LOOP_ITERS_SETTING != TemplatedDispSetting::RUN_ONLY_NON_TEMPLATED) {
       std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>> runBpOptimizedImp = 
         std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>>();
       runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread));
     }
-    if constexpr (TEMPLATED_DISP_IN_OPT_IMP != TemplatedDispSetting::RUN_ONLY_TEMPLATED) {
+    if constexpr (TEMPLATED_LOOP_ITERS_SETTING != TemplatedDispSetting::RUN_ONLY_TEMPLATED) {
       std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> runBpOptimizedImp = 
         std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
       runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread));

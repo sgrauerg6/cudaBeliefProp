@@ -63,6 +63,6 @@ constexpr std::string_view PROCESSOR_NAME{""};
 int main(int argc, char** argv)
 {
   std::unique_ptr<RunEvalBpImp> runBpImp = std::make_unique<RunEvalBpImp>();
-  RunAndEvaluateImp::runBpOnStereoSets<CPU_VECTORIZATION>(runBpImp);
+  RunAndEvaluateImp::runBpOnStereoSets<CPU_VECTORIZATION, TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED>(runBpImp);
   return 0;
 }

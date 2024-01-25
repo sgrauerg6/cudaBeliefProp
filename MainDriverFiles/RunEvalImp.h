@@ -26,7 +26,7 @@ namespace RunAndEvaluateImp {
 
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
 //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
-template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, TemplatedDispSetting TEMPLATED_LOOP_ITERS_SETTING>
 std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getAltAndNoVectSpeedup(MultRunData& runOutputData,
   const std::unique_ptr<RunEvalBpImp>& runBpImp) {
   const std::string speedupHeader{std::string(run_eval::SPEEDUP_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))};
@@ -40,7 +40,7 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   else {
     //if initial speedup is AVX512, also run AVX256
     if (OPT_IMP_ACCEL == run_environment::AccSetting::AVX512) {
-      auto runOutputAVX256 = runBpImp->operator()<T, run_environment::AccSetting::AVX256>();//beliefprop::runBpOnStereoSets<T, run_environment::AccSetting::AVX256>();
+      auto runOutputAVX256 = runBpImp->operator()<T, run_environment::AccSetting::AVX256, TEMPLATED_LOOP_ITERS_SETTING>();//beliefprop::runBpOnStereoSets<T, run_environment::AccSetting::AVX256>();
       //go through each result and replace initial run data with AVX256 run data if AVX256 run is faster
       for (unsigned int i = 0; i < runOutputData.size(); i++) {
         if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputAVX256.first[i].first == run_eval::Status::NO_ERROR)) {
@@ -57,7 +57,7 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
     else {
       multRunSpeedupVect.push_back({speedupVsAVX256Str, {0.0, 0.0}});
     }
-    auto runOutputNoVect = runBpImp->operator()<T, run_environment::AccSetting::NONE>();//beliefprop::runBpOnStereoSets<T, run_environment::AccSetting::NONE>();
+    auto runOutputNoVect = runBpImp->operator()<T, run_environment::AccSetting::NONE, TEMPLATED_LOOP_ITERS_SETTING>();//beliefprop::runBpOnStereoSets<T, run_environment::AccSetting::NONE>();
     //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
     for (unsigned int i = 0; i < runOutputData.size(); i++) {
       if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputNoVect.first[i].first == run_eval::Status::NO_ERROR)) {
@@ -74,27 +74,27 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   }
 }
 
-template <run_environment::AccSetting OPT_IMP_ACCEL>
+template <run_environment::AccSetting OPT_IMP_ACCEL, TemplatedDispSetting TEMPLATED_LOOP_ITERS_SETTING>
 void runBpOnStereoSets(const std::unique_ptr<RunEvalBpImp>& runBpImp) {
   //perform runs with and without vectorization using floating point
   //initially store output for floating-point runs separate from output using doubles and halfs
-  auto runOutput = runBpImp->operator()<float, OPT_IMP_ACCEL>();//beliefprop::runBpOnStereoSets<float, OPT_IMP_ACCEL>();
+  auto runOutput = runBpImp->operator()<float, OPT_IMP_ACCEL, TEMPLATED_LOOP_ITERS_SETTING>();//beliefprop::runBpOnStereoSets<float, OPT_IMP_ACCEL>();
   //get results and speedup for using potentially alternate and no vectorization (only applies to CPU)
-  const auto altAndNoVectSpeedupFl = getAltAndNoVectSpeedup<float, OPT_IMP_ACCEL>(runOutput.first, runBpImp);
+  const auto altAndNoVectSpeedupFl = getAltAndNoVectSpeedup<float, OPT_IMP_ACCEL, TEMPLATED_LOOP_ITERS_SETTING>(runOutput.first, runBpImp);
   //get run data portion of results
   auto runOutputAltAndNoVect = altAndNoVectSpeedupFl.first;
 
   //perform runs with and without vectorization using double-precision
-  auto runOutputDouble = runBpImp->operator()<double, OPT_IMP_ACCEL>();//beliefprop::runBpOnStereoSets<double, OPT_IMP_ACCEL>();
+  auto runOutputDouble = runBpImp->operator()<double, OPT_IMP_ACCEL, TEMPLATED_LOOP_ITERS_SETTING>();//beliefprop::runBpOnStereoSets<double, OPT_IMP_ACCEL>();
   const auto doublesSpeedup = run_eval::getAvgMedSpeedup(runOutput.first, runOutputDouble.first, std::string(run_eval::SPEEDUP_DOUBLE));
-  const auto altAndNoVectSpeedupDbl = getAltAndNoVectSpeedup<double, OPT_IMP_ACCEL>(runOutputDouble.first, runBpImp);
+  const auto altAndNoVectSpeedupDbl = getAltAndNoVectSpeedup<double, OPT_IMP_ACCEL, TEMPLATED_LOOP_ITERS_SETTING>(runOutputDouble.first, runBpImp);
   for (const auto& runData : altAndNoVectSpeedupDbl.first.first) {
     runOutputAltAndNoVect.first.push_back(runData);
   }
   //perform runs with and without vectorization using half-precision
-  auto runOutputHalf = runBpImp->operator()<halftype, OPT_IMP_ACCEL>();//beliefprop::runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
+  auto runOutputHalf = runBpImp->operator()<halftype, OPT_IMP_ACCEL, TEMPLATED_LOOP_ITERS_SETTING>();//beliefprop::runBpOnStereoSets<halftype, OPT_IMP_ACCEL>();
   const auto halfSpeedup = run_eval::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, std::string(run_eval::SPEEDUP_HALF));
-  const auto altAndNoVectSpeedupHalf = getAltAndNoVectSpeedup<halftype, OPT_IMP_ACCEL>(runOutputHalf.first, runBpImp);
+  const auto altAndNoVectSpeedupHalf = getAltAndNoVectSpeedup<halftype, OPT_IMP_ACCEL, TEMPLATED_LOOP_ITERS_SETTING>(runOutputHalf.first, runBpImp);
   for (const auto& runData : altAndNoVectSpeedupHalf.first.first) {
     runOutputAltAndNoVect.first.push_back(runData);
   }
@@ -111,15 +111,21 @@ void runBpOnStereoSets(const std::unique_ptr<RunEvalBpImp>& runBpImp) {
   runOutput.second.insert(runOutput.second.end(), runOutputHalf.second.begin(), runOutputHalf.second.end());
   runOutput.second.insert(runOutput.second.end(), altAndNoVectSpeedupHalf.second.begin(), altAndNoVectSpeedupHalf.second.end());
 
-  //get speedup info for using optimized parallel parameters and disparity count as template parameter across all data types
-  const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs",
-    BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD);
-  runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+  //get speedup over baseline runtimes on a previous run...assumes that templated and not templated runs have been done
+  //so not used with a different setting for templates
+  if constexpr (TEMPLATED_LOOP_ITERS_SETTING == TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+    const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs",
+      BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD);
+      runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+  }
+  //get speedup info for using optimized parallel parameters
   if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
     runOutput.second.push_back(run_eval::getAvgMedSpeedupOptPParams(runOutput.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
   }
-  //add more speedup data to overall data for inclusion in final results
-  runOutput.second.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(runOutput.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
+  if constexpr (TEMPLATED_LOOP_ITERS_SETTING == TemplatedDispSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+    //get speedup when using template for loop iteration count
+    runOutput.second.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(runOutput.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
+  }
   runOutput.second.push_back(vectorizationSpeedupAll);
   runOutput.second.push_back(doublesSpeedup);
   runOutput.second.push_back(halfSpeedup);
