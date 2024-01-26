@@ -112,6 +112,22 @@ inline RunData runSettings()  {
   return currRunData;
 }
 
+enum class TemplatedItersSetting {
+  RUN_ONLY_TEMPLATED,
+  RUN_ONLY_NON_TEMPLATED,
+  RUN_TEMPLATED_AND_NOT_TEMPLATED
+};
+
+//enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run
+//in initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster
+//on CPU
+enum class OptParallelParamsSetting { SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN };
+
+struct RunImpSettings {
+  TemplatedItersSetting templatedItersSetting_;
+  std::pair<bool, OptParallelParamsSetting> optParallelParmsOptionSetting_;
+};
+
 };
 
 #endif /* RUNSETTINGS_H_ */

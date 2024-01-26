@@ -197,7 +197,7 @@ MultRunSpeedup getAvgMedSpeedupDispValsInTemplate(MultRunData& runOutput,
 //write data for file corresponding to runs for a specified data type or across all data type
 //includes results for each run as well as average and median speedup data across multiple runs
 template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, RunData_t T = float>
-void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput) {
+void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings) {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
     { return (runResult.first == run_eval::Status::NO_ERROR); } );
@@ -212,8 +212,8 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     const std::string defaultParamsResultsFileName{std::string(ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
       (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
-      std::ofstream(OPTIMIZE_PARALLEL_PARAMS ? defaultParamsResultsFileName : optResultsFileName),
-      OPTIMIZE_PARALLEL_PARAMS ? std::ofstream(optResultsFileName) : std::ofstream()};
+      std::ofstream(runImpSettings.optParallelParmsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
+      runImpSettings.optParallelParmsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
     //get headers from first successful run
     const auto headersInOrder = firstSuccessRun->second.back().getHeadersInOrder();
     for (const auto& currHeader : headersInOrder) {
@@ -221,14 +221,14 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     }
     resultsStreamDefaultTBFinal[0] << std::endl;
 
-    if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+    if (runImpSettings.optParallelParmsOptionSetting_.first) {
       for (const auto& currHeader : headersInOrder) {
         resultsStreamDefaultTBFinal[1] << currHeader << ",";
       }
     }
     resultsStreamDefaultTBFinal[1] << std::endl;
 
-    for (unsigned int i=0; i < (OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() : 1); i++) {
+    for (unsigned int i=0; i < (runImpSettings.optParallelParmsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
       for (unsigned int runNum=0; runNum < runOutput.first.size(); runNum++) {
         //if run not successful only have single set of output data from run
         const unsigned int runResultIdx = (runOutput.first[runNum].first == run_eval::Status::NO_ERROR) ? i : 0;
@@ -245,7 +245,7 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     }
 
     //write speedup results
-    const unsigned int indexBestResults{(OPTIMIZE_PARALLEL_PARAMS ? resultsStreamDefaultTBFinal.size() - 1 : 0)};
+    const unsigned int indexBestResults{(runImpSettings.optParallelParmsOptionSetting_.first ? (unsigned int)resultsStreamDefaultTBFinal.size() - 1 : 0)};
     resultsStreamDefaultTBFinal[indexBestResults] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : runOutput.second) {
       resultsStreamDefaultTBFinal[indexBestResults] << speedup.first;
@@ -256,11 +256,11 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     }
 
     resultsStreamDefaultTBFinal[0].close();
-    if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+    if (runImpSettings.optParallelParmsOptionSetting_.first) {
       resultsStreamDefaultTBFinal[1].close();
     }
 
-    if constexpr (OPTIMIZE_PARALLEL_PARAMS) {
+    if (runImpSettings.optParallelParmsOptionSetting_.first) {
       std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
                 << optResultsFileName << std::endl;
       std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
