@@ -8,13 +8,8 @@
 #ifndef RUNSETTINGS_H_
 #define RUNSETTINGS_H_
 
-#include <iostream>
-#include <typeinfo>
-#include <typeindex>
 #include <map>
 #include <optional>
-#include <string_view>
-#include <thread>
 #include "RunData.h"
 
 namespace run_environment {
