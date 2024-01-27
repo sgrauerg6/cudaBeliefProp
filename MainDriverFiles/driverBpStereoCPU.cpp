@@ -23,14 +23,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <thread>
 #include <string_view>
 #include "BpConstsAndParams/bpStructsAndEnums.h"
-
-//parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation
-//parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
-const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
-const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
-  { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1}/*,
-  { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}*/};
-const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
+#include "BpRunImp/RunEvalBpImp.h"
+#include "RunEvalImp.h"
 
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
 constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NEON};
@@ -42,21 +36,27 @@ constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSett
 constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NONE};
 #endif
 
-//name of processor used for running optimized implementation
-constexpr std::string_view PROCESSOR_NAME{""};
-
-//functions in RunEvalImp use above constants and function
-#include "RunEvalImp.h"
-#include "BpRunImp/RunEvalBpImp.h"
-
 int main(int argc, char** argv)
 {
+  //name of processor used for running optimized implementation
+  constexpr std::string_view PROCESSOR_NAME{""};
+
+  //parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation
+  //parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
+  const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
+  const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
+    { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1}/*,
+    { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}*/};
+  const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
+
   std::unique_ptr<RunEvalBpImp> runBpImp = std::make_unique<RunEvalBpImp>();
   run_environment::RunImpSettings runImpSettings;
+  runImpSettings.processorName_ = PROCESSOR_NAME;
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
   runImpSettings.optParallelParmsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
+  runImpSettings.pParamsDefaultOptOptions_ = {PARALLEL_PARAMS_DEFAULT, PARALLEL_PARAMETERS_OPTIONS};
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   RunAndEvaluateImp::runBpOnStereoSets<CPU_VECTORIZATION>(runBpImp, runImpSettings);
   return 0;

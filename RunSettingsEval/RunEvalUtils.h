@@ -208,9 +208,9 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
     const auto accelStr = run_environment::accelerationString<OPT_IMP_ACCEL>();
     const std::string optResultsFileName{std::string(ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
-      (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
+      (runImpSettings.processorName_.size() > 0 ? std::string(runImpSettings.processorName_) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     const std::string defaultParamsResultsFileName{std::string(ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
-      (PROCESSOR_NAME.size() > 0 ? std::string(PROCESSOR_NAME) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
+      (runImpSettings.processorName_.size() > 0 ? std::string(runImpSettings.processorName_) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
       std::ofstream(runImpSettings.optParallelParmsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
       runImpSettings.optParallelParmsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};

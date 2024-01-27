@@ -126,6 +126,8 @@ enum class OptParallelParamsSetting { SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, A
 struct RunImpSettings {
   TemplatedItersSetting templatedItersSetting_;
   std::pair<bool, OptParallelParamsSetting> optParallelParmsOptionSetting_;
+  std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> pParamsDefaultOptOptions_;
+  std::string processorName_;
 };
 
 };

@@ -225,12 +225,12 @@ private:
     algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
     //parallel parameters initialized with default thread count dimensions at every level
-    beliefprop::ParallelParameters parallelParams(algSettings.numLevels_, PARALLEL_PARAMS_DEFAULT);
+    beliefprop::ParallelParameters parallelParams(algSettings.numLevels_, runImpSettings.pParamsDefaultOptOptions_.first);
 
     //if optimizing parallel parameters, parallelParamsVect contains parallel parameter settings to run
     //(and contains only the default parallel parameters if not)
     std::vector<std::array<unsigned int, 2>> parallelParamsVect{
-      runImpSettings.optParallelParmsOptionSetting_.first ? PARALLEL_PARAMETERS_OPTIONS : std::vector<std::array<unsigned int, 2>>()};
+      runImpSettings.optParallelParmsOptionSetting_.first ? runImpSettings.pParamsDefaultOptOptions_.second : std::vector<std::array<unsigned int, 2>>()};
     
     //mapping of parallel parameters to runtime for each kernel at each level and total runtime
     std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::NUM_KERNELS + 1)> pParamsToRunTimeEachKernel;
@@ -254,15 +254,15 @@ private:
       }
 
       //get and set parallel parameters for current run if not final run that uses optimized parameters
-      std::array<unsigned int, 2> pParamsCurrRun{PARALLEL_PARAMS_DEFAULT};
+      std::array<unsigned int, 2> pParamsCurrRun{runImpSettings.pParamsDefaultOptOptions_.first};
       if (currRunType == RunType::ONLY_RUN) {
-        parallelParams.setParallelDims(PARALLEL_PARAMS_DEFAULT, algSettings.numLevels_);
+        parallelParams.setParallelDims(runImpSettings.pParamsDefaultOptOptions_.first, algSettings.numLevels_);
       }
       else if (currRunType == RunType::TEST_PARAMS) {
         //set parallel parameters to parameters corresponding to current run for each BP processing level
         pParamsCurrRun = parallelParamsVect[runNum];
         parallelParams.setParallelDims(pParamsCurrRun, algSettings.numLevels_);
-        if (pParamsCurrRun == PARALLEL_PARAMS_DEFAULT) {
+        if (pParamsCurrRun == runImpSettings.pParamsDefaultOptOptions_.first) {
           //set run type to default parameters if current run uses default parameters
           currRunType = RunType::DEFAULT_PARAMS;
         }
