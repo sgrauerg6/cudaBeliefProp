@@ -259,7 +259,9 @@ private:
       //store input params data if using default parallel parameters or final run with optimized parameters
       RunData currRunData;
       if (currRunType != RunType::TEST_PARAMS) {
-        currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, NUM_SET, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>(algSettings));
+        currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
+        currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>(algSettings));
+        currRunData.appendData(bp_params::runSettings());
         if (runImpSettings.optParallelParmsOptionSetting_.first &&
           (runImpSettings.optParallelParmsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
         {

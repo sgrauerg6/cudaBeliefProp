@@ -13,7 +13,6 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
-#include "BpConstsAndParams/bpStereoParameters.h"
 #include "RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"
@@ -33,14 +32,12 @@ concept Params_t =
 namespace run_eval {
 
 //get current run inputs and parameters in RunData structure
-template<RunData_t T, Params_t U, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+template<RunData_t T, Params_t U, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
 RunData inputAndParamsRunData(const U& algSettings) {
   RunData currRunData;
   currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
-  currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
   currRunData.appendData(algSettings.runData());
   currRunData.appendData(run_environment::runSettings<ACC_SETTING>());
-  currRunData.appendData(bp_params::runSettings());
   currRunData.addDataWHeader("DISP_VALS_TEMPLATED",
                             (DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES");
   return currRunData;
