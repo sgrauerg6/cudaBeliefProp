@@ -30,8 +30,11 @@ CC    = g++
 # uncomment to use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
 BFLOAT_DATA_TYPE_SETTING = #-DUSE_BFLOAT16_FOR_HALF_PRECISION
 
+# set to use only smaller data sets
+USE_ONLY_SMALLER_DATA_SETTING = -DSMALLER_SETS_ONLY
+
 # defines to add for CUDA processing
-CUDA_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING}
+CUDA_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${USE_ONLY_SMALLER_DATA_SETTING}
 
 # have include directory as flag
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX ${CUDA_RUN_DEFINES}

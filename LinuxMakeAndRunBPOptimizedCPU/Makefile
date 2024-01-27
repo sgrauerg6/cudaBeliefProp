@@ -20,8 +20,11 @@ CC := g++
 # switch to -DAVX_256_VECTORIZATION if AVX 512 not supported on target CPU
 CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 
+# set to use only smaller data sets
+USE_ONLY_SMALLER_DATA_SETTING = -DSMALLER_SETS_ONLY
+
 # have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} -O3 -std=c++20 -Wall -march=native
+COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${USE_ONLY_SMALLER_DATA_SETTING} -O3 -std=c++20 -Wall -march=native
 DBG    = -g
 
 all: impDriverCPU

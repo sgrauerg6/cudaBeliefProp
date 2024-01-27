@@ -16,8 +16,11 @@ OPENMP_LIB := -fopenmp
 # define the path for the compiler
 CC := g++
 
+# set to use only smaller data sets
+USE_ONLY_SMALLER_DATA_SETTING = -DSMALLER_SETS_ONLY
+
 # have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM -O3 -std=c++20 -Wall -march=native
+COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${USE_ONLY_SMALLER_DATA_SETTING} -O3 -std=c++20 -Wall -march=native
 DBG    = -g
 
 all: impDriverCPU
