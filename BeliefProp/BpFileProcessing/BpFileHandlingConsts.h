@@ -9,6 +9,7 @@
 #define BPFILEHANDLINGCONSTS_H_
 
 #include <string_view>
+#include <array>
 
 namespace bp_file_handling
 {

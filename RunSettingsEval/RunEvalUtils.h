@@ -13,6 +13,7 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include "BpConstsAndParams/bpStereoParameters.h"
 #include "RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"

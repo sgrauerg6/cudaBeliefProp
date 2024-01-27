@@ -18,12 +18,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the optimized CPU BP implementation
 
-#include <array>
-#include <vector>
-#include <thread>
-#include <string_view>
-#include "BpConstsAndParams/bpStructsAndEnums.h"
-#include "BpRunImp/RunEvalBpImp.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunEvalImp.h"
