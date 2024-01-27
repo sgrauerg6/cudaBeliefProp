@@ -1,12 +1,14 @@
 /*
- * SharedUtilFuncts.h
+ * RunImpGenFuncts.h
  *
- *  Created on: Jun 24, 2019
+ *  Created on: Jan 26, 2024
  *      Author: scott
  */
 
-#ifndef SHAREDUTILFUNCTS_H_
-#define SHAREDUTILFUNCTS_H_
+#ifndef RUNIMPGENFUNCTS_H_
+#define RUNIMPGENFUNCTS_H_
+
+#include "RunSettingsEval/RunTypeConstraints.h"
 
 #ifdef OPTIMIZED_CUDA_RUN
 //added in front of function header to indicate that function is device function to be processed on GPU
@@ -14,6 +16,17 @@
 #else
 #define ARCHITECTURE_ADDITION
 #endif //OPTIMIZED_CUDA_RUN
+
+//T is input type, U is output type
+template<RunData_t T, RunData_t U>
+ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(const T data) {
+  return data; //by default assume same data type and just return data
+}
+
+template<RunData_t T>
+ARCHITECTURE_ADDITION inline T getZeroVal() {
+  return (T)0.0;
+}
 
 template<typename T>
 requires std::is_arithmetic_v<T>
@@ -33,4 +46,4 @@ ARCHITECTURE_ADDITION inline bool withinImageBounds(const unsigned int xVal, con
   return ((xVal < width) && (yVal < height));
 }
 
-#endif /* SHAREDUTILFUNCTS_H_ */
+#endif //RUNIMPGENFUNCTS_H_

@@ -43,7 +43,7 @@
     <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp">
+    <ClCompile Include="..\..\..\BpRunProcessing\RunImpMemoryManagement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp">
@@ -120,7 +120,7 @@
     <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h">
+    <ClInclude Include="..\..\..\BpRunProcessing\RunImpMemoryManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h">
@@ -165,7 +165,7 @@
     <ClInclude Include="..\..\..\BpOptimizeCUDA\ProcessCUDABP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h">
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunImpCUDAMemoryManagement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h">

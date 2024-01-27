@@ -409,50 +409,6 @@ public:
     printf("Data type not supported for updating best disparities and values\n");
   }
 
-  template<RunData_t T, RunDataVect_t U>
-  static U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-    const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
-  {
-    printf("Data type not supported for loading aligned data\n");
-  }
-
-  template<RunData_t T, RunDataVect_t U>
-  static U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
-    const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
-  {
-    printf("Data type not supported for loading unaligned data\n");
-  }
-
-  template<RunDataVect_t T>
-  static T createSIMDVectorSameData(const float data) {
-    printf("Data type not supported for creating simd vector\n");
-  }
-
-  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
-  static V addVals(const T& val1, const U& val2) { return (val1 + val2); }
-
-  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
-  static V subtractVals(const T& val1, const U& val2) { return (val1 - val2); }
-
-  template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
-  static V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
-
-  template<RunDataSingOrVect_t T, RunDataSingOrVect_t V>
-  static T convertValToDatatype(const V val) { return (T)val; }
-
-  template<RunDataSingOrVect_t T>
-  static T getMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }
-
-  template<RunData_t T, RunDataVectProcess_t U>
-  static void storePackedDataAligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
-    locationDataStore[indexDataStore] = dataToStore;
-  }
-
-  template<RunData_t T, RunDataVectProcess_t U>
-  static void storePackedDataUnaligned(const unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
-    locationDataStore[indexDataStore] = dataToStore;
-  }
-
   template<RunData_t T, unsigned int DISP_VALS>
   static void printDataAndMessageValsAtPointKernelCPU(const unsigned int xVal, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,

@@ -167,7 +167,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h" />
     <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h" />
-    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunImpMemoryManagement.h" />
     <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h" />
     <ClInclude Include="..\..\..\BpImageProcessing\BpImage.h" />
     <ClInclude Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU.h" />
@@ -191,7 +191,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp" />
     <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp" />
-    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunImpMemoryManagement.cpp" />
     <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp" />
     <ClCompile Include="..\..\..\BpImageProcessing\BpImage.cpp" />
     <ClCompile Include="..\..\..\BpOptimizeCPU\KernelBpStereoCPU.cpp" />

@@ -106,7 +106,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.cpp" />
     <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSet.cpp" />
-    <ClCompile Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.cpp" />
+    <ClCompile Include="..\..\..\BpRunProcessing\RunImpMemoryManagement.cpp" />
     <ClCompile Include="..\..\..\BpRunProcessing\SmoothImage.cpp" />
     <ClCompile Include="..\..\..\BpFileProcessing\BpFileHandling.cpp" />
     <ClCompile Include="..\..\..\GetDllFuncts\RunBpWithDLLsHelpers.cpp">
@@ -148,7 +148,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\BpRunProcessing\ProcessBPOnTargetDevice.h" />
     <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSet.h" />
-    <ClInclude Include="..\..\..\BpRunProcessing\RunBpStereoSetMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpRunProcessing\RunImpMemoryManagement.h" />
     <ClInclude Include="..\..\..\BpRunProcessing\SmoothImage.h" />
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandling.h" />
     <ClInclude Include="..\..\..\BpFileProcessing\BpFileHandlingConsts.h" />
@@ -167,7 +167,7 @@
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_61,sm_61</CodeGeneration>
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">compute_61,sm_61</CodeGeneration>
     </CudaCompile>
-    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetCUDAMemoryManagement.h" />
+    <ClInclude Include="..\..\..\BpOptimizeCUDA\RunImpCUDAMemoryManagement.h" />
     <ClInclude Include="..\..\..\BpOptimizeCUDA\RunBpStereoSetOnGPUWithCUDA.h" />
     <CudaCompile Include="..\..\..\BpOptimizeCUDA\SmoothImageCUDA.h">
       <CodeGeneration Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">compute_61,sm_61</CodeGeneration>

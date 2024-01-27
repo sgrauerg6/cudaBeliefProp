@@ -13,13 +13,7 @@
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
-#include "SharedUtilFuncts.h"
-
-//T is input type, U is output type
-template<RunData_t T, RunData_t U>
-ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(const T data) {
-  return data; //by default assume same data type and just return data
-}
+#include "RunImp/RunImpGenFuncts.h"
 
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
 ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const unsigned int xVal, const unsigned int yVal,
@@ -33,11 +27,6 @@ ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const un
   else {
     return ((yVal * width + xVal) * totalNumDispVals + currentDisparity);
   }
-}
-
-template<RunData_t T>
-ARCHITECTURE_ADDITION inline T getZeroVal() {
-  return (T)0.0;
 }
 
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment

@@ -1,7 +1,5 @@
-#include "KernelBpStereoCPU.h"
-
-#ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
-#define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
+#ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_
+#define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_
 
 //this is only processed when on x86
 #ifdef _WIN32
@@ -9,45 +7,8 @@
 #else
 #include <x86intrin.h>
 #endif
+#include "KernelBpStereoCPU.h"
 #include "BpSharedFuncts/SharedBPProcessingFuncts.h"
-
-//used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
-//for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio
-template<> inline
-short getZeroVal<short>()
-{
-#ifdef _WIN32
-  __m128 dataInAvxReg = _mm_set_ss(0.0);
-  __m128i convertedData = _mm_cvtps_ph(dataInAvxReg, 0);
-  return ((short*)& convertedData)[0];
-#else
-  return _cvtss_sh(0.0f, 0);
-#endif
-}
-
-template<> inline
-float convertValToDifferentDataTypeIfNeeded<short, float>(const short data)
-{
-#ifdef _WIN32
-  __m128i dataInAvxReg = _mm_cvtsi32_si128(static_cast<int>(data));
-  __m128 convertedData = _mm_cvtph_ps(dataInAvxReg);
-  return ((float*)& convertedData)[0];
-#else
-  return _cvtsh_ss(data);
-#endif
-}
-
-template<> inline
-short convertValToDifferentDataTypeIfNeeded<float, short>(const float data)
-{
-#ifdef _WIN32
-  __m128 dataInAvxReg = _mm_set_ss(data);
-  __m128i convertedData = _mm_cvtps_ph(dataInAvxReg, 0);
-  return ((short*)&convertedData)[0];
-#else
-  return _cvtss_sh(data, 0);
-#endif
-}
 
 template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<short, short, 0>(
@@ -447,4 +408,4 @@ void retrieveOutputDisparityCheckerboardStereoOptimizedPixel<short, short, bp_pa
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
-#endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS
+#endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_

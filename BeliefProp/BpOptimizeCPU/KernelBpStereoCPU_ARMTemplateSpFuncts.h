@@ -8,31 +8,13 @@
 #ifndef KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_
 
-#include "KernelBpStereoCPU.h"
 #include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "RunImpCPU/ARMTemplateSpFuncts.h"
+#include "KernelBpStereoCPU.h"
 
 #ifdef COMPILING_FOR_ARM
 
 #include <arm_neon.h>
-
-template<> inline
-float16_t getZeroVal<float16_t>()
-{
-  return (float16_t)0.0f;
-}
-
-template<> inline
-float convertValToDifferentDataTypeIfNeeded<float16_t, float>(const float16_t valToConvert)
-{
-  return (float)valToConvert;
-}
-
-template<> inline
-float16_t convertValToDifferentDataTypeIfNeeded<float, float16_t>(const float valToConvert)
-{
-  //seems like simple cast function works
-  return (float16_t)valToConvert;
-}
 
 template<> inline
 void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float16_t, float16_t, 0>(
