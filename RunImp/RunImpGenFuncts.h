@@ -17,6 +17,8 @@
 #define ARCHITECTURE_ADDITION
 #endif //OPTIMIZED_CUDA_RUN
 
+namespace GenProcessingFuncts {
+
 //T is input type, U is output type
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(const T data) {
@@ -53,5 +55,7 @@ inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const uns
   //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
   return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % divPaddedChBoardWidthForAlign) == 0));
 }
+
+};
 
 #endif //RUNIMPGENFUNCTS_H_

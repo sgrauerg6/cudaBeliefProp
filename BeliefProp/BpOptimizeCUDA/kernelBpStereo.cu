@@ -41,7 +41,7 @@ __global__ void initializeBottomLevelDataStereo(
   //get the x value within the current "checkerboard"
   const unsigned int xInCheckerboard = xVal / 2;
 
-  if (withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
   {
     initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal,
       currentLevelProperties, image1PixelsDevice,
@@ -64,7 +64,7 @@ __global__ void initializeCurrentLevelDataStereo(
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
     initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardPart, currentLevelProperties, prevLevelProperties,
@@ -88,7 +88,7 @@ __global__ void initializeMessageValsToDefaultKernel(
   const unsigned int xValInCheckerboard = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
     //initialize message values in both checkerboards
     initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
@@ -118,7 +118,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
   {
     runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardToUpdate, currentLevelProperties,
@@ -147,7 +147,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
   {
     runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardToUpdate, currentLevelProperties,
@@ -182,7 +182,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
     copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
       checkerboardPart, currentLevelProperties, nextLevelProperties,
@@ -214,7 +214,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
     retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
       xVal, yVal, currentLevelProperties,

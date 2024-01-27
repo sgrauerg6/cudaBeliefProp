@@ -139,7 +139,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 
   //in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool dataAligned = MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_, currentLevelProperties.divPaddedChBoardWAlign_);
+  const bool dataAligned = GenProcessingFuncts::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_, currentLevelProperties.divPaddedChBoardWAlign_);
 
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0]};
@@ -268,7 +268,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
         xValProcess = std::max(startX, xValProcess);
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
+        const bool dataAlignedAtXValProcess = GenProcessingFuncts::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
           currentLevelProperties.divPaddedChBoardWAlign_);
 
         //initialize arrays for data and message values
@@ -384,7 +384,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
         xValProcess = std::max(startX, xValProcess);
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
+        const bool dataAlignedAtXValProcess = GenProcessingFuncts::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
           currentLevelProperties.divPaddedChBoardWAlign_);
 
         //initialize arrays for data and message values
@@ -769,7 +769,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
         const unsigned int indexOutput = (yVal * widthDispCheckerboard) + xValProcess;
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
+        const bool dataAlignedAtXValProcess = GenProcessingFuncts::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
                                                                        currentLevelProperties.divPaddedChBoardWAlign_);
 
         //declare SIMD vectors for data and message values at each disparity

@@ -20,7 +20,7 @@
 //used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
 //for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio
 template<> inline
-short getZeroVal<short>()
+short GenProcessingFuncts::getZeroVal<short>()
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(0.0);
@@ -32,7 +32,7 @@ short getZeroVal<short>()
 }
 
 template<> inline
-float convertValToDifferentDataTypeIfNeeded<short, float>(const short data)
+float GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<short, float>(const short data)
 {
 #ifdef _WIN32
   __m128i dataInAvxReg = _mm_cvtsi32_si128(static_cast<int>(data));
@@ -44,7 +44,7 @@ float convertValToDifferentDataTypeIfNeeded<short, float>(const short data)
 }
 
 template<> inline
-short convertValToDifferentDataTypeIfNeeded<float, short>(const float data)
+short GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<float, short>(const float data)
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(data);
