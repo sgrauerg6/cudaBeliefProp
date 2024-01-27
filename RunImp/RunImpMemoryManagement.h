@@ -1,23 +1,23 @@
 /*
- * RunBpStereoSetMemoryManagement.h
+ * RunImpMemoryManagement.h
  *
  * Class for memory management with functions defined
  * for standard memory allocation using CPU and can be
  * overridden to support other computation devices
  */
 
-#ifndef RUN_BP_STEREO_SET_MEMORY_MANAGEMENT_H_
-#define RUN_BP_STEREO_SET_MEMORY_MANAGEMENT_H_
+#ifndef RUN_IMP_MEMORY_MANAGEMENT_H_
+#define RUN_IMP_MEMORY_MANAGEMENT_H_
 
 #include <new>
 #include <algorithm>
-#include "BpConstsAndParams/bpTypeConstraints.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunSettings.h"
 
 //Class for memory management with functions defined for standard memory allocation using CPU
 //Class functions can be overridden to support other computation devices such as GPU
 template <RunData_t T>
-class RunBpStereoSetMemoryManagement
+class RunImpMemoryManagement
 {
 public:
   virtual T* allocateMemoryOnDevice(const unsigned int numData) {
@@ -57,4 +57,4 @@ public:
   }
 };
 
-#endif //RUN_BP_STEREO_SET_MEMORY_MANAGEMENT_H_
+#endif //RUN_IMP_MEMORY_MANAGEMENT_H_

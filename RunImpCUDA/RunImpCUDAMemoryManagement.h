@@ -1,14 +1,13 @@
-#ifndef RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
-#define RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
+#ifndef RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_
+#define RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_
 
 #include <cuda_runtime.h>
 #include "RunSettingsEval/RunTypeConstraints.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
-#include "BpRunProcessing/RunBpStereoSetMemoryManagement.h"
+#include "RunImp/RunImpMemoryManagement.h"
 
 //functions to manage memory on CUDA device including transferring data between host and CUDA device
 template <RunData_t T>
-class RunBpStereoSetCUDAMemoryManagement : public RunBpStereoSetMemoryManagement<T>
+class RunImpCUDAMemoryManagement : public RunImpMemoryManagement<T>
 {
 public:
   T* allocateMemoryOnDevice(const unsigned int numData) override {
@@ -42,4 +41,4 @@ public:
   }
 };
 
-#endif //RUN_BP_STEREO_SET_CUDA_MEMORY_MANAGEMENT_H_
+#endif //RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_

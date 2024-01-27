@@ -23,7 +23,7 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
-#include "RunBpStereoSetMemoryManagement.h"
+#include "RunImp/RunImpMemoryManagement.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
 using timingInSecondsDoublePrecision = std::chrono::duration<double>;
@@ -74,7 +74,7 @@ public:
   }
 
   virtual void freeCheckerboardMessagesMemory(const beliefprop::checkerboardMessages<T*>& checkerboardMessagesToFree,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
     std::for_each(checkerboardMessagesToFree.checkerboardMessagesAtLevel_.begin(), checkerboardMessagesToFree.checkerboardMessagesAtLevel_.end(),
       [this, &memManagementBpRun](auto& checkerboardMessagesSet) {
@@ -82,7 +82,7 @@ public:
   }
 
   virtual beliefprop::checkerboardMessages<T*> allocateMemoryForCheckerboardMessages(const unsigned long numDataAllocatePerMessage,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
     beliefprop::checkerboardMessages<T*> outputCheckerboardMessages;
     std::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel_.begin(), outputCheckerboardMessages.checkerboardMessagesAtLevel_.end(),
@@ -104,20 +104,20 @@ public:
   }
 
   virtual void freeDataCostsMemory(const beliefprop::dataCostData<T*>& dataCostsToFree,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun) {
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
     memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree.dataCostCheckerboard0_);
     memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree.dataCostCheckerboard1_);
   }
 
   virtual beliefprop::dataCostData<T*> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun) {
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
     return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING), 
             memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING)};
   }
 
   virtual std::pair<beliefprop::dataCostData<T*>, beliefprop::checkerboardMessages<T*>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
     const unsigned long numDataAllocatePerDataCostsMessageDataArray,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
     T* dataAllLevels = memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray, ACC_SETTING);
     return organizeDataCostsAndMessageDataAllLevels(dataAllLevels, numDataAllocatePerDataCostsMessageDataArray);
@@ -141,7 +141,7 @@ public:
   }
 
   virtual void freeDataCostsAllDataInSingleArray(const beliefprop::dataCostData<T*>& dataCostsToFree,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
     memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree.dataCostCheckerboard0_);
   }
@@ -159,7 +159,7 @@ public:
   std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
     const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
     T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
-    const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun);
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun);
 };
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
@@ -168,7 +168,7 @@ public:
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
 std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
-  const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun)
+  const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
 {
   if (errorCheck() != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 

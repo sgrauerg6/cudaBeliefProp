@@ -25,7 +25,7 @@
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "ProcessBPOnTargetDevice.h"
-#include "RunBpStereoSetMemoryManagement.h"
+#include "RunImp/RunImpMemoryManagement.h"
 
 //stereo processing output
 struct ProcessStereoSetOutput
@@ -39,8 +39,8 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smoothImage;
   const std::unique_ptr<ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>>& runBpStereo;
-  const std::unique_ptr<RunBpStereoSetMemoryManagement<T>>& memManagementBpRun;
-  const std::unique_ptr<RunBpStereoSetMemoryManagement<float>>& memManagementImages;
+  const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun;
+  const std::unique_ptr<RunImpMemoryManagement<float>>& memManagementImages;
 };
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>

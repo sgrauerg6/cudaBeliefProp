@@ -25,12 +25,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include <memory>
 #include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
 #include "BpConstsAndParams/bpStereoCudaParameters.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "ProcessCUDABP.h"
-#include "RunBpStereoSetCUDAMemoryManagement.h"
 #include "SmoothImageCUDA.h"
 
 namespace bp_cuda_device
@@ -76,8 +76,8 @@ public:
       BpOnDevice<T, DISP_VALS, VECTORIZATION>{
         std::make_unique<SmoothImageCUDA>(parallelParams),
         std::make_unique<ProcessCUDABP<T, DISP_VALS>>(parallelParams),
-        std::make_unique<RunBpStereoSetCUDAMemoryManagement<T>>(),
-        std::make_unique<RunBpStereoSetCUDAMemoryManagement<float>>()});
+        std::make_unique<RunImpCUDAMemoryManagement<T>>(),
+        std::make_unique<RunImpCUDAMemoryManagement<float>>()});
     runData.appendData(procSetOutput.runData);
     procSetOutput.runData = runData;
     
@@ -100,7 +100,7 @@ public:
   //if type is specified as short, process as half on GPU
   //note that half is considered a data type for 16-bit floats in CUDA
   ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
-    const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunBpStereoSetMemoryManagement* memManagementImages = nullptr) override
+    const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunImpMemoryManagement* memManagementImages = nullptr) override
   {
 
     //std::cout << "Processing as half on GPU\n";
