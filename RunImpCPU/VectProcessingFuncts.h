@@ -12,7 +12,7 @@
 #include <omp.h>
 #include <algorithm>
 #include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
+#include "RunImpCPU/RunCPUSettings.h"
 
 //functions for processing using vectorization on CPU
 namespace VectProcessingFuncts

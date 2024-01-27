@@ -25,18 +25,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpRunImp/RunEvalBpImp.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
-#include "RunSettingsEval/RunSettings.h"
+#include "RunImpCPU/RunCPUSettings.h"
 #include "RunEvalImp.h"
-
-#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NEON};
-#elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX256};
-#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX512};
-#else
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NONE};
-#endif
 
 int main(int argc, char** argv)
 {
@@ -49,9 +39,9 @@ int main(int argc, char** argv)
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
   runImpSettings.optParallelParmsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
-  runImpSettings.pParamsDefaultOptOptions_ = {run_environment::PARALLEL_PARAMS_DEFAULT, run_environment::PARALLEL_PARAMETERS_OPTIONS};
+  runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baselineRunDataPathsOptSingThread_ = bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD;
-  RunAndEvaluateImp::runBpOnStereoSets<CPU_VECTORIZATION>(runBpImp, runImpSettings);
+  RunAndEvaluateImp::runBpOnStereoSets<run_cpu::CPU_VECTORIZATION>(runBpImp, runImpSettings);
   return 0;
 }
