@@ -30,6 +30,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <string>
 #include <array>
+#include <fstream>
+#include <ostream>
+#include "RunSettingsEval/RunData.h"
 
 namespace bp_consts
 {
@@ -128,6 +131,24 @@ namespace bp_params
 
   // amount to smooth the input images
   constexpr float SIGMA_BP = 0.0f;
-}
 
+  //by default, optimized GPU memory management and optimized indexing used
+  //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these
+  //optimizations (note that the optimized indexing was present in the initial implementation)
+  //Can remove optimized GPU memory management (making the processing more similar to the initial work)
+  //by setting USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT to false
+  //Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to false
+  //(not recommended; this slows down processing)
+  constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
+  constexpr bool OPTIMIZED_INDEXING_SETTING{true};
+  constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
+
+  inline RunData runSettings()  {
+    RunData currRunData;
+    currRunData.addDataWHeader("Memory Optimization Level", std::to_string(USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
+    currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(OPTIMIZED_INDEXING_SETTING));
+    return currRunData;
+  }
+
+};
 #endif /* BPSTEREOPARAMETERS_H_ */

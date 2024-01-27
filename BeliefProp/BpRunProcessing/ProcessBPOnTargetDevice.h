@@ -204,8 +204,8 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
     bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
 
   //assuming that width includes padding
-  if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
-    if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+    if constexpr (bp_params::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
       std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
         organizeDataCostsAndMessageDataAllLevels(allocatedMemForBpProcessingDevice, dataAllLevelsEachDataMessageArr);
     }
@@ -257,7 +257,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   std::array<beliefprop::checkerboardMessages<T*>, 2> messagesDevice;
 
   //assuming that width includes padding
-  if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+  if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
     messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
   }
   else {
@@ -305,7 +305,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
 
       //assuming that width includes padding
-      if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+      if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
         messagesDevice[(currCheckerboardSet + 1) % 2] = retrieveLevelMessageData(
           messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
       }
@@ -331,7 +331,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       eachLevelTimingCopy[levelNum].second = timeCopyMessageValuesKernelEnd;
 
       //assuming that width includes padding
-      if constexpr (!run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+      if constexpr (!bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
         //free the now-copied from computed data of the completed level
         freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet], memManagementBpRun);
       }
@@ -359,13 +359,13 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].second = currTime;
   startEndTimes[beliefprop::Runtime_Type::FINAL_FREE].first = currTime;
 
-  if constexpr (run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
-    if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
+    if constexpr (bp_params::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
       //do nothing; memory free outside of runs
     }
     else {
       //now free the allocated data space; all data in single array when
-      //run_environment::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
+      //bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT set to true
       freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels, memManagementBpRun);
     }
   }

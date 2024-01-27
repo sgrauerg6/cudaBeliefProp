@@ -30,9 +30,6 @@
 
 typedef std::filesystem::path filepathtype;
 
-//remove comment to only process on smaller stereo sets (reduces runtime)
-#define SMALLER_SETS_ONLY
-
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
@@ -62,16 +59,6 @@ using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment
 
 using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
 using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
-
-#ifdef SMALLER_SETS_ONLY
-  constexpr std::array<std::string_view, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
-    "../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt",
-    "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
-#else
-  constexpr std::array<std::string_view, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
-    "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
-    "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
-#endif //SMALLER_SETS_ONLY
 
 using namespace beliefprop;
 
@@ -104,7 +91,8 @@ public:
     if constexpr (std::is_same_v<T, float>) {
       //get speedup over baseline runtimes on a previous run...assumes that templated and not templated runs have been done
       //so not used with a different setting for templates
-      if (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+      if ((runImpSettings.baselineRunDataPathsOptSingThread_) && 
+          (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED)) {
         const std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetsStrIndices = {
           {"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
   #ifndef SMALLER_SETS_ONLY
@@ -114,7 +102,7 @@ public:
   #endif //SMALLER_SETS_ONLY
         };
         const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
-          runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)), BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD,
+          runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)), runImpSettings.baselineRunDataPathsOptSingThread_.value(),
           subsetsStrIndices);
         speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
       }

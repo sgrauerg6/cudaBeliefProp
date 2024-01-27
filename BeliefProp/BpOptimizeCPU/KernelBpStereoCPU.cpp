@@ -1153,7 +1153,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
       VectProcessingFuncts::storePackedDataUnaligned<T, W>(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
     }
 
-    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -1256,7 +1256,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
       VectProcessingFuncts::storePackedDataUnaligned<T, W>(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
     }
 
-    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {

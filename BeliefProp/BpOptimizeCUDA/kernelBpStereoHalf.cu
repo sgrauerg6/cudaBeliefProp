@@ -84,7 +84,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
 
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-      if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+      if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
         destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
       }
       else {
@@ -105,7 +105,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
     {
       dst[currentDisparity] -= valToNormalize;
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
-      if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+      if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
         destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
       }
       else {
@@ -146,7 +146,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
     if (dstProcessing[procArrIdx] < minimum)
       minimum = dstProcessing[procArrIdx];
 
-    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -171,7 +171,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
 
     valToNormalize += dstProcessing[procArrIdx];
 
-    if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -188,7 +188,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
 
     for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
       dstMessageArray[procArrIdx] = (half)0.0;
-      if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+      if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
         procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
       }
       else {
@@ -206,7 +206,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
     for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
       dstProcessing[procArrIdx] -= valToNormalize;
       dstMessageArray[procArrIdx] = convertValToDifferentDataTypeIfNeeded<half, half>(dstProcessing[procArrIdx]);
-      if constexpr (run_environment::OPTIMIZED_INDEXING_SETTING) {
+      if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
         procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
       }
       else {

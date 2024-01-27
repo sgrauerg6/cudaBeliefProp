@@ -82,7 +82,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
   //allocate data for bp processing on target device ahead of runs if option selected
   T* bpData = nullptr;
   T* bpProcStore = nullptr;
-  if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (bp_params::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
     unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
       widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
     bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
@@ -162,7 +162,7 @@ ProcessStereoSetOutput RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereo
 
   //free data for bp processing on target device if this memory
   //management set to be done outside of runs
-  if constexpr (run_environment::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
+  if constexpr (bp_params::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
     runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpData);
     runBpOnDevice.memManagementBpRun->freeAlignedMemoryOnDevice(bpProcStore);
   }

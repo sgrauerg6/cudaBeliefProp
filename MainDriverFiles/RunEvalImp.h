@@ -116,9 +116,10 @@ void runBpOnStereoSets(const std::unique_ptr<RunEvalBpImp>& runBpImp, const run_
 
   //get speedup over baseline runtimes on a previous run...assumes that templated and not templated runs have been done
   //so not used with a different setting for templates
-  if (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+  if ((runImpSettings.baselineRunDataPathsOptSingThread_) &&
+      (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED)) {
     const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs",
-      BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD);
+      runImpSettings.baselineRunDataPathsOptSingThread_.value());
       runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   }
   //get speedup info for using optimized parallel parameters

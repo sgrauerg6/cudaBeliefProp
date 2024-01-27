@@ -39,6 +39,7 @@ RunData inputAndParamsRunData(const U& algSettings) {
   currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
   currRunData.appendData(algSettings.runData());
   currRunData.appendData(run_environment::runSettings<ACC_SETTING>());
+  currRunData.appendData(bp_params::runSettings());
   currRunData.addDataWHeader("DISP_VALS_TEMPLATED",
                             (DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES");
   return currRunData;
@@ -208,9 +209,9 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
     const auto accelStr = run_environment::accelerationString<OPT_IMP_ACCEL>();
     const std::string optResultsFileName{std::string(ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
-      (runImpSettings.processorName_.size() > 0 ? std::string(runImpSettings.processorName_) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
+      ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     const std::string defaultParamsResultsFileName{std::string(ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
-      (runImpSettings.processorName_.size() > 0 ? std::string(runImpSettings.processorName_) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
+      ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
       std::ofstream(runImpSettings.optParallelParmsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
       runImpSettings.optParallelParmsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};

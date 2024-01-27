@@ -12,6 +12,9 @@
 #include <typeinfo>
 #include <typeindex>
 #include <map>
+#include <optional>
+#include <string_view>
+#include <thread>
 #include "RunData.h"
 
 //check if running on ARM architecture
@@ -50,16 +53,13 @@ enum class AccSetting {
   NONE, AVX256, AVX512, NEON, CUDA
 };
 
-//by default, optimized GPU memory management and optimized indexing used
-//See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these
-//optimizations (note that the optimized indexing was present in the initial implementation)
-//Can remove optimized GPU memory management (making the processing more similar to the initial work)
-//by setting USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT to false
-//Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to false
-//(not recommended; this slows down processing)
-constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
-constexpr bool OPTIMIZED_INDEXING_SETTING{true};
-constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
+//parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation
+//parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
+const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
+const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
+  { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1}/*,
+  { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}*/};
+const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
 
 //get string corresponding to CPU parallelization method
 //currently only OpenMP CPU parallelization supported
@@ -93,22 +93,10 @@ inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
 }
 
 template <AccSetting ACCELERATION_SETTING>
-inline void writeRunSettingsToStream(std::ostream& resultsStream)
-{
-  resultsStream << "Memory Optimization Level: " << USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT << "\n";
-  resultsStream << "Indexing Optimization Level: " << OPTIMIZED_INDEXING_SETTING << "\n";
-  resultsStream << "BYTES_ALIGN_MEMORY: " << getBytesAlignMemory(ACCELERATION_SETTING) << "\n";
-  resultsStream << "NUM_DATA_ALIGN_WIDTH: " << getNumDataAlignWidth(ACCELERATION_SETTING) << "\n";
-}
-
-template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
   RunData currRunData;
-  currRunData.addDataWHeader("Memory Optimization Level", std::to_string(USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
-  currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(OPTIMIZED_INDEXING_SETTING));
   currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(getBytesAlignMemory(ACCELERATION_SETTING)));
   currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(getNumDataAlignWidth(ACCELERATION_SETTING)));
-
   return currRunData;
 }
 
@@ -127,7 +115,8 @@ struct RunImpSettings {
   TemplatedItersSetting templatedItersSetting_;
   std::pair<bool, OptParallelParamsSetting> optParallelParmsOptionSetting_;
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> pParamsDefaultOptOptions_;
-  std::string processorName_;
+  std::optional<std::string> processorName_;
+  std::optional<std::array<std::string_view, 2>> baselineRunDataPathsOptSingThread_;
 };
 
 };

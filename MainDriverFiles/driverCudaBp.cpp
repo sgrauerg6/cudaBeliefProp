@@ -23,30 +23,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <thread>
 #include <string_view>
 #include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpFileProcessing/BpFileHandlingConsts.h"
+#include "RunImpCUDA/RunCUDASettings.h"
 #include "RunEvalImp.h"
 
 int main(int argc, char** argv)
 {
-  //name of processor used for running optimized implementation
-  constexpr std::string_view PROCESSOR_NAME{""};
-
-  //parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation
-  //parallel parameter corresponds to thread block dimensions in CUDA implementation
-  const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{  {16, 1}, {32, 1}, {32, 2}, {32, 3}, {32, 4}, {32, 5},
-    {32, 6},{32, 8}, {64, 1}, {64, 2}, {64, 3}, {64, 4}, {128, 1}, {128, 2}, {256, 1}, {32, 10}, {32, 12}, {32, 14}, {32, 16},
-    {64, 5}, {64, 6}, {64, 7}, {64, 8}, {128, 3}, {128, 4}, {256, 2}};
-  constexpr std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{32, 4}};
-
   std::unique_ptr<RunEvalBpImp> runBpImp = std::make_unique<RunEvalBpImp>();
   run_environment::RunImpSettings runImpSettings;
+  #ifdef PROCESSOR_NAME
+    runImpSettings.processorName_ = PROCESSOR_NAME;
+  #endif //PROCESSOR_NAME
   //enable optimization of parallel parameters with setting to use the allow different thread block dimensions
   //on kernels in same run
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
   //in different kernels in the optimized CUDA implementation can decrease runtime
-  runImpSettings.processorName_ = PROCESSOR_NAME;
   runImpSettings.optParallelParmsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN};
-  runImpSettings.pParamsDefaultOptOptions_ = {PARALLEL_PARAMS_DEFAULT, PARALLEL_PARAMETERS_OPTIONS};
+  runImpSettings.pParamsDefaultOptOptions_ = {run_cuda::PARALLEL_PARAMS_DEFAULT, run_cuda::PARALLEL_PARAMETERS_OPTIONS};
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
+  runImpSettings.baselineRunDataPathsOptSingThread_ = bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD;
   RunAndEvaluateImp::runBpOnStereoSets<run_environment::AccSetting::CUDA>(runBpImp, runImpSettings);
   return 0;
 }
