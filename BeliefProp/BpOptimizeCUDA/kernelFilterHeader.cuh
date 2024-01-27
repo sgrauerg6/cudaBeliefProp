@@ -24,11 +24,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include <type_traits>
 
-//checks if the current point is within the image bounds
-__device__ bool withinImageBoundsFilter(
-  const unsigned int xVal, const unsigned int yVal,
-  const unsigned int width, const unsigned int height);
-
 //kernel to convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture

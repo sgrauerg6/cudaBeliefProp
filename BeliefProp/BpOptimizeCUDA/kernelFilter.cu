@@ -23,15 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda.h>
 #include "BpConstsAndParams/bpStereoCudaParameters.h"
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
-
-//checks if the current point is within the image bounds
-__device__ bool withinImageBoundsFilter(
-  const unsigned int xVal, const unsigned int yVal,
-  const unsigned int width, const unsigned int height)
-{
-  //xVal and yVal unsigned so no need to compare with zero
-  return ((xVal < width) && (yVal < height));
-}
+#include "RunImp/RunImpGenFuncts.h"
 
 
 //kernel to convert the unsigned int pixels to float pixels in an image when
@@ -47,7 +39,7 @@ __global__ void convertUnsignedIntImageToFloat(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
     //retrieve the float-value of the unsigned int pixel value at the current location
     floatImagePixels[yVal*widthImages + xVal] = (float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];;
   }
@@ -68,7 +60,7 @@ __global__ void filterImageAcross(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
     filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, sizeFilter);
   }
@@ -89,7 +81,7 @@ __global__ void filterImageVertical(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (withinImageBoundsFilter(xVal, yVal, widthImages, heightImages)) {
+  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
     filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, sizeFilter);
   }
