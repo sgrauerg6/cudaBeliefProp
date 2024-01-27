@@ -29,14 +29,6 @@ ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const un
   }
 }
 
-//inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth,
-  unsigned int divPaddedChBoardWidthForAlign)
-{
-  //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
-  return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % divPaddedChBoardWidthForAlign) == 0));
-}
-
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void dtStereo(T f[DISP_VALS])

@@ -46,4 +46,12 @@ ARCHITECTURE_ADDITION inline bool withinImageBounds(const unsigned int xVal, con
   return ((xVal < width) && (yVal < height));
 }
 
+//inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
+inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth,
+  unsigned int divPaddedChBoardWidthForAlign)
+{
+  //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
+  return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % divPaddedChBoardWidthForAlign) == 0));
+}
+
 #endif //RUNIMPGENFUNCTS_H_

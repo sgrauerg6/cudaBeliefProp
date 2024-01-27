@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <iostream>
 #include "RunSettingsEval/RunEvalConstsEnums.h"
+#include "RunImp/RunImpGenFuncts.h"
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"
 
