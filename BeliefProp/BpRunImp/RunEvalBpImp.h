@@ -89,10 +89,10 @@ public:
 
     //get speedup info for using optimized parallel parameters and disparity count as template parameter
     if constexpr (std::is_same_v<T, float>) {
-      //get speedup over baseline runtimes on a previous run...assumes that templated and not templated runs have been done
-      //so not used with a different setting for templates
-      if ((runImpSettings.baselineRunDataPathsOptSingThread_) && 
-          (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED)) {
+      //get speedup over baseline runtimes...can only compare with baseline runtimes that are
+      //generated using same templated iterations setting as current run
+      if ((runImpSettings.baseOptSingThreadRTimeForTSetting_) &&
+          (runImpSettings.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings.templatedItersSetting_)) {
         const std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetsStrIndices = {
           {"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
   #ifndef SMALLER_SETS_ONLY
@@ -102,8 +102,8 @@ public:
   #endif //SMALLER_SETS_ONLY
         };
         const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
-          runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)), runImpSettings.baselineRunDataPathsOptSingThread_.value(),
-          subsetsStrIndices);
+          runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)),
+          runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first, subsetsStrIndices);
         speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
       }
     }

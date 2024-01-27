@@ -41,7 +41,8 @@ int main(int argc, char** argv)
   runImpSettings.optParallelParmsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
   runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
-  runImpSettings.baselineRunDataPathsOptSingThread_ = bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD;
+  runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
+        {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
   RunAndEvaluateImp::runBpOnStereoSets<run_cpu::CPU_VECTORIZATION>(runBpImp, runImpSettings);
   return 0;
 }

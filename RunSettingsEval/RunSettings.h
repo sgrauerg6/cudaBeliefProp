@@ -78,7 +78,8 @@ struct RunImpSettings {
   std::pair<bool, OptParallelParamsSetting> optParallelParmsOptionSetting_;
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> pParamsDefaultOptOptions_;
   std::optional<std::string> processorName_;
-  std::optional<std::array<std::string_view, 2>> baselineRunDataPathsOptSingThread_;
+  //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
+  std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> baseOptSingThreadRTimeForTSetting_;
 };
 
 };
