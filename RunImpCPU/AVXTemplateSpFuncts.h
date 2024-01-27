@@ -1,12 +1,12 @@
 /*
- * TemplateSpFuncts.h
+ * AVXTemplateSpFuncts.h
  *
  *  Created on: Jun 26, 2024
  *      Author: scott
  */
 
-#ifndef TEMPLATESPFUNCTS_H_
-#define TEMPLATESPFUNCTS_H_
+#ifndef AVXTEMPLATESPFUNCTS_H_
+#define AVXTEMPLATESPFUNCTS_H_
 
 //this is only processed when on x86
 #ifdef _WIN32
@@ -55,4 +55,4 @@ short convertValToDifferentDataTypeIfNeeded<float, short>(const float data)
 #endif
 }
 
-#endif //TEMPLATESPFUNCTS_H_
+#endif //AVXTEMPLATESPFUNCTS_H_

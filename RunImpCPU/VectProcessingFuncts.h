@@ -72,7 +72,7 @@ namespace VectProcessingFuncts
 
 #else
 //needed so that template specializations are used when available
-#include "TemplateSpFuncts.h"
+#include "AVXTemplateSpFuncts.h"
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
 #include "AVX256TemplateSpFuncts.h"
