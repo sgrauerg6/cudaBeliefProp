@@ -22,14 +22,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
 #include <cuda_runtime.h>
-#include <iostream>
-#include <memory>
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
 #include "BpConstsAndParams/bpStereoCudaParameters.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
 #include "ProcessCUDABP.h"
 #include "SmoothImageCUDA.h"
 

@@ -19,13 +19,13 @@
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "RuntimeTiming/DetailedTimings.h"
 #include "RunSettingsEval/RunData.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "ProcessBPOnTargetDevice.h"
+#include "RuntimeTiming/DetailedTimings.h"
 #include "RunImp/RunImpMemoryManagement.h"
+#include "ProcessBPOnTargetDevice.h"
 
 //stereo processing output
 struct ProcessStereoSetOutput

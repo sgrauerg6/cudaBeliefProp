@@ -16,17 +16,17 @@
 #include <numeric>
 #include <algorithm>
 #include <set>
-#include "BpFileProcessing/BpFileHandling.h"
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "BpFileProcessing/BpFileHandling.h"
+#include "BpRunProcessing/RunBpStereoSet.h"
+#include "BpSingleThreadCPU/stereo.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 #include "RunSettingsEval/RunEvalUtils.h"
-#include "BpSingleThreadCPU/stereo.h"
-#include "BpRunProcessing/RunBpStereoSet.h"
 
 typedef std::filesystem::path filepathtype;
 

@@ -8,14 +8,12 @@
 #ifndef RUNBPSTEREOOPTIMIZEDCPU_H_
 #define RUNBPSTEREOOPTIMIZEDCPU_H_
 
-#include <iostream>
 #include <string>
 #include <memory>
 #include <array>
-#include <thread>
+#include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"

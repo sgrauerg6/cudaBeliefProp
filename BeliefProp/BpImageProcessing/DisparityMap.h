@@ -8,11 +8,8 @@
 #ifndef DISPARITYMAP_H_
 #define DISPARITYMAP_H_
 
-#include <memory>
 #include <algorithm>
 #include <string>
-#include <iterator>
-#include <iostream>
 #include "BpImage.h"
 #include "BpOutputEvaluation/OutputEvaluationResults.h"
 #include "BpOutputEvaluation/OutputEvaluationParameters.h"

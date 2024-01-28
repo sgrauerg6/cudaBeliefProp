@@ -9,8 +9,6 @@
 #define SMOOTHIMAGECUDA_H_
 
 #include <cuda_runtime.h>
-
-#include "BpConstsAndParams/bpStereoCudaParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpImageProcessing/SmoothImage.h"
 
