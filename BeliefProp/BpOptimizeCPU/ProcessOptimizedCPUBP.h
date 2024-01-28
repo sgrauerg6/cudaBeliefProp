@@ -35,7 +35,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 
 //include for the "kernel" functions to be run on the CPU
-#include "KernelBpStereoCPU.cpp"
 #include "KernelBpStereoCPU.h"
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
