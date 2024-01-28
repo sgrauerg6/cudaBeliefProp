@@ -8,12 +8,11 @@
 #ifndef SMOOTHIMAGECPU_H_
 #define SMOOTHIMAGECPU_H_
 
-#include <algorithm>
+#include <utility>
 #include <memory>
+#include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "KernelBpStereoCPU.h"
 
 class SmoothImageCPU : public SmoothImage {
 public:
