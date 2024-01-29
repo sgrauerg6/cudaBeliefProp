@@ -18,7 +18,7 @@ template<> inline __m512d VectProcessingFuncts::loadPackedDataAligned<double, __
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData)
 {
-  return _mm512_load_pd(&inData[retrieveIndexInDataAndMessage(
+  return _mm512_load_pd(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -27,7 +27,7 @@ template<> inline __m512 VectProcessingFuncts::loadPackedDataAligned<float, __m5
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData)
 {
-  return _mm512_load_ps(&inData[retrieveIndexInDataAndMessage(
+  return _mm512_load_ps(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -36,7 +36,7 @@ template<> inline __m256i VectProcessingFuncts::loadPackedDataAligned<short, __m
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData)
 {
-  return _mm256_load_si256((__m256i*)(&inData[retrieveIndexInDataAndMessage(
+  return _mm256_load_si256((__m256i*)(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity,
     numDispVals)]));
@@ -46,7 +46,7 @@ template<> inline __m512 VectProcessingFuncts::loadPackedDataUnaligned<float, __
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData)
 {
-  return _mm512_loadu_ps(&inData[retrieveIndexInDataAndMessage(
+  return _mm512_loadu_ps(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -55,7 +55,7 @@ template<> inline __m256i VectProcessingFuncts::loadPackedDataUnaligned<short, _
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, short* inData)
 {
-  return _mm256_loadu_si256((__m256i*)(&inData[retrieveIndexInDataAndMessage(
+  return _mm256_loadu_si256((__m256i*)(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]));
 }
@@ -64,7 +64,7 @@ template<> inline __m512d VectProcessingFuncts::loadPackedDataUnaligned<double, 
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData)
 {
-  return _mm512_loadu_pd(&inData[retrieveIndexInDataAndMessage(
+  return _mm512_loadu_pd(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }

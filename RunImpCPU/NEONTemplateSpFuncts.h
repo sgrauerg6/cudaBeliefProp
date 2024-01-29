@@ -15,7 +15,7 @@ template<> inline float64x2_t VectProcessingFuncts::loadPackedDataAligned<double
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData)
 {
-  return vld1q_f64(&inData[retrieveIndexInDataAndMessage(
+  return vld1q_f64(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -24,7 +24,7 @@ template<> inline float32x4_t VectProcessingFuncts::loadPackedDataAligned<float,
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData)
 {
-  return vld1q_f32(&inData[retrieveIndexInDataAndMessage(
+  return vld1q_f32(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -33,7 +33,7 @@ template<> inline float16x4_t VectProcessingFuncts::loadPackedDataAligned<float1
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float16_t* inData)
 {
-  return vld1_f16(&inData[retrieveIndexInDataAndMessage(
+  return vld1_f16(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity,
     numDispVals)]);
@@ -43,7 +43,7 @@ template<> inline float32x4_t VectProcessingFuncts::loadPackedDataUnaligned<floa
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float* inData)
 {
-  return vld1q_f32(&inData[retrieveIndexInDataAndMessage(
+  return vld1q_f32(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -52,7 +52,7 @@ template<> inline float16x4_t VectProcessingFuncts::loadPackedDataUnaligned<floa
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, float16_t* inData)
 {
-  return vld1_f16(&inData[retrieveIndexInDataAndMessage(
+  return vld1_f16(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }
@@ -61,7 +61,7 @@ template<> inline float64x2_t VectProcessingFuncts::loadPackedDataUnaligned<doub
   const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
   const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, double* inData)
 {
-  return vld1q_f64(&inData[retrieveIndexInDataAndMessage(
+  return vld1q_f64(&inData[beliefprop::retrieveIndexInDataAndMessage(
     x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
 }

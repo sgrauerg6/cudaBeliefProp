@@ -77,7 +77,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
   //set destination vector to 0 for all disparities
   //note that may cause results to differ a little from ideal
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
-    unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+    unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
       currentLevelProperties.paddedWidthCheckerboardLevel_,
       currentLevelProperties.heightLevel_, 0,
       DISP_VALS);
@@ -96,7 +96,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
   {
     valToNormalize /= DISP_VALS;
 
-    unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+    unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
       currentLevelProperties.paddedWidthCheckerboardLevel_,
       currentLevelProperties.heightLevel_, 0,
       DISP_VALS);
@@ -129,7 +129,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
 {
   // aggregate and find min
   half minimum{(half)bp_consts::INF_BP};
-  unsigned int processingArrIndexDisp0 = retrieveIndexInDataAndMessage(xVal, yVal,
+  unsigned int processingArrIndexDisp0 = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
     currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, 0,
     bpSettingsDispVals);
@@ -138,7 +138,7 @@ __device__ inline void msgStereoHalf(const unsigned int xVal, const unsigned int
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
   {
     //set initial dst processing array value corresponding to disparity for M message type
-    setInitDstProcessing<half, half, M>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
+    beliefprop::setInitDstProcessing<half, half, M>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
       prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray,
       disc_k_bp, dataAligned, bpSettingsDispVals, dstProcessing, checkerboardAdjustment,
       offsetData, currentDisparity, procArrIdx);

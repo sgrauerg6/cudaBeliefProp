@@ -291,7 +291,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
   valToNormalize /= ((float) NUM_POSSIBLE_DISPARITY_VALUES);
 
-  unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+  unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
       currentLevelProperties.paddedWidthCheckerboardLevel_,
       currentLevelProperties.heightLevel_, 0,
       NUM_POSSIBLE_DISPARITY_VALUES);
@@ -388,7 +388,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
   valToNormalize /= ((float) NUM_POSSIBLE_DISPARITY_VALUES);
 
-  unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+  unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
       currentLevelProperties.paddedWidthCheckerboardLevel_,
       currentLevelProperties.heightLevel_, 0,
       NUM_POSSIBLE_DISPARITY_VALUES);
@@ -533,7 +533,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
   {
-    int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+    int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
             currentLevelProperties.paddedWidthCheckerboardLevel_,
             currentLevelProperties.heightLevel_, 0,
             NUM_POSSIBLE_DISPARITY_VALUES);
@@ -554,7 +554,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   {
     valToNormalize /= ((half) NUM_POSSIBLE_DISPARITY_VALUES);
 
-    unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+    unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
         currentLevelProperties.paddedWidthCheckerboardLevel_,
         currentLevelProperties.heightLevel_, 0,
         NUM_POSSIBLE_DISPARITY_VALUES);
@@ -659,7 +659,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   }
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
     {
-      unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+      unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
               currentLevelProperties.paddedWidthCheckerboardLevel_,
               currentLevelProperties.heightLevel_, 0,
               NUM_POSSIBLE_DISPARITY_VALUES);
@@ -679,7 +679,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
     valToNormalize /= ((half) NUM_POSSIBLE_DISPARITY_VALUES);
 
-    unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+    unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
         currentLevelProperties.paddedWidthCheckerboardLevel_,
         currentLevelProperties.heightLevel_, 0,
         NUM_POSSIBLE_DISPARITY_VALUES);

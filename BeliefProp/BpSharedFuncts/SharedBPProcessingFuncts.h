@@ -15,6 +15,8 @@
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "RunImp/RunImpGenFuncts.h"
 
+namespace beliefprop {
+
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
 ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(const unsigned int xVal, const unsigned int yVal,
   const unsigned int width, const unsigned int height, const unsigned int currentDisparity, const unsigned int totalNumDispVals,
@@ -1412,6 +1414,8 @@ ARCHITECTURE_ADDITION inline void printDataAndMessageValsToPointKernel(
           currentDisparity, DISP_VALS)]);
     }
   }
+}
+
 }
 
 #endif /* SHAREDBPPROCESSINGFUNCTS_H_ */

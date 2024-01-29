@@ -477,7 +477,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
     const unsigned int yVal = val / currentLevelProperties.widthLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthLevel_;
 
-    initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
+    beliefprop::initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
         image1PixelsDevice, image2PixelsDevice,
         dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
         lambda_bp, data_k_bp, bpSettingsDispVals);
@@ -509,7 +509,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
+    beliefprop::initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
         xVal, yVal, checkerboardPart,
         currentLevelProperties, prevLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -542,7 +542,7 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
+    beliefprop::initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
       xValInCheckerboard, yVal, currentLevelProperties,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
       messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -584,7 +584,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
     const unsigned int yVal = val / widthCheckerboardRunProcessing;
     const unsigned int xVal = val % widthCheckerboardRunProcessing;
 
-    runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+    beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardPartUpdate, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -1048,7 +1048,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
+    beliefprop::copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
       checkerboardPart, currentLevelProperties, nextLevelProperties,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
       messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1089,7 +1089,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
+    beliefprop::retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
       xVal, yVal, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1566,7 +1566,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
   //valToNormalize /= DISP_VALS;
   valToNormalize = VectProcessingFuncts::divideVals<W, W, W>(valToNormalize, VectProcessingFuncts::convertValToDatatype<W, V>((double)DISP_VALS));
 
-  unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+  unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
     currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, 0, DISP_VALS);
 
   for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
@@ -1669,7 +1669,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
   //valToNormalize /= DISP_VALS;
   valToNormalize = VectProcessingFuncts::divideVals<W, W, W>(valToNormalize, VectProcessingFuncts::convertValToDatatype<W, V>((float)bpSettingsDispVals));
 
-  unsigned int destMessageArrayIndex = retrieveIndexInDataAndMessage(xVal, yVal,
+  unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
     currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, 0, bpSettingsDispVals);
 
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
@@ -1741,23 +1741,23 @@ void KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float)messageUDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float)messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float)messageDDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float)messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float)messageLDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float)messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float)messageRDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float)messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float)dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(
+        (float)dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
     }
@@ -1767,23 +1767,23 @@ void KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float)messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float)messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float)messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float)messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float)messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float)messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float)messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float)messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float)dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+        (float)dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
     }
@@ -1807,23 +1807,23 @@ void KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float) messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float) messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal + 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float) messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float) messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal - 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float) messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float) messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2 + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float) messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+        (float) messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           (xVal / 2 - 1) + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float) dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(
+        (float) dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
     }
@@ -1834,23 +1834,23 @@ void KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float) messageUDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float) messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal + 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float) messageDDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float) messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal - 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float) messageLDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float) messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2 + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float) messageRDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+        (float) messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
           (xVal / 2 - 1) + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float) dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+        (float) dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
           xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
           currentDisparity, DISP_VALS)]);
     }

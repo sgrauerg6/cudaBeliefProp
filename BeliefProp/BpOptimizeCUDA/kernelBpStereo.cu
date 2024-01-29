@@ -43,7 +43,7 @@ __global__ void initializeBottomLevelDataStereo(
 
   if (GenProcessingFuncts::withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
   {
-    initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal,
+    beliefprop::initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal,
       currentLevelProperties, image1PixelsDevice,
       image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
       dataCostDeviceStereoCheckerboard1, lambda_bp,
@@ -66,7 +66,7 @@ __global__ void initializeCurrentLevelDataStereo(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
-    initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
+    beliefprop::initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardPart, currentLevelProperties, prevLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
       offsetNum, bpSettingsDispVals);
@@ -91,7 +91,7 @@ __global__ void initializeMessageValsToDefaultKernel(
   if (GenProcessingFuncts::withinImageBounds(xValInCheckerboard, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
     //initialize message values in both checkerboards
-    initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
+    beliefprop::initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
       xValInCheckerboard,  yVal, currentLevelProperties,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
       messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -120,7 +120,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
   {
-    runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+    beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardToUpdate, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -149,7 +149,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
   {
-    runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+    beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardToUpdate, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -184,7 +184,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
-    copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
+    beliefprop::copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
       checkerboardPart, currentLevelProperties, nextLevelProperties,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
       messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -216,7 +216,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
-    retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
+    beliefprop::retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
       xVal, yVal, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,

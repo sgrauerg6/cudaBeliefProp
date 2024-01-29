@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file defines CUDA kernel functions for debugging belief propagation processing
 
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void printDataAndMessageValsAtPointKernel(
+__global__ void beliefprop::printDataAndMessageValsAtPointKernel(
   const unsigned int xVal, const unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
@@ -34,23 +34,23 @@ __global__ void printDataAndMessageValsAtPointKernel(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -60,23 +60,23 @@ __global__ void printDataAndMessageValsAtPointKernel(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -100,23 +100,23 @@ __device__ void printDataAndMessageValsAtPointDevice(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -126,23 +126,23 @@ __device__ void printDataAndMessageValsAtPointDevice(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -151,7 +151,7 @@ __device__ void printDataAndMessageValsAtPointDevice(
 
 
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void printDataAndMessageValsToPointKernel(
+__global__ void beliefprop::printDataAndMessageValsToPointKernel(
   const unsigned int xVal, const unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
@@ -167,23 +167,23 @@ __global__ void printDataAndMessageValsToPointKernel(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal + 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal - 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2 + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               (xVal / 2 - 1) + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -193,23 +193,23 @@ __global__ void printDataAndMessageValsToPointKernel(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal + 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal - 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2 + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               (xVal / 2 - 1) + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -235,23 +235,23 @@ __device__ void printDataAndMessageValsToPointDevice(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal + 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal - 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2 + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               (xVal / 2 - 1) + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
@@ -261,23 +261,23 @@ __device__ void printDataAndMessageValsToPointDevice(
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       printf("DISP: %d\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-          (float) messageUDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal + 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-          (float) messageDDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal - 1, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-          (float) messageLDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2 + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-          (float) messageRDeviceCurrentCheckerboard0[retrieveIndexInDataAndMessage(
+          (float) messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
               (xVal / 2 - 1) + checkerboardAdjustment, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-          (float) dataCostStereoCheckerboard1[retrieveIndexInDataAndMessage(
+          (float) dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
               xVal / 2, yVal, widthLevelCheckerboardPart, heightLevel,
               currentDisparity, DISP_VALS)]);
     }
