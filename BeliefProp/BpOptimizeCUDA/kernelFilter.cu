@@ -61,7 +61,7 @@ __global__ void filterImageAcross(
 
   //make sure that (xVal, yVal) is within image bounds
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
-    filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
+    beliefprop::filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, sizeFilter);
   }
 }
@@ -82,7 +82,7 @@ __global__ void filterImageVertical(
 
   //make sure that (xVal, yVal) is within image bounds
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
-    filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
+    beliefprop::filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, sizeFilter);
   }
 }

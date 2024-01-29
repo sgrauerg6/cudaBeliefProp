@@ -37,20 +37,14 @@ constexpr float WIDTH_SIGMA_1{4.0f};
 class SmoothImage
 {
 public:
-  //normalize filter mask so it integrates to one
-  void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter)
-  {
-    float sum{0.0f};
-    for (unsigned int i = 1; i < sizeFilter; i++) {
-      sum += std::abs(filter[i]);
-    }
-    sum = 2*sum + std::abs(filter[0]);
-    for (unsigned int i = 0; i < sizeFilter; i++) {
-      filter[i] /= sum;
-    }
-  }
+  //function to use the image filter to apply a guassian filter to the a single images
+  //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
+  //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
+  //normalize mask so it integrates to one
+  virtual void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) = 0;
 
-  //this function creates a Gaussian filter given a sigma value
+protected:
+  //create a Gaussian filter from a sigma value
   std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma)
   {
     const float sigmaUse{std::max(sigma, 0.01f)};
@@ -64,11 +58,20 @@ public:
     return {std::move(mask), sizeFilter};
   }
 
-  //function to use the image filter to apply a guassian filter to the a single images
-  //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
-  //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-  //normalize mask so it integrates to one
-  virtual void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) = 0;
+private:
+  //normalize filter mask so it integrates to one
+  void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter)
+  {
+    float sum{0.0f};
+    for (unsigned int i = 1; i < sizeFilter; i++) {
+      sum += std::abs(filter[i]);
+    }
+    sum = 2*sum + std::abs(filter[0]);
+    for (unsigned int i = 0; i < sizeFilter; i++) {
+      filter[i] /= sum;
+    }
+  }
+
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

@@ -12,6 +12,8 @@
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
 
+namespace beliefprop {
+
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
@@ -46,6 +48,8 @@ ARCHITECTURE_ADDITION inline void filterImageVerticalProcessPixel(const unsigned
   }
 
   filteredImagePixels[yVal * widthImages + xVal] = filteredPixelVal;
+}
+
 }
 
 #endif /* SHAREDSMOOTHIMAGEFUNCTS_H_ */
