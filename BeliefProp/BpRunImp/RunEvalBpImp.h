@@ -140,7 +140,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::operator()(con
       run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
   }
   if (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
-    speedupResults.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(runData, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
+    speedupResults.push_back(run_eval::getAvgMedSpeedupLoopItersInTemplate(runData, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
       run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
   }
     

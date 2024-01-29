@@ -129,7 +129,7 @@ void runBpOnStereoSets(const std::unique_ptr<RunEvalBpImp>& runBpImp, const run_
   }
   if (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
     //get speedup when using template for loop iteration count
-    runOutput.second.push_back(run_eval::getAvgMedSpeedupDispValsInTemplate(
+    runOutput.second.push_back(run_eval::getAvgMedSpeedupLoopItersInTemplate(
       runOutput.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
   }
   runOutput.second.push_back(vectorizationSpeedupAll);

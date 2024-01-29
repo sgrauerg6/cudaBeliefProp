@@ -32,18 +32,47 @@ concept Params_t =
 namespace run_eval {
 
 //get current run inputs and parameters in RunData structure
-template<RunData_t T, Params_t U, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
-RunData inputAndParamsRunData(const U& algSettings) {
+template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+RunData inputAndParamsRunData(const U& algSettings);
+
+std::pair<std::string, std::vector<double>> getBaselineRuntimeData(const std::string& baselineDataPath);
+
+//get average and median speedup from vector of speedup values
+std::array<double, 2> getAvgMedSpeedup(const std::vector<double>& speedupsVect);
+
+//get average and median speedup of current runs compared to baseline data from file
+std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+  const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
+  const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices = 
+  std::vector<std::pair<std::string, std::vector<unsigned int>>>());
+
+//get average and median speedup using optimized parallel parameters compared to default parallel parameters
+MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput, const std::string& speedupHeader);
+
+MultRunSpeedup getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget, const std::string& speedupHeader);
+
+MultRunSpeedup getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput, const std::string& speedupHeader);
+
+//write data for file corresponding to runs for a specified data type or across all data type
+//includes results for each run as well as average and median speedup data across multiple runs
+template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, RunData_t T = float>
+void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput,
+  const run_environment::RunImpSettings& runImpSettings);  
+};
+
+//get current run inputs and parameters in RunData structure
+template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+RunData run_eval::inputAndParamsRunData(const U& algSettings) {
   RunData currRunData;
   currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
   currRunData.appendData(algSettings.runData());
   currRunData.appendData(run_environment::runSettings<ACC_SETTING>());
-  currRunData.addDataWHeader("DISP_VALS_TEMPLATED",
-                            (DISP_VALS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES");
+  currRunData.addDataWHeader("LOOP_ITERS_TEMPLATED",
+                            (LOOP_ITERS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES");
   return currRunData;
 }
 
-std::pair<std::string, std::vector<double>> getBaselineRuntimeData(const std::string& baselineDataPath) {
+std::pair<std::string, std::vector<double>> run_eval::getBaselineRuntimeData(const std::string& baselineDataPath) {
   std::ifstream baselineData(baselineDataPath);
   std::string line;
   //first line of data is string with baseline processor description and all subsequent data is runtimes
@@ -65,7 +94,7 @@ std::pair<std::string, std::vector<double>> getBaselineRuntimeData(const std::st
 }
 
 //get average and median speedup from vector of speedup values
-std::array<double, 2> getAvgMedSpeedup(const std::vector<double>& speedupsVect) {
+std::array<double, 2> run_eval::getAvgMedSpeedup(const std::vector<double>& speedupsVect) {
   const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
   auto speedupsVectSorted = speedupsVect;
   std::sort(speedupsVectSorted.begin(), speedupsVectSorted.end());
@@ -76,10 +105,9 @@ std::array<double, 2> getAvgMedSpeedup(const std::vector<double>& speedupsVect) 
 }
 
 //get average and median speedup of current runs compared to baseline data from file
-std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
-  const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices = 
-  std::vector<std::pair<std::string, std::vector<unsigned int>>>())
+  const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices)
 {
   //get speedup over baseline for optimized runs
   std::vector<double> speedupsVect;
@@ -141,7 +169,7 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
 }
 
 //get average and median speedup using optimized parallel parameters compared to default parallel parameters
-MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput,
+MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutput,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutput.size(); i++) {
@@ -158,7 +186,7 @@ MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput,
   return {speedupHeader, {0.0, 0.0}};
 }
 
-MultRunSpeedup getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
+MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutputBase.size(); i++) {
@@ -175,11 +203,11 @@ MultRunSpeedup getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutp
   return {speedupHeader, {0.0, 0.0}};
 }
 
-MultRunSpeedup getAvgMedSpeedupDispValsInTemplate(MultRunData& runOutput,
+MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
-  //assumine that runs with and without disparity count given in template parameter are consectutive with the run with the
-  //disparity count given in template being first
+  //assumine that runs with and without loop iteration count given in template parameter are consectutive with the run with the
+  //loop iteration count given in template being first
   for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
     if ((runOutput[i].first == run_eval::Status::NO_ERROR) && (runOutput[i+1].first == run_eval::Status::NO_ERROR))  {
       speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
@@ -196,7 +224,7 @@ MultRunSpeedup getAvgMedSpeedupDispValsInTemplate(MultRunData& runOutput,
 //write data for file corresponding to runs for a specified data type or across all data type
 //includes results for each run as well as average and median speedup data across multiple runs
 template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, RunData_t T = float>
-void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings) {
+void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings) {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
     { return (runResult.first == run_eval::Status::NO_ERROR); } );
@@ -260,21 +288,19 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
     }
 
     if (runImpSettings.optParallelParmsOptionSetting_.first) {
-      std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (optimized parallel parameters) in "
+      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (optimized parallel parameters) in "
                 << optResultsFileName << std::endl;
-      std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run (default parallel parameters) in "
+      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (default parallel parameters) in "
                 << defaultParamsResultsFileName << std::endl;
     }
     else {
-      std::cout << "Input stereo set/parameter info, detailed timings, and computed disparity map evaluation for each run using default parallel parameters in "
+      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run using default parallel parameters in "
                 << optResultsFileName << std::endl;
     }
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;
   }
-}
-    
 }
 
 #endif //RUN_EVAL_UTILS_H
