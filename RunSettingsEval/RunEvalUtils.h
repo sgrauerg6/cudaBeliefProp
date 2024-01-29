@@ -49,8 +49,10 @@ std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
 //get average and median speedup using optimized parallel parameters compared to default parallel parameters
 MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput, const std::string& speedupHeader);
 
+//get average and median speedup between base and target runtime data
 MultRunSpeedup getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget, const std::string& speedupHeader);
 
+//get average and median speedup when loop iterations are given at compile time as template value
 MultRunSpeedup getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput, const std::string& speedupHeader);
 
 //write data for file corresponding to runs for a specified data type or across all data type
@@ -186,6 +188,7 @@ MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutput,
   return {speedupHeader, {0.0, 0.0}};
 }
 
+//get average and median speedup between base and target runtime data
 MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
@@ -203,6 +206,7 @@ MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunDat
   return {speedupHeader, {0.0, 0.0}};
 }
 
+//get average and median speedup when loop iterations are given at compile time as template value
 MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
