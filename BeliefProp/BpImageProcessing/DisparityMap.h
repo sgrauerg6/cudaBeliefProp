@@ -43,9 +43,7 @@ public:
 
   void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const;
 
-
 private:
-
   void removeScaleFromDisparityVals(const unsigned int disparity_map_vals_scale)
   {
     if (disparity_map_vals_scale > 1) {

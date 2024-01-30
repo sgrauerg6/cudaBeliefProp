@@ -14,7 +14,6 @@
 
 class BpFileHandling {
 public:
-
   //constructor takes stereo set name as input, which must match the directory name of the stereo set
   BpFileHandling(const std::string& stereo_set_name) : num_out_disp_map_(1) {
     stereo_set_path_ = getStereoSetsPath() / stereo_set_name;
