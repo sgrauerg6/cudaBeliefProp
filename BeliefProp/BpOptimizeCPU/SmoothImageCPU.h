@@ -16,16 +16,14 @@
 
 class SmoothImageCPU : public SmoothImage {
 public:
-  SmoothImageCPU(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) {}
+  SmoothImageCPU(const beliefprop::ParallelParameters& optCPUParams) : SmoothImage(optCPUParams) {}
 
   //function to use the CPU-image filter to apply a guassian filter to the a single images
   //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
   //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
   void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) override;
 
-private:
-  const beliefprop::ParallelParameters& optCPUParams_;
-  
+private:  
   //convert the unsigned int pixels to float pixels in an image when
   //smoothing is not desired but the pixels need to be converted to floats
   //the input image is stored as unsigned ints in the texture imagePixelsUnsignedInt

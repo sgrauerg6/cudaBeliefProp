@@ -33,7 +33,10 @@ template<RunData_t T, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>
 {
 public:
-  ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+  ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : 
+    ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>(cudaParams) {}
+
+private:
 
   //initialize the data cost at each pixel for each disparity value
   run_eval::Status initializeDataCosts(
@@ -81,9 +84,6 @@ public:
     const unsigned int bpSettingsNumDispVals) override;
   
   run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;
-
-private:
-  const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_CUH

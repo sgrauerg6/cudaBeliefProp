@@ -55,8 +55,6 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTO
 class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
 {
 public:
-  RunBpStereoSetOnGPUWithCUDA() {}
-
   std::string getBpRunDescription() override { return "CUDA"; }
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images

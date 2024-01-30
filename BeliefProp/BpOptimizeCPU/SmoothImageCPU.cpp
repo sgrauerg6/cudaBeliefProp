@@ -17,7 +17,7 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, const floa
   if (sigmaVal < MIN_SIGMA_VAL_SMOOTH) {
     //call kernel to convert input unsigned int pixels to output float pixels on the device
     convertUnsignedIntImageToFloatCPU(inImage.getPointerToPixelsStart(), smoothedImage,
-      inImage.getWidth(), inImage.getHeight(), optCPUParams_);
+      inImage.getWidth(), inImage.getHeight(), this->parallelParams_);
   }
   //otherwise apply a Guassian filter to the images
   else
@@ -32,11 +32,11 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, const floa
 
      //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
     filterImageAcrossCPU<unsigned int>(inImage.getPointerToPixelsStart(), &(intermediateImage[0]), inImage.getWidth(),
-      inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
+      inImage.getHeight(), &(filter[0]), sizeFilter, this->parallelParams_);
 
     //now use the vertical filter to complete the smoothing of image 1 on the device
     filterImageVerticalCPU<float>(&(intermediateImage[0]), smoothedImage,
-      inImage.getWidth(), inImage.getHeight(), &(filter[0]), sizeFilter, optCPUParams_);
+      inImage.getWidth(), inImage.getHeight(), &(filter[0]), sizeFilter, this->parallelParams_);
   }
 }
 

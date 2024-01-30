@@ -25,9 +25,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <memory>
 #include <utility>
 #include <algorithm>
+#include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpImage.h"
 
-constexpr float MIN_SIGMA_VAL_SMOOTH{0.1f}; //don't smooth input images if SIGMA_BP below this
+//don't smooth input images if SIGMA_BP below this
+constexpr float MIN_SIGMA_VAL_SMOOTH{0.1f};
 
 //parameter for smoothing
 constexpr float WIDTH_SIGMA_1{4.0f};
@@ -37,6 +39,8 @@ constexpr float WIDTH_SIGMA_1{4.0f};
 class SmoothImage
 {
 public:
+  SmoothImage(const beliefprop::ParallelParameters& parallelParams) : parallelParams_{parallelParams} {}
+
   //function to use the image filter to apply a guassian filter to the a single images
   //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
   //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
@@ -45,33 +49,14 @@ public:
 
 protected:
   //create a Gaussian filter from a sigma value
-  std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma)
-  {
-    const float sigmaUse{std::max(sigma, 0.01f)};
-    const unsigned int sizeFilter{(unsigned int)std::ceil(sigmaUse * WIDTH_SIGMA_1) + 1u};
-    std::unique_ptr<float[]> mask = std::make_unique<float[]>(sizeFilter);
-    for (unsigned int i = 0; i < sizeFilter; i++) {
-      mask[i] = std::exp(-0.5*((i/sigmaUse) * (i/sigmaUse)));
-    }
-    normalizeFilter(mask, sizeFilter);
+  std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma);
 
-    return {std::move(mask), sizeFilter};
-  }
+  //parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA)
+  const beliefprop::ParallelParameters& parallelParams_;
 
 private:
   //normalize filter mask so it integrates to one
-  void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter)
-  {
-    float sum{0.0f};
-    for (unsigned int i = 1; i < sizeFilter; i++) {
-      sum += std::abs(filter[i]);
-    }
-    sum = 2*sum + std::abs(filter[0]);
-    for (unsigned int i = 0; i < sizeFilter; i++) {
-      filter[i] /= sum;
-    }
-  }
-
+  void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter);
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

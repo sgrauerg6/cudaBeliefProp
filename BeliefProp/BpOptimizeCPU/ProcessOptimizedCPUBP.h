@@ -41,8 +41,10 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTOR
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
-  ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : optCPUParams_(optCPUParams) { }
+  ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : 
+    ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>(optCPUParams) {}
 
+private:
   run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
     const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
 
@@ -75,9 +77,6 @@ public:
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     const unsigned int bpSettingsNumDispVals) override;
-
-private:
-  const beliefprop::ParallelParameters& optCPUParams_;
 };
 
 //functions definitions related to running BP to retrieve the movement between the images
@@ -107,7 +106,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
       messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
       messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1],
       messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-      algSettings.disc_k_bp_, algSettings.numDispVals_, optCPUParams_);
+      algSettings.disc_k_bp_, algSettings.numDispVals_, this->parallelParams_);
   }
   return run_eval::Status::NO_ERROR;
 }
@@ -146,7 +145,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copy
       messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
       messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1],
       messagesDeviceCopyTo.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-      bpSettingsNumDispVals, optCPUParams_);
+      bpSettingsNumDispVals, this->parallelParams_);
   }
   return run_eval::Status::NO_ERROR;
 }
@@ -161,7 +160,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
   beliefpropCPU::initializeBottomLevelDataCPU<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
     imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
     dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
-    algSettings.numDispVals_, optCPUParams_);
+    algSettings.numDispVals_, this->parallelParams_);
   return run_eval::Status::NO_ERROR;
 }
 
@@ -183,7 +182,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-    bpSettingsNumDispVals, optCPUParams_);
+    bpSettingsNumDispVals, this->parallelParams_);
   return run_eval::Status::NO_ERROR;
 }
 
@@ -210,7 +209,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
       dataCostDeviceCheckerboard.dataCostCheckerboard1_,
       checkerboardAndDataCost.second,
       ((int) offsetNum / sizeof(float)),
-      bpSettingsNumDispVals, optCPUParams_);
+      bpSettingsNumDispVals, this->parallelParams_);
   }
   return run_eval::Status::NO_ERROR;
 }
@@ -236,7 +235,7 @@ inline float* ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::retrieveOutput
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1],
-    resultingDisparityMapCompDevice, bpSettingsNumDispVals, optCPUParams_);
+    resultingDisparityMapCompDevice, bpSettingsNumDispVals, this->parallelParams_);
 
   return resultingDisparityMapCompDevice;
 }

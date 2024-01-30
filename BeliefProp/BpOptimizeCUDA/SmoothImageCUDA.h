@@ -17,13 +17,10 @@
 
 class SmoothImageCUDA : public SmoothImage {
 public:
-  SmoothImageCUDA(const beliefprop::ParallelParameters& cudaParams) : cudaParams_(cudaParams) {}
+  SmoothImageCUDA(const beliefprop::ParallelParameters& cudaParams) : SmoothImage(cudaParams) {}
 
   //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
   void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) override;
-
-private:
-  const beliefprop::ParallelParameters& cudaParams_;
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */

@@ -34,8 +34,24 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
 class ProcessBPOnTargetDevice {
 public:
-  ProcessBPOnTargetDevice() { }
+  ProcessBPOnTargetDevice(const beliefprop::ParallelParameters& parallelParams) : parallelParams_{parallelParams} { }
 
+  virtual run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
+    return run_eval::Status::NO_ERROR;
+  }
+  
+  //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
+  //input is images image1Pixels and image1Pixels
+  //output is resultingDisparityMap
+  std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
+    const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
+    T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
+    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun);
+
+protected:
+  const beliefprop::ParallelParameters& parallelParams_;
+
+private:
   virtual run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
     const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) = 0;
 
@@ -68,10 +84,6 @@ public:
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
     const unsigned int bpSettingsNumDispVals) = 0;
-  
-  virtual run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
-    return run_eval::Status::NO_ERROR;
-  }
 
   virtual void freeCheckerboardMessagesMemory(const beliefprop::checkerboardMessages<T*>& checkerboardMessagesToFree,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
@@ -152,14 +164,6 @@ public:
     return {&(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]),
             &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
   }
-
-  //run the belief propagation algorithm with on a set of stereo images to generate a disparity map
-  //input is images image1Pixels and image1Pixels
-  //output is resultingDisparityMap
-  std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
-    const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
-    T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun);
 };
 
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
