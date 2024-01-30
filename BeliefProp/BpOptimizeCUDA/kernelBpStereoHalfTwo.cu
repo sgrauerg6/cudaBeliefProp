@@ -344,7 +344,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
     half2 currentRMessage[bp_params::NUM_POSSIBLE_DISPARITY_VALUES];
 
     //uses the previous message values and data cost to calculate the current message values and store the results
-    beliefprop::runBPIterationInOutDataInLocalMem<half2>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
+    beliefprop::runBPIterationUpdateMsgVals<half2>(prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
               currentUMessage, currentDMessage, currentLMessage, currentRMessage, __float2half2_rn(disc_k_bp));
 
     //write the calculated message values to global memory
@@ -372,7 +372,7 @@ __device__ void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMe
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 /*template<>
-__global__ void retrieveOutputDisparityCheckerboardStereoOptimized<half2>(beliefprop::levelProperties currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
+__global__ void retrieveOutputDisparity<half2>(beliefprop::levelProperties currentLevelProperties, half2* dataCostStereoCheckerboard1, half2* dataCostStereoCheckerboard2, half2* messageUPrevStereoCheckerboard1, half2* messageDPrevStereoCheckerboard1, half2* messageLPrevStereoCheckerboard1, half2* messageRPrevStereoCheckerboard1, half2* messageUPrevStereoCheckerboard2, half2* messageDPrevStereoCheckerboard2, half2* messageLPrevStereoCheckerboard2, half2* messageRPrevStereoCheckerboard2, float* disparityBetweenImagesDevice)
 {
 
 }*/
@@ -657,7 +657,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereo<half2>(half2* dataCost
 */
 
 /*template<>
-__global__ void initializeBottomLevelDataStereo<half2>(beliefprop::levelProperties currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
+__global__ void initializeBottomLevelData<half2>(beliefprop::levelProperties currentLevelProperties, float* image1PixelsDevice, float* image2PixelsDevice, half2* dataCostDeviceStereoCheckerboard1, half2* dataCostDeviceStereoCheckerboard2, float lambda_bp, float data_k_bp)
 {
   //get the x and y indices for the current CUDA thread
   int xVal = blockIdx.x * blockDim.x + threadIdx.x;

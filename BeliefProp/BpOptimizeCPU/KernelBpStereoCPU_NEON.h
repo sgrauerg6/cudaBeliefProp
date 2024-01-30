@@ -13,7 +13,7 @@
 #include "RunImpCPU/NEONTemplateSpFuncts.h"
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
   float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -35,7 +35,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsN
 }
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
   float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
@@ -57,7 +57,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsN
 }
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
   double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -79,7 +79,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsN
 }
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
   const beliefprop::levelProperties& currentLevelProperties,
   float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
   float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -101,7 +101,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 }
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
   const beliefprop::levelProperties& currentLevelProperties,
   float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
   float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
@@ -123,7 +123,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
 }
 
 template<unsigned int DISP_VALS>
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
   const beliefprop::levelProperties& currentLevelProperties,
   double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
   double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -144,7 +144,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPUUse
     numDataInSIMDVector, optCPUParams);
 }
 
-template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float32x4_t>(float32x4_t& bestDisparities, float32x4_t& bestVals,
+template<> inline void beliefpropCPU::updateBestDispBestVals<float32x4_t>(float32x4_t& bestDisparities, float32x4_t& bestVals,
   const float32x4_t& currentDisparity, const float32x4_t& valAtDisp)
 {
   //get mask with value 1 where current value less then current best 1, 0 otherwise
@@ -155,7 +155,7 @@ template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float32x4_t>(fl
   bestDisparities = vbslq_f32(maskUpdateVals, currentDisparity, bestDisparities);
 }
 
-template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float64x2_t>(float64x2_t& bestDisparities, float64x2_t& bestVals,
+template<> inline void beliefpropCPU::updateBestDispBestVals<float64x2_t>(float64x2_t& bestDisparities, float64x2_t& bestVals,
   const float64x2_t& currentDisparity, const float64x2_t& valAtDisp)
 {
   uint64x2_t maskUpdateVals = vcltq_f64(valAtDisp, bestVals);
@@ -164,7 +164,7 @@ template<> inline void KernelBpStereoCPU::updateBestDispBestVals<float64x2_t>(fl
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]],
@@ -179,7 +179,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]],
@@ -194,7 +194,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]],
@@ -209,7 +209,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]],
@@ -224,7 +224,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]],
@@ -239,7 +239,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]],
@@ -254,7 +254,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
 }
 
 // compute current message
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t messageValsNeighbor1[bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]],
@@ -268,7 +268,7 @@ template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t, 
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
-template<> inline void KernelBpStereoCPU::msgStereoSIMD<float16_t, float16x4_t>(const unsigned int xVal, const unsigned int yVal,
+template<> inline void beliefpropCPU::msgStereoSIMD<float16_t, float16x4_t>(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   float16x4_t* messageValsNeighbor1, float16x4_t* messageValsNeighbor2,
   float16x4_t* messageValsNeighbor3, float16x4_t* dataCosts,

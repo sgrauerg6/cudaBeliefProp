@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "RunImp/RunImpGenFuncts.h"
 
+namespace beliefpropCUDA {
 
 //kernel to convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
@@ -86,3 +87,5 @@ __global__ void filterImageVertical(
       widthImages, heightImages, imageFilter, sizeFilter);
   }
 }
+
+};

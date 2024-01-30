@@ -95,7 +95,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
   {
     beliefprop::Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1 : beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0;
 
-    KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU<T, DISP_VALS, VECTORIZATION>(
+    beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPU<T, DISP_VALS, VECTORIZATION>(
       checkboardPartUpdate, currentLevelProperties,
       dataCostDeviceCheckerboard.dataCostCheckerboard0_,
       dataCostDeviceCheckerboard.dataCostCheckerboard1_,
@@ -128,7 +128,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copy
   {
     //call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
     //storing the current message values
-    KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU<T, DISP_VALS>(
+    beliefpropCPU::copyMsgDataToNextLevelCPU<T, DISP_VALS>(
       checkerboard_part, currentLevelProperties, nextlevelProperties,
       messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
       messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
@@ -158,7 +158,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
   const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
 {
   //initialize the data the the "bottom" of the image pyramid
-  KernelBpStereoCPU::initializeBottomLevelDataStereoCPU<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
+  beliefpropCPU::initializeBottomLevelDataCPU<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
     imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
     dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
     algSettings.numDispVals_, optCPUParams_);
@@ -173,7 +173,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
   const unsigned int bpSettingsNumDispVals)
 {
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
-  KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU<T, DISP_VALS>(
+  beliefpropCPU::initializeMessageValsToDefaultKernelCPU<T, DISP_VALS>(
     currentLevelProperties,
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
@@ -204,7 +204,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
     std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,
                    dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_) })
   {
-    KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU<T, DISP_VALS>(
+    beliefpropCPU::initializeCurrentLevelDataCPU<T, DISP_VALS>(
       checkerboardAndDataCost.first, currentLevelProperties, prevLevelProperties,
       dataCostDeviceCheckerboard.dataCostCheckerboard0_,
       dataCostDeviceCheckerboard.dataCostCheckerboard1_,
@@ -224,7 +224,7 @@ inline float* ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::retrieveOutput
 {
   float* resultingDisparityMapCompDevice = new float[currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_];
 
-  KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>(
+  beliefpropCPU::retrieveOutputDisparityCPU<T, DISP_VALS, VECTORIZATION>(
     currentLevelProperties,
     dataCostDeviceCheckerboard.dataCostCheckerboard0_,
     dataCostDeviceCheckerboard.dataCostCheckerboard1_,

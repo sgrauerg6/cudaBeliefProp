@@ -30,7 +30,8 @@ class BpImage {
 public:
   BpImage() : widthHeight_{0, 0} {}
 
-  BpImage(const std::array<unsigned int, 2>& widthHeight) : widthHeight_{widthHeight}, pixels_(std::make_unique<T[]>(widthHeight_[0]*widthHeight_[1])) {}
+  BpImage(const std::array<unsigned int, 2>& widthHeight) : 
+    widthHeight_{widthHeight}, pixels_(std::make_unique<T[]>(widthHeight_[0]*widthHeight_[1])) {}
 
   BpImage(const std::array<unsigned int, 2>& widthHeight, const T* input_pixel_vals) :
     widthHeight_{widthHeight}, pixels_(std::make_unique<T[]>(widthHeight_[0] * widthHeight_[1]))

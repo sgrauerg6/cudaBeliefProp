@@ -224,7 +224,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 
 template<typename T, typename U>
-ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationInOutDataInLocalMem(int xVal, int yVal, beliefprop::levelProperties& currentLevelProperties, T* prevUMessageShared, T* prevDMessageShared,
+ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUpdateMsgVals(int xVal, int yVal, beliefprop::levelProperties& currentLevelProperties, T* prevUMessageShared, T* prevDMessageShared,
     T* prevLMessageShared, T* prevRMessageShared, T* dataMessageShared, T* prevUMessage, T* prevDMessage, T* prevLMessage, T* prevRMessage, T* dataMessage,
     T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray, U disc_k_bp, bool dataAligned)
 {
@@ -251,7 +251,7 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationInOutDataInLocalMem(
 //this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
-ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<float, float>(
+ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<float, float>(
     int xVal, int yVal, beliefprop::Checkerboard_Parts checkerboardToUpdate,
     beliefprop::levelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard1, float* dataCostStereoCheckerboard2,
@@ -359,7 +359,7 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
     //uses the previous message values and data cost to calculate the current message values and store the results
     if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
     {
-      beliefprop::runBPIterationInOutDataInLocalMem<float, float>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
+      beliefprop::runBPIterationUpdateMsgVals<float, float>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
           prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
           prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard1,
@@ -370,7 +370,7 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
     }
     else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
     {
-      beliefprop::runBPIterationInOutDataInLocalMem<float, float>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
+      beliefprop::runBPIterationUpdateMsgVals<float, float>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
           prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
           prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard2,
@@ -387,7 +387,7 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
 //this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
 //this function uses linear memory bound to textures to access the current data and message values
 template<>
-ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<half, half>(
+ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<half, half>(
     int xVal, int yVal, beliefprop::Checkerboard_Parts checkerboardToUpdate,
     beliefprop::levelProperties& currentLevelProperties,
     half* dataCostStereoCheckerboard1, half* dataCostStereoCheckerboard2,
@@ -499,7 +499,7 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
     //uses the previous message values and data cost to calculate the current message values and store the results
     if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0)
     {
-      beliefprop::runBPIterationInOutDataInLocalMem<half, half>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
+      beliefprop::runBPIterationUpdateMsgVals<half, half>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
           prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
           prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard1,
@@ -510,7 +510,7 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
     }
     else //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
     {
-      beliefprop::runBPIterationInOutDataInLocalMem<half, half>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
+      beliefprop::runBPIterationUpdateMsgVals<half, half>(xVal, yVal, currentLevelProperties, prevUMessageShared, prevDMessageShared,
           prevLMessageShared, prevRMessageShared, dataMessageShared, prevUMessage, prevDMessage,
           prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard2,

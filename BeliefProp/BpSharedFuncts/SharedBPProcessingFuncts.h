@@ -375,7 +375,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(const unsigned int xVal, const unsigned int yVal,
+ARCHITECTURE_ADDITION inline void initializeBottomLevelDataPixel(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties, float* image1PixelsDevice,
   float* image2PixelsDevice, T* dataCostDeviceStereoCheckerboard0,
   T* dataCostDeviceStereoCheckerboard1, const float lambda_bp,
@@ -484,7 +484,7 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataStereoPixel(const uns
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataStereoPixel(
+ARCHITECTURE_ADDITION inline void initializeCurrentLevelDataPixel(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -649,7 +649,7 @@ ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 //and the output message values are stored in local memory
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
+ARCHITECTURE_ADDITION inline void runBPIterationUpdateMsgVals(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
   U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS],
@@ -673,7 +673,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 
 
 template<RunData_t T, RunData_t U>
-ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
+ARCHITECTURE_ADDITION inline void runBPIterationUpdateMsgVals(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U* prevUMessage, U* prevDMessage,
   U* prevLMessage, U* prevRMessage,
@@ -696,7 +696,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 }
 
 template<RunData_t T, RunData_t U>
-ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
+ARCHITECTURE_ADDITION inline void runBPIterationUpdateMsgVals(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   T* prevUMessageArray, T* prevDMessageArray,
   T* prevLMessageArray, T* prevRMessageArray,
@@ -725,7 +725,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationInOutDataInLocalMem(
 //this function uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
 //this function uses linear memory bound to textures to access the current data and message values
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
+ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesKernel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -796,14 +796,14 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
       //uses the previous message values and data cost to calculate the current message values and store the results
       if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
-        runBPIterationInOutDataInLocalMem<T, U, DISP_VALS>(xVal, yVal, currentLevelProperties,
+        runBPIterationUpdateMsgVals<T, U, DISP_VALS>(xVal, yVal, currentLevelProperties,
           prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard0,  messageDDeviceCurrentCheckerboard0,
           messageLDeviceCurrentCheckerboard0,  messageRDeviceCurrentCheckerboard0,
           (U)disc_k_bp, dataAligned);
       }
       else { //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
-        runBPIterationInOutDataInLocalMem<T, U, DISP_VALS>(xVal, yVal, currentLevelProperties,
+        runBPIterationUpdateMsgVals<T, U, DISP_VALS>(xVal, yVal, currentLevelProperties,
           prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard1,  messageDDeviceCurrentCheckerboard1,
           messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
@@ -866,14 +866,14 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 
       //uses the previous message values and data cost to calculate the current message values and store the results
       if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
-        runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties,
+        runBPIterationUpdateMsgVals<T, U>(xVal, yVal, currentLevelProperties,
           prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard0,  messageDDeviceCurrentCheckerboard0,
           messageLDeviceCurrentCheckerboard0,  messageRDeviceCurrentCheckerboard0,
           (U)disc_k_bp, dataAligned, bpSettingsDispVals);
       }
       else { //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
-        runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties,
+        runBPIterationUpdateMsgVals<T, U>(xVal, yVal, currentLevelProperties,
           prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
           messageUDeviceCurrentCheckerboard1,  messageDDeviceCurrentCheckerboard1,
           messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
@@ -890,7 +890,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 }
 
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel(
+ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesKernel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -911,7 +911,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
   {
     //uses the previous message values and data cost to calculate the current message values and store the results
     if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
-      runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties,
+      runBPIterationUpdateMsgVals<T, U>(xVal, yVal, currentLevelProperties,
         messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
         messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
         dataCostStereoCheckerboard0,
@@ -921,7 +921,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
         checkerboardAdjustment, offsetData);
     }
     else { //checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
-      runBPIterationInOutDataInLocalMem<T, U>(xVal, yVal, currentLevelProperties,
+      runBPIterationUpdateMsgVals<T, U>(xVal, yVal, currentLevelProperties,
         messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
         messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
         dataCostStereoCheckerboard1,
@@ -937,7 +937,7 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesDeviceNo
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPixel(
+ARCHITECTURE_ADDITION inline void copyMsgDataToNextLevelPixel(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardPart, const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextLevelProperties,
@@ -1072,7 +1072,7 @@ ARCHITECTURE_ADDITION inline void copyPrevLevelToNextLevelBPCheckerboardStereoPi
 }
 
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
-ARCHITECTURE_ADDITION inline void retrieveOutputDisparityCheckerboardStereoOptimizedPixel(
+ARCHITECTURE_ADDITION inline void retrieveOutputDisparityPixel(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0,  T* messageDPrevStereoCheckerboard0,

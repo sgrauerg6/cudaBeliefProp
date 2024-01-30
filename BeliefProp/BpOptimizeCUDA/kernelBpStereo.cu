@@ -25,10 +25,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //uncomment for CUDA kernel debug functions for belief propagation processing
 //#include "kernelBpStereoDebug.h"
 
+namespace beliefpropCUDA {
+
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void initializeBottomLevelDataStereo(
+__global__ void initializeBottomLevelData(
   const beliefprop::levelProperties currentLevelProperties,
   float* image1PixelsDevice, float* image2PixelsDevice,
   T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
@@ -43,7 +45,7 @@ __global__ void initializeBottomLevelDataStereo(
 
   if (GenProcessingFuncts::withinImageBounds(xInCheckerboard, yVal, currentLevelProperties.widthLevel_, currentLevelProperties.heightLevel_))
   {
-    beliefprop::initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal,
+    beliefprop::initializeBottomLevelDataPixel<T, DISP_VALS>(xVal, yVal,
       currentLevelProperties, image1PixelsDevice,
       image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
       dataCostDeviceStereoCheckerboard1, lambda_bp,
@@ -53,7 +55,7 @@ __global__ void initializeBottomLevelDataStereo(
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void initializeCurrentLevelDataStereo(
+__global__ void initializeCurrentLevelData(
   const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties currentLevelProperties,
   const beliefprop::levelProperties prevLevelProperties, T* dataCostStereoCheckerboard0,
@@ -66,7 +68,7 @@ __global__ void initializeCurrentLevelDataStereo(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
-    beliefprop::initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
+    beliefprop::initializeCurrentLevelDataPixel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardPart, currentLevelProperties, prevLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
       offsetNum, bpSettingsDispVals);
@@ -120,7 +122,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
   {
-    beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+    beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardToUpdate, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -149,7 +151,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthLevel_/2, currentLevelProperties.heightLevel_))
   {
-    beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+    beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardToUpdate, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -164,7 +166,7 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
+__global__ void copyMsgDataToNextLevel(
   const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties currentLevelProperties,
   const beliefprop::levelProperties nextLevelProperties,
@@ -184,7 +186,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
-    beliefprop::copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
+    beliefprop::copyMsgDataToNextLevelPixel<T, DISP_VALS>(xVal, yVal,
       checkerboardPart, currentLevelProperties, nextLevelProperties,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
       messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -201,7 +203,7 @@ __global__ void copyPrevLevelToNextLevelBPCheckerboardStereo(
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
+__global__ void retrieveOutputDisparity(
   const beliefprop::levelProperties currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -216,7 +218,7 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
 
   if (GenProcessingFuncts::withinImageBounds(xVal, yVal, currentLevelProperties.widthCheckerboardLevel_, currentLevelProperties.heightLevel_))
   {
-    beliefprop::retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
+    beliefprop::retrieveOutputDisparityPixel<T, T, DISP_VALS>(
       xVal, yVal, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -226,3 +228,5 @@ __global__ void retrieveOutputDisparityCheckerboardStereoOptimized(
       disparityBetweenImagesDevice, bpSettingsDispVals);
   }
 }
+
+};

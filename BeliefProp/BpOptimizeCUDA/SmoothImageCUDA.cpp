@@ -30,7 +30,7 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
       cudaMemcpyHostToDevice);
 
     //call kernel to convert input unsigned int pixels to output float pixels on the device
-    convertUnsignedIntImageToFloat <<< grid, threads >>> (originalImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight());
+    beliefpropCUDA::convertUnsignedIntImageToFloat <<< grid, threads >>> (originalImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight());
     cudaDeviceSynchronize();
 
     //free the device memory used to store original images
@@ -62,12 +62,12 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
       cudaMemcpyHostToDevice);
 
     //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-    filterImageAcross<unsigned int> <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, inImage.getWidth(), inImage.getHeight(),
+    beliefpropCUDA::filterImageAcross<unsigned int> <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, inImage.getWidth(), inImage.getHeight(),
       filterDevice, sizeFilter);
     cudaDeviceSynchronize();
 
     //now use the vertical filter to complete the smoothing of image on the device
-    filterImageVertical<float> <<< grid, threads >>> (intermediateImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight(),
+    beliefpropCUDA::filterImageVertical<float> <<< grid, threads >>> (intermediateImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight(),
         filterDevice, sizeFilter);
     cudaDeviceSynchronize();
 

@@ -33,19 +33,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImpCPU/VectProcessingFuncts.h"
 
-namespace KernelBpStereoCPU
+namespace beliefpropCPU
 {
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
   //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
   template<RunData_t T, unsigned int DISP_VALS>
-  void initializeBottomLevelDataStereoCPU(const beliefprop::levelProperties& currentLevelProperties,
+  void initializeBottomLevelDataCPU(const beliefprop::levelProperties& currentLevelProperties,
     float* image1PixelsDevice, float* image2PixelsDevice,
     T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
     const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<RunData_t T, unsigned int DISP_VALS>
-  void initializeCurrentLevelDataStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
+  void initializeCurrentLevelDataCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals,
@@ -88,7 +88,7 @@ namespace KernelBpStereoCPU
   //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
   template<RunData_t T, unsigned int DISP_VALS>
-  void copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
+  void copyMsgDataToNextLevelCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
     T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -103,7 +103,7 @@ namespace KernelBpStereoCPU
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPU(const beliefprop::levelProperties& currentLevelProperties,
+  void retrieveOutputDisparityCPU(const beliefprop::levelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
     T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -125,7 +125,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
   
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+  void retrieveOutputDisparityCPUUseSIMDVectorsAVX256(
     const beliefprop::levelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -136,7 +136,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+  void retrieveOutputDisparityCPUUseSIMDVectorsAVX256(
     const beliefprop::levelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -147,7 +147,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256(
+  void retrieveOutputDisparityCPUUseSIMDVectorsAVX256(
     const beliefprop::levelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -158,7 +158,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+  void retrieveOutputDisparityCPUUseSIMDVectorsAVX512(
     const beliefprop::levelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -169,7 +169,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+  void retrieveOutputDisparityCPUUseSIMDVectorsAVX512(
     const beliefprop::levelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -180,7 +180,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512(
+  void retrieveOutputDisparityCPUUseSIMDVectorsAVX512(
     const beliefprop::levelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -191,7 +191,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+  void retrieveOutputDisparityCPUUseSIMDVectorsNEON(
     const beliefprop::levelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -202,7 +202,7 @@ namespace KernelBpStereoCPU
     const beliefprop::ParallelParameters& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+  void retrieveOutputDisparityCPUUseSIMDVectorsNEON(
     const beliefprop::levelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -214,7 +214,7 @@ namespace KernelBpStereoCPU
 
 #ifdef COMPILING_FOR_ARM
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON(
+  void retrieveOutputDisparityCPUUseSIMDVectorsNEON(
     const beliefprop::levelProperties& currentLevelProperties,
     float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
     float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
@@ -228,7 +228,7 @@ namespace KernelBpStereoCPU
   //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
   //and the output message values are save to output message arrays
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-  void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(const unsigned int xValStartProcessing,
+  void runBPIterationUpdateMsgValsCPUUseSIMDVectors(const unsigned int xValStartProcessing,
     const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
     U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
     U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS],
@@ -238,7 +238,7 @@ namespace KernelBpStereoCPU
     const U disc_k_bp_vector, const bool dataAlignedAtxValStartProcessing);
 
   template<RunData_t T, RunDataVect_t U>
-  void runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
+  void runBPIterationUpdateMsgValsCPUUseSIMDVectors(
     const unsigned int xValStartProcessing, const unsigned int yVal,
     const beliefprop::levelProperties& currentLevelProperties,
     U* prevUMessage, U* prevDMessage,
@@ -455,7 +455,7 @@ namespace KernelBpStereoCPU
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
+void beliefpropCPU::initializeBottomLevelDataCPU(
   const beliefprop::levelProperties& currentLevelProperties,
   float* image1PixelsDevice, float* image2PixelsDevice,
   T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
@@ -477,7 +477,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
     const unsigned int yVal = val / currentLevelProperties.widthLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthLevel_;
 
-    beliefprop::initializeBottomLevelDataStereoPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
+    beliefprop::initializeBottomLevelDataPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
         image1PixelsDevice, image2PixelsDevice,
         dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
         lambda_bp, data_k_bp, bpSettingsDispVals);
@@ -486,7 +486,7 @@ void KernelBpStereoCPU::initializeBottomLevelDataStereoCPU(
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
+void beliefpropCPU::initializeCurrentLevelDataCPU(
   const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
@@ -509,7 +509,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    beliefprop::initializeCurrentLevelDataStereoPixel<T, T, DISP_VALS>(
+    beliefprop::initializeCurrentLevelDataPixel<T, T, DISP_VALS>(
         xVal, yVal, checkerboardPart,
         currentLevelProperties, prevLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -519,7 +519,7 @@ void KernelBpStereoCPU::initializeCurrentLevelDataStereoCPU(
 
 //initialize the message values at each pixel of the current level to the default value
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop::levelProperties& currentLevelProperties,
+void beliefpropCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop::levelProperties& currentLevelProperties,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
@@ -553,7 +553,7 @@ void KernelBpStereoCPU::initializeMessageValsToDefaultKernelCPU(const beliefprop
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstructions(
   const beliefprop::Checkerboard_Parts checkerboardPartUpdate, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
@@ -584,7 +584,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
     const unsigned int yVal = val / widthCheckerboardRunProcessing;
     const unsigned int xVal = val % widthCheckerboardRunProcessing;
 
-    beliefprop::runBPIterationUsingCheckerboardUpdatesDeviceNoTexBoundAndLocalMemPixel<T, T, DISP_VALS>(
+    beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
       xVal, yVal, checkerboardPartUpdate, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -596,7 +596,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUNoPackedInstruc
 }
 
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
+void beliefpropCPU::runBPIterationUpdateMsgValsCPUUseSIMDVectors(
   const unsigned int xValStartProcessing, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
@@ -622,7 +622,7 @@ void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
 }
 
 template<RunData_t T, RunDataVect_t U>
-void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
+void beliefpropCPU::runBPIterationUpdateMsgValsCPUUseSIMDVectors(
   const unsigned int xValStartProcessing, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   U* prevUMessage, U* prevDMessage, U* prevLMessage, U* prevRMessage, U* dataMessage,
@@ -647,7 +647,7 @@ void KernelBpStereoCPU::runBPIterationInOutDataInLocalMemCPUUseSIMDVectors(
 }
 
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
@@ -761,14 +761,14 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
         }
 
         if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
-          runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
+          runBPIterationUpdateMsgValsCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
             prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
             messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
             messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
             disc_k_bp_vector, dataAlignedAtXValProcess);
         }
         else {
-          runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
+          runBPIterationUpdateMsgValsCPUUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
             prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
             messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
             messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
@@ -883,14 +883,14 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
         }
 
         if (checkerboardToUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0) {
-          runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
+          runBPIterationUpdateMsgValsCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
             prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
             messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
             messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
             disc_k_bp_vector, dataAlignedAtXValProcess, bpSettingsDispVals);
         }
         else {
-          runBPIterationInOutDataInLocalMemCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
+          runBPIterationUpdateMsgValsCPUUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
             prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
             messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
             messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
@@ -910,7 +910,7 @@ void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsP
 //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-void KernelBpStereoCPU::runBPIterationUsingCheckerboardUpdatesCPU(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPU(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
@@ -1020,7 +1020,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
+void beliefpropCPU::copyMsgDataToNextLevelCPU(const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -1048,7 +1048,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    beliefprop::copyPrevLevelToNextLevelBPCheckerboardStereoPixel<T, DISP_VALS>(xVal, yVal,
+    beliefprop::copyMsgDataToNextLevelPixel<T, DISP_VALS>(xVal, yVal,
       checkerboardPart, currentLevelProperties, nextLevelProperties,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
       messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1063,7 +1063,7 @@ void KernelBpStereoCPU::copyPrevLevelToNextLevelBPCheckerboardStereoCPU(const be
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
+void beliefpropCPU::retrieveOutputDisparityCPU(
   const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -1089,7 +1089,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
     const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
     const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
 
-    beliefprop::retrieveOutputDisparityCheckerboardStereoOptimizedPixel<T, T, DISP_VALS>(
+    beliefprop::retrieveOutputDisparityPixel<T, T, DISP_VALS>(
       xVal, yVal, currentLevelProperties,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1103,7 +1103,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 #ifndef COMPILING_FOR_ARM
     //SIMD vectorization of output disparity
     if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512) {
-      retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
+      retrieveOutputDisparityCPUUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1112,7 +1112,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
         disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
     }
     else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256) {
-      retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsAVX256<DISP_VALS>(currentLevelProperties,
+      retrieveOutputDisparityCPUUseSIMDVectorsAVX256<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1121,7 +1121,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
         disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
     }
 #else
-      retrieveOutputDisparityCheckerboardStereoOptimizedCPUUseSIMDVectorsNEON<DISP_VALS>(currentLevelProperties,
+      retrieveOutputDisparityCPUUseSIMDVectorsNEON<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1134,7 +1134,7 @@ void KernelBpStereoCPU::retrieveOutputDisparityCheckerboardStereoOptimizedCPU(
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
-void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const beliefprop::levelProperties& currentLevelProperties,
+void beliefpropCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -1491,7 +1491,7 @@ void KernelBpStereoCPU::retrieveOutDispOptimizedCPUUseSIMDVectorsProcess(const b
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<RunDataProcess_t T, RunDataVectProcess_t U, unsigned int DISP_VALS>
-void KernelBpStereoCPU::dtStereoSIMD(U f[DISP_VALS])
+void beliefpropCPU::dtStereoSIMD(U f[DISP_VALS])
 {
   U prev;
   const U vectorAllOneVal = VectProcessingFuncts::convertValToDatatype<U, T>(1.0f);
@@ -1518,7 +1518,7 @@ void KernelBpStereoCPU::dtStereoSIMD(U f[DISP_VALS])
 
 // compute current message
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
-void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
+void beliefpropCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
   U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
@@ -1593,7 +1593,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 //TODO: look into defining function in .cpp file so don't need to declare inline
 template<RunDataProcess_t T, RunDataVectProcess_t U>
-void KernelBpStereoCPU::dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals)
+void beliefpropCPU::dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals)
 {
   U prev;
   const U vectorAllOneVal = VectProcessingFuncts::convertValToDatatype<U, T>(1.0f);
@@ -1620,7 +1620,7 @@ void KernelBpStereoCPU::dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals
 
 // compute current message
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
-void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
+void beliefpropCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   U* messageValsNeighbor1, U* messageValsNeighbor2,
   U* messageValsNeighbor3, U* dataCosts,
@@ -1697,7 +1697,7 @@ void KernelBpStereoCPU::msgStereoSIMDProcessing(const unsigned int xVal, const u
 
 // compute current message
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
+void beliefpropCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
   U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
@@ -1710,7 +1710,7 @@ void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned in
 
 // compute current message
 template<RunData_t T, RunDataVect_t U>
-void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
+void beliefpropCPU::msgStereoSIMD(const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   U* messageValsNeighbor1, U* messageValsNeighbor2,
   U* messageValsNeighbor3, U* dataCosts,
@@ -1726,7 +1726,7 @@ void KernelBpStereoCPU::msgStereoSIMD(const unsigned int xVal, const unsigned in
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU(
+void beliefpropCPU::printDataAndMessageValsAtPointKernelCPU(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
@@ -1791,7 +1791,7 @@ void KernelBpStereoCPU::printDataAndMessageValsAtPointKernelCPU(
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-void KernelBpStereoCPU::printDataAndMessageValsToPointKernelCPU(
+void beliefpropCPU::printDataAndMessageValsToPointKernelCPU(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::levelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
