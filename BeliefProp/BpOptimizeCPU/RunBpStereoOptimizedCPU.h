@@ -26,13 +26,13 @@ public:
   std::string getBpRunDescription() override { return "Optimized CPU"; }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-  ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings,
     const beliefprop::ParallelParameters& parallelParams) override;
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
+inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
   const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
   unsigned int nthreads = parallelParams.parallelDimsEachKernel_[beliefprop::BLUR_IMAGES][0][0];
@@ -51,8 +51,10 @@ inline ProcessStereoSetOutput RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATIO
       std::make_unique<ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>>(parallelParams),
       std::make_unique<RunImpMemoryManagement<T>>(),
       std::make_unique<RunImpMemoryManagement<float>>()});
-  runData.appendData(procSetOutput.runData);
-  procSetOutput.runData = runData;
+  if (procSetOutput) {
+    runData.appendData(procSetOutput->runData);
+    procSetOutput->runData = runData;
+  }
 
   return procSetOutput;
 }

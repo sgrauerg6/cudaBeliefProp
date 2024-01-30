@@ -31,7 +31,7 @@ template<typename T, unsigned int DISP_VALS>
 class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::NONE>
 {
 public:
-  ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
       const beliefprop::BPsettings& algSettings,
       const beliefprop::ParallelParameters& parallelParams) override;
   std::string getBpRunDescription() override { return "Single-Thread CPU"; }
@@ -296,7 +296,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
 }
 
 template<typename T, unsigned int DISP_VALS>
-inline ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
+inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
 {
   image<uchar> *img1, *img2, *out;// *edges;
@@ -319,10 +319,10 @@ inline ProcessStereoSetOutput RunBpStereoCPUSingleThread<T, DISP_VALS>::operator
     }
   }
 
-  ProcessStereoSetOutput output;
-  output.runTime = runtime;
-  output.outDisparityMap = std::move(outDispMap);
-  output.runData = outStereo.second;
+  std::optional<ProcessStereoSetOutput> output{ProcessStereoSetOutput{}};
+  output->runTime = runtime;
+  output->outDisparityMap = std::move(outDispMap);
+  output->runData = outStereo.second;
 
   delete img1;
   delete img2;

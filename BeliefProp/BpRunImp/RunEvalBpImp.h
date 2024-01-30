@@ -179,25 +179,28 @@ std::pair<run_eval::Status, RunData> RunEvalBpImp::runStereoTwoImpsAndCompare(
   std::cout << std::endl;
     
   //run optimized implementation and retrieve structure with runtime and output disparity map
-  std::array<ProcessStereoSetOutput, 2> run_output;
+  std::array<std::optional<ProcessStereoSetOutput>, 2> run_output;
   run_output[0] = optimizedImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams);
   
   //check if error in run
   RunData runData;
-  if ((run_output[0].runTime == 0.0) || (run_output[0].outDisparityMap.getHeight() == 0)) {
+  if (!(run_output[0].has_value())) {
     return {run_eval::Status::ERROR, runData};
   }
-  runData.appendData(run_output[0].runData);
+  runData.appendData(run_output[0]->runData);
 
   //save resulting disparity map
-  run_output[0].outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
-  runData.addDataWHeader(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER), std::to_string(run_output[0].runTime));
+  run_output[0]->outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::SCALE_BP[numStereoSet]);
+  runData.addDataWHeader(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER), std::to_string(run_output[0]->runTime));
 
   if (!runOptImpOnly) {
     //run single-threaded implementation and retrieve structure with runtime and output disparity map
     run_output[1] = singleThreadCPUImp->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings, parallelParams);
-    run_output[1].outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
-    runData.appendData(run_output[1].runData);
+    if (!(run_output[1].has_value())) {
+      return {run_eval::Status::ERROR, runData};
+    }
+    run_output[1]->outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::SCALE_BP[numStereoSet]);
+      runData.appendData(run_output[1]->runData);
   }
 
   for (unsigned int i = 0; i < numImpsRun; i++) {
@@ -210,12 +213,12 @@ std::pair<run_eval::Status, RunData> RunEvalBpImp::runStereoTwoImpsAndCompare(
   const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
   DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::SCALE_BP[numStereoSet]);
   runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
-  runData.appendData(run_output[0].outDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters()).runData());
+  runData.appendData(run_output[0]->outDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters()).runData());
   if (!runOptImpOnly) {
     runData.addDataWHeader(singleThreadCPUImp->getBpRunDescription() + " output vs. Ground Truth result", std::string());
-    runData.appendData(run_output[1].outDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters()).runData());
+    runData.appendData(run_output[1]->outDisparityMap.getOutputComparison(groundTruthDisparityMap, OutputEvaluationParameters()).runData());
     runData.addDataWHeader(optimizedImp->getBpRunDescription() + " output vs. " + singleThreadCPUImp->getBpRunDescription() + " result", std::string());
-    runData.appendData(run_output[0].outDisparityMap.getOutputComparison(run_output[1].outDisparityMap, OutputEvaluationParameters()).runData());
+    runData.appendData(run_output[0]->outDisparityMap.getOutputComparison(run_output[1]->outDisparityMap, OutputEvaluationParameters()).runData());
   }
 
   //return structure indicating that run succeeded along with data from run

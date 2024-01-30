@@ -60,7 +60,7 @@ public:
   std::string getBpRunDescription() override { return "CUDA"; }
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
-  ProcessStereoSetOutput operator()(const std::array<std::string, 2>& refTestImagePath,
+  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, 
     const beliefprop::ParallelParameters& parallelParams) override
   {
@@ -76,8 +76,10 @@ public:
         std::make_unique<ProcessCUDABP<T, DISP_VALS>>(parallelParams),
         std::make_unique<RunImpCUDAMemoryManagement<T>>(),
         std::make_unique<RunImpCUDAMemoryManagement<float>>()});
-    runData.appendData(procSetOutput.runData);
-    procSetOutput.runData = runData;
+    if (procSetOutput) {
+      runData.appendData(procSetOutput->runData);
+      procSetOutput->runData = runData;
+    }
     
     return procSetOutput;
   }
@@ -97,7 +99,7 @@ public:
 
   //if type is specified as short, process as half on GPU
   //note that half is considered a data type for 16-bit floats in CUDA
-  ProcessStereoSetOutput operator() (const std::string& refImagePath, const std::string& testImagePath,
+  std::optional<ProcessStereoSetOutput> operator() (const std::string& refImagePath, const std::string& testImagePath,
     const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunImpMemoryManagement* memManagementImages = nullptr) override
   {
 
