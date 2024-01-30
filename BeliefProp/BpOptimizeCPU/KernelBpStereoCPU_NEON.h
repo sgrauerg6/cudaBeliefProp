@@ -13,7 +13,7 @@
 #include "RunImpCPU/NEONTemplateSpFuncts.h"
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
   float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -24,7 +24,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
   const beliefprop::ParallelParameters& optCPUParams)
 {
   constexpr unsigned int numDataInSIMDVector{4u};
-  runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<float, float32x4_t, DISP_VALS>(
+  runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float, float32x4_t, DISP_VALS>(
     checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -35,7 +35,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
   float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
@@ -46,7 +46,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
   const beliefprop::ParallelParameters& optCPUParams)
 {
   constexpr unsigned int numDataInSIMDVector{4u};
-  runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<float16_t, float16x4_t, DISP_VALS>(
+  runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float16_t, float16x4_t, DISP_VALS>(
     checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -57,7 +57,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
+void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
   double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -68,7 +68,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
   const beliefprop::ParallelParameters& optCPUParams)
 {
   constexpr unsigned int numDataInSIMDVector{2u};
-  runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsProcess<double, float64x2_t, DISP_VALS>(
+  runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<double, float64x2_t, DISP_VALS>(
     checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -79,7 +79,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesCPUUseSIMDVectorsNEON(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
+void beliefpropCPU::retrieveOutputDisparityUseSIMDVectorsNEON(
   const beliefprop::levelProperties& currentLevelProperties,
   float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
   float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -90,7 +90,7 @@ void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
   const beliefprop::ParallelParameters& optCPUParams)
 {      
   constexpr unsigned int numDataInSIMDVector{4u};
-  retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<float, float32x4_t, float, float32x4_t, DISP_VALS>(currentLevelProperties,
+  retrieveOutputDisparityUseSIMDVectors<float, float32x4_t, float, float32x4_t, DISP_VALS>(currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
     messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -101,7 +101,7 @@ void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
+void beliefpropCPU::retrieveOutputDisparityUseSIMDVectorsNEON(
   const beliefprop::levelProperties& currentLevelProperties,
   float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
   float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
@@ -112,7 +112,7 @@ void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
   const beliefprop::ParallelParameters& optCPUParams)
 {      
   constexpr unsigned int numDataInSIMDVector{4u};
-  retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<float16_t, float16x4_t, float, float32x4_t, DISP_VALS>(currentLevelProperties,
+  retrieveOutputDisparityUseSIMDVectors<float16_t, float16x4_t, float, float32x4_t, DISP_VALS>(currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
     messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -123,7 +123,7 @@ void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
+void beliefpropCPU::retrieveOutputDisparityUseSIMDVectorsNEON(
   const beliefprop::levelProperties& currentLevelProperties,
   double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
   double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -134,7 +134,7 @@ void beliefpropCPU::retrieveOutputDisparityCPUUseSIMDVectorsNEON(
   const beliefprop::ParallelParameters& optCPUParams)
 {      
   constexpr unsigned int numDataInSIMDVector{2u};
-  retrieveOutDispOptimizedCPUUseSIMDVectorsProcess<double, float64x2_t, double, float64x2_t, DISP_VALS>(currentLevelProperties,
+  retrieveOutputDisparityUseSIMDVectors<double, float64x2_t, double, float64x2_t, DISP_VALS>(currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
     messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
