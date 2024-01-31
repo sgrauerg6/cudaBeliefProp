@@ -185,16 +185,6 @@ enum BpKernel { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL
                 COPY_AT_LEVEL, OUTPUT_DISP };
 constexpr unsigned int NUM_KERNELS{6u};
 
-//defines the default width and height of the thread block used for
-//kernel functions when running BP
-constexpr unsigned int DEFAULT_CUDA_TB_WIDTH{32};
-constexpr unsigned int DEFAULT_CUDA_TB_HEIGHT{4};
-constexpr std::array<unsigned int, 2> DEFAULT_CUDA_TB_DIMS{DEFAULT_CUDA_TB_WIDTH, DEFAULT_CUDA_TB_HEIGHT};
-
-//default number of threads in parallel processing is equal to number of threads on system
-const unsigned int DEFAULT_NUM_CPU_THREADS{std::thread::hardware_concurrency()};
-const std::array<unsigned int, 2> DEFAULT_CPU_PARALLEL_DIMS{DEFAULT_NUM_CPU_THREADS, 1u};
-
 //structure containing parameters including parallelization parameters
 //to use at each BP level
 struct ParallelParameters {
