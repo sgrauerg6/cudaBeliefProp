@@ -21,7 +21,7 @@ const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
 
 //enum for acceleration setting
 enum class AccSetting {
-  NONE, AVX256, AVX512, NEON, CUDA
+  DEFAULT, AVX256, AVX512, NEON
 };
 
 //get string corresponding to acceleration method
@@ -33,10 +33,8 @@ constexpr const char* accelerationString() {
     return "AVX256";
   else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512)
     return "AVX512";
-  else if constexpr (ACCELERATION_SETTING == AccSetting::CUDA)
-    return "CUDA";
   else
-    return "NO_VECTORIZATION";
+    return "DEFAULT";
 }
 
 inline const char* accelerationString(AccSetting accelerationSetting) {
@@ -46,10 +44,8 @@ inline const char* accelerationString(AccSetting accelerationSetting) {
     return "AVX256";
   else if (accelerationSetting == AccSetting::AVX512)
     return "AVX512";
-  else if (accelerationSetting == AccSetting::CUDA)
-    return "CUDA";
   else
-    return "NO_VECTORIZATION";
+    return "DEFAULT";
 }
 
 inline unsigned int getBytesAlignMemory(AccSetting accelSetting) {

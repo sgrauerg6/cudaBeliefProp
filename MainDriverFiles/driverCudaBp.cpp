@@ -38,6 +38,6 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
-  RunAndEvaluateImp::runBpOnStereoSets(runBpImp, runImpSettings, run_environment::AccSetting::CUDA);
+  RunAndEvaluateImp::runBpOnStereoSets(runBpImp, runImpSettings, run_environment::AccSetting::DEFAULT);
   return 0;
 }

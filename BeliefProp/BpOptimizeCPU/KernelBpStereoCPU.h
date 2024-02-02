@@ -1073,7 +1073,7 @@ void beliefpropCPU::retrieveOutputDisparity(
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
   const beliefprop::ParallelParameters& optCPUParams)
 {
-  if constexpr (VECTORIZATION == run_environment::AccSetting::NONE) {
+  if constexpr (VECTORIZATION == run_environment::AccSetting::DEFAULT) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]};
   #pragma omp parallel for num_threads(numThreadsKernel)

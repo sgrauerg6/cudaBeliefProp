@@ -34,11 +34,12 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   const std::string speedupVsAVX256Str{std::string(run_eval::SPEEDUP_VS_AVX256_VECTORIZATION) + " - " +
     run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)};
   std::vector<MultRunSpeedup> multRunSpeedupVect;
-  if ((accelerationSetting == run_environment::AccSetting::CUDA) || (accelerationSetting == run_environment::AccSetting::NONE)) {
+  if (accelerationSetting == run_environment::AccSetting::DEFAULT) {
     multRunSpeedupVect.push_back({speedupHeader, {0.0, 0.0}});
     multRunSpeedupVect.push_back({speedupVsAVX256Str, {0.0, 0.0}});
     return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
   }
+#ifdef OPTIMIZED_CPU_RUN
   else {
     //if initial speedup is AVX512, also run AVX256
     if (accelerationSetting == run_environment::AccSetting::AVX512) {
@@ -62,7 +63,7 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
       multRunSpeedupVect.push_back({speedupVsAVX256Str, {0.0, 0.0}});
     }
     //run implementation is no acceleration
-    auto runOutputNoVect = runBpImp->operator()(runImpSettings, dataTypeSize, run_environment::AccSetting::NONE);
+    auto runOutputNoVect = runBpImp->operator()(runImpSettings, dataTypeSize, run_environment::AccSetting::DEFAULT);
     //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
     for (unsigned int i = 0; i < runOutputData.size(); i++) {
       if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputNoVect.first[i].first == run_eval::Status::NO_ERROR)) {
@@ -78,10 +79,12 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
     multRunSpeedupVect.push_back(speedupWVectorization);
     return {runOutputNoVect, multRunSpeedupVect};
   }
+#endif //OPTIMIZED_CPU_RUN
+  return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
 }
 
 void runBpOnStereoSets(const std::unique_ptr<RunEvalBpImp>& runBpImp, const run_environment::RunImpSettings& runImpSettings,
-  run_environment::AccSetting accelerationSetting) {
+  const run_environment::AccSetting accelerationSetting) {
   //perform runs with and without vectorization using floating point
   //initially store output for floating-point runs separate from output using doubles and halfs
   auto runOutput = runBpImp->operator()(runImpSettings, sizeof(float), accelerationSetting);
