@@ -64,11 +64,18 @@ using namespace beliefprop;
 
 class RunEvalBpImp {
 public:
+  std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
+    size_t dataTypeSize, run_environment::AccSetting accelerationSetting) const;
+
+private:
   //perform runs on multiple data sets using specified data type and acceleration method
   template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings) const;
 
-private:
+  template <run_environment::AccSetting OPT_IMP_ACCEL>
+  std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpImpWTemplateAccSetting(const run_environment::RunImpSettings& runImpSettings,
+    size_t dataTypeSize) const;
+
   //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
   //on the reference and test images specified by numStereoSet
   //run only optimized implementation if runOptImpOnly is true
@@ -91,6 +98,48 @@ private:
   template<RunData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL>
   MultRunData runBpOnSetAndUpdateResults(const run_environment::RunImpSettings& runImpSettings) const;
 };
+
+//run belief propagation implementation with given data type and acceleration setting
+std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::operator()(const run_environment::RunImpSettings& runImpSettings,
+  size_t dataTypeSize, run_environment::AccSetting accelerationSetting) const
+{
+  if (accelerationSetting == run_environment::AccSetting::AVX512) {
+    return runBpImpWTemplateAccSetting<run_environment::AccSetting::AVX512>(runImpSettings, dataTypeSize);
+  }
+  else if (accelerationSetting == run_environment::AccSetting::AVX256) {
+    return runBpImpWTemplateAccSetting<run_environment::AccSetting::AVX256>(runImpSettings, dataTypeSize);
+  }
+#ifdef OPTIMIZED_CUDA_RUN
+  else if (accelerationSetting == run_environment::AccSetting::CUDA) {
+    return runBpImpWTemplateAccSetting<run_environment::AccSetting::CUDA>(runImpSettings, dataTypeSize);
+  }
+#endif //OPTIMIZED_CUDA_RUN
+#ifdef COMPILING_FOR_ARM
+  else if (accelerationSetting == run_environment::AccSetting::NEON) {
+    return runBpImpWTemplateAccSetting<run_environment::AccSetting::NEON>(runImpSettings, dataTypeSize);
+  }
+#endif //COMPILING_FOR_ARM
+  else {
+    return runBpImpWTemplateAccSetting<run_environment::AccSetting::NONE>(runImpSettings, dataTypeSize);
+  }
+}
+
+//run belief propagation implementation with given data type and acceleration setting with the acceleration setting
+//being a template parameter
+template <run_environment::AccSetting OPT_IMP_ACCEL>
+std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::runBpImpWTemplateAccSetting(const run_environment::RunImpSettings& runImpSettings,
+  size_t dataTypeSize) const
+{
+  if (sizeof(dataTypeSize) == sizeof(float)) {
+    return operator()<float, OPT_IMP_ACCEL>(runImpSettings);
+  }
+  else if (sizeof(dataTypeSize) == sizeof(double)) {
+    return operator()<double, OPT_IMP_ACCEL>(runImpSettings);
+  }
+  else {
+    return operator()<short, OPT_IMP_ACCEL>(runImpSettings);
+  }
+}
 
 //perform runs on multiple data sets using specified data type and acceleration method
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
@@ -146,7 +195,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::operator()(con
     
   //write output corresponding to results for current data type
   constexpr bool MULT_DATA_TYPES{false};
-  run_eval::writeRunOutput<OPT_IMP_ACCEL, MULT_DATA_TYPES, T>({runData, speedupResults}, runImpSettings);
+  run_eval::writeRunOutput<MULT_DATA_TYPES, T>({runData, speedupResults}, runImpSettings, OPT_IMP_ACCEL);
 
   //return data for each run and multiple average and median speedup results across the data
   return {runData, speedupResults};

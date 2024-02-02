@@ -39,6 +39,19 @@ constexpr const char* accelerationString() {
     return "NO_VECTORIZATION";
 }
 
+inline const char* accelerationString(AccSetting accelerationSetting) {
+  if (accelerationSetting == AccSetting::NEON)
+    return "NEON";
+  else if (accelerationSetting == AccSetting::AVX256)
+    return "AVX256";
+  else if (accelerationSetting == AccSetting::AVX512)
+    return "AVX512";
+  else if (accelerationSetting == AccSetting::CUDA)
+    return "CUDA";
+  else
+    return "NO_VECTORIZATION";
+}
+
 inline unsigned int getBytesAlignMemory(AccSetting accelSetting) {
   //avx512 requires data to be aligned on 64 bytes
   return (accelSetting == AccSetting::AVX512) ? 64 : 16;

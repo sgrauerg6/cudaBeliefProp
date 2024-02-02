@@ -37,6 +37,6 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
         {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
-  RunAndEvaluateImp::runBpOnStereoSets<run_cpu::CPU_VECTORIZATION>(runBpImp, runImpSettings);
+  RunAndEvaluateImp::runBpOnStereoSets(runBpImp, runImpSettings, run_cpu::CPU_VECTORIZATION);
   return 0;
 }

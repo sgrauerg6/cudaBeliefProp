@@ -57,9 +57,9 @@ MultRunSpeedup getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput, const
 
 //write data for file corresponding to runs for a specified data type or across all data type
 //includes results for each run as well as average and median speedup data across multiple runs
-template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, RunData_t T = float>
+template <bool MULT_DATA_TYPES, RunData_t T = float>
 void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput,
-  const run_environment::RunImpSettings& runImpSettings);  
+  const run_environment::RunImpSettings& runImpSettings, run_environment::AccSetting accelerationSetting);  
 };
 
 //get current run inputs and parameters in RunData structure
@@ -227,8 +227,9 @@ MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOut
 
 //write data for file corresponding to runs for a specified data type or across all data type
 //includes results for each run as well as average and median speedup data across multiple runs
-template <run_environment::AccSetting OPT_IMP_ACCEL, bool MULT_DATA_TYPES, RunData_t T = float>
-void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings) {
+template <bool MULT_DATA_TYPES, RunData_t T = float>
+void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
+  run_environment::AccSetting accelerationSetting) {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
     { return (runResult.first == run_eval::Status::NO_ERROR); } );
@@ -237,7 +238,7 @@ void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSp
   if (firstSuccessRun != runOutput.first.end()) {
     //write results from default and optimized parallel parameters runs to csv file
     const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T));
-    const auto accelStr = run_environment::accelerationString<OPT_IMP_ACCEL>();
+    const auto accelStr = run_environment::accelerationString(accelerationSetting);
     const std::string optResultsFileName{std::string(ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
       ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     const std::string defaultParamsResultsFileName{std::string(ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
