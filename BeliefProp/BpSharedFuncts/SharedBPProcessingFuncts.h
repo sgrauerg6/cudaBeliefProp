@@ -166,7 +166,6 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
   }
 }
 
-
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   U* messageValsNeighbor1, U* messageValsNeighbor2,
@@ -371,7 +370,6 @@ ARCHITECTURE_ADDITION inline void msgStereo(const unsigned int xVal, const unsig
   }
 }
 
-
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
@@ -480,7 +478,6 @@ ARCHITECTURE_ADDITION inline void initializeBottomLevelDataPixel(const unsigned 
     }
   }
 }
-
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
@@ -645,7 +642,6 @@ ARCHITECTURE_ADDITION inline void initializeMessageValsToDefaultKernelPixel(
   }
 }
 
-
 //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
 //and the output message values are stored in local memory
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
@@ -670,7 +666,6 @@ ARCHITECTURE_ADDITION inline void runBPIterationUpdateMsgVals(
   msgStereo<T, U, DISP_VALS>(xVal, yVal, currentLevelProperties, prevUMessage, prevDMessage, prevLMessage, dataMessage,
     currentLMessageArray, disc_k_bp, dataAligned);
 }
-
 
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void runBPIterationUpdateMsgVals(
@@ -932,7 +927,6 @@ ARCHITECTURE_ADDITION inline void runBPIterationUsingCheckerboardUpdatesKernel(
     }
   }
 }
-
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
@@ -1282,7 +1276,6 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityPixel(
     }
   }
 }
-
 
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void printDataAndMessageValsAtPointKernel(
