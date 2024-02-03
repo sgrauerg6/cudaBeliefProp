@@ -446,7 +446,7 @@ namespace beliefpropCPU
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
-#endif
+#endif //CPU_VECTORIZATION_DEFINE
 
 #endif //COMPILING_FOR_ARM
 
@@ -955,6 +955,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
       disc_k_bp, bpSettingsNumDispVals, optCPUParams);
   }
 #else
+#if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE))
   if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256)
   {
     //only use AVX-256 if width of processing checkerboard is over 10
@@ -979,6 +980,8 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
         disc_k_bp, bpSettingsNumDispVals, optCPUParams);
     }
   }
+#endif //CPU_VECTORIZATION_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512)
   {
     //only use AVX-512 if width of processing checkerboard is over 20
@@ -1003,6 +1006,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
         disc_k_bp, bpSettingsNumDispVals, optCPUParams);
     }
   }
+#endif //CPU_VECTORIZATION_DEFINE
   else
   {
     runBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboardToUpdate,

@@ -8,6 +8,7 @@
 #ifndef RUNEVALBPIMP_H_
 #define RUNEVALBPIMP_H_
 
+#include <omp.h>
 #include <memory>
 #include <array>
 #include <fstream>
@@ -27,6 +28,7 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 #include "RunSettingsEval/RunEvalUtils.h"
+#include "RunImp/RunBenchmarkImp.h"
 
 typedef std::filesystem::path filepathtype;
 
@@ -37,13 +39,6 @@ typedef std::filesystem::path filepathtype;
 //set RunBpOptimized alias to correspond to optimized CPU implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
-//set data type used for half-precision
-#ifdef COMPILING_FOR_ARM
-#include <arm_neon.h> //needed for float16_t type
-using halftype = float16_t;
-#else
-using halftype = short;
-#endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
@@ -57,15 +52,12 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment::AccSetting::DEFAULT>;
 #endif //OPTIMIZED_CUDA_RUN
 
-using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
-using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
-
 using namespace beliefprop;
 
-class RunEvalBpImp {
+class RunEvalBpImp : public RunBenchmarkImp {
 public:
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
-    const size_t dataTypeSize, const run_environment::AccSetting accelerationSetting) const;
+    const size_t dataTypeSize, const run_environment::AccSetting accelerationSetting) const override;
 
 private:
   //perform runs on multiple data sets using specified data type and acceleration method
@@ -135,15 +127,12 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::runBpImpWTempl
   const size_t dataTypeSize) const
 {
   if (dataTypeSize == sizeof(float)) {
-    std::cout << "RUN FLOAT" << std::endl;
     return operator()<float, OPT_IMP_ACCEL>(runImpSettings);
   }
   else if (dataTypeSize == sizeof(double)) {
-    std::cout << "RUN DOUBLE" << std::endl;
     return operator()<double, OPT_IMP_ACCEL>(runImpSettings);
   }
   else {
-    std::cout << "RUN HALF" << std::endl;
     return operator()<halftype, OPT_IMP_ACCEL>(runImpSettings);
   }
 }

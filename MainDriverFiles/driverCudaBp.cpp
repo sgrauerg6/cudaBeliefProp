@@ -20,11 +20,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "RunImpCUDA/RunCUDASettings.h"
+#include "BpRunImp/RunEvalBpImp.h"
 #include "RunEvalImp.h"
 
 int main(int argc, char** argv)
 {
-  std::unique_ptr<RunEvalBpImp> runBpImp = std::make_unique<RunEvalBpImp>();
+  std::unique_ptr<RunBenchmarkImp> runBpImp = std::make_unique<RunEvalBpImp>();
   run_environment::RunImpSettings runImpSettings;
   #ifdef PROCESSOR_NAME
     runImpSettings.processorName_ = PROCESSOR_NAME;
@@ -38,6 +39,6 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
-  RunAndEvaluateImp::runBpOnStereoSets(runBpImp, runImpSettings, run_environment::AccSetting::DEFAULT);
+  RunAndEvaluateImp::runBenchmark(runBpImp, runImpSettings, run_environment::AccSetting::DEFAULT);
   return 0;
 }

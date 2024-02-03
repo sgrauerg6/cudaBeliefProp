@@ -18,9 +18,6 @@
 #include "RunSettings.h"
 #include "RunData.h"
 
-using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
-using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
-
 //parameters type requires runData() function to return the parameters as a
 //RunData object
 template <typename T>
@@ -78,7 +75,7 @@ std::pair<std::string, std::vector<double>> run_eval::getBaselineRuntimeData(con
   std::ifstream baselineData(baselineDataPath);
   std::string line;
   //first line of data is string with baseline processor description and all subsequent data is runtimes
-  //on that processor in same order as runtimes from runBpOnStereoSets() function
+  //on that processor in same order as runtimes from runBenchmark() function
   std::pair<std::string, std::vector<double>> baselineNameData;
   bool firstLine{true};
   while (std::getline(baselineData, line))

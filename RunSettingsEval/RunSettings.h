@@ -12,6 +12,16 @@
 #include <optional>
 #include "RunData.h"
 
+//set data type used for half-precision
+#ifdef OPTIMIZED_CPU_RUN
+#ifdef COMPILING_FOR_ARM
+#include <arm_neon.h> //needed for float16_t type
+using halftype = float16_t;
+#else
+using halftype = short;
+#endif //COMPILING_FOR_ARM
+#endif //OPTIMIZED_CPU_RUN
+
 namespace run_environment {
 
 //mapping from data size to data type string

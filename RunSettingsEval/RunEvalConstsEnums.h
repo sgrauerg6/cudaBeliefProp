@@ -9,6 +9,8 @@
 #define RUN_EVAL_CONSTS_ENUMS_H
 
 #include <string_view>
+#include <vector>
+#include "RunData.h"
 
 namespace run_eval {
 
@@ -27,5 +29,8 @@ namespace run_eval {
   constexpr std::string_view SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
   constexpr std::string_view SPEEDUP_VS_AVX256_VECTORIZATION{"Speedup over AVX256 CPU vectorization"};
 }
+
+using MultRunData = std::vector<std::pair<run_eval::Status, std::vector<RunData>>>;
+using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
 
 #endif //RUN_EVAL_CONSTS_ENUMS_H
