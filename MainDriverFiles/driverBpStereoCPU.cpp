@@ -25,10 +25,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  //initialize runs using AVX512, AVX256, and no vectorization
-  std::shared_ptr<RunBenchmarkImp> runBpImpAVX512 = std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>();
-  std::shared_ptr<RunBenchmarkImp> runBpImpAVX256 = std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX256>>();
-  std::shared_ptr<RunBenchmarkImp> runBpImpNoVect = std::make_shared<RunEvalBpImp<run_environment::AccSetting::NONE>>();
   #ifdef PROCESSOR_NAME
     runImpSettings.processorName_ = PROCESSOR_NAME;
   #endif //PROCESSOR_NAME
@@ -41,9 +37,12 @@ int main(int argc, char** argv)
   runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
-        {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
+    {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
   
-  //run belief propagation with all three vectorization implementations, with the AVX512 implementation given first as the expected fastest implementation
-  RunAndEvaluateImp::runBenchmark({runBpImpAVX512, runBpImpAVX256, runBpImpNoVect}, runImpSettings);
+  //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation given first as the expected fastest implementation
+  RunAndEvaluateImp::runBenchmark({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>()},
+    {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX256>>()},
+    {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp<run_environment::AccSetting::NONE>>()}},
+    runImpSettings);
   return 0;
 }

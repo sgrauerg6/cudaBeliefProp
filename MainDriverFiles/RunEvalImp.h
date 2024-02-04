@@ -12,6 +12,7 @@
 #include <array>
 #include <vector>
 #include <numeric>
+#include <map>
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
@@ -24,16 +25,15 @@ namespace RunAndEvaluateImp {
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
 //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
 std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getAltAccelSpeedups(MultRunData& runOutputData,
-  const std::vector<std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImps, const run_environment::RunImpSettings& runImpSettings,
+  const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting, const run_environment::RunImpSettings& runImpSettings,
   size_t dataTypeSize) {
   const std::string speedupVsNoVectStr{std::string(run_eval::SPEEDUP_VECTORIZATION) + " - " +
     run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)};
   const std::string speedupVsAVX256Str{std::string(run_eval::SPEEDUP_VS_AVX256_VECTORIZATION) + " - " +
     run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)};
   std::vector<MultRunSpeedup> multRunSpeedupVect;
-  //alternate runs are after the first element in runBenchmarkImps
-  //no alternate run if only a single element in runBenchmarkImps
-  if (runBenchmarkImps.size() == 1) {
+  //no alternate run if only a single element in runBenchmarkImpsByAccSetting
+  if (runBenchmarkImpsByAccSetting.size() == 1) {
     multRunSpeedupVect.push_back({speedupVsNoVectStr, {0.0, 0.0}});
     multRunSpeedupVect.push_back({speedupVsAVX256Str, {0.0, 0.0}});
     return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
@@ -41,10 +41,10 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   else {
     std::pair<MultRunData, std::vector<MultRunSpeedup>> runOutputNoVect;
     //if initial speedup is AVX512, also run AVX256
-    for (unsigned int altAccImp = 1; altAccImp < runBenchmarkImps.size(); altAccImp++) {
-      if (runBenchmarkImps[altAccImp]->getAccelerationSetting() == run_environment::AccSetting::AVX256) {
+    for (auto& altAccImp : runBenchmarkImpsByAccSetting) {
+      if (altAccImp.first == run_environment::AccSetting::AVX256) {
         //run implementation using AVX256 acceleration
-        auto runOutputAVX256 = runBenchmarkImps[1]->operator()(runImpSettings, dataTypeSize);
+        auto runOutputAVX256 = altAccImp.second->operator()(runImpSettings, dataTypeSize);
         //go through each result and replace initial run data with AVX256 run data if AVX256 run is faster
         for (unsigned int i = 0; i < runOutputData.size(); i++) {
           if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputAVX256.first[i].first == run_eval::Status::NO_ERROR)) {
@@ -59,9 +59,9 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
         const auto speedupOverAVX256 = run_eval::getAvgMedSpeedup(runOutputAVX256.first, runOutputData, speedupVsAVX256Str);
         multRunSpeedupVect.push_back(speedupOverAVX256);
       }
-      if (runBenchmarkImps[altAccImp]->getAccelerationSetting() == run_environment::AccSetting::NONE) {
+      if (altAccImp.first == run_environment::AccSetting::NONE) {
         //run implementation is no acceleration
-        runOutputNoVect = runBenchmarkImps.back()->operator()(runImpSettings, dataTypeSize);
+        runOutputNoVect = altAccImp.second->operator()(runImpSettings, dataTypeSize);
         //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
         for (unsigned int i = 0; i < runOutputData.size(); i++) {
           if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputNoVect.first[i].first == run_eval::Status::NO_ERROR)) {
@@ -82,26 +82,43 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
 }
 
-void runBenchmark(const std::vector<std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImps, const run_environment::RunImpSettings& runImpSettings) {
-  //perform runs with and without vectorization using floating point
+void runBenchmark(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting, const run_environment::RunImpSettings& runImpSettings) {
+  //get fastest implementation available
+  std::shared_ptr<RunBenchmarkImp> fastestImp;
+  if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::CUDA)) {
+    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::CUDA);
+  }
+  else if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::AVX512)) {
+    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::AVX512);
+  }
+  else if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::NEON)) {
+    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::NEON);
+  }
+  else if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::AVX256)) {
+    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::AVX256);
+  }
+  else {
+    fastestImp = runBenchmarkImpsByAccSetting.begin()->second;
+  }
+  //perform runs with fastest implementation with and without vectorization using floating point
   //initially store output for floating-point runs separate from output using doubles and halfs
-  auto runOutput = runBenchmarkImps[0]->operator()(runImpSettings, sizeof(float));
+  auto runOutput = fastestImp->operator()(runImpSettings, sizeof(float));
   //get results and speedup for using potentially alternate and no vectorization (only applies to CPU)
-  const auto altAndNoVectSpeedupFl = getAltAccelSpeedups(runOutput.first, runBenchmarkImps, runImpSettings, sizeof(float));
+  const auto altAndNoVectSpeedupFl = getAltAccelSpeedups(runOutput.first, runBenchmarkImpsByAccSetting, runImpSettings, sizeof(float));
   //get run data portion of results
   auto runOutputAltAndNoVect = altAndNoVectSpeedupFl.first;
 
   //perform runs with and without vectorization using double-precision
-  auto runOutputDouble = runBenchmarkImps[0]->operator()(runImpSettings, sizeof(double));
+  auto runOutputDouble = fastestImp->operator()(runImpSettings, sizeof(double));
   const auto doublesSpeedup = run_eval::getAvgMedSpeedup(runOutput.first, runOutputDouble.first, std::string(run_eval::SPEEDUP_DOUBLE));
-  const auto altAndNoVectSpeedupDbl = getAltAccelSpeedups(runOutputDouble.first, runBenchmarkImps, runImpSettings, sizeof(double));
+  const auto altAndNoVectSpeedupDbl = getAltAccelSpeedups(runOutputDouble.first, runBenchmarkImpsByAccSetting, runImpSettings, sizeof(double));
   for (const auto& runData : altAndNoVectSpeedupDbl.first.first) {
     runOutputAltAndNoVect.first.push_back(runData);
   }
   //perform runs with and without vectorization using half-precision
-  auto runOutputHalf = runBenchmarkImps[0]->operator()(runImpSettings, sizeof(halftype));
+  auto runOutputHalf = fastestImp->operator()(runImpSettings, sizeof(halftype));
   const auto halfSpeedup = run_eval::getAvgMedSpeedup(runOutput.first, runOutputHalf.first, std::string(run_eval::SPEEDUP_HALF));
-  const auto altAndNoVectSpeedupHalf = getAltAccelSpeedups(runOutputHalf.first, runBenchmarkImps, runImpSettings, sizeof(halftype));
+  const auto altAndNoVectSpeedupHalf = getAltAccelSpeedups(runOutputHalf.first, runBenchmarkImpsByAccSetting, runImpSettings, sizeof(halftype));
   for (const auto& runData : altAndNoVectSpeedupHalf.first.first) {
     runOutputAltAndNoVect.first.push_back(runData);
   }
@@ -143,7 +160,7 @@ void runBenchmark(const std::vector<std::shared_ptr<RunBenchmarkImp>>& runBenchm
 
   //write output corresponding to results for all data types
   constexpr bool MULT_DATA_TYPES{true};
-  run_eval::writeRunOutput<MULT_DATA_TYPES>(runOutput, runImpSettings, runBenchmarkImps[0]->getAccelerationSetting());
+  run_eval::writeRunOutput<MULT_DATA_TYPES>(runOutput, runImpSettings, fastestImp->getAccelerationSetting());
 }
 
 }

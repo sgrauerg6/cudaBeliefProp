@@ -25,11 +25,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  std::shared_ptr<RunBenchmarkImp> runBpImp = std::make_shared<RunEvalBpImp<run_environment::AccSetting::CUDA>>();
-  run_environment::RunImpSettings runImpSettings;
   #ifdef PROCESSOR_NAME
     runImpSettings.processorName_ = PROCESSOR_NAME;
   #endif //PROCESSOR_NAME
+  run_environment::RunImpSettings runImpSettings;
   //enable optimization of parallel parameters with setting to use the allow different thread block dimensions
   //on kernels in same run
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
@@ -39,6 +38,7 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
-  RunAndEvaluateImp::runBenchmark({runBpImp}, runImpSettings);
+  //run belief propagation with CUDA implementation
+  RunAndEvaluateImp::runBenchmark({{run_environment::AccSetting::CUDA, std::make_shared<RunEvalBpImp<run_environment::AccSetting::CUDA>>()}}, runImpSettings);
   return 0;
 }
