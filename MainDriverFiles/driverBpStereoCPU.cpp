@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
   
   //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation given first as the expected fastest implementation
-  RunAndEvaluateImp::runBenchmark({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>()},
+  RunAndEvaluateImp::runEvalBenchmark({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>()},
     {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX256>>()},
     {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp<run_environment::AccSetting::NONE>>()}},
     runImpSettings);

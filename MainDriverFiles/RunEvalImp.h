@@ -20,6 +20,7 @@
 #include "RunSettingsEval/RunEvalUtils.h"
 #include "RunImp/RunBenchmarkImp.h"
 
+//functions to run and evaluate a benchmark implementation that may be optimized on the CPU or GPU
 namespace RunAndEvaluateImp {
 
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
@@ -82,24 +83,30 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
 }
 
-void runBenchmark(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting, const run_environment::RunImpSettings& runImpSettings) {
-  //get fastest implementation available
-  std::shared_ptr<RunBenchmarkImp> fastestImp;
+//get fastest available implementation
+std::shared_ptr<RunBenchmarkImp> getFastestAvailableImp(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting) {
   if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::CUDA)) {
-    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::CUDA);
+    return runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::CUDA);
   }
   else if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::AVX512)) {
-    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::AVX512);
+    return runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::AVX512);
   }
   else if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::NEON)) {
-    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::NEON);
+    return runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::NEON);
   }
   else if (runBenchmarkImpsByAccSetting.contains(run_environment::AccSetting::AVX256)) {
-    fastestImp = runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::AVX256);
+    return runBenchmarkImpsByAccSetting.at(run_environment::AccSetting::AVX256);
   }
   else {
-    fastestImp = runBenchmarkImpsByAccSetting.begin()->second;
+    return runBenchmarkImpsByAccSetting.begin()->second;
   }
+}
+
+//run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
+void runEvalBenchmark(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting, const run_environment::RunImpSettings& runImpSettings) {
+  //get fastest implementation available
+  std::shared_ptr<RunBenchmarkImp> fastestImp = getFastestAvailableImp(runBenchmarkImpsByAccSetting);
+  
   //perform runs with fastest implementation with and without vectorization using floating point
   //initially store output for floating-point runs separate from output using doubles and halfs
   auto runOutput = fastestImp->operator()(runImpSettings, sizeof(float));
