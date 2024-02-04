@@ -25,13 +25,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
+  //initialize runs using AVX512, AVX256, and no vectorization
   std::shared_ptr<RunBenchmarkImp> runBpImpAVX512 = std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>();
   std::shared_ptr<RunBenchmarkImp> runBpImpAVX256 = std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX256>>();
   std::shared_ptr<RunBenchmarkImp> runBpImpNoVect = std::make_shared<RunEvalBpImp<run_environment::AccSetting::NONE>>();
-  run_environment::RunImpSettings runImpSettings;
   #ifdef PROCESSOR_NAME
     runImpSettings.processorName_ = PROCESSOR_NAME;
   #endif //PROCESSOR_NAME
+  //initialize settings to run implementation and evaluation
+  run_environment::RunImpSettings runImpSettings;
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
@@ -40,6 +42,8 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
         {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
+  
+  //run belief propagation with all three vectorization implementations, with the AVX512 implementation given first as the expected fastest implementation
   RunAndEvaluateImp::runBenchmark({runBpImpAVX512, runBpImpAVX256, runBpImpNoVect}, runImpSettings);
   return 0;
 }
