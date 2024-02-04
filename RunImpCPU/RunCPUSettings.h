@@ -47,7 +47,7 @@ constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSett
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
 constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX512};
 #else
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::DEFAULT};
+constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NONE};
 #endif
 
 //parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation

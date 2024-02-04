@@ -31,7 +31,7 @@ const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
 
 //enum for acceleration setting
 enum class AccSetting {
-  DEFAULT, AVX256, AVX512, NEON
+  NONE, AVX256, AVX512, NEON, CUDA
 };
 
 //get string corresponding to acceleration method

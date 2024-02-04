@@ -49,107 +49,77 @@ using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 #include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment::AccSetting::DEFAULT>;
+using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment::AccSetting::CUDA>;
 #endif //OPTIMIZED_CUDA_RUN
 
 using namespace beliefprop;
 
+template <run_environment::AccSetting OPT_IMP_ACCEL>
 class RunEvalBpImp : public RunBenchmarkImp {
 public:
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
-    const size_t dataTypeSize, const run_environment::AccSetting accelerationSetting) const override;
+    const size_t dataTypeSize) const override;
+  
+  run_environment::AccSetting getAccelerationSetting() override { return OPT_IMP_ACCEL; }
 
 private:
   //perform runs on multiple data sets using specified data type and acceleration method
-  template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+  template <RunData_t T>
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings) const;
-
-  template <run_environment::AccSetting OPT_IMP_ACCEL>
-  std::pair<MultRunData, std::vector<MultRunSpeedup>> runBpImpWTemplateAccSetting(const run_environment::RunImpSettings& runImpSettings,
-    const size_t dataTypeSize) const;
 
   //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
   //on the reference and test images specified by numStereoSet
   //run only optimized implementation if runOptImpOnly is true
-  template<RunData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, run_environment::AccSetting OPT_IMP_ACCEL>
+  template<RunData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD>
     std::pair<run_eval::Status, RunData> runStereoTwoImpsAndCompare(
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
-    const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::DEFAULT>>& singleThreadCPUImp,
+    const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
     const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
     const beliefprop::ParallelParameters& parallelParams,
     bool runOptImpOnly = false) const;
 
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters
   //returns data from runs using default and optimized parallel parameters
-  template<RunData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
+  template<RunData_t T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
   std::pair<run_eval::Status, std::vector<RunData>> runBpOnSetAndUpdateResults(
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
-    const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, run_environment::AccSetting::DEFAULT>>& singleThreadCPUImp,
+    const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
     const run_environment::RunImpSettings& runImpSettings) const;
 
-  template<RunData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL>
+  template<RunData_t T, unsigned int NUM_SET>
   MultRunData runBpOnSetAndUpdateResults(const run_environment::RunImpSettings& runImpSettings) const;
 };
 
 //run belief propagation implementation with given data type and acceleration setting
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::operator()(const run_environment::RunImpSettings& runImpSettings,
-  const size_t dataTypeSize, const run_environment::AccSetting accelerationSetting) const
-{
-#ifdef OPTIMIZED_CPU_RUN
-#ifndef COMPILING_FOR_ARM
-  if (accelerationSetting == run_environment::AccSetting::AVX512) {
-    return runBpImpWTemplateAccSetting<run_environment::AccSetting::AVX512>(runImpSettings, dataTypeSize);
-  }
-  if (accelerationSetting == run_environment::AccSetting::AVX256) {
-    return runBpImpWTemplateAccSetting<run_environment::AccSetting::AVX256>(runImpSettings, dataTypeSize);
-  }
-#endif //COMPILING_FOR_ARM
-#endif //OPTIMIZED_CPU_RUN
-#ifdef OPTIMIZED_CUDA_RUN
-  if (accelerationSetting == run_environment::AccSetting::DEFAULT) {
-    return runBpImpWTemplateAccSetting<run_environment::AccSetting::DEFAULT>(runImpSettings, dataTypeSize);
-  }
-#endif //OPTIMIZED_CUDA_RUN
-#ifdef COMPILING_FOR_ARM
-  if (accelerationSetting == run_environment::AccSetting::NEON) {
-    return runBpImpWTemplateAccSetting<run_environment::AccSetting::NEON>(runImpSettings, dataTypeSize);
-  }
-#endif //COMPILING_FOR_ARM
-  {
-    return runBpImpWTemplateAccSetting<run_environment::AccSetting::DEFAULT>(runImpSettings, dataTypeSize);
-  }
-}
-
-//run belief propagation implementation with given data type and acceleration setting with the acceleration setting
-//being a template parameter
 template <run_environment::AccSetting OPT_IMP_ACCEL>
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::runBpImpWTemplateAccSetting(const run_environment::RunImpSettings& runImpSettings,
+std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>::operator()(const run_environment::RunImpSettings& runImpSettings,
   const size_t dataTypeSize) const
 {
   if (dataTypeSize == sizeof(float)) {
-    return operator()<float, OPT_IMP_ACCEL>(runImpSettings);
+    return operator()<float>(runImpSettings);
   }
   else if (dataTypeSize == sizeof(double)) {
-    return operator()<double, OPT_IMP_ACCEL>(runImpSettings);
+    return operator()<double>(runImpSettings);
   }
   else {
-    return operator()<halftype, OPT_IMP_ACCEL>(runImpSettings);
+    return operator()<halftype>(runImpSettings);
   }
 }
 
 //perform runs on multiple data sets using specified data type and acceleration method
-template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::operator()(const run_environment::RunImpSettings& runImpSettings) const {
+template <run_environment::AccSetting OPT_IMP_ACCEL>
+template <RunData_t T>
+std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>::operator()(const run_environment::RunImpSettings& runImpSettings) const {
   MultRunData runData;
   std::vector<MultRunData> runResultsEachInput;
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 0, OPT_IMP_ACCEL>(runImpSettings));
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 1, OPT_IMP_ACCEL>(runImpSettings));
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 2, OPT_IMP_ACCEL>(runImpSettings));
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 3, OPT_IMP_ACCEL>(runImpSettings));
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 4, OPT_IMP_ACCEL>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 0>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 1>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 2>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 3>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 4>(runImpSettings));
 #ifndef SMALLER_SETS_ONLY
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 5, OPT_IMP_ACCEL>(runImpSettings));
-  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 6, OPT_IMP_ACCEL>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 5>(runImpSettings));
+  runResultsEachInput.push_back(runBpOnSetAndUpdateResults<T, 6>(runImpSettings));
 #endif //SMALLER_SETS_ONLY
 
   //add run results for each input to overall results
@@ -200,10 +170,11 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp::operator()(con
 //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
 //on the reference and test images specified by numStereoSet
 //run only optimized implementation if runOptImpOnly is true
-template<RunData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD, run_environment::AccSetting OPT_IMP_ACCEL>
-std::pair<run_eval::Status, RunData> RunEvalBpImp::runStereoTwoImpsAndCompare(
+template <run_environment::AccSetting OPT_IMP_ACCEL>
+template<RunData_t T, unsigned int DISP_VALS_OPTIMIZED, unsigned int DISP_VALS_SINGLE_THREAD>
+std::pair<run_eval::Status, RunData> RunEvalBpImp<OPT_IMP_ACCEL>::runStereoTwoImpsAndCompare(
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
-  const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::DEFAULT>>& singleThreadCPUImp,
+  const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
   const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
   const beliefprop::ParallelParameters& parallelParams,
   bool runOptImpOnly) const
@@ -272,10 +243,11 @@ std::pair<run_eval::Status, RunData> RunEvalBpImp::runStereoTwoImpsAndCompare(
 
 //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters
 //returns data from runs using default and optimized parallel parameters
-template<RunData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
-std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp::runBpOnSetAndUpdateResults(
+template <run_environment::AccSetting OPT_IMP_ACCEL>
+template<RunData_t T, unsigned int NUM_SET, unsigned int DISP_VALS_TEMPLATE_OPTIMIZED, unsigned int DISP_VALS_TEMPLATE_SINGLE_THREAD>
+std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::runBpOnSetAndUpdateResults(
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
-  const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, run_environment::AccSetting::DEFAULT>>& singleThreadCPUImp,
+  const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
   const run_environment::RunImpSettings& runImpSettings) const
 {
   std::vector<RunData> outRunData(runImpSettings.optParallelParmsOptionSetting_.first ? 2 : 1);
@@ -348,7 +320,7 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp::runBpOnSetAndUpd
 
     //run belief propagation implementation(s) and return whether or not error in run
     //detailed results stored to file that is generated using stream
-    const auto runImpsECodeData = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD, OPT_IMP_ACCEL>(
+    const auto runImpsECodeData = runStereoTwoImpsAndCompare<T, DISP_VALS_TEMPLATE_OPTIMIZED, DISP_VALS_TEMPLATE_SINGLE_THREAD>(
       optimizedImp, singleThreadCPUImp, NUM_SET, algSettings, parallelParams, runOptImpOnly);
     currRunData.addDataWHeader("Run Success", (runImpsECodeData.first == run_eval::Status::NO_ERROR) ? "Yes" : "No");
 
@@ -429,21 +401,22 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp::runBpOnSetAndUpd
   return {run_eval::Status::NO_ERROR, outRunData};
 }
 
-template<RunData_t T, unsigned int NUM_SET, run_environment::AccSetting OPT_IMP_ACCEL>
-MultRunData RunEvalBpImp::runBpOnSetAndUpdateResults(const run_environment::RunImpSettings& runImpSettings) const {
-  std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], run_environment::AccSetting::DEFAULT>> runBpStereoSingleThread =
+template <run_environment::AccSetting OPT_IMP_ACCEL>
+template<RunData_t T, unsigned int NUM_SET>
+MultRunData RunEvalBpImp<OPT_IMP_ACCEL>::runBpOnSetAndUpdateResults(const run_environment::RunImpSettings& runImpSettings) const {
+  std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], run_environment::AccSetting::NONE>> runBpStereoSingleThread =
     std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>();
   MultRunData runResults;
   //RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
   if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::RUN_ONLY_NON_TEMPLATED) {
     std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>> runBpOptimizedImp = 
       std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET], OPT_IMP_ACCEL>>();
-    runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread, runImpSettings));
+    runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET>(runBpOptimizedImp, runBpStereoSingleThread, runImpSettings));
   }
   if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::RUN_ONLY_TEMPLATED) {
     std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> runBpOptimizedImp = 
       std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
-    runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET, OPT_IMP_ACCEL>(runBpOptimizedImp, runBpStereoSingleThread, runImpSettings));
+    runResults.push_back(runBpOnSetAndUpdateResults<T, NUM_SET>(runBpOptimizedImp, runBpStereoSingleThread, runImpSettings));
   }
   return runResults;
 }

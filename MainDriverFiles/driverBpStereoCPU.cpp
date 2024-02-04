@@ -25,7 +25,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  std::unique_ptr<RunBenchmarkImp> runBpImp = std::make_unique<RunEvalBpImp>();
+  std::shared_ptr<RunBenchmarkImp> runBpImpAVX512 = std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>();
+  std::shared_ptr<RunBenchmarkImp> runBpImpAVX256 = std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX256>>();
+  std::shared_ptr<RunBenchmarkImp> runBpImpNoVect = std::make_shared<RunEvalBpImp<run_environment::AccSetting::NONE>>();
   run_environment::RunImpSettings runImpSettings;
   #ifdef PROCESSOR_NAME
     runImpSettings.processorName_ = PROCESSOR_NAME;
@@ -38,6 +40,6 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
         {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
-  RunAndEvaluateImp::runBenchmark(runBpImp, runImpSettings, run_cpu::CPU_VECTORIZATION);
+  RunAndEvaluateImp::runBenchmark({runBpImpAVX512, runBpImpAVX256, runBpImpNoVect}, runImpSettings);
   return 0;
 }
