@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This function declares the host functions to run the CUDA implementation of Stereo estimation using BP
 
-#ifndef RUN_BP_STEREO_HOST_HEADER_CUH
-#define RUN_BP_STEREO_HOST_HEADER_CUH
+#ifndef RUN_BP_STEREO_HOST_HEADER_H
+#define RUN_BP_STEREO_HOST_HEADER_H
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
@@ -86,4 +86,4 @@ private:
   run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;
 };
 
-#endif //RUN_BP_STEREO_HOST_HEADER_CUH
+#endif //RUN_BP_STEREO_HOST_HEADER_H
