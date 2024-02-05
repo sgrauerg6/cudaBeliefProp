@@ -103,7 +103,7 @@ Relative speedup across various processors using float type w/ prior run using A
 outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv used for runtime comparison.
 -Speedup given is average across a number of input stereo sets and configurations.
 -CPU and CUDA runs are with thread count / thread block optimization enabled
-(via runImpSettings.optParallelParmsOptionSetting_.first = true setting in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
+(via runImpSettings.optParallelParamsOptionSetting_.first = true setting in MainDriverFiles/driverCudaBp.cpp / MainDriverFiles/driverBpStereoCPU.cpp set to true)
 NVIDIA H100: 2.41x
 AMD Genoa-X (88 Cores*): 2.17x
 NVIDIA A100: 1.80x

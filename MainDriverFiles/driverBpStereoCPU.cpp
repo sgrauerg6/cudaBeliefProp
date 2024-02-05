@@ -30,7 +30,7 @@ int main(int argc, char** argv)
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
-  runImpSettings.optParallelParmsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
+  runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
   runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 

@@ -89,7 +89,7 @@ enum class OptParallelParamsSetting { SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, A
 
 struct RunImpSettings {
   TemplatedItersSetting templatedItersSetting_;
-  std::pair<bool, OptParallelParamsSetting> optParallelParmsOptionSetting_;
+  std::pair<bool, OptParallelParamsSetting> optParallelParamsOptionSetting_;
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> pParamsDefaultOptOptions_;
   std::optional<std::string> processorName_;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes

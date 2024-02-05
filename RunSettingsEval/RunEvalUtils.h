@@ -242,8 +242,8 @@ void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSp
     const std::string defaultParamsResultsFileName{std::string(ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
       ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(CSV_FILE_EXTENSION)};
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
-      std::ofstream(runImpSettings.optParallelParmsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
-      runImpSettings.optParallelParmsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
+      std::ofstream(runImpSettings.optParallelParamsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
+      runImpSettings.optParallelParamsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
     //get headers from first successful run
     const auto headersInOrder = firstSuccessRun->second.back().getHeadersInOrder();
     for (const auto& currHeader : headersInOrder) {
@@ -251,14 +251,14 @@ void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSp
     }
     resultsStreamDefaultTBFinal[0] << std::endl;
 
-    if (runImpSettings.optParallelParmsOptionSetting_.first) {
+    if (runImpSettings.optParallelParamsOptionSetting_.first) {
       for (const auto& currHeader : headersInOrder) {
         resultsStreamDefaultTBFinal[1] << currHeader << ",";
       }
     }
     resultsStreamDefaultTBFinal[1] << std::endl;
 
-    for (unsigned int i=0; i < (runImpSettings.optParallelParmsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
+    for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
       for (unsigned int runNum=0; runNum < runOutput.first.size(); runNum++) {
         //if run not successful only have single set of output data from run
         const unsigned int runResultIdx = (runOutput.first[runNum].first == run_eval::Status::NO_ERROR) ? i : 0;
@@ -275,7 +275,7 @@ void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSp
     }
 
     //write speedup results
-    const unsigned int indexBestResults{(runImpSettings.optParallelParmsOptionSetting_.first ? (unsigned int)resultsStreamDefaultTBFinal.size() - 1 : 0)};
+    const unsigned int indexBestResults{(runImpSettings.optParallelParamsOptionSetting_.first ? (unsigned int)resultsStreamDefaultTBFinal.size() - 1 : 0)};
     resultsStreamDefaultTBFinal[indexBestResults] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : runOutput.second) {
       resultsStreamDefaultTBFinal[indexBestResults] << speedup.first;
@@ -286,11 +286,11 @@ void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSp
     }
 
     resultsStreamDefaultTBFinal[0].close();
-    if (runImpSettings.optParallelParmsOptionSetting_.first) {
+    if (runImpSettings.optParallelParamsOptionSetting_.first) {
       resultsStreamDefaultTBFinal[1].close();
     }
 
-    if (runImpSettings.optParallelParmsOptionSetting_.first) {
+    if (runImpSettings.optParallelParamsOptionSetting_.first) {
       std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (optimized parallel parameters) in "
                 << optResultsFileName << std::endl;
       std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (default parallel parameters) in "

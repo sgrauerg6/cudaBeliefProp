@@ -151,7 +151,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>:
       speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
     }
   }
-  if (runImpSettings.optParallelParmsOptionSetting_.first) {
+  if (runImpSettings.optParallelParamsOptionSetting_.first) {
     speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runData, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
       run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
   }
@@ -251,7 +251,7 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_TEMPLATE_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
   const run_environment::RunImpSettings& runImpSettings) const
 {
-  std::vector<RunData> outRunData(runImpSettings.optParallelParmsOptionSetting_.first ? 2 : 1);
+  std::vector<RunData> outRunData(runImpSettings.optParallelParamsOptionSetting_.first ? 2 : 1);
   enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
   std::array<std::array<std::map<std::string, std::string>, 2>, 2> inParamsResultsDefOptRuns;
   //load all the BP default settings
@@ -259,12 +259,13 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
   algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
   //parallel parameters initialized with default thread count dimensions at every level
-  BpParallelParams parallelParams(algSettings.numLevels_, runImpSettings.pParamsDefaultOptOptions_.first);
+  BpParallelParams parallelParams(runImpSettings.optParallelParamsOptionSetting_.second,
+    algSettings.numLevels_, runImpSettings.pParamsDefaultOptOptions_.first);
 
   //if optimizing parallel parameters, parallelParamsVect contains parallel parameter settings to run
   //(and contains only the default parallel parameters if not)
   std::vector<std::array<unsigned int, 2>> parallelParamsVect{
-    runImpSettings.optParallelParmsOptionSetting_.first ? runImpSettings.pParamsDefaultOptOptions_.second : std::vector<std::array<unsigned int, 2>>()};
+    runImpSettings.optParallelParamsOptionSetting_.first ? runImpSettings.pParamsDefaultOptOptions_.second : std::vector<std::array<unsigned int, 2>>()};
     
   //if optimizing parallel parameters, run BP for each parallel parameters option, retrieve best parameters for each kernel or overall for the run,
   //and then run BP with best found parallel parameters
@@ -272,7 +273,7 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
   for (unsigned int runNum=0; runNum < (parallelParamsVect.size() + 1); runNum++) {
     //initialize current run type to specify if current run is only run, run with default params, test params run, or final run with optimized params
     RunType currRunType{RunType::TEST_PARAMS};
-    if (!runImpSettings.optParallelParmsOptionSetting_.first) {
+    if (!runImpSettings.optParallelParamsOptionSetting_.first) {
       currRunType = RunType::ONLY_RUN;
     }
     else if (runNum == parallelParamsVect.size()) {
@@ -282,12 +283,12 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
     //get and set parallel parameters for current run if not final run that uses optimized parameters
     std::array<unsigned int, 2> pParamsCurrRun{runImpSettings.pParamsDefaultOptOptions_.first};
     if (currRunType == RunType::ONLY_RUN) {
-      parallelParams.setParallelDims(runImpSettings.pParamsDefaultOptOptions_.first, algSettings.numLevels_);
+      parallelParams.setParallelDims(runImpSettings.pParamsDefaultOptOptions_.first);
     }
     else if (currRunType == RunType::TEST_PARAMS) {
       //set parallel parameters to parameters corresponding to current run for each BP processing level
       pParamsCurrRun = parallelParamsVect[runNum];
-      parallelParams.setParallelDims(pParamsCurrRun, algSettings.numLevels_);
+      parallelParams.setParallelDims(pParamsCurrRun);
       if (pParamsCurrRun == runImpSettings.pParamsDefaultOptOptions_.first) {
         //set run type to default parameters if current run uses default parameters
         currRunType = RunType::DEFAULT_PARAMS;
@@ -300,8 +301,8 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
       currRunData.addDataWHeader("Stereo Set", bp_params::STEREO_SET[NUM_SET]);
       currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, DISP_VALS_TEMPLATE_OPTIMIZED, OPT_IMP_ACCEL>(algSettings));
       currRunData.appendData(bp_params::runSettings());
-      if ((runImpSettings.optParallelParmsOptionSetting_.first) &&
-          (runImpSettings.optParallelParmsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
+      if ((runImpSettings.optParallelParamsOptionSetting_.first) &&
+          (runImpSettings.optParallelParamsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
       {
         //add parallel parameters for each kernel to current input data if allowing different parallel parameters for each kernel in the same run
         currRunData.appendData(parallelParams.runData());
@@ -336,20 +337,20 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
       }
     }
 
-    if (runImpSettings.optParallelParmsOptionSetting_.first) {
+    if (runImpSettings.optParallelParamsOptionSetting_.first) {
       //retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
       //total runtime for current run
       //if error in run, don't add results for current parallel parameters to results set
       if (runImpsECodeData.first == run_eval::Status::NO_ERROR) {
         if (currRunType != RunType::OPTIMIZED_RUN) {
-          parallelParams.addTestResultsForParallelParams(algSettings, runImpSettings, pParamsCurrRun, currRunData);
+          parallelParams.addTestResultsForParallelParams(pParamsCurrRun, currRunData);
         }
       }
 
       //set optimized parallel parameters if next run is final run that uses optimized parallel parameters
       //optimized parallel parameters are determined from previous test runs using multiple test parallel parameters
       if (runNum == (parallelParamsVect.size() - 1)) {
-        parallelParams.setOptimizedParams(algSettings, runImpSettings);
+        parallelParams.setOptimizedParams();
       }
     }
   }

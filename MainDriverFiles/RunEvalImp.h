@@ -152,7 +152,7 @@ void runEvalBenchmark(const std::map<run_environment::AccSetting, std::shared_pt
       runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   }
   //get speedup info for using optimized parallel parameters
-  if (runImpSettings.optParallelParmsOptionSetting_.first) {
+  if (runImpSettings.optParallelParamsOptionSetting_.first) {
     runOutput.second.push_back(run_eval::getAvgMedSpeedupOptPParams(
       runOutput.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
   }

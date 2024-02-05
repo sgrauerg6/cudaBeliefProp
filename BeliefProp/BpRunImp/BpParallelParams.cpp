@@ -1,15 +1,17 @@
 /*
  * BpParallelParams.cpp
  *
- *  Created on: Sep 22, 2019
+ *  Created on: Feb 4, 2024
  *      Author: scott
  */
 
 #include "BpParallelParams.h"
 
 //constructor to set parallel parameters with default dimensions for each kernel
-BpParallelParams::BpParallelParams(unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims) {
-  setParallelDims(defaultPDims, numLevels);
+BpParallelParams::BpParallelParams(run_environment::OptParallelParamsSetting optParallelParamsSetting,
+    unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims) : optParallelParamsSetting_{optParallelParamsSetting}, numLevels_{numLevels}
+{
+  setParallelDims(defaultPDims);
   //set up mapping of parallel parameters to runtime for each kernel at each level and total runtime
   for (unsigned int i=0; i < beliefprop::NUM_KERNELS; i++) {
     //set to vector length for each kernel to corresponding vector length of kernel in parallelParams.parallelDimsEachKernel_
@@ -19,12 +21,12 @@ BpParallelParams::BpParallelParams(unsigned int numLevels, const std::array<unsi
 }
 
 //set parallel parameters for each kernel to the same input dimensions
-void BpParallelParams::setParallelDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels) {
+void BpParallelParams::setParallelDims(const std::array<unsigned int, 2>& tbDims) {
   parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES] = {tbDims};
-  parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+  parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels_, tbDims);
   parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS] = {tbDims};
-  parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
-  parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
+  parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels_, tbDims);
+  parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels_, tbDims);
   parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP] = {tbDims};
 }
 
@@ -60,12 +62,12 @@ RunData BpParallelParams::runData() const {
   return currRunData;
 }
 
-void BpParallelParams::addTestResultsForParallelParams(const beliefprop::BPsettings& algSettings, const run_environment::RunImpSettings& runImpSettings,
-  const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& currRunData)
+//add results from run with same specified parallel parameters used every parallel component
+void BpParallelParams::addTestResultsForParallelParams(const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& currRunData)
 {
   const std::string NUM_RUNS_IN_PARENS{"(" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"};
-  if (runImpSettings.optParallelParmsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
-    for (unsigned int level=0; level < algSettings.numLevels_; level++) {
+  if (optParallelParamsSetting_ == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
+    for (unsigned int level=0; level < numLevels_; level++) {
       pParamsToRunTimeEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
         std::stod(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][0] + " " + NUM_RUNS_IN_PARENS));
       pParamsToRunTimeEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
@@ -85,8 +87,10 @@ void BpParallelParams::addTestResultsForParallelParams(const beliefprop::BPsetti
     std::stod(currRunData.getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
 }
 
-void BpParallelParams::setOptimizedParams(const beliefprop::BPsettings& algSettings, const run_environment::RunImpSettings& runImpSettings) {
-  if (runImpSettings.optParallelParmsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
+//retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
+//to retrieved optimized parameters
+void BpParallelParams::setOptimizedParams() {
+  if (optParallelParamsSetting_ == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
     for (unsigned int numKernelSet = 0; numKernelSet < parallelDimsEachKernel_.size(); numKernelSet++) {
       //retrieve and set optimized parallel parameters for final run
       //std::min_element used to retrieve parallel parameters corresponding to lowest runtime from previous runs
@@ -104,6 +108,6 @@ void BpParallelParams::setOptimizedParams(const beliefprop::BPsettings& algSetti
     const auto bestParallelParams = std::min_element(pParamsToRunTimeEachKernel_[beliefprop::NUM_KERNELS][0].begin(),
                                                      pParamsToRunTimeEachKernel_[beliefprop::NUM_KERNELS][0].end(),
                                                      [](const auto& a, const auto& b) { return a.second < b.second; })->first;
-    setParallelDims(bestParallelParams, algSettings.numLevels_);
+    setParallelDims(bestParallelParams);
   }
 }
