@@ -87,7 +87,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
     cudaFuncSetAttribute(runBPIterationUsingCheckerboardUpdates<T>, cudaFuncAttributeMaxDynamicSharedMemorySize, maxbytes);
 
     //std::cout << "numDataSharedMemory: " << numDataSharedMemory << std::endl;
-    beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS><<<grid, threads, maxbytes>>>(checkboardPartUpdate, currentLevelProperties,
+    beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads, maxbytes>>> (checkboardPartUpdate, currentLevelProperties,
       dataCostDeviceCheckerboard.dataCostCheckerboard0_,
       dataCostDeviceCheckerboard.dataCostCheckerboard1_,
       messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
@@ -102,7 +102,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
 
 #else
     if constexpr (DISP_VALS > 0) {
-      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS><<<grid, threads>>>(checkboardPartUpdate, currentLevelProperties,
+      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkboardPartUpdate, currentLevelProperties,
         dataCostDeviceCheckerboard.dataCostCheckerboard0_,
         dataCostDeviceCheckerboard.dataCostCheckerboard1_,
         messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
@@ -116,7 +116,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
         algSettings.disc_k_bp_, dataAligned, algSettings.numDispVals_);
     }
     else {
-      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS><<<grid, threads>>>(checkboardPartUpdate, currentLevelProperties,
+      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkboardPartUpdate, currentLevelProperties,
         dataCostDeviceCheckerboard.dataCostCheckerboard0_,
         dataCostDeviceCheckerboard.dataCostCheckerboard1_,
         messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
@@ -217,7 +217,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
   //initialize the data the the "bottom" of the image pyramid
-  beliefpropCUDA::initializeBottomLevelData<T, DISP_VALS><<<grid, threads>>>(currentLevelProperties, imagesOnTargetDevice[0],
+  beliefpropCUDA::initializeBottomLevelData<T, DISP_VALS> <<<grid, threads>>> (currentLevelProperties, imagesOnTargetDevice[0],
     imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
     dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
     algSettings.numDispVals_);
@@ -285,7 +285,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const b
          std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
          std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,  dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
   {
-    beliefpropCUDA::initializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>>(checkerboardAndDataCost.first,
+    beliefpropCUDA::initializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>> (checkerboardAndDataCost.first,
       currentLevelProperties, prevLevelProperties,
       dataCostDeviceCheckerboard.dataCostCheckerboard0_,
       dataCostDeviceCheckerboard.dataCostCheckerboard1_,
@@ -315,7 +315,7 @@ float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
   const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
-  beliefpropCUDA::retrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>>(currentLevelProperties,
+  beliefpropCUDA::retrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (currentLevelProperties,
     dataCostDeviceCheckerboard.dataCostCheckerboard0_, dataCostDeviceCheckerboard.dataCostCheckerboard1_,
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0],
     messagesDevice.checkerboardMessagesAtLevel_[beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0],
