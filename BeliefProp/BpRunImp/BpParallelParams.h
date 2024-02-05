@@ -1,0 +1,55 @@
+/*
+ * BpParallelParams.h
+ *
+ *  Created on: Sep 22, 2019
+ *      Author: scott
+ */
+
+#ifndef BP_PARALLEL_PARAMS_H
+#define BP_PARALLEL_PARAMS_H
+
+#include <array>
+#include <vector>
+#include <thread>
+#include <iostream>
+#include <cmath>
+#include <string>
+#include "BpConstsAndParams/bpStereoParameters.h"
+#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsEval/RunData.h"
+#include "RunSettingsEval/RunEvalConstsEnums.h"
+
+//structure containing parameters including parallelization parameters
+//to use at each BP level
+class BpParallelParams {
+public:
+  //constructor to set parallel parameters with default dimensions for each kernel
+  BpParallelParams(unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims);
+
+  //set parallel parameters for each kernel to the same input dimensions
+  void setParallelDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels);
+
+  //add current parallel parameters to data for current run
+  RunData runData() const;
+
+  //add results from run with same specified parallel parameters used every parallel component
+  void addTestResultsForParallelParams(const beliefprop::BPsettings& algSettings, const run_environment::RunImpSettings& runImpSettings,
+    const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& currRunData);
+
+  //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
+  //to retrieved optimized parameters
+  void setOptimizedParams(const beliefprop::BPsettings& algSettings, const run_environment::RunImpSettings& runImpSettings);
+
+  //stores the current parallel parameters for each processing kernel
+  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::NUM_KERNELS> parallelDimsEachKernel_;
+
+private:
+  //mapping of parallel parameters to runtime for each kernel at each level and total runtime
+  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::NUM_KERNELS + 1)> pParamsToRunTimeEachKernel_;
+};
+
+#endif //BP_PARALLEL_PARAMS_H

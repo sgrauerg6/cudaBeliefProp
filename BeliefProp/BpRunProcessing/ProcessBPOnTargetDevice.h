@@ -19,6 +19,7 @@
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
@@ -34,7 +35,7 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
 class ProcessBPOnTargetDevice {
 public:
-  ProcessBPOnTargetDevice(const beliefprop::ParallelParameters& parallelParams) : parallelParams_{parallelParams} { }
+  ProcessBPOnTargetDevice(const BpParallelParams& parallelParams) : parallelParams_{parallelParams} { }
 
   virtual run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
     return run_eval::Status::NO_ERROR;
@@ -49,7 +50,7 @@ public:
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun);
 
 protected:
-  const beliefprop::ParallelParameters& parallelParams_;
+  const BpParallelParams& parallelParams_;
 
 private:
   virtual run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,

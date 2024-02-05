@@ -25,6 +25,7 @@
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
@@ -33,7 +34,7 @@ class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, run_envir
 public:
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
       const beliefprop::BPsettings& algSettings,
-      const beliefprop::ParallelParameters& parallelParams) override;
+      const BpParallelParams& parallelParams) override;
   std::string getBpRunDescription() override { return "Single-Thread CPU"; }
 
 private:
@@ -297,7 +298,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
 
 template<typename T, unsigned int DISP_VALS>
 inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_VALS>::operator()(const std::array<std::string, 2>& refTestImagePath,
-    const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
+    const beliefprop::BPsettings& algSettings, const BpParallelParams& parallelParams)
 {
   image<uchar> *img1, *img2, *out;// *edges;
 

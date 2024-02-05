@@ -69,7 +69,7 @@ public:
   }
 
   friend std::ostream& operator<<(std::ostream& os,
-      const DetailedTimings& inTimingObj)
+    const DetailedTimings& inTimingObj)
   {
     os << "Median Timings\n";
     std::for_each(inTimingObj.timings.begin(), inTimingObj.timings.end(),

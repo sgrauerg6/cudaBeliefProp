@@ -32,6 +32,7 @@ namespace run_eval {
 template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
 RunData inputAndParamsRunData(const U& algSettings);
 
+//get baseline runtime data from a previous run on a specific processor
 std::pair<std::string, std::vector<double>> getBaselineRuntimeData(const std::string& baselineDataPath);
 
 //get average and median speedup from vector of speedup values

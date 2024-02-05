@@ -24,7 +24,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
   float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   constexpr unsigned int numDataInSIMDVector{8u};
   runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float, __m256, DISP_VALS>(
@@ -46,7 +46,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   constexpr unsigned int numDataInSIMDVector{8u};
   runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m128i, DISP_VALS>(
@@ -68,7 +68,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
   double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   constexpr unsigned int numDataInSIMDVector{4u};
   runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<double, __m256d, DISP_VALS>(
@@ -90,7 +90,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectorsAVX256(
   float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
   float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {      
   constexpr unsigned int numDataInSIMDVector{8u};
   retrieveOutputDisparityUseSIMDVectors<float, __m256, float, __m256, DISP_VALS>(currentLevelProperties,
@@ -112,7 +112,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectorsAVX256(
   short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1,
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {      
   constexpr unsigned int numDataInSIMDVector{8u};
   retrieveOutputDisparityUseSIMDVectors<short, __m128i, float, __m256, DISP_VALS>(currentLevelProperties,
@@ -134,7 +134,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectorsAVX256(
   double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
   double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {      
   constexpr unsigned int numDataInSIMDVector{4u};
   retrieveOutputDisparityUseSIMDVectors<double, __m256d, double, __m256d, DISP_VALS>(currentLevelProperties,

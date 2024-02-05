@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpConstsAndParams/bpStereoCudaParameters.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 
@@ -33,7 +34,7 @@ template<RunData_t T, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>
 {
 public:
-  ProcessCUDABP(const beliefprop::ParallelParameters& cudaParams) : 
+  ProcessCUDABP(const BpParallelParams& cudaParams) : 
     ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>(cudaParams) {}
 
 private:

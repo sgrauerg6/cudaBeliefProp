@@ -25,9 +25,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  #ifdef PROCESSOR_NAME
-    runImpSettings.processorName_ = PROCESSOR_NAME;
-  #endif //PROCESSOR_NAME
   //initialize settings to run implementation and evaluation
   run_environment::RunImpSettings runImpSettings;
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
@@ -38,6 +35,9 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
+#ifdef PROCESSOR_NAME
+  runImpSettings.processorName_ = PROCESSOR_NAME;
+#endif //PROCESSOR_NAME
   
   //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation given first as the expected fastest implementation
   RunAndEvaluateImp::runEvalBenchmark({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp<run_environment::AccSetting::AVX512>>()},

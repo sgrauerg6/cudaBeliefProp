@@ -18,7 +18,7 @@ public:
   virtual std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
     const size_t dataTypeSize) const = 0;
 
-  virtual run_environment::AccSetting getAccelerationSetting() { return run_environment::AccSetting::NONE; }
+  virtual run_environment::AccSetting getAccelerationSetting() const = 0;
 };
 
 #endif //RUN_BENCHMARK_IMP_H

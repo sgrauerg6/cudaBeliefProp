@@ -11,13 +11,14 @@
 #include <cuda_runtime.h>
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpImageProcessing/SmoothImage.h"
+#include "BpRunImp/BpParallelParams.h"
 
 //include for the kernel functions to be run on the GPU
 #include "kernelFilterHeader.cuh"
 
 class SmoothImageCUDA : public SmoothImage {
 public:
-  SmoothImageCUDA(const beliefprop::ParallelParameters& cudaParams) : SmoothImage(cudaParams) {}
+  SmoothImageCUDA(const BpParallelParams& cudaParams) : SmoothImage(cudaParams) {}
 
   //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
   void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) override;

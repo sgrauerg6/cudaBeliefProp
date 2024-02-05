@@ -185,59 +185,6 @@ enum BpKernel { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL
                 COPY_AT_LEVEL, OUTPUT_DISP };
 constexpr unsigned int NUM_KERNELS{6u};
 
-//structure containing parameters including parallelization parameters
-//to use at each BP level
-struct ParallelParameters {
-  //constructor to set parallel parameters with default dimensions for each kernel
-  ParallelParameters(unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims) {
-    setParallelDims(defaultPDims, numLevels);
-  }
-
-  //set parallel parameters for each kernel to the same input dimensions
-  void setParallelDims(const std::array<unsigned int, 2>& tbDims, unsigned int numLevels) {
-    parallelDimsEachKernel_[BLUR_IMAGES] = {tbDims};
-    parallelDimsEachKernel_[DATA_COSTS_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
-    parallelDimsEachKernel_[INIT_MESSAGE_VALS] = {tbDims};
-    parallelDimsEachKernel_[BP_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
-    parallelDimsEachKernel_[COPY_AT_LEVEL] = std::vector<std::array<unsigned int, 2>>(numLevels, tbDims);
-    parallelDimsEachKernel_[OUTPUT_DISP] = {tbDims};
-  }
-
-  //add current parallel parameters to data for current run
-  RunData runData() const {
-    RunData currRunData;
-    //show parallel parameters for each kernel
-    currRunData.addDataWHeader("Blur Images Parallel Dimensions",
-      std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]) + " x " +
-      std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1]));
-    currRunData.addDataWHeader("Init Message Values Parallel Dimensions",
-      std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0]) + " x " +
-      std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1]));
-    for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL].size(); level++) {
-      currRunData.addDataWHeader("Level " + std::to_string(level) + " Data Costs Parallel Dimensions",
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][0]) + " x " +
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][1]));
-    }
-    for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL].size(); level++) {
-      currRunData.addDataWHeader("Level " + std::to_string(level) + " BP Thread Parallel Dimensions",
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][0]) + " x " +
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][1]));
-    }
-    for (unsigned int level=0; level < parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL].size(); level++) {
-      currRunData.addDataWHeader("Level " + std::to_string(level) + " Copy Thread Parallel Dimensions",
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][0]) + " x " +
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][1]));
-    }
-    currRunData.addDataWHeader("Get Output Disparity Parallel Dimensions",
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0]) + " x " +
-        std::to_string(parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1]));
-
-    return currRunData;
-  }
-
-  std::array<std::vector<std::array<unsigned int, 2>>, NUM_KERNELS> parallelDimsEachKernel_;
-};
-
 };
 
 #endif /* BPSTRUCTSANDENUMS_H_ */

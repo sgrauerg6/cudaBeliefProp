@@ -25,9 +25,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  #ifdef PROCESSOR_NAME
-    runImpSettings.processorName_ = PROCESSOR_NAME;
-  #endif //PROCESSOR_NAME
   run_environment::RunImpSettings runImpSettings;
   //enable optimization of parallel parameters with setting to use the allow different thread block dimensions
   //on kernels in same run
@@ -38,7 +35,11 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
-  //run belief propagation with CUDA implementation
+#ifdef PROCESSOR_NAME
+  runImpSettings.processorName_ = PROCESSOR_NAME;
+#endif //PROCESSOR_NAME
+
+  //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
   RunAndEvaluateImp::runEvalBenchmark({{run_environment::AccSetting::CUDA, std::make_shared<RunEvalBpImp<run_environment::AccSetting::CUDA>>()}}, runImpSettings);
   return 0;
 }

@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
@@ -41,7 +42,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTOR
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
-  ProcessOptimizedCPUBP(const beliefprop::ParallelParameters& optCPUParams) : 
+  ProcessOptimizedCPUBP(const BpParallelParams& optCPUParams) : 
     ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>(optCPUParams) {}
 
 private:

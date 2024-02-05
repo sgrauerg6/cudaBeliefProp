@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <utility>
 #include <algorithm>
 #include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "BpImage.h"
 
 //don't smooth input images if SIGMA_BP below this
@@ -39,7 +40,7 @@ constexpr float WIDTH_SIGMA_1{4.0f};
 class SmoothImage
 {
 public:
-  SmoothImage(const beliefprop::ParallelParameters& parallelParams) : parallelParams_{parallelParams} {}
+  SmoothImage(const BpParallelParams& parallelParams) : parallelParams_{parallelParams} {}
 
   //function to use the image filter to apply a guassian filter to the a single images
   //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
@@ -52,7 +53,7 @@ protected:
   std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma);
 
   //parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA)
-  const beliefprop::ParallelParameters& parallelParams_;
+  const BpParallelParams& parallelParams_;
 
 private:
   //normalize filter mask so it integrates to one

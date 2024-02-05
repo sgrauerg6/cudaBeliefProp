@@ -11,6 +11,7 @@
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
+#include <iostream>
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunImpCPU/RunCPUSettings.h"
 
@@ -21,19 +22,19 @@ namespace VectProcessingFuncts
   U loadPackedDataAligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
     const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
   {
-    printf("Data type not supported for loading aligned data\n");
+    std::cout << "Data type not supported for loading aligned data" << std::endl;
   }
 
   template<RunData_t T, RunDataVect_t U>
   U loadPackedDataUnaligned(const unsigned int x, const unsigned int y, const unsigned int currentDisparity,
     const beliefprop::levelProperties& currentLevelProperties, const unsigned int numDispVals, T* inData)
   {
-    printf("Data type not supported for loading unaligned data\n");
+    std::cout << "Data type not supported for loading unaligned data" << std::endl;
   }
 
   template<RunDataVect_t T>
   T createSIMDVectorSameData(const float data) {
-    printf("Data type not supported for creating simd vector\n");
+    std::cout << "Data type not supported for creating simd vector" << std::endl;
   }
 
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>

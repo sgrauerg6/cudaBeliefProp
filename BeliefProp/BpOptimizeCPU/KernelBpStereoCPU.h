@@ -24,10 +24,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <math.h>
 #include <omp.h>
 #include <algorithm>
+#include <iostream>
+//TODO: switch use of printf with std::format when it is supported on compiler used for development
+//#include <format>
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
@@ -42,14 +46,14 @@ namespace beliefpropCPU
     float* image1PixelsDevice, float* image2PixelsDevice,
     T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
     const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<RunData_t T, unsigned int DISP_VALS>
   void initializeCurrentLevelData(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   //initialize the message values at each pixel of the current level to the default value
   template<RunData_t T, unsigned int DISP_VALS>
@@ -59,7 +63,7 @@ namespace beliefpropCPU
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
     const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -72,7 +76,7 @@ namespace beliefpropCPU
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<RunData_t T, unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
@@ -83,7 +87,7 @@ namespace beliefpropCPU
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
@@ -99,7 +103,7 @@ namespace beliefpropCPU
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
     const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
@@ -110,7 +114,7 @@ namespace beliefpropCPU
     T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
     T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
@@ -122,7 +126,7 @@ namespace beliefpropCPU
     T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
     const unsigned int numDataInSIMDVector,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
   
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX256(
@@ -133,7 +137,7 @@ namespace beliefpropCPU
     float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
     float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX256(
@@ -144,7 +148,7 @@ namespace beliefpropCPU
     short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
     short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX256(
@@ -155,7 +159,7 @@ namespace beliefpropCPU
     double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
     double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
@@ -166,7 +170,7 @@ namespace beliefpropCPU
     float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
     float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
@@ -177,7 +181,7 @@ namespace beliefpropCPU
     short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
     short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
@@ -188,7 +192,7 @@ namespace beliefpropCPU
     double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
     double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsNEON(
@@ -199,7 +203,7 @@ namespace beliefpropCPU
     float* messageUPrevStereoCheckerboard1, float* messageDPrevStereoCheckerboard1,
     float* messageLPrevStereoCheckerboard1, float* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsNEON(
@@ -210,7 +214,7 @@ namespace beliefpropCPU
     double* messageUPrevStereoCheckerboard1, double* messageDPrevStereoCheckerboard1,
     double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
 #ifdef COMPILING_FOR_ARM
   template<unsigned int DISP_VALS>
@@ -222,7 +226,7 @@ namespace beliefpropCPU
     float16_t* messageUPrevStereoCheckerboard1, float16_t* messageDPrevStereoCheckerboard1,
     float16_t* messageLPrevStereoCheckerboard1, float16_t* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 #endif //COMPILING_FOR_ARM
 
   //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
@@ -258,7 +262,7 @@ namespace beliefpropCPU
     float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
     float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
@@ -269,7 +273,7 @@ namespace beliefpropCPU
     short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
     short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
@@ -280,7 +284,7 @@ namespace beliefpropCPU
     double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
     double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
   
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
@@ -291,7 +295,7 @@ namespace beliefpropCPU
     float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
     float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
@@ -302,7 +306,7 @@ namespace beliefpropCPU
     short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
     short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
@@ -313,7 +317,7 @@ namespace beliefpropCPU
     double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
     double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
@@ -324,7 +328,7 @@ namespace beliefpropCPU
     float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
     float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
@@ -335,7 +339,7 @@ namespace beliefpropCPU
     double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
     double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
 #ifdef COMPILING_FOR_ARM
   template<unsigned int DISP_VALS>
@@ -347,7 +351,7 @@ namespace beliefpropCPU
     float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
     float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 #endif //COMPILING_FOR_ARM
 
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
@@ -360,7 +364,7 @@ namespace beliefpropCPU
     T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int numDataInSIMDVector,
     const unsigned int bpSettingsDispVals,
-    const beliefprop::ParallelParameters& optCPUParams);
+    const BpParallelParams& optCPUParams);
 
   // compute current message
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
@@ -407,7 +411,7 @@ namespace beliefpropCPU
 
   template<RunDataVectProcess_t T>
   void updateBestDispBestVals(T& bestDisparities, T& bestVals, const T& currentDisparity, const T& valAtDisp) {
-    printf("Data type not supported for updating best disparities and values\n");
+    std::cout << "Data type not supported for updating best disparities and values" << std::endl;
   }
 
   template<RunData_t T, unsigned int DISP_VALS>
@@ -460,7 +464,7 @@ void beliefpropCPU::initializeBottomLevelData(
   float* image1PixelsDevice, float* image2PixelsDevice,
   T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
   const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][0]};
@@ -492,7 +496,7 @@ void beliefpropCPU::initializeCurrentLevelData(
   const beliefprop::levelProperties& prevLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* dataCostDeviceToWriteTo, const unsigned int offsetNum, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0]};
@@ -525,7 +529,7 @@ void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::level
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
   const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0]};
@@ -561,7 +565,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
   float disc_k_bp, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 
@@ -656,7 +660,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int numDataInSIMDVector,
   const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
   const U disc_k_bp_vector = VectProcessingFuncts::createSIMDVectorSameData<U>(disc_k_bp);
@@ -918,7 +922,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdates(
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int bpSettingsNumDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
 #ifdef COMPILING_FOR_ARM
 if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
@@ -1035,7 +1039,7 @@ void beliefpropCPU::copyMsgDataToNextLevel(const beliefprop::Checkerboard_Parts 
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
   const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0]};
@@ -1075,7 +1079,7 @@ void beliefpropCPU::retrieveOutputDisparity(
   T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
   T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   if constexpr (VECTORIZATION == run_environment::AccSetting::NONE) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
@@ -1146,7 +1150,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
   T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
   float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
   const unsigned int numDataInSIMDVector,
-  const beliefprop::ParallelParameters& optCPUParams)
+  const BpParallelParams& optCPUParams)
 {
   const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
 
@@ -1806,6 +1810,8 @@ void beliefpropCPU::printDataAndMessageValsToPointKernel(
 {
   const unsigned int checkerboardAdjustment = (((xVal + yVal) % 2) == 0) ? ((yVal)%2) : ((yVal+1)%2);
   if (((xVal + yVal) % 2) == 0) {
+    //TODO: switch use of printf with std::format when it is supported on compiler used for development
+    //std::cout << std::format("xVal: {}", xVal) << std::endl;
     printf("xVal: %u\n", xVal);
     printf("yVal: %u\n", yVal);
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {

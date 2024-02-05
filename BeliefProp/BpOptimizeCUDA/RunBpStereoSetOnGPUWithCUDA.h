@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
 #include "ProcessCUDABP.h"
@@ -60,7 +61,7 @@ public:
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, 
-    const beliefprop::ParallelParameters& parallelParams) override
+    const BpParallelParams& parallelParams) override
   {
     //using SmoothImageCUDA::SmoothImage;
     //generate struct with pointers to objects for running CUDA implementation and call

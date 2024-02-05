@@ -29,6 +29,7 @@
 #include "RunSettingsEval/RunData.h"
 #include "RunSettingsEval/RunEvalUtils.h"
 #include "RunImp/RunBenchmarkImp.h"
+#include "BpParallelParams.h"
 
 typedef std::filesystem::path filepathtype;
 
@@ -60,7 +61,7 @@ public:
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
     const size_t dataTypeSize) const override;
   
-  run_environment::AccSetting getAccelerationSetting() override { return OPT_IMP_ACCEL; }
+  run_environment::AccSetting getAccelerationSetting() const override { return OPT_IMP_ACCEL; }
 
 private:
   //perform runs on multiple data sets using specified data type and acceleration method
@@ -75,7 +76,7 @@ private:
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
     const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
-    const beliefprop::ParallelParameters& parallelParams,
+    const BpParallelParams& parallelParams,
     bool runOptImpOnly = false) const;
 
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters
@@ -176,7 +177,7 @@ std::pair<run_eval::Status, RunData> RunEvalBpImp<OPT_IMP_ACCEL>::runStereoTwoIm
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
   const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
-  const beliefprop::ParallelParameters& parallelParams,
+  const BpParallelParams& parallelParams,
   bool runOptImpOnly) const
 {
   const unsigned int numImpsRun{runOptImpOnly ? 1u : 2u};
@@ -258,20 +259,12 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
   algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
 
   //parallel parameters initialized with default thread count dimensions at every level
-  beliefprop::ParallelParameters parallelParams(algSettings.numLevels_, runImpSettings.pParamsDefaultOptOptions_.first);
+  BpParallelParams parallelParams(algSettings.numLevels_, runImpSettings.pParamsDefaultOptOptions_.first);
 
   //if optimizing parallel parameters, parallelParamsVect contains parallel parameter settings to run
   //(and contains only the default parallel parameters if not)
   std::vector<std::array<unsigned int, 2>> parallelParamsVect{
     runImpSettings.optParallelParmsOptionSetting_.first ? runImpSettings.pParamsDefaultOptOptions_.second : std::vector<std::array<unsigned int, 2>>()};
-    
-  //mapping of parallel parameters to runtime for each kernel at each level and total runtime
-  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::NUM_KERNELS + 1)> pParamsToRunTimeEachKernel;
-  for (unsigned int i=0; i < beliefprop::NUM_KERNELS; i++) {
-    //set to vector length for each kernel to corresponding vector length of kernel in parallelParams.parallelDimsEachKernel_
-    pParamsToRunTimeEachKernel[i] = std::vector<std::map<std::array<unsigned int, 2>, double>>(parallelParams.parallelDimsEachKernel_[i].size()); 
-  }
-  pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS] = std::vector<std::map<std::array<unsigned int, 2>, double>>(1); 
     
   //if optimizing parallel parameters, run BP for each parallel parameters option, retrieve best parameters for each kernel or overall for the run,
   //and then run BP with best found parallel parameters
@@ -347,53 +340,16 @@ std::pair<run_eval::Status, std::vector<RunData>> RunEvalBpImp<OPT_IMP_ACCEL>::r
       //retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
       //total runtime for current run
       //if error in run, don't add results for current parallel parameters to results set
-      const std::string NUM_RUNS_IN_PARENS{"(" + std::to_string(bp_params::NUM_BP_STEREO_RUNS) + " timings)"};
       if (runImpsECodeData.first == run_eval::Status::NO_ERROR) {
         if (currRunType != RunType::OPTIMIZED_RUN) {
-          if (runImpSettings.optParallelParmsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
-            for (unsigned int level=0; level < algSettings.numLevels_; level++) {
-              pParamsToRunTimeEachKernel[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
-                std::stod(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][0] + " " + NUM_RUNS_IN_PARENS));
-              pParamsToRunTimeEachKernel[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
-                std::stod(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][1] + " " + NUM_RUNS_IN_PARENS));
-              pParamsToRunTimeEachKernel[beliefprop::BpKernel::COPY_AT_LEVEL][level][pParamsCurrRun] =
-                std::stod(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][2] + " " + NUM_RUNS_IN_PARENS));
-            }
-            pParamsToRunTimeEachKernel[beliefprop::BpKernel::BLUR_IMAGES][0][pParamsCurrRun] =
-              std::stod(currRunData.getData(beliefprop::timingNames.at(beliefprop::Runtime_Type::SMOOTHING) + " " + NUM_RUNS_IN_PARENS));
-            pParamsToRunTimeEachKernel[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][pParamsCurrRun] =
-              std::stod(currRunData.getData(beliefprop::timingNames.at(beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL) + " " + NUM_RUNS_IN_PARENS));
-            pParamsToRunTimeEachKernel[beliefprop::BpKernel::OUTPUT_DISP][0][pParamsCurrRun] =
-              std::stod(currRunData.getData(beliefprop::timingNames.at(beliefprop::Runtime_Type::OUTPUT_DISPARITY) + " " + NUM_RUNS_IN_PARENS));
-          }
-          //get total runtime
-          pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =
-            std::stod(currRunData.getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+          parallelParams.addTestResultsForParallelParams(algSettings, runImpSettings, pParamsCurrRun, currRunData);
         }
       }
 
-      //get optimized parallel parameters if next run is final run that uses optimized parallel parameters
+      //set optimized parallel parameters if next run is final run that uses optimized parallel parameters
+      //optimized parallel parameters are determined from previous test runs using multiple test parallel parameters
       if (runNum == (parallelParamsVect.size() - 1)) {
-        if (runImpSettings.optParallelParmsOptionSetting_.second == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
-          for (unsigned int numKernelSet = 0; numKernelSet < pParamsToRunTimeEachKernel.size(); numKernelSet++) {
-            //retrieve and set optimized parallel parameters for final run
-            //std::min_element used to retrieve parallel parameters corresponding to lowest runtime from previous runs
-            std::transform(pParamsToRunTimeEachKernel[numKernelSet].begin(),
-                           pParamsToRunTimeEachKernel[numKernelSet].end(), 
-                           parallelParams.parallelDimsEachKernel_[numKernelSet].begin(),
-                           [](const auto& tDimsToRunTimeCurrLevel) /*-> std::array<unsigned int, 2>*/ { 
-                             return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
-                                                      [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
-          }
-        }
-        else {
-          //set optimized parallel parameters for all kernels to parallel parameters that got the best runtime across all kernels
-          //seems like setting different parallel parameters for different kernels on GPU decrease runtime but increases runtime on CPU
-          const auto bestParallelParams = std::min_element(pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0].begin(),
-                                                           pParamsToRunTimeEachKernel[beliefprop::NUM_KERNELS][0].end(),
-                                                           [](const auto& a, const auto& b) { return a.second < b.second; })->first;
-          parallelParams.setParallelDims(bestParallelParams, algSettings.numLevels_);
-        }
+        parallelParams.setOptimizedParams(algSettings, runImpSettings);
       }
     }
   }

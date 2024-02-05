@@ -14,6 +14,7 @@
 #include "BpConstsAndParams/bpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
@@ -26,12 +27,12 @@ public:
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings,
-    const beliefprop::ParallelParameters& parallelParams) override;
+    const BpParallelParams& parallelParams) override;
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& refTestImagePath,
-  const beliefprop::BPsettings& algSettings, const beliefprop::ParallelParameters& parallelParams)
+  const beliefprop::BPsettings& algSettings, const BpParallelParams& parallelParams)
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads

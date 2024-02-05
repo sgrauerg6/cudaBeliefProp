@@ -20,6 +20,7 @@
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
 #include "BpImageProcessing/SmoothImage.h"
+#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunData.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
@@ -52,16 +53,14 @@ public:
   //pure abstract overloaded operator that must be defined in child class
   virtual std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, 
-    const beliefprop::ParallelParameters& parallelParams) = 0;
+    const BpParallelParams& parallelParams) = 0;
 
 protected:
-
   //protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects
   //using V and W template parameters in default parameter with make_unique works in g++ but not visual studio
   std::optional<ProcessStereoSetOutput> processStereoSet(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice);
 };
-
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereoSet(const std::array<std::string, 2>& refTestImagePath,
