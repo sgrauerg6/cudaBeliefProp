@@ -28,7 +28,6 @@ template<RunData_t T, unsigned int DISP_VALS>
 inline run_eval::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
-    //fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
     std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
     cudaGetLastError();
     cudaDeviceReset();
