@@ -38,7 +38,6 @@ public:
     ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>(cudaParams) {}
 
 private:
-
   //initialize the data cost at each pixel for each disparity value
   run_eval::Status initializeDataCosts(
     const beliefprop::BPsettings& algSettings,
