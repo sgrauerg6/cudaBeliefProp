@@ -335,20 +335,20 @@ float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
 }
 
 template class ProcessCUDABP<float, 0>;
-template class ProcessCUDABP<double, 0>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
 template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<double, 0>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
 template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
 template class ProcessCUDABP<halftype, 0>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
@@ -358,64 +358,3 @@ template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
 template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
-//not currently supporting half2 data type
-//template class ProcessCUDABP<half2>;
-
-/*template<>
-int ProcessCUDABP<half2>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
-      return (int)ceil(((ceil(((float)widthLevelActualIntegerSize) / 2.0)) / 2.0));
-}
-
-template<>
-int ProcessCUDABP<half>::getCheckerboardWidthTargetDevice(int widthLevelActualIntegerSize) {
-  ProcessCUDABP<half2> processCUDABPHalf;
-  return processCUDABPHalf.getCheckerboardWidthTargetDevice(widthLevelActualIntegerSize) * 2;
-}
-
-//due to the checkerboard indexing, half2 must be converted to half with the half function used for copying to the next level
-template<>
-run_eval::Status ProcessCUDABP<half2, half2*>::copyMessageValuesToNextLevelDown(
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& nextlevelProperties,
-  const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyFrom,
-  const beliefprop::checkerboardMessages<half2*>& messagesDeviceCopyTo)
-{
-  /*ProcessCUDABP<half> processCUDABPHalf;
-  processCUDABPHalf.copyMessageValuesToNextLevelDown(
-      prevlevelProperties,
-      currentLevelProperties,
-      (half*)messagesDeviceCopyFrom.messagesU_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesD_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesL_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesR_Checkerboard0,
-      (half*)messagesDeviceCopyFrom.messagesU_Checkerboard1,
-      (half*)messagesDeviceCopyFrom.messagesD_Checkerboard1,
-      (half*)messagesDeviceCopyFrom.messagesL_Checkerboard1,
-      (half*)messagesDeviceCopyFrom.messagesR_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesU_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesD_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesL_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesR_Checkerboard0,
-      (half*)messagesDeviceCopyTo.messagesU_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesD_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesL_Checkerboard1,
-      (half*)messagesDeviceCopyTo.messagesR_Checkerboard1);
-  return run_eval::Status::NO_ERROR;
-}
-
-//due to indexing, need to convert to half* and use half arrays for this function
-template<>
-run_eval::Status ProcessCUDABP<half2, half2*>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& prevLevelProperties,
-  const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboard,
-  const beliefprop::dataCostData<half2*>& dataCostDeviceCheckerboardWriteTo)
-{
-  ProcessCUDABP<half> processCUDABPHalf;
-  processCUDABPHalf.initializeDataCurrentLevel(currentLevelProperties,
-      prevLevelProperties,
-      (half*)dataCostStereoCheckerboard1,
-      (half*)dataCostStereoCheckerboard2,
-      (half*)dataCostDeviceToWriteToCheckerboard1,
-      (half*)dataCostDeviceToWriteToCheckerboard2);
-  return run_eval::Status::NO_ERROR;
-}*/
