@@ -41,8 +41,6 @@ inline run_eval::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file
 
 //functions directed related to running BP to retrieve the movement between the images
 
-//cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
-//cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<RunData_t T, unsigned int DISP_VALS>
 run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
@@ -52,7 +50,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
   T* allocatedMemForProcessing)
 {
-  //cudaDeviceSetCacheConfig(cudaFuncCachePreferShared);
+  //set to prefer L1 cache since shared memory is not used in this implementation
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
   const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0],
                      this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
@@ -134,7 +132,6 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
     if (errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) {
       return run_eval::Status::ERROR;
     }
-    //cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
   }
   return run_eval::Status::NO_ERROR;
 }
