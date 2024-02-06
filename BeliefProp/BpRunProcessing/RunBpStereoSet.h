@@ -53,7 +53,7 @@ public:
   //pure abstract overloaded operator that must be defined in child class
   virtual std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, 
-    const BpParallelParams& parallelParams) = 0;
+    const ParallelParams& parallelParams) = 0;
 
 protected:
   //protected function to run stereo processing on any available architecture using pointers to architecture-specific smooth image, process BP, and memory management child class objects

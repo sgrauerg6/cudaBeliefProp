@@ -42,7 +42,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTOR
 class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
-  ProcessOptimizedCPUBP(const BpParallelParams& optCPUParams) : 
+  ProcessOptimizedCPUBP(const ParallelParams& optCPUParams) : 
     ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>(optCPUParams) {}
 
 private:

@@ -17,7 +17,7 @@
 
 class SmoothImageCPU : public SmoothImage {
 public:
-  SmoothImageCPU(const BpParallelParams& optCPUParams) : SmoothImage(optCPUParams) {}
+  SmoothImageCPU(const ParallelParams& optCPUParams) : SmoothImage(optCPUParams) {}
 
   //function to use the CPU-image filter to apply a guassian filter to the a single images
   //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
@@ -31,21 +31,21 @@ private:
   //output filtered image stored in floatImagePixels
   void convertUnsignedIntImageToFloatCPU(unsigned int* imagePixelsUnsignedInt, float* floatImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
-    const BpParallelParams& optCPUParams);
+    const ParallelParams& optCPUParams);
 
   //apply a horizontal filter on each pixel of the image in parallel
   template<BpImData_t U>
   void filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
     float* imageFilter, const unsigned int sizeFilter,
-    const BpParallelParams& optCPUParams);
+    const ParallelParams& optCPUParams);
 
   //apply a vertical filter on each pixel of the image in parallel
   template<BpImData_t U>
   void filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
     float* imageFilter, const unsigned int sizeFilter,
-    const BpParallelParams& optCPUParams);
+    const ParallelParams& optCPUParams);
 };
 
 //apply a horizontal filter on each pixel of the image in parallel
@@ -53,10 +53,10 @@ template<BpImData_t U>
 void SmoothImageCPU::filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,
   float* imageFilter, const unsigned int sizeFilter,
-  const BpParallelParams& optCPUParams)
+  const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -78,10 +78,10 @@ template<BpImData_t U>
 void SmoothImageCPU::filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
   const unsigned int widthImages, const unsigned int heightImages,
   float* imageFilter, const unsigned int sizeFilter,
-  const BpParallelParams& optCPUParams)
+  const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for

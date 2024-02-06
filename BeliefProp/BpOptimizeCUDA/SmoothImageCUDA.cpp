@@ -12,8 +12,8 @@
 void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage)
 {
   // setup execution parameters
-  const dim3 threads{this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][1]};
+  const dim3 threads{this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[1]};
   const dim3 grid{(unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)),
                   (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y))};
 

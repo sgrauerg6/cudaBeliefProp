@@ -34,7 +34,7 @@ template<RunData_t T, unsigned int DISP_VALS>
 class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>
 {
 public:
-  ProcessCUDABP(const BpParallelParams& cudaParams) : 
+  ProcessCUDABP(const ParallelParams& cudaParams) : 
     ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>(cudaParams) {}
 
 private:

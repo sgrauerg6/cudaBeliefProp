@@ -26,6 +26,9 @@ public:
   //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
   //to retrieved optimized parameters
   virtual void setOptimizedParams() = 0;
+
+  //get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers
+  virtual std::array<unsigned int, 2> getOptParamsForKernel(const std::array<unsigned int, 2>& kernelLocation) const = 0;
 };
 
 #endif //PARALLEL_PARAMS_H

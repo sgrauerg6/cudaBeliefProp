@@ -46,10 +46,10 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, const floa
 //output filtered image stored in floatImagePixels
 void SmoothImageCPU::convertUnsignedIntImageToFloatCPU(unsigned int* imagePixelsUnsignedInt, float* floatImagePixels,
     const unsigned int widthImages, const unsigned int heightImages,
-    const BpParallelParams& optCPUParams)
+    const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.parallelDimsEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for

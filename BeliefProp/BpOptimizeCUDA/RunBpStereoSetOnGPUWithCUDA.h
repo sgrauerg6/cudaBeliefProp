@@ -61,7 +61,7 @@ public:
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
     const beliefprop::BPsettings& algSettings, 
-    const BpParallelParams& parallelParams) override
+    const ParallelParams& parallelParams) override
   {
     //using SmoothImageCUDA::SmoothImage;
     //generate struct with pointers to objects for running CUDA implementation and call

@@ -52,8 +52,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
 {
   //set to prefer L1 cache since shared memory is not used in this implementation
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
-  const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+  const dim3 threads(this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::BP_AT_LEVEL, currentLevelProperties.levelNum_})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::BP_AT_LEVEL, currentLevelProperties.levelNum_})[1]);
   const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x), //only updating half at a time
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
@@ -148,8 +148,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
   const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
   const unsigned int bpSettingsNumDispVals)
 {
-  const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+  const dim3 threads(this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::COPY_AT_LEVEL, currentLevelProperties.levelNum_})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::COPY_AT_LEVEL, currentLevelProperties.levelNum_})[1]);
   const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
                   (unsigned int)ceil((float)(currentLevelProperties.heightLevel_) / (float)threads.y)};
 
@@ -206,8 +206,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
 
   //setup execution parameters
   //the thread size remains constant throughout but the grid size is adjusted based on the current level/kernel to run
-  const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][0][1]);
+  const dim3 threads(this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::DATA_COSTS_AT_LEVEL, 0})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::DATA_COSTS_AT_LEVEL, 0})[1]);
   //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
   const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthLevel_ / (float)threads.x),
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
@@ -233,8 +233,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
   const unsigned int bpSettingsNumDispVals)
 {
-  const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][1]);
+  const dim3 threads(this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::INIT_MESSAGE_VALS, 0})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::INIT_MESSAGE_VALS, 0})[1]);
   const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 
@@ -265,8 +265,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const b
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
   const unsigned int bpSettingsNumDispVals)
 {
-  const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][currentLevelProperties.levelNum_][1]);
+  const dim3 threads(this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::DATA_COSTS_AT_LEVEL, currentLevelProperties.levelNum_})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::DATA_COSTS_AT_LEVEL, currentLevelProperties.levelNum_})[1]);
   //each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
   //the four-connected neighbors are in the other checkerboard
   const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.widthCheckerboardLevel_) / (float)threads.x),
@@ -306,8 +306,8 @@ float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
   float* resultingDisparityMapCompDevice;
   cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_ * sizeof(float));
 
-  const dim3 threads(this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][0],
-                     this->parallelParams_.parallelDimsEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][1]);
+  const dim3 threads(this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::OUTPUT_DISP, 0})[0],
+                     this->parallelParams_.getOptParamsForKernel({beliefprop::BpKernel::OUTPUT_DISP, 0})[1]);
   const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.widthCheckerboardLevel_ / (float)threads.x),
                   (unsigned int)ceil((float)currentLevelProperties.heightLevel_ / (float)threads.y)};
 

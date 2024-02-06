@@ -45,6 +45,11 @@ public:
   //to retrieved optimized parameters
   void setOptimizedParams() override;
 
+  //get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers
+  std::array<unsigned int, 2> getOptParamsForKernel(const std::array<unsigned int, 2>& kernelLocation) const override {
+    return parallelDimsEachKernel_[kernelLocation[0]][kernelLocation[1]];
+  }
+
   //stores the current parallel parameters for each processing kernel
   std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::NUM_KERNELS> parallelDimsEachKernel_;
 

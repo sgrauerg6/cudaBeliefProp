@@ -76,7 +76,7 @@ private:
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
     const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
     const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
-    const BpParallelParams& parallelParams,
+    const ParallelParams& parallelParams,
     bool runOptImpOnly = false) const;
 
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters
@@ -177,7 +177,7 @@ std::pair<run_eval::Status, RunData> RunEvalBpImp<OPT_IMP_ACCEL>::runStereoTwoIm
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_OPTIMIZED, OPT_IMP_ACCEL>>& optimizedImp,
   const std::unique_ptr<RunBpStereoSet<T, DISP_VALS_SINGLE_THREAD, run_environment::AccSetting::NONE>>& singleThreadCPUImp,
   const unsigned int numStereoSet, const beliefprop::BPsettings& algSettings,
-  const BpParallelParams& parallelParams,
+  const ParallelParams& parallelParams,
   bool runOptImpOnly) const
 {
   const unsigned int numImpsRun{runOptImpOnly ? 1u : 2u};
