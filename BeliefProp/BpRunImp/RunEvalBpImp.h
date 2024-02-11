@@ -65,32 +65,15 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>:
   }
 }
 
-//perform runs on multiple data sets using specified data type and acceleration method
-template <run_environment::AccSetting OPT_IMP_ACCEL>
-template <RunData_t T>
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>::operator()(const run_environment::RunImpSettings& runImpSettings) const {
-  MultRunData runData;
-  std::vector<MultRunData> runResultsEachInput;
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(runImpSettings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(runImpSettings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(runImpSettings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(runImpSettings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(runImpSettings));
-#ifndef SMALLER_SETS_ONLY
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(runImpSettings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(runImpSettings));
-#endif //SMALLER_SETS_ONLY
-
-  //add run results for each input to overall results
-  for (auto& runResult : runResultsEachInput) {
-    runData.insert(runData.end(), runResult.begin(), runResult.end());
-  }
-
+//get speedup over baseline data for belief propagation run if data available
+std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
+  MultRunData& runDataAllRuns, const size_t dataTypeSize)
+{
   //initialize speedup results
   std::vector<MultRunSpeedup> speedupResults;
 
   //get speedup info for using optimized parallel parameters and disparity count as template parameter
-  if constexpr (std::is_same_v<T, float>) {
+  if (dataTypeSize == sizeof(float)) {
     //get speedup over baseline runtimes...can only compare with baseline runtimes that are
     //generated using same templated iterations setting as current run
     if ((runImpSettings.baseOptSingThreadRTimeForTSetting_) &&
@@ -104,26 +87,59 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>:
 #endif //SMALLER_SETS_ONLY
       };
       const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(
-        runData, run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)),
+        runDataAllRuns, run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize),
         runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first, subsetsStrIndices);
       speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
     }
   }
+
+  return speedupResults;
+}
+
+//perform runs on multiple data sets using specified data type and acceleration method
+template <run_environment::AccSetting OPT_IMP_ACCEL>
+template <RunData_t T>
+std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>::operator()(const run_environment::RunImpSettings& runImpSettings) const {
+  MultRunData runDataAllRuns;
+  std::vector<MultRunData> runResultsEachInput;
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(runImpSettings));
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(runImpSettings));
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(runImpSettings));
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(runImpSettings));
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(runImpSettings));
+#ifndef SMALLER_SETS_ONLY
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(runImpSettings));
+  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(runImpSettings));
+#endif //SMALLER_SETS_ONLY
+
+  //add run results for each input to overall results
+  for (auto& runResult : runResultsEachInput) {
+    runDataAllRuns.insert(runDataAllRuns.end(), runResult.begin(), runResult.end());
+  }
+
+  //initialize speedup results
+  std::vector<MultRunSpeedup> speedupResults;
+
+  //add speedup results over baseline data if available for current input
+  auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings, runDataAllRuns, sizeof(T));
+  speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+
+  //get speedup info for using optimized parallel parameters and disparity count as template parameter
   if (runImpSettings.optParallelParamsOptionSetting_.first) {
-    speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runData, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
+    speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runDataAllRuns, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
       run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
   }
   if (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
-    speedupResults.push_back(run_eval::getAvgMedSpeedupLoopItersInTemplate(runData, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
+    speedupResults.push_back(run_eval::getAvgMedSpeedupLoopItersInTemplate(runDataAllRuns, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
       run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
   }
-    
+
   //write output corresponding to results for current data type
   constexpr bool MULT_DATA_TYPES{false};
-  run_eval::writeRunOutput<MULT_DATA_TYPES, T>({runData, speedupResults}, runImpSettings, OPT_IMP_ACCEL);
+  run_eval::writeRunOutput<MULT_DATA_TYPES, T>({runDataAllRuns, speedupResults}, runImpSettings, OPT_IMP_ACCEL);
 
   //return data for each run and multiple average and median speedup results across the data
-  return {runData, speedupResults};
+  return {runDataAllRuns, speedupResults};
 }
 
 #endif /* RUNEVALBPIMP_H_ */
