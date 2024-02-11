@@ -23,6 +23,9 @@
 //functions to run and evaluate a benchmark implementation that may be optimized on the CPU or GPU
 namespace RunAndEvaluateImp {
 
+//unnamed namespace for helper functions
+namespace {
+
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
 //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
 std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultRunSpeedup>> getAltAccelSpeedups(MultRunData& runOutputData,
@@ -100,6 +103,8 @@ std::shared_ptr<RunBenchmarkImp> getFastestAvailableImp(const std::map<run_envir
   else {
     return runBenchmarkImpsByAccSetting.begin()->second;
   }
+}
+
 }
 
 //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
