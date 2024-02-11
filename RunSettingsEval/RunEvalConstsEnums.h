@@ -9,11 +9,13 @@
 #define RUN_EVAL_CONSTS_ENUMS_H
 
 #include <string_view>
+#include <array>
 #include <vector>
 #include "RunData.h"
 
+//namespace for general program run evaluation
 namespace run_eval {
-
+  //enum for status to indicate if error or no error
   enum class Status { NO_ERROR, ERROR };
 
   //constants for output results for individual and sets of runs
