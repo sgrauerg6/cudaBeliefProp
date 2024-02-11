@@ -19,35 +19,35 @@ const std::string BP_ALL_RUNS_OUTPUT_CSV_FILE{ "outputResults.csv" };
 enum class Implementation { OPTIMIZED_CPU, CUDA};
 constexpr Implementation IMP_TO_RUN{Implementation::CUDA};
 
-template<typename T, unsigned int NUM_SET>
+template<typename T, unsigned int NUM_INPUT>
 void runBpOnSetAndUpdateResultsCUDA(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns,
   const bool isTemplatedDispVals)
 {
   //get mapping of device config to factory function to retrieve run stereo set object for device config
-  auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(NUM_SET);
+  auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>(NUM_INPUT);
 
   std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
 
-  std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
-      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(runBpFactoryFuncts[run_bp_dlls::device_run::CUDA]()),
-      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(runBpFactoryFuncts[run_bp_dlls::device_run::SINGLE_THREAD_CPU]())
+  std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>, 2> runBpStereo = {
+      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>(runBpFactoryFuncts[run_bp_dlls::device_run::CUDA]()),
+      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>(runBpFactoryFuncts[run_bp_dlls::device_run::SINGLE_THREAD_CPU]())
   };
 
   //load all the BP default settings as set in bpStereoCudaParameters.cuh
   BPsettings algSettings;
-  algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
+  algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT];
 
   resultsStream << "DataType:" << dataTypeName << std::endl;
   if (isTemplatedDispVals) {
-    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-      resultsStream, runBpStereo, NUM_SET, algSettings);
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>(
+      resultsStream, runBpStereo, NUM_INPUT, algSettings);
   }
   else {
     auto runBpFactoryFuncts_dispValNotTemplated = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, 0>(-1);
     std::unique_ptr<RunBpStereoSet<T, 0>> optCpuDispValsNoTemplate =
       std::unique_ptr<RunBpStereoSet<T, 0>>(runBpFactoryFuncts_dispValNotTemplated[run_bp_dlls::device_run::CUDA]());
-    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-      resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>(
+      resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_INPUT, algSettings);
   }
   resultsStream.close();
 
@@ -62,35 +62,35 @@ void runBpOnSetAndUpdateResultsCUDA(const std::string& dataTypeName, std::map<st
   }
 }
 
-template<typename T, unsigned int NUM_SET>
+template<typename T, unsigned int NUM_INPUT>
 void runBpOnSetAndUpdateResults(const std::string& dataTypeName, std::map<std::string, std::vector<std::string>>& resultsAcrossRuns,
   const bool isTemplatedDispVals)
 {
   //get mapping of device config to factory function to retrieve run stereo set object for device config
-  auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(NUM_SET);
+  auto runBpFactoryFuncts = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>(NUM_INPUT);
 
   std::ofstream resultsStream(BP_RUN_OUTPUT_FILE, std::ofstream::out);
 
-  std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>, 2> runBpStereo = {
-      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(runBpFactoryFuncts[run_bp_dlls::device_run::OPTIMIZED_CPU]()),
-      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>>(runBpFactoryFuncts[run_bp_dlls::device_run::SINGLE_THREAD_CPU]())
+  std::array<std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>, 2> runBpStereo = {
+      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>(runBpFactoryFuncts[run_bp_dlls::device_run::OPTIMIZED_CPU]()),
+      std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>(runBpFactoryFuncts[run_bp_dlls::device_run::SINGLE_THREAD_CPU]())
   };
 
   //load all the BP default settings as set in bpStereoCudaParameters.cuh
   BPsettings algSettings;
-  algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET];
+  algSettings.numDispVals_ = bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT];
 
   resultsStream << "DataType:" << dataTypeName << std::endl;
   if (isTemplatedDispVals) {
-    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-      resultsStream, runBpStereo, NUM_SET, algSettings);
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>(
+      resultsStream, runBpStereo, NUM_INPUT, algSettings);
   }
   else {
     auto runBpFactoryFuncts_dispValNotTemplated = RunBpWithDLLsHelpers::getRunBpFactoryFuncts<T, 0>(-1);
     std::unique_ptr<RunBpStereoSet<T, 0>> optCpuDispValsNoTemplate = 
       std::unique_ptr<RunBpStereoSet<T, 0>>(runBpFactoryFuncts_dispValNotTemplated[run_bp_dlls::device_run::OPTIMIZED_CPU]());
-    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_SET]>(
-      resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_SET, algSettings);
+    RunEvalImp::runStereoTwoImpsAndCompare<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>(
+      resultsStream, optCpuDispValsNoTemplate, runBpStereo[1], NUM_INPUT, algSettings);
   }
   resultsStream.close();
 
