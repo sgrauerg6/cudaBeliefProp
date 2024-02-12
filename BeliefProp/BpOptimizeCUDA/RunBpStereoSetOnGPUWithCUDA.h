@@ -52,8 +52,8 @@ namespace bp_cuda_device
   }
 };
 
-template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION>
+template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
   std::string getBpRunDescription() override { return "CUDA"; }
@@ -63,6 +63,11 @@ public:
     const beliefprop::BPsettings& algSettings, 
     const ParallelParams& parallelParams) override
   {
+    //return null if acceleration setting is not CUDA
+    if constexpr (ACCELERATION != run_environment::AccSetting::CUDA) {
+      return {};
+    }
+
     //using SmoothImageCUDA::SmoothImage;
     //generate struct with pointers to objects for running CUDA implementation and call
     //function to run CUDA implementation
@@ -70,9 +75,9 @@ public:
     runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
     runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
     auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
-      BpOnDevice<T, DISP_VALS, VECTORIZATION>{
+      BpOnDevice<T, DISP_VALS, ACCELERATION>{
         std::make_unique<SmoothImageCUDA>(parallelParams),
-        std::make_unique<ProcessCUDABP<T, DISP_VALS>>(parallelParams),
+        std::make_unique<ProcessCUDABP<T, DISP_VALS, ACCELERATION>>(parallelParams),
         std::make_unique<RunImpCUDAMemoryManagement<T>>(),
         std::make_unique<RunImpCUDAMemoryManagement<float>>()});
     if (procSetOutput) {

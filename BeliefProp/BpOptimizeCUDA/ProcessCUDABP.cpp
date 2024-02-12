@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"
 
-template<RunData_t T, unsigned int DISP_VALS>
-inline run_eval::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file, int line, bool abort) const {
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::errorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
     std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
@@ -42,8 +42,8 @@ inline run_eval::Status ProcessCUDABP<T, DISP_VALS>::errorCheck(const char *file
 //functions directed related to running BP to retrieve the movement between the images
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
-template<RunData_t T, unsigned int DISP_VALS>
-run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
   const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
@@ -140,8 +140,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::runBPAtCurrentLevel(
 //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
-template<RunData_t T, unsigned int DISP_VALS>
-run_eval::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::copyMessageValuesToNextLevelDown(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& nextlevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
@@ -190,8 +190,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::copyMessageValuesToNextLevelDown(
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
-template<RunData_t T, unsigned int DISP_VALS>
-run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCosts(
   const beliefprop::BPsettings& algSettings,
   const beliefprop::levelProperties& currentLevelProperties,
   const std::array<float*, 2>& imagesOnTargetDevice,
@@ -227,8 +227,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCosts(
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
-template<RunData_t T, unsigned int DISP_VALS>
-run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeMessageValsToDefault(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
   const unsigned int bpSettingsNumDispVals)
@@ -258,8 +258,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeMessageValsToDefault(
   return run_eval::Status::NO_ERROR;
 }
 
-template<RunData_t T, unsigned int DISP_VALS>
-run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::levelProperties& prevLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
@@ -296,8 +296,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS>::initializeDataCurrentLevel(const b
   return run_eval::Status::NO_ERROR;
 }
 
-template<RunData_t T, unsigned int DISP_VALS>
-float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::retrieveOutputDisparity(
   const beliefprop::levelProperties& currentLevelProperties,
   const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
   const beliefprop::checkerboardMessages<T*>& messagesDevice,
@@ -330,27 +330,27 @@ float* ProcessCUDABP<T, DISP_VALS>::retrieveOutputDisparity(
   return resultingDisparityMapCompDevice;
 }
 
-template class ProcessCUDABP<float, 0>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
-template class ProcessCUDABP<double, 0>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
-template class ProcessCUDABP<halftype, 0>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>;
-template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>;
+template class ProcessCUDABP<float, 0, run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, 0, run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, 0, run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5], run_environment::AccSetting::CUDA>;
+template class ProcessCUDABP<halftype, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6], run_environment::AccSetting::CUDA>;

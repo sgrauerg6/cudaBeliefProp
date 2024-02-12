@@ -130,11 +130,11 @@ struct levelProperties
     }
   }
 
-  template <RunData_t T, run_environment::AccSetting ACC_SETTING>
+  template <RunData_t T, run_environment::AccSetting ACCELERATION>
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
     const unsigned int totalPossibleMovements, const unsigned int numLevels)
   {
-    beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACC_SETTING);
+    beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACCELERATION);
     unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
     for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
       currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);

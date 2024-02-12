@@ -87,9 +87,6 @@ std::vector<MultRunSpeedup> RunEvalBpImp::getSpeedupOverBaseline(const run_envir
 MultRunData RunEvalBpImp::runEvalImpMultDataSets(
   const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const 
 {
-#ifdef OPTIMIZED_CUDA_RUN
-  return runEvalImpMultDataSets<run_environment::AccSetting::CUDA>(runImpSettings, dataTypeSize);
-#else //OPTIMIZED_CUDA_RUN
   if (this->optImpAccel_ == run_environment::AccSetting::CUDA) {
     return runEvalImpMultDataSets<run_environment::AccSetting::CUDA>(runImpSettings, dataTypeSize);
   }
@@ -102,9 +99,8 @@ MultRunData RunEvalBpImp::runEvalImpMultDataSets(
   else if (this->optImpAccel_ == run_environment::AccSetting::NEON) {
     return runEvalImpMultDataSets<run_environment::AccSetting::NEON>(runImpSettings, dataTypeSize);
   }
-  //else (optImpAccel_ == run_environment::AccSetting::NONE)
+  //else (this->optImpAccel_ == run_environment::AccSetting::NONE)
   return runEvalImpMultDataSets<run_environment::AccSetting::NONE>(runImpSettings, dataTypeSize);
-#endif //OPTIMIZED_CUDA_RUN
 }
 
 template <run_environment::AccSetting OPT_IMP_ACCEL>

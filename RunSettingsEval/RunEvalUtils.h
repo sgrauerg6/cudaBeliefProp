@@ -30,7 +30,7 @@ concept Params_t =
 namespace run_eval {
 
 //get current run inputs and parameters in RunData structure
-template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACCELERATION>
 RunData inputAndParamsRunData(const U& algSettings);
 
 //get baseline runtime data from a previous run on a specific processor
@@ -63,12 +63,12 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
 };
 
 //get current run inputs and parameters in RunData structure
-template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACC_SETTING>
+template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACCELERATION>
 RunData run_eval::inputAndParamsRunData(const U& algSettings) {
   RunData currRunData;
   currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
   currRunData.appendData(algSettings.runData());
-  currRunData.appendData(run_environment::runSettings<ACC_SETTING>());
+  currRunData.appendData(run_environment::runSettings<ACCELERATION>());
   currRunData.addDataWHeader("LOOP_ITERS_TEMPLATED",
                             (LOOP_ITERS_TEMPLATE_OPTIMIZED == 0) ? "NO" : "YES");
   return currRunData;

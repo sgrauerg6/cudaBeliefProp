@@ -30,12 +30,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 
-template<RunData_t T, unsigned int DISP_VALS>
-class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>
 {
 public:
   ProcessCUDABP(const ParallelParams& cudaParams) : 
-    ProcessBPOnTargetDevice<T, DISP_VALS, run_environment::AccSetting::CUDA>(cudaParams) {}
+    ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>(cudaParams) {}
 
 private:
   //initialize the data cost at each pixel for each disparity value

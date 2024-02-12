@@ -38,7 +38,7 @@ using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 #include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, run_environment::AccSetting::CUDA>;
+using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 //run and evaluate belief propagation implementation on a specified input

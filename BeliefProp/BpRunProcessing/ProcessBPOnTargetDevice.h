@@ -32,7 +32,7 @@ using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 //Abstract class to process belief propagation on target device
 //Some of the class functions need to be overridden to for processing on
 //target device
-template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class ProcessBPOnTargetDevice {
 public:
   ProcessBPOnTargetDevice(const ParallelParams& parallelParams) : parallelParams_{parallelParams} { }
@@ -100,7 +100,7 @@ private:
     beliefprop::checkerboardMessages<T*> outputCheckerboardMessages;
     std::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel_.begin(), outputCheckerboardMessages.checkerboardMessagesAtLevel_.end(),
       [this, numDataAllocatePerMessage, &memManagementBpRun](auto& checkerboardMessagesSet) {
-      checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACC_SETTING); });
+      checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACCELERATION); });
 
     return outputCheckerboardMessages;
   }
@@ -124,15 +124,15 @@ private:
 
   virtual beliefprop::dataCostData<T*> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
-    return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING), 
-            memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACC_SETTING)};
+    return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACCELERATION), 
+            memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACCELERATION)};
   }
 
   virtual std::pair<beliefprop::dataCostData<T*>, beliefprop::checkerboardMessages<T*>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
     const unsigned long numDataAllocatePerDataCostsMessageDataArray,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
-    T* dataAllLevels = memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray, ACC_SETTING);
+    T* dataAllLevels = memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray, ACCELERATION);
     return organizeDataCostsAndMessageDataAllLevels(dataAllLevels, numDataAllocatePerDataCostsMessageDataArray);
   }
 
@@ -170,8 +170,8 @@ private:
 //run the belief propagation algorithm with on a set of stereo images to generate a disparity map on target device
 //input is images on target device for computation
 //output is disparity map and processing runtimes
-template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC_SETTING>
-std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDevice<T, DISP_VALS, ACC_SETTING>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
   const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
 {
@@ -188,7 +188,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   bpLevelProperties.reserve(algSettings.numLevels_);
 
   //set level properties for bottom level that include processing of full image width/height
-  bpLevelProperties.push_back(beliefprop::levelProperties(widthHeightImages, 0, 0, ACC_SETTING));
+  bpLevelProperties.push_back(beliefprop::levelProperties(widthHeightImages, 0, 0, ACCELERATION));
 
   //compute level properties which includes offset for each data/message array for each level after the bottom level
   for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
