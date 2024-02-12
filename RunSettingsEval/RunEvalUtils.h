@@ -64,7 +64,7 @@ void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& r
 
 //get current run inputs and parameters in RunData structure
 template<RunData_t T, Params_t U, unsigned int LOOP_ITERS_TEMPLATE_OPTIMIZED, run_environment::AccSetting ACCELERATION>
-RunData run_eval::inputAndParamsRunData(const U& algSettings) {
+inline RunData run_eval::inputAndParamsRunData(const U& algSettings) {
   RunData currRunData;
   currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
   currRunData.appendData(algSettings.runData());
@@ -74,7 +74,7 @@ RunData run_eval::inputAndParamsRunData(const U& algSettings) {
   return currRunData;
 }
 
-std::optional<std::pair<std::string, std::vector<double>>> run_eval::getBaselineRuntimeData(const std::string& baselineDataPath) {
+inline std::optional<std::pair<std::string, std::vector<double>>> run_eval::getBaselineRuntimeData(const std::string& baselineDataPath) {
   std::ifstream baselineData(baselineDataPath);
   if (!(baselineData.is_open())) {
     return {};
@@ -99,7 +99,7 @@ std::optional<std::pair<std::string, std::vector<double>>> run_eval::getBaseline
 }
 
 //get average and median speedup from vector of speedup values
-std::array<double, 2> run_eval::getAvgMedSpeedup(const std::vector<double>& speedupsVect) {
+inline std::array<double, 2> run_eval::getAvgMedSpeedup(const std::vector<double>& speedupsVect) {
   const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
   auto speedupsVectSorted = speedupsVect;
   std::sort(speedupsVectSorted.begin(), speedupsVectSorted.end());
@@ -110,7 +110,7 @@ std::array<double, 2> run_eval::getAvgMedSpeedup(const std::vector<double>& spee
 }
 
 //get average and median speedup of current runs compared to baseline data from file
-std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
   const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
   const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices)
 {
@@ -178,7 +178,7 @@ std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRunData& 
 }
 
 //get average and median speedup using optimized parallel parameters compared to default parallel parameters
-MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutput,
+inline MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutput,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutput.size(); i++) {
@@ -196,7 +196,7 @@ MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutput,
 }
 
 //get average and median speedup between base and target runtime data
-MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
+inline MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutputBase.size(); i++) {
@@ -214,7 +214,7 @@ MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunDat
 }
 
 //get average and median speedup when loop iterations are given at compile time as template value
-MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
+inline MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   //assumine that runs with and without loop iteration count given in template parameter are consectutive with the run with the
@@ -235,7 +235,7 @@ MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOut
 //write data for file corresponding to runs for a specified data type or across all data type
 //includes results for each run as well as average and median speedup data across multiple runs
 template <bool MULT_DATA_TYPES>
-void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
+inline void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
   run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize) {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)

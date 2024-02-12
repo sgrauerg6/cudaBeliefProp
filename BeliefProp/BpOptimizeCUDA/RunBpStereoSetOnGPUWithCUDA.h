@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace bp_cuda_device
 {
-  RunData retrieveDeviceProperties(int numDevice)
+  inline RunData retrieveDeviceProperties(int numDevice)
   {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, numDevice);
