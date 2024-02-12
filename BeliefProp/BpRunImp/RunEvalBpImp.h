@@ -34,40 +34,28 @@
 
 //run and evaluate optimized belief propagation implementation on a number of inputs
 //acceleration method of optimized belief propagation implementation is specified in template parameter
-template <run_environment::AccSetting OPT_IMP_ACCEL>
 class RunEvalBpImp : public RunBenchmarkImp {
 public:
-  std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
-    const size_t dataTypeSize) const override;
-  
-  //retrieve acceleration setting for optimized belief propagation implementation that is being evaluated
-  run_environment::AccSetting getAccelerationSetting() const override { return OPT_IMP_ACCEL; }
+  RunEvalBpImp(const run_environment::AccSetting& optImpAccel) : RunBenchmarkImp(optImpAccel) {}
 
 private:
-  //perform runs on multiple data sets using specified data type and acceleration method
-  template <RunData_t T>
-  std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings) const;
+  //run and evaluate implementation on multiple data sets
+  MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const override;
+  
+  template <run_environment::AccSetting OPT_IMP_ACCEL>
+  MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const;
+
+  template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+  MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings) const;
+
+  //get speedup over baseline data for belief propagation run if data available
+  std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
+    MultRunData& runDataAllRuns, const size_t dataTypeSize) const override;
 };
 
-//run belief propagation implementation with given data type and acceleration setting
-template <run_environment::AccSetting OPT_IMP_ACCEL>
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>::operator()(const run_environment::RunImpSettings& runImpSettings,
-  const size_t dataTypeSize) const
-{
-  if (dataTypeSize == sizeof(float)) {
-    return operator()<float>(runImpSettings);
-  }
-  else if (dataTypeSize == sizeof(double)) {
-    return operator()<double>(runImpSettings);
-  }
-  else {
-    return operator()<halftype>(runImpSettings);
-  }
-}
-
 //get speedup over baseline data for belief propagation run if data available
-std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
-  MultRunData& runDataAllRuns, const size_t dataTypeSize)
+std::vector<MultRunSpeedup> RunEvalBpImp::getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
+  MultRunData& runDataAllRuns, const size_t dataTypeSize) const
 {
   //initialize speedup results
   std::vector<MultRunSpeedup> speedupResults;
@@ -96,10 +84,47 @@ std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImp
   return speedupResults;
 }
 
-//perform runs on multiple data sets using specified data type and acceleration method
+MultRunData RunEvalBpImp::runEvalImpMultDataSets(
+  const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const 
+{
+#ifdef OPTIMIZED_CUDA_RUN
+  return runEvalImpMultDataSets<run_environment::AccSetting::CUDA>(runImpSettings, dataTypeSize);
+#else //OPTIMIZED_CUDA_RUN
+  if (this->optImpAccel_ == run_environment::AccSetting::CUDA) {
+    return runEvalImpMultDataSets<run_environment::AccSetting::CUDA>(runImpSettings, dataTypeSize);
+  }
+  else if (this->optImpAccel_ == run_environment::AccSetting::AVX512) {
+    return runEvalImpMultDataSets<run_environment::AccSetting::AVX512>(runImpSettings, dataTypeSize);
+  }
+  else if (this->optImpAccel_ == run_environment::AccSetting::AVX256) {
+    return runEvalImpMultDataSets<run_environment::AccSetting::AVX256>(runImpSettings, dataTypeSize);
+  }
+  else if (this->optImpAccel_ == run_environment::AccSetting::NEON) {
+    return runEvalImpMultDataSets<run_environment::AccSetting::NEON>(runImpSettings, dataTypeSize);
+  }
+  //else (optImpAccel_ == run_environment::AccSetting::NONE)
+  return runEvalImpMultDataSets<run_environment::AccSetting::NONE>(runImpSettings, dataTypeSize);
+#endif //OPTIMIZED_CUDA_RUN
+}
+
 template <run_environment::AccSetting OPT_IMP_ACCEL>
-template <RunData_t T>
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>::operator()(const run_environment::RunImpSettings& runImpSettings) const {
+MultRunData RunEvalBpImp::runEvalImpMultDataSets(
+  const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const
+{
+  if (dataTypeSize == sizeof(float)) {
+    return runEvalImpMultDataSets<float, OPT_IMP_ACCEL>(runImpSettings);
+  }
+  else if (dataTypeSize == sizeof(double)) {
+    return runEvalImpMultDataSets<double, OPT_IMP_ACCEL>(runImpSettings);
+  }
+  else {
+    return runEvalImpMultDataSets<halftype, OPT_IMP_ACCEL>(runImpSettings);
+  }
+}
+
+//run and evaluate implementation on multiple data sets
+template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
+MultRunData RunEvalBpImp::runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings) const {
   MultRunData runDataAllRuns;
   std::vector<MultRunData> runResultsEachInput;
   runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(runImpSettings));
@@ -116,30 +141,8 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunEvalBpImp<OPT_IMP_ACCEL>:
   for (auto& runResult : runResultsEachInput) {
     runDataAllRuns.insert(runDataAllRuns.end(), runResult.begin(), runResult.end());
   }
-
-  //initialize speedup results
-  std::vector<MultRunSpeedup> speedupResults;
-
-  //add speedup results over baseline data if available for current input
-  auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings, runDataAllRuns, sizeof(T));
-  speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
-
-  //get speedup info for using optimized parallel parameters and disparity count as template parameter
-  if (runImpSettings.optParallelParamsOptionSetting_.first) {
-    speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runDataAllRuns, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
-      run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
-  }
-  if (runImpSettings.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
-    speedupResults.push_back(run_eval::getAvgMedSpeedupLoopItersInTemplate(runDataAllRuns, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
-      run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
-  }
-
-  //write output corresponding to results for current data type
-  constexpr bool MULT_DATA_TYPES{false};
-  run_eval::writeRunOutput<MULT_DATA_TYPES, T>({runDataAllRuns, speedupResults}, runImpSettings, OPT_IMP_ACCEL);
-
-  //return data for each run and multiple average and median speedup results across the data
-  return {runDataAllRuns, speedupResults};
+ 
+  return runDataAllRuns;
 }
 
 #endif /* RUNEVALBPIMP_H_ */

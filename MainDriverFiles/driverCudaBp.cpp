@@ -40,6 +40,6 @@ int main(int argc, char** argv)
 #endif //PROCESSOR_NAME
 
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
-  RunAndEvaluateImp::runEvalBenchmark({{run_environment::AccSetting::CUDA, std::make_shared<RunEvalBpImp<run_environment::AccSetting::CUDA>>()}}, runImpSettings);
+  RunAndEvaluateImp::runEvalBenchmark({{run_environment::AccSetting::CUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::CUDA)}}, runImpSettings);
   return 0;
 }
