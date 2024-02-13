@@ -24,7 +24,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
   if (token == PGM_EXTENSION) {
     initImage = imageRead(filePathImage, image_type::PGM_IMAGE);
   } else if (token == PPM_EXTENSION) {
-    initImage = imageRead(filePathImage, image_type::PGM_IMAGE, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
+    initImage = imageRead(filePathImage, image_type::PPM_IMAGE, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
   } else {
     //end function if not of type pgm or ppm with result
     //being BpImage with default constructor
