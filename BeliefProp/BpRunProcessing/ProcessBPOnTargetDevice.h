@@ -455,5 +455,4 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   return {resultingDisparityMapCompDevice, segmentTimings};
 }
 
-
 #endif /* PROCESSBPONTARGETDEVICE_H_ */

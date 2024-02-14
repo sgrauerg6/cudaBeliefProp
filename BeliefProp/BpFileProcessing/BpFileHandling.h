@@ -12,12 +12,11 @@
 #include <algorithm>
 #include "BpFileHandlingConsts.h"
 
+//class for retrieve path of stereo set files for reading and for output
 class BpFileHandling {
 public:
   //constructor takes stereo set name as input, which must match the directory name of the stereo set
-  BpFileHandling(const std::string& stereo_set_name) : num_out_disp_map_(1) {
-    stereo_set_path_ = getStereoSetsPath() / stereo_set_name;
-  }
+  BpFileHandling(const std::string& stereo_set_name) : stereo_set_path_{getStereoSetsPath() / stereo_set_name}, num_out_disp_map_{1} { }
 
   //return path to reference image with valid extension if found, otherwise throw filesystem error
   std::filesystem::path getRefImagePath() const;
@@ -40,7 +39,7 @@ private:
   //constants
   std::filesystem::path getStereoSetsPath() const;
 
-  std::filesystem::path stereo_set_path_;
+  const std::filesystem::path stereo_set_path_;
   unsigned int num_out_disp_map_;
 };
 

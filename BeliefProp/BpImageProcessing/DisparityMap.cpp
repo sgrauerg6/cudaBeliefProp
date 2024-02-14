@@ -43,26 +43,25 @@ const OutputEvaluationResults DisparityMap<T>::getOutputComparison(
     const T dispMapCompareVal = disparity_map_to_compare.getPixelAtPoint(i);
     const T absDiff = std::abs(dispMapVal - dispMapCompareVal);
 
-    output_evaluation.totalDispAbsDiffNoMax += absDiff;
-    output_evaluation.totalDispAbsDiffWithMax += std::min(absDiff,
-      evaluation_parameters.max_diff_cap_);
+    output_evaluation.totalDispAbsDiffNoMax_ += absDiff;
+    output_evaluation.totalDispAbsDiffWithMax_ += std::min(absDiff, evaluation_parameters.max_diff_cap_);
 
     //increment number of pixels that differ greater than threshold for each threshold
     std::for_each(evaluation_parameters.output_diff_thresholds_.begin(), evaluation_parameters.output_diff_thresholds_.end(),
       [absDiff, &output_evaluation](const float threshold) {
         if (absDiff > threshold) {
-          output_evaluation.numSigDiffPixelsAtThresholds[threshold]++;
+          output_evaluation.numSigDiffPixelsAtThresholds_[threshold]++;
         }
       });
   }
 
-  output_evaluation.averageDispAbsDiffNoMax = output_evaluation.totalDispAbsDiffNoMax / this->getTotalPixels();
-  output_evaluation.averageDispAbsDiffWithMax = output_evaluation.totalDispAbsDiffWithMax / this->getTotalPixels();
+  output_evaluation.averageDispAbsDiffNoMax_ = output_evaluation.totalDispAbsDiffNoMax_ / this->getTotalPixels();
+  output_evaluation.averageDispAbsDiffWithMax_ = output_evaluation.totalDispAbsDiffWithMax_ / this->getTotalPixels();
 
   //need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
-  std::for_each(output_evaluation.numSigDiffPixelsAtThresholds.begin(), output_evaluation.numSigDiffPixelsAtThresholds.end(),
+  std::for_each(output_evaluation.numSigDiffPixelsAtThresholds_.begin(), output_evaluation.numSigDiffPixelsAtThresholds_.end(),
     [this, &output_evaluation](const auto& sigDiffPixelAtThresholdMap) {
-      output_evaluation.propSigDiffPixelsAtThresholds[sigDiffPixelAtThresholdMap.first] =
+      output_evaluation.propSigDiffPixelsAtThresholds_[sigDiffPixelAtThresholdMap.first] =
         ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels()));
     });
 

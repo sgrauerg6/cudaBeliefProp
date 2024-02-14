@@ -143,6 +143,7 @@ namespace bp_params
   constexpr bool OPTIMIZED_INDEXING_SETTING{true};
   constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
 
+  //retrieve run settings as a RunData object for output
   inline RunData runSettings()  {
     RunData currRunData;
     currRunData.addDataWHeader("Memory Optimization Level", std::to_string(USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));

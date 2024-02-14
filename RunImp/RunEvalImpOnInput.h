@@ -23,7 +23,7 @@ public:
 
 protected:
   //set up parallel parameters for benchmark
-  virtual std::shared_ptr<ParallelParams> setUpParallelParams(const run_environment::RunImpSettings& runImpSettings) = 0;
+  virtual std::shared_ptr<ParallelParams> setUpParallelParams(const run_environment::RunImpSettings& runImpSettings) const = 0;
 
   //retrieve input and parameters for run of current benchmark
   virtual RunData inputAndParamsForCurrBenchmark() const = 0;
