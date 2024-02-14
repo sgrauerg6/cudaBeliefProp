@@ -31,7 +31,11 @@ struct BPsettings
   float smoothingSigma_{bp_params::SIGMA_BP};
   float lambda_bp_{bp_params::LAMBDA_BP};
   float data_k_bp_{bp_params::DATA_K_BP};
-  float disc_k_bp_{bp_params::DISC_K_BP[0]};
+  //discontinuity cost cap set to infinity by default but is
+  //expected to be dependent on number of disparity values and set when
+  //number of disparity values is set
+  float disc_k_bp_{bp_consts::INF_BP};
+  //number of disparity values must be set for each stereo set
   unsigned int numDispVals_{0};
 
   RunData runData() const {
