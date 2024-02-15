@@ -138,14 +138,3 @@ a CUDA device with compute capability 8.0 or later, can switch CUDA processing a
 datatype to the bfloat16 datatype to fix this bug (at least in the conesFullSizeCropped test) by removing the
 comment in the line "BFLOAT_DATA_TYPE_SETTING = #-DUSE_BFLOAT16_FOR_HALF_PRECISION" in
 LinuxMakeAndRunBPCUDA/Makefile (line 28).
-
-
-WINDOWS INSTRUCTIONS (OUTDATED...HASN'T BEEN MAINTAINED FOR AWHILE):
-
-1.  Open CreateBeliefPropDLLs.sln Visual Studio Project in WindowsVSCreateDLLsWithRunBPWithDLLs/CreateBeliefPropDLLs folder.  
-
-2.  Select to compile then run the application.  The solution will first compile the single-thread CPU, optimized CPU, 
-and CUDA implementations into DLLs, then the main program in the solution will load the DLLs and run the program.  The
-program output shows the optimized CPU and CUDA implementation results compared to the single-thread CPU implementation results.
-
-Parameters can be adjusted in the BpConstsAndParams/bpStereoParameters.h file and will need to re-compile to see results with adjusted parameters.

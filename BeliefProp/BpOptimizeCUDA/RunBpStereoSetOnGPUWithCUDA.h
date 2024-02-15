@@ -123,33 +123,4 @@ public:
 
 #endif //COMPILING_FOR_ARM
 
-#ifdef _WIN32
-
-extern "C" __declspec(dllexport) RunBpStereoSet<float, 0> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, 0> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, 0> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp0();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp0();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp0();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp1();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp1();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp1();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp2();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp2();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp2();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp3();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp3();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp3();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp4();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp4();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp4();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp5();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp5();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp5();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp6();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp6();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_> * __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp6();
-
-#endif //_WIN32
-
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
