@@ -71,7 +71,7 @@ ParallelParams.o:
 RunBenchmarkImp.o:
 	$(CC) ${TOP_DIR}/RunImp/RunBenchmarkImp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverCudaBp.o: ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp ${TOP_DIR}/MainDriverFiles/RunEvalImp.h ${BP_PATH}/BpConstsAndParams/bpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/bpStereoParameters.h ${BP_PATH}/BpConstsAndParams/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverCudaBp.o: ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp ${BP_PATH}/BpConstsAndParams/bpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/bpStereoParameters.h ${BP_PATH}/BpConstsAndParams/bpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpFileHandling.o: ${BP_PATH}/BpFileProcessing/BpFileHandling.h ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp ${BP_PATH}/BpFileProcessing/BpFileHandlingConsts.h
