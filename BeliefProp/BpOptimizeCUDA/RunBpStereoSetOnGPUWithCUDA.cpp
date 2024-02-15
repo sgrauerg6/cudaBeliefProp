@@ -37,109 +37,109 @@ __declspec(dllexport) RunBpStereoSet<short, 0>* __cdecl createRunBpStereoSetOnGP
   return new RunBpStereoSetOnGPUWithCUDA<short, 0>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp0()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp0()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp0()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp0()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp0()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp0()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp1()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp1()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp1()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp1()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp1()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp1()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp2()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp2()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp2()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp2()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp2()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp2()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp3()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp3()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp3()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp3()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp3()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp3()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp4()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp4()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp4()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp4()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp4()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp4()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp5()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp5()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp5()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp5()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp5()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp5()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp6()
+__declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAFloat_KnownDisp6()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp6()
+__declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDADouble_KnownDisp6()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<double, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
-__declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp6()
+__declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>* __cdecl createRunBpStereoSetOnGPUWithCUDAShort_KnownDisp6()
 {
-  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(BpParallelParams(bp_params::LEVELS_BP));
+  return new RunBpStereoSetOnGPUWithCUDA<short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(BpParallelParams(bp_params::LEVELS_BP));
 }
 
 #endif //_WIN32

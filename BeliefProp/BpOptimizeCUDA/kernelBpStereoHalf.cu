@@ -26,13 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifdef CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 //set constexpr unsigned int values for number of disparity values for each stereo set used
-constexpr unsigned int DISP_VALS_0{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]};
-constexpr unsigned int DISP_VALS_1{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]};
-constexpr unsigned int DISP_VALS_2{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]};
-constexpr unsigned int DISP_VALS_3{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]};
-constexpr unsigned int DISP_VALS_4{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]};
-constexpr unsigned int DISP_VALS_5{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]};
-constexpr unsigned int DISP_VALS_6{bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]};
+constexpr unsigned int DISP_VALS_0{bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_};
+constexpr unsigned int DISP_VALS_1{bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_};
+constexpr unsigned int DISP_VALS_2{bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_};
+constexpr unsigned int DISP_VALS_3{bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_};
+constexpr unsigned int DISP_VALS_4{bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_};
+constexpr unsigned int DISP_VALS_5{bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_};
+constexpr unsigned int DISP_VALS_6{bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_};
 
 //device function to process messages using half precision with number of disparity values
 //given in template parameter

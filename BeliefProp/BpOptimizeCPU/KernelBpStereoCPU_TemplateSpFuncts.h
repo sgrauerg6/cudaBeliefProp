@@ -54,7 +54,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -64,7 +64,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -75,7 +75,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -85,7 +85,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -96,7 +96,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -106,7 +106,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -117,7 +117,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -127,7 +127,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -138,7 +138,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -148,7 +148,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -159,7 +159,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal,
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -169,7 +169,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -180,7 +180,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
 }
 
 template<> inline
-void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardToUpdate,
   const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
@@ -190,7 +190,7 @@ void beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, short, bp_p
   short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
   const float disc_k_bp, const unsigned int offsetData, const bool dataAligned, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+  beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<short, float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(
     xVal, yVal, checkerboardToUpdate, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -214,91 +214,91 @@ void beliefprop::initializeCurrentLevelDataPixel<short, short, 0>(const unsigned
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
-void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+void beliefprop::initializeCurrentLevelDataPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::Checkerboard_Parts checkerboardPart,
   const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* dataCostDeviceToWriteTo,
   const unsigned int offsetNum, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(xVal, yVal, checkerboardPart,
+  beliefprop::initializeCurrentLevelDataPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(xVal, yVal, checkerboardPart,
     currentLevelProperties, prevLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
     offsetNum, bpSettingsDispVals);
 }
@@ -318,91 +318,91 @@ void beliefprop::retrieveOutputDisparityPixel<short, short, 0>(
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard0,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(xVal, yVal, currentLevelProperties, dataCostStereoCheckerboard0,
     dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]>(xVal, yVal, currentLevelProperties,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(xVal, yVal, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]>(xVal, yVal, currentLevelProperties,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(xVal, yVal, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]>(xVal, yVal, currentLevelProperties,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(xVal, yVal, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]>(xVal, yVal, currentLevelProperties,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(xVal, yVal, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]>(xVal, yVal, currentLevelProperties,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(xVal, yVal, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);
 }
 
 template<> inline
-void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(
+void beliefprop::retrieveOutputDisparityPixel<short, short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(
   const unsigned int xVal, const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1, short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
   short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0, short* messageUPrevStereoCheckerboard1, short* messageDPrevStereoCheckerboard1,
   short* messageLPrevStereoCheckerboard1, short* messageRPrevStereoCheckerboard1, float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals)
 {
-  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]>(xVal, yVal, currentLevelProperties,
+  beliefprop::retrieveOutputDisparityPixel<short, float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(xVal, yVal, currentLevelProperties,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0, messageLPrevStereoCheckerboard0,
     messageRPrevStereoCheckerboard0, messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1, messageLPrevStereoCheckerboard1,
     messageRPrevStereoCheckerboard1, disparityBetweenImagesDevice, bpSettingsDispVals);

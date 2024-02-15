@@ -72,17 +72,6 @@ namespace bp_params
     BpStereoSet{"conesFullSize", 256, 1}
   };
 
-  //initialize array with number of disparity values for each test stereo set
-  constexpr std::array<unsigned int, 8> NUM_POSSIBLE_DISPARITY_VALUES{
-    STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_HALF_SIZE_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[TSUKUBA_IMAGES_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[VENUS_IMAGES_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[BARN_1_IMAGES_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[CONES_IMAGES_QUARTER_SIZE_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[CONES_IMAGES_HALF_SIZE_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[CONES_IMAGES_FULL_SIZE_CROPPED_E].numDispVals_,
-    STEREO_SETS_TO_PROCESS[CONES_IMAGES_FULL_SIZE_E].numDispVals_};
-
   //number of belief propagation stereo runs of same image set
   constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
 

@@ -61,8 +61,8 @@ protected:
     bool runImpTmpLoopIters) const override;
 
 private:
-  std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT], run_environment::AccSetting::NONE>> runBpStereoSingleThread_;
-  std::unique_ptr<RunBpStereoSet<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT], OPT_IMP_ACCEL>> runOptBpNumItersTemplated_;
+  std::unique_ptr<RunBpStereoSet<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, run_environment::AccSetting::NONE>> runBpStereoSingleThread_;
+  std::unique_ptr<RunBpStereoSet<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>> runOptBpNumItersTemplated_;
   std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> runOptBpNumItersNoTemplate_;
   beliefprop::BPsettings algSettings_;
 };
@@ -74,10 +74,10 @@ MultRunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(const r
   algSettings_.disc_k_bp_ = (float)algSettings_.numDispVals_ / 7.5f;
 
   MultRunData runResults;
-  runBpStereoSingleThread_ = std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT]>>();
+  runBpStereoSingleThread_ = std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_>>();
   //RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
   if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::RUN_ONLY_NON_TEMPLATED) {
-    runOptBpNumItersTemplated_ = std::make_unique<RunBpOptimized<T, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT], OPT_IMP_ACCEL>>();
+    runOptBpNumItersTemplated_ = std::make_unique<RunBpOptimized<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>>();
     constexpr bool runWLoopItersTemplated{true};
     runResults.push_back(this->runEvalBenchmark(runImpSettings, runWLoopItersTemplated));
   }
@@ -103,7 +103,7 @@ template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NU
 RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrBenchmark() const {
   RunData currRunData;
   currRunData.addDataWHeader("Stereo Set", std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
-  currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[NUM_INPUT], OPT_IMP_ACCEL>(algSettings_));
+  currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>(algSettings_));
   currRunData.appendData(bp_params::runSettings());
   return currRunData;
 }

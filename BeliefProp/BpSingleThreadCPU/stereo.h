@@ -334,27 +334,27 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_
 
 #ifdef _WIN32
 
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp0();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp0();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[0]>* __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp0();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp1();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp1();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[1]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp1();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp2();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp2();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[2]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp2();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp3();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp3();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[3]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp3();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp4();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp4();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[4]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp4();
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp5();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp5();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[5]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp5(); 
-extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp6();
-extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp6();
-extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::NUM_POSSIBLE_DISPARITY_VALUES[6]> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>* __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp0();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>* __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp0();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>* __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp0();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp1();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp1();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp1();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp2();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp2();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp2();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp3();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp3();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp3();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp4();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp4();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp4();
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp5();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp5();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp5(); 
+extern "C" __declspec(dllexport) RunBpStereoSet<float, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadFloat_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<double, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadDouble_KnownDisp6();
+extern "C" __declspec(dllexport) RunBpStereoSet<short, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_> * __cdecl createRunBpStereoCPUSingleThreadShort_KnownDisp6();
 
 #endif //_WIN32
 
