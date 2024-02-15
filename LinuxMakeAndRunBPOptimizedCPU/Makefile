@@ -29,8 +29,11 @@ DBG    = -g
 
 all: impDriverCPU
 
-impDriverCPU: driverBpStereoCPU.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
-	$(CC) driverBpStereoCPU.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o driverCPUBp -O
+impDriverCPU: driverBpStereoCPU.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
+	$(CC) driverBpStereoCPU.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o driverCPUBp -O
+
+RunEvalImpMultSettings.o:
+	$(CC) ${TOP_DIR}/RunImp/RunEvalImpMultSettings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunData.o:
 	$(CC) ${TOP_DIR}/RunSettingsEval/RunData.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

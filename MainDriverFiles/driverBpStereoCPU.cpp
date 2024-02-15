@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunImp/RunEvalBpImp.h"
 #include "RunImpCPU/RunCPUSettings.h"
-#include "RunEvalImp.h"
+#include "RunImp/RunEvalImpMultSettings.h"
 
 int main(int argc, char** argv)
 {
@@ -39,8 +39,9 @@ int main(int argc, char** argv)
   runImpSettings.processorName_ = PROCESSOR_NAME;
 #endif //PROCESSOR_NAME
   
-  //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation given first as the expected fastest implementation
-  RunAndEvaluateImp::runEvalBenchmark({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX512)},
+  //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
+  //given first as the expected fastest implementation
+  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX512)},
     {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX256)},
     {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::NONE)}},
     runImpSettings);
