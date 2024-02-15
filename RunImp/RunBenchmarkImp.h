@@ -33,11 +33,15 @@ private:
   //run and evaluate implementation on multiple data sets
   virtual MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const = 0;
 
-  //get speedup over baseline data for belief propagation run if data available
-  //by default return empty vector indicating no data available
-  //override in child class to get speedup over baselin
-  virtual std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
-    MultRunData& runDataAllRuns, const size_t dataTypeSize) const { return std::vector<MultRunSpeedup>(); };
+  //get speedup over baseline data if data available
+  std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
+    MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
+  
+  //get speedup over baseline data for belief propagation run for specific input subsets if data available
+  //by default returns empty vector and can be overriden in child class to retrieve speedups for specific subsets
+  //for benchmark
+  virtual std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
+    MultRunData& runDataAllRuns, const size_t dataTypeSize) const { return std::vector<MultRunSpeedup>(); }
 };
 
 #endif //RUN_BENCHMARK_IMP_H

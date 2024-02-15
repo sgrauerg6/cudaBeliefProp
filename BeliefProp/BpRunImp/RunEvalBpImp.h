@@ -48,8 +48,8 @@ private:
   template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
   MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings) const;
 
-  //get speedup over baseline data for belief propagation run if data available
-  std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
+  //get speedup over baseline data for belief propagation run for specific input subsets if data available
+  std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
     MultRunData& runDataAllRuns, const size_t dataTypeSize) const override;
 };
 

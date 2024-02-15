@@ -41,6 +41,10 @@ std::array<double, 2> getAvgMedSpeedup(const std::vector<double>& speedupsVect);
 
 //get average and median speedup of current runs compared to baseline data from file
 std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+  const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd);
+
+//get average and median speedup of subset(s) of runs compared to baseline data from file
+std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaselineSubsets(MultRunData& runOutput,
   const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
   const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices = 
   std::vector<std::pair<std::string, std::vector<unsigned int>>>());
@@ -109,8 +113,8 @@ inline std::array<double, 2> run_eval::getAvgMedSpeedup(const std::vector<double
   return {averageSpeedup, medianSpeedup};
 }
 
-//get average and median speedup of current runs compared to baseline data from file
-inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+//get average and median speedup of specified subset(s) of runs compared to baseline data from file
+inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaselineSubsets(MultRunData& runOutput,
   const std::string& dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
   const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices)
 {
@@ -121,22 +125,6 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
   if (baselineRunData) {
     std::string speedupHeader = "Speedup relative to " + (*baselineRunData).first + " - " + dataTypeStr;
     const auto baselineRuntimes = (*baselineRunData).second;
-    for (unsigned int i=0; i < runOutput.size(); i++) {
-      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-        for (auto& runData : runOutput[i].second) {
-          runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-        }
-      }
-    }
-    if (speedupsVect.size() > 0) {
-      speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
-      speedupsVect.clear();
-    }
-    else {
-      return {MultRunSpeedup()};
-    }
-
     //retrieve speedup data for any subsets of optimized runs
     for (const auto& currSubsetStrIndices : subsetStrIndices) {
       speedupHeader = "Speedup relative to " + (*baselineRunData).first + " on " + currSubsetStrIndices.first + " - " + dataTypeStr;
@@ -155,8 +143,39 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
     }
   }
 
+  return speedupData;
+}
+
+//get average and median speedup of current runs compared to baseline data from file
+inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+  const std::string& dataTypeStr, const std::array<std::string_view, 2>& baselinePathOptSingThread)
+{
+  //get speedup over baseline for optimized runs
+  std::vector<double> speedupsVect;
+  std::vector<MultRunSpeedup> speedupData;
+  const auto baselineRunData = getBaselineRuntimeData(std::string(baselinePathOptSingThread[0]));
+  if (baselineRunData) {
+    std::string speedupHeader = "Speedup relative to " + (*baselineRunData).first + " - " + dataTypeStr;
+    const auto baselineRuntimes = (*baselineRunData).second;
+    for (unsigned int i=0; i < runOutput.size(); i++) {
+      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
+        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+        for (auto& runData : runOutput[i].second) {
+          runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+        }
+      }
+    }
+    if (speedupsVect.size() > 0) {
+      speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
+      speedupsVect.clear();
+    }
+    else {
+      return {MultRunSpeedup()};
+    }
+  }
+
   //get speedup over baseline for single thread runs
-  const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[1]));
+  const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baselinePathOptSingThread[1]));
   if (baselineRunDataSThread) {
     std::string speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + (*baselineRunDataSThread).first + " - " + dataTypeStr;
     const auto baselineRuntimesSThread = (*baselineRunDataSThread).second;
