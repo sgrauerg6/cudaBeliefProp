@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <map>
 #include <iostream>
+#include <chrono>
 #include "RunSettingsEval/RunData.h"
 
 //Class to store timings
@@ -31,18 +32,18 @@ public:
   void addToCurrentTimings(const DetailedTimings& inDetailedTimings);
 
   //add timing by segment index
-  void addTiming(const T timingSegment, const double segmentTime) {
+  void addTiming(const T timingSegment, const std::chrono::duration<double>& segmentTime) {
     segmentTimings_[timingSegment].push_back(segmentTime);
   }
 
   //get median timing for a specified segment that may have been run multiple times
-  double getMedianTiming(const T runSegmentIndex) const;
+  std::chrono::duration<double> getMedianTiming(const T runSegmentIndex) const;
 
   //return current timing data as a RunData object for output
   RunData runData() const;
 
 private:
-  std::map<T, std::vector<double>> segmentTimings_;
+  std::map<T, std::vector<std::chrono::duration<double>>> segmentTimings_;
   const std::unordered_map<T, std::string> timingSegToStr_;
 };
 
@@ -52,7 +53,7 @@ requires std::is_enum_v<T>
 DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : timingSegToStr_{timingSegments} {
   std::for_each(timingSegments.begin(), timingSegments.end(),
     [this](const auto& segment) {
-      this->segmentTimings_[segment.first] = std::vector<double>(); 
+      this->segmentTimings_[segment.first] = std::vector<std::chrono::duration<double>>(); 
     });
 }
 
@@ -76,14 +77,14 @@ void DetailedTimings<T>::addToCurrentTimings(const DetailedTimings& inDetailedTi
 //get median timing for a specified segment that may have been run multiple times
 template <typename T>
 requires std::is_enum_v<T>
-double DetailedTimings<T>::getMedianTiming(const T runSegmentIndex) const {
+std::chrono::duration<double> DetailedTimings<T>::getMedianTiming(const T runSegmentIndex) const {
   if (segmentTimings_.at(runSegmentIndex).size() > 0) {
-    std::vector<double> segmentTimingVectCopy(segmentTimings_.at(runSegmentIndex));
+    std::vector<std::chrono::duration<double>> segmentTimingVectCopy(segmentTimings_.at(runSegmentIndex));
     std::sort(segmentTimingVectCopy.begin(), segmentTimingVectCopy.end());
     return (segmentTimingVectCopy[segmentTimingVectCopy.size() / 2]);
   }
   else {
-    return 0.0;
+    return std::chrono::duration<double>();
   }
 }
 
@@ -98,7 +99,7 @@ RunData DetailedTimings<T>::runData() const {
       std::string headerStart = timingSegToStr_.at(currentTiming.first);
       if (currentTiming.second.size() > 0) {
         timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) +
-          " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2]));
+          " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2].count()));
       }
       else {
         timingsRunData.addDataWHeader(headerStart + " (No timings) ", "No timings"); 

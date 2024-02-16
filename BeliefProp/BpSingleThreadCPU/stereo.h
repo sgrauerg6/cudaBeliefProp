@@ -49,7 +49,8 @@ private:
   void bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
       image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
       image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp);
-  std::pair<image<uchar>*, RunData> stereo_ms(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings, float& runtime);
+  std::pair<image<uchar>*, RunData> stereo_ms(image<uchar> *img1, image<uchar> *img2,
+    const beliefprop::BPsettings& algSettings, std::chrono::duration<double>& runtime);
 };
 
 // dt of 1d function
@@ -201,7 +202,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::bp_cb(image<float[DISP_VAL
 // multiscale belief propagation for image restoration
 template<typename T, unsigned int DISP_VALS>
 inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
-  const beliefprop::BPsettings& algSettings, float& runtime) {
+  const beliefprop::BPsettings& algSettings, std::chrono::duration<double>& runtime) {
   image<float[DISP_VALS]> *u[bp_params::LEVELS_BP];
   image<float[DISP_VALS]> *d[bp_params::LEVELS_BP];
   image<float[DISP_VALS]> *l[bp_params::LEVELS_BP];
@@ -305,7 +306,7 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_
   // load input
   img1 = loadPGMOrPPMImage(refTestImagePath[0].c_str());
   img2 = loadPGMOrPPMImage(refTestImagePath[1].c_str());
-  float runtime = 0.0f;
+  std::chrono::duration<double> runtime;
 
   // compute disparities
   auto outStereo = stereo_ms(img1, img2, algSettings, runtime);

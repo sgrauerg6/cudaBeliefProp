@@ -181,7 +181,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
   std::vector<std::pair<timingType, timingType>> eachLevelTimingBP(algSettings.numLevels_);
   std::vector<std::pair<timingType, timingType>> eachLevelTimingCopy(algSettings.numLevels_);
-  double totalTimeBpIters{0.0}, totalTimeCopyData{0.0}, totalTimeCopyDataKernel{0.0};
+  std::chrono::duration<double> totalTimeBpIters{0}, totalTimeCopyData{0}, totalTimeCopyDataKernel{0};
 
   //start at the "bottom level" and work way up to determine amount of space needed to store data costs
   std::vector<beliefprop::levelProperties> bpLevelProperties;
@@ -291,7 +291,6 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   //to converge more quickly
   for (int levelNum = (int)algSettings.numLevels_ - 1; levelNum >= 0; levelNum--)
   {
-    std::chrono::duration<double> diff;
     const auto timeBpIterStart = std::chrono::system_clock::now();
 
     //need to alternate which checkerboard set to work on since copying from one to the other...need to avoid read-write conflict when copying in parallel
@@ -299,8 +298,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
     if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
     const auto timeBpIterEnd = std::chrono::system_clock::now();
-    diff = timeBpIterEnd - timeBpIterStart;
-    totalTimeBpIters += diff.count();
+    totalTimeBpIters += timeBpIterEnd - timeBpIterStart;
     const auto timeCopyMessageValuesStart = std::chrono::system_clock::now();
 
     //if not at the "bottom level" copy the current message values at the current level to the corresponding slots next level
@@ -330,8 +328,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
       if (errCode != run_eval::Status::NO_ERROR) { return {nullptr, DetailedTimings<beliefprop::Runtime_Type>(beliefprop::timingNames)}; }
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
-      diff = timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
-      totalTimeCopyDataKernel += diff.count();
+      totalTimeCopyDataKernel += timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
       eachLevelTimingCopy[levelNum].first = timeCopyMessageValuesKernelStart;
       eachLevelTimingCopy[levelNum].second = timeCopyMessageValuesKernelEnd;
 
@@ -347,8 +344,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
     }
 
     const auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
-    diff = timeCopyMessageValuesEnd - timeCopyMessageValuesStart;
-    totalTimeCopyData += diff.count();
+    totalTimeCopyData += timeCopyMessageValuesEnd - timeCopyMessageValuesStart;
     eachLevelTimingBP[levelNum].first = timeBpIterStart;
     eachLevelTimingBP[levelNum].second = timeBpIterEnd;
   }
@@ -438,14 +434,14 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
   std::for_each(startEndTimes.begin(), startEndTimes.end(),
     [&segmentTimings](const auto& currentRuntimeNameAndTiming) {
     segmentTimings.addTiming(currentRuntimeNameAndTiming.first,
-      (timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
+      currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first);
   });
 
   segmentTimings.addTiming(beliefprop::Runtime_Type::BP_ITERS, totalTimeBpIters);
   segmentTimings.addTiming(beliefprop::Runtime_Type::COPY_DATA, totalTimeCopyData);
   segmentTimings.addTiming(beliefprop::Runtime_Type::COPY_DATA_KERNEL, totalTimeCopyDataKernel);
 
-  const double totalTimed = segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC)
+  const auto totalTimed = segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC)
     + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::LEVEL_0_DATA_COSTS)
     + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL) + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_MESSAGES)
     + totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::OUTPUT_DISPARITY)

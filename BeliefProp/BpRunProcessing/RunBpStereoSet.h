@@ -32,7 +32,7 @@
 //stereo processing output
 struct ProcessStereoSetOutput
 {
-  float runTime = 0.0;
+  std::chrono::duration<double> runTime;
   DisparityMap<float> outDisparityMap;
   RunData runData;
 };
@@ -150,7 +150,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
       [&detailedBPTimings] (const auto& currentRuntimeNameAndTiming) {
         detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
-          (timingInSecondsDoublePrecision(currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first)).count());
+          currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first);
     });
 
     //add bp timings from current run to overall timings
@@ -177,7 +177,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object
   return {ProcessStereoSetOutput{
-    (float)detailedBPTimings.getMedianTiming(beliefprop::Runtime_Type::TOTAL_WITH_TRANSFER), std::move(output_disparity_map), runData}};
+    detailedBPTimings.getMedianTiming(beliefprop::Runtime_Type::TOTAL_WITH_TRANSFER), std::move(output_disparity_map), runData}};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */

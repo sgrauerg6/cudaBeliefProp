@@ -149,7 +149,7 @@ std::pair<run_eval::Status, RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_I
 
   //save resulting disparity map
   run_output[0]->outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
-  runData.addDataWHeader(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER), std::to_string(run_output[0]->runTime));
+  runData.addDataWHeader(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER), std::to_string(run_output[0]->runTime.count()));
 
   if (!runOptImpOnly) {
     //run single-threaded implementation and retrieve structure with runtime and output disparity map
