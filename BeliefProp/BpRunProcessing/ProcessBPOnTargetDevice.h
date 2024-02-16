@@ -27,7 +27,6 @@
 #include "RunImp/RunImpMemoryManagement.h"
 
 typedef std::chrono::time_point<std::chrono::system_clock> timingType;
-using timingInSecondsDoublePrecision = std::chrono::duration<double>;
 
 //Abstract class to process belief propagation on target device
 //Some of the class functions need to be overridden to for processing on
