@@ -37,7 +37,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
   pixels_ = std::make_unique<T[]>(getTotalPixels());
 
   //convert each pixel in dataRead to data type T and place in imageData array in same location
-  std::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + getTotalPixels(),
+  std::ranges::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + getTotalPixels(),
     &(pixels_[0]), [] (const unsigned char i) -> T {return (T)i;});
 }
 

@@ -14,6 +14,7 @@
 #include <map>
 #include <iostream>
 #include <chrono>
+#include <ranges>
 #include "RunSettingsEval/RunData.h"
 
 //Class to store timings
@@ -51,7 +52,7 @@ private:
 template <typename T>
 requires std::is_enum_v<T>
 DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : timingSegToStr_{timingSegments} {
-  std::for_each(timingSegments.begin(), timingSegments.end(),
+  std::ranges::for_each(timingSegments,
     [this](const auto& segment) {
       this->segmentTimings_[segment.first] = std::vector<std::chrono::duration<double>>(); 
     });
@@ -62,7 +63,7 @@ template <typename T>
 requires std::is_enum_v<T>
 void DetailedTimings<T>::addToCurrentTimings(const DetailedTimings& inDetailedTimings)
 {
-  std::for_each(inDetailedTimings.segmentTimings_.begin(), inDetailedTimings.segmentTimings_.end(),
+  std::ranges::for_each(inDetailedTimings.segmentTimings_,
     [this](const auto& currentTiming) {
       auto iter = this->segmentTimings_.find(currentTiming.first);
       if (iter != this->segmentTimings_.end()) {
@@ -80,7 +81,8 @@ requires std::is_enum_v<T>
 std::chrono::duration<double> DetailedTimings<T>::getMedianTiming(const T runSegmentIndex) const {
   if (segmentTimings_.at(runSegmentIndex).size() > 0) {
     std::vector<std::chrono::duration<double>> segmentTimingVectCopy(segmentTimings_.at(runSegmentIndex));
-    std::sort(segmentTimingVectCopy.begin(), segmentTimingVectCopy.end());
+    //get median timing across runs
+    std::ranges::nth_element(segmentTimingVectCopy, segmentTimingVectCopy.begin() + segmentTimingVectCopy.size() / 2);
     return (segmentTimingVectCopy[segmentTimingVectCopy.size() / 2]);
   }
   else {
@@ -93,9 +95,10 @@ template <typename T>
 requires std::is_enum_v<T>
 RunData DetailedTimings<T>::runData() const {
   RunData timingsRunData;
-  std::for_each(segmentTimings_.begin(), segmentTimings_.end(),
+  std::ranges::for_each(segmentTimings_,
     [this, &timingsRunData](auto currentTiming) {
-      std::sort(currentTiming.second.begin(), currentTiming.second.end());
+      //get median timing across runs
+      std::ranges::nth_element(currentTiming.second, currentTiming.second.begin() + currentTiming.second.size() / 2);
       std::string headerStart = timingSegToStr_.at(currentTiming.first);
       if (currentTiming.second.size() > 0) {
         timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) +

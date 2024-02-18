@@ -5,6 +5,7 @@
  *      Author: scott
  */
 
+#include <ranges>
 #include "BpParallelParams.h"
 
 //constructor to set parallel parameters with default dimensions for each kernel
@@ -94,20 +95,19 @@ void BpParallelParams::setOptimizedParams() {
     for (unsigned int numKernelSet = 0; numKernelSet < parallelDimsEachKernel_.size(); numKernelSet++) {
       //retrieve and set optimized parallel parameters for final run
       //std::min_element used to retrieve parallel parameters corresponding to lowest runtime from previous runs
-      std::transform(pParamsToRunTimeEachKernel_[numKernelSet].begin(),
-                     pParamsToRunTimeEachKernel_[numKernelSet].end(), 
+      std::ranges::transform(pParamsToRunTimeEachKernel_[numKernelSet], 
                      parallelDimsEachKernel_[numKernelSet].begin(),
-                     [](const auto& tDimsToRunTimeCurrLevel) /*-> std::array<unsigned int, 2>*/ { 
-                       return (std::min_element(tDimsToRunTimeCurrLevel.begin(), tDimsToRunTimeCurrLevel.end(),
+                     [](const auto& tDimsToRunTimeCurrLevel) { 
+                       return (std::ranges::min_element(tDimsToRunTimeCurrLevel,
                                                 [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
     }
   }
   else {
     //set optimized parallel parameters for all kernels to parallel parameters that got the best runtime across all kernels
     //seems like setting different parallel parameters for different kernels on GPU decrease runtime but increases runtime on CPU
-    const auto bestParallelParams = std::min_element(pParamsToRunTimeEachKernel_[beliefprop::NUM_KERNELS][0].begin(),
-                                                     pParamsToRunTimeEachKernel_[beliefprop::NUM_KERNELS][0].end(),
-                                                     [](const auto& a, const auto& b) { return a.second < b.second; })->first;
+    const auto bestParallelParams = std::ranges::min_element(pParamsToRunTimeEachKernel_[beliefprop::NUM_KERNELS][0],
+                                                               [](const auto& a, const auto& b) { return a.second < b.second; }
+                                                            )->first;
     setParallelDims(bestParallelParams);
   }
 }

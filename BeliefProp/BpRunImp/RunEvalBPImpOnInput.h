@@ -115,7 +115,7 @@ template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NU
 std::pair<run_eval::Status, RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImpsAndCompare(
   std::shared_ptr<ParallelParams> parallelParams, bool runOptImpOnly, bool runImpTmpLoopIters) const
 { 
-  std::string optImpRunDesc{runImpTmpLoopIters ? runOptBpNumItersTemplated_->getBpRunDescription() : runOptBpNumItersNoTemplate_->getBpRunDescription()};
+  const std::string optImpRunDesc{runImpTmpLoopIters ? runOptBpNumItersTemplated_->getBpRunDescription() : runOptBpNumItersNoTemplate_->getBpRunDescription()};
   const unsigned int numImpsRun{runOptImpOnly ? 1u : 2u};
   BpFileHandling bpFileSettings(std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
   const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};

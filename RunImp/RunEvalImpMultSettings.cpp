@@ -56,7 +56,7 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
       (runImpSettings.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings.templatedItersSetting_)) {
     const auto speedupOverBaseline = run_eval::getAvgMedSpeedupOverBaseline(runOutput.first, "All Runs",
       runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first);
-      runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+    runOutput.second.insert(runOutput.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   }
   //get speedup info for using optimized parallel parameters
   if (runImpSettings.optParallelParamsOptionSetting_.first) {
@@ -68,9 +68,7 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
     runOutput.second.push_back(run_eval::getAvgMedSpeedupLoopItersInTemplate(
       runOutput.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
   }
-  runOutput.second.push_back(vectorizationSpeedupAll);
-  runOutput.second.push_back(doublesSpeedup);
-  runOutput.second.push_back(halfSpeedup);
+  runOutput.second.insert(runOutput.second.end(), {vectorizationSpeedupAll, doublesSpeedup, halfSpeedup});
 
   //write output corresponding to results for all data types
   constexpr bool MULT_DATA_TYPES{true};
@@ -90,8 +88,7 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
   std::vector<MultRunSpeedup> multRunSpeedupVect;
   //no alternate run if only a single element in runBenchmarkImpsByAccSetting
   if (runBenchmarkImpsByAccSetting.size() == 1) {
-    multRunSpeedupVect.push_back({speedupVsNoVectStr, {0.0, 0.0}});
-    multRunSpeedupVect.push_back({speedupVsAVX256Str, {0.0, 0.0}});
+    multRunSpeedupVect.insert(multRunSpeedupVect.end(), {{speedupVsNoVectStr, {0.0, 0.0}}, {speedupVsAVX256Str, {0.0, 0.0}}});
     return {std::pair<MultRunData, std::vector<MultRunSpeedup>>(), multRunSpeedupVect};
   }
   else {

@@ -11,6 +11,7 @@
 
 #include <new>
 #include <algorithm>
+#include <ranges>
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 
@@ -49,11 +50,11 @@ public:
   }
 
   virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, const unsigned int numDataTransfer) {
-    std::copy(inArray, inArray + numDataTransfer, destArray);
+    std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
   }
 
   virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, const unsigned int numDataTransfer) {
-    std::copy(inArray, inArray + numDataTransfer, destArray);
+    std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
   }
 };
 

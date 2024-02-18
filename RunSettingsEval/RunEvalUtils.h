@@ -14,6 +14,7 @@
 #include <vector>
 #include <algorithm>
 #include <optional>
+#include <ranges>
 #include "RunTypeConstraints.h"
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"
@@ -106,7 +107,7 @@ inline std::optional<std::pair<std::string, std::vector<double>>> run_eval::getB
 inline std::array<double, 2> run_eval::getAvgMedSpeedup(const std::vector<double>& speedupsVect) {
   const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
   auto speedupsVectSorted = speedupsVect;
-  std::sort(speedupsVectSorted.begin(), speedupsVectSorted.end());
+  std::ranges::sort(speedupsVectSorted);
   const double medianSpeedup = ((speedupsVectSorted.size() % 2) == 0) ? 
     (speedupsVectSorted[(speedupsVectSorted.size() / 2) - 1] + speedupsVectSorted[(speedupsVectSorted.size() / 2)]) / 2.0 : 
     speedupsVectSorted[(speedupsVectSorted.size() / 2)];
@@ -119,7 +120,6 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaselineSubsets
   const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices)
 {
   //get speedup over baseline for optimized runs
-  std::vector<double> speedupsVect;
   std::vector<MultRunSpeedup> speedupData;
   const auto baselineRunData = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[0]));
   if (baselineRunData) {
@@ -127,6 +127,7 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaselineSubsets
     const auto baselineRuntimes = (*baselineRunData).second;
     //retrieve speedup data for any subsets of optimized runs
     for (const auto& currSubsetStrIndices : subsetStrIndices) {
+      std::vector<double> speedupsVect;
       speedupHeader = "Speedup relative to " + (*baselineRunData).first + " on " + currSubsetStrIndices.first + " - " + dataTypeStr;
       for (unsigned int i : currSubsetStrIndices.second) {
         if (runOutput[i].first == run_eval::Status::NO_ERROR) {
@@ -136,9 +137,8 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaselineSubsets
           }
         }
       }
-      if (speedupsVect.size() > 0) {
+      if (!(speedupsVect.empty())) {
         speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
-        speedupsVect.clear();
       }
     }
   }
@@ -151,10 +151,10 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
   const std::string& dataTypeStr, const std::array<std::string_view, 2>& baselinePathOptSingThread)
 {
   //get speedup over baseline for optimized runs
-  std::vector<double> speedupsVect;
   std::vector<MultRunSpeedup> speedupData;
   const auto baselineRunData = getBaselineRuntimeData(std::string(baselinePathOptSingThread[0]));
   if (baselineRunData) {
+    std::vector<double> speedupsVect;
     std::string speedupHeader = "Speedup relative to " + (*baselineRunData).first + " - " + dataTypeStr;
     const auto baselineRuntimes = (*baselineRunData).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
@@ -165,18 +165,15 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
         }
       }
     }
-    if (speedupsVect.size() > 0) {
+    if (!(speedupsVect.empty())) {
       speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
-      speedupsVect.clear();
-    }
-    else {
-      return {MultRunSpeedup()};
     }
   }
 
   //get speedup over baseline for single thread runs
   const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baselinePathOptSingThread[1]));
   if (baselineRunDataSThread) {
+    std::vector<double> speedupsVect;
     std::string speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + (*baselineRunDataSThread).first + " - " + dataTypeStr;
     const auto baselineRuntimesSThread = (*baselineRunDataSThread).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
@@ -187,9 +184,8 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
         }
       }
     }
-    if (speedupsVect.size() > 0) {
+    if (!(speedupsVect.empty())) {
       speedupData.push_back({speedupHeader, getAvgMedSpeedup(speedupsVect)});
-      speedupsVect.clear();
     }
   }
 
@@ -208,7 +204,7 @@ inline MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutpu
       runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
     }
   }
-  if (speedupsVect.size() > 0) {
+  if (!(speedupsVect.empty())) {
     return {speedupHeader, getAvgMedSpeedup(speedupsVect)};
   }
   return {speedupHeader, {0.0, 0.0}};
@@ -226,7 +222,7 @@ inline MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, Mul
       runOutputTarget[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
     }
   }
-  if (speedupsVect.size() > 0) {
+  if (!(speedupsVect.empty())) {
     return {speedupHeader, getAvgMedSpeedup(speedupsVect)};
   }
   return {speedupHeader, {0.0, 0.0}};
@@ -245,7 +241,7 @@ inline MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData&
       runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
     }
   }
-  if (speedupsVect.size() > 0) {
+  if (!(speedupsVect.empty())) {
     return {speedupHeader, getAvgMedSpeedup(speedupsVect)};
   }
   return {speedupHeader, {0.0, 0.0}};

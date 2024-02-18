@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <string>
+#include <ranges>
 #include "BpImage.h"
 #include "BpOutputEvaluation/OutputEvaluationResults.h"
 #include "BpOutputEvaluation/OutputEvaluationParameters.h"
@@ -25,7 +26,7 @@ public:
   DisparityMap(const std::array<unsigned int, 2>& widthHeight, const T* input_disparity_map_vals,
     const unsigned int disparity_map_vals_scale = 1) : BpImage<T>(widthHeight, input_disparity_map_vals)
   {
-    std::copy(input_disparity_map_vals, input_disparity_map_vals + this->getTotalPixels(), this->pixels_.get());
+    std::ranges::copy(input_disparity_map_vals, input_disparity_map_vals + this->getTotalPixels(), this->pixels_.get());
     if (disparity_map_vals_scale > 1u) {
       removeScaleFromDisparityVals(disparity_map_vals_scale);
     }
@@ -48,7 +49,7 @@ private:
   {
     if (disparity_map_vals_scale > 1) {
       //divide each disparity value by disparity_map_vals_scale
-      std::for_each(this->pixels_.get(), this->pixels_.get() + this->getTotalPixels(),
+      std::ranges::for_each(this->pixels_.get(), this->pixels_.get() + this->getTotalPixels(),
                     [disparity_map_vals_scale](T& disp_val) { disp_val /= disparity_map_vals_scale; });
     }
   }

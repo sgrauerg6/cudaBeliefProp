@@ -15,6 +15,7 @@
 #include <vector>
 #include <array>
 #include <utility>
+#include <ranges>
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
@@ -88,7 +89,7 @@ private:
   virtual void freeCheckerboardMessagesMemory(const beliefprop::checkerboardMessages<T*>& checkerboardMessagesToFree,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
-    std::for_each(checkerboardMessagesToFree.checkerboardMessagesAtLevel_.begin(), checkerboardMessagesToFree.checkerboardMessagesAtLevel_.end(),
+    std::ranges::for_each(checkerboardMessagesToFree.checkerboardMessagesAtLevel_,
       [this, &memManagementBpRun](auto& checkerboardMessagesSet) {
       memManagementBpRun->freeAlignedMemoryOnDevice(checkerboardMessagesSet); });
   }
@@ -97,7 +98,7 @@ private:
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
     beliefprop::checkerboardMessages<T*> outputCheckerboardMessages;
-    std::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel_.begin(), outputCheckerboardMessages.checkerboardMessagesAtLevel_.end(),
+    std::ranges::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel_,
       [this, numDataAllocatePerMessage, &memManagementBpRun](auto& checkerboardMessagesSet) {
       checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACCELERATION); });
 
@@ -430,7 +431,7 @@ std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>> ProcessBPOnTargetDe
 
   //add timing for each runtime segment to segmentTimings object
   DetailedTimings segmentTimings(beliefprop::timingNames);
-  std::for_each(startEndTimes.begin(), startEndTimes.end(),
+  std::ranges::for_each(startEndTimes,
     [&segmentTimings](const auto& currentRuntimeNameAndTiming) {
     segmentTimings.addTiming(currentRuntimeNameAndTiming.first,
       currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first);

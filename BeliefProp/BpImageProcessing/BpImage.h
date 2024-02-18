@@ -18,6 +18,7 @@
 #include <array>
 #include <string_view>
 #include <type_traits>
+#include <ranges>
 
 enum class image_type { PGM_IMAGE, PPM_IMAGE };
 constexpr bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
@@ -36,7 +37,7 @@ public:
   BpImage(const std::array<unsigned int, 2>& widthHeight, const T* input_pixel_vals) :
     widthHeight_{widthHeight}, pixels_(std::make_unique<T[]>(widthHeight_[0] * widthHeight_[1]))
   {
-    std::copy(input_pixel_vals, input_pixel_vals + (getTotalPixels()), pixels_.get());
+    std::ranges::copy(input_pixel_vals, input_pixel_vals + (getTotalPixels()), pixels_.get());
   }
 
   BpImage(const std::string& fileName) {

@@ -13,6 +13,7 @@
 #include <array>
 #include <string>
 #include <optional>
+#include <ranges>
 #include "BpConstsAndParams/bpStereoParameters.h"
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpConstsAndParams/bpTypeConstraints.h"
@@ -147,7 +148,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     runtime_start_end_timings[beliefprop::Runtime_Type::TOTAL_WITH_TRANSFER].second = std::chrono::system_clock::now();
 
     //retrieve the timing for each runtime segment and add to vector in timings map
-    std::for_each(runtime_start_end_timings.begin(), runtime_start_end_timings.end(),
+    std::ranges::for_each(runtime_start_end_timings,
       [&detailedBPTimings] (const auto& currentRuntimeNameAndTiming) {
         detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
           currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first);
