@@ -49,8 +49,8 @@ private:
   {
     if (disparity_map_vals_scale > 1) {
       //divide each disparity value by disparity_map_vals_scale
-      std::ranges::for_each(this->pixels_.get(), this->pixels_.get() + this->getTotalPixels(),
-                    [disparity_map_vals_scale](T& disp_val) { disp_val /= disparity_map_vals_scale; });
+      std::ranges::transform(this->pixels_.get(), this->pixels_.get() + this->getTotalPixels(), this->pixels_.get(),
+                    [disparity_map_vals_scale](const auto& disp_val) { return (disp_val / disparity_map_vals_scale); });
     }
   }
 };

@@ -11,6 +11,7 @@
 #include <vector>
 #include <algorithm>
 #include <unordered_map>
+#include <iterator>
 #include <map>
 #include <iostream>
 #include <chrono>
@@ -52,10 +53,9 @@ private:
 template <typename T>
 requires std::is_enum_v<T>
 DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : timingSegToStr_{timingSegments} {
-  std::ranges::for_each(timingSegments,
-    [this](const auto& segment) {
-      this->segmentTimings_[segment.first] = std::vector<std::chrono::duration<double>>(); 
-    });
+  std::ranges::transform(timingSegToStr_, std::inserter(segmentTimings_, segmentTimings_.end()),
+    [](const auto& segment) -> std::pair<T, std::vector<std::chrono::duration<double>>> {
+      return {segment.first, std::vector<std::chrono::duration<double>>()}; });
 }
 
 //add instance of DetailedTimings to current DetailedTimings

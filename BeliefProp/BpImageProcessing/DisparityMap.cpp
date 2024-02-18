@@ -9,14 +9,14 @@
 
 template<class T>
 void DisparityMap<T>::saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor) const {
-  //declare and allocate the space for the movement image to save
+  //declare and allocate the space for the disparity map image to save
   BpImage<char> movementImageToSave(this->widthHeight_);
 
-  //go though every value in the movementBetweenImages data and retrieve the intensity value to use in the resulting "movement image" where minMovementDirection
-  //represents 0 intensity and the intensity increases linearly using scaleMovement from minMovementDirection
+  //go though every pixel in the disparity map and compute the intensity value to use in the "disparity map image"
+  //by multiplying the pixel disparity value by scale factor
   std::ranges::transform(this->getPointerToPixelsStart(), this->getPointerToPixelsStart() + this->getTotalPixels(),
     movementImageToSave.getPointerToPixelsStart(),
-    [this, scale_factor](const T& currentPixel) -> char {
+    [scale_factor](const T& currentPixel) -> char {
       return (char)(((float)currentPixel)*((float)scale_factor) + 0.5f);
     });
 
@@ -59,10 +59,10 @@ const OutputEvaluationResults DisparityMap<T>::getOutputComparison(
   output_evaluation.averageDispAbsDiffWithMax_ = output_evaluation.totalDispAbsDiffWithMax_ / this->getTotalPixels();
 
   //need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
-  std::ranges::for_each(output_evaluation.numSigDiffPixelsAtThresholds_,
-    [this, &output_evaluation](const auto& sigDiffPixelAtThresholdMap) {
-      output_evaluation.propSigDiffPixelsAtThresholds_[sigDiffPixelAtThresholdMap.first] =
-        ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels()));
+  std::ranges::transform(output_evaluation.numSigDiffPixelsAtThresholds_,
+    std::inserter(output_evaluation.propSigDiffPixelsAtThresholds_, output_evaluation.propSigDiffPixelsAtThresholds_.end()),
+    [this](const auto& sigDiffPixelAtThresholdMap) -> std::pair<float, float> {
+      return { sigDiffPixelAtThresholdMap.first, ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels())) };
     });
 
   return output_evaluation;

@@ -49,7 +49,7 @@ public:
   }
 
   T* getPointerToPixelsStart() const {
-    return &(pixels_[0]);
+    return pixels_.get();
   }
 
   T getPixelAtPoint(const std::array<unsigned int, 2>& xyPoint) const {
