@@ -74,7 +74,7 @@ public:
   void saveImageAsPgm(const std::string& filename) const {
     std::ofstream file(filename, std::ios::out | std::ios::binary);
     file << "P5\n" << widthHeight_[0] << " " << widthHeight_[1] << "\n" << UCHAR_MAX << "\n";
-    file.write((char*)(&pixels_[0]), getTotalPixels() * sizeof(char));
+    file.write((char*)(pixels_.get()), getTotalPixels() * sizeof(char));
     file.close();
   }
 
