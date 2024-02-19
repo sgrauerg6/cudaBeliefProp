@@ -38,7 +38,7 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
 
   //convert each pixel in dataRead to data type T and place in imageData array in same location
   std::ranges::transform(initImage.getPointerToPixelsStart(), initImage.getPointerToPixelsStart() + getTotalPixels(),
-    &(pixels_[0]), [] (const unsigned char i) -> T {return (T)i;});
+    pixels_.get(), [] (const unsigned char i) -> T {return (T)i;});
 }
 
 template<class T>
@@ -90,7 +90,7 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
     std::unique_ptr<char[]> rgbImagePtr = std::make_unique<char[]>(3 * cols * rows);
 
     /* read data */
-    file.read(&(rgbImagePtr[0]), 3 * cols * rows * sizeof(char));
+    file.read(rgbImagePtr.get(), 3 * cols * rows * sizeof(char));
     file.close();
 
     //convert the RGB image to grayscale either

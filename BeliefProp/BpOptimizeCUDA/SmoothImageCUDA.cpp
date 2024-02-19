@@ -40,14 +40,12 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
   {
     //apply a Guassian filter to the images
     //retrieve output filter (float array in unique_ptr) and size
-    auto outFilterAndSize = this->makeFilter(sigmaVal);
-    auto filter = std::move(outFilterAndSize.first);
-    unsigned int sizeFilter = outFilterAndSize.second;
+    const auto filterWSize = this->makeFilter(sigmaVal);
 
     //copy the image filter to the GPU
     float* filterDevice;
-    cudaMalloc((void**)&filterDevice, (sizeFilter*sizeof(float)));
-    cudaMemcpy(filterDevice, &(filter[0]), (sizeFilter*sizeof(float)), cudaMemcpyHostToDevice);
+    cudaMalloc((void**)&filterDevice, filterWSize.second*sizeof(float));
+    cudaMemcpy(filterDevice, filterWSize.first.get(), filterWSize.second*sizeof(float), cudaMemcpyHostToDevice);
 
     //allocate the GPU global memory for the original, intermediate (when the image has been filtered horizontally but not vertically), and final image
     unsigned int* originalImageDevice;
@@ -58,17 +56,17 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
     cudaMalloc((void**)&intermediateImageDevice, (inImage.getWidth()*inImage.getHeight()*sizeof(float)));
 
     //copy image to GPU memory
-    cudaMemcpy(originalImageDevice, inImage.getPointerToPixelsStart(), (inImage.getWidth()*inImage.getHeight()*sizeof(unsigned int)),
+    cudaMemcpy(originalImageDevice, inImage.getPointerToPixelsStart(), inImage.getWidth()*inImage.getHeight()*sizeof(unsigned int),
       cudaMemcpyHostToDevice);
 
     //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
     beliefpropCUDA::filterImageAcross<unsigned int> <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, inImage.getWidth(), inImage.getHeight(),
-      filterDevice, sizeFilter);
+      filterDevice, filterWSize.second);
     cudaDeviceSynchronize();
 
     //now use the vertical filter to complete the smoothing of image on the device
     beliefpropCUDA::filterImageVertical<float> <<< grid, threads >>> (intermediateImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight(),
-        filterDevice, sizeFilter);
+        filterDevice, filterWSize.second);
     cudaDeviceSynchronize();
 
     //free the device memory used to store the images

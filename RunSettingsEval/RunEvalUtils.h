@@ -155,7 +155,7 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
   const auto baselineRunData = getBaselineRuntimeData(std::string(baselinePathOptSingThread[0]));
   if (baselineRunData) {
     std::vector<double> speedupsVect;
-    std::string speedupHeader = "Speedup relative to " + (*baselineRunData).first + " - " + dataTypeStr;
+    const std::string speedupHeader = "Speedup relative to " + (*baselineRunData).first + " - " + dataTypeStr;
     const auto baselineRuntimes = (*baselineRunData).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == run_eval::Status::NO_ERROR) {
@@ -174,7 +174,7 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
   const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baselinePathOptSingThread[1]));
   if (baselineRunDataSThread) {
     std::vector<double> speedupsVect;
-    std::string speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + (*baselineRunDataSThread).first + " - " + dataTypeStr;
+    const std::string speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + (*baselineRunDataSThread).first + " - " + dataTypeStr;
     const auto baselineRuntimesSThread = (*baselineRunDataSThread).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i].first == run_eval::Status::NO_ERROR) {
