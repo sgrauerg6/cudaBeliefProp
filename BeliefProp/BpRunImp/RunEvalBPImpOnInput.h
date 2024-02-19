@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <filesystem>
+#include <optional>
 #include "BpConstsAndParams/bpStructsAndEnums.h"
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpSingleThreadCPU/stereo.h"
@@ -57,7 +58,7 @@ protected:
   //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
   //on the reference and test images specified by numStereoSet
   //run only optimized implementation if runOptImpOnly is true
-  std::pair<run_eval::Status, RunData> runImpsAndCompare(std::shared_ptr<ParallelParams> parallelParams, bool runOptImpOnly,
+  std::optional<RunData> runImpsAndCompare(std::shared_ptr<ParallelParams> parallelParams, bool runOptImpOnly,
     bool runImpTmpLoopIters) const override;
 
 private:
@@ -112,7 +113,7 @@ RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrB
   //on the reference and test images specified by numStereoSet
   //run only optimized implementation if runOptImpOnly is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::pair<run_eval::Status, RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImpsAndCompare(
+std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImpsAndCompare(
   std::shared_ptr<ParallelParams> parallelParams, bool runOptImpOnly, bool runImpTmpLoopIters) const
 { 
   const std::string optImpRunDesc{runImpTmpLoopIters ? runOptBpNumItersTemplated_->getBpRunDescription() : runOptBpNumItersNoTemplate_->getBpRunDescription()};
@@ -142,8 +143,8 @@ std::pair<run_eval::Status, RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_I
     
   //check if error in run
   RunData runData;
-  if (!(run_output[0].has_value())) {
-    return {run_eval::Status::ERROR, runData};
+  if (!(run_output[0])) {
+    return {};
   }
   runData.appendData(run_output[0]->runData);
 
@@ -154,8 +155,8 @@ std::pair<run_eval::Status, RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_I
   if (!runOptImpOnly) {
     //run single-threaded implementation and retrieve structure with runtime and output disparity map
     run_output[1] = runBpStereoSingleThread_->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings_, *parallelParams);
-    if (!(run_output[1].has_value())) {
-      return {run_eval::Status::ERROR, runData};
+    if (!(run_output[1])) {
+      return {};
     }
     run_output[1]->outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
       runData.appendData(run_output[1]->runData);
@@ -180,7 +181,7 @@ std::pair<run_eval::Status, RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_I
   }
 
   //return structure indicating that run succeeded along with data from run
-  return {run_eval::Status::NO_ERROR, runData};
+  return runData;
 }
 
 #endif //RUN_EVAL_BP_IMP_SINGLE_SET_H_

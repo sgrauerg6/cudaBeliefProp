@@ -100,9 +100,9 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
         auto runOutputAVX256 = altAccImp.second->operator()(runImpSettings, dataTypeSize);
         //go through each result and replace initial run data with AVX256 run data if AVX256 run is faster
         for (unsigned int i = 0; i < runOutputData.size(); i++) {
-          if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputAVX256.first[i].first == run_eval::Status::NO_ERROR)) {
-            const double initResultTime = std::stod(runOutputData[i].second.back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
-            const double avx256ResultTime = std::stod(runOutputAVX256.first[i].second.back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+          if (runOutputData[i] && runOutputAVX256.first[i]) {
+            const double initResultTime = std::stod(runOutputData[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+            const double avx256ResultTime = std::stod(runOutputAVX256.first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
             if (avx256ResultTime < initResultTime) {
               runOutputData[i] = runOutputAVX256.first[i];
             }
@@ -117,9 +117,9 @@ std::pair<std::pair<MultRunData, std::vector<MultRunSpeedup>>, std::vector<MultR
         runOutputNoVect = altAccImp.second->operator()(runImpSettings, dataTypeSize);
         //go through each result and replace initial run data with no vectorization run data if no vectorization run is faster
         for (unsigned int i = 0; i < runOutputData.size(); i++) {
-          if ((runOutputData[i].first == run_eval::Status::NO_ERROR) && (runOutputNoVect.first[i].first == run_eval::Status::NO_ERROR)) {
-            const double initResultTime = std::stod(runOutputData[i].second.back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
-            const double noVectResultTime = std::stod(runOutputNoVect.first[i].second.back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+          if (runOutputData[i] && runOutputNoVect.first[i]) {
+            const double initResultTime = std::stod(runOutputData[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+            const double noVectResultTime = std::stod(runOutputNoVect.first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
             if (noVectResultTime < initResultTime) {
               runOutputData[i] = runOutputNoVect.first[i];
             }

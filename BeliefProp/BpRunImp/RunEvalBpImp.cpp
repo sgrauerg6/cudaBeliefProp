@@ -78,7 +78,6 @@ MultRunData RunEvalBpImp::runEvalImpMultDataSets(
 //run and evaluate implementation on multiple data sets
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
 MultRunData RunEvalBpImp::runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings) const {
-  MultRunData runDataAllRuns;
   std::vector<MultRunData> runResultsEachInput;
   runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(runImpSettings));
   runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(runImpSettings));
@@ -91,6 +90,7 @@ MultRunData RunEvalBpImp::runEvalImpMultDataSets(const run_environment::RunImpSe
 #endif //SMALLER_SETS_ONLY
 
   //add run results for each input to overall results
+  MultRunData runDataAllRuns;
   for (auto& runResult : runResultsEachInput) {
     runDataAllRuns.insert(runDataAllRuns.end(), runResult.begin(), runResult.end());
   }

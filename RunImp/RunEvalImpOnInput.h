@@ -10,6 +10,7 @@
 
 #include <utility>
 #include <memory>
+#include <optional>
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
@@ -29,15 +30,15 @@ protected:
   virtual RunData inputAndParamsForCurrBenchmark() const = 0;
 
   //run one or two implementations of benchmark and compare results if running multiple implementations
-  virtual std::pair<run_eval::Status, RunData> runImpsAndCompare(std::shared_ptr<ParallelParams> parallelParams,
+  virtual std::optional<RunData> runImpsAndCompare(std::shared_ptr<ParallelParams> parallelParams,
     bool runOptImpOnly, bool runImpTmpLoopIters) const = 0;
 
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set
   //to optimize parallel parameters returns data from runs using default and optimized parallel parameters
-  std::pair<run_eval::Status, std::vector<RunData>> runEvalBenchmark(const run_environment::RunImpSettings& runImpSettings,
+  MultRunData::value_type runEvalBenchmark(const run_environment::RunImpSettings& runImpSettings,
     const bool runWLoopItersTemplated)
   {
-    std::vector<RunData> outRunData(runImpSettings.optParallelParamsOptionSetting_.first ? 2 : 1);
+    MultRunData::value_type::value_type outRunData(runImpSettings.optParallelParamsOptionSetting_.first ? 2 : 1);
     enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
     std::array<std::array<std::map<std::string, std::string>, 2>, 2> inParamsResultsDefOptRuns;
 
@@ -94,18 +95,18 @@ protected:
       //run only optimized implementation and not single-threaded run if current run is not final run or is using default parameter parameters
       const bool runOptImpOnly{currRunType == RunType::TEST_PARAMS};
 
-      //run benchmark implementation(s) and return whether or not error in run
+      //run benchmark implementation(s) and return null output if error in run
       //detailed results stored to file that is generated using stream
       const auto runImpsECodeData = runImpsAndCompare(parallelParams, runOptImpOnly, runWLoopItersTemplated);
-      currRunData.addDataWHeader("Run Success", (runImpsECodeData.first == run_eval::Status::NO_ERROR) ? "Yes" : "No");
+      currRunData.addDataWHeader("Run Success", runImpsECodeData ? "Yes" : "No");
 
-      //if error in run and run is any type other than for testing parameters, exit function with error
-      if ((runImpsECodeData.first != run_eval::Status::NO_ERROR) && (currRunType != RunType::TEST_PARAMS)) {
-        return {run_eval::Status::ERROR, {currRunData}};
+      //if error in run and run is any type other than for testing parameters, exit function with null output to indicate error
+      if ((!runImpsECodeData) && (currRunType != RunType::TEST_PARAMS)) {
+        return {};
       }
 
       //retrieve results from current run
-      currRunData.appendData(runImpsECodeData.second);
+      currRunData.appendData(runImpsECodeData.value());
 
       //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
       if (currRunType != RunType::TEST_PARAMS) {
@@ -122,7 +123,7 @@ protected:
         //retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
         //total runtime for current run
         //if error in run, don't add results for current parallel parameters to results set
-        if (runImpsECodeData.first == run_eval::Status::NO_ERROR) {
+        if (runImpsECodeData) {
           if (currRunType != RunType::OPTIMIZED_RUN) {
             parallelParams->addTestResultsForParallelParams(pParamsCurrRun, currRunData);
           }
@@ -136,7 +137,7 @@ protected:
       }
     }
       
-    return {run_eval::Status::NO_ERROR, outRunData};
+    return outRunData;
   }
   
 };

@@ -130,9 +130,9 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaselineSubsets
       std::vector<double> speedupsVect;
       speedupHeader = "Speedup relative to " + (*baselineRunData).first + " on " + currSubsetStrIndices.first + " - " + dataTypeStr;
       for (unsigned int i : currSubsetStrIndices.second) {
-        if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-          for (auto& runData : runOutput[i].second) {
+        if (runOutput[i]) {
+          speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i]->at(1).getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+          for (auto& runData : runOutput[i].value()) {
             runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
           }
         }
@@ -158,9 +158,9 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
     const std::string speedupHeader = "Speedup relative to " + (*baselineRunData).first + " - " + dataTypeStr;
     const auto baselineRuntimes = (*baselineRunData).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
-      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-        for (auto& runData : runOutput[i].second) {
+      if (runOutput[i]) {
+        speedupsVect.push_back(baselineRuntimes[i] / std::stod(runOutput[i]->at(1).getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+        for (auto& runData : runOutput[i].value()) {
           runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         }
       }
@@ -177,9 +177,9 @@ inline std::vector<MultRunSpeedup> run_eval::getAvgMedSpeedupOverBaseline(MultRu
     const std::string speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + (*baselineRunDataSThread).first + " - " + dataTypeStr;
     const auto baselineRuntimesSThread = (*baselineRunDataSThread).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
-      if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-        speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(runOutput[i].second[1].getData(std::string(SINGLE_THREAD_RUNTIME_HEADER))));
-        for (auto& runData : runOutput[i].second) {
+      if (runOutput[i]) {
+        speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(runOutput[i]->at(1).getData(std::string(SINGLE_THREAD_RUNTIME_HEADER))));
+        for (auto& runData : runOutput[i].value()) {
           runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
         }
       }
@@ -197,11 +197,11 @@ inline MultRunSpeedup run_eval::getAvgMedSpeedupOptPParams(MultRunData& runOutpu
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutput.size(); i++) {
-    if (runOutput[i].first == run_eval::Status::NO_ERROR) {
-      speedupsVect.push_back(std::stod(runOutput[i].second[0].getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
-                             std::stod(runOutput[i].second[1].getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-      runOutput[i].second[0].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-      runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+    if (runOutput[i]) {
+      speedupsVect.push_back(std::stod(runOutput[i]->at(0).getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
+                             std::stod(runOutput[i]->at(1).getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+      runOutput[i]->at(0).addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+      runOutput[i]->at(1).addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
     }
   }
   if (!(speedupsVect.empty())) {
@@ -215,11 +215,11 @@ inline MultRunSpeedup run_eval::getAvgMedSpeedup(MultRunData& runOutputBase, Mul
   const std::string& speedupHeader) {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutputBase.size(); i++) {
-    if ((runOutputBase[i].first == run_eval::Status::NO_ERROR) && (runOutputTarget[i].first == run_eval::Status::NO_ERROR))  {
-      speedupsVect.push_back(std::stod(runOutputBase[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
-                             std::stod(runOutputTarget[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-      runOutputBase[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
-      runOutputTarget[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+    if (runOutputBase[i] && runOutputTarget[i])  {
+      speedupsVect.push_back(std::stod(runOutputBase[i]->back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
+                             std::stod(runOutputTarget[i]->back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+      runOutputBase[i]->at(1).addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+      runOutputTarget[i]->at(1).addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
     }
   }
   if (!(speedupsVect.empty())) {
@@ -235,10 +235,10 @@ inline MultRunSpeedup run_eval::getAvgMedSpeedupLoopItersInTemplate(MultRunData&
   //assumine that runs with and without loop iteration count given in template parameter are consectutive with the run with the
   //loop iteration count given in template being first
   for (unsigned int i=0; (i+1) < runOutput.size(); i+=2) {
-    if ((runOutput[i].first == run_eval::Status::NO_ERROR) && (runOutput[i+1].first == run_eval::Status::NO_ERROR))  {
-      speedupsVect.push_back(std::stod(runOutput[i+1].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
-                             std::stod(runOutput[i].second.back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
-      runOutput[i].second[1].addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+    if (runOutput[i] && runOutput[i+1])  {
+      speedupsVect.push_back(std::stod(runOutput[i+1]->back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))) / 
+                             std::stod(runOutput[i]->back().getData(std::string(OPTIMIZED_RUNTIME_HEADER))));
+      runOutput[i]->at(1).addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
     }
   }
   if (!(speedupsVect.empty())) {
@@ -254,7 +254,7 @@ inline void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<Mu
   run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize) {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
-    { return (runResult.first == run_eval::Status::NO_ERROR); } );
+    { return runResult; } );
   
   //check if there was at least one successful run
   if (firstSuccessRun != runOutput.first.end()) {
@@ -269,7 +269,7 @@ inline void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<Mu
       std::ofstream(runImpSettings.optParallelParamsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
       runImpSettings.optParallelParamsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
     //get headers from first successful run
-    const auto headersInOrder = firstSuccessRun->second.back().getHeadersInOrder();
+    const auto headersInOrder = (*firstSuccessRun)->back().getHeadersInOrder();
     for (const auto& currHeader : headersInOrder) {
       resultsStreamDefaultTBFinal[0] << currHeader << ",";
     }
@@ -285,13 +285,13 @@ inline void run_eval::writeRunOutput(const std::pair<MultRunData, std::vector<Mu
     for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
       for (unsigned int runNum=0; runNum < runOutput.first.size(); runNum++) {
         //if run not successful only have single set of output data from run
-        const unsigned int runResultIdx = (runOutput.first[runNum].first == run_eval::Status::NO_ERROR) ? i : 0;
+        const unsigned int runResultIdx = runOutput.first[runNum] ? i : 0;
         for (const auto& currHeader : headersInOrder) {
-          if (!(runOutput.first[runNum].second[runResultIdx].isData(currHeader))) {
+          if (!(runOutput.first[runNum]->at(runResultIdx).isData(currHeader))) {
             resultsStreamDefaultTBFinal[i] << "No Data" << ",";
           }
           else {
-            resultsStreamDefaultTBFinal[i] << runOutput.first[runNum].second[runResultIdx].getData(currHeader) << ",";
+            resultsStreamDefaultTBFinal[i] << runOutput.first[runNum]->at(runResultIdx).getData(currHeader) << ",";
           }
         }
         resultsStreamDefaultTBFinal[i] << std::endl;
