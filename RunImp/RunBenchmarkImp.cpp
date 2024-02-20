@@ -14,16 +14,14 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunBenchmarkImp::operator()(
   //run belief propagation implementation on multiple datasets and return run data for all runs
   MultRunData runDataAllRuns = runEvalImpMultDataSets(runImpSettings, dataTypeSize);  
 
-  //initialize speedup results
+  //initialize and add speedup results over baseline data if available for current input
   std::vector<MultRunSpeedup> speedupResults;
-
-  //add speedup results over baseline data if available for current input
-  auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings, runDataAllRuns, dataTypeSize);
+  const auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings, runDataAllRuns, dataTypeSize);
+  const auto speedupOverBaselineSubsets = getSpeedupOverBaselineSubsets(runImpSettings, runDataAllRuns, dataTypeSize);
   speedupResults.insert(speedupResults.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
-  auto speedupOverBaselineSubsets = getSpeedupOverBaselineSubsets(runImpSettings, runDataAllRuns, dataTypeSize);
   speedupResults.insert(speedupResults.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
 
-  //get speedup info for using optimized parallel parameters and disparity count as template parameter
+  //compute and add speedup info for using optimized parallel parameters and disparity count as template parameter to speedup results
   if (runImpSettings.optParallelParamsOptionSetting_.first) {
     speedupResults.push_back(run_eval::getAvgMedSpeedupOptPParams(runDataAllRuns, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
       run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)));
