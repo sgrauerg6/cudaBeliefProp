@@ -1,3 +1,12 @@
+/*
+ * EvaluateImpResults.cpp
+ *
+ *  Created on: Feb 20, 2024
+ *      Author: scott
+ * 
+ *  Function definitions for class to evaluate implementation results.
+ */
+
 #include "EvaluateImpResults.h"
 #include <numeric>
 
@@ -9,280 +18,279 @@ void EvaluateImpResults::operator()(const MultRunData& runResults, const run_env
     evalResultsSingDTypeAccRun();
   }
 
-  void EvaluateImpResults::operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
-    const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc)
-  {
-    runImpResultsMultRuns_ = runResultsMultRuns;
-    runImpSettings_ = runImpSettings;
-    optImpAccel_ = optImpAcc;
-    evalResultsMultDTypeAccRuns();
-  }
+void EvaluateImpResults::operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
+  const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc)
+{
+  runImpResultsMultRuns_ = runResultsMultRuns;
+  runImpSettings_ = runImpSettings;
+  optImpAccel_ = optImpAcc;
+  evalResultsMultDTypeAccRuns();
+}
 
-  std::pair<MultRunData, std::vector<MultRunSpeedup>> EvaluateImpResults::getRunDataWSpeedups() const {
-    return {runImpOptResults_, runImpSpeedups_};
-  }
+std::pair<MultRunData, std::vector<MultRunSpeedup>> EvaluateImpResults::getRunDataWSpeedups() const {
+  return {runImpOptResults_, runImpSpeedups_};
+}
 
-  //write data for file corresponding to runs for a specified data type or across all data type
-  //includes results for each run as well as average and median speedup data across multiple runs
-  template <bool MULT_DATA_TYPES>
-  void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
-    run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize)
-  {
-    //get iterator to first run with success
-    const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
-      { return runResult; } );
+//write data for file corresponding to runs for a specified data type or across all data type
+//includes results for each run as well as average and median speedup data across multiple runs
+template <bool MULT_DATA_TYPES>
+void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
+  run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize)
+{
+  //get iterator to first run with success
+  const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
+    { return runResult; } );
     
-    //check if there was at least one successful run
-    if (firstSuccessRun != runOutput.first.end()) {
-      //write results from default and optimized parallel parameters runs to csv file
-      //file name contains info about data type, parameter settings, and processor name if available
-      const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize);
-      const auto accelStr = run_environment::accelerationString(accelerationSetting);
-      const std::string optResultsFileName{std::string(run_eval::ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
-        ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
-      const std::string defaultParamsResultsFileName{std::string(run_eval::ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
-        ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
-      std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
-      std::ofstream(runImpSettings.optParallelParamsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
-        runImpSettings.optParallelParamsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
+  //check if there was at least one successful run
+  if (firstSuccessRun != runOutput.first.end()) {
+    //write results from default and optimized parallel parameters runs to csv file
+    //file name contains info about data type, parameter settings, and processor name if available
+    const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize);
+    const auto accelStr = run_environment::accelerationString(accelerationSetting);
+    const std::string optResultsFileName{std::string(run_eval::ALL_RUNS_OUTPUT_CSV_FILE_NAME_START) + "_" + 
+      ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
+    const std::string defaultParamsResultsFileName{std::string(run_eval::ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START) + "_" +
+      ((runImpSettings.processorName_) ? std::string(runImpSettings.processorName_.value()) + "_" : "") + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
+    std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
+    std::ofstream(runImpSettings.optParallelParamsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
+      runImpSettings.optParallelParamsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
         
-      //get headers from first successful run and write headers to top of output files
-      const auto headersInOrder = (*firstSuccessRun)->back().getHeadersInOrder();
-      for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
+    //get headers from first successful run and write headers to top of output files
+    const auto headersInOrder = (*firstSuccessRun)->back().getHeadersInOrder();
+    for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
+      for (const auto& currHeader : headersInOrder) {
+        resultsStreamDefaultTBFinal[i] << currHeader << ",";
+      }
+      resultsStreamDefaultTBFinal[i] << std::endl;
+    }
+
+    //write output for run on each input with each data type
+    for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
+      for (unsigned int runNum=0; runNum < runOutput.first.size(); runNum++) {
+        //if run not successful only have single set of output data from run
+        const unsigned int runResultIdx = runOutput.first[runNum] ? i : 0;
         for (const auto& currHeader : headersInOrder) {
-          resultsStreamDefaultTBFinal[i] << currHeader << ",";
+          if (!(runOutput.first[runNum]->at(runResultIdx).isData(currHeader))) {
+            resultsStreamDefaultTBFinal[i] << "No Data" << ",";
+          }
+          else {
+              resultsStreamDefaultTBFinal[i] << runOutput.first[runNum]->at(runResultIdx).getData(currHeader) << ",";
+          }
         }
         resultsStreamDefaultTBFinal[i] << std::endl;
       }
+    }
 
-      //write output for run on each input with each data type
-      for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
-        for (unsigned int runNum=0; runNum < runOutput.first.size(); runNum++) {
-          //if run not successful only have single set of output data from run
-          const unsigned int runResultIdx = runOutput.first[runNum] ? i : 0;
-          for (const auto& currHeader : headersInOrder) {
-            if (!(runOutput.first[runNum]->at(runResultIdx).isData(currHeader))) {
-              resultsStreamDefaultTBFinal[i] << "No Data" << ",";
-            }
-            else {
-                resultsStreamDefaultTBFinal[i] << runOutput.first[runNum]->at(runResultIdx).getData(currHeader) << ",";
-            }
-          }
-          resultsStreamDefaultTBFinal[i] << std::endl;
-        }
+    //write speedup results
+    const unsigned int indexBestResults{(runImpSettings.optParallelParamsOptionSetting_.first ? (unsigned int)resultsStreamDefaultTBFinal.size() - 1 : 0)};
+    resultsStreamDefaultTBFinal[indexBestResults] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
+    for (const auto& speedup : runOutput.second) {
+      resultsStreamDefaultTBFinal[indexBestResults] << speedup.first;
+      if (speedup.second[0] > 0) {
+        resultsStreamDefaultTBFinal[indexBestResults] << "," << speedup.second[0] << "," << speedup.second[1];
       }
+      resultsStreamDefaultTBFinal[indexBestResults] << std::endl;      
+    }
 
-      //write speedup results
-      const unsigned int indexBestResults{(runImpSettings.optParallelParamsOptionSetting_.first ? (unsigned int)resultsStreamDefaultTBFinal.size() - 1 : 0)};
-      resultsStreamDefaultTBFinal[indexBestResults] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
-      for (const auto& speedup : runOutput.second) {
-        resultsStreamDefaultTBFinal[indexBestResults] << speedup.first;
-        if (speedup.second[0] > 0) {
-          resultsStreamDefaultTBFinal[indexBestResults] << "," << speedup.second[0] << "," << speedup.second[1];
-        }
-        resultsStreamDefaultTBFinal[indexBestResults] << std::endl;      
-      }
+    //close output file streams
+    resultsStreamDefaultTBFinal[0].close();
+    if (runImpSettings.optParallelParamsOptionSetting_.first) {
+      resultsStreamDefaultTBFinal[1].close();
+    }
 
-      //close output file streams
-      resultsStreamDefaultTBFinal[0].close();
-      if (runImpSettings.optParallelParamsOptionSetting_.first) {
-        resultsStreamDefaultTBFinal[1].close();
-      }
-
-      if (runImpSettings.optParallelParamsOptionSetting_.first) {
-        std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (optimized parallel parameters) in "
-                  << optResultsFileName << std::endl;
-        std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (default parallel parameters) in "
-                  << defaultParamsResultsFileName << std::endl;
-      }
-      else {
-        std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run using default parallel parameters in "
-                  << optResultsFileName << std::endl;
-      }
+    if (runImpSettings.optParallelParamsOptionSetting_.first) {
+      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (optimized parallel parameters) in "
+                << optResultsFileName << std::endl;
+      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (default parallel parameters) in "
+                << defaultParamsResultsFileName << std::endl;
     }
     else {
-      std::cout << "Error, no runs completed successfully" << std::endl;
+      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run using default parallel parameters in "
+                << optResultsFileName << std::endl;
     }
   }
+  else {
+    std::cout << "Error, no runs completed successfully" << std::endl;
+  }
+}
 
-  void EvaluateImpResults::evalResultsSingDTypeAccRun() {
-    //initialize and add speedup results over baseline data if available for current input
-    runImpOptResults_ = runImpOrigResults_;
-    const auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings_, runImpOptResults_, dataSize_);
-    const auto speedupOverBaselineSubsets = getSpeedupOverBaselineSubsets(runImpSettings_, runImpOptResults_, dataSize_);
-    runImpSpeedups_.insert(runImpSpeedups_.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
-    runImpSpeedups_.insert(runImpSpeedups_.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
+void EvaluateImpResults::evalResultsSingDTypeAccRun() {
+  //initialize and add speedup results over baseline data if available for current input
+  runImpOptResults_ = runImpOrigResults_;
+  const auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings_, runImpOptResults_, dataSize_);
+  const auto speedupOverBaselineSubsets = getSpeedupOverBaselineSubsets(runImpSettings_, runImpOptResults_, dataSize_);
+  runImpSpeedups_.insert(runImpSpeedups_.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+  runImpSpeedups_.insert(runImpSpeedups_.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
 
-    //compute and add speedup info for using optimized parallel parameters and disparity count as template parameter to speedup results
-    if (runImpSettings_.optParallelParamsOptionSetting_.first) {
-        runImpSpeedups_.push_back(getAvgMedSpeedupOptPParams(runImpOptResults_, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
-        run_environment::DATA_SIZE_TO_NAME_MAP.at(dataSize_)));
-    }
-    if (runImpSettings_.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
-        runImpSpeedups_.push_back(getAvgMedSpeedupLoopItersInTemplate(runImpOptResults_, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
-        run_environment::DATA_SIZE_TO_NAME_MAP.at(dataSize_)));
-    }
-
-    //write output corresponding to results for current data type
-    constexpr bool MULT_DATA_TYPES{false};
-    writeRunOutput<MULT_DATA_TYPES>({runImpOptResults_, runImpSpeedups_}, runImpSettings_, optImpAccel_, dataSize_);
+  //compute and add speedup info for using optimized parallel parameters and disparity count as template parameter to speedup results
+  if (runImpSettings_.optParallelParamsOptionSetting_.first) {
+    runImpSpeedups_.push_back(getAvgMedSpeedupOptPParams(runImpOptResults_, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - " +
+    run_environment::DATA_SIZE_TO_NAME_MAP.at(dataSize_)));
+  }
+  if (runImpSettings_.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+    runImpSpeedups_.push_back(getAvgMedSpeedupLoopItersInTemplate(runImpOptResults_, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - " +
+    run_environment::DATA_SIZE_TO_NAME_MAP.at(dataSize_)));
   }
 
-  //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
-  //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
-  std::vector<MultRunSpeedup> EvaluateImpResults::getAltAccelSpeedups(
-    std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>& runImpResultsByAccSetting,
-    const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize, run_environment::AccSetting fastestAcc) const
-  {
-    //set up mapping from acceleration type to description
-    const std::map<run_environment::AccSetting, std::string> accToSpeedupStr{
-      {run_environment::AccSetting::NONE, 
-      std::string(run_eval::SPEEDUP_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)},
-      {run_environment::AccSetting::AVX256, 
-      std::string(run_eval::SPEEDUP_VS_AVX256_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)}};
+  //write output corresponding to results for current data type
+  constexpr bool MULT_DATA_TYPES{false};
+  writeRunOutput<MULT_DATA_TYPES>({runImpOptResults_, runImpSpeedups_}, runImpSettings_, optImpAccel_, dataSize_);
+}
 
-    if (runImpResultsByAccSetting.size() == 1) {
-      //no alternate run results
-      return {{accToSpeedupStr.at(run_environment::AccSetting::NONE), {0.0, 0.0}}, {accToSpeedupStr.at(run_environment::AccSetting::AVX256), {0.0, 0.0}}};
-    }
-    else {
-      //initialize speedup/slowdown using alternate acceleration
-      std::vector<MultRunSpeedup> altAccSpeedups;
-      for (auto& altAccImpResults : runImpResultsByAccSetting) {
-        if ((altAccImpResults.first != fastestAcc) && (accToSpeedupStr.contains(altAccImpResults.first))) {
-          //process results using alternate acceleration
-          //go through each result and replace initial run data with alternate implementation run data if alternate implementation run is faster
-          for (unsigned int i = 0; i < runImpResultsByAccSetting[fastestAcc].first.size(); i++) {
-            if (runImpResultsByAccSetting[fastestAcc].first[i] && altAccImpResults.second.first[i]) {
-              const double initResultTime = std::stod(runImpResultsByAccSetting[fastestAcc].first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
-              const double altAccResultTime = std::stod(altAccImpResults.second.first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
-              if (altAccResultTime < initResultTime) {
-                runImpResultsByAccSetting[fastestAcc].first[i] = altAccImpResults.second.first[i];
-              }
+//perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
+//CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
+std::vector<MultRunSpeedup> EvaluateImpResults::getAltAccelSpeedups(
+  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>& runImpResultsByAccSetting,
+  const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize, run_environment::AccSetting fastestAcc) const
+{
+  //set up mapping from acceleration type to description
+  const std::map<run_environment::AccSetting, std::string> accToSpeedupStr{
+    {run_environment::AccSetting::NONE, 
+    std::string(run_eval::SPEEDUP_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)},
+    {run_environment::AccSetting::AVX256, 
+    std::string(run_eval::SPEEDUP_VS_AVX256_VECTORIZATION) + " - " + run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize)}};
+
+  if (runImpResultsByAccSetting.size() == 1) {
+    //no alternate run results
+    return {{accToSpeedupStr.at(run_environment::AccSetting::NONE), {0.0, 0.0}}, {accToSpeedupStr.at(run_environment::AccSetting::AVX256), {0.0, 0.0}}};
+  }
+  else {
+    //initialize speedup/slowdown using alternate acceleration
+    std::vector<MultRunSpeedup> altAccSpeedups;
+    for (auto& altAccImpResults : runImpResultsByAccSetting) {
+      if ((altAccImpResults.first != fastestAcc) && (accToSpeedupStr.contains(altAccImpResults.first))) {
+        //process results using alternate acceleration
+        //go through each result and replace initial run data with alternate implementation run data if alternate implementation run is faster
+        for (unsigned int i = 0; i < runImpResultsByAccSetting[fastestAcc].first.size(); i++) {
+          if (runImpResultsByAccSetting[fastestAcc].first[i] && altAccImpResults.second.first[i]) {
+            const double initResultTime = std::stod(runImpResultsByAccSetting[fastestAcc].first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+            const double altAccResultTime = std::stod(altAccImpResults.second.first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)));
+            if (altAccResultTime < initResultTime) {
+              runImpResultsByAccSetting[fastestAcc].first[i] = altAccImpResults.second.first[i];
             }
           }
-          //get speedup/slowdown using alternate acceleration compared to fastest implementation and store in speedup results
-          altAccSpeedups.push_back(getAvgMedSpeedup(
-          altAccImpResults.second.first, runImpResultsByAccSetting[fastestAcc].first, accToSpeedupStr.at(altAccImpResults.first)));
         }
+        //get speedup/slowdown using alternate acceleration compared to fastest implementation and store in speedup results
+        altAccSpeedups.push_back(getAvgMedSpeedup(
+        altAccImpResults.second.first, runImpResultsByAccSetting[fastestAcc].first, accToSpeedupStr.at(altAccImpResults.first)));
       }
-      return altAccSpeedups;
+    }
+    return altAccSpeedups;
+  }
+}
+
+void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
+  //get speedup/slowdown using alternate accelerations
+  std::unordered_map<size_t, std::vector<MultRunSpeedup>> altImpSpeedup;
+  std::unordered_map<size_t, MultRunSpeedup> altDataTypeSpeedup;
+  for (const size_t dataSize : {sizeof(float), sizeof(double), sizeof(halftype)}) {
+    altImpSpeedup[dataSize] = getAltAccelSpeedups(runImpResultsMultRuns_[dataSize], runImpSettings_, dataSize, optImpAccel_);
+    if (dataSize != sizeof(float)) {
+      //get speedup or slowdown using alternate data type (double or half) compared with float
+      altDataTypeSpeedup[dataSize] = getAvgMedSpeedup(runImpResultsMultRuns_[sizeof(float)][optImpAccel_].first,
+        runImpResultsMultRuns_[dataSize][optImpAccel_].first, (dataSize > sizeof(float)) ? std::string(run_eval::SPEEDUP_DOUBLE) : std::string(run_eval::SPEEDUP_HALF));
     }
   }
 
-  void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
-    //get speedup/slowdown using alternate accelerations
-    std::unordered_map<size_t, std::vector<MultRunSpeedup>> altImpSpeedup;
-    std::unordered_map<size_t, MultRunSpeedup> altDataTypeSpeedup;
-    for (const size_t dataSize : {sizeof(float), sizeof(double), sizeof(halftype)}) {
-      altImpSpeedup[dataSize] = getAltAccelSpeedups(runImpResultsMultRuns_[dataSize], runImpSettings_, dataSize, optImpAccel_);
-      if (dataSize != sizeof(float)) {
-        //get speedup or slowdown using alternate data type (double or half) compared with float
-        altDataTypeSpeedup[dataSize] = getAvgMedSpeedup(runImpResultsMultRuns_[sizeof(float)][optImpAccel_].first,
-          runImpResultsMultRuns_[dataSize][optImpAccel_].first, (dataSize > sizeof(float)) ? std::string(run_eval::SPEEDUP_DOUBLE) : std::string(run_eval::SPEEDUP_HALF));
-      }
-    }
+  //initialize overall results to float results using fastest acceleration and add double and half-type results to it
+  auto resultsWSpeedups = runImpResultsMultRuns_[sizeof(float)][optImpAccel_];
+  resultsWSpeedups.first.insert(resultsWSpeedups.first.end(),
+    runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.begin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.end());
+  resultsWSpeedups.first.insert(resultsWSpeedups.first.end(),
+    runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.begin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.end());
 
-    //initialize overall results to float results using fastest acceleration and add double and half-type results to it
-    auto resultsWSpeedups = runImpResultsMultRuns_[sizeof(float)][optImpAccel_];
-    resultsWSpeedups.first.insert(resultsWSpeedups.first.end(),
-      runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.begin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.end());
-    resultsWSpeedups.first.insert(resultsWSpeedups.first.end(),
-      runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.begin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.end());
+  //add speedup data from double and half precision runs to speedup results
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(float)].begin(), altImpSpeedup[sizeof(float)].end());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(),
+    runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.begin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.end());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(double)].begin(), altImpSpeedup[sizeof(double)].end());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(),
+    runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.begin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.end());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(halftype)].begin(), altImpSpeedup[sizeof(halftype)].end());
 
-    //add speedup data from double and half precision runs to speedup results
-    resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(float)].begin(), altImpSpeedup[sizeof(float)].end());
-    resultsWSpeedups.second.insert(resultsWSpeedups.second.end(),
-      runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.begin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.end());
-    resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(double)].begin(), altImpSpeedup[sizeof(double)].end());
-    resultsWSpeedups.second.insert(resultsWSpeedups.second.end(),
-      runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.begin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.end());
-    resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(halftype)].begin(), altImpSpeedup[sizeof(halftype)].end());
+  //get speedup over baseline runtimes...can only compare with baseline runtimes that are
+  //generated using same templated iterations setting as current run
+  if ((runImpSettings_.baseOptSingThreadRTimeForTSetting_) &&
+      (runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings_.templatedItersSetting_)) {
+      const auto speedupOverBaseline = getAvgMedSpeedupOverBaseline(resultsWSpeedups.first, "All Runs",
+        runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().first);
+      resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+  }
 
+  //get speedup info for using optimized parallel parameters
+  if (runImpSettings_.optParallelParamsOptionSetting_.first) {
+    resultsWSpeedups.second.push_back(getAvgMedSpeedupOptPParams(
+    resultsWSpeedups.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
+  }
+
+  //get speedup when using template for loop iteration count
+  if (runImpSettings_.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
+    resultsWSpeedups.second.push_back(getAvgMedSpeedupLoopItersInTemplate(
+    resultsWSpeedups.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
+  }
+
+  //add speedups when using doubles and half precision compared to float to end of speedup data
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), {altDataTypeSpeedup[sizeof(double)], altDataTypeSpeedup[sizeof(halftype)]});
+
+  //write output corresponding to results and speedups for all data types
+  constexpr bool MULT_DATA_TYPES{true};
+  writeRunOutput<MULT_DATA_TYPES>(resultsWSpeedups, runImpSettings_, optImpAccel_);
+}
+
+//get speedup over baseline data if data available
+std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
+  MultRunData& runDataAllRuns, const size_t dataTypeSize) const
+{
+  //initialize speedup results
+  std::vector<MultRunSpeedup> speedupResults;
+
+  //only get speedup over baseline when processing float data type since that is run first and corresponds to the data at the top
+  //of the baseline data
+  if (dataTypeSize == sizeof(float)) {
     //get speedup over baseline runtimes...can only compare with baseline runtimes that are
     //generated using same templated iterations setting as current run
-    if ((runImpSettings_.baseOptSingThreadRTimeForTSetting_) &&
-        (runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings_.templatedItersSetting_)) {
-        const auto speedupOverBaseline = getAvgMedSpeedupOverBaseline(resultsWSpeedups.first, "All Runs",
-        runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().first);
-        resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
-    }
-
-    //get speedup info for using optimized parallel parameters
-    if (runImpSettings_.optParallelParamsOptionSetting_.first) {
-        resultsWSpeedups.second.push_back(getAvgMedSpeedupOptPParams(
-        resultsWSpeedups.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
-    }
-
-    //get speedup when using template for loop iteration count
-    if (runImpSettings_.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
-        resultsWSpeedups.second.push_back(getAvgMedSpeedupLoopItersInTemplate(
-        resultsWSpeedups.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
-    }
-
-    //add speedups when using doubles and half precision compared to float to end of speedup data
-    resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), {altDataTypeSpeedup[sizeof(double)], altDataTypeSpeedup[sizeof(halftype)]});
-
-    //write output corresponding to results and speedups for all data types
-    constexpr bool MULT_DATA_TYPES{true};
-    writeRunOutput<MULT_DATA_TYPES>(resultsWSpeedups, runImpSettings_, optImpAccel_);
-  }
-
-  //get speedup over baseline data if data available
-  std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
-    MultRunData& runDataAllRuns, const size_t dataTypeSize) const
-  {
-    //initialize speedup results
-    std::vector<MultRunSpeedup> speedupResults;
-
-    //only get speedup over baseline when processing float data type since that is run first and corresponds to the data at the top
-    //of the baseline data
-    if (dataTypeSize == sizeof(float)) {
-      //get speedup over baseline runtimes...can only compare with baseline runtimes that are
-      //generated using same templated iterations setting as current run
-      if ((runImpSettings.baseOptSingThreadRTimeForTSetting_) &&
-          (runImpSettings.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings.templatedItersSetting_))
-      {
-        const auto speedupOverBaselineSubsets = getAvgMedSpeedupOverBaseline(
-          runDataAllRuns, run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize),
-          runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first);
-        speedupResults.insert(speedupResults.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
-      }
-    }
-    return speedupResults;
-  }
-
-  //get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
-  std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
-    MultRunData& runDataAllRuns, const size_t dataTypeSize) const
-  {
-    //return empty vector if not defined in child class
-    return std::vector<MultRunSpeedup>();
-  }
-
-  std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::getBaselineRuntimeData(const std::string& baselineDataPath) const {
-    std::ifstream baselineData(baselineDataPath);
-    if (!(baselineData.is_open())) {
-      return {};
-    }
-    std::string line;
-    //first line of data is string with baseline processor description and all subsequent data is runtimes
-    //on that processor in same order as runtimes from runBenchmark() function
-    std::pair<std::string, std::vector<double>> baselineNameData;
-    bool firstLine{true};
-    while (std::getline(baselineData, line))
+    if ((runImpSettings.baseOptSingThreadRTimeForTSetting_) &&
+        (runImpSettings.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings.templatedItersSetting_))
     {
-      if (firstLine) {
-        baselineNameData.first = line;
-        firstLine = false;
-      }
-      else {
-        baselineNameData.second.push_back(std::stod(line));
-      }
+      const auto speedupOverBaselineSubsets = getAvgMedSpeedupOverBaseline(
+        runDataAllRuns, run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize),
+        runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first);
+      speedupResults.insert(speedupResults.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
     }
-
-    return baselineNameData;
   }
+  return speedupResults;
+}
+
+//get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
+std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
+  MultRunData& runDataAllRuns, const size_t dataTypeSize) const
+{
+  //return empty vector if not defined in child class
+  return std::vector<MultRunSpeedup>();
+}
+
+std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::getBaselineRuntimeData(const std::string& baselineDataPath) const {
+  std::ifstream baselineData(baselineDataPath);
+  if (!(baselineData.is_open())) {
+    return {};
+  }
+  std::string line;
+  //first line of data is string with baseline processor description and all subsequent data is runtimes
+  //on that processor in same order as runtimes from runBenchmark() function
+  std::pair<std::string, std::vector<double>> baselineNameData;
+  bool firstLine{true};
+  while (std::getline(baselineData, line)) {
+    if (firstLine) {
+      baselineNameData.first = line;
+      firstLine = false;
+    }
+    else {
+      baselineNameData.second.push_back(std::stod(line));
+    }
+  }
+
+  return baselineNameData;
+}
 
 //get average and median speedup from vector of speedup values
 std::array<double, 2> EvaluateImpResults::getAvgMedSpeedup(const std::vector<double>& speedupsVect) const {
