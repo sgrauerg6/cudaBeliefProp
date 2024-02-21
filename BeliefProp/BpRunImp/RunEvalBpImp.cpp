@@ -8,7 +8,7 @@
 #include "RunEvalBpImp.h"
 
 //get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
-std::vector<MultRunSpeedup> RunEvalBpImp::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
+/*std::vector<MultRunSpeedup> RunEvalBpImp::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
   MultRunData& runDataAllRuns, const size_t dataTypeSize) const
 {
   //initialize speedup results
@@ -39,7 +39,7 @@ std::vector<MultRunSpeedup> RunEvalBpImp::getSpeedupOverBaselineSubsets(const ru
   }
 
   return speedupResults;
-}
+}*/
 
 MultRunData RunEvalBpImp::runEvalImpMultDataSets(
   const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const 

@@ -29,12 +29,6 @@ public:
     const run_environment::RunImpSettings& runImpSettings) const;
 
 private:
-  //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
-  //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
-  std::vector<MultRunSpeedup> getAltAccelSpeedups(
-    std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>& runBenchmarkImpsByAccSetting,
-    const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize, run_environment::AccSetting fastestAcc) const;
-
   //get fastest available implementation
   run_environment::AccSetting getFastestAvailableAcc(const std::map<run_environment::AccSetting,
     std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting) const;
