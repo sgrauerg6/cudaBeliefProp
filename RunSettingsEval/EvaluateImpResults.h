@@ -13,31 +13,36 @@
 #include "RunEvalConstsEnums.h"
 #include "RunEvalUtils.h"
 
+//class with operator function to evaluate implementation runs
 class EvaluateImpResults {
 public:
+  //evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
   void operator()(const MultRunData& runResults, const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc, size_t dataSize);
 
+  //evaluate results for implementation runs on multiple inputs with the runs having different data type and acceleration methods
   void operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
     const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc);
 
   std::pair<MultRunData, std::vector<MultRunSpeedup>> getRunDataWSpeedups() const;
 
 private:
+  //process results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
+  void evalResultsSingDTypeAccRun();
+
+  //process results for implementation runs on multiple inputs with the runs having different data type and acceleration methods
+  void evalResultsMultDTypeAccRuns();
+
   //write data for file corresponding to runs for a specified data type or across all data type
   //includes results for each run as well as average and median speedup data across multiple runs
   template <bool MULT_DATA_TYPES>
   void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
     run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize = 0);
 
-  void evalResultsSingDTypeAccRun();
-
   //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
   std::vector<MultRunSpeedup> getAltAccelSpeedups(
     std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>& runImpResultsByAccSetting,
     const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize, run_environment::AccSetting fastestAcc) const;
-
-  void evalResultsMultDTypeAccRuns();
 
   //get speedup over baseline data if data available
   std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,

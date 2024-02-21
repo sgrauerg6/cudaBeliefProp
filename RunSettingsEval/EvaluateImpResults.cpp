@@ -10,14 +10,16 @@
 #include "EvaluateImpResults.h"
 #include <numeric>
 
+//evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
 void EvaluateImpResults::operator()(const MultRunData& runResults, const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc, size_t dataSize) {
-    runImpOrigResults_ = runResults;
-    runImpSettings_ = runImpSettings;
-    optImpAccel_ = optImpAcc;
-    dataSize_ = dataSize;
-    evalResultsSingDTypeAccRun();
-  }
+  runImpOrigResults_ = runResults;
+  runImpSettings_ = runImpSettings;
+  optImpAccel_ = optImpAcc;
+  dataSize_ = dataSize;
+  evalResultsSingDTypeAccRun();
+}
 
+//evaluate results for implementation runs on multiple inputs with the runs having different data type and acceleration methods
 void EvaluateImpResults::operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
   const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc)
 {
