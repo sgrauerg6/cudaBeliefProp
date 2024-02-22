@@ -114,8 +114,10 @@ protected:
         return {};
       }
 
-      //retrieve results from current run
-      currRunData.appendData(runImpsECodeData.value());
+      //add data results from current run if run successful
+      if (runImpsECodeData) {
+        currRunData.appendData(runImpsECodeData.value());
+      }
 
       //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
       if (currRunType != RunType::TEST_PARAMS) {
