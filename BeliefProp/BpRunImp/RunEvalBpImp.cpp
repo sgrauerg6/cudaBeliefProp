@@ -7,40 +7,6 @@
 
 #include "RunEvalBpImp.h"
 
-//get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
-/*std::vector<MultRunSpeedup> RunEvalBpImp::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
-  MultRunData& runDataAllRuns, const size_t dataTypeSize) const
-{
-  //initialize speedup results
-  std::vector<MultRunSpeedup> speedupResults;
-
-  //only get speedup over baseline when processing float data type since that is run first and corresponds to the data at the top
-  //of the baseline data
-  if (dataTypeSize == sizeof(float)) {
-    //get speedup over baseline runtimes...can only compare with baseline runtimes that are
-    //generated using same templated iterations setting as current run
-    if ((runImpSettings.baseOptSingThreadRTimeForTSetting_) &&
-        (runImpSettings.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings.templatedItersSetting_))
-    {
-      //input subsets to get speedup over baseline
-      const std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetsStrIndices = {
-        {"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
-#ifndef SMALLER_SETS_ONLY
-        {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}
-#else
-        {"largest stereo set", {8, 9}}
-#endif //SMALLER_SETS_ONLY
-      };
-      const auto speedupOverBaselineSubsets = run_eval::getAvgMedSpeedupOverBaselineSubsets(
-        runDataAllRuns, run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize),
-        runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first, subsetsStrIndices);
-      speedupResults.insert(speedupResults.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
-    }
-  }
-
-  return speedupResults;
-}*/
-
 MultRunData RunEvalBpImp::runEvalImpMultDataSets(
   const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const 
 {

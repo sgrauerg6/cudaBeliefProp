@@ -14,7 +14,6 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunEvalUtils.h"
 #include "RunImp/RunEvalImpOnInput.h"
 
 #ifndef RUN_EVAL_BP_IMP_SINGLE_SET_H_
@@ -53,7 +52,7 @@ protected:
   std::shared_ptr<ParallelParams> setUpParallelParams(const run_environment::RunImpSettings& runImpSettings) const override;
 
   //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
-  RunData inputAndParamsForCurrBenchmark() const override;
+  RunData inputAndParamsForCurrBenchmark(bool loopItersTemplated) const override;
 
   //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
   //on the reference and test images specified by numStereoSet
@@ -101,10 +100,11 @@ std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>
 
 //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrBenchmark() const {
+RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrBenchmark(bool loopItersTemplated) const {
   RunData currRunData;
   currRunData.addDataWHeader("Stereo Set", std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
-  currRunData.appendData(run_eval::inputAndParamsRunData<T, beliefprop::BPsettings, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>(algSettings_));
+  currRunData.appendData(this->inputAndParamsRunData(loopItersTemplated));
+  currRunData.appendData(algSettings_.runData());
   currRunData.appendData(bp_params::runSettings());
   return currRunData;
 }

@@ -27,11 +27,20 @@ protected:
   virtual std::shared_ptr<ParallelParams> setUpParallelParams(const run_environment::RunImpSettings& runImpSettings) const = 0;
 
   //retrieve input and parameters for run of current benchmark
-  virtual RunData inputAndParamsForCurrBenchmark() const = 0;
+  virtual RunData inputAndParamsForCurrBenchmark(bool loopItersTemplated) const = 0;
 
   //run one or two implementations of benchmark and compare results if running multiple implementations
   virtual std::optional<RunData> runImpsAndCompare(std::shared_ptr<ParallelParams> parallelParams,
     bool runOptImpOnly, bool runImpTmpLoopIters) const = 0;
+
+  //get current run inputs and parameters in RunData structure
+  RunData inputAndParamsRunData(bool loopItersTemplated) const {
+    RunData currRunData;
+    currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
+    currRunData.appendData(run_environment::runSettings<OPT_IMP_ACCEL>());
+    currRunData.addDataWHeader("LOOP_ITERS_TEMPLATED", loopItersTemplated ? "YES" : "NO");
+    return currRunData;
+  }
 
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set
   //to optimize parallel parameters returns data from runs using default and optimized parallel parameters
@@ -82,7 +91,7 @@ protected:
       RunData currRunData;
       if (currRunType != RunType::TEST_PARAMS) {
         //add input and parameters data for specific benchmark to current run data
-        currRunData.appendData(inputAndParamsForCurrBenchmark());
+        currRunData.appendData(inputAndParamsForCurrBenchmark(runWLoopItersTemplated));
         if ((runImpSettings.optParallelParamsOptionSetting_.first) &&
             (runImpSettings.optParallelParamsOptionSetting_.second ==
              run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))

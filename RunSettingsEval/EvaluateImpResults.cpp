@@ -8,6 +8,7 @@
  */
 
 #include "EvaluateImpResults.h"
+#include <fstream>
 #include <numeric>
 
 //evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
@@ -267,10 +268,17 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaseline(const run
 std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
   MultRunData& runDataAllRuns, const size_t dataTypeSize) const
 {
-  //return empty vector if not defined in child class
+  if ((dataTypeSize == sizeof(float)) &&
+    (runImpSettings.baseOptSingThreadRTimeForTSetting_ && (runImpSettings.baseOptSingThreadRTimeForTSetting_->second == runImpSettings.templatedItersSetting_)))
+  {
+    return getAvgMedSpeedupOverBaselineSubsets(runDataAllRuns, run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize),
+      runImpSettings.baseOptSingThreadRTimeForTSetting_->first, runImpSettings.subsetStrIndices_);
+  }
+  //return empty vector if doesn't match settings to get speedup over baseline for subsets
   return std::vector<MultRunSpeedup>();
 }
 
+//get baseline runtime data if available...return null if baseline data not available
 std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::getBaselineRuntimeData(const std::string& baselineDataPath) const {
   std::ifstream baselineData(baselineDataPath);
   if (!(baselineData.is_open())) {

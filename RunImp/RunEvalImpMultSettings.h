@@ -17,7 +17,6 @@
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
-#include "RunSettingsEval/RunEvalUtils.h"
 #include "RunImp/RunBenchmarkImp.h"
 
 //class to run and evaluate a optimized benchmark implementation using multiple settings

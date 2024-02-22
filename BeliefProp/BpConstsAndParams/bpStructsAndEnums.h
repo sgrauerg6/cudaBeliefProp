@@ -20,6 +20,14 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 
+//parameters type requires runData() function to return the parameters as a
+//RunData object
+template <typename T>
+concept Params_t =
+  requires(T t) {
+    { t.runData() } -> std::same_as<RunData>;
+  };
+
 namespace beliefprop {
 
 //structure to store the settings for the number of levels and iterations

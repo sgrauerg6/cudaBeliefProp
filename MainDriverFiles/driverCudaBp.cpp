@@ -35,6 +35,12 @@ int main(int argc, char** argv)
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
+  runImpSettings.subsetStrIndices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
+#ifndef SMALLER_SETS_ONLY
+                                      {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
+#else
+                                      {"largest stereo set", {8, 9}}};
+#endif //SMALLER_SETS_ONLY
 #ifdef PROCESSOR_NAME
   runImpSettings.processorName_ = PROCESSOR_NAME;
 #endif //PROCESSOR_NAME

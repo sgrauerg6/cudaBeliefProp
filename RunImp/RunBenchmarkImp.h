@@ -12,7 +12,6 @@
 #include <numeric>
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunEvalUtils.h"
 
 //base class for running and evaluating multiple runs of benchmark that may be optimized on CPU or GPU
 class RunBenchmarkImp {

@@ -11,7 +11,11 @@
 #define EVALUATE_IMP_RESULTS_H_
 
 #include "RunEvalConstsEnums.h"
-#include "RunEvalUtils.h"
+#include "RunSettings.h"
+
+#ifdef OPTIMIZED_CUDA_RUN
+#include "RunImpCUDA/RunCUDASettings.h"
+#endif //OPTIMIZED_CUDA_RUN
 
 //class with operator function to evaluate implementation runs
 class EvaluateImpResults {
@@ -23,6 +27,7 @@ public:
   void operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
     const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc);
 
+  //get run data with speedup from evaluation of implementation runs using multiple inputs with runs having the same data type and acceleration method
   std::pair<MultRunData, std::vector<MultRunSpeedup>> getRunDataWSpeedups() const;
 
 private:
@@ -49,9 +54,10 @@ private:
     MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
 
   //get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
-  virtual std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
+  std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
     MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
 
+  //get baseline runtime data if available...return null if baseline data not available
   std::optional<std::pair<std::string, std::vector<double>>> getBaselineRuntimeData(const std::string& baselineDataPath) const;
 
   //get average and median speedup from vector of speedup values

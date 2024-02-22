@@ -28,7 +28,6 @@
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
-#include "RunSettingsEval/RunEvalUtils.h"
 #include "RunImp/RunBenchmarkImp.h"
 #include "BpParallelParams.h"
 
@@ -47,10 +46,6 @@ private:
 
   template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
   MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings) const;
-
-  //get speedup over baseline data for belief propagation run for specific input subsets if data available
-  //std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
-  //  MultRunData& runDataAllRuns, const size_t dataTypeSize) const override;
 };
 
 #endif /* RUNEVALBPIMP_H_ */
