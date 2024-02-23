@@ -20,8 +20,9 @@ namespace run_eval {
   enum class Status { NO_ERROR, ERROR };
 
   //constants for output results for individual and sets of runs
-  constexpr std::string_view ALL_RUNS_OUTPUT_CSV_FILE_NAME_START{"outputResults"};
-  constexpr std::string_view ALL_RUNS_OUTPUT_DEFAULT_PARALLEL_PARAMS_CSV_FILE_START{"outputResultsDefaultParallelParams"};
+  constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"Results"};
+  constexpr std::string_view RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME{"ResultsDefaultParallelParams"};
+  constexpr std::string_view SPEEDUPS_DESCRIPTION_FILE_NAME{"Speedups"};
   constexpr std::string_view CSV_FILE_EXTENSION{".csv"};
   constexpr std::string_view OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
   constexpr std::string_view SINGLE_THREAD_RUNTIME_HEADER{"AVERAGE CPU RUN TIME"};

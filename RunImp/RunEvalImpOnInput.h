@@ -91,6 +91,7 @@ protected:
       RunData currRunData;
       if (currRunType != RunType::TEST_PARAMS) {
         //add input and parameters data for specific benchmark to current run data
+        currRunData.addDataWHeader("Input Index", std::to_string(NUM_INPUT));
         currRunData.appendData(inputAndParamsForCurrBenchmark(runWLoopItersTemplated));
         if ((runImpSettings.optParallelParamsOptionSetting_.first) &&
             (runImpSettings.optParallelParamsOptionSetting_.second ==

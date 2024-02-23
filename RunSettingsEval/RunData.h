@@ -15,6 +15,7 @@
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <optional>
 
 class RunData {
 public:
@@ -31,11 +32,33 @@ public:
   bool isData(const std::string& header) const { 
     return (std::find(headersInOrder_.begin(), headersInOrder_.end(), header) != headersInOrder_.end()); }
 
-  //get data corresponding to header
+  //get data corresponding to ,
   const std::string getData(const std::string& header) const { return headersWData_.at(header); }
   
   //append current RunData with input RunData
   void appendData(const RunData& inRunData);
+
+  //retrieve pair between a set of parameters and a single parameter
+  std::optional<std::pair<std::vector<std::string>, std::string>> getParamsToParamRunData(
+    const std::vector<std::string>& keyParams, const std::string& valParam) const
+  {
+    std::vector<std::string> keyParamVals;
+    for (const auto& keyParam : keyParams) {
+      //check if current key params exists as header; return null if not
+      if (!(headersWData_.contains(keyParam))) {
+        return {};
+      }
+      //add value of key param for first part of pair to return
+      keyParamVals.push_back(headersWData_.at(keyParam));
+    }
+      //check if value params exists as header; return null if not
+    if (!(headersWData_.contains(valParam))) {
+      return {};
+    }
+
+    //return pair of vector key parameters values with value parameter value for run data
+    return std::pair<std::vector<std::string>, std::string>{keyParamVals, headersWData_.at(valParam)};
+  }
 
 private:
   //data stored as mapping between header and data value corresponding to headers

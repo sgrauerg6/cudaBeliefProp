@@ -41,9 +41,10 @@ int main(int argc, char** argv)
 #else
                                       {"largest stereo set", {8, 9}}};
 #endif //SMALLER_SETS_ONLY
-#ifdef PROCESSOR_NAME
-  runImpSettings.processorName_ = PROCESSOR_NAME;
-#endif //PROCESSOR_NAME
+  //set run name to first argument if it exists
+  if (argc > 1) {
+    runImpSettings.runName_ = argv[1];
+  }
   
   //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
