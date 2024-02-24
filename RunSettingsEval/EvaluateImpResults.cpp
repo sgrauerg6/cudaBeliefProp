@@ -62,8 +62,8 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
       runImpSettings.optParallelParamsOptionSetting_.first ? (writeDebugOutputFiles_ ? std::ofstream(defaultParamsResultsFileName) : std::ofstream()) : std::ofstream(optResultsFileName),
       runImpSettings.optParallelParamsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
-    std::array<std::stringstream, 2> runDataOptDefaultSStr;
-    std::array<std::stringstream, 2> speedupsHeadersLeftTopSStr;
+    std::array<std::ostringstream, 2> runDataOptDefaultSStr;
+    std::array<std::ostringstream, 2> speedupsHeadersLeftTopSStr;
     std::ofstream runResultWSpeedupsStr(optResultsWSpeedupFileName);
         
     //get headers from first successful run and write headers to top of output files
