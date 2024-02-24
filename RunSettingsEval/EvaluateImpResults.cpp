@@ -10,6 +10,7 @@
 #include "EvaluateImpResults.h"
 #include <fstream>
 #include <numeric>
+#include <sstream>
 
 //evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
 void EvaluateImpResults::operator()(const MultRunData& runResults, const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc, size_t dataSize) {
@@ -43,7 +44,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
     { return runResult; } );
-    
+
   //check if there was at least one successful run
   if (firstSuccessRun != runOutput.first.end()) {
     //write results from default and optimized parallel parameters runs to csv file
@@ -52,21 +53,26 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     const auto accelStr = run_environment::accelerationString(accelerationSetting);
     const std::string optResultsFileName{((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
       std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
+    const std::string optResultsWSpeedupFileName{((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
+      std::string(run_eval::RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
     const std::string defaultParamsResultsFileName{((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
       std::string(run_eval::RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
     const std::string speedupResultsFileName{((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
       std::string(run_eval::SPEEDUPS_DESCRIPTION_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION)};
     std::array<std::ofstream, 2> resultsStreamDefaultTBFinal{
-    std::ofstream(runImpSettings.optParallelParamsOptionSetting_.first ? defaultParamsResultsFileName : optResultsFileName),
+      runImpSettings.optParallelParamsOptionSetting_.first ? (writeDebugOutputFiles_ ? std::ofstream(defaultParamsResultsFileName) : std::ofstream()) : std::ofstream(optResultsFileName),
       runImpSettings.optParallelParamsOptionSetting_.first ? std::ofstream(optResultsFileName) : std::ofstream()};
+    std::array<std::stringstream, 2> runDataOptDefaultSStr;
+    std::array<std::stringstream, 2> speedupsHeadersLeftTopSStr;
+    std::ofstream runResultWSpeedupsStr(optResultsWSpeedupFileName);
         
     //get headers from first successful run and write headers to top of output files
     const auto headersInOrder = (*firstSuccessRun)->back().getHeadersInOrder();
     for (unsigned int i=0; i < (runImpSettings.optParallelParamsOptionSetting_.first ? resultsStreamDefaultTBFinal.size() : 1); i++) {
       for (const auto& currHeader : headersInOrder) {
-        resultsStreamDefaultTBFinal[i] << currHeader << ",";
+        runDataOptDefaultSStr[i] << currHeader << ',';
       }
-      resultsStreamDefaultTBFinal[i] << std::endl;
+      runDataOptDefaultSStr[i] << std::endl;
     }
 
     //write output for run on each input with each data type
@@ -76,47 +82,60 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
         const unsigned int runResultIdx = runOutput.first[runNum] ? i : 0;
         for (const auto& currHeader : headersInOrder) {
           if (!(runOutput.first[runNum]->at(runResultIdx).isData(currHeader))) {
-            resultsStreamDefaultTBFinal[i] << "No Data" << ",";
+            runDataOptDefaultSStr[i] << "No Data" << ',';
           }
           else {
-            resultsStreamDefaultTBFinal[i] << runOutput.first[runNum]->at(runResultIdx).getData(currHeader) << ",";
+            runDataOptDefaultSStr[i] << runOutput.first[runNum]->at(runResultIdx).getData(currHeader) << ',';
           }
         }
-        resultsStreamDefaultTBFinal[i] << std::endl;
+        runDataOptDefaultSStr[i] << std::endl;
       }
     }
 
-    //write speedup results
-    std::ofstream speedupResultsStr{speedupResultsFileName};
-    speedupResultsStr << ',';
+    //speedup results as part of full results with headers on left side
+    //const unsigned int indexBestResults{(runImpSettings.optParallelParamsOptionSetting_.first ? (unsigned int)resultsStreamDefaultTBFinal.size() - 1 : 0)};
+    speedupsHeadersLeftTopSStr[0] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : runOutput.second) {
-      speedupResultsStr << speedup.first << ',';
+      speedupsHeadersLeftTopSStr[0] << speedup.first;
+      if (speedup.second[0] > 0) {
+        speedupsHeadersLeftTopSStr[0] << ',' << speedup.second[0] << ',' << speedup.second[1];
+      }
+      speedupsHeadersLeftTopSStr[0] << std::endl;
+    }
+
+    //write speedup results as separate file with headers on top row
+    std::ofstream speedupResultsStr{speedupResultsFileName};
+    speedupsHeadersLeftTopSStr[1] << ',';
+    for (const auto& speedup : runOutput.second) {
+      speedupsHeadersLeftTopSStr[1] << speedup.first << ',';
     }
     for (const auto& speedupDescWIndex : {std::pair<std::string, size_t>{"Average Speedup", 0}, std::pair<std::string, size_t>{"Median Speedup", 1}}) {
-      speedupResultsStr << std::endl << speedupDescWIndex.first << ',';
+      speedupsHeadersLeftTopSStr[1] << std::endl << speedupDescWIndex.first << ',';
       for (const auto& speedup : runOutput.second) {
-        speedupResultsStr << speedup.second[speedupDescWIndex.second] << ',';
+        speedupsHeadersLeftTopSStr[1] << speedup.second[speedupDescWIndex.second] << ',';
       }
     }
-    speedupResultsStr.close();
-    std::cout << "Speedup info using test parameters and settings in " << speedupResultsFileName << std::endl;
     
-    //close output file streams
-    resultsStreamDefaultTBFinal[0].close();
-    if (runImpSettings.optParallelParamsOptionSetting_.first) {
-      resultsStreamDefaultTBFinal[1].close();
+    //write run results strings to output streams
+    //one results file contains only speedup results, another contains only run results, and a third contains run results followed by speedups
+    speedupResultsStr << speedupsHeadersLeftTopSStr[1].str();
+    if (writeDebugOutputFiles_ || (!runImpSettings.optParallelParamsOptionSetting_.first)) {
+      //only write file with default params when there are results with optimized parameters when writing debug files
+      resultsStreamDefaultTBFinal[0] << runDataOptDefaultSStr[0].str();
     }
-
     if (runImpSettings.optParallelParamsOptionSetting_.first) {
-      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (optimized parallel parameters) in "
-                << optResultsFileName << std::endl;
-      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run (default parallel parameters) in "
-                << defaultParamsResultsFileName << std::endl;
+      resultsStreamDefaultTBFinal[1] << runDataOptDefaultSStr[1].str();
+      runResultWSpeedupsStr << runDataOptDefaultSStr[1].str() << std::endl;
     }
     else {
-      std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run using default parallel parameters in "
-                << optResultsFileName << std::endl;
+      runResultWSpeedupsStr << runDataOptDefaultSStr[0].str() << std::endl;        
     }
+    //add speedups with headers on left to file containing run results and speedups
+    runResultWSpeedupsStr << "Speedup Results" << std::endl << speedupsHeadersLeftTopSStr[0].str();
+
+    std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in " << optResultsWSpeedupFileName << std::endl;
+    std::cout << "Run inputs and results in " << optResultsFileName << std::endl;
+    std::cout << "Speedup results in " << speedupResultsFileName << std::endl;
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;
@@ -141,9 +160,11 @@ void EvaluateImpResults::evalResultsSingDTypeAccRun() {
     run_environment::DATA_SIZE_TO_NAME_MAP.at(dataSize_)));
   }
 
-  //write output corresponding to results for current data type
-  constexpr bool MULT_DATA_TYPES{false};
-  writeRunOutput<MULT_DATA_TYPES>({runImpOptResults_, runImpSpeedups_}, runImpSettings_, optImpAccel_, dataSize_);
+  //write output corresponding to results for current data type if writing debug output
+  if (writeDebugOutputFiles_) {
+    constexpr bool MULT_DATA_TYPES{false};
+    writeRunOutput<MULT_DATA_TYPES>({runImpOptResults_, runImpSpeedups_}, runImpSettings_, optImpAccel_, dataSize_);
+  }
 }
 
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization

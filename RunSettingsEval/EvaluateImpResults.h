@@ -90,6 +90,7 @@ private:
   MultRunData runImpOptResults_;
   std::vector<MultRunSpeedup> runImpSpeedups_;
   std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>> runImpResultsMultRuns_;
+  bool writeDebugOutputFiles_{false};
 };
 
 #endif //EVALUATE_IMP_RESULTS_H_

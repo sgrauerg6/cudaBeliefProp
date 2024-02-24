@@ -21,6 +21,7 @@ namespace run_eval {
 
   //constants for output results for individual and sets of runs
   constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"Results"};
+  constexpr std::string_view RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME{"ResultsWSpeedups"};
   constexpr std::string_view RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME{"ResultsDefaultParallelParams"};
   constexpr std::string_view SPEEDUPS_DESCRIPTION_FILE_NAME{"Speedups"};
   constexpr std::string_view CSV_FILE_EXTENSION{".csv"};
