@@ -33,6 +33,12 @@ namespace run_eval {
   constexpr std::string_view SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup w/ templated disparity count (known at compile-time)"};
   constexpr std::string_view SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
   constexpr std::string_view SPEEDUP_VS_AVX256_VECTORIZATION{"Speedup over AVX256 CPU vectorization"};
+
+  //constants for implementation result
+  constexpr std::string_view IMP_RESULTS_FOLDER_NAME{"ImpResults"};
+  constexpr std::string_view IMP_RESULTS_RUN_DATA_FOLDER_NAME{"RunResults"};
+  constexpr std::string_view IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME{"RunResultsWSpeedups"};
+  constexpr std::string_view IMP_RESULTS_SPEEDUPS_FOLDER_NAME{"Speedups"};
 }
 
 using MultRunData = std::vector<std::optional<std::vector<RunData>>>;

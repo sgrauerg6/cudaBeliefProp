@@ -12,6 +12,7 @@
 
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"
+#include <filesystem>
 
 #ifdef OPTIMIZED_CUDA_RUN
 #include "RunImpCUDA/RunCUDASettings.h"
@@ -82,6 +83,9 @@ private:
   //get average and median speedup when loop iterations are given at compile time as template value
   MultRunSpeedup getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
     const std::string& speedupHeader);
+
+  //retrieve path of results
+  std::filesystem::path getImpResultsPath() const;
 
   run_environment::RunImpSettings runImpSettings_;
   run_environment::AccSetting optImpAccel_;
