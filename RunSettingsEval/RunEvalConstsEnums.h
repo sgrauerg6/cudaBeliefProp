@@ -20,8 +20,8 @@ namespace run_eval {
   enum class Status { NO_ERROR, ERROR };
 
   //constants for output results for individual and sets of runs
-  constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"Results"};
-  constexpr std::string_view RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME{"ResultsWSpeedups"};
+  constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"RunResults"};
+  constexpr std::string_view RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME{"RunResultsWSpeedups"};
   constexpr std::string_view RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME{"ResultsDefaultParallelParams"};
   constexpr std::string_view SPEEDUPS_DESCRIPTION_FILE_NAME{"Speedups"};
   constexpr std::string_view CSV_FILE_EXTENSION{".csv"};
@@ -39,6 +39,7 @@ namespace run_eval {
   constexpr std::string_view IMP_RESULTS_RUN_DATA_FOLDER_NAME{"RunResults"};
   constexpr std::string_view IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME{"RunResultsWSpeedups"};
   constexpr std::string_view IMP_RESULTS_SPEEDUPS_FOLDER_NAME{"Speedups"};
+  constexpr std::string_view IMP_RESULTS_RESULTS_ACROSS_ARCHS_FOLDER_NAME{"ResultsAcrossArchitectures"};
 }
 
 using MultRunData = std::vector<std::optional<std::vector<RunData>>>;

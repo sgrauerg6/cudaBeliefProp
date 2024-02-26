@@ -8,6 +8,7 @@
  */
 
 #include "EvaluateImpResults.h"
+#include "CombineMultResultSets.h"
 #include <fstream>
 #include <numeric>
 #include <sstream>
@@ -49,17 +50,18 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
   if (firstSuccessRun != runOutput.first.end()) {
     //write results from default and optimized parallel parameters runs to csv file
     //file name contains info about data type, parameter settings, and processor name if available
-    const std::string dataTypeStr = MULT_DATA_TYPES ? "MULT_DATA_TYPES" : run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize);
-    const auto accelStr = run_environment::accelerationString(accelerationSetting);
-    auto impResultsFp = getImpResultsPath();
+    //only show data type string and acceleration string for runs using a single data type that are used for debugging (not multidata type results) 
+    const std::string dataTypeStr = MULT_DATA_TYPES ? "" : '_' + run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize);
+    const auto accelStr = MULT_DATA_TYPES ? "" : '_' + run_environment::accelerationString(accelerationSetting);
+    const auto impResultsFp = getImpResultsPath();
     const std::filesystem::path optResultsFilePath{impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
-      std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
+      std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME) + dataTypeStr + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
     const std::filesystem::path optResultsWSpeedupFilePath{impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
-      std::string(run_eval::RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
+      std::string(run_eval::RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME) + dataTypeStr + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
     const std::filesystem::path defaultParamsResultsFilePath{impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
-      std::string(run_eval::RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
+      std::string(run_eval::RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME) + dataTypeStr + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
     const std::filesystem::path speedupResultsFilePath{impResultsFp / run_eval::IMP_RESULTS_SPEEDUPS_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
-      std::string(run_eval::SPEEDUPS_DESCRIPTION_FILE_NAME) + "_" + dataTypeStr + "_" + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
+      std::string(run_eval::SPEEDUPS_DESCRIPTION_FILE_NAME) + dataTypeStr + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
     std::array<std::ostringstream, 2> runDataOptDefaultSStr;
     std::array<std::ostringstream, 2> speedupsHeadersLeftTopSStr;
         
@@ -134,6 +136,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in " << optResultsWSpeedupFilePath << std::endl;
     std::cout << "Run inputs and results in " << optResultsFilePath << std::endl;
     std::cout << "Speedup results in " << speedupResultsFilePath << std::endl;
+    CombineMultResultSets().operator()(impResultsFp);
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;

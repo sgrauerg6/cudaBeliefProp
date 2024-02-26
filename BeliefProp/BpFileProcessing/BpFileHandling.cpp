@@ -12,7 +12,6 @@
 std::filesystem::path BpFileHandling::getStereoSetsPath() const
 {
   std::filesystem::path currentPath = std::filesystem::current_path();
-
   while (true)
   {
     //create directory iterator corresponding to current path
@@ -33,7 +32,6 @@ std::filesystem::path BpFileHandling::getStereoSetsPath() const
       if (currentPath == currentPath.parent_path()) {
         throw std::filesystem::filesystem_error("Belief prop directory not found", std::error_code());
       }
-
       currentPath = currentPath.parent_path();
     }
     else {
@@ -46,7 +44,6 @@ std::filesystem::path BpFileHandling::getStereoSetsPath() const
       }      
     }
   }
-
   return std::filesystem::path();
 }
 
