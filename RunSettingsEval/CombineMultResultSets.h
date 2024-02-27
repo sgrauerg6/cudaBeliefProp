@@ -11,11 +11,14 @@
 #define COMBINE_MULT_RESULT_SETS_H_
 
 #include <map>
+#include <set>
 #include <string>
 #include <vector>
 #include <filesystem>
 #include <fstream>
 #include <string>
+#include <ranges>
+#include <algorithm>
 #include "RunEvalConstsEnums.h"
 
 class CombineMultResultSets {
@@ -39,6 +42,56 @@ public:
           std::cout << header << " " << runResultsNameToData[runName].second[header][0] << std::endl;
         }
       }
+    }
+
+    //get input mapping to runtime
+    const std::array<std::string, 3> inputSigKeys{"Input Index", "DataType", "LOOP_ITERS_TEMPLATED"};
+    //comparison lambda for sorting of input signature for each run (datatype, then input number, then whether or not using templated iter count)
+    auto inputCmp = [] (const std::array<std::string, 3>& a, const std::array<std::string, 3>& b)
+    {
+      //sort by datatype followed by input number followed by templated iters setting
+      if (a[1] != b[1]) {
+        if (a[1] == "FLOAT") { return true; /* a < b is true*/ }
+        else if (a[1] == "HALF") { return false; /* a < b is false */ }
+        else if (b[1] == "FLOAT") { return false; /* a < b is false */ }
+        else if (b[1] == "HALF") { return true; /* a < b is true */ }
+      }
+      else if (a[0] != b[0]) {
+        return std::stoi(a[0]) < std::stoi(b[0]);
+      }
+      else if (a[2] != b[2]) {
+        if (a[2] == "YES") { return true; /* a < b is true */ }
+      }
+      return false; /* a <= b is false*/
+    };
+    std::map<std::string, std::map<std::array<std::string, 3>, std::string, decltype(inputCmp)>> inputToRuntimeAcrossArchs;
+    std::set<std::array<std::string, 3>, decltype(inputCmp)> inputSet;
+    for (const auto& runResult : runResultsNameToData) {
+      inputToRuntimeAcrossArchs[runResult.first] = std::map<std::array<std::string, 3>, std::string, decltype(inputCmp)>();
+      const auto& resultKeysToResVect = runResult.second.second;
+      const unsigned int totNumRuns = resultKeysToResVect.at(inputSigKeys[0]).size();
+      std::cout << "totNumRuns: " << totNumRuns << std::endl;
+      for (size_t numRun = 0; numRun < totNumRuns; numRun++) {
+        std::cout << "numRun: " << numRun << std::endl;
+        std::array<std::string, 3> runInput{resultKeysToResVect.at(inputSigKeys[0])[numRun], resultKeysToResVect.at(inputSigKeys[1])[numRun],
+          resultKeysToResVect.at(inputSigKeys[2])[numRun]};
+        std::cout << "runInput: " << runInput[0] << " " << runInput[1] << " " << runInput[2] << std::endl;
+        inputToRuntimeAcrossArchs[runResult.first][runInput] = resultKeysToResVect.at(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))[numRun];
+        inputSet.insert(runInput);
+      }
+    }
+    
+    for (const auto& inputToRuntimeArch : inputToRuntimeAcrossArchs) {
+      std::cout << inputToRuntimeArch.first << std::endl;
+      std::cout << "Input Set" << " " << "DataType" << " " << "LOOP_ITERS_TEMPLATED" << std::endl;
+      for (const auto& runInput : inputSet) {
+        std::cout << runInput[0] << " " << runInput[1] << " " << runInput[2] << " ";
+        if (inputToRuntimeArch.second.contains(runInput)) {
+          std::cout << inputToRuntimeArch.second.at(runInput);
+        }
+        std::cout << std::endl;
+      }
+      std::cout << std::endl;
     }
 
     //get header to data of each set of speedups
