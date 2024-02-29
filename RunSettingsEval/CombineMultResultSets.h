@@ -34,13 +34,8 @@ public:
       std::string fileNameNoExt = resultsFp.path().stem();
       if (fileNameNoExt.ends_with("_" + std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME))) {
         std::string runName = fileNameNoExt.substr(0, fileNameNoExt.find("_" + std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME)));
-        std::cout << "RUN NAME: " << runName << std::endl;
         runNames.push_back(runName);
         runResultsNameToData[runName] = getHeaderToDataInCsvFile(resultsFp);
-        std::cout << "HEADERS w data" << std::endl;
-        for (const auto& header : runResultsNameToData[runName].first) {
-          std::cout << header << " " << runResultsNameToData[runName].second[header][0] << std::endl;
-        }
       }
     }
 
@@ -66,32 +61,25 @@ public:
     };
     std::map<std::string, std::map<std::array<std::string, 3>, std::string, decltype(inputCmp)>> inputToRuntimeAcrossArchs;
     std::set<std::array<std::string, 3>, decltype(inputCmp)> inputSet;
+    std::vector<std::string> inputParamsDisp{"Stereo Set", "DataType", "Image Width", "Image Height", "Num Possible Disparity Values", "LOOP_ITERS_TEMPLATED"};
+    std::map<std::array<std::string, 3>, std::vector<std::string>, decltype(inputCmp)> inputSetToInputDisp;
     for (const auto& runResult : runResultsNameToData) {
       inputToRuntimeAcrossArchs[runResult.first] = std::map<std::array<std::string, 3>, std::string, decltype(inputCmp)>();
       const auto& resultKeysToResVect = runResult.second.second;
       const unsigned int totNumRuns = resultKeysToResVect.at(inputSigKeys[0]).size();
-      std::cout << "totNumRuns: " << totNumRuns << std::endl;
       for (size_t numRun = 0; numRun < totNumRuns; numRun++) {
-        std::cout << "numRun: " << numRun << std::endl;
         std::array<std::string, 3> runInput{resultKeysToResVect.at(inputSigKeys[0])[numRun], resultKeysToResVect.at(inputSigKeys[1])[numRun],
           resultKeysToResVect.at(inputSigKeys[2])[numRun]};
-        std::cout << "runInput: " << runInput[0] << " " << runInput[1] << " " << runInput[2] << std::endl;
         inputToRuntimeAcrossArchs[runResult.first][runInput] = resultKeysToResVect.at(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))[numRun];
         inputSet.insert(runInput);
-      }
-    }
-    
-    for (const auto& inputToRuntimeArch : inputToRuntimeAcrossArchs) {
-      std::cout << inputToRuntimeArch.first << std::endl;
-      std::cout << "Input Set" << " " << "DataType" << " " << "LOOP_ITERS_TEMPLATED" << std::endl;
-      for (const auto& runInput : inputSet) {
-        std::cout << runInput[0] << " " << runInput[1] << " " << runInput[2] << " ";
-        if (inputToRuntimeArch.second.contains(runInput)) {
-          std::cout << inputToRuntimeArch.second.at(runInput);
+        //add mapping from run input signature to run input to be displayed
+        if (!(inputSetToInputDisp.contains(runInput))) {
+          inputSetToInputDisp[runInput] = std::vector<std::string>();
+          for (const auto& dispParam : inputParamsDisp) {
+            inputSetToInputDisp[runInput].push_back(resultKeysToResVect.at(dispParam)[numRun]);
+          }
         }
-        std::cout << std::endl;
       }
-      std::cout << std::endl;
     }
 
     //get header to data of each set of speedups
@@ -103,59 +91,67 @@ public:
         (runName + '_' + std::string(run_eval::SPEEDUPS_DESCRIPTION_FILE_NAME) + std::string(run_eval::CSV_FILE_EXTENSION));
       if (std::filesystem::is_regular_file(runSpeedupFp)) {
         speedupResultsNameToData[runName] = getHeaderToDataInCsvFile(runSpeedupFp);
-        std::cout << "SPEEDUP HEADERS w data" << std::endl;
-        for (const auto& header : speedupResultsNameToData[runName].second) {
-          std::cout << header.first << " " << header.second[0] << std::endl;
-        }
       }
     }
 
     //generate results across architectures
     std::ostringstream resultAcrossArchsSStr;
-    //write each architecture name
-    std::cout << "1" << std::endl;
+    //write out the name of each input parameter to be displayed
+    for (const auto& inputParamDispHeader : inputParamsDisp) {
+      resultAcrossArchsSStr << inputParamDispHeader << ',';
+    }
+    //write each architecture name and save order of architectures
     std::vector<std::string> runNamesInOrder;
-    resultAcrossArchsSStr << ',';
+    std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> runNamesInOrderWSpeedup;
+    std::string firstSpeedupHeader;
+    for (const auto& archWSpeedupData : speedupResultsNameToData.begin()->second.first) {
+      if (!(archWSpeedupData.empty())) {
+        firstSpeedupHeader = archWSpeedupData;
+        break;
+      }
+    }
+    std::cout << "firstSpeedupHeader: " << firstSpeedupHeader << std::endl;
     for (const auto& archWSpeedupData : speedupResultsNameToData) {
+      const float avgSpeedupVsBase = std::stof(archWSpeedupData.second.second.at(firstSpeedupHeader).at(0));
       runNamesInOrder.push_back(archWSpeedupData.first);
+      runNamesInOrderWSpeedup.insert({avgSpeedupVsBase, archWSpeedupData.first});
       resultAcrossArchsSStr << archWSpeedupData.first << ',';
     }
-    std::cout << "2" << std::endl;
     resultAcrossArchsSStr << std::endl;
     //write input data and runtime for each run for each architecture
-    std::map<std::string, std::vector<std::string>> inDataRunTimesEachArch;
-    std::cout << "3" << std::endl;
-    for (const auto& archWResultsData : runResultsNameToData) {
-      //if (!(inDataRunTimesEachArch.contains(archWResultsData.first))) {
-      //  inDataRunTimesEachArch[archWResultsData.first] = std::vector<std::string>();
-      //}
-      inDataRunTimesEachArch[archWResultsData.first] = archWResultsData.second.second.at(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER));
-    }
-    std::cout << "4" << std::endl;
-    size_t numRuntimes = inDataRunTimesEachArch.begin()->second.size();
-    for (unsigned int i = 0; i < numRuntimes; i++) {
-      std::cout << "4a" << std::endl;
-      resultAcrossArchsSStr << ',';
-      for (const auto& runName : runNamesInOrder) {
-        resultAcrossArchsSStr << inDataRunTimesEachArch.at(runName).at(i) << ',';
+    for (const auto& currRunInput : inputSetToInputDisp) {
+      for (const auto& runInputVal : currRunInput.second) {
+        resultAcrossArchsSStr << runInputVal << ',';
+      }
+      for (const auto& runName : runNamesInOrderWSpeedup) {
+        if (inputToRuntimeAcrossArchs.at(runName.second).contains(currRunInput.first)) {
+          resultAcrossArchsSStr << inputToRuntimeAcrossArchs.at(runName.second).at(currRunInput.first) << ',';
+        }
       }
       resultAcrossArchsSStr << std::endl;
     }
-    std::cout << "5" << std::endl;
     resultAcrossArchsSStr << std::endl;
-    //write each speedup with results for each architecture
+    //write each average speedup with results for each architecture
+    resultAcrossArchsSStr << "Average Speedups" << std::endl;
     std::string firstRunName = speedupResultsNameToData.begin()->first;
     for (const auto& speedupHeader : speedupResultsNameToData.at(firstRunName).first) {
-      resultAcrossArchsSStr << speedupHeader << ',';
-      for (const auto& speedupData : speedupResultsNameToData) {
-        resultAcrossArchsSStr << speedupData.second.second.at(speedupHeader).at(0) << ',';
+      //don't process if header is empty
+      if (!(speedupHeader.empty())) {
+        resultAcrossArchsSStr << speedupHeader << ',';
+        //add empty cell for each input parameter after the first that's displayed so speedup shown on same line as runtime for architecture
+        for (size_t i = 1; i < inputParamsDisp.size(); i++) {
+          resultAcrossArchsSStr << ',';
+        }
+        //write speedup for each architecture in separate cells in horizontal direction
+        for (const auto& runName : runNamesInOrderWSpeedup) {
+          resultAcrossArchsSStr << speedupResultsNameToData.at(runName.second).second.at(speedupHeader).at(0) << ',';
+        }
+        //continue to next row of table
+        resultAcrossArchsSStr << std::endl;
       }
-      resultAcrossArchsSStr << std::endl;
     }
-    std::cout << "6" << std::endl;
     std::ofstream combResultsStr("CombResults.csv");
     combResultsStr << resultAcrossArchsSStr.str();
-    std::cout << "7" << std::endl;
   }
 
 private:
