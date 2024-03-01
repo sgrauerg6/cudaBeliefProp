@@ -27,6 +27,7 @@ public:
     //get header to data of each set of run results
     //iterate through all run results files and get run name to results
     //create directory iterator with all results files
+    std::cout << "1" << std::endl;
     std::filesystem::directory_iterator resultsFilesIt = std::filesystem::directory_iterator(impResultsFilePath / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME);
     std::vector<std::string> runNames;
     std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> runResultsNameToData;
@@ -39,37 +40,18 @@ public:
       }
     }
 
-    //get input mapping to runtime
-    const std::array<std::string, 3> inputSigKeys{"Input Index", "DataType", "LOOP_ITERS_TEMPLATED"};
-    //comparison lambda for sorting of input signature for each run (datatype, then input number, then whether or not using templated iter count)
-    auto inputCmp = [] (const std::array<std::string, 3>& a, const std::array<std::string, 3>& b)
-    {
-      //sort by datatype followed by input number followed by templated iters setting
-      if (a[1] != b[1]) {
-        if (a[1] == "FLOAT") { return true; /* a < b is true*/ }
-        else if (a[1] == "HALF") { return false; /* a < b is false */ }
-        else if (b[1] == "FLOAT") { return false; /* a < b is false */ }
-        else if (b[1] == "HALF") { return true; /* a < b is true */ }
-      }
-      else if (a[0] != b[0]) {
-        return std::stoi(a[0]) < std::stoi(b[0]);
-      }
-      else if (a[2] != b[2]) {
-        if (a[2] == "YES") { return true; /* a < b is true */ }
-      }
-      return false; /* a <= b is false*/
-    };
-    std::map<std::string, std::map<std::array<std::string, 3>, std::string, decltype(inputCmp)>> inputToRuntimeAcrossArchs;
-    std::set<std::array<std::string, 3>, decltype(inputCmp)> inputSet;
-    std::vector<std::string> inputParamsDisp{"Stereo Set", "DataType", "Image Width", "Image Height", "Num Possible Disparity Values", "LOOP_ITERS_TEMPLATED"};
-    std::map<std::array<std::string, 3>, std::vector<std::string>, decltype(inputCmp)> inputSetToInputDisp;
+    std::cout << "2" << std::endl;
+    std::map<std::string, std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>> inputToRuntimeAcrossArchs;
+    std::set<std::array<std::string, 3>, run_eval::LessThanRunSigHdrs> inputSet;
+    const std::vector<std::string> inputParamsDisp{getInputParamsShow()};
+    std::map<std::array<std::string, 3>, std::vector<std::string>, run_eval::LessThanRunSigHdrs> inputSetToInputDisp;
     for (const auto& runResult : runResultsNameToData) {
-      inputToRuntimeAcrossArchs[runResult.first] = std::map<std::array<std::string, 3>, std::string, decltype(inputCmp)>();
+      inputToRuntimeAcrossArchs[runResult.first] = std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>();
       const auto& resultKeysToResVect = runResult.second.second;
-      const unsigned int totNumRuns = resultKeysToResVect.at(inputSigKeys[0]).size();
+      const unsigned int totNumRuns = resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[0])).size();
       for (size_t numRun = 0; numRun < totNumRuns; numRun++) {
-        std::array<std::string, 3> runInput{resultKeysToResVect.at(inputSigKeys[0])[numRun], resultKeysToResVect.at(inputSigKeys[1])[numRun],
-          resultKeysToResVect.at(inputSigKeys[2])[numRun]};
+        std::array<std::string, 3> runInput{resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[0]))[numRun],
+          resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[1]))[numRun], resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[2]))[numRun]};
         inputToRuntimeAcrossArchs[runResult.first][runInput] = resultKeysToResVect.at(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))[numRun];
         inputSet.insert(runInput);
         //add mapping from run input signature to run input to be displayed
@@ -82,26 +64,37 @@ public:
       }
     }
 
+    std::cout << "3" << std::endl;
     //get header to data of each set of speedups
     //iterate through all speedup data files and get run name to results
     std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> speedupResultsNameToData;
     std::vector<std::string> speedupHeadersInOrder;
     for (const auto& runName : runNames) {
       std::filesystem::path runSpeedupFp = impResultsFilePath / run_eval::IMP_RESULTS_SPEEDUPS_FOLDER_NAME /
-        (runName + '_' + std::string(run_eval::SPEEDUPS_DESCRIPTION_FILE_NAME) + std::string(run_eval::CSV_FILE_EXTENSION));
+        (std::string(runName) + '_' + std::string(run_eval::SPEEDUPS_DESCRIPTION_FILE_NAME) + std::string(run_eval::CSV_FILE_EXTENSION));
       if (std::filesystem::is_regular_file(runSpeedupFp)) {
         speedupResultsNameToData[runName] = getHeaderToDataInCsvFile(runSpeedupFp);
       }
     }
 
+    std::cout << "4" << std::endl;
     //generate results across architectures
     std::ostringstream resultAcrossArchsSStr;
+    //add text to display on top of results across architecture comparison file
+    for (const auto& compFileTopTextLine : getCombResultsTopText()) {
+      resultAcrossArchsSStr << compFileTopTextLine << std::endl;
+    }
+    resultAcrossArchsSStr << std::endl;
+
     //write out the name of each input parameter to be displayed
     for (const auto& inputParamDispHeader : inputParamsDisp) {
       resultAcrossArchsSStr << inputParamDispHeader << ',';
     }
-    //write each architecture name and save order of architectures
-    std::vector<std::string> runNamesInOrder;
+
+    std::cout << "5" << std::endl;
+    //write each architecture name and save order of architectures with speedup corresponding to first
+    //speedup header
+    //order of architectures from left to right is in speedup from largest to smallest
     std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> runNamesInOrderWSpeedup;
     std::string firstSpeedupHeader;
     for (const auto& archWSpeedupData : speedupResultsNameToData.begin()->second.first) {
@@ -110,14 +103,15 @@ public:
         break;
       }
     }
-    std::cout << "firstSpeedupHeader: " << firstSpeedupHeader << std::endl;
+    std::cout << "6" << std::endl;
     for (const auto& archWSpeedupData : speedupResultsNameToData) {
-      const float avgSpeedupVsBase = std::stof(archWSpeedupData.second.second.at(firstSpeedupHeader).at(0));
-      runNamesInOrder.push_back(archWSpeedupData.first);
+      const float avgSpeedupVsBase = std::stof(std::string(archWSpeedupData.second.second.at(firstSpeedupHeader).at(0)));
       runNamesInOrderWSpeedup.insert({avgSpeedupVsBase, archWSpeedupData.first});
       resultAcrossArchsSStr << archWSpeedupData.first << ',';
     }
     resultAcrossArchsSStr << std::endl;
+
+    std::cout << "7" << std::endl;
     //write input data and runtime for each run for each architecture
     for (const auto& currRunInput : inputSetToInputDisp) {
       for (const auto& runInputVal : currRunInput.second) {
@@ -131,6 +125,8 @@ public:
       resultAcrossArchsSStr << std::endl;
     }
     resultAcrossArchsSStr << std::endl;
+
+    std::cout << "8" << std::endl;
     //write each average speedup with results for each architecture
     resultAcrossArchsSStr << "Average Speedups" << std::endl;
     std::string firstRunName = speedupResultsNameToData.begin()->first;
@@ -150,11 +146,27 @@ public:
         resultAcrossArchsSStr << std::endl;
       }
     }
+    std::cout << "9" << std::endl;
     std::ofstream combResultsStr("CombResults.csv");
     combResultsStr << resultAcrossArchsSStr.str();
   }
 
 private:
+  //get text at top of results summary file with each string_view in the vector corresponding to a separate line
+  std::vector<std::string> getCombResultsTopText() const {
+    return {{"Stereo Processing using optimized CUDA and optimized CPU belief propagation implementations"},
+            {"Code available at https://github.com/sgrauerg6/cudaBeliefProp"},
+            {"All stereo sets used in evaluation are from (or adapted from) Middlebury stereo datasets at https://vision.middlebury.edu/stereo/data/"},
+            {"\"tsukubaSetHalfSize: tsukubaSet with half the height, width, and disparity count of tsukubaSet\""},
+            {"conesFullSizeCropped: 900 x 750 region in center of the reference and test cones stereo set images"},
+            {"Results shown in this comparison for each run are for total runtime including any time for data transfer between device and host"}};
+  }
+
+  //input parameters that are showed in results summary with runtimes
+  std::vector<std::string> getInputParamsShow() const {
+    return {"Stereo Set", "DataType", "Image Width", "Image Height", "Num Possible Disparity Values", "LOOP_ITERS_TEMPLATED"};
+  }
+
   //get mapping of headers to data in csv file for run results and speedups
   //assumed that there are no commas in data since it is used as delimiter between data
   //first output is headers in order, second output is mapping of headers to results

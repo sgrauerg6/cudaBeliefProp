@@ -102,10 +102,15 @@ std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrBenchmark(bool loopItersTemplated) const {
   RunData currRunData;
+  std::cout << "4a" << std::endl;
   currRunData.addDataWHeader("Stereo Set", std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
+  std::cout << "4b" << std::endl;
   currRunData.appendData(this->inputAndParamsRunData(loopItersTemplated));
+  std::cout << "4c" << std::endl;
   currRunData.appendData(algSettings_.runData());
+  std::cout << "4d" << std::endl;
   currRunData.appendData(bp_params::runSettings());
+  std::cout << "4e" << std::endl;
   return currRunData;
 }
 

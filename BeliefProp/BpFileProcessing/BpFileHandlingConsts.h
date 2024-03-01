@@ -9,6 +9,7 @@
 #define BPFILEHANDLINGCONSTS_H_
 
 #include <string_view>
+#include <string>
 #include <array>
 
 namespace bp_file_handling
@@ -22,11 +23,11 @@ namespace bp_file_handling
   constexpr std::string_view STEREO_SETS_DIRECTORY_NAME = "BpStereoSets";
 
   #ifdef SMALLER_SETS_ONLY
-    constexpr std::array<std::string_view, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
+    const std::array<std::string, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
       "../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
   #else
-    constexpr std::array<std::string_view, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
+    const std::array<std::string, 2> BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD{
       "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
   #endif //SMALLER_SETS_ONLY

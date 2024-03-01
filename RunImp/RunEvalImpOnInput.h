@@ -36,9 +36,13 @@ protected:
   //get current run inputs and parameters in RunData structure
   RunData inputAndParamsRunData(bool loopItersTemplated) const {
     RunData currRunData;
-    currRunData.addDataWHeader("DataType", run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T)));
+    std::cout << "4b1" << std::endl;
+    currRunData.addDataWHeader("DataType", std::string(run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
+    std::cout << "4b2" << std::endl;
     currRunData.appendData(run_environment::runSettings<OPT_IMP_ACCEL>());
+    std::cout << "4b3" << std::endl;
     currRunData.addDataWHeader("LOOP_ITERS_TEMPLATED", loopItersTemplated ? "YES" : "NO");
+    std::cout << "4b4" << std::endl;
     return currRunData;
   }
 
@@ -50,6 +54,7 @@ protected:
     MultRunData::value_type::value_type outRunData(runImpSettings.optParallelParamsOptionSetting_.first ? 2 : 1);
     enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
     std::array<std::array<std::map<std::string, std::string>, 2>, 2> inParamsResultsDefOptRuns;
+    std::cout << "3a" << std::endl;
 
     //set up parallel parameters for specific benchmark
     std::shared_ptr<ParallelParams> parallelParams = setUpParallelParams(runImpSettings);
@@ -87,21 +92,28 @@ protected:
         }
       }
 
+      std::cout << "3b" << std::endl;
       //store input params data if using default parallel parameters or final run with optimized parameters
       RunData currRunData;
       if (currRunType != RunType::TEST_PARAMS) {
+      std::cout << "3b1" << std::endl;
         //add input and parameters data for specific benchmark to current run data
         currRunData.addDataWHeader("Input Index", std::to_string(NUM_INPUT));
+      std::cout << "3b2" << std::endl;
         currRunData.appendData(inputAndParamsForCurrBenchmark(runWLoopItersTemplated));
+      std::cout << "3b3" << std::endl;
         if ((runImpSettings.optParallelParamsOptionSetting_.first) &&
             (runImpSettings.optParallelParamsOptionSetting_.second ==
              run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
         {
+      std::cout << "3b4" << std::endl;
           //add parallel parameters for each kernel to current input data if allowing different parallel parameters for each kernel in the same run
           currRunData.appendData(parallelParams->runData());
+      std::cout << "3b5" << std::endl;
         }
       }
 
+      std::cout << "3c" << std::endl;
       //run only optimized implementation and not single-threaded run if current run is not final run or is using default parameter parameters
       const bool runOptImpOnly{currRunType == RunType::TEST_PARAMS};
 
@@ -110,16 +122,19 @@ protected:
       const auto runImpsECodeData = runImpsAndCompare(parallelParams, runOptImpOnly, runWLoopItersTemplated);
       currRunData.addDataWHeader("Run Success", runImpsECodeData ? "Yes" : "No");
 
+      std::cout << "3d" << std::endl;
       //if error in run and run is any type other than for testing parameters, exit function with null output to indicate error
       if ((!runImpsECodeData) && (currRunType != RunType::TEST_PARAMS)) {
         return {};
       }
 
+      std::cout << "3e" << std::endl;
       //add data results from current run if run successful
       if (runImpsECodeData) {
         currRunData.appendData(runImpsECodeData.value());
       }
 
+      std::cout << "3f" << std::endl;
       //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
       if (currRunType != RunType::TEST_PARAMS) {
         //set output for runs using default parallel parameters and final run (which is the same run if not optimizing parallel parameters)
@@ -131,6 +146,7 @@ protected:
         }
       }
 
+      std::cout << "3g" << std::endl;
       if (runImpSettings.optParallelParamsOptionSetting_.first) {
         //retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
         //total runtime for current run
@@ -141,11 +157,13 @@ protected:
           }
         }
 
+        std::cout << "3h" << std::endl;
         //set optimized parallel parameters if next run is final run that uses optimized parallel parameters
         //optimized parallel parameters are determined from previous test runs using multiple test parallel parameters
         if (runNum == (parallelParamsVect.size() - 1)) {
           parallelParams->setOptimizedParams();
         }
+        std::cout << "3i" << std::endl;
       }
     }
       
