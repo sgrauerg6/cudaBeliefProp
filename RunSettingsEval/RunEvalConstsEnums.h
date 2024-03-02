@@ -61,7 +61,7 @@ namespace run_eval {
         return std::stoi(a[0]) < std::stoi(b[0]);
       }
       else if (a[2] != b[2]) {
-        if (a[2] == "YES") { return true; /* a < b is true */ }
+        if (a[2] == std::string(BOOL_VAL_FALSE_TRUE_DISP_STR[1])) { return true; /* a < b is true */ }
       }
       return false; /* a <= b is false*/
     }
