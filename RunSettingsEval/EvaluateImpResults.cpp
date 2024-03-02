@@ -92,7 +92,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     }
 
     //generate speedup results with headers on left side and with headers on top row
-    speedupsHeadersLeftTopSStr[0] << ",Average Speedup,Median Speedup" << std::endl;
+    speedupsHeadersLeftTopSStr[0] << "Speedup Results,Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : runOutput.second) {
       speedupsHeadersLeftTopSStr[0] << speedup.first;
       if (speedup.second[0] > 0) {
@@ -131,7 +131,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
       runResultWSpeedupsStr << runDataOptDefaultSStr[0].str() << std::endl;        
     }
     //add speedups with headers on left to file containing run results and speedups
-    runResultWSpeedupsStr << "Speedup Results" << std::endl << speedupsHeadersLeftTopSStr[0].str();
+    runResultWSpeedupsStr << speedupsHeadersLeftTopSStr[0].str();
 
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in " << optResultsWSpeedupFilePath << std::endl;
     std::cout << "Run inputs and results in " << optResultsFilePath << std::endl;
@@ -494,14 +494,14 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     }
     //retrieve which run data uses templated iteration count and which one doesn't and get speedup
     //add speedup to speedup vector and also to run data of run with templated iteration count
-    if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "YES") &&
-        (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "NO"))
+    if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[1]) &&
+        (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[0]))
     {
       speedupsVect.push_back(std::stod(std::string(runComp2->second.first)) / std::stod(std::string(runComp1->second.first)));
       runOutput[runComp1->second.second]->back().addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
-    else if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "NO") &&
-             (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "YES"))
+    else if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[0]) &&
+             (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[1]))
     {
       speedupsVect.push_back(std::stod(std::string(runComp1->second.first)) / std::stod(std::string(runComp2->second.first)));
       runOutput[runComp2->second.second]->back().addDataWHeader(std::string(speedupHeader), speedupsVect.back());
