@@ -108,7 +108,7 @@ protected:
       //run benchmark implementation(s) and return null output if error in run
       //detailed results stored to file that is generated using stream
       const auto runImpsECodeData = runImpsAndCompare(parallelParams, runOptImpOnly, runWLoopItersTemplated);
-      currRunData.addDataWHeader("Run Success", runImpsECodeData.has_value());
+      currRunData.addDataWHeader(std::string(run_eval::RUN_SUCCESS_HEADER), runImpsECodeData.has_value());
 
       //if error in run and run is any type other than for testing parameters, exit function with null output to indicate error
       if ((!runImpsECodeData) && (currRunType != RunType::TEST_PARAMS)) {

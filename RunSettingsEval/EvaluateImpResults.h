@@ -54,7 +54,7 @@ private:
   std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
     MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
 
-  //get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
+  //get speedup over baseline run for subsets of smallest and largest sets if data available
   std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
     MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
 

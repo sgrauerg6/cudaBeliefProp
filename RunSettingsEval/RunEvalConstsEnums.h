@@ -19,19 +19,21 @@ namespace run_eval {
   //enum for status to indicate if error or no error
   enum class Status { NO_ERROR, ERROR };
 
-  //constants for headers corresponding to input, input settings, and results
+  //constants for headers corresponding to input, input settings, results, and run success
   constexpr std::string_view INPUT_IDX_HEADER{"Input Index"};
   constexpr std::string_view DATATYPE_HEADER{"Data Type"};
   constexpr std::string_view LOOP_ITERS_TEMPLATED_HEADER{"Loop Iters Templated"};
+  constexpr std::string_view RUN_SUCCESS_HEADER{"Run Success"};
 
   //constants for output results for individual and sets of runs
   constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"RunResults"};
   constexpr std::string_view RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME{"RunResultsWSpeedups"};
   constexpr std::string_view RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME{"ResultsDefaultParallelParams"};
   constexpr std::string_view SPEEDUPS_DESCRIPTION_FILE_NAME{"Speedups"};
+  constexpr std::string_view EVALUATION_ACROSS_RUNS_FILE_NAME{"EvaluationAcrossRuns"};
   constexpr std::string_view CSV_FILE_EXTENSION{".csv"};
   constexpr std::string_view OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
-  constexpr std::string_view SINGLE_THREAD_RUNTIME_HEADER{"AVERAGE CPU RUN TIME"};
+  constexpr std::string_view SINGLE_THREAD_RUNTIME_HEADER{"Average Single-Thread CPU run time"};
   constexpr std::string_view SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
   constexpr std::string_view SPEEDUP_DOUBLE{"Speedup using double-precision relative to float (actually slowdown)"};
   constexpr std::string_view SPEEDUP_HALF{"Speedup using half-precision relative to float"};

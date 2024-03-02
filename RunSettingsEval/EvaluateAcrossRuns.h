@@ -1,14 +1,14 @@
 /*
- * CombineMultResultSets.cpp
+ * EvaluateAcrossRuns.h
  *
  *  Created on: Feb 25, 2024
  *      Author: scott
  * 
- *  Class for combining of multiple result sets across multiple architectures.
+ *  Class for evaluating results across multiple runs, potentially on different architectures.
  */
 
-#ifndef COMBINE_MULT_RESULT_SETS_H_
-#define COMBINE_MULT_RESULT_SETS_H_
+#ifndef EVALUATE_ACROSS_RUNS_H_
+#define EVALUATE_ACROSS_RUNS_H_
 
 #include <map>
 #include <set>
@@ -21,7 +21,7 @@
 #include <algorithm>
 #include "RunEvalConstsEnums.h"
 
-class CombineMultResultSets {
+class EvaluateAcrossRuns {
 public:
   void operator()(const std::filesystem::path& impResultsFilePath,
     const std::vector<std::string>& evalAcrossRunsTopText,
@@ -143,7 +143,7 @@ public:
       }
     }
     //get file path for evaluation across runs and save evaluation across runs to csv file
-    std::filesystem::path resultsAcrossRunFp = impResultsFilePath / "EvaluationAcrossRuns.csv";
+    std::filesystem::path resultsAcrossRunFp = impResultsFilePath / (std::string(run_eval::EVALUATION_ACROSS_RUNS_FILE_NAME) + std::string(run_eval::CSV_FILE_EXTENSION));
     std::ofstream evalResultsAcrossRunsStr(resultsAcrossRunFp);
     evalResultsAcrossRunsStr << resultAcrossArchsSStr.str();
   }
@@ -179,4 +179,4 @@ private:
   }
 };
 
-#endif //COMBINE_MULT_RESULT_SETS_H_
+#endif //EVALUATE_ACROSS_RUNS_H_

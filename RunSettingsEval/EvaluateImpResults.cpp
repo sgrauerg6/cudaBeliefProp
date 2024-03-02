@@ -8,7 +8,7 @@
  */
 
 #include "EvaluateImpResults.h"
-#include "CombineMultResultSets.h"
+#include "EvaluateAcrossRuns.h"
 #include <fstream>
 #include <numeric>
 #include <sstream>
@@ -148,13 +148,14 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in " << optResultsWSpeedupFilePath << std::endl;
     std::cout << "Run inputs and results in " << optResultsFilePath << std::endl;
     std::cout << "Speedup results in " << speedupResultsFilePath << std::endl;
-    CombineMultResultSets().operator()(impResultsFp, getCombResultsTopText(), getInputParamsShow());
+    EvaluateAcrossRuns().operator()(impResultsFp, getCombResultsTopText(), getInputParamsShow());
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;
   }
 }
 
+//evaluate results across runs using the same data type
 void EvaluateImpResults::evalResultsSingDTypeAccRun() {
   //initialize and add speedup results over baseline data if available for current input
   runImpOptResults_ = runImpOrigResults_;
@@ -301,7 +302,7 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaseline(const run
   return speedupResults;
 }
 
-//get speedup over baseline data for belief propagation run for subsets of smallest and largest sets if data available
+//get speedup over baseline run for subsets of smallest and largest sets if data available
 std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
   MultRunData& runDataAllRuns, const size_t dataTypeSize) const
 {
