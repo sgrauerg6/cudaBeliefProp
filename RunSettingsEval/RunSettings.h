@@ -96,6 +96,12 @@ struct RunImpSettings {
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
   std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> baseOptSingThreadRTimeForTSetting_;
   std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetStrIndices_;
+
+  //remove parallel parameters with less than specified number of threads
+  void removeParallelParamBelowMinThreads(const unsigned int minThreads) {
+    pParamsDefaultOptOptions_.second.erase(std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(), [minThreads](const auto& pParams) {
+      return pParams[0] < minThreads; }), pParamsDefaultOptOptions_.second.end());
+  }
 };
 
 };

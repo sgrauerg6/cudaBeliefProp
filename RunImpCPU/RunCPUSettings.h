@@ -54,8 +54,9 @@ constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSett
 //parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
 const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
 const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
-  { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1}/*,
-  { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}*/};
+  { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1},
+  { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}};
+const unsigned int MIN_NUM_THREADS_RUN{std::min(NUM_THREADS_CPU, 4u)};
 const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
 
 };
