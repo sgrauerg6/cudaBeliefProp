@@ -43,11 +43,11 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
   run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize)
 {
   //get iterator to first run with success
-  const auto firstSuccessRun = std::find_if(runOutput.first.begin(), runOutput.first.end(), [](const auto& runResult)
+  const auto firstSuccessRun = std::find_if(runOutput.first.cbegin(), runOutput.first.cend(), [](const auto& runResult)
     { return runResult; } );
 
   //check if there was at least one successful run
-  if (firstSuccessRun != runOutput.first.end()) {
+  if (firstSuccessRun != runOutput.first.cend()) {
     //write results from default and optimized parallel parameters runs to csv file
     //file name contains info about data type, parameter settings, and processor name if available
     //only show data type string and acceleration string for runs using a single data type that are used for debugging (not multidata type results) 
@@ -148,8 +148,8 @@ void EvaluateImpResults::evalResultsSingDTypeAccRun() {
   runImpOptResults_ = runImpOrigResults_;
   const auto speedupOverBaseline = getSpeedupOverBaseline(runImpSettings_, runImpOptResults_, dataSize_);
   const auto speedupOverBaselineSubsets = getSpeedupOverBaselineSubsets(runImpSettings_, runImpOptResults_, dataSize_);
-  runImpSpeedups_.insert(runImpSpeedups_.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
-  runImpSpeedups_.insert(runImpSpeedups_.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
+  runImpSpeedups_.insert(runImpSpeedups_.cend(), speedupOverBaseline.cbegin(), speedupOverBaseline.cend());
+  runImpSpeedups_.insert(runImpSpeedups_.cend(), speedupOverBaselineSubsets.cbegin(), speedupOverBaselineSubsets.cend());
 
   //compute and add speedup info for using optimized parallel parameters and disparity count as template parameter to speedup results
   if (runImpSettings_.optParallelParamsOptionSetting_.first) {
@@ -225,26 +225,26 @@ void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
 
   //initialize overall results to float results using fastest acceleration and add double and half-type results to it
   auto resultsWSpeedups = runImpResultsMultRuns_[sizeof(float)][optImpAccel_];
-  resultsWSpeedups.first.insert(resultsWSpeedups.first.end(),
-    runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.begin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.end());
-  resultsWSpeedups.first.insert(resultsWSpeedups.first.end(),
-    runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.begin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.end());
+  resultsWSpeedups.first.insert(resultsWSpeedups.first.cend(),
+    runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.cbegin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].first.cend());
+  resultsWSpeedups.first.insert(resultsWSpeedups.first.cend(),
+    runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.cbegin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].first.cend());
 
   //add speedup data from double and half precision runs to speedup results
-  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(float)].begin(), altImpSpeedup[sizeof(float)].end());
-  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(),
-    runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.begin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.end());
-  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(double)].begin(), altImpSpeedup[sizeof(double)].end());
-  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(),
-    runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.begin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.end());
-  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), altImpSpeedup[sizeof(halftype)].begin(), altImpSpeedup[sizeof(halftype)].end());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(), altImpSpeedup[sizeof(float)].cbegin(), altImpSpeedup[sizeof(float)].cend());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(),
+    runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.cbegin(), runImpResultsMultRuns_[sizeof(double)][optImpAccel_].second.cend());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(), altImpSpeedup[sizeof(double)].cbegin(), altImpSpeedup[sizeof(double)].cend());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(),
+    runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.cbegin(), runImpResultsMultRuns_[sizeof(halftype)][optImpAccel_].second.cend());
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(), altImpSpeedup[sizeof(halftype)].cbegin(), altImpSpeedup[sizeof(halftype)].cend());
 
   //get speedup over baseline runtimes...can only compare with baseline runtimes that are
   //generated using same templated iterations setting as current run
   if ((runImpSettings_.baseOptSingThreadRTimeForTSetting_) &&
       (runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings_.templatedItersSetting_)) {
       const auto speedupOverBaseline = getAvgMedSpeedupOverBaseline(resultsWSpeedups.first, "All Runs", runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().first);
-      resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
+      resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(), speedupOverBaseline.cbegin(), speedupOverBaseline.cend());
   }
 
   //get speedup info for using optimized parallel parameters
@@ -258,7 +258,7 @@ void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
   }
 
   //add speedups when using doubles and half precision compared to float to end of speedup data
-  resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), {altDataTypeSpeedup[sizeof(double)], altDataTypeSpeedup[sizeof(halftype)]});
+  resultsWSpeedups.second.insert(resultsWSpeedups.second.cend(), {altDataTypeSpeedup[sizeof(double)], altDataTypeSpeedup[sizeof(halftype)]});
 
   //write output corresponding to results and speedups for all data types
   constexpr bool MULT_DATA_TYPES{true};
@@ -283,7 +283,7 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaseline(const run
       const auto speedupOverBaselineSubsets = getAvgMedSpeedupOverBaseline(
         runDataAllRuns, run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize),
         runImpSettings.baseOptSingThreadRTimeForTSetting_.value().first);
-      speedupResults.insert(speedupResults.end(), speedupOverBaselineSubsets.begin(), speedupOverBaselineSubsets.end());
+      speedupResults.insert(speedupResults.cend(), speedupOverBaselineSubsets.cbegin(), speedupOverBaselineSubsets.cend());
     }
   }
   return speedupResults;
@@ -329,7 +329,7 @@ std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::g
 
 //get average and median speedup from vector of speedup values
 std::array<double, 2> EvaluateImpResults::getAvgMedSpeedup(const std::vector<double>& speedupsVect) const {
-  const double averageSpeedup = (std::accumulate(speedupsVect.begin(), speedupsVect.end(), 0.0) / (double)speedupsVect.size());
+  const double averageSpeedup = (std::accumulate(speedupsVect.cbegin(), speedupsVect.cend(), 0.0) / (double)speedupsVect.size());
   auto speedupsVectSorted = speedupsVect;
   std::ranges::sort(speedupsVectSorted);
   const double medianSpeedup = ((speedupsVectSorted.size() % 2) == 0) ? 
@@ -461,7 +461,7 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i]) {
       const auto inputSettingsToTime = runOutput[i]->back().getParamsToRuntime(
-        std::vector<std::string_view>(run_eval::RUN_INPUT_SIG_HDRS.begin(), run_eval::RUN_INPUT_SIG_HDRS.end()),
+        std::vector<std::string_view>(run_eval::RUN_INPUT_SIG_HDRS.cbegin(), run_eval::RUN_INPUT_SIG_HDRS.cend()),
         run_eval::OPTIMIZED_RUNTIME_HEADER);
       if (inputSettingsToTime) {
         runInputSettingsToTimeWIdx.insert({inputSettingsToTime->first, {inputSettingsToTime->second, i}});
@@ -471,14 +471,14 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
   //go through all run input settings to time and get each pair that is the same in datatype and input and differs in disp values templated
   //and get speedup for each of templated compared to non-templated
   std::vector<double> speedupsVect;
-  auto runDataIter = runInputSettingsToTimeWIdx.begin();
-  while (runDataIter != runInputSettingsToTimeWIdx.end()) {
+  auto runDataIter = runInputSettingsToTimeWIdx.cbegin();
+  while (runDataIter != runInputSettingsToTimeWIdx.cend()) {
     auto dataTypeRun = runDataIter->first[run_eval::RUN_INPUT_DATATYPE_IDX];
     auto inputIdxRun = runDataIter->first[run_eval::RUN_INPUT_NUM_INPUT_IDX];
     auto runComp1 = runDataIter;
     auto runComp2 = runDataIter;
     //find run with same datatype and input index
-    while (++runDataIter != runInputSettingsToTimeWIdx.end()) {
+    while (++runDataIter != runInputSettingsToTimeWIdx.cend()) {
       if ((runDataIter->first[run_eval::RUN_INPUT_DATATYPE_IDX] == dataTypeRun) &&
           (runDataIter->first[run_eval::RUN_INPUT_NUM_INPUT_IDX] == inputIdxRun))
       {
@@ -489,7 +489,7 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     //if don't have two separate runs with same data type and input, erase current run from mapping and continue
     if (runComp1 == runComp2) {
       runInputSettingsToTimeWIdx.erase(runComp1);
-      runDataIter = runInputSettingsToTimeWIdx.begin();
+      runDataIter = runInputSettingsToTimeWIdx.cbegin();
       continue;
     }
     //retrieve which run data uses templated iteration count and which one doesn't and get speedup
@@ -509,7 +509,7 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     //remove runs that have been processed from mapping
     runInputSettingsToTimeWIdx.erase(runComp1);
     runInputSettingsToTimeWIdx.erase(runComp2);
-    runDataIter = runInputSettingsToTimeWIdx.begin();
+    runDataIter = runInputSettingsToTimeWIdx.cbegin();
   }
   if (!(speedupsVect.empty())) {
     return {std::string(speedupHeader), getAvgMedSpeedup(speedupsVect)};

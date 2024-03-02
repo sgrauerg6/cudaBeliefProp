@@ -58,7 +58,7 @@ MultRunData RunEvalBpImp::runEvalImpMultDataSets(const run_environment::RunImpSe
   //add run results for each input to overall results
   MultRunData runDataAllRuns;
   for (auto& runResult : runResultsEachInput) {
-    runDataAllRuns.insert(runDataAllRuns.end(), runResult.begin(), runResult.end());
+    runDataAllRuns.insert(runDataAllRuns.cend(), runResult.cbegin(), runResult.cend());
   }
  
   return runDataAllRuns;

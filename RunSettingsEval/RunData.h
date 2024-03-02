@@ -45,7 +45,7 @@ public:
 
   //return whether or not there is data corresponding to a specific header
   bool isData(const std::string_view header) const { 
-    return (std::find(headersInOrder_.begin(), headersInOrder_.end(), std::string(header)) != headersInOrder_.end()); }
+    return (std::find(headersInOrder_.cbegin(), headersInOrder_.cend(), std::string(header)) != headersInOrder_.cend()); }
 
   //get data corresponding to header as a string
   //returns data as string regardless of underlying data type

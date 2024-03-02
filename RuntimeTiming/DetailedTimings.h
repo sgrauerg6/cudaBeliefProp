@@ -66,8 +66,8 @@ void DetailedTimings<T>::addToCurrentTimings(const DetailedTimings& inDetailedTi
   std::ranges::for_each(inDetailedTimings.segmentTimings_,
     [this](const auto& currentTiming) {
       auto iter = this->segmentTimings_.find(currentTiming.first);
-      if (iter != this->segmentTimings_.end()) {
-        iter->second.insert(iter->second.end(), currentTiming.second.begin(), currentTiming.second.end());
+      if (iter != this->segmentTimings_.cend()) {
+        iter->second.insert(iter->second.cend(), currentTiming.second.cbegin(), currentTiming.second.cend());
       }
       else {
         this->segmentTimings_[currentTiming.first] = currentTiming.second;

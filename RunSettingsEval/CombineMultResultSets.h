@@ -94,7 +94,7 @@ public:
     //order of architectures from left to right is in speedup from largest to smallest
     std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> runNamesInOrderWSpeedup;
     std::string firstSpeedupHeader;
-    for (const auto& archWSpeedupData : speedupResultsNameToData.begin()->second.first) {
+    for (const auto& archWSpeedupData : speedupResultsNameToData.cbegin()->second.first) {
       if (!(archWSpeedupData.empty())) {
         firstSpeedupHeader = archWSpeedupData;
         break;
@@ -123,7 +123,7 @@ public:
 
     //write each average speedup with results for each architecture
     resultAcrossArchsSStr << "Average Speedups" << std::endl;
-    std::string firstRunName = speedupResultsNameToData.begin()->first;
+    std::string firstRunName = speedupResultsNameToData.cbegin()->first;
     for (const auto& speedupHeader : speedupResultsNameToData.at(firstRunName).first) {
       //don't process if header is empty
       if (!(speedupHeader.empty())) {

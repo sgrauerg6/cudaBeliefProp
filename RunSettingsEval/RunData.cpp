@@ -15,7 +15,7 @@
 std::string RunData::getHeaderToAdd(const std::string& inHeader) const {
   auto headerToAdd = inHeader;
   unsigned int num{0};
-  while (std::find(headersInOrder_.begin(), headersInOrder_.end(), headerToAdd) != headersInOrder_.end()) {
+  while (std::find(headersInOrder_.cbegin(), headersInOrder_.cend(), headerToAdd) != headersInOrder_.cend()) {
     //add "_{num}" to header if header already in data
     num++;
     headerToAdd = inHeader + "_" + std::to_string(num);
