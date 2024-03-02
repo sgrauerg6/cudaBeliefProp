@@ -23,7 +23,10 @@
 
 class CombineMultResultSets {
 public:
-  void operator()(const std::filesystem::path& impResultsFilePath) const {
+  void operator()(const std::filesystem::path& impResultsFilePath,
+    const std::vector<std::string>& evalAcrossRunsTopText,
+    const std::vector<std::string>& evalAcrossRunsInParamsShow) const
+  {
     //get header to data of each set of run results
     //iterate through all run results files and get run name to results
     //create directory iterator with all results files
@@ -41,7 +44,6 @@ public:
 
     std::map<std::string, std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>> inputToRuntimeAcrossArchs;
     std::set<std::array<std::string, 3>, run_eval::LessThanRunSigHdrs> inputSet;
-    const std::vector<std::string> inputParamsDisp{getInputParamsShow()};
     std::map<std::array<std::string, 3>, std::vector<std::string>, run_eval::LessThanRunSigHdrs> inputSetToInputDisp;
     for (const auto& runResult : runResultsNameToData) {
       inputToRuntimeAcrossArchs[runResult.first] = std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>();
@@ -57,7 +59,7 @@ public:
         //add mapping from run input signature to run input to be displayed
         if (!(inputSetToInputDisp.contains(runInput))) {
           inputSetToInputDisp[runInput] = std::vector<std::string>();
-          for (const auto& dispParam : inputParamsDisp) {
+          for (const auto& dispParam : evalAcrossRunsInParamsShow) {
             inputSetToInputDisp[runInput].push_back(resultKeysToResVect.at(dispParam)[numRun]);
           }
         }
@@ -79,13 +81,13 @@ public:
     //generate results across architectures
     std::ostringstream resultAcrossArchsSStr;
     //add text to display on top of results across architecture comparison file
-    for (const auto& compFileTopTextLine : getCombResultsTopText()) {
+    for (const auto& compFileTopTextLine : evalAcrossRunsTopText) {
       resultAcrossArchsSStr << compFileTopTextLine << std::endl;
     }
     resultAcrossArchsSStr << std::endl;
 
     //write out the name of each input parameter to be displayed
-    for (const auto& inputParamDispHeader : inputParamsDisp) {
+    for (const auto& inputParamDispHeader : evalAcrossRunsInParamsShow) {
       resultAcrossArchsSStr << inputParamDispHeader << ',';
     }
 
@@ -129,7 +131,7 @@ public:
       if (!(speedupHeader.empty())) {
         resultAcrossArchsSStr << speedupHeader << ',';
         //add empty cell for each input parameter after the first that's displayed so speedup shown on same line as runtime for architecture
-        for (size_t i = 1; i < inputParamsDisp.size(); i++) {
+        for (size_t i = 1; i < evalAcrossRunsInParamsShow.size(); i++) {
           resultAcrossArchsSStr << ',';
         }
         //write speedup for each architecture in separate cells in horizontal direction
@@ -140,26 +142,13 @@ public:
         resultAcrossArchsSStr << std::endl;
       }
     }
-    std::ofstream combResultsStr("CombResults.csv");
-    combResultsStr << resultAcrossArchsSStr.str();
+    //get file path for evaluation across runs and save evaluation across runs to csv file
+    std::filesystem::path resultsAcrossRunFp = impResultsFilePath / "EvaluationAcrossRuns.csv";
+    std::ofstream evalResultsAcrossRunsStr(resultsAcrossRunFp);
+    evalResultsAcrossRunsStr << resultAcrossArchsSStr.str();
   }
 
 private:
-  //get text at top of results summary file with each string_view in the vector corresponding to a separate line
-  std::vector<std::string> getCombResultsTopText() const {
-    return {{"Stereo Processing using optimized CUDA and optimized CPU belief propagation implementations"},
-            {"Code available at https://github.com/sgrauerg6/cudaBeliefProp"},
-            {"All stereo sets used in evaluation are from (or adapted from) Middlebury stereo datasets at https://vision.middlebury.edu/stereo/data/"},
-            {"\"tsukubaSetHalfSize: tsukubaSet with half the height, width, and disparity count of tsukubaSet\""},
-            {"conesFullSizeCropped: 900 x 750 region in center of the reference and test cones stereo set images"},
-            {"Results shown in this comparison for each run are for total runtime including any time for data transfer between device and host"}};
-  }
-
-  //input parameters that are showed in results summary with runtimes
-  std::vector<std::string> getInputParamsShow() const {
-    return {"Stereo Set", "DataType", "Image Width", "Image Height", "Num Possible Disparity Values", "LOOP_ITERS_TEMPLATED"};
-  }
-
   //get mapping of headers to data in csv file for run results and speedups
   //assumed that there are no commas in data since it is used as delimiter between data
   //first output is headers in order, second output is mapping of headers to results

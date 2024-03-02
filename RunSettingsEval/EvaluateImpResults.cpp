@@ -53,7 +53,19 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     //only show data type string and acceleration string for runs using a single data type that are used for debugging (not multidata type results) 
     const std::string dataTypeStr = MULT_DATA_TYPES ? "" : '_' + std::string(run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize));
     const auto accelStr = MULT_DATA_TYPES ? "" : '_' + std::string(run_environment::accelerationString(accelerationSetting));
+    //get directory to store implementation results for specific implementation
     const auto impResultsFp = getImpResultsPath();
+    //create any results directories if needed
+    if (!(std::filesystem::is_directory(impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME))) {
+      std::filesystem::create_directory(impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME);
+    }
+    if (!(std::filesystem::is_directory(impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME))) {
+      std::filesystem::create_directory(impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME);
+    }
+    if (!(std::filesystem::is_directory(impResultsFp / run_eval::IMP_RESULTS_SPEEDUPS_FOLDER_NAME))) {
+      std::filesystem::create_directory(impResultsFp / run_eval::IMP_RESULTS_SPEEDUPS_FOLDER_NAME);
+    }
+    //get file paths for run result and speedup files for implementation run
     const std::filesystem::path optResultsFilePath{impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
       std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME) + dataTypeStr + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
     const std::filesystem::path optResultsWSpeedupFilePath{impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
@@ -136,7 +148,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in " << optResultsWSpeedupFilePath << std::endl;
     std::cout << "Run inputs and results in " << optResultsFilePath << std::endl;
     std::cout << "Speedup results in " << speedupResultsFilePath << std::endl;
-    CombineMultResultSets().operator()(impResultsFp);
+    CombineMultResultSets().operator()(impResultsFp, getCombResultsTopText(), getInputParamsShow());
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;
@@ -515,38 +527,4 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     return {std::string(speedupHeader), getAvgMedSpeedup(speedupsVect)};
   }
   return {std::string(speedupHeader), {0.0, 0.0}};
-}
-
-//retrieve path of implementation results
-std::filesystem::path EvaluateImpResults::getImpResultsPath() const
-{
-  std::filesystem::path currentPath = std::filesystem::current_path();
-  while (true) {
-    //create directory iterator corresponding to current path
-    std::filesystem::directory_iterator dirIt = std::filesystem::directory_iterator(currentPath);
-
-    //check if any of the directories in the current path correspond to the implementation results directory;
-    //if so return iterator to directory; otherwise return iterator to end indicating that directory not
-    //found in current path
-    std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dirIt), std::filesystem::end(dirIt), 
-      [](const auto &p) { return p.path().stem() == run_eval::IMP_RESULTS_FOLDER_NAME; });
-    //check if return from find_if at iterator end and therefore didn't find stereo sets directory;
-    //if that's the case continue to outer directory
-    //for now assuming stereo sets directory exists in some outer directory and program won't work without it
-    if (it == std::filesystem::end(dirIt))
-    {
-      //if current path same as parent path, throw error
-      if (currentPath == currentPath.parent_path()) {
-        throw std::filesystem::filesystem_error("Implementation results directory not found", std::error_code());
-      }
-      //continue to next outer directory
-      currentPath = currentPath.parent_path();
-    }
-    
-    //return path for implementation results
-    if (it != std::filesystem::end(dirIt)) {
-      return it->path();
-    }
-  }
-  return std::filesystem::path();
 }

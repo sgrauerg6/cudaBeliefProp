@@ -6,7 +6,7 @@
  */
 
 #include "RunBenchmarkImp.h"
-#include "RunSettingsEval/EvaluateImpResults.h"
+#include "BpOutputEvaluation/EvaluateBPImpResults.h"
 
 //run and evaluate runs on one or more input of benchmark implementation using multiple settings
 std::pair<MultRunData, std::vector<MultRunSpeedup>> RunBenchmarkImp::operator()(const run_environment::RunImpSettings& runImpSettings,
@@ -16,7 +16,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> RunBenchmarkImp::operator()(
   MultRunData runDataAllRuns = runEvalImpMultDataSets(runImpSettings, dataTypeSize);
 
   //evaluate results
-  EvaluateImpResults evalResults;
+  EvaluateBPImpResults evalResults;
   evalResults(runDataAllRuns, runImpSettings, optImpAccel_, dataTypeSize);
 
   //return data for each run and multiple average and median speedup results across the data

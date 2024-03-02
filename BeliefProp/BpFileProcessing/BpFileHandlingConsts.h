@@ -31,6 +31,6 @@ namespace bp_file_handling
       "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
   #endif //SMALLER_SETS_ONLY
-}
+};
 
 #endif /* BPFILEHANDLINGCONSTS_H_ */

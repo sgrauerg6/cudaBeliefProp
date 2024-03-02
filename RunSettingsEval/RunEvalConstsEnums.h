@@ -19,6 +19,11 @@ namespace run_eval {
   //enum for status to indicate if error or no error
   enum class Status { NO_ERROR, ERROR };
 
+  //constants for headers corresponding to input, input settings, and results
+  constexpr std::string_view INPUT_IDX_HEADER{"Input Index"};
+  constexpr std::string_view DATATYPE_HEADER{"Data Type"};
+  constexpr std::string_view LOOP_ITERS_TEMPLATED_HEADER{"Loop Iters Templated"};
+
   //constants for output results for individual and sets of runs
   constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"RunResults"};
   constexpr std::string_view RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME{"RunResultsWSpeedups"};
@@ -42,7 +47,7 @@ namespace run_eval {
   constexpr std::string_view IMP_RESULTS_RESULTS_ACROSS_ARCHS_FOLDER_NAME{"ResultsAcrossArchitectures"};
   
   //headers that correspond to unique "signature" for input mapping in run across multiple inputs on an architecture
-  constexpr std::array<std::string_view, 3> RUN_INPUT_SIG_HDRS{"Input Index", "DataType", "LOOP_ITERS_TEMPLATED"};
+  constexpr std::array<std::string_view, 3> RUN_INPUT_SIG_HDRS{INPUT_IDX_HEADER, DATATYPE_HEADER, LOOP_ITERS_TEMPLATED_HEADER};
   constexpr size_t RUN_INPUT_NUM_INPUT_IDX{0};
   constexpr size_t RUN_INPUT_DATATYPE_IDX{1};
   constexpr size_t RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX{2};

@@ -7,6 +7,7 @@
 
 #include "RunEvalImpMultSettings.h"
 #include "RunSettingsEval/EvaluateImpResults.h"
+#include "BpOutputEvaluation/EvaluateBPImpResults.h"
 
 //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
 void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting,
@@ -26,7 +27,7 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
   }
 
   //evaluate results including writing results to output file
-  EvaluateImpResults().operator()(runImpResults, runImpSettings, fastestAcc);
+  EvaluateBPImpResults().operator()(runImpResults, runImpSettings, fastestAcc);
 }
 
 //get fastest available acceleration

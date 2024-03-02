@@ -85,7 +85,13 @@ private:
     std::string_view speedupHeader);
 
   //retrieve path of results
-  std::filesystem::path getImpResultsPath() const;
+  virtual std::filesystem::path getImpResultsPath() const = 0;
+  
+  //get text at top of results across runs with each string in the vector corresponding to a separate line
+  virtual std::vector<std::string> getCombResultsTopText() const = 0;
+
+  //input parameters that are showed in results across runs with runtimes
+  virtual std::vector<std::string> getInputParamsShow() const = 0;
 
   run_environment::RunImpSettings runImpSettings_;
   run_environment::AccSetting optImpAccel_;

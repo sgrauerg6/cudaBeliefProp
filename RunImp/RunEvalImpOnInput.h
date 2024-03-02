@@ -36,9 +36,9 @@ protected:
   //get current run inputs and parameters in RunData structure
   RunData inputAndParamsRunData(bool loopItersTemplated) const {
     RunData currRunData;
-    currRunData.addDataWHeader("DataType", std::string(run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
+    currRunData.addDataWHeader(std::string(run_eval::DATATYPE_HEADER), std::string(run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
     currRunData.appendData(run_environment::runSettings<OPT_IMP_ACCEL>());
-    currRunData.addDataWHeader("LOOP_ITERS_TEMPLATED", loopItersTemplated);
+    currRunData.addDataWHeader(std::string(run_eval::LOOP_ITERS_TEMPLATED_HEADER), loopItersTemplated);
     return currRunData;
   }
 
@@ -91,7 +91,7 @@ protected:
       RunData currRunData;
       if (currRunType != RunType::TEST_PARAMS) {
         //add input and parameters data for specific benchmark to current run data
-        currRunData.addDataWHeader("Input Index", std::to_string(NUM_INPUT));
+        currRunData.addDataWHeader(std::string(run_eval::INPUT_IDX_HEADER), std::to_string(NUM_INPUT));
         currRunData.appendData(inputAndParamsForCurrBenchmark(runWLoopItersTemplated));
         if ((runImpSettings.optParallelParamsOptionSetting_.first) &&
             (runImpSettings.optParallelParamsOptionSetting_.second ==
