@@ -29,8 +29,11 @@ DBG    = -g
 
 all: impDriverCPU
 
-impDriverCPU: driverBpStereoCPU.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
-	$(CC) driverBpStereoCPU.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o driverCPUBp -O
+impDriverCPU: driverBpStereoCPU.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
+	$(CC) driverBpStereoCPU.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o driverCPUBp -O
+
+EvaluateAcrossRuns.o :
+	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 EvaluateBPImpResults.o : 
 	$(CC) ${BP_PATH}/BpOutputEvaluation/EvaluateBPImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

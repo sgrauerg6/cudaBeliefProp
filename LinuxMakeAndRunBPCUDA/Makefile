@@ -50,8 +50,14 @@ ARCHITECTURES_GENCODE = -arch=native
 
 all: impDriverCUDA
 
-impDriverCUDA: driverCudaBp.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
-	$(CC) driverCudaBp.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+impDriverCUDA: driverCudaBp.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
+	$(CC) driverCudaBp.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+
+EvaluateAcrossRuns.o :
+	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+EvaluateBPImpResults.o : 
+	$(CC) ${BP_PATH}/BpOutputEvaluation/EvaluateBPImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 EvaluateImpResults.o:
 	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
