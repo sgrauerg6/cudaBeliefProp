@@ -22,8 +22,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
 #include <cuda_runtime.h>
-#include "BpConstsAndParams/bpStereoCudaParameters.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpStereoCudaParameters.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "BpRunImp/BpParallelParams.h"
@@ -72,7 +72,6 @@ public:
     //generate struct with pointers to objects for running CUDA implementation and call
     //function to run CUDA implementation
     RunData runData;
-    runData.addDataWHeader("CURRENT RUN", "GPU WITH CUDA");
     runData.appendData(bp_cuda_device::retrieveDeviceProperties(0));
     auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
       BpOnDevice<T, DISP_VALS, ACCELERATION>{

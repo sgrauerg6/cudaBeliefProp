@@ -46,13 +46,13 @@ LINUX USAGE AND INSTRUCTIONS:
 
 This code runs belief propagation for stereo vision on the CPU and GPU using CUDA on Linux-based systems.
 
-The parameters are defined in BpConstsAndParams/bpStereoParameters.h and are documented in that file and the paper.  
+The parameters are defined in BpConstsAndParams/BpStereoParameters.h and are documented in that file and the paper.  
 In order to compile/re-compile the program, navigate to the directory LinuxMakeAndRunBPOptimizedCPU (for optimized GPU
 implementation on x86 processors), the directory LinuxMakeAndRunBPOptimizedCPU (for optimized CPU implementation on ARM
 processors), or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run "make clean" and "make".
 
 A number of stereo sets including the Tsukuba stereo are included in the "BeliefProp/BpStereoSets" folder.  In order to run the
-implementation on these stereo sets using the initial parameters as defined in BpConstsAndParams/bpStereoParameters.h,
+implementation on these stereo sets using the initial parameters as defined in BpConstsAndParams/BpStereoParameters.h,
 perform the following steps:
 
 1a.  (CUDA ONLY) If needed, set the PATH and LD_LIBRARY_PATH to the necessary paths needed to run CUDA programs
@@ -92,7 +92,7 @@ outputResultsDefaultParallelParams_MULT_DATA_TYPES_{acceleration_type}.csv file;
 the driverCPUBp/driverCudaBp executable.
 
 6.  To adjust the program to run on different inputs or with different parameters, set the desired
-parameters in BpConstsAndParams/bpStereoParameters.h, run "make clean" and "make" to compile the program with the
+parameters in BpConstsAndParams/BpStereoParameters.h, run "make clean" and "make" to compile the program with the
 adjusted parameters, and then call the executable to run the program with the adjusted parameters.
 
 

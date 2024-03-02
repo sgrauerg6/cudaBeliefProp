@@ -1,5 +1,5 @@
 /*
- * bpStructsAndEnums.h
+ * BpStructsAndEnums.h
  *
  *  Created on: Sep 22, 2019
  *      Author: scott
@@ -14,8 +14,8 @@
 #include <iostream>
 #include <cmath>
 #include <string>
-#include "bpStereoParameters.h"
-#include "bpTypeConstraints.h"
+#include "BpStereoParameters.h"
+#include "BpTypeConstraints.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"

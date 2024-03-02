@@ -9,7 +9,7 @@
 #define SMOOTHIMAGECUDA_H_
 
 #include <cuda_runtime.h>
-#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpImageProcessing/SmoothImage.h"
 #include "BpRunImp/BpParallelParams.h"
 

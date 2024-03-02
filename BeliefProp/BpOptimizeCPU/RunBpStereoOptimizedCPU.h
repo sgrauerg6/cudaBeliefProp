@@ -11,7 +11,7 @@
 #include <string>
 #include <memory>
 #include <array>
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "BpRunImp/BpParallelParams.h"
@@ -41,7 +41,6 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
 
   //add settings for current run to output data
   RunData runData;
-  runData.addDataWHeader("CURRENT RUN", "OPTIMIZED CPU");
   runData.addDataWHeader("Number of threads", nthreads);
   runData.addDataWHeader("Vectorization", std::string(run_environment::accelerationString<VECTORIZATION>()));
 

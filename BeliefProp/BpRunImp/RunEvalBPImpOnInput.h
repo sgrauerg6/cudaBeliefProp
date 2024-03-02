@@ -8,7 +8,8 @@
 #include <memory>
 #include <filesystem>
 #include <optional>
-#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/BpConsts.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpSingleThreadCPU/stereo.h"
 #include "RunSettingsEval/RunSettings.h"
@@ -33,7 +34,7 @@ using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 //check if CUDA run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CUDA_RUN
 //needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
-#include "BpConstsAndParams/bpStereoCudaParameters.h"
+#include "BpConstsAndParams/BpStereoCudaParameters.h"
 //needed to run the implementation a stereo set using CUDA
 #include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
@@ -102,7 +103,7 @@ std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrBenchmark(bool loopItersTemplated) const {
   RunData currRunData;
-  currRunData.addDataWHeader("Stereo Set", std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
+  currRunData.addDataWHeader(std::string(belief_prop::STEREO_SET_HEADER), std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
   currRunData.appendData(this->inputAndParamsRunData(loopItersTemplated));
   currRunData.appendData(algSettings_.runData());
   currRunData.appendData(bp_params::runSettings());
@@ -143,6 +144,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImps
     
   //check if error in run
   RunData runData;
+  runData.addDataWHeader("Acceleration", optImpRunDesc);
   if (!(run_output[0])) {
     return {};
   }

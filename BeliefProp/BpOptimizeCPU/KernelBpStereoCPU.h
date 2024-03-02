@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 //TODO: switch use of printf with std::format when it is supported on compiler used for development
 //#include <format>
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpStructsAndEnums.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpSharedFuncts/SharedBPProcessingFuncts.h"
 #include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"

@@ -1,4 +1,4 @@
-//bpTypeConstraints.h
+//BpTypeConstraints.h
 //
 //Define constraints for data type in belief propagation processing
 

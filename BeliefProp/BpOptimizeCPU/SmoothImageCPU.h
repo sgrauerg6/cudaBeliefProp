@@ -10,7 +10,7 @@
 
 #include <utility>
 #include <memory>
-#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "BpImageProcessing/SmoothImage.h"
 #include "BpRunImp/BpParallelParams.h"

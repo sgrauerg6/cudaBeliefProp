@@ -19,10 +19,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file defines the template specialization to perform belief propagation using half precision for
 //disparity map estimation from stereo images on CUDA
 
-#include "BpConstsAndParams/bpStereoCudaParameters.h"
+#include "BpConstsAndParams/BpStereoCudaParameters.h"
 
 //only need template specialization for half precision if CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF is set
-//in BpConstsAndParams/bpStereoCudaParameters.h
+//in BpConstsAndParams/BpStereoCudaParameters.h
 #ifdef CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 //set constexpr unsigned int values for number of disparity values for each stereo set used

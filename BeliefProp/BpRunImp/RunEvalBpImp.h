@@ -18,8 +18,8 @@
 #include <algorithm>
 #include <set>
 #include "BpRunImp/RunEvalBPImpOnInput.h"
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpRunProcessing/RunBpStereoSet.h"

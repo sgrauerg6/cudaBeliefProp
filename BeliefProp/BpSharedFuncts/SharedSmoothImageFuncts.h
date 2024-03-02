@@ -9,7 +9,7 @@
 #define SHAREDSMOOTHIMAGEFUNCTS_H_
 
 #include "RunSettingsEval/RunTypeConstraints.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
 
 namespace beliefprop {

@@ -16,9 +16,9 @@
 #include <array>
 #include <utility>
 #include <ranges>
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpStructsAndEnums.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"

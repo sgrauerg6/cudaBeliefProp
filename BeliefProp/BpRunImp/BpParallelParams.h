@@ -14,10 +14,10 @@
 #include <iostream>
 #include <cmath>
 #include <string>
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
-#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"

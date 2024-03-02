@@ -27,9 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <chrono>
 #include <stdlib.h>
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpStructsAndEnums.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunTypeConstraints.h"

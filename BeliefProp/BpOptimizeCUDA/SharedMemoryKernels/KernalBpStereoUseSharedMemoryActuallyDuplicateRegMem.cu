@@ -2,7 +2,7 @@
 //so currently not using except for testing
 
 #include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
-#include "../bpStereoCudaParameters.h"
+#include "../BpStereoCudaParameters.h"
 
 template<typename T>
 __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMemActuallyReg, T* dst) {

@@ -23,8 +23,8 @@
 #include "filter.h"
 #include "imconv.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunSettings.h"
 
@@ -286,7 +286,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   std::chrono::duration<double> diff = timeEnd-timeStart;
 
   RunData runData;
-  runData.addDataWHeader("AVERAGE CPU RUN TIME", diff.count());
+  runData.addDataWHeader(std::string(run_eval::SINGLE_THREAD_RUNTIME_HEADER), diff.count());
 
   delete u[0];
   delete d[0];

@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <memory>
 #include <utility>
 #include <algorithm>
-#include "BpConstsAndParams/bpStructsAndEnums.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpRunImp/BpParallelParams.h"
 #include "BpImage.h"
 

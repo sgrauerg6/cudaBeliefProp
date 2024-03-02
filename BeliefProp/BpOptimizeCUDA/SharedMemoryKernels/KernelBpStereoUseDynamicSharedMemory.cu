@@ -2,7 +2,7 @@
 //so currently not using except for testing
 
 #include "../BpSharedFuncts/SharedBPProcessingFuncts.h"
-#include "../bpStereoCudaParameters.h"
+#include "../BpStereoCudaParameters.h"
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
 template<typename T>

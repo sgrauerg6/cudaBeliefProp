@@ -14,9 +14,10 @@
 #include <string>
 #include <optional>
 #include <ranges>
-#include "BpConstsAndParams/bpStereoParameters.h"
-#include "BpConstsAndParams/bpStructsAndEnums.h"
-#include "BpConstsAndParams/bpTypeConstraints.h"
+#include "BpConstsAndParams/BpConsts.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
@@ -172,8 +173,8 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
   }
 
   RunData runData;
-  runData.addDataWHeader("Image Width", widthHeightImages[0]);
-  runData.addDataWHeader("Image Height", widthHeightImages[1]);
+  runData.addDataWHeader(std::string(belief_prop::IMAGE_WIDTH_HEADER), widthHeightImages[0]);
+  runData.addDataWHeader(std::string(belief_prop::IMAGE_HEIGHT_HEADER), widthHeightImages[1]);
   runData.appendData(detailedBPTimings.runData());
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object

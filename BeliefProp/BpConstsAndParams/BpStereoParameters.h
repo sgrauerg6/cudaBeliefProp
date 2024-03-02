@@ -1,5 +1,5 @@
 /*
- * bpStereoParameters.h
+ * BpStereoParameters.h
  *
  *  Created on: Jun 18, 2019
  *      Author: scott
