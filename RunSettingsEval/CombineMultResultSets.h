@@ -27,7 +27,6 @@ public:
     //get header to data of each set of run results
     //iterate through all run results files and get run name to results
     //create directory iterator with all results files
-    std::cout << "1" << std::endl;
     std::filesystem::directory_iterator resultsFilesIt = std::filesystem::directory_iterator(impResultsFilePath / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME);
     std::vector<std::string> runNames;
     std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> runResultsNameToData;
@@ -40,7 +39,6 @@ public:
       }
     }
 
-    std::cout << "2" << std::endl;
     std::map<std::string, std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>> inputToRuntimeAcrossArchs;
     std::set<std::array<std::string, 3>, run_eval::LessThanRunSigHdrs> inputSet;
     const std::vector<std::string> inputParamsDisp{getInputParamsShow()};
@@ -50,8 +48,10 @@ public:
       const auto& resultKeysToResVect = runResult.second.second;
       const unsigned int totNumRuns = resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[0])).size();
       for (size_t numRun = 0; numRun < totNumRuns; numRun++) {
-        std::array<std::string, 3> runInput{resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[0]))[numRun],
-          resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[1]))[numRun], resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[2]))[numRun]};
+        const std::array<std::string, 3> runInput{
+          resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[0]))[numRun],
+          resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[1]))[numRun],
+          resultKeysToResVect.at(std::string(run_eval::RUN_INPUT_SIG_HDRS[2]))[numRun]};
         inputToRuntimeAcrossArchs[runResult.first][runInput] = resultKeysToResVect.at(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))[numRun];
         inputSet.insert(runInput);
         //add mapping from run input signature to run input to be displayed
@@ -64,7 +64,6 @@ public:
       }
     }
 
-    std::cout << "3" << std::endl;
     //get header to data of each set of speedups
     //iterate through all speedup data files and get run name to results
     std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> speedupResultsNameToData;
@@ -77,7 +76,6 @@ public:
       }
     }
 
-    std::cout << "4" << std::endl;
     //generate results across architectures
     std::ostringstream resultAcrossArchsSStr;
     //add text to display on top of results across architecture comparison file
@@ -91,7 +89,6 @@ public:
       resultAcrossArchsSStr << inputParamDispHeader << ',';
     }
 
-    std::cout << "5" << std::endl;
     //write each architecture name and save order of architectures with speedup corresponding to first
     //speedup header
     //order of architectures from left to right is in speedup from largest to smallest
@@ -103,7 +100,6 @@ public:
         break;
       }
     }
-    std::cout << "6" << std::endl;
     for (const auto& archWSpeedupData : speedupResultsNameToData) {
       const float avgSpeedupVsBase = std::stof(std::string(archWSpeedupData.second.second.at(firstSpeedupHeader).at(0)));
       runNamesInOrderWSpeedup.insert({avgSpeedupVsBase, archWSpeedupData.first});
@@ -111,7 +107,6 @@ public:
     }
     resultAcrossArchsSStr << std::endl;
 
-    std::cout << "7" << std::endl;
     //write input data and runtime for each run for each architecture
     for (const auto& currRunInput : inputSetToInputDisp) {
       for (const auto& runInputVal : currRunInput.second) {
@@ -126,7 +121,6 @@ public:
     }
     resultAcrossArchsSStr << std::endl;
 
-    std::cout << "8" << std::endl;
     //write each average speedup with results for each architecture
     resultAcrossArchsSStr << "Average Speedups" << std::endl;
     std::string firstRunName = speedupResultsNameToData.begin()->first;
@@ -146,7 +140,6 @@ public:
         resultAcrossArchsSStr << std::endl;
       }
     }
-    std::cout << "9" << std::endl;
     std::ofstream combResultsStr("CombResults.csv");
     combResultsStr << resultAcrossArchsSStr.str();
   }

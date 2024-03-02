@@ -18,12 +18,12 @@ void OutputEvaluationResults::initializeWithEvalParams(const OutputEvaluationPar
 //retrieve evaluation results as RunData for output
 RunData OutputEvaluationResults::runData() const {
   RunData evalRunData;
-  evalRunData.addDataWHeader("Average RMS error", std::to_string(averageDispAbsDiffNoMax_));
+  evalRunData.addDataWHeader("Average RMS error", (double)averageDispAbsDiffNoMax_);
   evalRunData.addDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparityErrorCap_) + ")",
-                             std::to_string(averageDispAbsDiffNoMax_));
+                             (double)averageDispAbsDiffNoMax_);
   for (const auto& propBadPixelsAtThreshold : propSigDiffPixelsAtThresholds_) {
     evalRunData.addDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
-                               std::to_string(propBadPixelsAtThreshold.second));
+                               (double)propBadPixelsAtThreshold.second);
   }
 
   return evalRunData;

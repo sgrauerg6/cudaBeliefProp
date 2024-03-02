@@ -48,13 +48,13 @@ struct BPsettings
 
   RunData runData() const {
     RunData currRunData;
-    currRunData.addDataWHeader("Num Possible Disparity Values", std::to_string(numDispVals_));
-    currRunData.addDataWHeader("Num BP Levels", std::to_string(numLevels_));
-    currRunData.addDataWHeader("Num BP Iterations", std::to_string(numIterations_));
-    currRunData.addDataWHeader("DISC_K_BP", std::to_string(disc_k_bp_));
-    currRunData.addDataWHeader("DATA_K_BP", std::to_string(data_k_bp_));
-    currRunData.addDataWHeader("LAMBDA_BP", std::to_string(lambda_bp_));
-    currRunData.addDataWHeader("SIGMA_BP", std::to_string(smoothingSigma_));
+    currRunData.addDataWHeader("Num Possible Disparity Values", numDispVals_);
+    currRunData.addDataWHeader("Num BP Levels", numLevels_);
+    currRunData.addDataWHeader("Num BP Iterations", numIterations_);
+    currRunData.addDataWHeader("DISC_K_BP", (double)disc_k_bp_);
+    currRunData.addDataWHeader("DATA_K_BP", (double)data_k_bp_);
+    currRunData.addDataWHeader("LAMBDA_BP", (double)lambda_bp_);
+    currRunData.addDataWHeader("SIGMA_BP", (double)smoothingSigma_);
 
     return currRunData;
   }

@@ -42,8 +42,8 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
   //add settings for current run to output data
   RunData runData;
   runData.addDataWHeader("CURRENT RUN", "OPTIMIZED CPU");
-  runData.addDataWHeader("Number of threads", std::to_string(nthreads));
-  runData.addDataWHeader("Vectorization", run_environment::accelerationString<VECTORIZATION>());
+  runData.addDataWHeader("Number of threads", nthreads);
+  runData.addDataWHeader("Vectorization", std::string(run_environment::accelerationString<VECTORIZATION>()));
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation

@@ -16,53 +16,56 @@
 #include <algorithm>
 #include <iostream>
 #include <optional>
+#include <variant>
 
 class RunData {
 public:
   //add data with header describing added data
   void addDataWHeader(const std::string& header, const std::string& data);
 
+  //add data with header describing added data
+  void addDataWHeader(const std::string& header, double data);
+
+  //add data with header describing added data
+  void addDataWHeader(const std::string& header, bool data);
+
+  //add data with header describing added data
+  void addDataWHeader(const std::string& header, unsigned int data);
+
   //return data headers in order
   const std::vector<std::string>& getHeadersInOrder() const { return headersInOrder_; }
 
   //return data mapped to corresponding headers
-  const std::map<std::string, std::string>& getAllData() const { return headersWData_; }
+  const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& getAllData() const { return headersWData_; }
 
   //return whether or not there is data corresponding to a specific header
-  bool isData(const std::string& header) const { 
-    return (std::find(headersInOrder_.begin(), headersInOrder_.end(), header) != headersInOrder_.end()); }
+  bool isData(const std::string_view header) const { 
+    return (std::find(headersInOrder_.begin(), headersInOrder_.end(), std::string(header)) != headersInOrder_.end()); }
 
-  //get data corresponding to ,
-  const std::string getData(const std::string& header) const { return headersWData_.at(header); }
-  
+  //get data corresponding to header as a string
+  //returns data as string regardless of underlying data type
+  std::string getDataAsStr(const std::string_view header) const;
+
+  //get data as specified type if variant corresponding to header is specified type
+  //return null if data corresponds to a different data type
+  std::optional<double> getDataAsDouble(const std::string_view header) const;
+  std::optional<unsigned int> getDataAsUInt(const std::string_view header) const;
+  std::optional<bool> getDataAsBool(const std::string_view header) const;
+
   //append current RunData with input RunData
   void appendData(const RunData& inRunData);
 
   //retrieve pair between a set of parameters and a single parameter
   std::optional<std::pair<std::vector<std::string>, std::string>> getParamsToParamRunData(
-    const std::vector<std::string>& keyParams, const std::string& valParam) const
-  {
-    std::vector<std::string> keyParamVals;
-    for (const auto& keyParam : keyParams) {
-      //check if current key params exists as header; return null if not
-      if (!(headersWData_.contains(keyParam))) {
-        return {};
-      }
-      //add value of key param for first part of pair to return
-      keyParamVals.push_back(headersWData_.at(keyParam));
-    }
-      //check if value params exists as header; return null if not
-    if (!(headersWData_.contains(valParam))) {
-      return {};
-    }
-
-    //return pair of vector key parameters values with value parameter value for run data
-    return std::pair<std::vector<std::string>, std::string>{keyParamVals, headersWData_.at(valParam)};
-  }
+    const std::vector<std::string_view>& keyParams, std::string_view valParam) const;
 
 private:
+  //get header to add...use input header if not yet used
+  //user original header with number appended if original header is already used
+  std::string getHeaderToAdd(const std::string& inHeader) const;
+
   //data stored as mapping between header and data value corresponding to headers
-  std::map<std::string, std::string> headersWData_;
+  std::map<std::string, std::variant<unsigned int, double, bool, std::string>> headersWData_;
   
   //headers ordered from first header added to last header added
   std::vector<std::string> headersInOrder_;

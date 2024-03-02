@@ -70,22 +70,22 @@ void BpParallelParams::addTestResultsForParallelParams(const std::array<unsigned
   if (optParallelParamsSetting_ == run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN) {
     for (unsigned int level=0; level < numLevels_; level++) {
       pParamsToRunTimeEachKernel_[beliefprop::BpKernel::DATA_COSTS_AT_LEVEL][level][pParamsCurrRun] =
-        std::stod(std::string(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][0] + " " + NUM_RUNS_IN_PARENS)));
+        currRunData.getDataAsDouble(std::string(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][0]) + " " + NUM_RUNS_IN_PARENS).value();
       pParamsToRunTimeEachKernel_[beliefprop::BpKernel::BP_AT_LEVEL][level][pParamsCurrRun] = 
-        std::stod(std::string(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][1] + " " + NUM_RUNS_IN_PARENS)));
+        currRunData.getDataAsDouble(std::string(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][1]) + " " + NUM_RUNS_IN_PARENS).value();
       pParamsToRunTimeEachKernel_[beliefprop::BpKernel::COPY_AT_LEVEL][level][pParamsCurrRun] =
-        std::stod(std::string(currRunData.getData(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][2] + " " + NUM_RUNS_IN_PARENS)));
+        currRunData.getDataAsDouble(std::string(beliefprop::LEVEL_DCOST_BPTIME_CTIME_NAMES[level][2]) + " " + NUM_RUNS_IN_PARENS).value();
     }
     pParamsToRunTimeEachKernel_[beliefprop::BpKernel::BLUR_IMAGES][0][pParamsCurrRun] =
-      std::stod(std::string(currRunData.getData(beliefprop::timingNames.at(beliefprop::Runtime_Type::SMOOTHING) + " " + NUM_RUNS_IN_PARENS)));
+      currRunData.getDataAsDouble(std::string(beliefprop::timingNames.at(beliefprop::Runtime_Type::SMOOTHING)) + " " + NUM_RUNS_IN_PARENS).value();
     pParamsToRunTimeEachKernel_[beliefprop::BpKernel::INIT_MESSAGE_VALS][0][pParamsCurrRun] =
-      std::stod(std::string(currRunData.getData(beliefprop::timingNames.at(beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL) + " " + NUM_RUNS_IN_PARENS)));
+      currRunData.getDataAsDouble(std::string(beliefprop::timingNames.at(beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL)) + " " + NUM_RUNS_IN_PARENS).value();
     pParamsToRunTimeEachKernel_[beliefprop::BpKernel::OUTPUT_DISP][0][pParamsCurrRun] =
-      std::stod(std::string(currRunData.getData(beliefprop::timingNames.at(beliefprop::Runtime_Type::OUTPUT_DISPARITY) + " " + NUM_RUNS_IN_PARENS)));
+      currRunData.getDataAsDouble(std::string(beliefprop::timingNames.at(beliefprop::Runtime_Type::OUTPUT_DISPARITY)) + " " + NUM_RUNS_IN_PARENS).value();
   }
   //get total runtime
   pParamsToRunTimeEachKernel_[beliefprop::NUM_KERNELS][0][pParamsCurrRun] =
-    std::stod(std::string(currRunData.getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))));
+    currRunData.getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value();
 }
 
 //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters

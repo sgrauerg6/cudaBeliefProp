@@ -286,7 +286,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   std::chrono::duration<double> diff = timeEnd-timeStart;
 
   RunData runData;
-  runData.addDataWHeader("AVERAGE CPU RUN TIME", std::to_string(diff.count()));
+  runData.addDataWHeader("AVERAGE CPU RUN TIME", diff.count());
 
   delete u[0];
   delete d[0];

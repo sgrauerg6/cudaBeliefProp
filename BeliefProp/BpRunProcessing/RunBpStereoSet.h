@@ -172,8 +172,8 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
   }
 
   RunData runData;
-  runData.addDataWHeader("Image Width", std::to_string(widthHeightImages[0]));
-  runData.addDataWHeader("Image Height", std::to_string(widthHeightImages[1]));
+  runData.addDataWHeader("Image Width", widthHeightImages[0]);
+  runData.addDataWHeader("Image Height", widthHeightImages[1]);
   runData.appendData(detailedBPTimings.runData());
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object

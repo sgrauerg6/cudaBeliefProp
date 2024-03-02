@@ -43,6 +43,9 @@ namespace run_eval {
   
   //headers that correspond to unique "signature" for input mapping in run across multiple inputs on an architecture
   constexpr std::array<std::string_view, 3> RUN_INPUT_SIG_HDRS{"Input Index", "DataType", "LOOP_ITERS_TEMPLATED"};
+  constexpr size_t RUN_INPUT_NUM_INPUT_IDX{0};
+  constexpr size_t RUN_INPUT_DATATYPE_IDX{1};
+  constexpr size_t RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX{2};
 
   //comparison for sorting of input signature for each run (datatype, then input number, then whether or not using templated iter count)
   struct LessThanRunSigHdrs {

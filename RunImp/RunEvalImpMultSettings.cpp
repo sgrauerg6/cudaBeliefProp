@@ -12,7 +12,6 @@
 void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting,
   const run_environment::RunImpSettings& runImpSettings) const
 {
-  std::cout << "1a" << std::endl;
   //get fastest implementation available
   const auto fastestAcc = getFastestAvailableAcc(runBenchmarkImpsByAccSetting);
 
@@ -26,7 +25,6 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
     }
   }
 
-  std::cout << "1b" << std::endl;
   //evaluate results including writing results to output file
   EvaluateImpResults().operator()(runImpResults, runImpSettings, fastestAcc);
 }

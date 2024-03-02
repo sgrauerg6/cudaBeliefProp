@@ -25,7 +25,7 @@ requires std::is_enum_v<T>
 class DetailedTimings {
 public:
   //initialize each timing segment
-  DetailedTimings(const std::unordered_map<T, std::string>& timingSegments);
+  DetailedTimings(const std::unordered_map<T, std::string_view>& timingSegments);
 
   //reset all timings
   void resetTiming() { segmentTimings_.clear(); }
@@ -46,13 +46,13 @@ public:
 
 private:
   std::map<T, std::vector<std::chrono::duration<double>>> segmentTimings_;
-  const std::unordered_map<T, std::string> timingSegToStr_;
+  const std::unordered_map<T, std::string_view> timingSegToStr_;
 };
 
 //initialize each timing segment
 template <typename T>
 requires std::is_enum_v<T>
-DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string>& timingSegments) : timingSegToStr_{timingSegments} {
+DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string_view>& timingSegments) : timingSegToStr_{timingSegments} {
   std::ranges::transform(timingSegToStr_, std::inserter(segmentTimings_, segmentTimings_.end()),
     [](const auto& segment) -> std::pair<T, std::vector<std::chrono::duration<double>>> {
       return {segment.first, std::vector<std::chrono::duration<double>>()}; });
@@ -99,13 +99,13 @@ RunData DetailedTimings<T>::runData() const {
     [this, &timingsRunData](auto currentTiming) {
       //get median timing across runs
       std::ranges::nth_element(currentTiming.second, currentTiming.second.begin() + currentTiming.second.size() / 2);
-      std::string headerStart = timingSegToStr_.at(currentTiming.first);
+      std::string_view headerStart = timingSegToStr_.at(currentTiming.first);
       if (currentTiming.second.size() > 0) {
-        timingsRunData.addDataWHeader(headerStart + " (" + std::to_string(currentTiming.second.size()) +
-          " timings)", std::to_string(currentTiming.second[currentTiming.second.size() / 2].count()));
+        timingsRunData.addDataWHeader(std::string(headerStart) + " (" + std::to_string(currentTiming.second.size()) +
+          " timings)", currentTiming.second[currentTiming.second.size() / 2].count());
       }
       else {
-        timingsRunData.addDataWHeader(headerStart + " (No timings) ", "No timings"); 
+        timingsRunData.addDataWHeader(std::string(headerStart) + " (No timings) ", "No timings"); 
       }
     });
   return timingsRunData;

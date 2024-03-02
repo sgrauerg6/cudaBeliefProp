@@ -10,6 +10,7 @@
 
 #include <map>
 #include <optional>
+#include <string_view>
 #include "RunData.h"
 
 //set data type used for half-precision
@@ -25,7 +26,7 @@ using halftype = short;
 namespace run_environment {
 
 //mapping from data size to data type string
-const std::map<std::size_t, std::string> DATA_SIZE_TO_NAME_MAP{
+const std::map<std::size_t, std::string_view> DATA_SIZE_TO_NAME_MAP{
   {sizeof(float), "FLOAT"}, {sizeof(double), "DOUBLE"}, {sizeof(short), "HALF"}
 };
 
@@ -36,7 +37,7 @@ enum class AccSetting {
 
 //get string corresponding to acceleration method
 template <AccSetting ACCELERATION_SETTING>
-constexpr const char* accelerationString() {
+constexpr std::string_view accelerationString() {
   if constexpr (ACCELERATION_SETTING == AccSetting::NEON)
     return "NEON";
   else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256)
@@ -47,7 +48,7 @@ constexpr const char* accelerationString() {
     return "DEFAULT";
 }
 
-inline const char* accelerationString(AccSetting accelerationSetting) {
+inline std::string_view accelerationString(AccSetting accelerationSetting) {
   if (accelerationSetting == AccSetting::NEON)
     return "NEON";
   else if (accelerationSetting == AccSetting::AVX256)
@@ -71,8 +72,8 @@ inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
   RunData currRunData;
-  currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", std::to_string(getBytesAlignMemory(ACCELERATION_SETTING)));
-  currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", std::to_string(getNumDataAlignWidth(ACCELERATION_SETTING)));
+  currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", getBytesAlignMemory(ACCELERATION_SETTING));
+  currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", getNumDataAlignWidth(ACCELERATION_SETTING));
   return currRunData;
 }
 
@@ -93,7 +94,7 @@ struct RunImpSettings {
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> pParamsDefaultOptOptions_;
   std::optional<std::string> runName_;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
-  std::optional<std::pair<std::array<std::string, 2>, TemplatedItersSetting>> baseOptSingThreadRTimeForTSetting_;
+  std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> baseOptSingThreadRTimeForTSetting_;
   std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetStrIndices_;
 };
 

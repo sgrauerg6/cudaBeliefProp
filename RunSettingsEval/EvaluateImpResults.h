@@ -59,30 +59,30 @@ private:
     MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
 
   //get baseline runtime data if available...return null if baseline data not available
-  std::optional<std::pair<std::string, std::vector<double>>> getBaselineRuntimeData(const std::string& baselineDataPath) const;
+  std::optional<std::pair<std::string, std::vector<double>>> getBaselineRuntimeData(std::string_view baselineDataPath) const;
 
   //get average and median speedup from vector of speedup values
   std::array<double, 2> getAvgMedSpeedup(const std::vector<double>& speedupsVect) const;
 
   //get average and median speedup of specified subset(s) of runs compared to baseline data from file
   std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaselineSubsets(MultRunData& runOutput,
-    const std::string& dataTypeStr, const std::array<std::string, 2>& baseDataPathOptSingThrd,
+    std::string_view dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
     const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices = std::vector<std::pair<std::string, std::vector<unsigned int>>>()) const;
 
   //get average and median speedup of current runs compared to baseline data from file
   std::vector<MultRunSpeedup> getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
-    const std::string& dataTypeStr, const std::array<std::string, 2>& baselinePathOptSingThread) const;
+    std::string_view dataTypeStr, const std::array<std::string_view, 2>& baselinePathOptSingThread) const;
 
   //get average and median speedup using optimized parallel parameters compared to default parallel parameters
-  MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput, const std::string& speedupHeader) const;
+  MultRunSpeedup getAvgMedSpeedupOptPParams(MultRunData& runOutput, std::string_view speedupHeader) const;
 
   //get average and median speedup between base and target runtime data
   MultRunSpeedup getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
-    const std::string& speedupHeader) const;
+    std::string_view speedupHeader) const;
 
   //get average and median speedup when loop iterations are given at compile time as template value
   MultRunSpeedup getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
-    const std::string& speedupHeader);
+    std::string_view speedupHeader);
 
   //retrieve path of results
   std::filesystem::path getImpResultsPath() const;

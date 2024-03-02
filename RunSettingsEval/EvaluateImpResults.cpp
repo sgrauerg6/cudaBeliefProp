@@ -52,7 +52,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     //file name contains info about data type, parameter settings, and processor name if available
     //only show data type string and acceleration string for runs using a single data type that are used for debugging (not multidata type results) 
     const std::string dataTypeStr = MULT_DATA_TYPES ? "" : '_' + std::string(run_environment::DATA_SIZE_TO_NAME_MAP.at(dataTypeSize));
-    const auto accelStr = MULT_DATA_TYPES ? "" : '_' + run_environment::accelerationString(accelerationSetting);
+    const auto accelStr = MULT_DATA_TYPES ? "" : '_' + std::string(run_environment::accelerationString(accelerationSetting));
     const auto impResultsFp = getImpResultsPath();
     const std::filesystem::path optResultsFilePath{impResultsFp / run_eval::IMP_RESULTS_RUN_DATA_FOLDER_NAME / std::filesystem::path(((runImpSettings.runName_) ? std::string(runImpSettings.runName_.value()) + "_" : "") + 
       std::string(run_eval::RUN_RESULTS_DESCRIPTION_FILE_NAME) + dataTypeStr + accelStr + std::string(run_eval::CSV_FILE_EXTENSION))};
@@ -84,7 +84,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
             runDataOptDefaultSStr[i] << "No Data" << ',';
           }
           else {
-            runDataOptDefaultSStr[i] << runOutput.first[runNum]->at(runResultIdx).getData(currHeader) << ',';
+            runDataOptDefaultSStr[i] << runOutput.first[runNum]->at(runResultIdx).getDataAsStr(currHeader) << ',';
           }
         }
         runDataOptDefaultSStr[i] << std::endl;
@@ -92,7 +92,7 @@ void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector
     }
 
     //generate speedup results with headers on left side and with headers on top row
-    speedupsHeadersLeftTopSStr[0] << std::endl << ",Average Speedup,Median Speedup" << std::endl;
+    speedupsHeadersLeftTopSStr[0] << ",Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : runOutput.second) {
       speedupsHeadersLeftTopSStr[0] << speedup.first;
       if (speedup.second[0] > 0) {
@@ -194,8 +194,8 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getAltAccelSpeedups(
         //go through each result and replace initial run data with alternate implementation run data if alternate implementation run is faster
         for (unsigned int i = 0; i < runImpResultsByAccSetting[fastestAcc].first.size(); i++) {
           if (runImpResultsByAccSetting[fastestAcc].first[i] && altAccImpResults.second.first[i]) {
-            const double initResultTime = std::stod(std::string(runImpResultsByAccSetting[fastestAcc].first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))));
-            const double altAccResultTime = std::stod(std::string(altAccImpResults.second.first[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER))));
+            const double initResultTime = runImpResultsByAccSetting[fastestAcc].first[i]->back().getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value();
+            const double altAccResultTime = altAccImpResults.second.first[i]->back().getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value();
             if (altAccResultTime < initResultTime) {
               runImpResultsByAccSetting[fastestAcc].first[i] = altAccImpResults.second.first[i];
             }
@@ -219,7 +219,7 @@ void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
     if (dataSize != sizeof(float)) {
       //get speedup or slowdown using alternate data type (double or half) compared with float
       altDataTypeSpeedup[dataSize] = getAvgMedSpeedup(runImpResultsMultRuns_[sizeof(float)][optImpAccel_].first,
-        runImpResultsMultRuns_[dataSize][optImpAccel_].first, (dataSize > sizeof(float)) ? std::string(run_eval::SPEEDUP_DOUBLE) : std::string(run_eval::SPEEDUP_HALF));
+        runImpResultsMultRuns_[dataSize][optImpAccel_].first, (dataSize > sizeof(float)) ? run_eval::SPEEDUP_DOUBLE : run_eval::SPEEDUP_HALF);
     }
   }
 
@@ -243,21 +243,18 @@ void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
   //generated using same templated iterations setting as current run
   if ((runImpSettings_.baseOptSingThreadRTimeForTSetting_) &&
       (runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().second == runImpSettings_.templatedItersSetting_)) {
-      const auto speedupOverBaseline = getAvgMedSpeedupOverBaseline(resultsWSpeedups.first, "All Runs",
-        runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().first);
+      const auto speedupOverBaseline = getAvgMedSpeedupOverBaseline(resultsWSpeedups.first, "All Runs", runImpSettings_.baseOptSingThreadRTimeForTSetting_.value().first);
       resultsWSpeedups.second.insert(resultsWSpeedups.second.end(), speedupOverBaseline.begin(), speedupOverBaseline.end());
   }
 
   //get speedup info for using optimized parallel parameters
   if (runImpSettings_.optParallelParamsOptionSetting_.first) {
-    resultsWSpeedups.second.push_back(getAvgMedSpeedupOptPParams(
-    resultsWSpeedups.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
+    resultsWSpeedups.second.push_back(getAvgMedSpeedupOptPParams(resultsWSpeedups.first, std::string(run_eval::SPEEDUP_OPT_PAR_PARAMS_HEADER) + " - All Runs"));
   }
 
   //get speedup when using template for loop iteration count
   if (runImpSettings_.templatedItersSetting_ == run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED) {
-    resultsWSpeedups.second.push_back(getAvgMedSpeedupLoopItersInTemplate(
-    resultsWSpeedups.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
+    resultsWSpeedups.second.push_back(getAvgMedSpeedupLoopItersInTemplate(resultsWSpeedups.first, std::string(run_eval::SPEEDUP_DISP_COUNT_TEMPLATE) + " - All Runs"));
   }
 
   //add speedups when using doubles and half precision compared to float to end of speedup data
@@ -307,7 +304,7 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaselineSubsets(co
 }
 
 //get baseline runtime data if available...return null if baseline data not available
-std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::getBaselineRuntimeData(const std::string& baselineDataPath) const {
+std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::getBaselineRuntimeData(std::string_view baselineDataPath) const {
   std::ifstream baselineData(std::string{baselineDataPath});
   if (!(baselineData.is_open())) {
     return {};
@@ -343,12 +340,12 @@ std::array<double, 2> EvaluateImpResults::getAvgMedSpeedup(const std::vector<dou
 
 //get average and median speedup of specified subset(s) of runs compared to baseline data from file
 std::vector<MultRunSpeedup> EvaluateImpResults::getAvgMedSpeedupOverBaselineSubsets(MultRunData& runOutput,
-  const std::string& dataTypeStr, const std::array<std::string, 2>& baseDataPathOptSingThrd,
+  std::string_view dataTypeStr, const std::array<std::string_view, 2>& baseDataPathOptSingThrd,
   const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subsetStrIndices) const
 {
   //get speedup over baseline for optimized runs
   std::vector<MultRunSpeedup> speedupData;
-  const auto baselineRunData = getBaselineRuntimeData(std::string(baseDataPathOptSingThrd[0]));
+  const auto baselineRunData = getBaselineRuntimeData(baseDataPathOptSingThrd[0]);
   if (baselineRunData) {
     std::string speedupHeader = "Speedup relative to " + std::string((*baselineRunData).first) + " - " + std::string(dataTypeStr);
     const auto baselineRuntimes = (*baselineRunData).second;
@@ -358,9 +355,9 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getAvgMedSpeedupOverBaselineSubs
       speedupHeader = "Speedup relative to " + std::string((*baselineRunData).first) + " on " + std::string(currSubsetStrIndices.first) + " - " + std::string(dataTypeStr);
       for (unsigned int i : currSubsetStrIndices.second) {
         if (runOutput[i]) {
-          speedupsVect.push_back(baselineRuntimes[i] / std::stod(std::string(runOutput[i]->at(1).getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)))));
+          speedupsVect.push_back(baselineRuntimes[i] / runOutput[i]->at(1).getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value());
           for (auto& runData : runOutput[i].value()) {
-            runData.addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
+            runData.addDataWHeader(std::string(speedupHeader), speedupsVect.back());
           }
         }
       }
@@ -374,21 +371,21 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getAvgMedSpeedupOverBaselineSubs
 }
 
 //get average and median speedup of current runs compared to baseline data from file
-std::vector<MultRunSpeedup> EvaluateImpResults::getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
-  const std::string& dataTypeStr, const std::array<std::string, 2>& baselinePathOptSingThread) const
+std::vector<MultRunSpeedup> EvaluateImpResults:: getAvgMedSpeedupOverBaseline(MultRunData& runOutput,
+  std::string_view dataTypeStr, const std::array<std::string_view, 2>& baselinePathOptSingThread) const
 {
   //get speedup over baseline for optimized runs
   std::vector<MultRunSpeedup> speedupData;
-  const auto baselineRunData = getBaselineRuntimeData(std::string(baselinePathOptSingThread[0]));
+  const auto baselineRunData = getBaselineRuntimeData(baselinePathOptSingThread[0]);
   if (baselineRunData) {
     std::vector<double> speedupsVect;
-    const std::string speedupHeader = "Speedup relative to " + std::string((*baselineRunData).first) + " - " + std::string(dataTypeStr);
+    const std::string speedupHeader = "Speedup relative to " + baselineRunData->first + " - " + std::string(dataTypeStr);
     const auto baselineRuntimes = (*baselineRunData).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i]) {
-        speedupsVect.push_back(baselineRuntimes[i] / std::stod(std::string(runOutput[i]->at(1).getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)))));
+       speedupsVect.push_back(baselineRuntimes[i] / runOutput[i]->at(1).getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value());
         for (auto& runData : runOutput[i].value()) {
-          runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+          runData.addDataWHeader(speedupHeader, speedupsVect.back());
         }
       }
     }
@@ -398,16 +395,16 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getAvgMedSpeedupOverBaseline(Mul
   }
 
   //get speedup over baseline for single thread runs
-  const auto baselineRunDataSThread = getBaselineRuntimeData(std::string(baselinePathOptSingThread[1]));
+  const auto baselineRunDataSThread = getBaselineRuntimeData(baselinePathOptSingThread[1]);
   if (baselineRunDataSThread) {
     std::vector<double> speedupsVect;
     const std::string speedupHeader = "Single-Thread (Orig Imp) speedup relative to " + std::string((*baselineRunDataSThread).first) + " - " + std::string(dataTypeStr);
     const auto baselineRuntimesSThread = (*baselineRunDataSThread).second;
     for (unsigned int i=0; i < runOutput.size(); i++) {
       if (runOutput[i]) {
-        speedupsVect.push_back(baselineRuntimesSThread[i] / std::stod(std::string(runOutput[i]->at(1).getData(std::string(run_eval::SINGLE_THREAD_RUNTIME_HEADER)))));
+        speedupsVect.push_back(baselineRuntimesSThread[i] / runOutput[i]->at(1).getDataAsDouble(run_eval::SINGLE_THREAD_RUNTIME_HEADER).value());
         for (auto& runData : runOutput[i].value()) {
-          runData.addDataWHeader(speedupHeader, std::to_string(speedupsVect.back()));
+          runData.addDataWHeader(speedupHeader, speedupsVect.back());
         }
       }
     }
@@ -420,49 +417,52 @@ std::vector<MultRunSpeedup> EvaluateImpResults::getAvgMedSpeedupOverBaseline(Mul
 }
 
 //get average and median speedup using optimized parallel parameters compared to default parallel parameters
-MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupOptPParams(MultRunData& runOutput, const std::string& speedupHeader) const {
+MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupOptPParams(MultRunData& runOutput, std::string_view speedupHeader) const {
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i]) {
-      speedupsVect.push_back(std::stod(std::string(runOutput[i]->at(0).getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)))) / 
-                             std::stod(std::string(runOutput[i]->at(1).getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)))));
-      runOutput[i]->at(0).addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
-      runOutput[i]->at(1).addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
+      speedupsVect.push_back(runOutput[i]->at(0).getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value() / 
+                             runOutput[i]->at(1).getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value());
+      runOutput[i]->at(0).addDataWHeader(std::string(speedupHeader), speedupsVect.back());
+      runOutput[i]->at(1).addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
   }
   if (!(speedupsVect.empty())) {
-    return {speedupHeader, getAvgMedSpeedup(speedupsVect)};
+    return {std::string(speedupHeader), getAvgMedSpeedup(speedupsVect)};
   }
-  return {speedupHeader, {0.0, 0.0}};
+  return {std::string(speedupHeader), {0.0, 0.0}};
 }
 
 //get average and median speedup between base and target runtime data
 MultRunSpeedup EvaluateImpResults::getAvgMedSpeedup(MultRunData& runOutputBase, MultRunData& runOutputTarget,
-  const std::string& speedupHeader) const {
+  std::string_view speedupHeader) const
+{
   std::vector<double> speedupsVect;
   for (unsigned int i=0; i < runOutputBase.size(); i++) {
-    if (runOutputBase[i] && runOutputTarget[i])  {
-      speedupsVect.push_back(std::stod(std::string(runOutputBase[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)))) / 
-                             std::stod(std::string(runOutputTarget[i]->back().getData(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER)))));
-      runOutputBase[i]->at(1).addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
-      runOutputTarget[i]->at(1).addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
+    if (runOutputBase[i] && runOutputTarget[i]) {
+      speedupsVect.push_back(runOutputBase[i]->back().getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value() / 
+                             runOutputTarget[i]->back().getDataAsDouble(run_eval::OPTIMIZED_RUNTIME_HEADER).value());
+      runOutputBase[i]->at(1).addDataWHeader(std::string(speedupHeader), speedupsVect.back());
+      runOutputTarget[i]->at(1).addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
   }
   if (!(speedupsVect.empty())) {
-    return {speedupHeader, getAvgMedSpeedup(speedupsVect)};
+    return {std::string(speedupHeader), getAvgMedSpeedup(speedupsVect)};
   }
-  return {speedupHeader, {0.0, 0.0}};
+  return {std::string(speedupHeader), {0.0, 0.0}};
 }
 
 //get average and median speedup when loop iterations are given at compile time as template value
 MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
-  const std::string& speedupHeader)
+  std::string_view speedupHeader)
 {
   //get mapping of run inputs to runtime with index value in run output
   std::map<std::vector<std::string>, std::pair<std::string, size_t>> runInputSettingsToTimeWIdx;
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i]) {
-      const auto inputSettingsToTime = runOutput[i]->back().getParamsToParamRunData({"DataType", "Input Index", "LOOP_ITERS_TEMPLATED"}, std::string(run_eval::OPTIMIZED_RUNTIME_HEADER));
+      const auto inputSettingsToTime = runOutput[i]->back().getParamsToParamRunData(
+        std::vector<std::string_view>(run_eval::RUN_INPUT_SIG_HDRS.begin(), run_eval::RUN_INPUT_SIG_HDRS.end()),
+        run_eval::OPTIMIZED_RUNTIME_HEADER);
       if (inputSettingsToTime) {
         runInputSettingsToTimeWIdx.insert({inputSettingsToTime->first, {inputSettingsToTime->second, i}});
       }
@@ -473,13 +473,15 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
   std::vector<double> speedupsVect;
   auto runDataIter = runInputSettingsToTimeWIdx.begin();
   while (runDataIter != runInputSettingsToTimeWIdx.end()) {
-    auto dataTypeRun = runDataIter->first[0];
-    auto inputIdxRun = runDataIter->first[1];
+    auto dataTypeRun = runDataIter->first[run_eval::RUN_INPUT_DATATYPE_IDX];
+    auto inputIdxRun = runDataIter->first[run_eval::RUN_INPUT_NUM_INPUT_IDX];
     auto runComp1 = runDataIter;
     auto runComp2 = runDataIter;
     //find run with same datatype and input index
     while (++runDataIter != runInputSettingsToTimeWIdx.end()) {
-      if ((runDataIter->first[0] == dataTypeRun) && (runDataIter->first[1] == inputIdxRun)) {
+      if ((runDataIter->first[run_eval::RUN_INPUT_DATATYPE_IDX] == dataTypeRun) &&
+          (runDataIter->first[run_eval::RUN_INPUT_NUM_INPUT_IDX] == inputIdxRun))
+      {
         runComp2 = runDataIter;
         break;
       }
@@ -492,13 +494,17 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     }
     //retrieve which run data uses templated iteration count and which one doesn't and get speedup
     //add speedup to speedup vector and also to run data of run with templated iteration count
-    if ((runComp1->first[2] == "YES") && (runComp2->first[2] == "NO"))  {
+    if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "YES") &&
+        (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "NO"))
+    {
       speedupsVect.push_back(std::stod(std::string(runComp2->second.first)) / std::stod(std::string(runComp1->second.first)));
-      runOutput[runComp1->second.second]->back().addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
+      runOutput[runComp1->second.second]->back().addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
-    else if ((runComp1->first[2] == "NO") && (runComp2->first[2] == "YES"))  {
+    else if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "NO") &&
+             (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == "YES"))
+    {
       speedupsVect.push_back(std::stod(std::string(runComp1->second.first)) / std::stod(std::string(runComp2->second.first)));
-      runOutput[runComp2->second.second]->back().addDataWHeader(std::string(speedupHeader), std::to_string(speedupsVect.back()));
+      runOutput[runComp2->second.second]->back().addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
     //remove runs that have been processed from mapping
     runInputSettingsToTimeWIdx.erase(runComp1);
@@ -506,9 +512,9 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     runDataIter = runInputSettingsToTimeWIdx.begin();
   }
   if (!(speedupsVect.empty())) {
-    return {speedupHeader, getAvgMedSpeedup(speedupsVect)};
+    return {std::string(speedupHeader), getAvgMedSpeedup(speedupsVect)};
   }
-  return {speedupHeader, {0.0, 0.0}};
+  return {std::string(speedupHeader), {0.0, 0.0}};
 }
 
 //retrieve path of implementation results
