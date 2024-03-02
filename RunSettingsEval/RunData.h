@@ -61,7 +61,7 @@ public:
   void appendData(const RunData& inRunData);
 
   //retrieve pair between a set of parameters and a single parameter
-  std::optional<std::pair<std::vector<std::string>, std::string>> getParamsToParamRunData(
+  std::optional<std::pair<std::vector<std::string>, double>> getParamsToRuntime(
     const std::vector<std::string_view>& keyParams, std::string_view valParam) const;
 
 private:

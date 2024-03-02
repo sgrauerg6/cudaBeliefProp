@@ -52,7 +52,7 @@ namespace run_eval {
     inline bool operator()(const std::array<std::string, 3>& a, const std::array<std::string, 3>& b) const {
       //sort by datatype followed by input number followed by templated iters setting
       if (a[1] != b[1]) {
-        if (a[1] == "FLOAT") { return true; /* a < b is true*/ }
+        if (a[1] == "FLOAT") { return true; /* a < b is true */ }
         else if (a[1] == "HALF") { return false; /* a < b is false */ }
         else if (b[1] == "FLOAT") { return false; /* a < b is false */ }
         else if (b[1] == "HALF") { return true; /* a < b is true */ }
@@ -63,7 +63,7 @@ namespace run_eval {
       else if (a[2] != b[2]) {
         if (a[2] == std::string(BOOL_VAL_FALSE_TRUE_DISP_STR[1])) { return true; /* a < b is true */ }
       }
-      return false; /* a <= b is false*/
+      return false; /* a <= b is false */
     }
 
     inline bool operator()(const std::array<std::string_view, 3>& a, const std::array<std::string_view, 3>& b) const {

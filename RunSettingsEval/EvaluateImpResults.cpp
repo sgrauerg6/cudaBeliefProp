@@ -457,10 +457,10 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
   std::string_view speedupHeader)
 {
   //get mapping of run inputs to runtime with index value in run output
-  std::map<std::vector<std::string>, std::pair<std::string, size_t>> runInputSettingsToTimeWIdx;
+  std::map<std::vector<std::string>, std::pair<double, size_t>> runInputSettingsToTimeWIdx;
   for (unsigned int i=0; i < runOutput.size(); i++) {
     if (runOutput[i]) {
-      const auto inputSettingsToTime = runOutput[i]->back().getParamsToParamRunData(
+      const auto inputSettingsToTime = runOutput[i]->back().getParamsToRuntime(
         std::vector<std::string_view>(run_eval::RUN_INPUT_SIG_HDRS.begin(), run_eval::RUN_INPUT_SIG_HDRS.end()),
         run_eval::OPTIMIZED_RUNTIME_HEADER);
       if (inputSettingsToTime) {
@@ -497,13 +497,13 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunDa
     if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[1]) &&
         (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[0]))
     {
-      speedupsVect.push_back(std::stod(std::string(runComp2->second.first)) / std::stod(std::string(runComp1->second.first)));
+      speedupsVect.push_back(runComp2->second.first / runComp1->second.first);
       runOutput[runComp1->second.second]->back().addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
     else if ((runComp1->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[0]) &&
              (runComp2->first[run_eval::RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX] == run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[1]))
     {
-      speedupsVect.push_back(std::stod(std::string(runComp1->second.first)) / std::stod(std::string(runComp2->second.first)));
+      speedupsVect.push_back(runComp1->second.first / runComp2->second.first);
       runOutput[runComp2->second.second]->back().addDataWHeader(std::string(speedupHeader), speedupsVect.back());
     }
     //remove runs that have been processed from mapping

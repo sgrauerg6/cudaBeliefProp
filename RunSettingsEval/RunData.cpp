@@ -115,7 +115,7 @@ std::optional<bool> RunData::getDataAsBool(const std::string_view header) const 
 }
 
 //retrieve pair between a set of parameters and a single parameter
-std::optional<std::pair<std::vector<std::string>, std::string>> RunData::getParamsToParamRunData(
+std::optional<std::pair<std::vector<std::string>, double>> RunData::getParamsToRuntime(
   const std::vector<std::string_view>& keyParams, std::string_view valParam) const
 {
   std::vector<std::string> keyParamVals;
@@ -133,5 +133,5 @@ std::optional<std::pair<std::vector<std::string>, std::string>> RunData::getPara
   }
 
   //return pair of vector key parameters values with value parameter value for run data
-  return std::pair<std::vector<std::string>, std::string>{keyParamVals, getDataAsStr(std::string(valParam))};
+  return std::pair<std::vector<std::string>, double>{keyParamVals, getDataAsDouble(std::string(valParam)).value()};
 }
