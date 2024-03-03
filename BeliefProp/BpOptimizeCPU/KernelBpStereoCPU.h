@@ -161,6 +161,7 @@ namespace beliefpropCPU
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
 
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::levelProperties& currentLevelProperties,
@@ -193,6 +194,7 @@ namespace beliefpropCPU
     double* messageLPrevStereoCheckerboard1, double* messageRPrevStereoCheckerboard1,
     float* disparityBetweenImagesDevice, const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
+#endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsNEON(
@@ -286,6 +288,7 @@ namespace beliefpropCPU
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
   
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
@@ -318,6 +321,7 @@ namespace beliefpropCPU
     double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
+#endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
@@ -1111,6 +1115,7 @@ void beliefpropCPU::retrieveOutputDisparity(
 #ifndef COMPILING_FOR_ARM
     //SIMD vectorization of output disparity
     if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512) {
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
       retrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -1118,6 +1123,7 @@ void beliefpropCPU::retrieveOutputDisparity(
         messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
         messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
         disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
+#endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     }
     else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256) {
       retrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(currentLevelProperties,
