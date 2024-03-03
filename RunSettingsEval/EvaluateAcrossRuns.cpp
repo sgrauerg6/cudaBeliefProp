@@ -90,10 +90,14 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& impResultsFileP
       break;
     }
   }
+  //add first speedup with run name to get names of runs in order of fastest to slowest first speedup
   for (const auto& archWSpeedupData : speedupResultsNameToData) {
     const float avgSpeedupVsBase = std::stof(std::string(archWSpeedupData.second.second.at(firstSpeedupHeader).at(0)));
     runNamesInOrderWSpeedup.insert({avgSpeedupVsBase, archWSpeedupData.first});
-    resultAcrossArchsSStr << archWSpeedupData.first << ',';
+  }
+  //write all the run names in order from fastest to slowest
+  for (const auto& runName : runNamesInOrderWSpeedup) {
+    resultAcrossArchsSStr << runName.second << ',';
   }
   resultAcrossArchsSStr << std::endl;
 
