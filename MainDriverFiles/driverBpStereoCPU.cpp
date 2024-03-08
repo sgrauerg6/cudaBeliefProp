@@ -32,6 +32,22 @@ int main(int argc, char** argv)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
   runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
   runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
+
+#ifdef SIM_SINGLE_CPU_TWO_CPU_SYSTEM
+  //adjust settings to simulate run on single CPU in two-CPU system, specifically set parallel thread count options so that
+  //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
+  //are pinned to socket
+  //set default parallel threads count to be number of threads on a single CPU in the two-CPU system
+  runImpSettings.pParamsDefaultOptOptions_.first = {std::thread::hardware_concurrency() / 2, 1};
+  //erase parallel thread count options with more than the number of threads on a single CPU in the two-CPU system
+  runImpSettings.pParamsDefaultOptOptions_.second.erase(std::remove_if(
+      runImpSettings.pParamsDefaultOptOptions_.second.begin(), runImpSettings.pParamsDefaultOptOptions_.second.end(),
+      [](const auto& pParams) { return pParams[0] > (std::thread::hardware_concurrency() / 2);}),
+    runImpSettings.pParamsDefaultOptOptions_.second.end());
+  //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
+  run_environment::CPUThreadsPinnedToSocket().operator()(true);
+#endif //SIM_SINGLE_CPU_TWO_CPU_SYSTEM
+
   //remove any parallel processing below given minimum number of threads
   runImpSettings.removeParallelParamBelowMinThreads(run_cpu::MIN_NUM_THREADS_RUN);
   runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
