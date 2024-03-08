@@ -33,12 +33,12 @@ public:
   //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
   void operator()(bool cpuThrdsPinned) const {
     if (cpuThrdsPinned) {
-      putenv((char*)"export OMP_PLACES=\"sockets\"");
-      putenv((char*)"export OMP_PROC_BIND=true");
+      putenv((char*)"OMP_PLACES=\"sockets\"");
+      putenv((char*)"OMP_PROC_BIND=true");
     }
     else {
-      putenv((char*)"export OMP_PLACES=");
-      putenv((char*)"export OMP_PROC_BIND=");
+      putenv((char*)"OMP_PLACES=");
+      putenv((char*)"OMP_PROC_BIND=");
     }
   }
 
