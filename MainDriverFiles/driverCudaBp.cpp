@@ -42,9 +42,8 @@ int main(int argc, char** argv)
                                       {"largest stereo set", {8, 9}}};
 #endif //SMALLER_SETS_ONLY
   //set run name to first argument if it exists
-  if (argc > 1) {
-    runImpSettings.runName_ = argv[1];
-  }
+  //otherwise set to "CurrentRun"
+  runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
 
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
   RunEvalImpMultSettings().operator()({{run_environment::AccSetting::CUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::CUDA)}}, runImpSettings);

@@ -11,7 +11,7 @@
 #include <map>
 #include <optional>
 #include <string_view>
-#include "RunData.h"
+#include "RunSettingsEval/RunData.h"
 
 //set data type used for half-precision
 #ifdef OPTIMIZED_CPU_RUN
@@ -24,6 +24,37 @@ using halftype = short;
 #endif //OPTIMIZED_CPU_RUN
 
 namespace run_environment {
+
+//class to adjust and retrieve settings corresponding to CPU threads pinned to socket
+class CPUThreadsPinnedToSocket {
+public:
+  //adjust setting to specify that CPU threads to be pinned to socket or not
+  //if true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings
+  //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
+  void operator()(bool cpuThrdsPinned) const {
+    if (cpuThrdsPinned) {
+      putenv((char*)"export OMP_PLACES=\"sockets\"");
+      putenv((char*)"export OMP_PROC_BIND=true");
+    }
+    else {
+      putenv((char*)"export OMP_PLACES=");
+      putenv((char*)"export OMP_PROC_BIND=");
+    }
+  }
+
+  //retrieve environment variable values corresponding to CPU threads being pinned to socket and return
+  //as RunData structure
+  RunData currSettingsAsRunData() const {
+    RunData pinnedThreadsSettings;
+    const std::string ompPlacesSetting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
+    const std::string ompProcBindSetting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
+    const bool cpuThreadsPinned = ((ompPlacesSetting == "\"sockets\"") && (ompProcBindSetting == "true"));
+    pinnedThreadsSettings.addDataWHeader("CPU Threads Pinned To Socket", cpuThreadsPinned);
+    pinnedThreadsSettings.addDataWHeader("OMP_PLACES", ompPlacesSetting);
+    pinnedThreadsSettings.addDataWHeader("OMP_PROC_BIND", ompProcBindSetting);
+    return pinnedThreadsSettings;
+  }
+};
 
 //mapping from data size to data type string
 const std::map<std::size_t, std::string_view> DATA_SIZE_TO_NAME_MAP{
@@ -74,6 +105,7 @@ inline RunData runSettings()  {
   RunData currRunData;
   currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", getBytesAlignMemory(ACCELERATION_SETTING));
   currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", getNumDataAlignWidth(ACCELERATION_SETTING));
+  currRunData.appendData(CPUThreadsPinnedToSocket().currSettingsAsRunData());
   return currRunData;
 }
 

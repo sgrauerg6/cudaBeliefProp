@@ -21,8 +21,10 @@ CC := g++
 CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 
 # set to use only smaller data sets
-USE_ONLY_SMALLER_DATA_SETTING =
-#-DSMALLER_SETS_ONLY
+USE_ONLY_SMALLER_DATA_SETTING = -DSMALLER_SETS_ONLY
+
+#set to perform second run with CPU threads pinned to socket
+SECOND_RUN_CPU_THREADS_PINNED_TO_SOCKET = -DSECOND_RUN_W_THREADS_PINNED_TO_SOCKET
 
 # have include directory as flag
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${USE_ONLY_SMALLER_DATA_SETTING} -O3 -std=c++20 -Wall -march=native
@@ -67,7 +69,7 @@ DetailedTimings.o:
 	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 driverBpStereoCPU.o: BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
-	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS) ${SECOND_RUN_CPU_THREADS_PINNED_TO_SOCKET}
 
 ProcessBPOnTargetDevice.o : DetailedTimings.o
 	$(CC) ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

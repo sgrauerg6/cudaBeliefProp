@@ -44,9 +44,8 @@ int main(int argc, char** argv)
                                       {"largest stereo set", {8, 9}}};
 #endif //SMALLER_SETS_ONLY
   //set run name to first argument if it exists
-  if (argc > 1) {
-    runImpSettings.runName_ = argv[1];
-  }
+  //otherwise set to "CurrentRun"
+  runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
   
   //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
@@ -54,5 +53,23 @@ int main(int argc, char** argv)
     {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX256)},
     {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::NONE)}},
     runImpSettings);
+  
+  //check if running a second time with CPU threads pinned to socket (for cases with multiple CPUs)
+#ifdef SECOND_RUN_W_THREADS_PINNED_TO_SOCKET
+  //adjust settings so that CPU threads pinned to socket
+  run_environment::CPUThreadsPinnedToSocket().operator()(true);
+
+  //append run name to specify that CPU threads pinned to socket
+  if (runImpSettings.runName_) {
+    *(runImpSettings.runName_) += "_ThreadsPinnedToSocket";
+  }
+
+  //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
+  //given first as the expected fastest implementation
+  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX512)},
+    {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX256)},
+    {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::NONE)}},
+    runImpSettings);
+#endif //SECOND_RUN_W_THREADS_PINNED_TO_SOCKET
   return 0;
 }
