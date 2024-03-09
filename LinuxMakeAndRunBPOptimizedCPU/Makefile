@@ -91,7 +91,7 @@ OutputEvaluationParameters.o:
 
 OutputEvaluationResults.o:
 	$(CC) ${BP_PATH}/BpOutputEvaluation/OutputEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-		
+
 DisparityMap.o: OutputEvaluationParameters.o OutputEvaluationResults.o
 	$(CC) ${BP_PATH}/BpImageProcessing/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
