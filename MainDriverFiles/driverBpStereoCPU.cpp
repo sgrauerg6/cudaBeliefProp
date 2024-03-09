@@ -23,8 +23,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunEvalImpMultSettings.h"
 
-int main(int argc, char** argv)
-{
+//enum to define setting to run implementation
+enum class RunImpSetting {
+  RUN_IMP_DEFAULT,
+  RUN_IMP_THREADS_PINNED_TO_SOCKET,
+  RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM
+};
+
+//run implementation using input parameters from command line with specified setting
+void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //initialize settings to run implementation and evaluation
   run_environment::RunImpSettings runImpSettings;
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
@@ -32,21 +39,38 @@ int main(int argc, char** argv)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
   runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
   runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
+  //set run name to first argument if it exists
+  //otherwise set to "CurrentRun"
+  runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
 
-#ifdef SIM_SINGLE_CPU_TWO_CPU_SYSTEM
-  //adjust settings to simulate run on single CPU in two-CPU system, specifically set parallel thread count options so that
-  //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
-  //are pinned to socket
-  //set default parallel threads count to be number of threads on a single CPU in the two-CPU system
-  runImpSettings.pParamsDefaultOptOptions_.first = {std::thread::hardware_concurrency() / 2, 1};
-  //erase parallel thread count options with more than the number of threads on a single CPU in the two-CPU system
-  runImpSettings.pParamsDefaultOptOptions_.second.erase(std::remove_if(
-      runImpSettings.pParamsDefaultOptOptions_.second.begin(), runImpSettings.pParamsDefaultOptOptions_.second.end(),
-      [](const auto& pParams) { return pParams[0] > (std::thread::hardware_concurrency() / 2);}),
-    runImpSettings.pParamsDefaultOptOptions_.second.end());
-  //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
-  run_environment::CPUThreadsPinnedToSocket().operator()(true);
-#endif //SIM_SINGLE_CPU_TWO_CPU_SYSTEM
+  if (impSetting == RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM) {
+    //adjust settings to simulate run on single CPU in two-CPU system, specifically set parallel thread count options so that
+    //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
+    //are pinned to socket
+    //set default parallel threads count to be number of threads on a single CPU in the two-CPU system
+    runImpSettings.pParamsDefaultOptOptions_.first = {std::thread::hardware_concurrency() / 2, 1};
+
+    //erase parallel thread count options with more than the number of threads on a single CPU in the two-CPU system
+    runImpSettings.removeParallelParamAboveMaxThreads(std::thread::hardware_concurrency() / 2);
+
+    //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
+    run_environment::CPUThreadsPinnedToSocket().operator()(true);
+
+    //append run name to specify that simulating single CPU on dual-CPU system
+    if (runImpSettings.runName_) {
+      *(runImpSettings.runName_) += "_SimSingleCPUOnDualCPUSystem";
+    }
+  }
+  //check if running implementation with CPU threads pinned to socket (for cases with multiple CPUs)
+  else if (impSetting == RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET) {
+    //adjust settings so that CPU threads pinned to socket
+    run_environment::CPUThreadsPinnedToSocket().operator()(true);
+
+    //append run name to specify that CPU threads pinned to socket
+    if (runImpSettings.runName_) {
+      *(runImpSettings.runName_) += "_ThreadsPinnedToSocket";
+    }
+  }
 
   //remove any parallel processing below given minimum number of threads
   runImpSettings.removeParallelParamBelowMinThreads(run_cpu::MIN_NUM_THREADS_RUN);
@@ -54,38 +78,31 @@ int main(int argc, char** argv)
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
   runImpSettings.subsetStrIndices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
-#ifndef SMALLER_SETS_ONLY
+  #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
-#else
+  #else
                                       {"largest stereo set", {8, 9}}};
-#endif //SMALLER_SETS_ONLY
-  //set run name to first argument if it exists
-  //otherwise set to "CurrentRun"
-  runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
-  
+  #endif //SMALLER_SETS_ONLY
+    
   //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
   RunEvalImpMultSettings().operator()({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX512)},
     {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX256)},
     {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::NONE)}},
     runImpSettings);
-  
-  //check if running a second time with CPU threads pinned to socket (for cases with multiple CPUs)
-#ifdef SECOND_RUN_W_THREADS_PINNED_TO_SOCKET
-  //adjust settings so that CPU threads pinned to socket
-  run_environment::CPUThreadsPinnedToSocket().operator()(true);
+}
 
-  //append run name to specify that CPU threads pinned to socket
-  if (runImpSettings.runName_) {
-    *(runImpSettings.runName_) += "_ThreadsPinnedToSocket";
-  }
+int main(int argc, char** argv)
+{
+  //run default implementation
+  runImp(argc, argv, RunImpSetting::RUN_IMP_DEFAULT);
 
-  //run belief propagation with all AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
-  //given first as the expected fastest implementation
-  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::AVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX512)},
-    {run_environment::AccSetting::AVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::AVX256)},
-    {run_environment::AccSetting::NONE, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::NONE)}},
-    runImpSettings);
-#endif //SECOND_RUN_W_THREADS_PINNED_TO_SOCKET
+  //if running on a system with two cpus, also run implementation with threads pinned to socket and with settings adjusted
+  //to simulate run on single CPU
+#ifdef RUN_ON_DUAL_CPU_SYSTEM
+  runImp(argc, argv, RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET);
+  runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
+#endif //RUN_ON_DUAL_CPU_SYSTEM
+
   return 0;
 }

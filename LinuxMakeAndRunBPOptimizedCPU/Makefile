@@ -23,12 +23,10 @@ CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 # set to use only smaller data sets
 USE_ONLY_SMALLER_DATA_SETTING = -DSMALLER_SETS_ONLY
 
-# set to perform second run with CPU threads pinned to socket
-SECOND_RUN_CPU_THREADS_PINNED_TO_SOCKET = -DSECOND_RUN_W_THREADS_PINNED_TO_SOCKET
-
-# set to simulate single CPU on dual-CPU system
-SIM_SINGLE_CPU_TWO_CPU_SYSTEM =
-#-DSIM_SINGLE_CPU_TWO_CPU_SYSTEM
+# set that run is on dual-CPU system (assumed that both CPUs have the same architecture and core count)
+# this causes additional runs with threads pinned to socket and run that simulates run on single CPU
+RUN_ON_DUAL_CPU_SYSTEM = 
+#-DRUN_ON_DUAL_CPU_SYSTEM
 
 # have include directory as flag
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${USE_ONLY_SMALLER_DATA_SETTING} -O3 -std=c++20 -Wall -march=native
@@ -73,7 +71,7 @@ DetailedTimings.o:
 	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 driverBpStereoCPU.o: BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
-	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS) ${SECOND_RUN_CPU_THREADS_PINNED_TO_SOCKET} ${SIM_SINGLE_CPU_TWO_CPU_SYSTEM}
+	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS) ${RUN_ON_DUAL_CPU_SYSTEM}
 
 ProcessBPOnTargetDevice.o : DetailedTimings.o
 	$(CC) ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

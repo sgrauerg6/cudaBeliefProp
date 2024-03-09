@@ -11,6 +11,7 @@
 #include <map>
 #include <optional>
 #include <string_view>
+#include <thread>
 #include "RunSettingsEval/RunData.h"
 
 //set data type used for half-precision
@@ -31,8 +32,8 @@ public:
   //adjust setting to specify that CPU threads to be pinned to socket or not
   //if true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings
   //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
-  void operator()(bool cpuThrdsPinned) const {
-    if (cpuThrdsPinned) {
+  void operator()(bool cpuThreadsPinned) const {
+    if (cpuThreadsPinned) {
       putenv((char*)"OMP_PLACES=\"sockets\"");
       putenv((char*)"OMP_PROC_BIND=true");
     }
@@ -103,6 +104,7 @@ inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
   RunData currRunData;
+  currRunData.addDataWHeader("Total number of CPU threads", std::thread::hardware_concurrency());
   currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", getBytesAlignMemory(ACCELERATION_SETTING));
   currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", getNumDataAlignWidth(ACCELERATION_SETTING));
   currRunData.appendData(CPUThreadsPinnedToSocket().currSettingsAsRunData());
@@ -133,6 +135,12 @@ struct RunImpSettings {
   void removeParallelParamBelowMinThreads(const unsigned int minThreads) {
     pParamsDefaultOptOptions_.second.erase(std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(), [minThreads](const auto& pParams) {
       return pParams[0] < minThreads; }), pParamsDefaultOptOptions_.second.end());
+  }
+
+  //remove parallel parameters with greater than specified number of threads
+  void removeParallelParamAboveMaxThreads(const unsigned int maxThreads) {
+    pParamsDefaultOptOptions_.second.erase(std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(), [maxThreads](const auto& pParams) {
+      return pParams[0] > maxThreads; }), pParamsDefaultOptOptions_.second.end());
   }
 };
 
