@@ -67,7 +67,7 @@ RunBenchmarkImp.o:
 
 BpFileHandling.o:
 	$(CC) ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
+
 DetailedTimings.o:
 	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
