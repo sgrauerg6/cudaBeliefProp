@@ -21,7 +21,8 @@ CC := g++
 CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 
 # set to use only smaller data sets
-USE_ONLY_SMALLER_DATA_SETTING = -DSMALLER_SETS_ONLY
+USE_ONLY_SMALLER_DATA_SETTING =
+#-DSMALLER_SETS_ONLY
 
 # set that run is on dual-CPU system (assumed that both CPUs have the same architecture and core count)
 # this causes additional runs with threads pinned to socket and run that simulates run on single CPU
