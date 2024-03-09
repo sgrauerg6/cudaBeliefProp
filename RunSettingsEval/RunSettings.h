@@ -34,7 +34,7 @@ public:
   //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
   void operator()(bool cpuThreadsPinned) const {
     if (cpuThreadsPinned) {
-      putenv((char*)"OMP_PLACES=\"sockets\"");
+      putenv((char*)"OMP_PLACES=sockets");
       putenv((char*)"OMP_PROC_BIND=true");
     }
     else {
@@ -49,7 +49,7 @@ public:
     RunData pinnedThreadsSettings;
     const std::string ompPlacesSetting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
     const std::string ompProcBindSetting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
-    const bool cpuThreadsPinned = ((ompPlacesSetting == "\"sockets\"") && (ompProcBindSetting == "true"));
+    const bool cpuThreadsPinned = ((ompPlacesSetting == "sockets") && (ompProcBindSetting == "true"));
     pinnedThreadsSettings.addDataWHeader("CPU Threads Pinned To Socket", cpuThreadsPinned);
     pinnedThreadsSettings.addDataWHeader("OMP_PLACES", ompPlacesSetting);
     pinnedThreadsSettings.addDataWHeader("OMP_PROC_BIND", ompProcBindSetting);
