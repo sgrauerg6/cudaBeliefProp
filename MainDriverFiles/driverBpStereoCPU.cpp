@@ -97,10 +97,9 @@ int main(int argc, char** argv)
   //run default implementation
   runImp(argc, argv, RunImpSetting::RUN_IMP_DEFAULT);
 
-  //if running on a system with two cpus, also run implementation with threads pinned to socket and with settings adjusted
+  //if running on a system with two cpus, also run implementation with settings adjusted
   //to simulate run on single CPU
 #ifdef RUN_ON_DUAL_CPU_SYSTEM
-  runImp(argc, argv, RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET);
   runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
 #endif //RUN_ON_DUAL_CPU_SYSTEM
 

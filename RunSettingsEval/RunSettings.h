@@ -33,8 +33,9 @@ public:
   //adjust setting to specify that CPU threads to be pinned to socket or not
   //if true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings
   //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
+  //TODO: currently commented out since it doesn't seem to have any effect
   void operator()(bool cpuThreadsPinned) const {
-    if (cpuThreadsPinned) {
+    /*if (cpuThreadsPinned) {
       int success = system("export OMP_PLACES=\"sockets\"");
       if (success == 0) {
         std::cout << "export OMP_PLACES=\"sockets\" success" << std::endl;
@@ -53,7 +54,7 @@ public:
       if (success == 0) {
         std::cout << "export OMP_PROC_BIND= success" << std::endl;
       }
-    }
+    }*/
   }
 
   //retrieve environment variable values corresponding to CPU threads being pinned to socket and return
