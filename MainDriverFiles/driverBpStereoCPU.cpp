@@ -54,7 +54,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     runImpSettings.removeParallelParamAboveMaxThreads(std::thread::hardware_concurrency() / 2);
 
     //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
-    run_environment::CPUThreadsPinnedToSocket().operator()(true);
+    //TODO: commented out since currently has no effect
+    //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that simulating single CPU on dual-CPU system
     if (runImpSettings.runName_) {
@@ -64,7 +65,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //check if running implementation with CPU threads pinned to socket (for cases with multiple CPUs)
   else if (impSetting == RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET) {
     //adjust settings so that CPU threads pinned to socket
-    run_environment::CPUThreadsPinnedToSocket().operator()(true);
+    //TODO: commented out since currently has no effect
+    //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that CPU threads pinned to socket
     if (runImpSettings.runName_) {
@@ -94,14 +96,14 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
 
 int main(int argc, char** argv)
 {
+  //if running on a system with two cpus, run implementation with settings adjusted
+  //to simulate run on single CPU if specified in define
+#ifdef SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
+  runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
+#else //SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
   //run default implementation
   runImp(argc, argv, RunImpSetting::RUN_IMP_DEFAULT);
-
-  //if running on a system with two cpus, also run implementation with settings adjusted
-  //to simulate run on single CPU
-#ifdef RUN_ON_DUAL_CPU_SYSTEM
-  runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
-#endif //RUN_ON_DUAL_CPU_SYSTEM
+#endif //SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
 
   return 0;
 }
