@@ -12,6 +12,7 @@
 #include <optional>
 #include <string_view>
 #include <thread>
+#include <iostream>
 #include "RunSettingsEval/RunData.h"
 
 //set data type used for half-precision
@@ -34,12 +35,24 @@ public:
   //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
   void operator()(bool cpuThreadsPinned) const {
     if (cpuThreadsPinned) {
-      putenv((char*)"OMP_PLACES=sockets");
-      putenv((char*)"OMP_PROC_BIND=true");
+      int success = system("export OMP_PLACES=\"sockets\"");
+      if (success == 0) {
+        std::cout << "export OMP_PLACES=\"sockets\" success" << std::endl;
+      }
+      success = system("export OMP_PROC_BIND=true");
+      if (success == 0) {
+        std::cout << "export OMP_PROC_BIND=true success" << std::endl;
+      }
     }
     else {
-      putenv((char*)"OMP_PLACES=");
-      putenv((char*)"OMP_PROC_BIND=");
+      int success = system("export OMP_PLACES=");
+      if (success == 0) {
+        std::cout << "export OMP_PLACES= success" << std::endl;
+      }
+      success = system("export OMP_PROC_BIND=");
+      if (success == 0) {
+        std::cout << "export OMP_PROC_BIND= success" << std::endl;
+      }
     }
   }
 
