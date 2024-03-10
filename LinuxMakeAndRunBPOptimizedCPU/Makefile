@@ -24,9 +24,11 @@ CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 USE_ONLY_SMALLER_DATA_SETTING =
 #-DSMALLER_SETS_ONLY
 
-# set to simulate single-CPU when running on a dual-CPU system (assumed that both CPUs have the same architecture and core count)
-# need to have environment variable set so that threads are pinned to socket via the "export OMP_PLACES="sockets"" "export OMP_PROC_BIND=true"
-# commands on command line before running the implementation to work as expected
+# set to simulate single-CPU when running on a dual-CPU system (assumed that both CPUs
+# have the same architecture and core count)
+# need to have environment variable set so that threads are pinned to socket via the
+# "export OMP_PLACES="sockets"" and "export OMP_PROC_BIND=true" commands on command line 
+# before running the implementation to work as expected
 SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM =
 #-DSIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
 

@@ -43,6 +43,9 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //otherwise set to "CurrentRun"
   runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
 
+  //adjust thread count to simulate single CPU on dual-CPU system
+  //currently only works as expected if environment variables are set before run such that threads are pinned to socket via
+  //"export OMP_PLACES="sockets"" and "export OMP_PROC_BIND=true" commands on command line
   if (impSetting == RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM) {
     //adjust settings to simulate run on single CPU in two-CPU system, specifically set parallel thread count options so that
     //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
@@ -54,7 +57,9 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     runImpSettings.removeParallelParamAboveMaxThreads(std::thread::hardware_concurrency() / 2);
 
     //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
-    //TODO: commented out since currently has no effect
+    //TODO: commented out since currently has no effect; needs to be set before run by
+    //calling "export OMP_PLACES="sockets"" and "export OMP_PROC_BIND=true" commands on
+    //command line before run
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that simulating single CPU on dual-CPU system
@@ -63,7 +68,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     }
   }
   //check if running implementation with CPU threads pinned to socket (for cases with multiple CPUs)
-  else if (impSetting == RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET) {
+  //TODO: currently not supported due to code for setting CPU threads to be pinned to socket not working as expected
+  //can still run implementation with CPU threads pinned to socket by calling "export OMP_PLACES="sockets"" and
+  //"export OMP_PROC_BIND=true" commands on command line before run
+  /*else if (impSetting == RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET) {
     //adjust settings so that CPU threads pinned to socket
     //TODO: commented out since currently has no effect
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
@@ -72,7 +80,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     if (runImpSettings.runName_) {
       *(runImpSettings.runName_) += "_ThreadsPinnedToSocket";
     }
-  }
+  }*/
 
   //remove any parallel processing below given minimum number of threads
   runImpSettings.removeParallelParamBelowMinThreads(run_cpu::MIN_NUM_THREADS_RUN);
