@@ -18,6 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the optimized CPU BP implementation
 
+#include <iostream>
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunImp/RunEvalBpImp.h"
 #include "RunImpCPU/RunCPUSettings.h"
@@ -105,13 +106,19 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
 int main(int argc, char** argv)
 {
   //if running on a system with two cpus, run implementation with settings adjusted
-  //to simulate run on single CPU if specified in define
-#ifdef SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
-  runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
-#else //SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
-  //run default implementation
-  runImp(argc, argv, RunImpSetting::RUN_IMP_DEFAULT);
-#endif //SIM_SINGLE_CPU_ON_DUAL_CPU_SYSTEM
+  //to simulate run on single CPU if specified in second command line argument
+  if ((argc > 2) && (std::string(argv[2]) == std::string(run_cpu::SIMULATE_SINGLE_CPU))) {
+    std::cout << "Running optimized CPU implementation with settings adjusted such that "
+                 "a single CPU is simulated on a dual-CPU system." << std::endl;
+    std::cout << "Results only as expected if running on dual-CPU system and "
+                 "environment variables set so that threads pinned to CPU socket." << std::endl;
+    runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
+  }
+  else {
+    //run default implementation
+    std::cout << "Running optimized CPU implementation" << std::endl;
+    runImp(argc, argv, RunImpSetting::RUN_IMP_DEFAULT);
+  }
 
   return 0;
 }
