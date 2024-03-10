@@ -39,6 +39,9 @@
 
 namespace run_cpu {
 
+//constant to specify to run simulate single CPU on a dual-CPU system
+constexpr std::string_view SIMULATE_SINGLE_CPU{"SimulateSingleCPU"};
+
 //set the CPU vectorization
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
 constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NEON};
