@@ -8,6 +8,8 @@
 #include <memory>
 #include <filesystem>
 #include <optional>
+#include <array>
+#include <map>
 #include "BpConstsAndParams/BpConsts.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpFileProcessing/BpFileHandling.h"
@@ -41,6 +43,11 @@ using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
+
+namespace bpSingleThread {
+  constexpr bool RUN_SINGLE_THREAD_ONCE_FOR_SET{true};
+  inline std::map<std::array<filepathtype, 2>, std::tuple<std::chrono::duration<double>, RunData, filepathtype>> singleThreadRunOutput;
+};
 
 //run and evaluate belief propagation implementation on a specified input
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
@@ -156,13 +163,25 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImps
 
   if (!runOptImpOnly) {
     //run single-threaded implementation and retrieve structure with runtime and output disparity map
-    run_output[1] = runBpStereoSingleThread_->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings_, *parallelParams);
-    if (!(run_output[1])) {
-      return {};
+    if ((!(bpSingleThread::RUN_SINGLE_THREAD_ONCE_FOR_SET)) || (!(bpSingleThread::singleThreadRunOutput.contains(refTestImagePath)))) {
+      run_output[1] = runBpStereoSingleThread_->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings_, *parallelParams);
+      if (!(run_output[1])) {
+        return {};
+      }
+      run_output[1]->outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
+      if (bpSingleThread::RUN_SINGLE_THREAD_ONCE_FOR_SET) {
+        bpSingleThread::singleThreadRunOutput[refTestImagePath] = {run_output[1]->runTime, run_output[1]->runData, output_disp[1]};
+      }
     }
-    run_output[1]->outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
-      runData.appendData(run_output[1]->runData);
+    else {
+      run_output[1]->runTime = std::get<0>(bpSingleThread::singleThreadRunOutput[refTestImagePath]);
+      run_output[1]->runData = std::get<1>(bpSingleThread::singleThreadRunOutput[refTestImagePath]);
+      run_output[1]->outDisparityMap = DisparityMap<float>(
+        std::get<2>(bpSingleThread::singleThreadRunOutput[refTestImagePath]).string(),
+        bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
+    }
   }
+  runData.appendData(run_output[1]->runData);
 
   for (unsigned int i = 0; i < numImpsRun; i++) {
     const std::string runDesc{(i == 0) ? optImpRunDesc : runBpStereoSingleThread_->getBpRunDescription()};

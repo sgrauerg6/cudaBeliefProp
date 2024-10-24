@@ -25,6 +25,7 @@ LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart -l
 
 # define the path for the nvcc cuda compiler
 NVCC := $(CUDA_DIR)/bin/nvcc
+#NVCC := /usr/bin/nvcc
 CC    = g++
 
 # uncomment to use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
@@ -34,8 +35,12 @@ BFLOAT_DATA_TYPE_SETTING = #-DUSE_BFLOAT16_FOR_HALF_PRECISION
 USE_ONLY_SMALLER_DATA_SETTING =
 #-DSMALLER_SETS_ONLY
 
+# set to use limited set of test parameters and fewer runs for faster results for testing
+USE_LIMITED_TEST_PARAMS_FEWER_RUNS = -DLIMITED_TEST_PARAMS_FEWER_RUNS
+#-DLIMITED_TEST_PARAMS_FEWER_RUNS
+
 # defines to add for CUDA processing
-CUDA_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${USE_ONLY_SMALLER_DATA_SETTING}
+CUDA_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${USE_ONLY_SMALLER_DATA_SETTING} ${USE_LIMITED_TEST_PARAMS_FEWER_RUNS}
 
 # have include directory as flag
 COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX ${CUDA_RUN_DEFINES}

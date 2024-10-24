@@ -73,7 +73,12 @@ namespace bp_params
   };
 
   //number of belief propagation stereo runs of same image set
+  //fewer runs if using limited parameters for faster processing
+#ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
+  constexpr unsigned int NUM_BP_STEREO_RUNS = 3;
+#else
   constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
+#endif //LIMITED_TEST_PARAMS_FEWER_RUNS
 
   //define the default message value...
   constexpr float DEFAULT_INITIAL_MESSAGE_VAL = 0.0f;
