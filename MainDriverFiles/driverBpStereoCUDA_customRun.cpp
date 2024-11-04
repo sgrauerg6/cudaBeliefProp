@@ -40,8 +40,8 @@ int main(int argc, char** argv)
   algSettings.disc_k_bp_ = (float)algSettings.numDispVals_ / 7.5f;
   unsigned int dispMapScale = 256 / algSettings.numDispVals_;
 
-  auto numThreads = std::thread::hardware_concurrency();
-  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, algSettings.numLevels_, {numThreads, 1}};
+  const auto cudaTBDims = std::array<unsigned int, 2>{32, 4};
+  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, algSettings.numLevels_, cudaTBDims};
 
   std::unique_ptr<RunBpStereoSet<float, 0, run_environment::AccSetting::CUDA>> runOptBpNumItersNoTemplate =
     std::make_unique<RunBpStereoSetOnGPUWithCUDA<float, 0, run_environment::AccSetting::CUDA>>();
