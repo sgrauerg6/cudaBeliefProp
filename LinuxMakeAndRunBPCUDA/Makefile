@@ -54,10 +54,13 @@ ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++20
 # use native GPU by default (native flag requires CUDA 11.6 or later)
 ARCHITECTURES_GENCODE = -arch=native
 
-all: impDriverCUDA
+all: impDriverCUDA impDriverCUDACustom
 
 impDriverCUDA: driverCudaBp.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
 	$(CC) driverCudaBp.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+
+impDriverCUDACustom: driverBpStereoCUDA_customRun.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
+	$(CC) driverBpStereoCUDA_customRun.o EvaluateAcrossRuns.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o OutputEvaluationResults.o OutputEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBpCustom -O
 
 EvaluateAcrossRuns.o :
 	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -88,6 +91,9 @@ RunBenchmarkImp.o:
 
 driverCudaBp.o: ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp ${BP_PATH}/BpConstsAndParams/BpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/BpStereoParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+
+driverBpStereoCUDA_customRun.o: ${TOP_DIR}/MainDriverFiles/driverBpStereoCUDA_customRun.cpp ${BP_PATH}/BpConstsAndParams/BpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/BpStereoParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCUDA_customRun.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpFileHandling.o: ${BP_PATH}/BpFileProcessing/BpFileHandling.h ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp ${BP_PATH}/BpFileProcessing/BpFileHandlingConsts.h
 	$(CC) ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -132,4 +138,4 @@ SmoothImageCUDA.o: ${BP_PATH}/BpOptimizeCUDA/SmoothImageCUDA.cpp ${BP_PATH}/BpOp
 	$(NVCC) -x cu -c ${BP_PATH}/BpOptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o SmoothImageCUDA.o $(CUDA_COMPILE_FLAGS)
 
 make clean:
-	rm *.o driverCudaBp driverCPUBp
+	rm *.o driverCudaBp driverCPUBp driverCudaBpCustom
