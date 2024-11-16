@@ -25,7 +25,7 @@ public:
   void operator()(const MultRunData& runResults, const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc, size_t dataSize);
 
   //evaluate results for implementation runs on multiple inputs with the runs having different data type and acceleration methods
-  void operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
+  void operator()(const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& runResultsMultRuns,
     const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc);
 
   //get run data with speedup from evaluation of implementation runs using multiple inputs with runs having the same data type and acceleration method
@@ -42,12 +42,12 @@ private:
   //includes results for each run as well as average and median speedup data across multiple runs
   template <bool MULT_DATA_TYPES>
   void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
-    run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize = 0);
+    run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize = 0) const;
 
   //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
   std::vector<MultRunSpeedup> getAltAccelSpeedups(
-    std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>& runImpResultsByAccSetting,
+    MultRunDataWSpeedupByAcc& runImpResultsByAccSetting,
     const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize, run_environment::AccSetting fastestAcc) const;
 
   //get speedup over baseline data if data available
@@ -82,7 +82,7 @@ private:
 
   //get average and median speedup when loop iterations are given at compile time as template value
   MultRunSpeedup getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
-    std::string_view speedupHeader);
+    std::string_view speedupHeader) const;
 
   //retrieve path of results
   virtual std::filesystem::path getImpResultsPath() const = 0;
@@ -99,7 +99,7 @@ private:
   MultRunData runImpOrigResults_;
   MultRunData runImpOptResults_;
   std::vector<MultRunSpeedup> runImpSpeedups_;
-  std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>> runImpResultsMultRuns_;
+  std::unordered_map<size_t, MultRunDataWSpeedupByAcc> runImpResultsMultRuns_;
   bool writeDebugOutputFiles_{false};
 };
 

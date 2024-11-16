@@ -7,7 +7,7 @@
 
 #include "RunEvalImpMultSettings.h"
 #include "RunSettingsEval/EvaluateImpResults.h"
-#include "BpOutputEvaluation/EvaluateBPImpResults.h"
+#include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
 void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting,
@@ -17,9 +17,9 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
   const auto fastestAcc = getFastestAvailableAcc(runBenchmarkImpsByAccSetting);
 
   //get results using each datatype and possible acceleration
-  std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>> runImpResults;
+  std::unordered_map<size_t, MultRunDataWSpeedupByAcc> runImpResults;
   for (const size_t dataSize : {sizeof(float), sizeof(double), sizeof(halftype)}) {
-    runImpResults[dataSize] = std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>();
+    runImpResults[dataSize] = MultRunDataWSpeedupByAcc();
     //run implementation using each acceleration setting
     for (auto& runImp : runBenchmarkImpsByAccSetting) {
       runImpResults[dataSize][runImp.first] = runImp.second->operator()(runImpSettings, dataSize);

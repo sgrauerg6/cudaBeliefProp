@@ -135,7 +135,8 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& impResultsFileP
     }
   }
   //get file path for evaluation across runs and save evaluation across runs to csv file
-  std::filesystem::path resultsAcrossRunFp = impResultsFilePath / (std::string(run_eval::EVALUATION_ACROSS_RUNS_FILE_NAME) + std::string(run_eval::CSV_FILE_EXTENSION));
+  std::filesystem::path resultsAcrossRunFp = impResultsFilePath /
+    (std::string(run_eval::EVALUATION_ACROSS_RUNS_FILE_NAME) + std::string(run_eval::CSV_FILE_EXTENSION));
   std::ofstream evalResultsAcrossRunsStr(resultsAcrossRunFp);
   evalResultsAcrossRunsStr << resultAcrossArchsSStr.str();
   std::cout << "Evaluation of results across all runs in " << resultsAcrossRunFp << std::endl;

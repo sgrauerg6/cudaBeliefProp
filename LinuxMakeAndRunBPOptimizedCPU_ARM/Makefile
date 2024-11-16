@@ -37,7 +37,7 @@ EvaluateAcrossRuns.o :
 	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 EvaluateBPImpResults.o : 
-	$(CC) ${BP_PATH}/BpOutputEvaluation/EvaluateBPImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${BP_PATH}/BpResultsEvaluation/EvaluateBPImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 EvaluateImpResults.o :
 	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -82,10 +82,10 @@ BpImage.o:
 	$(CC) ${BP_PATH}/BpImageProcessing/BpImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpEvaluationParameters.o:
-	$(CC) ${BP_PATH}/BpOutputEvaluation/BpEvaluationParameters.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${BP_PATH}/BpResultsEvaluation/BpEvaluationParameters.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpEvaluationResults.o:
-	$(CC) ${BP_PATH}/BpOutputEvaluation/BpEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${BP_PATH}/BpResultsEvaluation/BpEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 		
 DisparityMap.o: BpEvaluationParameters.o BpEvaluationResults.o
 	$(CC) ${BP_PATH}/BpImageProcessing/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)

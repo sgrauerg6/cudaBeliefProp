@@ -23,7 +23,7 @@ void EvaluateImpResults::operator()(const MultRunData& runResults, const run_env
 }
 
 //evaluate results for implementation runs on multiple inputs with the runs having different data type and acceleration methods
-void EvaluateImpResults::operator()(const std::unordered_map<size_t, std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>>& runResultsMultRuns,
+void EvaluateImpResults::operator()(const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& runResultsMultRuns,
   const run_environment::RunImpSettings runImpSettings, run_environment::AccSetting optImpAcc)
 {
   runImpResultsMultRuns_ = runResultsMultRuns;
@@ -41,7 +41,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> EvaluateImpResults::getRunDa
 //includes results for each run as well as average and median speedup data across multiple runs
 template <bool MULT_DATA_TYPES>
 void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
-  run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize)
+  run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize) const
 {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.cbegin(), runOutput.first.cend(), [](const auto& runResult)
@@ -185,7 +185,7 @@ void EvaluateImpResults::evalResultsSingDTypeAccRun() {
 //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
 //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
 std::vector<MultRunSpeedup> EvaluateImpResults::getAltAccelSpeedups(
-  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>& runImpResultsByAccSetting,
+  MultRunDataWSpeedupByAcc& runImpResultsByAccSetting,
   const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize, run_environment::AccSetting fastestAcc) const
 {
   //set up mapping from acceleration type to description
@@ -468,7 +468,7 @@ MultRunSpeedup EvaluateImpResults::getAvgMedSpeedup(MultRunData& runOutputBase, 
 
 //get average and median speedup when loop iterations are given at compile time as template value
 MultRunSpeedup EvaluateImpResults::getAvgMedSpeedupLoopItersInTemplate(MultRunData& runOutput,
-  std::string_view speedupHeader)
+  std::string_view speedupHeader) const
 {
   //get mapping of run inputs to runtime with index value in run output
   std::map<std::vector<std::string>, std::pair<double, size_t>> runInputSettingsToTimeWIdx;

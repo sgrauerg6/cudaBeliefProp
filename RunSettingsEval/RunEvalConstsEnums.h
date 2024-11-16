@@ -13,6 +13,7 @@
 #include <vector>
 #include <optional>
 #include "RunData.h"
+#include "RunSettings.h"
 
 //namespace for general program run evaluation
 namespace run_eval {
@@ -82,5 +83,6 @@ namespace run_eval {
 
 using MultRunData = std::vector<std::optional<std::vector<RunData>>>;
 using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
+using MultRunDataWSpeedupByAcc = std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>;
 
 #endif //RUN_EVAL_CONSTS_ENUMS_H

@@ -12,8 +12,8 @@
 #include <string>
 #include <ranges>
 #include "BpImage.h"
-#include "BpOutputEvaluation/BpEvaluationResults.h"
-#include "BpOutputEvaluation/BpEvaluationParameters.h"
+#include "BpResultsEvaluation/BpEvaluationResults.h"
+#include "BpResultsEvaluation/BpEvaluationParameters.h"
 
 template<class T>
 requires std::is_arithmetic_v<T>
