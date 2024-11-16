@@ -90,6 +90,8 @@ std::string RunData::getDataAsStr(const std::string_view header) const {
   return "";
 }
 
+//get data as double if variant corresponding to header is double type
+//return null if data corresponds to a different data type
 std::optional<double> RunData::getDataAsDouble(const std::string_view header) const {
   const auto variantVal = headersWData_.at(std::string(header));
   if (std::holds_alternative<double>(variantVal)) {
@@ -98,6 +100,8 @@ std::optional<double> RunData::getDataAsDouble(const std::string_view header) co
   return {};
 }
 
+//get data as unsigned integer if variant corresponding to header is unsigned integer type
+//return null if data corresponds to a different data type
 std::optional<unsigned int> RunData::getDataAsUInt(const std::string_view header) const {
   const auto variantVal = headersWData_.at(std::string(header));
   if (std::holds_alternative<unsigned int>(variantVal)) {
@@ -106,6 +110,8 @@ std::optional<unsigned int> RunData::getDataAsUInt(const std::string_view header
   return {};
 }
 
+//get data as boolean if variant corresponding to header is boolean type
+//return null if data corresponds to a different data type
 std::optional<bool> RunData::getDataAsBool(const std::string_view header) const {
   const auto variantVal = headersWData_.at(std::string(header));
   if (std::holds_alternative<bool>(variantVal)) {

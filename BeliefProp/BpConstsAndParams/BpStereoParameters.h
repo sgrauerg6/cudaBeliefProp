@@ -41,7 +41,7 @@ namespace bp_consts
 
 namespace bp_params
 {
-  enum image_set_options
+  enum class image_set_options
   {
     TSUKUBA_IMAGES_HALF_SIZE_E = 0,
     TSUKUBA_IMAGES_E = 1,

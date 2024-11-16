@@ -46,6 +46,7 @@ public:
   void setOptimizedParams() override;
 
   //get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers
+  //that correspond to the kernel name and bp level
   std::array<unsigned int, 2> getOptParamsForKernel(const std::array<unsigned int, 2>& kernelLocation) const override {
     return parallelDimsEachKernel_[kernelLocation[0]][kernelLocation[1]];
   }

@@ -56,7 +56,7 @@ void SmoothImageCPU::filterImageAcrossCPU(U* imagePixelsToFilter, float* filtere
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BLUR_IMAGES), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -81,7 +81,7 @@ void SmoothImageCPU::filterImageVerticalCPU(U* imagePixelsToFilter, float* filte
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BLUR_IMAGES, 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BLUR_IMAGES), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for

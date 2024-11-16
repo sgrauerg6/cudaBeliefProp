@@ -471,7 +471,7 @@ void beliefpropCPU::initializeBottomLevelData(
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::DATA_COSTS_AT_LEVEL, 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::DATA_COSTS_AT_LEVEL), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -503,7 +503,7 @@ void beliefpropCPU::initializeCurrentLevelData(
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::DATA_COSTS_AT_LEVEL, currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::DATA_COSTS_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -536,7 +536,7 @@ void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::level
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::INIT_MESSAGE_VALS, 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::INIT_MESSAGE_VALS), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -578,7 +578,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   const bool dataAligned = GenProcessingFuncts::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_, currentLevelProperties.divPaddedChBoardWAlign_);
 
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BP_AT_LEVEL, currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BP_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -671,7 +671,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 
   if constexpr (DISP_VALS > 0) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BP_AT_LEVEL, currentLevelProperties.levelNum_})[0]};
+    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BP_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
@@ -787,7 +787,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   }
   else {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::BP_AT_LEVEL, currentLevelProperties.levelNum_})[0]};
+    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BP_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
@@ -1046,7 +1046,7 @@ void beliefpropCPU::copyMsgDataToNextLevel(const beliefprop::Checkerboard_Parts 
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::COPY_AT_LEVEL, currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::COPY_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -1087,7 +1087,7 @@ void beliefpropCPU::retrieveOutputDisparity(
 {
   if constexpr (VECTORIZATION == run_environment::AccSetting::NONE) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::OUTPUT_DISP, 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::OUTPUT_DISP), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -1176,7 +1176,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
   for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
   {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::OUTPUT_DISP, 0})[0]};
+    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::OUTPUT_DISP), 0})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
@@ -1442,7 +1442,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({beliefprop::BpKernel::OUTPUT_DISP, 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::OUTPUT_DISP), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for

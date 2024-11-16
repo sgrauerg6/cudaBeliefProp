@@ -32,6 +32,7 @@ void EvaluateImpResults::operator()(const std::unordered_map<size_t, std::unorde
   evalResultsMultDTypeAccRuns();
 }
 
+//get run data with speedup from evaluation of implementation runs using multiple inputs with runs having the same data type and acceleration method
 std::pair<MultRunData, std::vector<MultRunSpeedup>> EvaluateImpResults::getRunDataWSpeedups() const {
   return {runImpOptResults_, runImpSpeedups_};
 }
