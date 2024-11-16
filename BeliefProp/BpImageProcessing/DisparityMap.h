@@ -32,7 +32,7 @@ public:
     }
   }
 
-  DisparityMap(const std::string& file_path_disparity_map, const unsigned int disparity_map_vals_scale = 1) : BpImage<T>(file_path_disparity_map)
+  DisparityMap(const std::string& file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : BpImage<T>(file_path_disparity_map)
   {
     if (disparity_map_vals_scale > 1) {
       removeScaleFromDisparityVals(disparity_map_vals_scale);
@@ -42,7 +42,7 @@ public:
   const BpEvaluationResults getOutputComparison(const DisparityMap& disparity_map_to_compare,
     const BpEvaluationParameters& evaluation_parameters) const;
 
-  void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const;
+  void saveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor = 1) const;
 
 private:
   void removeScaleFromDisparityVals(const unsigned int disparity_map_vals_scale)

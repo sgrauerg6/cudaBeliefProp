@@ -64,6 +64,9 @@ public:
   //retrieve pair between a set of parameters and a single parameter
   std::optional<std::pair<std::vector<std::string>, double>> getParamsToRuntime(
     const std::vector<std::string_view>& keyParams, std::string_view valParam) const;
+  
+  //overloaded << operator for output to stream
+  friend std::ostream& operator<<(std::ostream& os, const RunData& runData);
 
 private:
   //get header to add...use input header if not yet used
@@ -76,5 +79,14 @@ private:
   //headers ordered from first header added to last header added
   std::vector<std::string> headersInOrder_;
 };
+
+//definition of overloaded << operator for output to stream
+inline std::ostream& operator<<(std::ostream& os, const RunData& runData) {
+  //add each header with corresponding data separated by ':' to stream in a separate line
+  for (const auto& header : runData.headersInOrder_) {
+    os << header << ": " << runData.getDataAsStr(header) << std::endl;
+  }
+  return os;
+}
 
 #endif //RUN_DATA_H

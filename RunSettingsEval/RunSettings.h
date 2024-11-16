@@ -95,9 +95,9 @@ constexpr std::string_view accelerationString() {
 
 //get string corresponding to acceleration method at run time
 inline std::string_view accelerationString(AccSetting accelerationSetting) {
-  if (accelerationSetting == AccSetting::NEON) { return "NEON"; }
-  else if (accelerationSetting == AccSetting::AVX256) { return "AVX256"; }
-  else if (accelerationSetting == AccSetting::AVX512) { return "AVX512"; }
+  if (accelerationSetting == AccSetting::NEON) { return accelerationString<AccSetting::NEON>(); }
+  else if (accelerationSetting == AccSetting::AVX256) { return accelerationString<AccSetting::AVX256>(); }
+  else if (accelerationSetting == AccSetting::AVX512) { return accelerationString<AccSetting::AVX512>(); }
   else { return "DEFAULT"; }
 }
 

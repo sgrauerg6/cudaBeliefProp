@@ -26,7 +26,7 @@
 
 //structure containing parameters including parallelization parameters
 //to use at each BP level
-class BpParallelParams : public ParallelParams {
+class BpParallelParams final : public ParallelParams {
 public:
   //constructor to set parallel parameters with default dimensions for each kernel
   BpParallelParams(run_environment::OptParallelParamsSetting optParallelParamsSetting,
@@ -34,9 +34,6 @@ public:
 
   //set parallel parameters for each kernel to the same input dimensions
   void setParallelDims(const std::array<unsigned int, 2>& tbDims) override;
-
-  //add current parallel parameters to data for current run
-  RunData runData() const override;
 
   //add results from run with same specified parallel parameters used every parallel component
   void addTestResultsForParallelParams(const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& currRunData);
@@ -51,12 +48,20 @@ public:
     return parallelDimsEachKernel_[kernelLocation[0]][kernelLocation[1]];
   }
 
-  //stores the current parallel parameters for each processing kernel
-  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::NUM_KERNELS> parallelDimsEachKernel_;
+  //retrieve current parallel parameters as RunData object
+  RunData runData() const override;
 
 private:
+  //setting to determine whether or not to use same parallel parameters for all kernels in run or to allow for different
+  //parallel parameters for each kernel
   const run_environment::OptParallelParamsSetting optParallelParamsSetting_;
+  
+  //num of levels in bp processing hierarchy
   const unsigned int numLevels_;
+
+  //stores the current parallel parameters for each processing kernel
+  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::NUM_KERNELS> parallelDimsEachKernel_;
+  
   //mapping of parallel parameters to runtime for each kernel at each level and total runtime
   std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::NUM_KERNELS + 1)> pParamsToRunTimeEachKernel_;
 };

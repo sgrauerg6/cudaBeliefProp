@@ -41,7 +41,7 @@ public:
   //get median timing for a specified segment that may have been run multiple times
   std::chrono::duration<double> getMedianTiming(const T runSegmentIndex) const;
 
-  //return current timing data as a RunData object for output
+  //return current timing data as a RunData object for evaluation
   RunData runData() const;
 
 private:

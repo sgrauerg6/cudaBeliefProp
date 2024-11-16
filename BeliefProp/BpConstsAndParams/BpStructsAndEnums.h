@@ -67,14 +67,8 @@ struct BPsettings
 
 //function to output bp settings to stream
 inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings) {
-  resultsStream << "Num Possible Disparity Values: " << bpSettings.numDispVals_ << "\n";
-  resultsStream << "Num BP Levels: " << bpSettings.numLevels_ << "\n";
-  resultsStream << "Num BP Iterations: " << bpSettings.numIterations_ << "\n";
-  resultsStream << "DISC_K_BP: " << bpSettings.disc_k_bp_ << "\n";
-  resultsStream << "DATA_K_BP: " << bpSettings.data_k_bp_ << "\n";
-  resultsStream << "LAMBDA_BP: " << bpSettings.lambda_bp_ << "\n";
-  resultsStream << "SIGMA_BP: " << bpSettings.smoothingSigma_ << "\n";
-  
+  //get settings as RunData object and then use overloaded << operator for RunData
+  resultsStream << bpSettings.runData();
   return resultsStream;  
 }
 
