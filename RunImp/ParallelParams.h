@@ -11,7 +11,8 @@
 #include <array>
 #include "RunSettingsEval/RunData.h"
 
-//class for holding and processing parallelization parameters
+//abstract class for holding and processing parallelization parameters
+//child class(es) specific to processing implementation(s) must be defined
 class ParallelParams {
 public:
   //set parallel parameters for each kernel to the same input dimensions
