@@ -16,7 +16,7 @@
 //include for the kernel functions to be run on the GPU
 #include "kernelFilterHeader.cuh"
 
-class SmoothImageCUDA : public SmoothImage {
+class SmoothImageCUDA final : public SmoothImage {
 public:
   SmoothImageCUDA(const ParallelParams& cudaParams) : SmoothImage(cudaParams) {}
 

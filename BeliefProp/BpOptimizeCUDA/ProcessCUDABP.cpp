@@ -33,7 +33,9 @@ inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::errorCheck(co
     cudaDeviceReset();
     cudaDeviceSynchronize();
     cudaSetDevice(0);
-    if (abort) { exit(code); }
+    if (abort) { 
+      exit(code);
+    }
     return run_eval::Status::ERROR;
    }
    return run_eval::Status::NO_ERROR;
@@ -158,7 +160,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::copyMessageValuesToN
     return run_eval::Status::ERROR;
   }
 
-  for (const auto& checkerboard_part : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
+  for (const auto checkerboard_part : {beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1})
   {
     //call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
     //storing the current message values
@@ -278,8 +280,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCurren
 
   const size_t offsetNum{0};
   for (const auto& checkerboardAndDataCost : {
-         std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
-         std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,  dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
+    std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0, dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
+    std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,  dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
   {
     beliefpropCUDA::initializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>> (checkerboardAndDataCost.first,
       currentLevelProperties, prevLevelProperties,

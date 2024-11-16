@@ -51,7 +51,7 @@ namespace bpSingleThread {
 
 //run and evaluate belief propagation implementation on a specified input
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-class RunEvalBPImpOnInput : public RunEvalImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
+class RunEvalBPImpOnInput final : public RunEvalImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   MultRunData operator()(const run_environment::RunImpSettings& runImpSettings) override;
   

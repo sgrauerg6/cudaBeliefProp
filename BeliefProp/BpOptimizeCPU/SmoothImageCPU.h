@@ -15,7 +15,7 @@
 #include "BpImageProcessing/SmoothImage.h"
 #include "BpRunImp/BpParallelParams.h"
 
-class SmoothImageCPU : public SmoothImage {
+class SmoothImageCPU final : public SmoothImage {
 public:
   SmoothImageCPU(const ParallelParams& optCPUParams) : SmoothImage(optCPUParams) {}
 

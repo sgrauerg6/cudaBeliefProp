@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class ProcessCUDABP : public ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>
+class ProcessCUDABP final : public ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>
 {
 public:
   ProcessCUDABP(const ParallelParams& cudaParams) : 

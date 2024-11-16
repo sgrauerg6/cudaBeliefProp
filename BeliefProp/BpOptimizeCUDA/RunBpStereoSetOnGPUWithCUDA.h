@@ -53,10 +53,10 @@ namespace bp_cuda_device
 };
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpStereoSetOnGPUWithCUDA : public RunBpStereoSet<T, DISP_VALS, ACCELERATION>
+class RunBpStereoSetOnGPUWithCUDA final : public RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
-  std::string getBpRunDescription() override { return "CUDA"; }
+  std::string getBpRunDescription() const override { return "CUDA"; }
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
@@ -98,7 +98,7 @@ class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet
 public:
   RunBpStereoSetOnGPUWithCUDA() {}
 
-  std::string getBpRunDescription() override  { return "CUDA"; }
+  std::string getBpRunDescription() const override  { return "CUDA"; }
 
   //if type is specified as short, process as half on GPU
   //note that half is considered a data type for 16-bit floats in CUDA

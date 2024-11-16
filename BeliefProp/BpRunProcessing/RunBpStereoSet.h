@@ -50,7 +50,7 @@ struct BpOnDevice {
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpStereoSet {
 public:
-  virtual std::string getBpRunDescription() = 0;
+  virtual std::string getBpRunDescription() const = 0;
 
   //pure abstract overloaded operator that must be defined in child class
   virtual std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,

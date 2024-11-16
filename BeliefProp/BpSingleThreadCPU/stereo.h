@@ -29,13 +29,13 @@
 #include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
-class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::NONE>
+class RunBpStereoCPUSingleThread final : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::NONE>
 {
 public:
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
       const beliefprop::BPsettings& algSettings,
       const ParallelParams& parallelParams) override;
-  std::string getBpRunDescription() override { return "Single-Thread CPU"; }
+  std::string getBpRunDescription() const override { return "Single-Thread CPU"; }
 
 private:
   // compute message
@@ -340,7 +340,7 @@ public:
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
       const beliefprop::BPsettings& algSettings,
       const ParallelParams& parallelParams) override;
-  std::string getBpRunDescription() override { return "Single-Thread CPU"; }
+  std::string getBpRunDescription() const override { return "Single-Thread CPU"; }
 
 private:
   // compute message

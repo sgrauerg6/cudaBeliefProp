@@ -33,7 +33,7 @@
 
 //run and evaluate optimized belief propagation implementation on a number of inputs
 //acceleration method of optimized belief propagation implementation is specified in template parameter
-class RunEvalBpImp : public RunBenchmarkImp {
+class RunEvalBpImp final : public RunBenchmarkImp {
 public:
   RunEvalBpImp(const run_environment::AccSetting& optImpAccel) : RunBenchmarkImp(optImpAccel) {}
 

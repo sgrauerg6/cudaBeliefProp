@@ -20,9 +20,9 @@
 #include "ProcessOptimizedCPUBP.h"
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-class RunBpStereoOptimizedCPU : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
+class RunBpStereoOptimizedCPU final : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
 public:
-  std::string getBpRunDescription() override { return "Optimized CPU"; }
+  std::string getBpRunDescription() const override { return "Optimized CPU"; }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,

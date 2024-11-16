@@ -18,7 +18,7 @@
 #include <string>
 
 //class with operator function to evaluate implementation runs
-class EvaluateBPImpResults : public EvaluateImpResults {
+class EvaluateBPImpResults final : public EvaluateImpResults {
 private:
   //retrieve path of belief propagation implementation results
   std::filesystem::path getImpResultsPath() const override;

@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.h"
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-class ProcessOptimizedCPUBP : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
+class ProcessOptimizedCPUBP final : public ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>
 {
 public:
   ProcessOptimizedCPUBP(const ParallelParams& optCPUParams) : 
@@ -93,7 +93,10 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
   for (unsigned int iterationNum = 0; iterationNum < algSettings.numIterations_; iterationNum++)
   {
-    beliefprop::Checkerboard_Parts checkboardPartUpdate = ((iterationNum % 2) == 0) ? beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1 : beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0;
+    const beliefprop::Checkerboard_Parts checkboardPartUpdate =
+      ((iterationNum % 2) == 0) ?
+      beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1 :
+      beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0;
 
     beliefpropCPU::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS, VECTORIZATION>(
       checkboardPartUpdate, currentLevelProperties,
@@ -198,11 +201,13 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
 {
   size_t offsetNum = 0;
 
-  for (const auto& checkerboardAndDataCost : { std::make_pair(
-    beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0,
-    dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
-    std::make_pair(beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,
-                   dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_) })
+  for (const auto& checkerboardAndDataCost : {
+    std::make_pair(
+      beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_0,
+      dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
+    std::make_pair(
+      beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1,
+      dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
   {
     beliefpropCPU::initializeCurrentLevelData<T, DISP_VALS>(
       checkerboardAndDataCost.first, currentLevelProperties, prevLevelProperties,
