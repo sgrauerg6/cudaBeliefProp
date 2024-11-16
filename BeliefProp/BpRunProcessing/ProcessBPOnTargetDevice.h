@@ -177,10 +177,10 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
 {
   if (errorCheck() != run_eval::Status::NO_ERROR) { return {}; }
 
-  std::unordered_map<beliefprop::Runtime_Type, std::pair<timingType, timingType>> startEndTimes;
-  std::vector<std::pair<timingType, timingType>> eachLevelTimingDataCosts(algSettings.numLevels_);
-  std::vector<std::pair<timingType, timingType>> eachLevelTimingBP(algSettings.numLevels_);
-  std::vector<std::pair<timingType, timingType>> eachLevelTimingCopy(algSettings.numLevels_);
+  std::unordered_map<beliefprop::Runtime_Type, std::array<timingType, 2>> startEndTimes;
+  std::vector<std::array<timingType, 2>> eachLevelTimingDataCosts(algSettings.numLevels_);
+  std::vector<std::array<timingType, 2>> eachLevelTimingBP(algSettings.numLevels_);
+  std::vector<std::array<timingType, 2>> eachLevelTimingCopy(algSettings.numLevels_);
   std::chrono::duration<double> totalTimeBpIters{0}, totalTimeCopyData{0}, totalTimeCopyDataKernel{0};
 
   //start at the "bottom level" and work way up to determine amount of space needed to store data costs
@@ -196,7 +196,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
     bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(algSettings.numDispVals_));
   }
 
-  startEndTimes[beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC].first = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC][0] = std::chrono::system_clock::now();
 
   //declare and allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
   //as well as the message data used for bp processing
@@ -225,33 +225,33 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   }
 
   auto currTime = std::chrono::system_clock::now();
-  startEndTimes[beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC].second = currTime;
-  eachLevelTimingDataCosts[0].first = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC][1] = currTime;
+  eachLevelTimingDataCosts[0][0] = currTime;
 
   //initialize the data cost at the bottom level
   auto errCode = initializeDataCosts(algSettings, bpLevelProperties[0], imagesOnTargetDevice, dataCostsDeviceAllLevels);
   if (errCode != run_eval::Status::NO_ERROR) { return {}; }
 
   currTime = std::chrono::system_clock::now();
-  eachLevelTimingDataCosts[0].second = currTime;
-  startEndTimes[beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL].first = currTime;
+  eachLevelTimingDataCosts[0][1] = currTime;
+  startEndTimes[beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL][0] = currTime;
 
   //set the data costs at each level from the bottom level "up"
   for (unsigned int levelNum = 1u; levelNum < algSettings.numLevels_; levelNum++)
   {
-    eachLevelTimingDataCosts[levelNum].first = std::chrono::system_clock::now();
+    eachLevelTimingDataCosts[levelNum][0] = std::chrono::system_clock::now();
     errCode = initializeDataCurrentLevel(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
       retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
       algSettings.numDispVals_);
     if (errCode != run_eval::Status::NO_ERROR) { return {}; }
 
-    eachLevelTimingDataCosts[levelNum].second = std::chrono::system_clock::now();
+    eachLevelTimingDataCosts[levelNum][1] = std::chrono::system_clock::now();
   }
 
-  currTime = eachLevelTimingDataCosts[algSettings.numLevels_-1].second;
-  startEndTimes[beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL].second = currTime;
-  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES].first = currTime;
+  currTime = eachLevelTimingDataCosts[algSettings.numLevels_-1][1];
+  startEndTimes[beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL][1] = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES][0] = currTime;
 
   //get and use offset into data at current processing level of pyramid
   beliefprop::dataCostData<T*> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
@@ -271,15 +271,15 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
       bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_), memManagementBpRun);
   }
 
-  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL].first = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL][0] = std::chrono::system_clock::now();
 
   //initialize all the BP message values at every pixel for every disparity to 0
   errCode = initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
   if (errCode != run_eval::Status::NO_ERROR) { return {}; }
 
   currTime = std::chrono::system_clock::now();
-  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL].second = currTime;
-  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES].second = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES_KERNEL][1] = currTime;
+  startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES][1] = currTime;
 
   //alternate between checkerboard sets 0 and 1
   enum Checkerboard_Num { CHECKERBOARD_ZERO = 0, CHECKERBOARD_ONE = 1 };
@@ -329,8 +329,8 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
       totalTimeCopyDataKernel += timeCopyMessageValuesKernelEnd - timeCopyMessageValuesKernelStart;
-      eachLevelTimingCopy[levelNum].first = timeCopyMessageValuesKernelStart;
-      eachLevelTimingCopy[levelNum].second = timeCopyMessageValuesKernelEnd;
+      eachLevelTimingCopy[levelNum][0] = timeCopyMessageValuesKernelStart;
+      eachLevelTimingCopy[levelNum][1] = timeCopyMessageValuesKernelEnd;
 
       //assuming that width includes padding
       if constexpr (!bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
@@ -345,11 +345,11 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
 
     const auto timeCopyMessageValuesEnd = std::chrono::system_clock::now();
     totalTimeCopyData += timeCopyMessageValuesEnd - timeCopyMessageValuesStart;
-    eachLevelTimingBP[levelNum].first = timeBpIterStart;
-    eachLevelTimingBP[levelNum].second = timeBpIterEnd;
+    eachLevelTimingBP[levelNum][0] = timeBpIterStart;
+    eachLevelTimingBP[levelNum][1] = timeBpIterEnd;
   }
 
-  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].first = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY][0] = std::chrono::system_clock::now();
 
   //assume in bottom level when retrieving output disparity
   float* resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
@@ -357,8 +357,8 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   if (resultingDisparityMapCompDevice == nullptr) { return {}; }
 
   currTime = std::chrono::system_clock::now();
-  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY].second = currTime;
-  startEndTimes[beliefprop::Runtime_Type::FINAL_FREE].first = currTime;
+  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY][1] = currTime;
+  startEndTimes[beliefprop::Runtime_Type::FINAL_FREE][0] = currTime;
 
   if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
     if constexpr (bp_params::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
@@ -378,7 +378,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
     freeDataCostsMemory(dataCostsDeviceAllLevels, memManagementBpRun);
   }
 
-  startEndTimes[beliefprop::Runtime_Type::FINAL_FREE].second = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::FINAL_FREE][1] = std::chrono::system_clock::now();
 
   startEndTimes[beliefprop::Runtime_Type::LEVEL_0_DATA_COSTS] = eachLevelTimingDataCosts[0];
   startEndTimes[beliefprop::Runtime_Type::LEVEL_0_BP] = eachLevelTimingBP[0];
@@ -434,7 +434,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   std::ranges::for_each(startEndTimes,
     [&segmentTimings](const auto& currentRuntimeNameAndTiming) {
     segmentTimings.addTiming(currentRuntimeNameAndTiming.first,
-      currentRuntimeNameAndTiming.second.second - currentRuntimeNameAndTiming.second.first);
+      currentRuntimeNameAndTiming.second[1] - currentRuntimeNameAndTiming.second[0]);
   });
 
   segmentTimings.addTiming(beliefprop::Runtime_Type::BP_ITERS, totalTimeBpIters);
