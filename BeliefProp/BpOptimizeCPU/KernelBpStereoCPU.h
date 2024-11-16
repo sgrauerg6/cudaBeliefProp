@@ -40,7 +40,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 namespace beliefpropCPU
 {
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
-  //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
   template<RunData_t T, unsigned int DISP_VALS>
   void initializeBottomLevelData(const beliefprop::levelProperties& currentLevelProperties,
     float* image1PixelsDevice, float* image2PixelsDevice,
@@ -48,6 +47,7 @@ namespace beliefpropCPU
     const float lambda_bp, const float data_k_bp, const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
 
+  //initialize the "data cost" for each possible disparity at the current level using the data costs from the previous level
   template<RunData_t T, unsigned int DISP_VALS>
   void initializeCurrentLevelData(const beliefprop::Checkerboard_Parts checkerboardPart,
     const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
@@ -65,7 +65,7 @@ namespace beliefpropCPU
     const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
 
-  //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
+  //run the current iteration of belief propagation using the checkerboard update method where half the pixels in the "checkerboard"
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   void runBPIterationUsingCheckerboardUpdates(const beliefprop::Checkerboard_Parts checkerboardToUpdate,
@@ -89,7 +89,7 @@ namespace beliefpropCPU
     const float disc_k_bp, const unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
 
-  //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
+  //copy the computed BP message values at the current level to the corresponding locations at the "next" level down
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
   template<RunData_t T, unsigned int DISP_VALS>
   void copyMsgDataToNextLevel(const beliefprop::Checkerboard_Parts checkerboardPart,
@@ -231,8 +231,8 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 #endif //COMPILING_FOR_ARM
 
-  //device portion of the kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array in local memory
-  //and the output message values are save to output message arrays
+  //run the current iteration of belief propagation where the input messages and data costs come in as arrays
+  //and the output message values are written to output message arrays
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   void runBPIterationUpdateMsgValsUseSIMDVectors(const unsigned int xValStartProcessing,
     const unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
@@ -409,7 +409,6 @@ namespace beliefpropCPU
   void dtStereoSIMD(U f[DISP_VALS]);
 
   //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-  //TODO: look into defining function in .cpp file so don't need to declare inline
   template<RunDataProcess_t T, RunDataVectProcess_t U>
   void dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals);
 
@@ -752,7 +751,8 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
                 currentDisparity, currentLevelProperties, DISP_VALS, messageLDeviceCurrentCheckerboard1);
               prevRMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
-            } else //checkerboardPartUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
+            }
+            else //checkerboardPartUpdate == beliefprop::Checkerboard_Parts::CHECKERBOARD_PART_1
             {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
@@ -1027,7 +1027,6 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
   }
 #endif //COMPILING_FOR_ARM
 }
-
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
@@ -1605,7 +1604,6 @@ void beliefpropCPU::msgStereoSIMDProcessing(const unsigned int xVal, const unsig
 }
 
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-//TODO: look into defining function in .cpp file so don't need to declare inline
 template<RunDataProcess_t T, RunDataVectProcess_t U>
 void beliefpropCPU::dtStereoSIMD(U* f, const unsigned int bpSettingsDispVals)
 {
@@ -1872,6 +1870,5 @@ void beliefpropCPU::printDataAndMessageValsToPointKernel(
     }
   }
 }
-
 
 #endif //KERNEL_BP_STEREO_CPU_H

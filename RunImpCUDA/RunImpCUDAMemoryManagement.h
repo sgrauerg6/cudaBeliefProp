@@ -7,7 +7,7 @@
 
 //functions to manage memory on CUDA device including transferring data between host and CUDA device
 template <RunData_t T>
-class RunImpCUDAMemoryManagement : public RunImpMemoryManagement<T>
+class RunImpCUDAMemoryManagement final : public RunImpMemoryManagement<T>
 {
 public:
   T* allocateMemoryOnDevice(const unsigned int numData) override {

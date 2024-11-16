@@ -74,7 +74,9 @@ public:
 
 //mapping from data size to data type string
 const std::map<std::size_t, std::string_view> DATA_SIZE_TO_NAME_MAP{
-  {sizeof(float), "FLOAT"}, {sizeof(double), "DOUBLE"}, {sizeof(short), "HALF"}
+  {sizeof(float), "FLOAT"},
+  {sizeof(double), "DOUBLE"},
+  {sizeof(short), "HALF"}
 };
 
 //enum for acceleration setting
@@ -135,7 +137,8 @@ enum class TemplatedItersSetting {
 //on CPU
 enum class OptParallelParamsSetting {
   SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN,
-  ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN };
+  ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN
+};
 
 //structure that stores settings for current implementation run
 struct RunImpSettings {
