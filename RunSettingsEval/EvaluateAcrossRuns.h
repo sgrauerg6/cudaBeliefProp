@@ -23,7 +23,7 @@
 
 class EvaluateAcrossRuns {
 public:
-  //evaluate all runs with results in specified file path
+  //evaluate all runs with results in specified file path and
   //generate csv file with evaluation of results across runs
   //generated file starts with specified top text and includes
   //specified input parameters for each input as well as the optimized

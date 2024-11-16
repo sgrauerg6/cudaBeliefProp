@@ -13,6 +13,7 @@
 #include <string_view>
 #include <thread>
 #include <iostream>
+#include <algorithm>
 #include "RunSettingsEval/RunData.h"
 
 //set data type used for half-precision
@@ -81,28 +82,21 @@ enum class AccSetting {
   NONE, AVX256, AVX512, NEON, CUDA
 };
 
-//get string corresponding to acceleration method
+//get string corresponding to acceleration method at compile time
 template <AccSetting ACCELERATION_SETTING>
 constexpr std::string_view accelerationString() {
-  if constexpr (ACCELERATION_SETTING == AccSetting::NEON)
-    return "NEON";
-  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256)
-    return "AVX256";
-  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512)
-    return "AVX512";
-  else
-    return "DEFAULT";
+  if constexpr (ACCELERATION_SETTING == AccSetting::NEON) { return "NEON"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256) { return "AVX256"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512) { return "AVX512"; }
+  else { return "DEFAULT"; }
 }
 
+//get string corresponding to acceleration method at run time
 inline std::string_view accelerationString(AccSetting accelerationSetting) {
-  if (accelerationSetting == AccSetting::NEON)
-    return "NEON";
-  else if (accelerationSetting == AccSetting::AVX256)
-    return "AVX256";
-  else if (accelerationSetting == AccSetting::AVX512)
-    return "AVX512";
-  else
-    return "DEFAULT";
+  if (accelerationSetting == AccSetting::NEON) { return "NEON"; }
+  else if (accelerationSetting == AccSetting::AVX256) { return "AVX256"; }
+  else if (accelerationSetting == AccSetting::AVX512) { return "AVX512"; }
+  else { return "DEFAULT"; }
 }
 
 inline unsigned int getBytesAlignMemory(AccSetting accelSetting) {
@@ -115,6 +109,7 @@ inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
   return (accelSetting == AccSetting::AVX512) ? 16 : 8;
 }
 
+//generate RunData object that contains description header with corresponding value for each run setting
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
   RunData currRunData;
@@ -125,6 +120,10 @@ inline RunData runSettings()  {
   return currRunData;
 }
 
+//enum that specifies whether or not to use templated counts for the number of iterations in processing
+//loops or to run implementation with and without templated iteration counts
+//templated counts for number of loop iterations can help with optimization but requires that the number of
+//iterations be known at compile time
 enum class TemplatedItersSetting {
   RUN_ONLY_TEMPLATED,
   RUN_ONLY_NON_TEMPLATED,
@@ -134,8 +133,11 @@ enum class TemplatedItersSetting {
 //enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run
 //in initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster
 //on CPU
-enum class OptParallelParamsSetting { SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN };
+enum class OptParallelParamsSetting {
+  SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN,
+  ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN };
 
+//structure that stores settings for current implementation run
 struct RunImpSettings {
   TemplatedItersSetting templatedItersSetting_;
   std::pair<bool, OptParallelParamsSetting> optParallelParamsOptionSetting_;
@@ -147,14 +149,18 @@ struct RunImpSettings {
 
   //remove parallel parameters with less than specified number of threads
   void removeParallelParamBelowMinThreads(const unsigned int minThreads) {
-    pParamsDefaultOptOptions_.second.erase(std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(), [minThreads](const auto& pParams) {
-      return pParams[0] < minThreads; }), pParamsDefaultOptOptions_.second.end());
+    pParamsDefaultOptOptions_.second.erase(
+      std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(),
+        [minThreads](const auto& pParams) { return pParams[0] < minThreads; }),
+        pParamsDefaultOptOptions_.second.end());
   }
 
   //remove parallel parameters with greater than specified number of threads
   void removeParallelParamAboveMaxThreads(const unsigned int maxThreads) {
-    pParamsDefaultOptOptions_.second.erase(std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(), [maxThreads](const auto& pParams) {
-      return pParams[0] > maxThreads; }), pParamsDefaultOptOptions_.second.end());
+    pParamsDefaultOptOptions_.second.erase(
+      std::remove_if(pParamsDefaultOptOptions_.second.begin(), pParamsDefaultOptOptions_.second.end(),
+        [maxThreads](const auto& pParams) { return pParams[0] > maxThreads; }),
+        pParamsDefaultOptOptions_.second.end());
   }
 };
 

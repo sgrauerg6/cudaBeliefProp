@@ -4,7 +4,7 @@
  *  Created on: May 16, 2023
  *      Author: scott
  * 
- *  Class to store headers with data corresponding to current program run.
+ *  Class to store headers with data corresponding to current program run and evaluation.
  */
 
 #ifndef RUN_DATA_H
@@ -23,6 +23,7 @@ namespace run_eval {
   constexpr std::array<std::string_view, 2> BOOL_VAL_FALSE_TRUE_DISP_STR{"NO", "YES"};
 };
 
+//class to store headers with data corresponding to current program run and evaluation
 class RunData {
 public:
   //add data with header describing added data

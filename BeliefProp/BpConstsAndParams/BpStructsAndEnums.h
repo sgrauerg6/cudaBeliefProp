@@ -46,6 +46,8 @@ struct BPsettings
   //number of disparity values must be set for each stereo set
   unsigned int numDispVals_{0};
 
+  //retrieve bp settings as RunData object containing description headers with corresponding values
+  //for each setting
   RunData runData() const {
     RunData currRunData;
     currRunData.addDataWHeader("Num Possible Disparity Values", numDispVals_);
@@ -59,9 +61,11 @@ struct BPsettings
     return currRunData;
   }
 
+  //declare friend function to output bp settings to stream
   friend std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings);
 };
 
+//function to output bp settings to stream
 inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings) {
   resultsStream << "Num Possible Disparity Values: " << bpSettings.numDispVals_ << "\n";
   resultsStream << "Num BP Levels: " << bpSettings.numLevels_ << "\n";
@@ -74,9 +78,7 @@ inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& b
   return resultsStream;  
 }
 
-
-//structure to store the properties of the current level
-//
+//structure to store properties of a bp processing level
 struct levelProperties
 {
   levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
@@ -98,7 +100,7 @@ struct levelProperties
     paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
     offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum), divPaddedChBoardWAlign_(divPaddedChBoardWAlign) {}
 
-  //get bp level properties for next (higher) level in hierarchy that processed data with half width/height of current level
+  //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
   template <RunData_t T>
   beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
     const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
@@ -107,7 +109,7 @@ struct levelProperties
   }
 
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
-  //with the given number of possible movements
+  //with the specified number of possible disparity values
   template <RunData_t T>
   unsigned int getNumDataInBpArrays(const unsigned int numDisparityValues) const {
     return getNumDataForAlignedMemoryAtLevel<T>({widthLevel_, heightLevel_}, numDisparityValues);
@@ -156,7 +158,6 @@ struct levelProperties
     return totalData;
   }
 
-
   unsigned int widthLevel_;
   unsigned int heightLevel_;
   unsigned int bytesAlignMemory_;
@@ -172,8 +173,9 @@ struct levelProperties
 
 //used to define the two checkerboard "parts" that the image is divided into
 enum class Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
-enum class Message_Arrays : unsigned int { MESSAGES_U_CHECKERBOARD_0 = 0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
-                      MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
+enum class Message_Arrays : unsigned int { 
+  MESSAGES_U_CHECKERBOARD_0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
+  MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
 enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 
 template <RunData_ptr T>
@@ -193,9 +195,14 @@ struct dataCostData
 };
 
 //enum corresponding to each kernel in belief propagation that can be run in parallel
-enum class BpKernel : unsigned int { BLUR_IMAGES, DATA_COSTS_AT_LEVEL, INIT_MESSAGE_VALS, BP_AT_LEVEL,
-                COPY_AT_LEVEL, OUTPUT_DISP };
-constexpr unsigned int NUM_KERNELS{6u};
+enum class BpKernel : unsigned int { 
+  BLUR_IMAGES,
+  DATA_COSTS_AT_LEVEL,
+  INIT_MESSAGE_VALS,
+  BP_AT_LEVEL,
+  COPY_AT_LEVEL,
+  OUTPUT_DISP };
+constexpr unsigned int NUM_KERNELS{6};
 
 };
 

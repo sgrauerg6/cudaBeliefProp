@@ -18,7 +18,7 @@
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
 
-//class with operator function to evaluate implementation runs
+//class with operator function to evaluate implementations of the same algorithm across different data types and acceleration methods
 class EvaluateImpResults {
 public:
   //evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
