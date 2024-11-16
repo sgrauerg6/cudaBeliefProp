@@ -1,24 +1,24 @@
 /*
- * OutputEvaluationResults.h
+ * BpEvaluationResults.h
  *
  *  Created on: Sep 13, 2019
  *      Author: scott
  */
 
-#ifndef OUTPUTEVALUATIONRESULTS_H_
-#define OUTPUTEVALUATIONRESULTS_H_
+#ifndef BPEVALUATIONRESULTS_H_
+#define BPEVALUATIONRESULTS_H_
 
 #include <map>
 #include <iostream>
 #include <numeric>
 #include "RunSettingsEval/RunData.h"
-#include "OutputEvaluationParameters.h"
+#include "BpEvaluationParameters.h"
 
 //class to store stereo processing evaluation results
-class OutputEvaluationResults {
+class BpEvaluationResults {
 public:
   //initialize evaluation results with evaluation parameters
-  void initializeWithEvalParams(const OutputEvaluationParameters& evalParams);
+  void initializeWithEvalParams(const BpEvaluationParameters& evalParams);
 
   //retrieve evaluation results as RunData for output
   RunData runData() const;
@@ -40,4 +40,4 @@ public:
   std::map<float, unsigned int> numSigDiffPixelsAtThresholds_;
 };
 
-#endif /* OUTPUTEVALUATIONRESULTS_H_ */
+#endif /* BPEVALUATIONRESULTS_H_ */

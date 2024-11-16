@@ -12,8 +12,8 @@
 #include <string>
 #include <ranges>
 #include "BpImage.h"
-#include "BpOutputEvaluation/OutputEvaluationResults.h"
-#include "BpOutputEvaluation/OutputEvaluationParameters.h"
+#include "BpOutputEvaluation/BpEvaluationResults.h"
+#include "BpOutputEvaluation/BpEvaluationParameters.h"
 
 template<class T>
 requires std::is_arithmetic_v<T>
@@ -39,8 +39,8 @@ public:
     }
   }
 
-  const OutputEvaluationResults getOutputComparison(const DisparityMap& disparity_map_to_compare,
-    const OutputEvaluationParameters& evaluation_parameters) const;
+  const BpEvaluationResults getOutputComparison(const DisparityMap& disparity_map_to_compare,
+    const BpEvaluationParameters& evaluation_parameters) const;
 
   void saveDisparityMap(const std::string& disparity_map_file_path, const unsigned int scale_factor = 1) const;
 

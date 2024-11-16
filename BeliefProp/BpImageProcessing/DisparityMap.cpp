@@ -25,12 +25,12 @@ void DisparityMap<T>::saveDisparityMap(const std::string& disparity_map_file_pat
 
 //TODO: look into case where no known disparity in ground truth disparity map (should not be penalized for wrong disparity in that case)
 template<class T>
-const OutputEvaluationResults DisparityMap<T>::getOutputComparison(
+const BpEvaluationResults DisparityMap<T>::getOutputComparison(
   const DisparityMap& disparity_map_to_compare,
-  const OutputEvaluationParameters& evaluation_parameters) const
+  const BpEvaluationParameters& evaluation_parameters) const
 {
   //initialize output evaluation with evaluation parameters
-  OutputEvaluationResults output_evaluation;
+  BpEvaluationResults output_evaluation;
   output_evaluation.initializeWithEvalParams(evaluation_parameters);
 
   //go through each disparity map output pixel and evaluate output

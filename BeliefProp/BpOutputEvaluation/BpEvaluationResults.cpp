@@ -1,14 +1,14 @@
 /*
- * OutputEvaluationResults.cpp
+ * BpEvaluationResults.cpp
  *
  *  Created on: Sep 13, 2019
  *      Author: scott
  */
 
-#include "OutputEvaluationResults.h"
+#include "BpEvaluationResults.h"
 
 //initialize evaluation results with evaluation parameters
-void OutputEvaluationResults::initializeWithEvalParams(const OutputEvaluationParameters& evalParams) {
+void BpEvaluationResults::initializeWithEvalParams(const BpEvaluationParameters& evalParams) {
   disparityErrorCap_ = evalParams.max_diff_cap_;
   for (const auto& output_diff_threshold : evalParams.output_diff_thresholds_) {
     numSigDiffPixelsAtThresholds_[output_diff_threshold] = 0;
@@ -16,7 +16,7 @@ void OutputEvaluationResults::initializeWithEvalParams(const OutputEvaluationPar
 }
 
 //retrieve evaluation results as RunData for output
-RunData OutputEvaluationResults::runData() const {
+RunData BpEvaluationResults::runData() const {
   RunData evalRunData;
   evalRunData.addDataWHeader("Average RMS error", (double)averageDispAbsDiffNoMax_);
   evalRunData.addDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparityErrorCap_) + ")",

@@ -1,12 +1,12 @@
 /*
- * OutputEvaluationParameters.h
+ * BpEvaluationParameters.h
  *
  *  Created on: Sep 13, 2019
  *      Author: scott
  */
 
-#ifndef OUTPUTEVALUATIONPARAMETERS_H_
-#define OUTPUTEVALUATIONPARAMETERS_H_
+#ifndef BPEVALUATIONPARAMETERS_H_
+#define BPEVALUATIONPARAMETERS_H_
 
 #include <vector>
 
@@ -30,12 +30,15 @@ namespace beliefprop {
 }
 
 //structs to store parameters for evaluation of disparity map from stereo processing
-struct OutputEvaluationParameters {
-  std::vector<float> output_diff_thresholds_{beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1, beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2,
-    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3, beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4};
+struct BpEvaluationParameters {
+  std::vector<float> output_diff_thresholds_{
+    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_1,
+    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_2,
+    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_3,
+    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLD_4};
   const float max_diff_cap_{beliefprop::MAX_DIFF_CAP};
   unsigned int x_border_eval_{beliefprop::X_BORDER_SIZE_STEREO_EVAL};
   unsigned int y_border_eval_{beliefprop::Y_BORDER_SIZE_STEREO_EVAL};
 };
 
-#endif /* OUTPUTEVALUATIONPARAMETERS_H_ */
+#endif /* BPEVALUATIONPARAMETERS_H_ */
