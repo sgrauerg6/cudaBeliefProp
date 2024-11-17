@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"
 
+//return whether or not there was an error in CUDA processing
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::errorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
@@ -41,7 +42,7 @@ inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::errorCheck(co
    return run_eval::Status::NO_ERROR;
 }
 
-//functions directed related to running BP to retrieve the movement between the images
+//functions for processing BP to retrieve the disparity between the images
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>

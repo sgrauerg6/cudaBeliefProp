@@ -75,7 +75,6 @@ __global__ void initializeCurrentLevelData(
   }
 }
 
-
 //initialize the message values at each pixel of the current level to the default value
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void initializeMessageValsToDefaultKernel(
@@ -102,7 +101,6 @@ __global__ void initializeMessageValsToDefaultKernel(
       bpSettingsDispVals);
   }
 }
-
 
 //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
@@ -133,7 +131,6 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
   }
 }
 
-
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void runBPIterationUsingCheckerboardUpdates(
   const beliefprop::Checkerboard_Parts checkerboardToUpdate, const beliefprop::levelProperties currentLevelProperties,
@@ -161,7 +158,6 @@ __global__ void runBPIterationUsingCheckerboardUpdates(
       disc_k_bp, 0, dataAligned, bpSettingsDispVals, dstProcessing);
   }
 }
-
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
@@ -199,7 +195,6 @@ __global__ void copyMsgDataToNextLevel(
       bpSettingsDispVals);
   }
 }
-
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<RunData_t T, unsigned int DISP_VALS>

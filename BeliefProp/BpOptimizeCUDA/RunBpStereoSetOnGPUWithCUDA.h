@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 #define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
 
+#include <array>
 #include <cuda_runtime.h>
 #include "BpConstsAndParams/BpStereoCudaParameters.h"
 #include "BpConstsAndParams/BpTypeConstraints.h"
@@ -37,17 +38,16 @@ namespace bp_cuda_device
   inline RunData retrieveDeviceProperties(int numDevice)
   {
     cudaDeviceProp prop;
+    std::array<int, 2> cudaDriverRuntimeVersion;
     cudaGetDeviceProperties(&prop, numDevice);
-    int cudaDriverVersion;
-    cudaDriverGetVersion(&cudaDriverVersion);
-    int cudaRuntimeVersion;
-    cudaRuntimeGetVersion(&cudaRuntimeVersion);
+    cudaDriverGetVersion(&(cudaDriverRuntimeVersion[0]));
+    cudaRuntimeGetVersion(&(cudaDriverRuntimeVersion[1]));
 
     RunData runData;
     runData.addDataWHeader("Device " + std::to_string(numDevice),
       std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) + " multiprocessors");
-    runData.addDataWHeader("Cuda version", std::to_string(cudaDriverVersion));
-    runData.addDataWHeader("Cuda Runtime Version", std::to_string(cudaRuntimeVersion));
+    runData.addDataWHeader("Cuda version", std::to_string(cudaDriverRuntimeVersion[0]));
+    runData.addDataWHeader("Cuda Runtime Version", std::to_string(cudaDriverRuntimeVersion[1]));
     return runData;
   }
 };
@@ -63,12 +63,11 @@ public:
     const beliefprop::BPsettings& algSettings, 
     const ParallelParams& parallelParams) override
   {
-    //return null if acceleration setting is not CUDA
+    //return no value if acceleration setting is not CUDA
     if constexpr (ACCELERATION != run_environment::AccSetting::CUDA) {
       return {};
     }
 
-    //using SmoothImageCUDA::SmoothImage;
     //generate struct with pointers to objects for running CUDA implementation and call
     //function to run CUDA implementation
     RunData runData;
@@ -87,39 +86,5 @@ public:
     return procSetOutput;
   }
 };
-
-//float16_t data type used for arm (rather than short)
-//TODO: needs to be updated with other code changes
-#ifdef COMPILING_FOR_ARM
-
-template<>
-class RunBpStereoSetOnGPUWithCUDA<float16_t, float16_t*> : public RunBpStereoSet<float16_t, float16_t*>
-{
-public:
-  RunBpStereoSetOnGPUWithCUDA() {}
-
-  std::string getBpRunDescription() const override  { return "CUDA"; }
-
-  //if type is specified as short, process as half on GPU
-  //note that half is considered a data type for 16-bit floats in CUDA
-  std::optional<ProcessStereoSetOutput> operator() (const std::string& refImagePath, const std::string& testImagePath,
-    const beliefprop::BPsettings& algSettings, std::ostream& resultsStream, SmoothImage* smoothImage = nullptr, ProcessBPOnTargetDevice<short>* runBpStereo = nullptr, RunImpMemoryManagement* memManagementImages = nullptr) override
-  {
-
-    //std::cout << "Processing as half on GPU\n";
-    RunBpStereoSetOnGPUWithCUDA<halftype> runCUDABpStereoSet;
-    ProcessCUDABP<halftype> runCUDABPHalfPrecision;
-    return runCUDABpStereoSet(refImagePath,
-      testImagePath,
-      algSettings,
-      saveDisparityMapImagePath,
-      resultsStream,
-      smoothImage,
-      &runCUDABPHalfPrecision,
-      memManagementImages);
-  }
-};
-
-#endif //COMPILING_FOR_ARM
 
 #endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
