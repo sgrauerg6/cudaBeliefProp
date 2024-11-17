@@ -45,7 +45,7 @@ protected:
   //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set
   //to optimize parallel parameters returns data from runs using default and optimized parallel parameters
   MultRunData::value_type runEvalBenchmark(const run_environment::RunImpSettings& runImpSettings,
-    const bool runWLoopItersTemplated)
+    bool runWLoopItersTemplated)
   {
     MultRunData::value_type::value_type outRunData(runImpSettings.optParallelParamsOptionSetting_.first ? 2 : 1);
     enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };

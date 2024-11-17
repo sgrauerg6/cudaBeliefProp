@@ -24,7 +24,7 @@ public:
   DisparityMap(const std::array<unsigned int, 2>& widthHeight) : BpImage<T>(widthHeight) {}
 
   DisparityMap(const std::array<unsigned int, 2>& widthHeight, const T* input_disparity_map_vals,
-    const unsigned int disparity_map_vals_scale = 1) : BpImage<T>(widthHeight, input_disparity_map_vals)
+    unsigned int disparity_map_vals_scale = 1) : BpImage<T>(widthHeight, input_disparity_map_vals)
   {
     std::ranges::copy(input_disparity_map_vals, input_disparity_map_vals + this->getTotalPixels(), this->pixels_.get());
     if (disparity_map_vals_scale > 1u) {
@@ -39,13 +39,13 @@ public:
     }
   }
 
-  const BpEvaluationResults getOutputComparison(const DisparityMap& disparity_map_to_compare,
+  BpEvaluationResults getOutputComparison(const DisparityMap& disparity_map_to_compare,
     const BpEvaluationParameters& evaluation_parameters) const;
 
   void saveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor = 1) const;
 
 private:
-  void removeScaleFromDisparityVals(const unsigned int disparity_map_vals_scale)
+  void removeScaleFromDisparityVals(unsigned int disparity_map_vals_scale)
   {
     if (disparity_map_vals_scale > 1) {
       //divide each disparity value by disparity_map_vals_scale

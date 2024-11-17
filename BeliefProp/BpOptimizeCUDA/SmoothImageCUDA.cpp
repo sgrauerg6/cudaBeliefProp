@@ -9,15 +9,16 @@
 #include "kernelFilter.cu"
 
 //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage)
+void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage)
 {
   // setup execution parameters
-  const dim3 threads{this->parallelParams_.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BLUR_IMAGES), 0})[0],
-                     this->parallelParams_.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BLUR_IMAGES), 0})[1]};
+  const auto kernelTBlockDims = this->parallelParams_.getOptParamsForKernel(
+    {static_cast<unsigned int>(beliefprop::BpKernel::BLUR_IMAGES), 0});
+  const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
   const dim3 grid{(unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)),
                   (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y))};
 
-  //if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
+  //if sigmaVal < MIN_SIGMA_VAL_SMOOTH, don't smooth image...just convert the input image
   //of unsigned ints to an output image of float values
   if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
   {
@@ -30,7 +31,8 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
       cudaMemcpyHostToDevice);
 
     //call kernel to convert input unsigned int pixels to output float pixels on the device
-    beliefpropCUDA::convertUnsignedIntImageToFloat <<< grid, threads >>> (originalImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight());
+    beliefpropCUDA::convertUnsignedIntImageToFloat <<< grid, threads >>> (originalImageDevice, smoothedImage,
+      inImage.getWidth(), inImage.getHeight());
     cudaDeviceSynchronize();
 
     //free the device memory used to store original images
@@ -60,13 +62,13 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, const flo
       cudaMemcpyHostToDevice);
 
     //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
-    beliefpropCUDA::filterImageAcross<unsigned int> <<< grid, threads >>> (originalImageDevice, intermediateImageDevice, inImage.getWidth(), inImage.getHeight(),
-      filterDevice, filterWSize.second);
+    beliefpropCUDA::filterImageAcross<unsigned int> <<< grid, threads >>> (originalImageDevice, intermediateImageDevice,
+      inImage.getWidth(), inImage.getHeight(), filterDevice, filterWSize.second);
     cudaDeviceSynchronize();
 
     //now use the vertical filter to complete the smoothing of image on the device
-    beliefpropCUDA::filterImageVertical<float> <<< grid, threads >>> (intermediateImageDevice, smoothedImage, inImage.getWidth(), inImage.getHeight(),
-        filterDevice, filterWSize.second);
+    beliefpropCUDA::filterImageVertical<float> <<< grid, threads >>> (intermediateImageDevice, smoothedImage,
+      inImage.getWidth(), inImage.getHeight(), filterDevice, filterWSize.second);
     cudaDeviceSynchronize();
 
     //free the device memory used to store the images

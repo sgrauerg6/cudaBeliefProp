@@ -10,7 +10,7 @@
 
 //run and evaluate runs on one or more input of benchmark implementation using multiple settings
 std::pair<MultRunData, std::vector<MultRunSpeedup>> RunBenchmarkImp::operator()(const run_environment::RunImpSettings& runImpSettings,
-  const size_t dataTypeSize) const
+  size_t dataTypeSize) const
 {
   //run belief propagation implementation on multiple datasets and return run data for all runs
   MultRunData runDataAllRuns = runEvalImpMultDataSets(runImpSettings, dataTypeSize);

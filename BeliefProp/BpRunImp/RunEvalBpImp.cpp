@@ -8,7 +8,7 @@
 #include "RunEvalBpImp.h"
 
 MultRunData RunEvalBpImp::runEvalImpMultDataSets(
-  const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const 
+  const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize) const 
 {
   if (this->optImpAccel_ == run_environment::AccSetting::CUDA) {
     return runEvalImpMultDataSets<run_environment::AccSetting::CUDA>(runImpSettings, dataTypeSize);
@@ -28,7 +28,7 @@ MultRunData RunEvalBpImp::runEvalImpMultDataSets(
 
 template <run_environment::AccSetting OPT_IMP_ACCEL>
 MultRunData RunEvalBpImp::runEvalImpMultDataSets(
-  const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const
+  const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize) const
 {
   if (dataTypeSize == sizeof(float)) {
     return runEvalImpMultDataSets<float, OPT_IMP_ACCEL>(runImpSettings);

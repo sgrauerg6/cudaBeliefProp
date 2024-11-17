@@ -63,13 +63,13 @@ private:
     const beliefprop::levelProperties& prevLevelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
-    const unsigned int bpSettingsNumDispVals) = 0;
+    unsigned int bpSettingsNumDispVals) = 0;
 
   //initialize message values at first level of bp processing to default value
   virtual run_eval::Status initializeMessageValsToDefault(
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
-    const unsigned int bpSettingsNumDispVals) = 0;
+    unsigned int bpSettingsNumDispVals) = 0;
 
   //run belief propagation processing at current level of processing hierarchy
   virtual run_eval::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
@@ -84,14 +84,14 @@ private:
     const beliefprop::levelProperties& nextlevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
     const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
-    const unsigned int bpSettingsNumDispVals) = 0;
+    unsigned int bpSettingsNumDispVals) = 0;
 
   //retrieve computed output disparity at each pixel in bottom level using data and message values
   virtual float* retrieveOutputDisparity(
     const beliefprop::levelProperties& levelProperties,
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,
-    const unsigned int bpSettingsNumDispVals) = 0;
+    unsigned int bpSettingsNumDispVals) = 0;
 
   //free memory used for message values in bp processing
   virtual void freeCheckerboardMessagesMemory(const beliefprop::checkerboardMessages<T*>& checkerboardMessagesToFree,

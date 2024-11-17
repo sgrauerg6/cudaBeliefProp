@@ -18,9 +18,9 @@ namespace beliefprop {
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
 template <BpImData_t T>
-ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(const unsigned int xVal, const unsigned int yVal,
-  T* imagePixelsToFilter, float* filteredImagePixels, const unsigned int widthImages, const unsigned int heightImages,
-  float* imageFilter, const unsigned int sizeFilter)
+ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(unsigned int xVal, unsigned int yVal,
+  T* imagePixelsToFilter, float* filteredImagePixels, unsigned int widthImages, unsigned int heightImages,
+  float* imageFilter, unsigned int sizeFilter)
 {
   float filteredPixelVal = imageFilter[0] * ((float)imagePixelsToFilter[yVal*widthImages + xVal]);
 
@@ -36,9 +36,9 @@ ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(const unsigned i
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
 //the output filtered image is returned as an array of floats
 template <BpImData_t T>
-ARCHITECTURE_ADDITION inline void filterImageVerticalProcessPixel(const unsigned int xVal, const unsigned int yVal,
-  T* imagePixelsToFilter, float* filteredImagePixels, const unsigned int widthImages, const unsigned int heightImages,
-  float* imageFilter, const unsigned int sizeFilter)
+ARCHITECTURE_ADDITION inline void filterImageVerticalProcessPixel(unsigned int xVal, unsigned int yVal,
+  T* imagePixelsToFilter, float* filteredImagePixels, unsigned int widthImages, unsigned int heightImages,
+  float* imageFilter, unsigned int sizeFilter)
 {
   float filteredPixelVal = imageFilter[0] * ((float)imagePixelsToFilter[yVal*widthImages + xVal]);
 

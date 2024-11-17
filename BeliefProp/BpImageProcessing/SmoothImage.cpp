@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "SmoothImage.h"
 
 //create a Gaussian filter from a sigma value
-std::pair<std::unique_ptr<float[]>, unsigned int> SmoothImage::makeFilter(const float sigma)
+std::pair<std::unique_ptr<float[]>, unsigned int> SmoothImage::makeFilter(float sigma)
 {
   const float sigmaUse{std::max(sigma, 0.01f)};
   const unsigned int sizeFilter{(unsigned int)std::ceil(sigmaUse * WIDTH_SIGMA_1) + 1u};
@@ -33,7 +33,7 @@ std::pair<std::unique_ptr<float[]>, unsigned int> SmoothImage::makeFilter(const 
 }
 
 //normalize filter mask so it integrates to one
-void SmoothImage::normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter)
+void SmoothImage::normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter)
 {
   float sum{0.0f};
   for (unsigned int i = 1; i < sizeFilter; i++) {

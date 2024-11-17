@@ -33,7 +33,7 @@ namespace beliefpropCUDA {
 //output filtered image stored in floatImagePixels
 __global__ void convertUnsignedIntImageToFloat(
   unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
-  const unsigned int widthImages, const unsigned int heightImages)
+  unsigned int widthImages, unsigned int heightImages)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -52,8 +52,8 @@ __global__ void convertUnsignedIntImageToFloat(
 template<BpImData_t T>
 __global__ void filterImageAcross(
   T* imagePixelsToFilter, float* filteredImagePixels,
-  const unsigned int widthImages, const unsigned int heightImages,
-  float* imageFilter, const unsigned int sizeFilter)
+  unsigned int widthImages, unsigned int heightImages,
+  float* imageFilter, unsigned int sizeFilter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -72,8 +72,8 @@ __global__ void filterImageAcross(
 template<BpImData_t T>
 __global__ void filterImageVertical(
   T* imagePixelsToFilter, float* filteredImagePixels,
-  const unsigned int widthImages, const unsigned int heightImages,
-  float* imageFilter, const unsigned int sizeFilter)
+  unsigned int widthImages, unsigned int heightImages,
+  float* imageFilter, unsigned int sizeFilter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;

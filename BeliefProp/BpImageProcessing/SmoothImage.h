@@ -46,18 +46,18 @@ public:
   //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
   //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
   //normalize mask so it integrates to one
-  virtual void operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage) = 0;
+  virtual void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage) = 0;
 
 protected:
   //create a Gaussian filter from a sigma value
-  std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(const float sigma);
+  std::pair<std::unique_ptr<float[]>, unsigned int> makeFilter(float sigma);
 
   //parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA)
   const ParallelParams& parallelParams_;
 
 private:
   //normalize filter mask so it integrates to one
-  void normalizeFilter(const std::unique_ptr<float[]>& filter, const unsigned int sizeFilter);
+  void normalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int sizeFilter);
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

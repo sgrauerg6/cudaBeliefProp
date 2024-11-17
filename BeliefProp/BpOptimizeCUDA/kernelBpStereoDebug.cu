@@ -20,13 +20,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void beliefprop::printDataAndMessageValsAtPointKernel(
-  const unsigned int xVal, const unsigned int yVal,
+  unsigned int xVal, unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-  const unsigned int widthLevelCheckerboardPart, const unsigned int heightLevel)
+  unsigned int widthLevelCheckerboardPart, unsigned int heightLevel)
 {
   if (((xVal + yVal) % 2) == 0) {
     printf("xVal: %d\n", xVal);
@@ -86,13 +86,13 @@ __global__ void beliefprop::printDataAndMessageValsAtPointKernel(
 
 template<RunData_t T, unsigned int DISP_VALS>
 __device__ void printDataAndMessageValsAtPointDevice(
-  const unsigned int xVal, const unsigned int yVal,
+  unsigned int xVal, unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-  const unsigned int widthLevelCheckerboardPart, const unsigned int heightLevel)
+  unsigned int widthLevelCheckerboardPart, unsigned int heightLevel)
 {
   if (((xVal + yVal) % 2) == 0) {
     printf("xVal: %d\n", xVal);
@@ -152,13 +152,13 @@ __device__ void printDataAndMessageValsAtPointDevice(
 
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void beliefprop::printDataAndMessageValsToPointKernel(
-  const unsigned int xVal, const unsigned int yVal,
+  unsigned int xVal, unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-  const unsigned int widthLevelCheckerboardPart, const unsigned int heightLevel)
+  unsigned int widthLevelCheckerboardPart, unsigned int heightLevel)
 {
   const unsigned int checkerboardAdjustment = (((xVal + yVal) % 2) == 0) ? ((yVal)%2) : ((yVal+1)%2);
   if (((xVal + yVal) % 2) == 0) {
@@ -219,13 +219,13 @@ __global__ void beliefprop::printDataAndMessageValsToPointKernel(
 
 template<RunData_t T, unsigned int DISP_VALS>
 __device__ void printDataAndMessageValsToPointDevice(
-  const unsigned int xVal, const unsigned int yVal,
+  unsigned int xVal, unsigned int yVal,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-  const unsigned int widthLevelCheckerboardPart, const unsigned int heightLevel)
+  unsigned int widthLevelCheckerboardPart, unsigned int heightLevel)
 {
   const unsigned int checkerboardAdjustment = (((xVal + yVal) % 2) == 0) ? ((yVal)%2) : ((yVal+1)%2);
 

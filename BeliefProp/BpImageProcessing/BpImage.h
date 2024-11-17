@@ -56,15 +56,15 @@ public:
     return getPixelAtPoint(xyPoint[1]*widthHeight_[0] + xyPoint[0]);
   }
 
-  T getPixelAtPoint(const unsigned int i) const {
+  T getPixelAtPoint(unsigned int i) const {
     return (pixels_.get())[i];
   }
 
-  void setPixelAtPoint(const std::array<unsigned int, 2>& xyPoint, const T val) {
+  void setPixelAtPoint(const std::array<unsigned int, 2>& xyPoint, T val) {
     setPixelAtPoint((xyPoint[1]*widthHeight_[0] + xyPoint[0]), val);
   }
 
-  void setPixelAtPoint(const unsigned int i, const T val) {
+  void setPixelAtPoint(unsigned int i, T val) {
     (pixels_.get())[i] = val;
   }
 
@@ -87,11 +87,11 @@ protected:
   void pnm_read(std::ifstream &file, std::string& buf) const;
 
   BpImage<unsigned char> imageRead(const std::string& fileName,
-    const image_type imageType, const bool weightedRGBConversion = true) const;
+    image_type imageType, bool weightedRGBConversion = true) const;
 
   //currently assuming single channel
-  inline unsigned int getTotalPixels(/*const unsigned int numChannels = 1*/) const {
-    return (widthHeight_[0] * widthHeight_[1]/* * numChannels*/);
+  inline unsigned int getTotalPixels() const {
+    return (widthHeight_[0] * widthHeight_[1]);
   }
 };
 

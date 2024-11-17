@@ -32,7 +32,7 @@ short GenProcessingFuncts::getZeroVal<short>()
 }
 
 template<> inline
-float GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<short, float>(const short data)
+float GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<short, float>(short data)
 {
 #ifdef _WIN32
   __m128i dataInAvxReg = _mm_cvtsi32_si128(static_cast<int>(data));
@@ -44,7 +44,7 @@ float GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<short, float>(c
 }
 
 template<> inline
-short GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<float, short>(const float data)
+short GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<float, short>(float data)
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(data);

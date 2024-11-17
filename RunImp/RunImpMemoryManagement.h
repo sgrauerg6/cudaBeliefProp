@@ -21,7 +21,7 @@ template <RunData_t T>
 class RunImpMemoryManagement
 {
 public:
-  virtual T* allocateMemoryOnDevice(const unsigned int numData) {
+  virtual T* allocateMemoryOnDevice(unsigned int numData) {
     return (new T[numData]);
   }
 
@@ -49,11 +49,11 @@ public:
 #endif
   }
 
-  virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, const unsigned int numDataTransfer) {
+  virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) {
     std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
   }
 
-  virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, const unsigned int numDataTransfer) {
+  virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) {
     std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
   }
 };

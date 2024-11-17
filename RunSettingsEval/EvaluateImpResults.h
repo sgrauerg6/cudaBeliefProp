@@ -42,7 +42,7 @@ private:
   //includes results for each run as well as average and median speedup data across multiple runs
   template <bool MULT_DATA_TYPES>
   void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
-    run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize = 0) const;
+    run_environment::AccSetting accelerationSetting, unsigned int dataTypeSize = 0) const;
 
   //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
@@ -52,11 +52,11 @@ private:
 
   //get speedup over baseline data if data available
   std::vector<MultRunSpeedup> getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
-    MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
+    MultRunData& runDataAllRuns, size_t dataTypeSize) const;
 
   //get speedup over baseline run for subsets of smallest and largest sets if data available
   std::vector<MultRunSpeedup> getSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& runImpSettings,
-    MultRunData& runDataAllRuns, const size_t dataTypeSize) const;
+    MultRunData& runDataAllRuns, size_t dataTypeSize) const;
 
   //get baseline runtime data if available...return null if baseline data not available
   std::optional<std::pair<std::string, std::vector<double>>> getBaselineRuntimeData(std::string_view baselineDataPath) const;

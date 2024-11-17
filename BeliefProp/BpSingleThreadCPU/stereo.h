@@ -41,14 +41,14 @@ private:
   // compute message
   image<float[DISP_VALS]> *comp_data(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings);
   void msg(float s1[DISP_VALS], float s2[DISP_VALS], float s3[DISP_VALS], float s4[DISP_VALS],
-      float dst[DISP_VALS], const float disc_k_bp);
+      float dst[DISP_VALS], float disc_k_bp);
   void dt(float f[DISP_VALS]);
   image<uchar> *output(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
       image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
       image<float[DISP_VALS]> *data);
   void bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
       image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
-      image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp);
+      image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp);
   std::pair<image<uchar>*, RunData> stereo_ms(image<uchar> *img1, image<uchar> *img2,
     const beliefprop::BPsettings& algSettings, std::chrono::duration<double>& runtime);
 };
@@ -73,7 +73,7 @@ template<typename T, unsigned int DISP_VALS>
 inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::msg(float s1[DISP_VALS],
     float s2[DISP_VALS], float s3[DISP_VALS],
     float s4[DISP_VALS], float dst[DISP_VALS],
-    const float disc_k_bp) {
+    float disc_k_bp) {
   float val;
 
   // aggregate and find min
@@ -172,7 +172,7 @@ inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::output(image<flo
 template<typename T, unsigned int DISP_VALS>
 inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
     image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
-    image<float[DISP_VALS]> *data, const unsigned int iter, const float disc_k_bp) {
+    image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) {
   unsigned int width{(unsigned int)data->width()};
   unsigned int height{(unsigned int)data->height()};
 
@@ -332,315 +332,5 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_
 
   return output;
 }
-
-/*template<typename T>
-class RunBpStereoCPUSingleThread : public RunBpStereoSet<T, 0, run_environment::AccSetting::NONE>
-{
-public:
-  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
-      const beliefprop::BPsettings& algSettings,
-      const ParallelParams& parallelParams) override;
-  std::string getBpRunDescription() const override { return "Single-Thread CPU"; }
-
-private:
-  // compute message
-  image<float*> *comp_data(image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings);
-  void msg(float* s1, float* s2, float* s3, float* s4,
-      float* dst, const float disc_k_bp,
-      const beliefprop::BPsettings& algSettings);
-  void dt(float* f, const beliefprop::BPsettings& algSettings);
-  image<uchar> *output(image<float*> *u, image<float*> *d,
-      image<float*> *l, image<float*> *r,
-      image<float*> *data, const beliefprop::BPsettings& algSettings);
-  void bp_cb(image<float*> *u, image<float*> *d,
-      image<float*> *l, image<float*> *r,
-      image<float*> *data, const unsigned int iter, const float disc_k_bp,
-      const beliefprop::BPsettings& algSettings);
-  std::pair<image<uchar>*, RunData> stereo_ms(image<uchar> *img1, image<uchar> *img2,
-    const beliefprop::BPsettings& algSettings, std::chrono::duration<double>& runtime);
-};
-
-// dt of 1d function
-template<typename T>
-inline void RunBpStereoCPUSingleThread<T>::dt(float* f, const beliefprop::BPsettings& algSettings) {
-  for (unsigned int q = 1; q < algSettings.numDispVals_; q++) {
-    float prev = f[q - 1] + 1.0F;
-    if (prev < f[q])
-      f[q] = prev;
-  }
-  for (int q = (int)algSettings.numDispVals_ - 2; q >= 0; q--) {
-    float prev = f[q + 1] + 1.0F;
-    if (prev < f[q])
-      f[q] = prev;
-  }
-}
-
-// compute message
-template<typename T>
-inline void RunBpStereoCPUSingleThread<T>::msg(float* s1,
-    float* s2, float* s3,
-    float* s4, float* dst,
-    const float disc_k_bp,
-    const beliefprop::BPsettings& algSettings) {
-  float val;
-
-  // aggregate and find min
-  float minimum = bp_consts::INF_BP;
-  for (unsigned int value = 0; value < algSettings.numDispVals_; value++) {
-    dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
-    if (dst[value] < minimum)
-      minimum = dst[value];
-  }
-
-  // dt
-  dt(dst, algSettings);
-
-  // truncate
-  minimum += disc_k_bp;
-  for (unsigned int value = 0; value < algSettings.numDispVals_; value++)
-    if (minimum < dst[value])
-      dst[value] = minimum;
-
-  // normalize
-  val = 0;
-  for (unsigned int value = 0; value < algSettings.numDispVals_; value++)
-    val += dst[value];
-
-  val /= algSettings.numDispVals_;
-  for (unsigned int value = 0; value < algSettings.numDispVals_; value++)
-    dst[value] -= val;
-}
-
-// computation of data costs
-template<typename T>
-inline image<float*> * RunBpStereoCPUSingleThread<T>::comp_data(
-    image<uchar> *img1, image<uchar> *img2, const beliefprop::BPsettings& algSettings) {
-  unsigned int width{(unsigned int)img1->width()};
-  unsigned int height{(unsigned int)img1->height()};
-  image<float*> *data = new image<float*>(width, height);
-
-  image<float> *sm1, *sm2;
-  if (algSettings.smoothingSigma_ >= 0.1) {
-    sm1 = FilterImage::smooth(img1, algSettings.smoothingSigma_);
-    sm2 = FilterImage::smooth(img2, algSettings.smoothingSigma_);
-  } else {
-    sm1 = imageUCHARtoFLOAT(img1);
-    sm2 = imageUCHARtoFLOAT(img2);
-  }
-
-  for (unsigned int y = 0; y < height; y++) {
-    for (unsigned int x = algSettings.numDispVals_ - 1; x < width; x++) {
-      for (unsigned int value = 0; value < algSettings.numDispVals_; value++) {
-        const float val = abs(imRef(sm1, x, y) - imRef(sm2, x - value, y));
-        imRef(data, x, y)[value] = algSettings.lambda_bp_ * std::min(val, algSettings.data_k_bp_);
-      }
-    }
-  }
-
-  delete sm1;
-  delete sm2;
-  return data;
-}
-
-// generate output from current messages
-template<typename T>
-inline image<uchar> * RunBpStereoCPUSingleThread<T>::output(image<float*> *u,
-    image<float*> *d, image<float*> *l,
-    image<float*> *r, image<float*> *data,
-    const beliefprop::BPsettings& algSettings) {
-  unsigned int width{(unsigned int)data->width()};
-  unsigned int height{(unsigned int)data->height()};
-  image<uchar> *out = new image<uchar>(width, height);
-
-  for (unsigned int y = 1; y < height - 1; y++) {
-    for (unsigned int x = 1; x < width - 1; x++) {
-      // keep track of best value for current pixel
-      unsigned int best = 0;
-      float best_val = bp_consts::INF_BP;
-      for (unsigned int value = 0; value < algSettings.numDispVals_; value++) {
-        const float val =
-        imRef(u, x, y+1)[value] +
-        imRef(d, x, y-1)[value] +
-        imRef(l, x+1, y)[value] +
-        imRef(r, x-1, y)[value] +
-        imRef(data, x, y)[value];
-
-        if (val < best_val) {
-          best_val = val;
-          best = value;
-        }
-      }
-      imRef(out, x, y) = best;
-    }
-  }
-
-  return out;
-}
-
-// belief propagation using checkerboard update scheme
-template<typename T>
-inline void RunBpStereoCPUSingleThread<T>::bp_cb(image<float*> *u, image<float*> *d,
-    image<float*> *l, image<float*> *r,
-    image<float*> *data, const unsigned int iter, const float disc_k_bp,
-    const beliefprop::BPsettings& algSettings) {
-  unsigned int width{(unsigned int)data->width()};
-  unsigned int height{(unsigned int)data->height()};
-
-  for (unsigned int t = 0; t < iter; t++) {
-    //std::cout << "iter " << t << "\n";
-
-    for (unsigned int y = 1; y < height - 1; y++) {
-      for (unsigned int x = ((y + t) % 2) + 1; x < width - 1; x += 2) {
-
-        msg(imRef(u, x, y + 1), imRef(l, x + 1, y), imRef(r, x - 1, y),
-            imRef(data, x, y), imRef(u, x, y), disc_k_bp, algSettings);
-
-        msg(imRef(d, x, y - 1), imRef(l, x + 1, y), imRef(r, x - 1, y),
-            imRef(data, x, y), imRef(d, x, y), disc_k_bp, algSettings);
-
-        msg(imRef(u, x, y + 1), imRef(d, x, y - 1), imRef(r, x - 1, y),
-            imRef(data, x, y), imRef(r, x, y), disc_k_bp, algSettings);
-
-        msg(imRef(u, x, y + 1), imRef(d, x, y - 1), imRef(l, x + 1, y),
-            imRef(data, x, y), imRef(l, x, y), disc_k_bp, algSettings);
-
-      }
-    }
-  }
-}
-
-// multiscale belief propagation for image restoration
-template<typename T>
-inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
-  const beliefprop::BPsettings& algSettings, std::chrono::duration<double>& runtime) {
-  image<float*> *u[bp_params::LEVELS_BP];
-  image<float*> *d[bp_params::LEVELS_BP];
-  image<float*> *l[bp_params::LEVELS_BP];
-  image<float*> *r[bp_params::LEVELS_BP];
-  image<float*> *data[bp_params::LEVELS_BP];
-
-  auto timeStart = std::chrono::system_clock::now();
-
-  // data costs
-  data[0] = comp_data(img1, img2, algSettings);
-
-  // data pyramid
-  for (unsigned int i = 1; i < algSettings.numLevels_; i++) {
-    const unsigned int old_width = (unsigned int)data[i - 1]->width();
-    const unsigned int old_height = (unsigned int)data[i - 1]->height();
-    const unsigned int new_width = (unsigned int) ceil(old_width / 2.0);
-    const unsigned int new_height = (unsigned int) ceil(old_height / 2.0);
-
-    assert(new_width >= 1);
-    assert(new_height >= 1);
-
-    data[i] = new image<float*>(new_width, new_height);
-    for (unsigned int y = 0; y < old_height; y++) {
-      for (unsigned int x = 0; x < old_width; x++) {
-        for (unsigned int value = 0; value < algSettings.numDispVals_; value++) {
-          imRef(data[i], x/2, y/2)[value] +=
-              imRef(data[i-1], x, y)[value];
-        }
-      }
-    }
-  }
-
-  // run bp from coarse to fine
-  for (int i = algSettings.numLevels_ - 1; i >= 0; i--) {
-    unsigned int width = (unsigned int)data[i]->width();
-    unsigned int height = (unsigned int)data[i]->height();
-
-    // allocate & init memory for messages
-    if ((unsigned int)i == (algSettings.numLevels_ - 1)) {
-      // in the coarsest level messages are initialized to zero
-      u[i] = new image<float*>(width, height);
-      d[i] = new image<float*>(width, height);
-      l[i] = new image<float*>(width, height);
-      r[i] = new image<float*>(width, height);
-    } else {
-      // initialize messages from values of previous level
-      u[i] = new image<float*>(width, height, false);
-      d[i] = new image<float*>(width, height, false);
-      l[i] = new image<float*>(width, height, false);
-      r[i] = new image<float*>(width, height, false);
-
-      for (unsigned int y = 0; y < height; y++) {
-        for (unsigned int x = 0; x < width; x++) {
-          for (unsigned int value = 0; value < algSettings.numDispVals_; value++) {
-            imRef(u[i], x, y)[value] =
-                imRef(u[i+1], x/2, y/2)[value];
-            imRef(d[i], x, y)[value] =
-                imRef(d[i+1], x/2, y/2)[value];
-            imRef(l[i], x, y)[value] =
-                imRef(l[i+1], x/2, y/2)[value];
-            imRef(r[i], x, y)[value] =
-                imRef(r[i+1], x/2, y/2)[value];
-          }
-        }
-      }
-      // delete old messages and data
-      delete u[i + 1];
-      delete d[i + 1];
-      delete l[i + 1];
-      delete r[i + 1];
-      delete data[i + 1];
-    }
-
-    // BP
-    bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations_, algSettings.disc_k_bp_, algSettings);
-  }
-
-  image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
-
-  auto timeEnd = std::chrono::system_clock::now();
-  runtime = timeEnd-timeStart;
-  
-  RunData runData;
-  runData.addDataWHeader(std::string(run_eval::SINGLE_THREAD_RUNTIME_HEADER), runtime.count());
-
-  delete u[0];
-  delete d[0];
-  delete l[0];
-  delete r[0];
-  delete data[0];
-
-  return {out, runData};
-}
-
-template<typename T>
-inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T>::operator()(const std::array<std::string, 2>& refTestImagePath,
-    const beliefprop::BPsettings& algSettings, const ParallelParams& parallelParams)
-{
-  image<uchar> *img1, *img2, *out;// *edges;
-
-  // load input
-  img1 = loadPGMOrPPMImage(refTestImagePath[0].c_str());
-  img2 = loadPGMOrPPMImage(refTestImagePath[1].c_str());
-  std::chrono::duration<double> runtime;
-
-  // compute disparities
-  auto outStereo = stereo_ms(img1, img2, algSettings, runtime);
-  out = outStereo.first;
-
-  DisparityMap<float> outDispMap(std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
-
-  //set disparity at each point in disparity map
-  for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
-    for (unsigned int x = 0; x < (unsigned int)img1->width(); x++) {
-      outDispMap.setPixelAtPoint({x, y}, (float)imRef(out, x, y));
-    }
-  }
-
-  std::optional<ProcessStereoSetOutput> output{ProcessStereoSetOutput{}};
-  output->runTime = runtime;
-  output->outDisparityMap = std::move(outDispMap);
-  output->runData = outStereo.second;
-
-  delete img1;
-  delete img2;
-  delete out;
-
-  return output;
-}*/
 
 #endif /* STEREO_H_ */

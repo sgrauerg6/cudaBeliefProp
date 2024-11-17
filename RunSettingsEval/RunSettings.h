@@ -152,14 +152,14 @@ struct RunImpSettings {
   std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetStrIndices_;
 
   //remove parallel parameters with less than specified number of threads
-  void removeParallelParamBelowMinThreads(const unsigned int minThreads) {
+  void removeParallelParamBelowMinThreads(unsigned int minThreads) {
     const auto [firstRemove, lastRemove] = std::ranges::remove_if(pParamsDefaultOptOptions_.second,
         [minThreads](const auto& pParams) { return pParams[0] < minThreads; });
     pParamsDefaultOptOptions_.second.erase(firstRemove, lastRemove);
   }
 
   //remove parallel parameters with greater than specified number of threads
-  void removeParallelParamAboveMaxThreads(const unsigned int maxThreads) {
+  void removeParallelParamAboveMaxThreads(unsigned int maxThreads) {
     const auto [firstRemove, lastRemove] = std::ranges::remove_if(pParamsDefaultOptOptions_.second,
         [maxThreads](const auto& pParams) { return pParams[0] > maxThreads; });
     pParamsDefaultOptOptions_.second.erase(firstRemove, lastRemove);

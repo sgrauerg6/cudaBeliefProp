@@ -10,7 +10,7 @@ template <RunData_t T>
 class RunImpCUDAMemoryManagement final : public RunImpMemoryManagement<T>
 {
 public:
-  T* allocateMemoryOnDevice(const unsigned int numData) override {
+  T* allocateMemoryOnDevice(unsigned int numData) override {
     //allocate the space for the disparity map estimation
     T* arrayToAllocate;
     cudaMalloc((void **) &arrayToAllocate, numData * sizeof(T));
@@ -32,11 +32,11 @@ public:
     cudaFree(memoryToFree);
   }
 
-  void transferDataFromDeviceToHost(T* destArray, const T* inArray, const unsigned int numDataTransfer) override {
+  void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) override {
     cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyDeviceToHost);
   }
 
-  void transferDataFromHostToDevice(T* destArray, const T* inArray, const unsigned int numDataTransfer) override {
+  void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) override {
     cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyHostToDevice);
   }
 };

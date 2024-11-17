@@ -25,7 +25,7 @@ void DisparityMap<T>::saveDisparityMap(const std::string& disparity_map_file_pat
 
 //TODO: look into case where no known disparity in ground truth disparity map (should not be penalized for wrong disparity in that case)
 template<class T>
-const BpEvaluationResults DisparityMap<T>::getOutputComparison(
+BpEvaluationResults DisparityMap<T>::getOutputComparison(
   const DisparityMap& disparity_map_to_compare,
   const BpEvaluationParameters& evaluation_parameters) const
 {
@@ -51,7 +51,7 @@ const BpEvaluationResults DisparityMap<T>::getOutputComparison(
 
     //increment number of pixels that differ greater than threshold for each threshold
     std::ranges::for_each(evaluation_parameters.output_diff_thresholds_,
-      [absDiff, &output_evaluation](const float threshold) {
+      [absDiff, &output_evaluation](auto threshold) {
         if (absDiff > threshold) {
           output_evaluation.numSigDiffPixelsAtThresholds_[threshold]++;
         }

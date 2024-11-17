@@ -30,29 +30,29 @@ private:
   //the input image is stored as unsigned ints in the texture imagePixelsUnsignedInt
   //output filtered image stored in floatImagePixels
   void convertUnsignedIntImageToFloatCPU(unsigned int* imagePixelsUnsignedInt, float* floatImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages,
+    unsigned int widthImages, unsigned int heightImages,
     const ParallelParams& optCPUParams);
 
   //apply a horizontal filter on each pixel of the image in parallel
   template<BpImData_t U>
   void filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages,
-    float* imageFilter, const unsigned int sizeFilter,
+    unsigned int widthImages, unsigned int heightImages,
+    float* imageFilter, unsigned int sizeFilter,
     const ParallelParams& optCPUParams);
 
   //apply a vertical filter on each pixel of the image in parallel
   template<BpImData_t U>
   void filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages,
-    float* imageFilter, const unsigned int sizeFilter,
+    unsigned int widthImages, unsigned int heightImages,
+    float* imageFilter, unsigned int sizeFilter,
     const ParallelParams& optCPUParams);
 };
 
 //apply a horizontal filter on each pixel of the image in parallel
 template<BpImData_t U>
 void SmoothImageCPU::filterImageAcrossCPU(U* imagePixelsToFilter, float* filteredImagePixels,
-  const unsigned int widthImages, const unsigned int heightImages,
-  float* imageFilter, const unsigned int sizeFilter,
+  unsigned int widthImages, unsigned int heightImages,
+  float* imageFilter, unsigned int sizeFilter,
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
@@ -76,8 +76,8 @@ void SmoothImageCPU::filterImageAcrossCPU(U* imagePixelsToFilter, float* filtere
 //apply a vertical filter on each pixel of the image in parallel
 template<BpImData_t U>
 void SmoothImageCPU::filterImageVerticalCPU(U* imagePixelsToFilter, float* filteredImagePixels,
-  const unsigned int widthImages, const unsigned int heightImages,
-  float* imageFilter, const unsigned int sizeFilter,
+  unsigned int widthImages, unsigned int heightImages,
+  float* imageFilter, unsigned int sizeFilter,
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU

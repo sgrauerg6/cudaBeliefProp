@@ -27,7 +27,7 @@ template <class T>
 class image {
  public:
   /* create an image */
-  image(const int width, const int height, const bool init = true);
+  image(int width, int height, bool init = true);
 
   /* delete an image */
   ~image();
@@ -61,7 +61,7 @@ class image {
 #define imPtr(im, x, y) &(im->access[y][x])
 
 template <class T>
-image<T>::image(const int width, const int height, const bool init) {
+image<T>::image(int width, int height, bool init) {
   w = width;
   h = height;
   data = new T[w * h];  // allocate space for image data

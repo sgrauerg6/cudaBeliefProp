@@ -96,7 +96,7 @@ struct levelProperties
 
   //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
   template <RunData_t T>
-  beliefprop::levelProperties getNextLevelProperties(const unsigned int numDisparityValues) const {
+  beliefprop::levelProperties getNextLevelProperties(unsigned int numDisparityValues) const {
     const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
     return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
       offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_, divPaddedChBoardWAlign_);
@@ -105,15 +105,15 @@ struct levelProperties
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
   //with the specified number of possible disparity values
   template <RunData_t T>
-  unsigned int getNumDataInBpArrays(const unsigned int numDisparityValues) const {
+  unsigned int getNumDataInBpArrays(unsigned int numDisparityValues) const {
     return getNumDataForAlignedMemoryAtLevel<T>({widthLevel_, heightLevel_}, numDisparityValues);
   }
 
-  unsigned int getCheckerboardWidthTargetDevice(const unsigned int widthLevel) const {
+  unsigned int getCheckerboardWidthTargetDevice(unsigned int widthLevel) const {
     return (unsigned int)std::ceil(((float)widthLevel) / 2.0f);
   }
 
-  unsigned int getPaddedCheckerboardWidth(const unsigned int checkerboardWidth) const
+  unsigned int getPaddedCheckerboardWidth(unsigned int checkerboardWidth) const
   {
     //add "padding" to checkerboard width if necessary for alignment
     return ((checkerboardWidth % numDataAlignWidth_) == 0) ?
@@ -123,7 +123,7 @@ struct levelProperties
 
   template <RunData_t T>
   unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& widthHeightLevel,
-      const unsigned int totalPossibleMovements) const
+      unsigned int totalPossibleMovements) const
   {
     const unsigned long numDataAtLevel = (unsigned long)getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(widthHeightLevel[0])) *
       ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
@@ -140,7 +140,7 @@ struct levelProperties
 
   template <RunData_t T, run_environment::AccSetting ACCELERATION>
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
-    const unsigned int totalPossibleMovements, const unsigned int numLevels)
+    unsigned int totalPossibleMovements, unsigned int numLevels)
   {
     beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACCELERATION);
     unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
@@ -166,11 +166,11 @@ struct levelProperties
 };
 
 //used to define the two checkerboard "parts" that the image is divided into
-enum class Checkerboard_Parts {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
+enum class Checkerboard_Part {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
 enum class Message_Arrays : unsigned int { 
   MESSAGES_U_CHECKERBOARD_0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
   MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
-enum class messageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
+enum class MessageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
 
 template <RunData_ptr T>
 struct checkerboardMessages

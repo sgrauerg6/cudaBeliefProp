@@ -41,7 +41,7 @@ std::pair<MultRunData, std::vector<MultRunSpeedup>> EvaluateImpResults::getRunDa
 //includes results for each run as well as average and median speedup data across multiple runs
 template <bool MULT_DATA_TYPES>
 void EvaluateImpResults::writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
-  run_environment::AccSetting accelerationSetting, const unsigned int dataTypeSize) const
+  run_environment::AccSetting accelerationSetting, unsigned int dataTypeSize) const
 {
   //get iterator to first run with success
   const auto firstSuccessRun = std::find_if(runOutput.first.cbegin(), runOutput.first.cend(), [](const auto& runResult)
@@ -281,7 +281,7 @@ void EvaluateImpResults::evalResultsMultDTypeAccRuns() {
 
 //get speedup over baseline data if data available
 std::vector<MultRunSpeedup> EvaluateImpResults::getSpeedupOverBaseline(const run_environment::RunImpSettings& runImpSettings,
-  MultRunData& runDataAllRuns, const size_t dataTypeSize) const
+  MultRunData& runDataAllRuns, size_t dataTypeSize) const
 {
   //initialize speedup results
   std::vector<MultRunSpeedup> speedupResults;

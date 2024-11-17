@@ -59,7 +59,7 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 
 template<class T>
 BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
-  const image_type imageType, const bool weightedRGBConversion) const
+  image_type imageType, bool weightedRGBConversion) const
 {
   std::string buf;
 

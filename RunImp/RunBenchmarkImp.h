@@ -16,11 +16,11 @@
 //base class for running and evaluating multiple runs of benchmark that may be optimized on CPU or GPU
 class RunBenchmarkImp {
 public:
-  RunBenchmarkImp(const run_environment::AccSetting& optImpAccel) : optImpAccel_(optImpAccel) {}
+  RunBenchmarkImp(run_environment::AccSetting optImpAccel) : optImpAccel_(optImpAccel) {}
 
   //run and evaluate runs on one or more input of benchmark implementation using multiple settings
   std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& runImpSettings,
-    const size_t dataTypeSize) const;
+    size_t dataTypeSize) const;
 
   //return acceleration setting for implementation
   run_environment::AccSetting getAccelerationSetting() const { return optImpAccel_; }
@@ -30,7 +30,7 @@ protected:
 
 private:
   //run and evaluate implementation on multiple data sets
-  virtual MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, const size_t dataTypeSize) const = 0;
+  virtual MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize) const = 0;
 };
 
 #endif //RUN_BENCHMARK_IMP_H

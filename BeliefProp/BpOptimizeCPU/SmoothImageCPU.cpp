@@ -10,7 +10,7 @@
 //function to use the CPU-image filter to apply a guassian filter to the a single images
 //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)
 //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
-void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, const float sigmaVal, float* smoothedImage)
+void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage)
 {
   //if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
   //of unsigned ints to an output image of float values
@@ -43,7 +43,7 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, const floa
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedInt
 //output filtered image stored in floatImagePixels
 void SmoothImageCPU::convertUnsignedIntImageToFloatCPU(unsigned int* imagePixelsUnsignedInt, float* floatImagePixels,
-    const unsigned int widthImages, const unsigned int heightImages,
+    unsigned int widthImages, unsigned int heightImages,
     const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU

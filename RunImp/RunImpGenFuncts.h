@@ -44,12 +44,12 @@ ARCHITECTURE_ADDITION inline T getMax(const T val1, const T val2) {
 
 //checks if the current point is within the image bounds
 //assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
-ARCHITECTURE_ADDITION inline bool withinImageBounds(const unsigned int xVal, const unsigned int yVal, const unsigned int width, const unsigned int height) {
+ARCHITECTURE_ADDITION inline bool withinImageBounds(unsigned int xVal, unsigned int yVal, unsigned int width, unsigned int height) {
   return ((xVal < width) && (yVal < height));
 }
 
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(const unsigned int xValDataStart, const unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth,
+inline bool MemoryAlignedAtDataStart(unsigned int xValDataStart, unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth,
   unsigned int divPaddedChBoardWidthForAlign)
 {
   //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
