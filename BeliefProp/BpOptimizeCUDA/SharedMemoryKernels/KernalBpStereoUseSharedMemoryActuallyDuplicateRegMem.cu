@@ -31,7 +31,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 #endif
 #pragma unroll
   for (unsigned int currentDisparity = getMax(1, DISP_INDEX_START_REG_LOCAL_MEM);
-      currentDisparity < STEREO_SETS_TO_PROCESS;
+      currentDisparity < kStereoSetsToProcess;
       currentDisparity++) {
     prev = lastVal + (T) 1.0;
     if (prev < dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]) {
@@ -41,7 +41,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
   }
 
 //#pragma unroll 64
-  for (unsigned int currentDisparity = STEREO_SETS_TO_PROCESS - 2;
+  for (unsigned int currentDisparity = kStereoSetsToProcess - 2;
       currentDisparity >= DISP_INDEX_START_REG_LOCAL_MEM;
       currentDisparity--) {
     prev = lastVal + (T) 1.0;
@@ -52,7 +52,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
   }
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
-  for (unsigned int currentDisparity = getMin(STEREO_SETS_TO_PROCESS - 2,
+  for (unsigned int currentDisparity = getMin(kStereoSetsToProcess - 2,
       DISP_INDEX_START_REG_LOCAL_MEM - 1); currentDisparity >= 0;
       currentDisparity--) {
     prev = lastVal + (T) 1.0;
@@ -68,30 +68,30 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 template<>
 __device__ inline void msgStereo<float, float>(int xVal, int yVal,
     beliefprop::LevelProperties& currentLevelProperties,
-    float messageValsNeighbor1[STEREO_SETS_TO_PROCESS],
-    float messageValsNeighbor2[STEREO_SETS_TO_PROCESS],
-    float messageValsNeighbor3[STEREO_SETS_TO_PROCESS],
-    float dataCosts[STEREO_SETS_TO_PROCESS], float* dstMessageArray,
+    float messageValsNeighbor1[kStereoSetsToProcess],
+    float messageValsNeighbor2[kStereoSetsToProcess],
+    float messageValsNeighbor3[kStereoSetsToProcess],
+    float dataCosts[kStereoSetsToProcess], float* dstMessageArray,
     float disc_k_bp, bool dataAligned)
 {
   //int halfIndexSharedVals[2] = {1, (2*BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP)-1};
   //int indexIntervalNextHalfIndexSharedVals = 0;
   //printf("USED SHARED MEMORY\n");
   // aggregate and find min
-  float minimum = INF_BP;
+  float minimum = kInfBp;
 
 #if DISP_INDEX_START_REG_LOCAL_MEM == 0
   float* dstSharedMemActuallyReg = nullptr;
 #else
   //__shared__ float dstSharedMem[BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
-  //    * (STEREO_SETS_TO_PROCESS - (STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM) + ((STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM) % 2))];
+  //    * (kStereoSetsToProcess - (kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM) + ((kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM) % 2))];
   float dstSharedMemActuallyReg[DISP_INDEX_START_REG_LOCAL_MEM];
 #endif
 
   //unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
   //unsigned int indexIndexDstShared = startIndexDstShared;
 
-  float dst[STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
+  float dst[kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
@@ -115,7 +115,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
   //indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
   for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-      currentDisparity < STEREO_SETS_TO_PROCESS;
+      currentDisparity < kStereoSetsToProcess;
       currentDisparity++) {
     dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] =
         messageValsNeighbor1[currentDisparity]
@@ -128,7 +128,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-//#if (STEREO_SETS_TO_PROCESS - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
+//#if (kStereoSetsToProcess - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
 //  dtStereo<float>(dst);
 //#else
   //dtStereoSharedAndRegLocalMemory<float>(dstSharedMem, dst);
@@ -160,7 +160,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 #endif
 //#pragma unroll 64
   for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-      currentDisparity < STEREO_SETS_TO_PROCESS;
+      currentDisparity < kStereoSetsToProcess;
       currentDisparity++) {
     if (minimum < dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]) {
       dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = minimum;
@@ -169,12 +169,12 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
     valToNormalize +=
         dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM];
   }
-    valToNormalize /= ((float) STEREO_SETS_TO_PROCESS);
+    valToNormalize /= ((float) kStereoSetsToProcess);
 
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
         currentLevelProperties.paddedWidthCheckerboardLevel_,
         currentLevelProperties.heightLevel_, 0,
-        STEREO_SETS_TO_PROCESS);
+        kStereoSetsToProcess);
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
     //indexIndexDstShared = startIndexDstShared;
@@ -190,59 +190,59 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
       //indexIntervalNextHalfIndexSharedVals = !indexIntervalNextHalfIndexSharedVals;
       //indexIndexDstShared += BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP;
 
-#if bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#endif //bp_params::kOptimizedIndexingSetting == 1
     }
 #endif
 //#pragma unroll 64
     for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-        currentDisparity < STEREO_SETS_TO_PROCESS;
+        currentDisparity < kStereoSetsToProcess;
         currentDisparity++) {
       dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] -=
           valToNormalize;
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity
           - DISP_INDEX_START_REG_LOCAL_MEM];
 
-#if bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#endif //bp_params::kOptimizedIndexingSetting == 1
     }
 }
 
 template<>
 __device__ inline void msgStereo<half, half>(int xVal, int yVal,
     beliefprop::LevelProperties& currentLevelProperties,
-    half messageValsNeighbor1[STEREO_SETS_TO_PROCESS],
-    half messageValsNeighbor2[STEREO_SETS_TO_PROCESS],
-    half messageValsNeighbor3[STEREO_SETS_TO_PROCESS],
-    half dataCosts[STEREO_SETS_TO_PROCESS], half* dstMessageArray,
+    half messageValsNeighbor1[kStereoSetsToProcess],
+    half messageValsNeighbor2[kStereoSetsToProcess],
+    half messageValsNeighbor3[kStereoSetsToProcess],
+    half dataCosts[kStereoSetsToProcess], half* dstMessageArray,
     half disc_k_bp, bool dataAligned)
 {
   //int halfIndexSharedVals[2] = {1, (2*BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP)-1};
   //int indexIntervalNextHalfIndexSharedVals = 0;
   //printf("USED SHARED MEMORY\n");
   // aggregate and find min
-  half minimum = INF_BP;
+  half minimum = kInfBp;
 
 #if DISP_INDEX_START_REG_LOCAL_MEM == 0
   half* dstSharedMemActuallyReg = nullptr;
 #else
   //__shared__ half dstSharedMem[BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP
-  //    * (STEREO_SETS_TO_PROCESS - (STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM) + ((STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM) % 2))];
+  //    * (kStereoSetsToProcess - (kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM) + ((kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM) % 2))];
   half dstSharedMemActuallyReg[DISP_INDEX_START_REG_LOCAL_MEM];
 #endif
 
   //unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
   //unsigned int indexIndexDstShared = startIndexDstShared;
 
-  half dst[STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
+  half dst[kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
 //#pragma unroll 64
@@ -266,7 +266,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   //indexIntervalNextHalfIndexSharedVals = 0;
 //#pragma unroll 64
   for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-      currentDisparity < STEREO_SETS_TO_PROCESS;
+      currentDisparity < kStereoSetsToProcess;
       currentDisparity++) {
     dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] =
         messageValsNeighbor1[currentDisparity]
@@ -279,7 +279,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-//#if (STEREO_SETS_TO_PROCESS - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
+//#if (kStereoSetsToProcess - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
 //  dtStereo<float>(dst);
 //#else
   //dtStereoSharedAndRegLocalMemory<half>(dstSharedMem, dst);
@@ -311,7 +311,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 #endif
 //#pragma unroll 64
   for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-      currentDisparity < STEREO_SETS_TO_PROCESS;
+      currentDisparity < kStereoSetsToProcess;
       currentDisparity++) {
     if (minimum < dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]) {
       dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = minimum;
@@ -326,28 +326,28 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
         currentLevelProperties.paddedWidthCheckerboardLevel_,
         currentLevelProperties.heightLevel_, 0,
-        STEREO_SETS_TO_PROCESS);
+        kStereoSetsToProcess);
 
     for (unsigned int currentDisparity = 0;
-        currentDisparity < STEREO_SETS_TO_PROCESS;
+        currentDisparity < kStereoSetsToProcess;
         currentDisparity++) {
       dstMessageArray[destMessageArrayIndex] = (half) 0.0;
-#if bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#endif //bp_params::kOptimizedIndexingSetting == 1
     }
   }
   else
   {
-    valToNormalize /= ((half) STEREO_SETS_TO_PROCESS);
+    valToNormalize /= ((half) kStereoSetsToProcess);
 
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
         currentLevelProperties.paddedWidthCheckerboardLevel_,
         currentLevelProperties.heightLevel_, 0,
-        STEREO_SETS_TO_PROCESS);
+        kStereoSetsToProcess);
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
     //indexIndexDstShared = startIndexDstShared;
@@ -363,29 +363,29 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
       //indexIntervalNextHalfIndexSharedVals = !indexIntervalNextHalfIndexSharedVals;
       //indexIndexDstShared += BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP;
 
-#if bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#endif //bp_params::kOptimizedIndexingSetting == 1
     }
 #endif
 //#pragma unroll 64
     for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-        currentDisparity < STEREO_SETS_TO_PROCESS;
+        currentDisparity < kStereoSetsToProcess;
         currentDisparity++) {
       dst[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] -=
           valToNormalize;
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity
           - DISP_INDEX_START_REG_LOCAL_MEM];
 
-#if bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
           currentLevelProperties.paddedWidthCheckerboardLevel_;
 #else
       destMessageArrayIndex++;
-#endif //bp_params::OPTIMIZED_INDEXING_SETTING == 1
+#endif //bp_params::kOptimizedIndexingSetting == 1
     }
   }
 }

@@ -41,7 +41,7 @@ int main(int argc, char** argv)
   unsigned int dispMapScale = 256 / algSettings.numDispVals_;
 
   const auto cudaTBDims = std::array<unsigned int, 2>{32, 4};
-  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, algSettings.numLevels_, cudaTBDims};
+  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels, algSettings.numLevels_, cudaTBDims};
 
   std::unique_ptr<RunBpStereoSet<float, 0, run_environment::AccSetting::CUDA>> runOptBpNumItersNoTemplate =
     std::make_unique<RunBpStereoSetOnGPUWithCUDA<float, 0, run_environment::AccSetting::CUDA>>();

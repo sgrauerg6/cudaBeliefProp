@@ -23,7 +23,7 @@ std::filesystem::path EvaluateBPImpResults::getImpResultsPath() const
     //if so return iterator to directory; otherwise return iterator to end indicating that directory not
     //found in current path
     std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dirIt), std::filesystem::end(dirIt), 
-      [](const auto &p) { return p.path().stem() == bp_file_handling::BELIEF_PROP_DIRECTORY_NAME; });
+      [](const auto &p) { return p.path().stem() == bp_file_handling::kBeliefPropDirectoryName; });
     //check if return from find_if at iterator end and therefore didn't find belief propagation directory;
     //if that's the case continue to outer directory
     //for now assuming stereo sets directory exists in some outer directory and program won't work without it
@@ -39,7 +39,7 @@ std::filesystem::path EvaluateBPImpResults::getImpResultsPath() const
     
     //retrieve and return path for implementation results which is a subfolder inside of belief propagation directory
     if (it != std::filesystem::end(dirIt)) {
-      const std::filesystem::path impResultsPath{it->path() / run_eval::IMP_RESULTS_FOLDER_NAME};
+      const std::filesystem::path impResultsPath{it->path() / run_eval::kImpResultsFolderName};
       if (!(std::filesystem::is_directory(impResultsPath))) {
         //create directory if it doesn't exist
         std::filesystem::create_directory(impResultsPath);

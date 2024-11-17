@@ -21,10 +21,10 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
   //last token after "." is file extension
   //use extension to check if image is pgm or ppm
   BpImage<unsigned char> initImage;
-  if (token == PGM_EXTENSION) {
-    initImage = imageRead(filePathImage, ImageType::PGM_IMAGE);
-  } else if (token == PPM_EXTENSION) {
-    initImage = imageRead(filePathImage, ImageType::PPM_IMAGE, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
+  if (token == kPGMExt) {
+    initImage = imageRead(filePathImage, ImageType::kPgmImage);
+  } else if (token == kPPMExt) {
+    initImage = imageRead(filePathImage, ImageType::kPpmImage, kUseWeightedRGBToGrayscaleConversion);
   } else {
     //end function if not of type pgm or ppm with result
     //being BpImage with default constructor
@@ -81,12 +81,12 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
 
   BpImage<unsigned char> outImage(std::array<unsigned int, 2>{cols, rows});
 
-  if (imageType == ImageType::PGM_IMAGE) {
+  if (imageType == ImageType::kPgmImage) {
     /* read data */
     file.read((char*) (outImage.getPointerToPixelsStart()),
       (cols * rows * sizeof(char)));
   }
-  else if (imageType == ImageType::PPM_IMAGE) {
+  else if (imageType == ImageType::kPpmImage) {
     std::unique_ptr<char[]> rgbImagePtr = std::make_unique<char[]>(3 * cols * rows);
 
     /* read data */

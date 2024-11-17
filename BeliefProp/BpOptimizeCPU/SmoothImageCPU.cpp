@@ -12,9 +12,9 @@
 //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigmaVal
 void SmoothImageCPU::operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage)
 {
-  //if sigmaVal < MIN_SIGMA_VAL_SMOOTH, then don't smooth image...just convert the input image
+  //if sigmaVal < kMinSigmaValSmooth, then don't smooth image...just convert the input image
   //of unsigned ints to an output image of float values
-  if (sigmaVal < MIN_SIGMA_VAL_SMOOTH) {
+  if (sigmaVal < kMinSigmaValSmooth) {
     //call kernel to convert input unsigned int pixels to output float pixels on the device
     convertUnsignedIntImageToFloatCPU(inImage.getPointerToPixelsStart(), smoothedImage,
       inImage.getWidth(), inImage.getHeight(), this->parallelParams_);

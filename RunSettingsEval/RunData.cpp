@@ -84,8 +84,8 @@ std::string RunData::getDataAsStr(const std::string_view header) const {
   }
   if (std::holds_alternative<bool>(variantVal)) {
     return (std::get<bool>(variantVal)) ?
-      std::string(run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[1]) :
-      std::string(run_eval::BOOL_VAL_FALSE_TRUE_DISP_STR[0]);
+      std::string(run_eval::kBoolValFalseTrueDispStr[1]) :
+      std::string(run_eval::kBoolValFalseTrueDispStr[0]);
   }
   return "";
 }

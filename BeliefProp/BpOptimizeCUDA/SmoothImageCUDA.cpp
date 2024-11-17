@@ -18,9 +18,9 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& inImage, float sig
   const dim3 grid{(unsigned int)(ceil((float)inImage.getWidth() / (float)threads.x)),
                   (unsigned int)(ceil((float)inImage.getHeight() / (float)threads.y))};
 
-  //if sigmaVal < MIN_SIGMA_VAL_SMOOTH, don't smooth image...just convert the input image
+  //if sigmaVal < kMinSigmaValSmooth, don't smooth image...just convert the input image
   //of unsigned ints to an output image of float values
-  if (sigmaVal < MIN_SIGMA_VAL_SMOOTH)
+  if (sigmaVal < kMinSigmaValSmooth)
   {
     //declare and allocate the space for the input unsigned int image pixels and the output float image pixels
     unsigned int* originalImageDevice;

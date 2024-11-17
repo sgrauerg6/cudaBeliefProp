@@ -45,7 +45,7 @@ using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 namespace bpSingleThread {
-  constexpr bool RUN_SINGLE_THREAD_ONCE_FOR_SET{true};
+  constexpr bool kRunSingleThreadOnceForSet{true};
   inline std::map<std::array<filepathtype, 2>, std::tuple<std::chrono::duration<double>, RunData, filepathtype>> singleThreadRunOutput;
 };
 
@@ -69,8 +69,8 @@ protected:
     bool runImpTmpLoopIters) const override;
 
 private:
-  std::unique_ptr<RunBpStereoSet<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, run_environment::AccSetting::NONE>> runBpStereoSingleThread_;
-  std::unique_ptr<RunBpStereoSet<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>> runOptBpNumItersTemplated_;
+  std::unique_ptr<RunBpStereoSet<T, bp_params::kStereoSetsToProcess[NUM_INPUT].numDispVals_, run_environment::AccSetting::NONE>> runBpStereoSingleThread_;
+  std::unique_ptr<RunBpStereoSet<T, bp_params::kStereoSetsToProcess[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>> runOptBpNumItersTemplated_;
   std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> runOptBpNumItersNoTemplate_;
   beliefprop::BPsettings algSettings_;
 };
@@ -78,18 +78,18 @@ private:
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 MultRunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(const run_environment::RunImpSettings& runImpSettings) {
   //set up BP settings for current run
-  algSettings_.numDispVals_ = bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_;
+  algSettings_.numDispVals_ = bp_params::kStereoSetsToProcess[NUM_INPUT].numDispVals_;
   algSettings_.disc_k_bp_ = (float)algSettings_.numDispVals_ / 7.5f;
 
   MultRunData runResults;
-  runBpStereoSingleThread_ = std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_>>();
+  runBpStereoSingleThread_ = std::make_unique<RunBpStereoCPUSingleThread<T, bp_params::kStereoSetsToProcess[NUM_INPUT].numDispVals_>>();
   //RunBpOptimized set to optimized belief propagation implementation (currently optimized CPU and CUDA implementations supported)
-  if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::RUN_ONLY_NON_TEMPLATED) {
-    runOptBpNumItersTemplated_ = std::make_unique<RunBpOptimized<T, bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>>();
+  if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::kRunOnlyNonTemplated) {
+    runOptBpNumItersTemplated_ = std::make_unique<RunBpOptimized<T, bp_params::kStereoSetsToProcess[NUM_INPUT].numDispVals_, OPT_IMP_ACCEL>>();
     constexpr bool runWLoopItersTemplated{true};
     runResults.push_back(this->runEvalBenchmark(runImpSettings, runWLoopItersTemplated));
   }
-  if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::RUN_ONLY_TEMPLATED) {
+  if (runImpSettings.templatedItersSetting_ != run_environment::TemplatedItersSetting::kRunOnlyTempated) {
     runOptBpNumItersNoTemplate_ = std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
     constexpr bool runWLoopItersTemplated{false};
     runResults.push_back(this->runEvalBenchmark(runImpSettings, runWLoopItersTemplated));
@@ -110,7 +110,7 @@ std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::inputAndParamsForCurrBenchmark(bool loopItersTemplated) const {
   RunData currRunData;
-  currRunData.addDataWHeader(std::string(belief_prop::STEREO_SET_HEADER), std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
+  currRunData.addDataWHeader(std::string(belief_prop::kStereoSetHeader), std::string(bp_params::kStereoSetsToProcess[NUM_INPUT].name_));
   currRunData.appendData(this->inputAndParamsRunData(loopItersTemplated));
   currRunData.appendData(algSettings_.runData());
   currRunData.appendData(bp_params::runSettings());
@@ -126,7 +126,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImps
 { 
   const std::string optImpRunDesc{runImpTmpLoopIters ? runOptBpNumItersTemplated_->getBpRunDescription() : runOptBpNumItersNoTemplate_->getBpRunDescription()};
   const unsigned int numImpsRun{runOptImpOnly ? 1u : 2u};
-  BpFileHandling bpFileSettings(std::string(bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].name_));
+  BpFileHandling bpFileSettings(std::string(bp_params::kStereoSetsToProcess[NUM_INPUT].name_));
   const std::array<filepathtype, 2> refTestImagePath{bpFileSettings.getRefImagePath(), bpFileSettings.getTestImagePath()};
   std::array<filepathtype, 2> output_disp;
   for (unsigned int i=0; i < numImpsRun; i++) {
@@ -158,18 +158,18 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImps
   runData.appendData(run_output[0]->runData);
 
   //save resulting disparity map
-  run_output[0]->outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
-  runData.addDataWHeader(std::string(run_eval::OPTIMIZED_RUNTIME_HEADER), run_output[0]->runTime.count());
+  run_output[0]->outDisparityMap.saveDisparityMap(output_disp[0].string(), bp_params::kStereoSetsToProcess[NUM_INPUT].scaleFactor_);
+  runData.addDataWHeader(std::string(run_eval::kOptimizedRuntimeHeader), run_output[0]->runTime.count());
 
   if (!runOptImpOnly) {
     //run single-threaded implementation and retrieve structure with runtime and output disparity map
-    if ((!(bpSingleThread::RUN_SINGLE_THREAD_ONCE_FOR_SET)) || (!(bpSingleThread::singleThreadRunOutput.contains(refTestImagePath)))) {
+    if ((!(bpSingleThread::kRunSingleThreadOnceForSet)) || (!(bpSingleThread::singleThreadRunOutput.contains(refTestImagePath)))) {
       run_output[1] = runBpStereoSingleThread_->operator()({refTestImagePath[0].string(), refTestImagePath[1].string()}, algSettings_, *parallelParams);
       if (!(run_output[1])) {
         return {};
       }
-      run_output[1]->outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
-      if (bpSingleThread::RUN_SINGLE_THREAD_ONCE_FOR_SET) {
+      run_output[1]->outDisparityMap.saveDisparityMap(output_disp[1].string(), bp_params::kStereoSetsToProcess[NUM_INPUT].scaleFactor_);
+      if (bpSingleThread::kRunSingleThreadOnceForSet) {
         bpSingleThread::singleThreadRunOutput[refTestImagePath] = {run_output[1]->runTime, run_output[1]->runData, output_disp[1]};
       }
     }
@@ -178,7 +178,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImps
       run_output[1]->runData = std::get<1>(bpSingleThread::singleThreadRunOutput[refTestImagePath]);
       run_output[1]->outDisparityMap = DisparityMap<float>(
         std::get<2>(bpSingleThread::singleThreadRunOutput[refTestImagePath]).string(),
-        bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
+        bp_params::kStereoSetsToProcess[NUM_INPUT].scaleFactor_);
     }
   }
   runData.appendData(run_output[1]->runData);
@@ -191,7 +191,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::runImps
 
   //compare resulting disparity maps with ground truth and to each other
   const filepathtype groundTruthDisp{bpFileSettings.getGroundTruthDisparityFilePath()};
-  DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::STEREO_SETS_TO_PROCESS[NUM_INPUT].scaleFactor_);
+  DisparityMap<float> groundTruthDisparityMap(groundTruthDisp.string(), bp_params::kStereoSetsToProcess[NUM_INPUT].scaleFactor_);
   runData.addDataWHeader(optImpRunDesc + " output vs. Ground Truth result", std::string());
   runData.appendData(run_output[0]->outDisparityMap.getOutputComparison(groundTruthDisparityMap, BpEvaluationParameters()).runData());
   if (!runOptImpOnly) {

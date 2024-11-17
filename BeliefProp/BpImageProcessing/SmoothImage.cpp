@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 std::pair<std::unique_ptr<float[]>, unsigned int> SmoothImage::makeFilter(float sigma)
 {
   const float sigmaUse{std::max(sigma, 0.01f)};
-  const unsigned int sizeFilter{(unsigned int)std::ceil(sigmaUse * WIDTH_SIGMA_1) + 1u};
+  const unsigned int sizeFilter{(unsigned int)std::ceil(sigmaUse * kWidthSigma1) + 1u};
   std::unique_ptr<float[]> mask = std::make_unique<float[]>(sizeFilter);
   for (unsigned int i = 0; i < sizeFilter; i++) {
     mask[i] = std::exp(-0.5*((i/sigmaUse) * (i/sigmaUse)));

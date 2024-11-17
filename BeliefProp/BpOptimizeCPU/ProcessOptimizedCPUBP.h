@@ -112,7 +112,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
       messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
       algSettings.disc_k_bp_, algSettings.numDispVals_, this->parallelParams_);
   }
-  return run_eval::Status::NO_ERROR;
+  return run_eval::Status::kNoError;
 }
 
 //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -151,7 +151,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copy
       messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
       bpSettingsNumDispVals, this->parallelParams_);
   }
-  return run_eval::Status::NO_ERROR;
+  return run_eval::Status::kNoError;
 }
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
@@ -165,7 +165,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
     imagesOnTargetDevice[1], dataCostDeviceCheckerboard[0],
     dataCostDeviceCheckerboard[1], algSettings.lambda_bp_, algSettings.data_k_bp_,
     algSettings.numDispVals_, this->parallelParams_);
-  return run_eval::Status::NO_ERROR;
+  return run_eval::Status::kNoError;
 }
 
 //initialize the message values with no previous message values...all message values are set to 0
@@ -187,7 +187,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
     bpSettingsNumDispVals, this->parallelParams_);
-  return run_eval::Status::NO_ERROR;
+  return run_eval::Status::kNoError;
 }
 
 
@@ -216,7 +216,7 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
       ((int) offsetNum / sizeof(float)),
       bpSettingsNumDispVals, this->parallelParams_);
   }
-  return run_eval::Status::NO_ERROR;
+  return run_eval::Status::kNoError;
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>

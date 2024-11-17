@@ -40,7 +40,7 @@ private:
 
   //write data for file corresponding to runs for a specified data type or across all data type
   //includes results for each run as well as average and median speedup data across multiple runs
-  template <bool MULT_DATA_TYPES>
+  template <bool kMultDataTypes>
   void writeRunOutput(const std::pair<MultRunData, std::vector<MultRunSpeedup>>& runOutput, const run_environment::RunImpSettings& runImpSettings,
     run_environment::AccSetting accelerationSetting, unsigned int dataTypeSize = 0) const;
 

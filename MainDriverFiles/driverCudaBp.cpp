@@ -30,11 +30,11 @@ int main(int argc, char** argv)
   //on kernels in same run
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
   //in different kernels in the optimized CUDA implementation can decrease runtime
-  runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN};
-  runImpSettings.pParamsDefaultOptOptions_ = {run_cuda::PARALLEL_PARAMS_DEFAULT, run_cuda::PARALLEL_PARAMETERS_OPTIONS};
-  runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
+  runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
+  runImpSettings.pParamsDefaultOptOptions_ = {run_cuda::kParallelParamsDefault, run_cuda::kParallelParameterOptions};
+  runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
-    {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
+    {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
   runImpSettings.subsetStrIndices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
 #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};

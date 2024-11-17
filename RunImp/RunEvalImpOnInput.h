@@ -36,9 +36,9 @@ protected:
   //get current run inputs and parameters in RunData structure
   RunData inputAndParamsRunData(bool loopItersTemplated) const {
     RunData currRunData;
-    currRunData.addDataWHeader(std::string(run_eval::DATATYPE_HEADER), std::string(run_environment::DATA_SIZE_TO_NAME_MAP.at(sizeof(T))));
+    currRunData.addDataWHeader(std::string(run_eval::kDatatypeHeader), std::string(run_environment::kDataSizeToNameMap.at(sizeof(T))));
     currRunData.appendData(run_environment::runSettings<OPT_IMP_ACCEL>());
-    currRunData.addDataWHeader(std::string(run_eval::LOOP_ITERS_TEMPLATED_HEADER), loopItersTemplated);
+    currRunData.addDataWHeader(std::string(run_eval::kLoopItersTemplatedHeader), loopItersTemplated);
     return currRunData;
   }
 
@@ -91,11 +91,11 @@ protected:
       RunData currRunData;
       if (currRunType != RunType::TEST_PARAMS) {
         //add input and parameters data for specific benchmark to current run data
-        currRunData.addDataWHeader(std::string(run_eval::INPUT_IDX_HEADER), std::to_string(NUM_INPUT));
+        currRunData.addDataWHeader(std::string(run_eval::kInputIdxHeader), std::to_string(NUM_INPUT));
         currRunData.appendData(inputAndParamsForCurrBenchmark(runWLoopItersTemplated));
         if ((runImpSettings.optParallelParamsOptionSetting_.first) &&
             (runImpSettings.optParallelParamsOptionSetting_.second ==
-             run_environment::OptParallelParamsSetting::ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN))
+             run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun))
         {
           //add parallel parameters for each kernel to current input data if allowing different parallel parameters for each kernel in the same run
           currRunData.appendData(parallelParams->runData());
@@ -108,7 +108,7 @@ protected:
       //run benchmark implementation(s) and return null output if error in run
       //detailed results stored to file that is generated using stream
       const auto runImpsECodeData = runImpsAndCompare(parallelParams, runOptImpOnly, runWLoopItersTemplated);
-      currRunData.addDataWHeader(std::string(run_eval::RUN_SUCCESS_HEADER), runImpsECodeData.has_value());
+      currRunData.addDataWHeader(std::string(run_eval::kRunSuccessHeader), runImpsECodeData.has_value());
 
       //if error in run and run is any type other than for testing parameters, exit function with null output to indicate error
       if ((!runImpsECodeData) && (currRunType != RunType::TEST_PARAMS)) {

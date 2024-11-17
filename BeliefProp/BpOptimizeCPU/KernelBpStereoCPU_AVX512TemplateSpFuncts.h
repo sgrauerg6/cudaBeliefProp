@@ -164,106 +164,106 @@ template<> inline void beliefpropCPU::updateBestDispBestVals<__m512d>(__m512d& b
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[0].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[0].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[0].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[0].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[0].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[0].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[0].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[1].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[1].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[1].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[1].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[1].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[1].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[1].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[2].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[2].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[2].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[2].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[2].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[2].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[2].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[3].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[3].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[3].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[3].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[3].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[3].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[3].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[4].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[4].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[4].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[4].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[4].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[4].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[4].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[5].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[5].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[5].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[5].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[5].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[5].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[5].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 // compute current message
-template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(
+template<> inline void beliefpropCPU::msgStereoSIMD<short, __m256i, bp_params::kStereoSetsToProcess[6].numDispVals_>(
   unsigned int xVal, unsigned int yVal,
   const beliefprop::LevelProperties& currentLevelProperties,
-  __m256i messageValsNeighbor1[bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_],
-  __m256i messageValsNeighbor2[bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_],
-  __m256i messageValsNeighbor3[bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_],
-  __m256i dataCosts[bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_],
+  __m256i messageValsNeighbor1[bp_params::kStereoSetsToProcess[6].numDispVals_],
+  __m256i messageValsNeighbor2[bp_params::kStereoSetsToProcess[6].numDispVals_],
+  __m256i messageValsNeighbor3[bp_params::kStereoSetsToProcess[6].numDispVals_],
+  __m256i dataCosts[bp_params::kStereoSetsToProcess[6].numDispVals_],
   short* dstMessageArray, const __m256i& disc_k_bp, bool dataAligned)
 {
-  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::STEREO_SETS_TO_PROCESS[6].numDispVals_>(
+  msgStereoSIMDProcessing<short, __m256i, float, __m512, bp_params::kStereoSetsToProcess[6].numDispVals_>(
     xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2,
     messageValsNeighbor3, dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }

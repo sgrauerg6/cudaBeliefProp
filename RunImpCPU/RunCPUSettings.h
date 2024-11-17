@@ -40,32 +40,21 @@
 namespace run_cpu {
 
 //constant to specify to run simulate single CPU on a dual-CPU system
-constexpr std::string_view SIMULATE_SINGLE_CPU{"SimulateSingleCPU"};
-
-//set the CPU vectorization
-#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NEON};
-#elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX256};
-#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::AVX512};
-#else
-constexpr run_environment::AccSetting CPU_VECTORIZATION{run_environment::AccSetting::NONE};
-#endif
+constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 
 //parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation
 //parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
-const unsigned int NUM_THREADS_CPU{std::thread::hardware_concurrency()};
+const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
 #ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
-const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
-  { NUM_THREADS_CPU, 1},{ NUM_THREADS_CPU / 2, 1}};
+const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
+  { kNumThreadsCPU, 1},{ kNumThreadsCPU / 2, 1}};
 #else
-const std::vector<std::array<unsigned int, 2>> PARALLEL_PARAMETERS_OPTIONS{
-  { NUM_THREADS_CPU, 1}, { (3 * NUM_THREADS_CPU) / 4 , 1}, { NUM_THREADS_CPU / 2, 1},
-  { NUM_THREADS_CPU / 4, 1}, { NUM_THREADS_CPU / 8, 1}};
+const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
+  { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
+  { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
 #endif //LIMITED_TEST_PARAMS_FEWER_RUNS
-const unsigned int MIN_NUM_THREADS_RUN{std::min(NUM_THREADS_CPU, 4u)};
-const std::array<unsigned int, 2> PARALLEL_PARAMS_DEFAULT{{NUM_THREADS_CPU, 1}};
+const unsigned int kMinNumThreadsRun{std::min(kNumThreadsCPU, 4u)};
+const std::array<unsigned int, 2> kParallelParamsDefault{{kNumThreadsCPU, 1}};
 
 };
 

@@ -16,7 +16,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//Declares the functions used to smooth the input images with a gaussian filter of SIGMA_BP (see bpCudaParameters.cuh) implemented in CUDA
+//Declares the functions used to smooth the input images with a gaussian filter of kSigmaBp (see bpCudaParameters.cuh) implemented in CUDA
 
 #ifndef SMOOTH_IMAGE_HOST_HEADER_CUH
 #define SMOOTH_IMAGE_HOST_HEADER_CUH
@@ -29,11 +29,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunImp/BpParallelParams.h"
 #include "BpImage.h"
 
-//don't smooth input images if SIGMA_BP below this
-constexpr float MIN_SIGMA_VAL_SMOOTH{0.1f};
+//don't smooth input images if kSigmaBp below this
+constexpr float kMinSigmaValSmooth{0.1f};
 
 //parameter for smoothing
-constexpr float WIDTH_SIGMA_1{4.0f};
+constexpr float kWidthSigma1{4.0f};
 
 //functions relating to smoothing the images before running BP
 //Smoothing image always uses float data type

@@ -18,42 +18,42 @@
 //namespace for general program run evaluation
 namespace run_eval {
   //enum for status to indicate if error or no error
-  enum class Status { NO_ERROR, ERROR };
+  enum class Status { kNoError, kError };
 
   //constants for headers corresponding to input, input settings, results, and run success
-  constexpr std::string_view INPUT_IDX_HEADER{"Input Index"};
-  constexpr std::string_view DATATYPE_HEADER{"Data Type"};
-  constexpr std::string_view LOOP_ITERS_TEMPLATED_HEADER{"Loop Iters Templated"};
-  constexpr std::string_view RUN_SUCCESS_HEADER{"Run Success"};
+  constexpr std::string_view kInputIdxHeader{"Input Index"};
+  constexpr std::string_view kDatatypeHeader{"Data Type"};
+  constexpr std::string_view kLoopItersTemplatedHeader{"Loop Iters Templated"};
+  constexpr std::string_view kRunSuccessHeader{"Run Success"};
 
   //constants for output results for individual and sets of runs
-  constexpr std::string_view RUN_RESULTS_DESCRIPTION_FILE_NAME{"RunResults"};
-  constexpr std::string_view RUN_RESULTS_W_SPEEDUPS_DESCRIPTION_FILE_NAME{"RunResultsWSpeedups"};
-  constexpr std::string_view RUN_RESULTS_DESCRIPTION_DEFAULT_P_PARAMS_FILE_NAME{"ResultsDefaultParallelParams"};
-  constexpr std::string_view SPEEDUPS_DESCRIPTION_FILE_NAME{"Speedups"};
-  constexpr std::string_view EVALUATION_ACROSS_RUNS_FILE_NAME{"EvaluationAcrossRuns"};
-  constexpr std::string_view CSV_FILE_EXTENSION{".csv"};
-  constexpr std::string_view OPTIMIZED_RUNTIME_HEADER{"Median Optimized Runtime (including transfer time)"};
-  constexpr std::string_view SINGLE_THREAD_RUNTIME_HEADER{"Average Single-Thread CPU run time"};
-  constexpr std::string_view SPEEDUP_OPT_PAR_PARAMS_HEADER{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
-  constexpr std::string_view SPEEDUP_DOUBLE{"Speedup using double-precision relative to float (actually slowdown)"};
-  constexpr std::string_view SPEEDUP_HALF{"Speedup using half-precision relative to float"};
-  constexpr std::string_view SPEEDUP_DISP_COUNT_TEMPLATE{"Speedup w/ templated disparity count (known at compile-time)"};
-  constexpr std::string_view SPEEDUP_VECTORIZATION{"Speedup using CPU vectorization"};
-  constexpr std::string_view SPEEDUP_VS_AVX256_VECTORIZATION{"Speedup over AVX256 CPU vectorization"};
+  constexpr std::string_view kRunResultsDescFileName{"RunResults"};
+  constexpr std::string_view kRunResultsWSpeedupsDescFileName{"RunResultsWSpeedups"};
+  constexpr std::string_view kRunResultsDescDefaultPParamsFileName{"ResultsDefaultParallelParams"};
+  constexpr std::string_view kSpeedupsDescFileName{"Speedups"};
+  constexpr std::string_view kEvalAcrossRunsFileName{"EvaluationAcrossRuns"};
+  constexpr std::string_view kCsvFileExtension{".csv"};
+  constexpr std::string_view kOptimizedRuntimeHeader{"Median Optimized Runtime (including transfer time)"};
+  constexpr std::string_view kSingleThreadRuntimeHeader{"Average Single-Thread CPU run time"};
+  constexpr std::string_view kSpeedupOptParParamsHeader{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
+  constexpr std::string_view kSpeedupDouble{"Speedup using double-precision relative to float (actually slowdown)"};
+  constexpr std::string_view kSpeedupHalf{"Speedup using half-precision relative to float"};
+  constexpr std::string_view kSpeedupDispCountTemplate{"Speedup w/ templated disparity count (known at compile-time)"};
+  constexpr std::string_view kSpeedupCPUVectorization{"Speedup using CPU vectorization"};
+  constexpr std::string_view kSpeedupVsAvx256Vectorization{"Speedup over AVX256 CPU vectorization"};
 
   //constants for implementation result
-  constexpr std::string_view IMP_RESULTS_FOLDER_NAME{"ImpResults"};
-  constexpr std::string_view IMP_RESULTS_RUN_DATA_FOLDER_NAME{"RunResults"};
-  constexpr std::string_view IMP_RESULTS_RUN_DATA_W_SPEEDUPS_FOLDER_NAME{"RunResultsWSpeedups"};
-  constexpr std::string_view IMP_RESULTS_SPEEDUPS_FOLDER_NAME{"Speedups"};
-  constexpr std::string_view IMP_RESULTS_RESULTS_ACROSS_ARCHS_FOLDER_NAME{"ResultsAcrossArchitectures"};
+  constexpr std::string_view kImpResultsFolderName{"ImpResults"};
+  constexpr std::string_view kImpResultsRunDataFolderName{"RunResults"};
+  constexpr std::string_view kImpResultsRunDataWSpeedupsFolderName{"RunResultsWSpeedups"};
+  constexpr std::string_view kImpResultsSpeedupsFolderName{"Speedups"};
+  constexpr std::string_view kImpResultsAcrossArchsFolderName{"ResultsAcrossArchitectures"};
   
   //headers that correspond to unique "signature" for input mapping in run across multiple inputs on an architecture
-  constexpr std::array<std::string_view, 3> RUN_INPUT_SIG_HDRS{INPUT_IDX_HEADER, DATATYPE_HEADER, LOOP_ITERS_TEMPLATED_HEADER};
-  constexpr size_t RUN_INPUT_NUM_INPUT_IDX{0};
-  constexpr size_t RUN_INPUT_DATATYPE_IDX{1};
-  constexpr size_t RUN_INPUT_LOOP_ITERS_TEMPLATED_IDX{2};
+  constexpr std::array<std::string_view, 3> kRunInputSigHeaders{kInputIdxHeader, kDatatypeHeader, kLoopItersTemplatedHeader};
+  constexpr size_t kRunInputNumInputIdx{0};
+  constexpr size_t kRunInputDatatypeIdx{1};
+  constexpr size_t kRunInputLoopItersTemplatedIdx{2};
 
   //comparison for sorting of input signature for each run (datatype, then input number, then whether or not using templated iter count)
   struct LessThanRunSigHdrs {
@@ -69,7 +69,7 @@ namespace run_eval {
         return std::stoi(a[0]) < std::stoi(b[0]);
       }
       else if (a[2] != b[2]) {
-        if (a[2] == std::string(BOOL_VAL_FALSE_TRUE_DISP_STR[1])) { return true; /* a < b is true */ }
+        if (a[2] == std::string(kBoolValFalseTrueDispStr[1])) { return true; /* a < b is true */ }
       }
       return false; /* a <= b is false */
     }

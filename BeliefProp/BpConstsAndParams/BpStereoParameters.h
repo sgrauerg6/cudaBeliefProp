@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 namespace bp_consts
 {
   //float value of "infinity" that works with half-precision
-  constexpr float INF_BP = 65504.0f;
+  constexpr float kInfBp = 65504.0f;
 }
 
 namespace bp_params
@@ -48,7 +48,7 @@ namespace bp_params
   };
 
   //declare stereo sets to process with name, num disparity values, and scale factor
-  constexpr std::array<BpStereoSet, 8> STEREO_SETS_TO_PROCESS{
+  constexpr std::array<BpStereoSet, 8> kStereoSetsToProcess{
     BpStereoSet{"tsukubaSetHalfSize", 8, 32},
     BpStereoSet{"tsukubaSet", 16, 16},
     BpStereoSet{"venus", 21, 8},
@@ -62,42 +62,42 @@ namespace bp_params
   //number of belief propagation stereo runs of same image set
   //fewer runs if using limited parameters for faster processing
 #ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
-  constexpr unsigned int NUM_BP_STEREO_RUNS = 3;
+  constexpr unsigned int kNumBpStereoRuns = 3;
 #else
-  constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
+  constexpr unsigned int kNumBpStereoRuns = 15;
 #endif //LIMITED_TEST_PARAMS_FEWER_RUNS
 
   // number of BP iterations at each scale/level
-  constexpr unsigned int ITER_BP = 7;
+  constexpr unsigned int kItersBp = 7;
 
   // number of scales/levels in the pyramid to run BP
-  constexpr unsigned int LEVELS_BP = 5;
+  constexpr unsigned int kLevelsBp = 5;
 
   // truncation of data cost
-  constexpr float DATA_K_BP = 15.0f;
+  constexpr float kDataKBp = 15.0f;
 
   // weighing of data cost
-  constexpr float LAMBDA_BP = 0.1f;
+  constexpr float kLambdaBp = 0.1f;
 
   // amount to smooth the input images
-  constexpr float SIGMA_BP = 0.0f;
+  constexpr float kSigmaBp = 0.0f;
 
   //by default, optimized GPU memory management and optimized indexing used
   //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these
   //optimizations (note that the optimized indexing was present in the initial implementation)
   //Can remove optimized GPU memory management (making the processing more similar to the initial work)
-  //by setting USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT to false
-  //Optimized indexing can be turned off by changing the OPTIMIZED_INDEXING_SETTING value to false
+  //by setting kUseOptGPUMemManagement to false
+  //Optimized indexing can be turned off by changing the kOptimizedIndexingSetting value to false
   //(not recommended; this slows down processing)
-  constexpr bool USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT{true};
-  constexpr bool OPTIMIZED_INDEXING_SETTING{true};
-  constexpr bool ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS{true};
+  constexpr bool kUseOptGPUMemManagement{true};
+  constexpr bool kOptimizedIndexingSetting{true};
+  constexpr bool kAllocateFreeBpMemoryOutsideRuns{true};
 
   //retrieve run settings as a RunData object for output
   inline RunData runSettings()  {
     RunData currRunData;
-    currRunData.addDataWHeader("Memory Optimization Level", std::to_string(USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT));
-    currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(OPTIMIZED_INDEXING_SETTING));
+    currRunData.addDataWHeader("Memory Optimization Level", std::to_string(kUseOptGPUMemManagement));
+    currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(kOptimizedIndexingSetting));
     return currRunData;
   }
 };

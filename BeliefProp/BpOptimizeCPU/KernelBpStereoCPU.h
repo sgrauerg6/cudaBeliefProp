@@ -1538,8 +1538,8 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
   T* dstMessageArray, const U& disc_k_bp, bool dataAligned)
 {
   // aggregate and find min
-  //T minimum = bp_consts::INF_BP;
-  W minimum = VectProcessingFuncts::convertValToDatatype<W, V>(bp_consts::INF_BP);
+  //T minimum = bp_consts::kInfBp;
+  W minimum = VectProcessingFuncts::convertValToDatatype<W, V>(bp_consts::kInfBp);
   W dst[DISP_VALS];
 
   for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
@@ -1594,7 +1594,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
       VectProcessingFuncts::storePackedDataUnaligned<T, W>(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
     }
 
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -1640,8 +1640,8 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
   unsigned int bpSettingsDispVals)
 {
   // aggregate and find min
-  //T minimum = bp_consts::INF_BP;
-  W minimum = VectProcessingFuncts::convertValToDatatype<W, V>(bp_consts::INF_BP);
+  //T minimum = bp_consts::kInfBp;
+  W minimum = VectProcessingFuncts::convertValToDatatype<W, V>(bp_consts::kInfBp);
   W* dst = new W[bpSettingsDispVals];
 
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
@@ -1696,7 +1696,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
       VectProcessingFuncts::storePackedDataUnaligned<T, W>(destMessageArrayIndex, dstMessageArray, dst[currentDisparity]);
     }
 
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {

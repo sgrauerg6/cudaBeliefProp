@@ -34,15 +34,15 @@ namespace beliefprop {
 struct BPsettings
 {
   //initally set to default values
-  unsigned int numLevels_{bp_params::LEVELS_BP};
-  unsigned int numIterations_{bp_params::ITER_BP};
-  float smoothingSigma_{bp_params::SIGMA_BP};
-  float lambda_bp_{bp_params::LAMBDA_BP};
-  float data_k_bp_{bp_params::DATA_K_BP};
+  unsigned int numLevels_{bp_params::kLevelsBp};
+  unsigned int numIterations_{bp_params::kItersBp};
+  float smoothingSigma_{bp_params::kSigmaBp};
+  float lambda_bp_{bp_params::kLambdaBp};
+  float data_k_bp_{bp_params::kDataKBp};
   //discontinuity cost cap set to infinity by default but is
   //expected to be dependent on number of disparity values and set when
   //number of disparity values is set
-  float disc_k_bp_{bp_consts::INF_BP};
+  float disc_k_bp_{bp_consts::kInfBp};
   //number of disparity values must be set for each stereo set
   unsigned int numDispVals_{0};
 
@@ -54,9 +54,9 @@ struct BPsettings
     currRunData.addDataWHeader("Num BP Levels", numLevels_);
     currRunData.addDataWHeader("Num BP Iterations", numIterations_);
     currRunData.addDataWHeader("DISC_K_BP", (double)disc_k_bp_);
-    currRunData.addDataWHeader("DATA_K_BP", (double)data_k_bp_);
-    currRunData.addDataWHeader("LAMBDA_BP", (double)lambda_bp_);
-    currRunData.addDataWHeader("SIGMA_BP", (double)smoothingSigma_);
+    currRunData.addDataWHeader("kDataKBp", (double)data_k_bp_);
+    currRunData.addDataWHeader("kLambdaBp", (double)lambda_bp_);
+    currRunData.addDataWHeader("kSigmaBp", (double)smoothingSigma_);
 
     return currRunData;
   }

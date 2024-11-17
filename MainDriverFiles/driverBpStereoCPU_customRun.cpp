@@ -37,7 +37,7 @@ int main(int argc, char** argv)
   unsigned int dispMapScale = 256 / algSettings.numDispVals_;
 
   auto numThreads = std::thread::hardware_concurrency();
-  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN, algSettings.numLevels_, {numThreads, 1}};
+  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels, algSettings.numLevels_, {numThreads, 1}};
 
   std::unique_ptr<RunBpStereoSet<float, 0, run_environment::AccSetting::AVX512>> runOptBpNumItersNoTemplate =
     std::make_unique<RunBpStereoOptimizedCPU<float, 0, run_environment::AccSetting::AVX512>>();

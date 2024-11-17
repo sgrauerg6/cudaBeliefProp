@@ -7,7 +7,7 @@
 
 #include "BpFileHandling.h"
 
-//retrieve path of stereo images to process using BELIEF_PROP_DIRECTORY_NAME and STEREO_SETS_DIRECTORY_NAME
+//retrieve path of stereo images to process using kBeliefPropDirectoryName and kStereoSetsDirectoryName
 //constants
 std::filesystem::path BpFileHandling::getStereoSetsPath() const
 {
@@ -21,7 +21,7 @@ std::filesystem::path BpFileHandling::getStereoSetsPath() const
     //if so return iterator to directory; otherwise return iterator to end indicating that directory not
     //found in current path
     std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dirIt), std::filesystem::end(dirIt), 
-      [](const auto &p) { return p.path().stem() == bp_file_handling::BELIEF_PROP_DIRECTORY_NAME; });
+      [](const auto &p) { return p.path().stem() == bp_file_handling::kBeliefPropDirectoryName; });
 
     //check if return from find_if at iterator end and therefore didn't find stereo sets directory;
     //if that's the case continue to outer directory
@@ -35,7 +35,7 @@ std::filesystem::path BpFileHandling::getStereoSetsPath() const
       currentPath = currentPath.parent_path();
     }
     else {
-      std::filesystem::path stereoSetPath = it->path() / bp_file_handling::STEREO_SETS_DIRECTORY_NAME;
+      std::filesystem::path stereoSetPath = it->path() / bp_file_handling::kStereoSetsDirectoryName;
       if (std::filesystem::is_directory(stereoSetPath)) {
         return stereoSetPath;
       }
@@ -51,9 +51,9 @@ std::filesystem::path BpFileHandling::getStereoSetsPath() const
 std::filesystem::path BpFileHandling::getRefImagePath() const
 {
   //check if ref image exists for each possible extension (currently pgm and ppm) and return path if so
-  for (const auto& extension : bp_file_handling::IN_IMAGE_POSS_EXTENSIONS) {
-    if (std::filesystem::exists((stereo_set_path_ / (std::string(bp_file_handling::REF_IMAGE_NAME) + "." + std::string(extension))))) {
-      return stereo_set_path_ / (std::string(bp_file_handling::REF_IMAGE_NAME) + "." + std::string(extension));
+  for (const auto& extension : bp_file_handling::kInImagePossExtensions) {
+    if (std::filesystem::exists((stereo_set_path_ / (std::string(bp_file_handling::kRefImageName) + "." + std::string(extension))))) {
+      return stereo_set_path_ / (std::string(bp_file_handling::kRefImageName) + "." + std::string(extension));
     }
   }
 
@@ -64,9 +64,9 @@ std::filesystem::path BpFileHandling::getRefImagePath() const
 std::filesystem::path BpFileHandling::getTestImagePath() const
 {
   //check if test image exists for each possible extension (currently pgm and ppm) and return path if so
-  for (const auto& extension : bp_file_handling::IN_IMAGE_POSS_EXTENSIONS) {
-    if (std::filesystem::exists((stereo_set_path_ / (std::string(bp_file_handling::TEST_IMAGE_NAME) + "." + std::string(extension))))) {
-      return stereo_set_path_ / (std::string(bp_file_handling::TEST_IMAGE_NAME) + "." + std::string(extension));
+  for (const auto& extension : bp_file_handling::kInImagePossExtensions) {
+    if (std::filesystem::exists((stereo_set_path_ / (std::string(bp_file_handling::kTestImageName) + "." + std::string(extension))))) {
+      return stereo_set_path_ / (std::string(bp_file_handling::kTestImageName) + "." + std::string(extension));
     }
   }
 

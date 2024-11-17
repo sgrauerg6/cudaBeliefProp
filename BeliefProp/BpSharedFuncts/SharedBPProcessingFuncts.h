@@ -22,7 +22,7 @@ ARCHITECTURE_ADDITION inline unsigned int retrieveIndexInDataAndMessage(unsigned
   unsigned int width, unsigned int height, unsigned int currentDisparity, unsigned int totalNumDispVals,
   unsigned int offsetData = 0u)
 {
-  if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+  if constexpr (bp_params::kOptimizedIndexingSetting) {
     //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
     return (yVal * width * totalNumDispVals + width * currentDisparity + xVal) + offsetData;
   }
@@ -84,7 +84,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, unsigned int bpSettingsDispVals
 
   for (unsigned int currentDisparity = 1; currentDisparity < bpSettingsDispVals; currentDisparity++)
   {
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       currFArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -99,7 +99,7 @@ ARCHITECTURE_ADDITION inline void dtStereo(T* f, unsigned int bpSettingsDispVals
 
   for (int currentDisparity = (int)bpSettingsDispVals - 2; currentDisparity >= 0; currentDisparity--)
   {
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       currFArrayIndex -= currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -120,7 +120,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
   T* dstMessageArray, U disc_k_bp, bool dataAligned)
 {
   // aggregate and find min
-  U minimum{(U)bp_consts::INF_BP};
+  U minimum{(U)bp_consts::kInfBp};
   U dst[DISP_VALS];
 
   for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
@@ -157,7 +157,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
   for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
     dst[currentDisparity] -= valToNormalize;
     dstMessageArray[destMessageArrayIndex] = run_imp_util::convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -173,7 +173,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
   T* dstMessageArray, U disc_k_bp, bool dataAligned, unsigned int bpSettingsDispVals)
 {
   // aggregate and find min
-  U minimum{(U)bp_consts::INF_BP};
+  U minimum{(U)bp_consts::kInfBp};
   U* dst = new U[bpSettingsDispVals];
 
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
@@ -210,7 +210,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
     dst[currentDisparity] -= valToNormalize;
     dstMessageArray[destMessageArrayIndex] = run_imp_util::convertValToDifferentDataTypeIfNeeded<U, T>(dst[currentDisparity]);
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -302,7 +302,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
   unsigned int offsetData)
 {
   // aggregate and find min
-  U minimum{(U)bp_consts::INF_BP};
+  U minimum{(U)bp_consts::kInfBp};
   unsigned int processingArrIndexDisp0 = retrieveIndexInDataAndMessage(xVal, yVal,
     currentLevelProperties.paddedWidthCheckerboardLevel_,
     currentLevelProperties.heightLevel_, 0,
@@ -320,7 +320,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
     if (dstProcessing[procArrIdx] < minimum)
       minimum = dstProcessing[procArrIdx];
 
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -345,7 +345,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
 
     valToNormalize += dstProcessing[procArrIdx];
 
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -361,7 +361,7 @@ ARCHITECTURE_ADDITION inline void msgStereo(unsigned int xVal, unsigned int yVal
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
     dstProcessing[procArrIdx] -= valToNormalize;
     dstMessageArray[procArrIdx] = run_imp_util::convertValToDifferentDataTypeIfNeeded<U, T>(dstProcessing[procArrIdx]);
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING) {
+    if constexpr (bp_params::kOptimizedIndexingSetting) {
       procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
     }
     else {
@@ -1089,7 +1089,7 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityPixel(
     {
       // keep track of "best" disparity for current pixel
       unsigned int bestDisparity{0u};
-      U best_val{(U)bp_consts::INF_BP};
+      U best_val{(U)bp_consts::kInfBp};
       if constexpr (DISP_VALS > 0) {
         for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
           const U val =
@@ -1188,7 +1188,7 @@ ARCHITECTURE_ADDITION inline void retrieveOutputDisparityPixel(
     {
       // keep track of "best" disparity for current pixel
       unsigned int bestDisparity{0u};
-      U best_val{(U)bp_consts::INF_BP};
+      U best_val{(U)bp_consts::kInfBp};
       if constexpr (DISP_VALS > 0) {
         for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
           const U val = 

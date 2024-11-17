@@ -12,10 +12,10 @@
 
 namespace belief_prop {
   //constants for headers in belief propagation input and results
-  constexpr std::string_view IMAGE_WIDTH_HEADER{"Image Width"};
-  constexpr std::string_view IMAGE_HEIGHT_HEADER{"Image Height"};
-  constexpr std::string_view NUM_DISP_VALS_HEADER{"Num Possible Disparity Values"};
-  constexpr std::string_view STEREO_SET_HEADER{"Stereo Set"};
+  constexpr std::string_view kImageWidthHeader{"Image Width"};
+  constexpr std::string_view kImageHeightHeader{"Image Height"};
+  constexpr std::string_view kNumDispValsHeader{"Num Possible Disparity Values"};
+  constexpr std::string_view kStereoSetHeader{"Stereo Set"};
 };
 
 #endif //BP_CONSTS_H_

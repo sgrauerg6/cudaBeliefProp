@@ -26,16 +26,16 @@ public:
 
   //return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
   const std::filesystem::path getCurrentOutputDisparityFilePathAndIncrement() {
-    return stereo_set_path_ / (std::string(bp_file_handling::OUT_DISP_IMAGE_NAME_BASE) + std::to_string(num_out_disp_map_++) + ".pgm");
+    return stereo_set_path_ / (std::string(bp_file_handling::kOutDispImageNameBase) + std::to_string(num_out_disp_map_++) + ".pgm");
   }
 
   //get file path to ground truth disparity map
   const std::filesystem::path getGroundTruthDisparityFilePath() const {
-    return stereo_set_path_ / (std::string(bp_file_handling::GROUND_TRUTH_DISP_FILE));
+    return stereo_set_path_ / (std::string(bp_file_handling::kGroundTruthDispFile));
   }
 
 private:
-  //retrieve path of stereo images to process using BELIEF_PROP_DIRECTORY_NAME and STEREO_SETS_DIRECTORY_NAME
+  //retrieve path of stereo images to process using kBeliefPropDirectoryName and kStereoSetsDirectoryName
   //constants
   std::filesystem::path getStereoSetsPath() const;
 

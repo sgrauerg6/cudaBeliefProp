@@ -26,9 +26,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //enum to define setting to run implementation
 enum class RunImpSetting {
-  RUN_IMP_DEFAULT,
-  RUN_IMP_THREADS_PINNED_TO_SOCKET,
-  RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM
+  kRunImpDefault,
+  kRunImpThreadsPinnedToSocket,
+  kRunImpSimSingleCPUTwoCPUSystem
 };
 
 //run implementation using input parameters from command line with specified setting
@@ -38,8 +38,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
-  runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN};
-  runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::PARALLEL_PARAMS_DEFAULT, run_cpu::PARALLEL_PARAMETERS_OPTIONS};
+  runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels};
+  runImpSettings.pParamsDefaultOptOptions_ = {run_cpu::kParallelParamsDefault, run_cpu::kParallelParameterOptions};
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
   runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
@@ -47,7 +47,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //adjust thread count to simulate single CPU on dual-CPU system
   //currently only works as expected if environment variables are set before run such that threads are pinned to socket via
   //"export OMP_PLACES="sockets"" and "export OMP_PROC_BIND=true" commands on command line
-  if (impSetting == RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM) {
+  if (impSetting == RunImpSetting::kRunImpSimSingleCPUTwoCPUSystem) {
     //adjust settings to simulate run on single CPU in two-CPU system, specifically set parallel thread count options so that
     //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
     //are pinned to socket
@@ -72,7 +72,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //TODO: currently not supported due to code for setting CPU threads to be pinned to socket not working as expected
   //can still run implementation with CPU threads pinned to socket by calling "export OMP_PLACES="sockets"" and
   //"export OMP_PROC_BIND=true" commands on command line before run
-  /*else if (impSetting == RunImpSetting::RUN_IMP_THREADS_PINNED_TO_SOCKET) {
+  /*else if (impSetting == RunImpSetting::kRunImpThreadsPinnedToSocket) {
     //adjust settings so that CPU threads pinned to socket
     //TODO: commented out since currently has no effect
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
@@ -84,10 +84,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   }*/
 
   //remove any parallel processing below given minimum number of threads
-  runImpSettings.removeParallelParamBelowMinThreads(run_cpu::MIN_NUM_THREADS_RUN);
-  runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED;
+  runImpSettings.removeParallelParamBelowMinThreads(run_cpu::kMinNumThreadsRun);
+  runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
   runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
-    {bp_file_handling::BASELINE_RUN_DATA_PATHS_OPT_SINGLE_THREAD, run_environment::TemplatedItersSetting::RUN_TEMPLATED_AND_NOT_TEMPLATED};
+    {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
   runImpSettings.subsetStrIndices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
   #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
@@ -107,17 +107,17 @@ int main(int argc, char** argv)
 {
   //if running on a system with two cpus, run implementation with settings adjusted
   //to simulate run on single CPU if specified in second command line argument
-  if ((argc > 2) && (std::string(argv[2]) == std::string(run_cpu::SIMULATE_SINGLE_CPU))) {
+  if ((argc > 2) && (std::string(argv[2]) == std::string(run_cpu::kSimulateSingleCPU))) {
     std::cout << "Running optimized CPU implementation with settings adjusted such that "
                  "a single CPU is simulated on a dual-CPU system." << std::endl;
     std::cout << "Results only as expected if running on dual-CPU system and "
                  "environment variables set so that threads pinned to CPU socket." << std::endl;
-    runImp(argc, argv, RunImpSetting::RUN_IMP_SIM_SINGLE_CPU_TWO_CPU_SYSTEM);
+    runImp(argc, argv, RunImpSetting::kRunImpSimSingleCPUTwoCPUSystem);
   }
   else {
     //run default implementation
     std::cout << "Running optimized CPU implementation" << std::endl;
-    runImp(argc, argv, RunImpSetting::RUN_IMP_DEFAULT);
+    runImp(argc, argv, RunImpSetting::kRunImpDefault);
   }
 
   return 0;

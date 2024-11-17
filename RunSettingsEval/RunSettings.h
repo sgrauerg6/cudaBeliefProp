@@ -74,7 +74,7 @@ public:
 };
 
 //mapping from data size to data type string
-const std::map<std::size_t, std::string_view> DATA_SIZE_TO_NAME_MAP{
+const std::map<std::size_t, std::string_view> kDataSizeToNameMap{
   {sizeof(float), "FLOAT"},
   {sizeof(double), "DOUBLE"},
   {sizeof(short), "HALF"}
@@ -128,17 +128,17 @@ inline RunData runSettings()  {
 //templated counts for number of loop iterations can help with optimization but requires that the number of
 //iterations be known at compile time
 enum class TemplatedItersSetting {
-  RUN_ONLY_TEMPLATED,
-  RUN_ONLY_NON_TEMPLATED,
-  RUN_TEMPLATED_AND_NOT_TEMPLATED
+  kRunOnlyTempated,
+  kRunOnlyNonTemplated,
+  kRunTemplatedAndNotTemplated
 };
 
 //enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run
 //in initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster
 //on CPU
 enum class OptParallelParamsSetting {
-  SAME_PARALLEL_PARAMS_ALL_KERNELS_IN_RUN,
-  ALLOW_DIFF_KERNEL_PARALLEL_PARAMS_IN_SAME_RUN
+  kSameParallelParamsAllKernels,
+  kAllowDiffKernelParallelParamsInRun
 };
 
 //structure that stores settings for current implementation run

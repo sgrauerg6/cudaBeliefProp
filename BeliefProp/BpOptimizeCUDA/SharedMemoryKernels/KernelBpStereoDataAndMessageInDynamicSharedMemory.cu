@@ -28,14 +28,14 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 {
   //printf("USED SHARED MEMORY\n");
   // aggregate and find min
-  half minimum = INF_BP;
+  half minimum = kInfBp;
 
   unsigned int startIndexDstShared = 2*(threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x);
   unsigned int indexIndexDstShared = startIndexDstShared;
   int halfIndexSharedVals[2] = {1, (2*BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP)-1};
   int indexIntervalNextHalfIndexSharedVals = 0;
 
-  half dst[bp_params::STEREO_SETS_TO_PROCESS];
+  half dst[bp_params::kStereoSetsToProcess];
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = 0;
@@ -55,7 +55,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-      currentDisparity < bp_params::STEREO_SETS_TO_PROCESS;
+      currentDisparity < bp_params::kStereoSetsToProcess;
       currentDisparity++) {
     dst[currentDisparity] =
         messageValsNeighbor1[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]
@@ -68,7 +68,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-//#if (bp_params::STEREO_SETS_TO_PROCESS - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
+//#if (bp_params::kStereoSetsToProcess - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
 //  dtStereo<float>(dst);
 //#else
   dtStereo<half>(dst);
@@ -82,7 +82,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = 0;
-      currentDisparity < bp_params::STEREO_SETS_TO_PROCESS;
+      currentDisparity < bp_params::kStereoSetsToProcess;
       currentDisparity++) {
     if (minimum < dst[currentDisparity]) {
       dst[currentDisparity] = minimum;
@@ -92,22 +92,22 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
         dst[currentDisparity];
   }
 
-  valToNormalize /= ((half) bp_params::STEREO_SETS_TO_PROCESS);
+  valToNormalize /= ((half) bp_params::kStereoSetsToProcess);
 
   unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
       currentLevelProperties.paddedWidthCheckerboardLevel_,
       currentLevelProperties.heightLevel_, 0,
-      bp_params::STEREO_SETS_TO_PROCESS);
+      bp_params::kStereoSetsToProcess);
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = 0;
-      currentDisparity < bp_params::STEREO_SETS_TO_PROCESS;
+      currentDisparity < bp_params::kStereoSetsToProcess;
       currentDisparity++) {
     dst[currentDisparity] -=
         valToNormalize;
     dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
 
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING)
+    if constexpr (bp_params::kOptimizedIndexingSetting)
     {
       destMessageArrayIndex +=
         currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -134,12 +134,12 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 {
   //printf("USED SHARED MEMORY\n");
   // aggregate and find min
-  float minimum = INF_BP;
+  float minimum = kInfBp;
 
   unsigned int startIndexDstShared = threadIdx.y * BLOCK_SIZE_WIDTH_BP + threadIdx.x;
   unsigned int indexIndexDstShared = startIndexDstShared;
 
-  float dst[bp_params::STEREO_SETS_TO_PROCESS];
+  float dst[bp_params::kStereoSetsToProcess];
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = 0;
@@ -158,7 +158,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM;
-      currentDisparity < bp_params::STEREO_SETS_TO_PROCESS;
+      currentDisparity < bp_params::kStereoSetsToProcess;
       currentDisparity++) {
     dst[currentDisparity] =
         messageValsNeighbor1[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM]
@@ -171,7 +171,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-//#if (bp_params::STEREO_SETS_TO_PROCESS - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
+//#if (bp_params::kStereoSetsToProcess - 1) <= DISPARITY_START_SHARED_MEM //no shared memory used
 //  dtStereo<float>(dst);
 //#else
   dtStereo<float>(dst);
@@ -185,7 +185,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = 0;
-      currentDisparity < bp_params::STEREO_SETS_TO_PROCESS;
+      currentDisparity < bp_params::kStereoSetsToProcess;
       currentDisparity++) {
     if (minimum < dst[currentDisparity]) {
       dst[currentDisparity] = minimum;
@@ -195,22 +195,22 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
         dst[currentDisparity];
   }
 
-  valToNormalize /= ((float) bp_params::STEREO_SETS_TO_PROCESS);
+  valToNormalize /= ((float) bp_params::kStereoSetsToProcess);
 
   unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
       currentLevelProperties.paddedWidthCheckerboardLevel_,
       currentLevelProperties.heightLevel_, 0,
-      bp_params::STEREO_SETS_TO_PROCESS);
+      bp_params::kStereoSetsToProcess);
 
 //#pragma unroll 64
   for (unsigned int currentDisparity = 0;
-      currentDisparity < bp_params::STEREO_SETS_TO_PROCESS;
+      currentDisparity < bp_params::kStereoSetsToProcess;
       currentDisparity++) {
     dst[currentDisparity] -=
         valToNormalize;
     dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
 
-    if constexpr (bp_params::OPTIMIZED_INDEXING_SETTING)
+    if constexpr (bp_params::kOptimizedIndexingSetting)
     {
       destMessageArrayIndex +=
         currentLevelProperties.paddedWidthCheckerboardLevel_;
@@ -282,12 +282,12 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
   //if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
   if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment)) && (yVal > 0) && (yVal < (currentLevelProperties.heightLevel_ - 1)))
   {
-#if (DISP_INDEX_START_REG_LOCAL_MEM < bp_params::STEREO_SETS_TO_PROCESS)
-    float prevUMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    float prevDMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    float prevLMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    float prevRMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    float dataMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
+#if (DISP_INDEX_START_REG_LOCAL_MEM < bp_params::kStereoSetsToProcess)
+    float prevUMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    float prevDMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    float prevLMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    float prevRMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    float dataMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
 #else
     float* prevUMessage = nullptr;
     float* prevDMessage = nullptr;
@@ -319,40 +319,40 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
     {
       if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0)
       {
-        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
       }
       else //checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
       {
-        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
       }
       indexIndexDstShared += BLOCK_SIZE_WIDTH_BP * BLOCK_SIZE_HEIGHT_BP;;
     }
 
-    for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::STEREO_SETS_TO_PROCESS; currentDisparity++)
+    for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::kStereoSetsToProcess; currentDisparity++)
         {
           if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0)
           {
-            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
           }
           else //checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
           {
-            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
           }
         }
 
@@ -418,12 +418,12 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
   //if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (widthLevelCheckerboardPart - 1)) && (yVal > 0) && (yVal < (heightLevel - 1)))
   if ((xVal >= (1 - checkerboardAdjustment)) && (xVal < (currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment)) && (yVal > 0) && (yVal < (currentLevelProperties.heightLevel_ - 1)))
   {
-#if (DISP_INDEX_START_REG_LOCAL_MEM < bp_params::STEREO_SETS_TO_PROCESS)
-    half prevUMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    half prevDMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    half prevLMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    half prevRMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
-    half dataMessage[bp_params::STEREO_SETS_TO_PROCESS - DISP_INDEX_START_REG_LOCAL_MEM];
+#if (DISP_INDEX_START_REG_LOCAL_MEM < bp_params::kStereoSetsToProcess)
+    half prevUMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    half prevDMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    half prevLMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    half prevRMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
+    half dataMessage[bp_params::kStereoSetsToProcess - DISP_INDEX_START_REG_LOCAL_MEM];
 #else
     half* prevUMessage = nullptr;
     half* prevDMessage = nullptr;
@@ -458,41 +458,41 @@ ARCHITECTURE_ADDITION inline void beliefprop::runBPIterationUsingCheckerboardUpd
     {
       if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0)
       {
-        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
       }
       else //checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
       {
-        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+        dataMessageShared[indexIndexDstShared] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+        prevUMessageShared[indexIndexDstShared] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevDMessageShared[indexIndexDstShared] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevLMessageShared[indexIndexDstShared] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+        prevRMessageShared[indexIndexDstShared] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
       }
       indexIndexDstShared += halfIndexSharedVals[indexIntervalNextHalfIndexSharedVals];
       indexIntervalNextHalfIndexSharedVals = !indexIntervalNextHalfIndexSharedVals;
     }
 
-    for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::STEREO_SETS_TO_PROCESS; currentDisparity++)
+    for (unsigned int currentDisparity = DISP_INDEX_START_REG_LOCAL_MEM; currentDisparity < bp_params::kStereoSetsToProcess; currentDisparity++)
         {
           if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0)
           {
-            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
           }
           else //checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
           {
-            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS, offsetData)]);
-            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
-            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::STEREO_SETS_TO_PROCESS)]);
+            dataMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (dataCostStereoCheckerboard2[beliefprop::retrieveIndexInDataAndMessage(xVal, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess, offsetData)]);
+            prevUMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal+1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevDMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(xVal, (yVal-1), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevLMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage((xVal + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
+            prevRMessage[currentDisparity - DISP_INDEX_START_REG_LOCAL_MEM] = (messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(((xVal - 1) + checkerboardAdjustment), (yVal), currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, currentDisparity, bp_params::kStereoSetsToProcess)]);
           }
         }
 
