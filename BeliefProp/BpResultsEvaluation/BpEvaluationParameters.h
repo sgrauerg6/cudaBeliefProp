@@ -27,8 +27,8 @@ namespace beliefprop {
 struct BpEvaluationParameters {
   //evaluation done at multiple difference thresholds
   const std::vector<float> output_diff_thresholds_{
-    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLDS.begin(),
-    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLDS.end()};
+    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLDS.cbegin(),
+    beliefprop::SIG_DIFF_THRESHOLD_STEREO_EVAL_THRESHOLDS.cend()};
   const float max_diff_cap_{beliefprop::MAX_DIFF_CAP};
 };
 

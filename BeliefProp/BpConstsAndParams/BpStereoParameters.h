@@ -41,18 +41,6 @@ namespace bp_consts
 
 namespace bp_params
 {
-  enum class image_set_options
-  {
-    TSUKUBA_IMAGES_HALF_SIZE_E = 0,
-    TSUKUBA_IMAGES_E = 1,
-    VENUS_IMAGES_E = 2,
-    BARN_1_IMAGES_E = 3,
-    CONES_IMAGES_QUARTER_SIZE_E = 4,
-    CONES_IMAGES_HALF_SIZE_E = 5,
-    CONES_IMAGES_FULL_SIZE_CROPPED_E = 6,
-    CONES_IMAGES_FULL_SIZE_E = 7
-  };
-
   struct BpStereoSet {
     const std::string_view name_;
     const unsigned int numDispVals_;
@@ -60,7 +48,6 @@ namespace bp_params
   };
 
   //declare stereo sets to process with name, num disparity values, and scale factor
-  //order is the same as in image_set_options enum
   constexpr std::array<BpStereoSet, 8> STEREO_SETS_TO_PROCESS{
     BpStereoSet{"tsukubaSetHalfSize", 8, 32},
     BpStereoSet{"tsukubaSet", 16, 16},
@@ -79,9 +66,6 @@ namespace bp_params
 #else
   constexpr unsigned int NUM_BP_STEREO_RUNS = 15;
 #endif //LIMITED_TEST_PARAMS_FEWER_RUNS
-
-  //define the default message value...
-  constexpr float DEFAULT_INITIAL_MESSAGE_VAL = 0.0f;
 
   // number of BP iterations at each scale/level
   constexpr unsigned int ITER_BP = 7;

@@ -52,7 +52,7 @@ private:
     const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
     const unsigned int bpSettingsNumDispVals) override;
 
-  //initialize the message values for every pixel at every disparity to DEFAULT_INITIAL_MESSAGE_VAL (value is 0.0f unless changed)
+  //initialize the message values for every pixel at every disparity to 0
   run_eval::Status initializeMessageValsToDefault(
     const beliefprop::levelProperties& currentLevelProperties,
     const beliefprop::checkerboardMessages<T*>& messagesDevice,

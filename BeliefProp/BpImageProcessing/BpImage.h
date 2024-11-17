@@ -21,9 +21,9 @@
 #include <ranges>
 
 enum class image_type { PGM_IMAGE, PPM_IMAGE };
-constexpr bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION = true;
-constexpr std::string_view PGM_EXTENSION = "pgm";
-constexpr std::string_view PPM_EXTENSION = "ppm";
+constexpr bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION{true};
+constexpr std::string_view PGM_EXTENSION{"pgm"};
+constexpr std::string_view PPM_EXTENSION{"ppm"};
 
 template <class T>
 requires std::is_arithmetic_v<T>
@@ -79,7 +79,6 @@ public:
   }
 
 protected:
-
   std::array<unsigned int, 2> widthHeight_;
   std::unique_ptr<T[]> pixels_;
 
