@@ -60,10 +60,10 @@ private:
   const unsigned int numLevels_;
 
   //stores the current parallel parameters for each processing kernel
-  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::NUM_KERNELS> parallelDimsEachKernel_;
+  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels> parallelDimsEachKernel_;
   
   //mapping of parallel parameters to runtime for each kernel at each level and total runtime
-  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::NUM_KERNELS + 1)> pParamsToRunTimeEachKernel_;
+  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::kNumKernels + 1)> pParamsToRunTimeEachKernel_;
 };
 
 #endif //BP_PARALLEL_PARAMS_H

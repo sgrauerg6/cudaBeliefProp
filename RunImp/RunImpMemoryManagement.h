@@ -21,15 +21,15 @@ template <RunData_t T>
 class RunImpMemoryManagement
 {
 public:
-  virtual T* allocateMemoryOnDevice(unsigned int numData) {
+  virtual T* allocateMemoryOnDevice(unsigned int numData) const {
     return (new T[numData]);
   }
 
-  virtual void freeMemoryOnDevice(T* arrayToFree) {
+  virtual void freeMemoryOnDevice(T* arrayToFree) const {
     delete [] arrayToFree;
   }
 
-  virtual T* allocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting accSetting)
+  virtual T* allocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting accSetting) const
   {
 #ifdef _WIN32
     T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), run_environment::getNumDataAlignWidth(accSetting) * sizeof(T)));
@@ -40,7 +40,7 @@ public:
 #endif
   }
 
-  virtual void freeAlignedMemoryOnDevice(T* memoryToFree)
+  virtual void freeAlignedMemoryOnDevice(T* memoryToFree) const
   {
 #ifdef _WIN32
     _aligned_free(memoryToFree);
@@ -49,11 +49,11 @@ public:
 #endif
   }
 
-  virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) {
+  virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) const {
     std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
   }
 
-  virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) {
+  virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) const {
     std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
   }
 };

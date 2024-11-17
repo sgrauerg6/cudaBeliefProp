@@ -41,7 +41,7 @@ namespace beliefpropCPU
 {
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
   template<RunData_t T, unsigned int DISP_VALS>
-  void initializeBottomLevelData(const beliefprop::levelProperties& currentLevelProperties,
+  void initializeBottomLevelData(const beliefprop::LevelProperties& currentLevelProperties,
     float* image1PixelsDevice, float* image2PixelsDevice,
     T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
     float lambda_bp, float data_k_bp, unsigned int bpSettingsDispVals,
@@ -50,14 +50,14 @@ namespace beliefpropCPU
   //initialize the "data cost" for each possible disparity at the current level using the data costs from the previous level
   template<RunData_t T, unsigned int DISP_VALS>
   void initializeCurrentLevelData(beliefprop::Checkerboard_Part checkerboardPart,
-    const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& prevLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties, const beliefprop::LevelProperties& prevLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* dataCostDeviceToWriteTo, unsigned int offsetNum, unsigned int bpSettingsDispVals,
     const ParallelParams& optCPUParams);
 
   //initialize the message values at each pixel of the current level to the default value
   template<RunData_t T, unsigned int DISP_VALS>
-  void initializeMessageValsToDefaultKernel(const beliefprop::levelProperties& currentLevelProperties,
+  void initializeMessageValsToDefaultKernel(const beliefprop::LevelProperties& currentLevelProperties,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
     T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
@@ -69,7 +69,7 @@ namespace beliefpropCPU
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   void runBPIterationUsingCheckerboardUpdates(beliefprop::Checkerboard_Part checkerboardToUpdate,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -80,7 +80,7 @@ namespace beliefpropCPU
 
   template<RunData_t T, unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
-    beliefprop::Checkerboard_Part checkerboardPartUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardPartUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -93,7 +93,7 @@ namespace beliefpropCPU
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
   template<RunData_t T, unsigned int DISP_VALS>
   void copyMsgDataToNextLevel(beliefprop::Checkerboard_Part checkerboardPart,
-    const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties, const beliefprop::LevelProperties& nextLevelProperties,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
     T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
     T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -107,7 +107,7 @@ namespace beliefpropCPU
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-  void retrieveOutputDisparity(const beliefprop::levelProperties& currentLevelProperties,
+  void retrieveOutputDisparity(const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
     T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -118,7 +118,7 @@ namespace beliefpropCPU
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectors(const beliefprop::levelProperties& currentLevelProperties,
+  void retrieveOutputDisparityUseSIMDVectors(const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
     T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -130,7 +130,7 @@ namespace beliefpropCPU
   
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX256(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
     float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
@@ -141,7 +141,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX256(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
     short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
@@ -152,7 +152,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX256(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
     double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
@@ -164,7 +164,7 @@ namespace beliefpropCPU
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
     float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
@@ -175,7 +175,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
     short* messageLPrevStereoCheckerboard0, short* messageRPrevStereoCheckerboard0,
@@ -186,7 +186,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsAVX512(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
     double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
@@ -198,7 +198,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsNEON(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
     float* messageLPrevStereoCheckerboard0, float* messageRPrevStereoCheckerboard0,
@@ -209,7 +209,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsNEON(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
     double* messageLPrevStereoCheckerboard0, double* messageRPrevStereoCheckerboard0,
@@ -221,7 +221,7 @@ namespace beliefpropCPU
 #ifdef COMPILING_FOR_ARM
   template<unsigned int DISP_VALS>
   void retrieveOutputDisparityUseSIMDVectorsNEON(
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
     float16_t* messageUPrevStereoCheckerboard0, float16_t* messageDPrevStereoCheckerboard0,
     float16_t* messageLPrevStereoCheckerboard0, float16_t* messageRPrevStereoCheckerboard0,
@@ -235,7 +235,7 @@ namespace beliefpropCPU
   //and the output message values are written to output message arrays
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   void runBPIterationUpdateMsgValsUseSIMDVectors(unsigned int xValStartProcessing,
-    unsigned int yVal, const beliefprop::levelProperties& currentLevelProperties,
+    unsigned int yVal, const beliefprop::LevelProperties& currentLevelProperties,
     U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
     U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS],
     U dataMessage[DISP_VALS],
@@ -246,7 +246,7 @@ namespace beliefpropCPU
   template<RunData_t T, RunDataVect_t U>
   void runBPIterationUpdateMsgValsUseSIMDVectors(
     unsigned int xValStartProcessing, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     U* prevUMessage, U* prevDMessage,
     U* prevLMessage, U* prevRMessage,
     U* dataMessage,
@@ -257,7 +257,7 @@ namespace beliefpropCPU
   
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
     float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -268,7 +268,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
     short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -279,7 +279,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
     double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
@@ -291,7 +291,7 @@ namespace beliefpropCPU
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
     float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -302,7 +302,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
     short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -313,7 +313,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
     double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
@@ -325,7 +325,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
     float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -336,7 +336,7 @@ namespace beliefpropCPU
 
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
     double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
@@ -348,7 +348,7 @@ namespace beliefpropCPU
 #ifdef COMPILING_FOR_ARM
   template<unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     float16_t* dataCostStereoCheckerboard0, float16_t* dataCostStereoCheckerboard1,
     float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
     float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
@@ -360,7 +360,7 @@ namespace beliefpropCPU
 
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
-    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -373,7 +373,7 @@ namespace beliefpropCPU
   // compute current message
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   void msgStereoSIMD(unsigned int xVal, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
     U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
     T* dstMessageArray, const U& disc_k_bp, bool dataAligned);
@@ -381,7 +381,7 @@ namespace beliefpropCPU
   // compute current message
   template<RunData_t T, RunDataVect_t U>
   void msgStereoSIMD(unsigned int xVal, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     U* messageValsNeighbor1, U* messageValsNeighbor2,
     U* messageValsNeighbor3, U* dataCosts,
     T* dstMessageArray, const U& disc_k_bp, bool dataAligned,
@@ -390,7 +390,7 @@ namespace beliefpropCPU
   // compute current message
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
   void msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     U* messageValsNeighbor1, U* messageValsNeighbor2,
     U* messageValsNeighbor3, U* dataCosts,
     T* dstMessageArray, const U& disc_k_bp, bool dataAligned,
@@ -399,7 +399,7 @@ namespace beliefpropCPU
   // compute current message
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
   void msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
     U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
     T* dstMessageArray, const U& disc_k_bp, bool dataAligned);
@@ -419,7 +419,7 @@ namespace beliefpropCPU
 
   template<RunData_t T, unsigned int DISP_VALS>
   void printDataAndMessageValsAtPointKernel(unsigned int xVal, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -428,7 +428,7 @@ namespace beliefpropCPU
 
   template<RunData_t T, unsigned int DISP_VALS>
   void printDataAndMessageValsToPointKernel(unsigned int xVal, unsigned int yVal,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
     T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
     T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -463,14 +463,14 @@ namespace beliefpropCPU
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::initializeBottomLevelData(
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   float* image1PixelsDevice, float* image2PixelsDevice,
   T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
   float lambda_bp, float data_k_bp, unsigned int bpSettingsDispVals,
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::DATA_COSTS_AT_LEVEL), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -495,14 +495,14 @@ void beliefpropCPU::initializeBottomLevelData(
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::initializeCurrentLevelData(
   beliefprop::Checkerboard_Part checkerboardPart,
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& prevLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& prevLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* dataCostDeviceToWriteTo, unsigned int offsetNum, unsigned int bpSettingsDispVals,
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::DATA_COSTS_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), currentLevelProperties.levelNum_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -526,7 +526,7 @@ void beliefpropCPU::initializeCurrentLevelData(
 
 //initialize the message values at each pixel of the current level to the default value
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::levelProperties& currentLevelProperties,
+void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::LevelProperties& currentLevelProperties,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
@@ -535,7 +535,7 @@ void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::level
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::INIT_MESSAGE_VALS), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -561,7 +561,7 @@ void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::level
 
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
-  beliefprop::Checkerboard_Part checkerboardPartUpdate, const beliefprop::levelProperties& currentLevelProperties,
+  beliefprop::Checkerboard_Part checkerboardPartUpdate, const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -574,10 +574,10 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 
   //in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool dataAligned = GenProcessingFuncts::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_, currentLevelProperties.divPaddedChBoardWAlign_);
+  const bool dataAligned = run_imp_util::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_, currentLevelProperties.divPaddedChBoardWAlign_);
 
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BP_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.levelNum_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -605,7 +605,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
 void beliefpropCPU::runBPIterationUpdateMsgValsUseSIMDVectors(
   unsigned int xValStartProcessing, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   U prevUMessage[DISP_VALS], U prevDMessage[DISP_VALS],
   U prevLMessage[DISP_VALS], U prevRMessage[DISP_VALS], U dataMessage[DISP_VALS],
   T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray,
@@ -631,7 +631,7 @@ void beliefpropCPU::runBPIterationUpdateMsgValsUseSIMDVectors(
 template<RunData_t T, RunDataVect_t U>
 void beliefpropCPU::runBPIterationUpdateMsgValsUseSIMDVectors(
   unsigned int xValStartProcessing, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   U* prevUMessage, U* prevDMessage, U* prevLMessage, U* prevRMessage, U* dataMessage,
   T* currentUMessageArray, T* currentDMessageArray, T* currentLMessageArray, T* currentRMessageArray,
   const U disc_k_bp_vector, bool dataAlignedAtxValStartProcessing, unsigned int bpSettingsDispVals)
@@ -655,7 +655,7 @@ void beliefpropCPU::runBPIterationUpdateMsgValsUseSIMDVectors(
 
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
 void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
-  beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+  beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -670,7 +670,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 
   if constexpr (DISP_VALS > 0) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BP_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
+    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.levelNum_})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
@@ -682,7 +682,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 #endif //_WIN32
       //checkerboardAdjustment used for indexing into current checkerboard to update
       const unsigned int checkerboardAdjustment =
-        (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
+        (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((yVal) % 2) : ((yVal + 1) % 2);
       const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
       const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
                                              widthCheckerboardRunProcessing);
@@ -703,7 +703,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         xValProcess = std::max(startX, xValProcess);
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = GenProcessingFuncts::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
+        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
           currentLevelProperties.divPaddedChBoardWAlign_);
 
         //initialize arrays for data and message values
@@ -712,7 +712,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         //load using aligned instructions when possible
         if (dataAlignedAtXValProcess) {
           for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
-            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataAligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
               prevUMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
@@ -724,7 +724,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
               prevRMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
             }
-            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataAligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
@@ -740,7 +740,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
           }
         } else {
           for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
-            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0);
               prevUMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
@@ -752,7 +752,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
               prevRMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, messageRDeviceCurrentCheckerboard1);
             }
-            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard1);
@@ -768,7 +768,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
           }
         }
 
-        if (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+        if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
           runBPIterationUpdateMsgValsUseSIMDVectors<T, U, DISP_VALS>(xValProcess, yVal, currentLevelProperties,
             prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
             messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -787,7 +787,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   }
   else {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BP_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
+    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.levelNum_})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
@@ -799,7 +799,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 #endif //_WIN32
       //checkerboardAdjustment used for indexing into current checkerboard to update
       const unsigned int checkerboardAdjustment =
-        (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
+        (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((yVal) % 2) : ((yVal + 1) % 2);
       const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
       const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
                                              widthCheckerboardRunProcessing);
@@ -820,7 +820,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         xValProcess = std::max(startX, xValProcess);
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = GenProcessingFuncts::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
+        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
           currentLevelProperties.divPaddedChBoardWAlign_);
 
         //initialize arrays for data and message values
@@ -833,7 +833,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         //load using aligned instructions when possible
         if (dataAlignedAtXValProcess) {
           for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
-            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataAligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0);
               prevUMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataAligned<T, U>(xValProcess, yVal + 1,
@@ -845,7 +845,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
               prevRMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
                 currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRDeviceCurrentCheckerboard1);
             }
-            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataAligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1);
@@ -862,7 +862,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         } 
         else {
           for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
-            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0);
               prevUMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal + 1,
@@ -874,7 +874,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
               prevRMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>((xValProcess + checkerboardAdjustment) - 1, yVal,
                 currentDisparity, currentLevelProperties, bpSettingsDispVals, messageRDeviceCurrentCheckerboard1);
             } 
-            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardPartUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               dataMessage[currentDisparity] = VectProcessingFuncts::loadPackedDataUnaligned<T, U>(xValProcess, yVal,
                 currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard1);
@@ -890,7 +890,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
           }
         }
 
-        if (checkerboardToUpdate == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+        if (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
           runBPIterationUpdateMsgValsUseSIMDVectors<T, U>(xValProcess, yVal, currentLevelProperties,
             prevUMessage, prevDMessage, prevLMessage, prevRMessage, dataMessage,
             messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
@@ -919,7 +919,7 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 void beliefpropCPU::runBPIterationUsingCheckerboardUpdates(
-  beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::levelProperties& currentLevelProperties,
+  beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -1032,7 +1032,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::copyMsgDataToNextLevel(beliefprop::Checkerboard_Part checkerboardPart,
-  const beliefprop::levelProperties& currentLevelProperties, const beliefprop::levelProperties& nextLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties, const beliefprop::LevelProperties& nextLevelProperties,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
   T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -1045,7 +1045,7 @@ void beliefpropCPU::copyMsgDataToNextLevel(beliefprop::Checkerboard_Part checker
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::COPY_AT_LEVEL), currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), currentLevelProperties.levelNum_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -1075,7 +1075,7 @@ void beliefpropCPU::copyMsgDataToNextLevel(beliefprop::Checkerboard_Part checker
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 void beliefpropCPU::retrieveOutputDisparity(
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -1086,7 +1086,7 @@ void beliefpropCPU::retrieveOutputDisparity(
 {
   if constexpr (VECTORIZATION == run_environment::AccSetting::NONE) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::OUTPUT_DISP), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -1147,7 +1147,7 @@ void beliefpropCPU::retrieveOutputDisparity(
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
-void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::levelProperties& currentLevelProperties,
+void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
@@ -1172,10 +1172,10 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
   V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(currentLevelProperties.numDataAlignWidth_ * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
 #endif
 
-  for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1})
+  for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Part::kCheckerboardPart0, beliefprop::Checkerboard_Part::kCheckerboardPart1})
   {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::OUTPUT_DISP), 0})[0]};
+    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
@@ -1186,7 +1186,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
     for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
 #endif //_WIN32
       //checkerboardAdjustment used for indexing into current checkerboard to retrieve best disparities
-      const unsigned int checkerboardAdjustment = (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) ? ((yVal) % 2) : ((yVal + 1) % 2);
+      const unsigned int checkerboardAdjustment = (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((yVal) % 2) : ((yVal + 1) % 2);
       const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
       const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
                                              widthCheckerboardRunProcessing);
@@ -1210,7 +1210,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
         const unsigned int indexOutput = (yVal * widthDispCheckerboard) + xValProcess;
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = GenProcessingFuncts::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
+        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
                                                                        currentLevelProperties.divPaddedChBoardWAlign_);
 
         //declare SIMD vectors for data and message values at each disparity
@@ -1222,7 +1222,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
         //load using aligned instructions when possible
         if constexpr (DISP_VALS > 0) {
           for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
-            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               if (dataAlignedAtXValProcess) {
                 //retrieve and get sum of message and data values
                 valAtDisp = VectProcessingFuncts::addVals<U, U, W>(
@@ -1258,7 +1258,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
                     currentDisparity, currentLevelProperties, DISP_VALS, dataCostStereoCheckerboard0));
               }
             }
-            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               if (dataAlignedAtXValProcess) {
                 //retrieve and get sum of message and data values
@@ -1308,19 +1308,19 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
             }
           }
           if (dataAlignedAtXValProcess) {
-            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               VectProcessingFuncts::storePackedDataAligned<V, W>(indexOutput, disparityCheckboard0, bestDisparities);
             }
-            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               VectProcessingFuncts::storePackedDataAligned<V, W>(numDataDispChBoard + indexOutput, disparityCheckboard0, bestDisparities);
             }
           }
           else {
-            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               VectProcessingFuncts::storePackedDataUnaligned<V, W>(indexOutput, disparityCheckboard0, bestDisparities);
             }
-            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               VectProcessingFuncts::storePackedDataUnaligned<V, W>(numDataDispChBoard + indexOutput, disparityCheckboard0, bestDisparities);
             }
@@ -1328,7 +1328,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
         }
         else {
           for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
-            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               if (dataAlignedAtXValProcess) {
                 //retrieve and get sum of message and data values
                 valAtDisp = VectProcessingFuncts::addVals<U, U, W>(
@@ -1364,7 +1364,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
                     currentDisparity, currentLevelProperties, bpSettingsDispVals, dataCostStereoCheckerboard0));
               }
             }
-            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               if (dataAlignedAtXValProcess) {
                 //retrieve and get sum of message and data values
@@ -1415,19 +1415,19 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
           }
           //store best disparities in checkerboard being updated
           if (dataAlignedAtXValProcess) {
-            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               VectProcessingFuncts::storePackedDataAligned<V, W>(indexOutput, disparityCheckboard0, bestDisparities);
             }
-            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               VectProcessingFuncts::storePackedDataAligned<V, W>(numDataDispChBoard + indexOutput, disparityCheckboard0, bestDisparities);
             }
           }
           else {
-            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0) {
+            if (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
               VectProcessingFuncts::storePackedDataUnaligned<V, W>(indexOutput, disparityCheckboard0, bestDisparities);
             }
-            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1
+            else //checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart1
             {
               VectProcessingFuncts::storePackedDataUnaligned<V, W>(numDataDispChBoard + indexOutput, disparityCheckboard0, bestDisparities);
             }
@@ -1441,7 +1441,7 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::leve
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::OUTPUT_DISP), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
@@ -1532,7 +1532,7 @@ void beliefpropCPU::dtStereoSIMD(U f[DISP_VALS])
 // compute current message
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
 void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
   U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
   T* dstMessageArray, const U& disc_k_bp, bool dataAligned)
@@ -1633,7 +1633,7 @@ void beliefpropCPU::dtStereoSIMD(U* f, unsigned int bpSettingsDispVals)
 // compute current message
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
 void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   U* messageValsNeighbor1, U* messageValsNeighbor2,
   U* messageValsNeighbor3, U* dataCosts,
   T* dstMessageArray, const U& disc_k_bp, bool dataAligned,
@@ -1710,7 +1710,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
 // compute current message
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
 void beliefpropCPU::msgStereoSIMD(unsigned int xVal, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   U messageValsNeighbor1[DISP_VALS], U messageValsNeighbor2[DISP_VALS],
   U messageValsNeighbor3[DISP_VALS], U dataCosts[DISP_VALS],
   T* dstMessageArray, const U& disc_k_bp, bool dataAligned)
@@ -1723,7 +1723,7 @@ void beliefpropCPU::msgStereoSIMD(unsigned int xVal, unsigned int yVal,
 // compute current message
 template<RunData_t T, RunDataVect_t U>
 void beliefpropCPU::msgStereoSIMD(unsigned int xVal, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   U* messageValsNeighbor1, U* messageValsNeighbor2,
   U* messageValsNeighbor3, U* dataCosts,
   T* dstMessageArray, const U& disc_k_bp, bool dataAligned,
@@ -1740,7 +1740,7 @@ void beliefpropCPU::msgStereoSIMD(unsigned int xVal, unsigned int yVal,
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::printDataAndMessageValsAtPointKernel(
   unsigned int xVal, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -1805,7 +1805,7 @@ void beliefpropCPU::printDataAndMessageValsAtPointKernel(
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::printDataAndMessageValsToPointKernel(
   unsigned int xVal, unsigned int yVal,
-  const beliefprop::levelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& currentLevelProperties,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,

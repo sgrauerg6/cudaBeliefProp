@@ -55,59 +55,59 @@ protected:
 
 private:
   //initialize data cost for each possible disparity at bottom level
-  virtual run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) = 0;
+  virtual run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::LevelProperties& currentLevelProperties,
+    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard) = 0;
 
   //initialize data cost for each possible disparity at levels above the bottom level
-  virtual run_eval::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& prevLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
+  virtual run_eval::Status initializeDataCurrentLevel(const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& prevLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboardWriteTo,
     unsigned int bpSettingsNumDispVals) = 0;
 
   //initialize message values at first level of bp processing to default value
   virtual run_eval::Status initializeMessageValsToDefault(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     unsigned int bpSettingsNumDispVals) = 0;
 
   //run belief propagation processing at current level of processing hierarchy
   virtual run_eval::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     T* allocatedMemForProcessing) = 0;
 
   //copy message values from current level of processing to next level of processing
   virtual run_eval::Status copyMessageValuesToNextLevelDown(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& nextlevelProperties,
-    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
-    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& nextLevelProperties,
+    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyFrom,
+    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyTo,
     unsigned int bpSettingsNumDispVals) = 0;
 
   //retrieve computed output disparity at each pixel in bottom level using data and message values
   virtual float* retrieveOutputDisparity(
-    const beliefprop::levelProperties& levelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& LevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     unsigned int bpSettingsNumDispVals) = 0;
 
   //free memory used for message values in bp processing
-  virtual void freeCheckerboardMessagesMemory(const beliefprop::checkerboardMessages<T*>& checkerboardMessagesToFree,
+  virtual void freeCheckerboardMessagesMemory(const beliefprop::CheckerboardMessages<T*>& checkerboardMessagesToFree,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
-    std::ranges::for_each(checkerboardMessagesToFree.checkerboardMessagesAtLevel_,
+    std::ranges::for_each(checkerboardMessagesToFree,
       [this, &memManagementBpRun](auto& checkerboardMessagesSet) {
       memManagementBpRun->freeAlignedMemoryOnDevice(checkerboardMessagesSet); });
   }
 
   //allocate memory for message values in bp processing
-  virtual beliefprop::checkerboardMessages<T*> allocateMemoryForCheckerboardMessages(const unsigned long numDataAllocatePerMessage,
+  virtual beliefprop::CheckerboardMessages<T*> allocateMemoryForCheckerboardMessages(const unsigned long numDataAllocatePerMessage,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
-    beliefprop::checkerboardMessages<T*> outputCheckerboardMessages;
-    std::ranges::for_each(outputCheckerboardMessages.checkerboardMessagesAtLevel_,
+    beliefprop::CheckerboardMessages<T*> outputCheckerboardMessages;
+    std::ranges::for_each(outputCheckerboardMessages,
       [this, numDataAllocatePerMessage, &memManagementBpRun](auto& checkerboardMessagesSet) {
       checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACCELERATION); });
 
@@ -115,34 +115,34 @@ private:
   }
 
   //retrieve pointer to bp message data at current level using specified offset
-  virtual beliefprop::checkerboardMessages<T*> retrieveLevelMessageData(
-    const beliefprop::checkerboardMessages<T*>& allCheckerboardMessages, const unsigned long offsetIntoMessages)
+  virtual beliefprop::CheckerboardMessages<T*> retrieveLevelMessageData(
+    const beliefprop::CheckerboardMessages<T*>& allCheckerboardMessages, const unsigned long offsetIntoMessages)
   {
-    beliefprop::checkerboardMessages<T*> outputCheckerboardMessages;
-    for (unsigned int i = 0; i < outputCheckerboardMessages.checkerboardMessagesAtLevel_.size(); i++) {
-      outputCheckerboardMessages.checkerboardMessagesAtLevel_[i] =
-        &((allCheckerboardMessages.checkerboardMessagesAtLevel_[i])[offsetIntoMessages]);
+    beliefprop::CheckerboardMessages<T*> outputCheckerboardMessages;
+    for (unsigned int i = 0; i < outputCheckerboardMessages.size(); i++) {
+      outputCheckerboardMessages[i] =
+        &((allCheckerboardMessages[i])[offsetIntoMessages]);
     }
 
     return outputCheckerboardMessages;
   }
 
   //free memory allocated for data costs in bp processing
-  virtual void freeDataCostsMemory(const beliefprop::dataCostData<T*>& dataCostsToFree,
+  virtual void freeDataCostsMemory(const beliefprop::DataCostsCheckerboards<T*>& dataCostsToFree,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
-    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree.dataCostCheckerboard0_);
-    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree.dataCostCheckerboard1_);
+    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree[0]);
+    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree[1]);
   }
 
   //allocate memory for data costs in bp processing
-  virtual beliefprop::dataCostData<T*> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboard,
+  virtual beliefprop::DataCostsCheckerboards<T*> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboards,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
-    return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACCELERATION), 
-            memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboard, ACCELERATION)};
+    return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboards, ACCELERATION), 
+            memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboards, ACCELERATION)};
   }
 
   //allocate and organize data cost and message value data at all levels for bp processing
-  virtual std::pair<beliefprop::dataCostData<T*>, beliefprop::checkerboardMessages<T*>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
+  virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
     const unsigned long numDataAllocatePerDataCostsMessageDataArray,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
@@ -151,36 +151,36 @@ private:
   }
 
   //organize data cost and message value data at all bp processing levels
-  virtual std::pair<beliefprop::dataCostData<T*>, beliefprop::checkerboardMessages<T*>> organizeDataCostsAndMessageDataAllLevels(
+  virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> organizeDataCostsAndMessageDataAllLevels(
     T* dataAllLevels, const unsigned long numDataAllocatePerDataCostsMessageDataArray)
   {
-    beliefprop::dataCostData<T*> dataCostsDeviceCheckerboardAllLevels;
-    dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_ = dataAllLevels;
-    dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard1_ =
-      &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[1 * (numDataAllocatePerDataCostsMessageDataArray)]);
+    beliefprop::DataCostsCheckerboards<T*> dataCostsDeviceCheckerboardAllLevels;
+    dataCostsDeviceCheckerboardAllLevels[0] = dataAllLevels;
+    dataCostsDeviceCheckerboardAllLevels[1] =
+      &(dataCostsDeviceCheckerboardAllLevels[0][1 * (numDataAllocatePerDataCostsMessageDataArray)]);
 
-    beliefprop::checkerboardMessages<T*> messagesDeviceAllLevels;
-    for (unsigned int i = 0; i < messagesDeviceAllLevels.checkerboardMessagesAtLevel_.size(); i++) {
-      messagesDeviceAllLevels.checkerboardMessagesAtLevel_[i] =
-        &(dataCostsDeviceCheckerboardAllLevels.dataCostCheckerboard0_[(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
+    beliefprop::CheckerboardMessages<T*> messagesDeviceAllLevels;
+    for (unsigned int i = 0; i < messagesDeviceAllLevels.size(); i++) {
+      messagesDeviceAllLevels[i] =
+        &(dataCostsDeviceCheckerboardAllLevels[0][(i + 2) * (numDataAllocatePerDataCostsMessageDataArray)]);
     }
 
     return {dataCostsDeviceCheckerboardAllLevels, messagesDeviceAllLevels};
   }
 
   //free data costs at all levels for bp processing that are all together in a single array
-  virtual void freeDataCostsAllDataInSingleArray(const beliefprop::dataCostData<T*>& dataCostsToFree,
+  virtual void freeDataCostsAllDataInSingleArray(const beliefprop::DataCostsCheckerboards<T*>& dataCostsToFree,
     const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
   {
-    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree.dataCostCheckerboard0_);
+    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree[0]);
   }
 
   //retrieve pointer to data costs for level using specified offset
-  virtual beliefprop::dataCostData<T*> retrieveLevelDataCosts(const beliefprop::dataCostData<T*>& allDataCosts,
+  virtual beliefprop::DataCostsCheckerboards<T*> retrieveLevelDataCosts(const beliefprop::DataCostsCheckerboards<T*>& allDataCosts,
     const unsigned long offsetIntoAllDataCosts)
   {
-    return {&(allDataCosts.dataCostCheckerboard0_[offsetIntoAllDataCosts]),
-            &(allDataCosts.dataCostCheckerboard1_[offsetIntoAllDataCosts])};
+    return {&(allDataCosts[0][offsetIntoAllDataCosts]),
+            &(allDataCosts[1][offsetIntoAllDataCosts])};
   }
 };
 
@@ -201,11 +201,11 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   std::chrono::duration<double> totalTimeBpIters{0}, totalTimeCopyData{0}, totalTimeCopyDataKernel{0};
 
   //start at the "bottom level" and work way up to determine amount of space needed to store data costs
-  std::vector<beliefprop::levelProperties> bpLevelProperties;
+  std::vector<beliefprop::LevelProperties> bpLevelProperties;
   bpLevelProperties.reserve(algSettings.numLevels_);
 
   //set level properties for bottom level that include processing of full image width/height
-  bpLevelProperties.push_back(beliefprop::levelProperties(widthHeightImages, 0, 0, ACCELERATION));
+  bpLevelProperties.push_back(beliefprop::LevelProperties(widthHeightImages, 0, 0, ACCELERATION));
 
   //compute level properties which includes offset for each data/message array for each level after the bottom level
   for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
@@ -218,8 +218,8 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   //declare and allocate the space on the device to store the data cost component at each possible movement at each level of the "pyramid"
   //as well as the message data used for bp processing
   //each checkerboard holds half of the data and checkerboard 0 includes the pixel in slot (0, 0)
-  beliefprop::dataCostData<T*> dataCostsDeviceAllLevels;
-  beliefprop::checkerboardMessages<T*> messagesDeviceAllLevels;
+  beliefprop::DataCostsCheckerboards<T*> dataCostsDeviceAllLevels;
+  beliefprop::CheckerboardMessages<T*> messagesDeviceAllLevels;
 
   //data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
   const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.numLevels_-1].offsetIntoArrays_ +
@@ -271,12 +271,12 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   startEndTimes[beliefprop::Runtime_Type::INIT_MESSAGES][0] = currTime;
 
   //get and use offset into data at current processing level of pyramid
-  beliefprop::dataCostData<T*> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
+  beliefprop::DataCostsCheckerboards<T*> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
     dataCostsDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
 
   //declare the space to pass the BP messages; need to have two "sets" of checkerboards because the message
   //data at the "higher" level in the image pyramid need copied to a lower level without overwriting values
-  std::array<beliefprop::checkerboardMessages<T*>, 2> messagesDevice;
+  std::array<beliefprop::CheckerboardMessages<T*>, 2> messagesDevice;
 
   //assuming that width includes padding
   if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
@@ -366,7 +366,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
     eachLevelTimingBP[levelNum][1] = timeBpIterEnd;
   }
 
-  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY][0] = std::chrono::system_clock::now();
+  startEndTimes[beliefprop::Runtime_Type::kOutputDispARITY][0] = std::chrono::system_clock::now();
 
   //assume in bottom level when retrieving output disparity
   float* resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
@@ -374,7 +374,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   if (resultingDisparityMapCompDevice == nullptr) { return {}; }
 
   currTime = std::chrono::system_clock::now();
-  startEndTimes[beliefprop::Runtime_Type::OUTPUT_DISPARITY][1] = currTime;
+  startEndTimes[beliefprop::Runtime_Type::kOutputDispARITY][1] = currTime;
   startEndTimes[beliefprop::Runtime_Type::FINAL_FREE][0] = currTime;
 
   if constexpr (bp_params::USE_OPTIMIZED_GPU_MEMORY_MANAGEMENT) {
@@ -461,7 +461,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   const auto totalTimed = segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_SETTINGS_MALLOC)
     + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::LEVEL_0_DATA_COSTS)
     + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::DATA_COSTS_HIGHER_LEVEL) + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::INIT_MESSAGES)
-    + totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::OUTPUT_DISPARITY)
+    + totalTimeBpIters + totalTimeCopyData + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::kOutputDispARITY)
     + segmentTimings.getMedianTiming(beliefprop::Runtime_Type::FINAL_FREE);
   segmentTimings.addTiming(beliefprop::Runtime_Type::TOTAL_TIMED, totalTimed);
 

@@ -29,7 +29,7 @@ constexpr std::array<std::array<std::string_view, 3>, 10> LEVEL_DCOST_BPTIME_CTI
 enum class Runtime_Type { INIT_SETTINGS_MALLOC, LEVEL_0_DATA_COSTS, LEVEL_1_DATA_COSTS, LEVEL_2_DATA_COSTS,
   LEVEL_3_DATA_COSTS, LEVEL_4_DATA_COSTS, LEVEL_5_DATA_COSTS, LEVEL_6_DATA_COSTS,
   LEVEL_7_DATA_COSTS, LEVEL_8_DATA_COSTS, LEVEL_9_DATA_COSTS, DATA_COSTS_HIGHER_LEVEL, INIT_MESSAGES,
-  INIT_MESSAGES_KERNEL, BP_ITERS, COPY_DATA, COPY_DATA_KERNEL, COPY_DATA_MEM_MANAGEMENT, OUTPUT_DISPARITY, FINAL_FREE,
+  INIT_MESSAGES_KERNEL, BP_ITERS, COPY_DATA, COPY_DATA_KERNEL, COPY_DATA_MEM_MANAGEMENT, kOutputDispARITY, FINAL_FREE,
   TOTAL_TIMED, SMOOTHING, LEVEL_0_BP, LEVEL_1_BP, LEVEL_2_BP, LEVEL_3_BP, LEVEL_4_BP, LEVEL_5_BP, LEVEL_6_BP, LEVEL_7_BP,
   LEVEL_8_BP, LEVEL_9_BP, LEVEL_0_COPY, LEVEL_1_COPY, LEVEL_2_COPY, LEVEL_3_COPY, LEVEL_4_COPY, LEVEL_5_COPY, LEVEL_6_COPY, LEVEL_7_COPY,
   LEVEL_8_COPY, LEVEL_9_COPY, TOTAL_BP, TOTAL_NO_TRANSFER, TOTAL_WITH_TRANSFER };
@@ -53,7 +53,7 @@ const std::unordered_map<Runtime_Type, std::string_view> timingNames = {
   {Runtime_Type::COPY_DATA, "Total time Copy Data"},
   {Runtime_Type::COPY_DATA_KERNEL, "Total time Copy Data (kernel portion only)"}, 
   {Runtime_Type::COPY_DATA_MEM_MANAGEMENT, "Total time Copy Data (memory management portion only)"}, 
-  {Runtime_Type::OUTPUT_DISPARITY, "Time get output disparity"},
+  {Runtime_Type::kOutputDispARITY, "Time get output disparity"},
   {Runtime_Type::FINAL_FREE, "Time final free"}, 
   {Runtime_Type::TOTAL_TIMED, "Total timed"}, 
   {Runtime_Type::SMOOTHING, "Smoothing Runtime"}, 

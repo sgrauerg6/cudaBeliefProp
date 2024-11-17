@@ -40,7 +40,7 @@ __global__ void convertUnsignedIntImageToFloat(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
     //retrieve the float-value of the unsigned int pixel value at the current location
     floatImagePixels[yVal*widthImages + xVal] = (float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];;
   }
@@ -60,7 +60,7 @@ __global__ void filterImageAcross(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
     beliefprop::filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, sizeFilter);
   }
@@ -80,7 +80,7 @@ __global__ void filterImageVertical(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (GenProcessingFuncts::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
     beliefprop::filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, sizeFilter);
   }

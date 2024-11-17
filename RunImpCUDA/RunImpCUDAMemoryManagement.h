@@ -10,33 +10,33 @@ template <RunData_t T>
 class RunImpCUDAMemoryManagement final : public RunImpMemoryManagement<T>
 {
 public:
-  T* allocateMemoryOnDevice(unsigned int numData) override {
+  T* allocateMemoryOnDevice(unsigned int numData) const override {
     //allocate the space for the disparity map estimation
     T* arrayToAllocate;
     cudaMalloc((void **) &arrayToAllocate, numData * sizeof(T));
     return arrayToAllocate;
   }
 
-  void freeMemoryOnDevice(T* arrayToFree) override {
+  void freeMemoryOnDevice(T* arrayToFree) const override {
     cudaFree(arrayToFree);
   }
 
-  T* allocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting accSetting) override
+  T* allocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting accSetting) const override
   {
     T* arrayToAllocate;
     cudaMalloc((void**)&arrayToAllocate, numData*sizeof(T));
     return arrayToAllocate;
   }
 
-  void freeAlignedMemoryOnDevice(T* memoryToFree) override {
+  void freeAlignedMemoryOnDevice(T* memoryToFree) const override {
     cudaFree(memoryToFree);
   }
 
-  void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) override {
+  void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) const override {
     cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyDeviceToHost);
   }
 
-  void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) override {
+  void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) const override {
     cudaMemcpy(destArray, inArray, numDataTransfer * sizeof(T), cudaMemcpyHostToDevice);
   }
 };

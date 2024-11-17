@@ -25,8 +25,8 @@ ARCHITECTURE_ADDITION inline void filterImageAcrossProcessPixel(unsigned int xVa
   float filteredPixelVal = imageFilter[0] * ((float)imagePixelsToFilter[yVal*widthImages + xVal]);
 
   for (unsigned int i = 1; i < sizeFilter; i++) {
-    filteredPixelVal += imageFilter[i] * (((float)imagePixelsToFilter[yVal*widthImages + (unsigned int)GenProcessingFuncts::getMax((int)xVal - (int)i, 0)]) +
-      ((float)imagePixelsToFilter[yVal*widthImages + GenProcessingFuncts::getMin(xVal + i, widthImages - 1)]));
+    filteredPixelVal += imageFilter[i] * (((float)imagePixelsToFilter[yVal*widthImages + (unsigned int)run_imp_util::getMax((int)xVal - (int)i, 0)]) +
+      ((float)imagePixelsToFilter[yVal*widthImages + run_imp_util::getMin(xVal + i, widthImages - 1)]));
   }
 
   filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
@@ -43,8 +43,8 @@ ARCHITECTURE_ADDITION inline void filterImageVerticalProcessPixel(unsigned int x
   float filteredPixelVal = imageFilter[0] * ((float)imagePixelsToFilter[yVal*widthImages + xVal]);
 
   for (unsigned int i = 1; i < sizeFilter; i++) {
-    filteredPixelVal += imageFilter[i] * ((float) (imagePixelsToFilter[(unsigned int)GenProcessingFuncts::getMax((int)yVal - (int)i, 0) * widthImages + xVal]) +
-      ((float)imagePixelsToFilter[GenProcessingFuncts::getMin(yVal + i, heightImages - 1) * widthImages + xVal]));
+    filteredPixelVal += imageFilter[i] * ((float) (imagePixelsToFilter[(unsigned int)run_imp_util::getMax((int)yVal - (int)i, 0) * widthImages + xVal]) +
+      ((float)imagePixelsToFilter[run_imp_util::getMin(yVal + i, heightImages - 1) * widthImages + xVal]));
   }
 
   filteredImagePixels[yVal * widthImages + xVal] = filteredPixelVal;

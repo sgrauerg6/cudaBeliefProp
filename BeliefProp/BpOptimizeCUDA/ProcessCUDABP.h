@@ -41,29 +41,29 @@ private:
   //initialize the data cost at each pixel for each disparity value
   run_eval::Status initializeDataCosts(
     const beliefprop::BPsettings& algSettings,
-    const beliefprop::levelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& currentLevelProperties,
     const std::array<float*, 2>& imagesOnTargetDevice,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard) override;
 
   run_eval::Status initializeDataCurrentLevel(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& prevLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& prevLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboardWriteTo,
     unsigned int bpSettingsNumDispVals) override;
 
   //initialize the message values for every pixel at every disparity to 0
   run_eval::Status initializeMessageValsToDefault(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     unsigned int bpSettingsNumDispVals) override;
 
   //run the given number of iterations of BP at the current level using the given message values in global device memory
   run_eval::Status runBPAtCurrentLevel(
     const beliefprop::BPsettings& algSettings,
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     T* allocatedMemForProcessing) override;
 
   //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
@@ -71,16 +71,16 @@ private:
   //in the next level down
   //need two different "sets" of message values to avoid read-write conflicts
   run_eval::Status copyMessageValuesToNextLevelDown(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& nextlevelProperties,
-    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
-    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& nextLevelProperties,
+    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyFrom,
+    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyTo,
     unsigned int bpSettingsNumDispVals) override;
 
   float* retrieveOutputDisparity(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     unsigned int bpSettingsNumDispVals) override;
   
   run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;

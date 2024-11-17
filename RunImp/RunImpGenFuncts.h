@@ -17,7 +17,7 @@
 #define ARCHITECTURE_ADDITION
 #endif //OPTIMIZED_CUDA_RUN
 
-namespace GenProcessingFuncts {
+namespace run_imp_util {
 
 //T is input type, U is output type
 template<RunData_t T, RunData_t U>

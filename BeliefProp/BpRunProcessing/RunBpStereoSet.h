@@ -98,12 +98,12 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
   T* bpProcStore{nullptr};
   if constexpr (bp_params::ALLOCATE_FREE_BP_MEMORY_OUTSIDE_RUNS) {
     //allocate memory on device for bp processing
-    const unsigned long numData = beliefprop::levelProperties::getTotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
+    const unsigned long numData = beliefprop::LevelProperties::getTotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
       widthHeightImages, algSettings.numDispVals_, algSettings.numLevels_);
     bpData = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
     if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) { return {}; }
 
-    beliefprop::levelProperties bottomLevelProperties(widthHeightImages, 0, 0, ACCELERATION);
+    beliefprop::LevelProperties bottomLevelProperties(widthHeightImages, 0, 0, ACCELERATION);
     const unsigned long totalDataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<T>(algSettings.numDispVals_);
     bpProcStore = runBpOnDevice.memManagementBpRun->allocateAlignedMemoryOnDevice(totalDataBottomLevel, ACCELERATION);
     if (runBpOnDevice.runBpStereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::NO_ERROR) { return {}; }

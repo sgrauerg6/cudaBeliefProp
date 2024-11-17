@@ -73,9 +73,9 @@ inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& b
 }
 
 //structure to store properties of a bp processing level
-struct levelProperties
+struct LevelProperties
 {
-  levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
+  LevelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
     run_environment::AccSetting accSetting) :
     widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
     bytesAlignMemory_(run_environment::getBytesAlignMemory(accSetting)),
@@ -85,7 +85,7 @@ struct levelProperties
     offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum),
     divPaddedChBoardWAlign_{(accSetting == run_environment::AccSetting::AVX512) ? 16u : 8u} {}
   
-  levelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
+  LevelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
     unsigned int bytesAlignMemory, unsigned int numDataAlignWidth, unsigned int divPaddedChBoardWAlign) :
     widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
     bytesAlignMemory_(bytesAlignMemory),
@@ -96,9 +96,9 @@ struct levelProperties
 
   //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
   template <RunData_t T>
-  beliefprop::levelProperties getNextLevelProperties(unsigned int numDisparityValues) const {
+  beliefprop::LevelProperties getNextLevelProperties(unsigned int numDisparityValues) const {
     const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
-    return levelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
+    return LevelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
       offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_, divPaddedChBoardWAlign_);
   }
 
@@ -142,7 +142,7 @@ struct levelProperties
   static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
     unsigned int totalPossibleMovements, unsigned int numLevels)
   {
-    beliefprop::levelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACCELERATION);
+    beliefprop::LevelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACCELERATION);
     unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
     for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
       currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);
@@ -166,37 +166,31 @@ struct levelProperties
 };
 
 //used to define the two checkerboard "parts" that the image is divided into
-enum class Checkerboard_Part {CHECKERBOARD_PART_0, CHECKERBOARD_PART_1 };
+enum class Checkerboard_Part {kCheckerboardPart0, kCheckerboardPart1 };
 enum class Message_Arrays : unsigned int { 
-  MESSAGES_U_CHECKERBOARD_0, MESSAGES_D_CHECKERBOARD_0, MESSAGES_L_CHECKERBOARD_0, MESSAGES_R_CHECKERBOARD_0,
-  MESSAGES_U_CHECKERBOARD_1, MESSAGES_D_CHECKERBOARD_1, MESSAGES_L_CHECKERBOARD_1, MESSAGES_R_CHECKERBOARD_1 };
-enum class MessageComp { U_MESSAGE, D_MESSAGE, L_MESSAGE, R_MESSAGE };
+  kMessagesUCheckerboard0, kMessagesDCheckerboard0, kMessagesLCheckerboard0, kMessagesRCheckerboard0,
+  kMessagesUCheckerboard1, kMessagesDCheckerboard1, kMessagesLCheckerboard1, kMessagesRCheckerboard1 };
+enum class MessageComp { kUMessage, kDMessage, kLMessage, kRMessage };
 
+//each checkerboard messages element corresponds to separate Message_Arrays enum that go from 0 to 7 (8 total)
+//could use a map/unordered map to map Message_Arrays enum to corresponding message array but using array structure is likely faster
 template <RunData_ptr T>
-struct checkerboardMessages
-{
-  //each checkerboard messages element corresponds to separate Message_Arrays enum that go from 0 to 7 (8 total)
-  //could use a map/unordered map to map Message_Arrays enum to corresponding message array but using array structure is likely faster
-  std::array<T, 8> checkerboardMessagesAtLevel_;
-};
+using CheckerboardMessages = std::array<T, 8>;
 
 //belief propagation checkerboard messages and data costs must be pointers to a bp data type
+//define alias for two-element array with data costs for each bp processing checkerboard
 template <RunData_ptr T>
-struct dataCostData
-{
-  T dataCostCheckerboard0_;
-  T dataCostCheckerboard1_;
-};
+using DataCostsCheckerboards = std::array<T, 2>;
 
 //enum corresponding to each kernel in belief propagation that can be run in parallel
 enum class BpKernel : unsigned int { 
-  BLUR_IMAGES,
-  DATA_COSTS_AT_LEVEL,
-  INIT_MESSAGE_VALS,
-  BP_AT_LEVEL,
-  COPY_AT_LEVEL,
-  OUTPUT_DISP };
-constexpr unsigned int NUM_KERNELS{6};
+  kBlurImages,
+  kDataCostsAtLevel,
+  kInitMessageVals,
+  kBpAtLevel,
+  kCopyAtLevel,
+  kOutputDisp };
+constexpr unsigned int kNumKernels{6};
 
 };
 

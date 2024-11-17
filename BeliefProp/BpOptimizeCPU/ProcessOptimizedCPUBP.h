@@ -46,37 +46,37 @@ public:
     ProcessBPOnTargetDevice<T, DISP_VALS, VECTORIZATION>(optCPUParams) {}
 
 private:
-  run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard) override;
+  run_eval::Status initializeDataCosts(const beliefprop::BPsettings& algSettings, const beliefprop::LevelProperties& currentLevelProperties,
+    const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard) override;
 
-  run_eval::Status initializeDataCurrentLevel(const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& prevLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
+  run_eval::Status initializeDataCurrentLevel(const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& prevLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboardWriteTo,
     unsigned int bpSettingsNumDispVals) override;
 
   run_eval::Status initializeMessageValsToDefault(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     unsigned int bpSettingsNumDispVals) override;
 
   run_eval::Status runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     T* allocatedMemForProcessing) override;
 
   run_eval::Status copyMessageValuesToNextLevelDown(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::levelProperties& nextlevelProperties,
-    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
-    const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::LevelProperties& nextLevelProperties,
+    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyFrom,
+    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyTo,
     unsigned int bpSettingsNumDispVals) override;
 
   float* retrieveOutputDisparity(
-    const beliefprop::levelProperties& currentLevelProperties,
-    const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::checkerboardMessages<T*>& messagesDevice,
+    const beliefprop::LevelProperties& currentLevelProperties,
+    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
     unsigned int bpSettingsNumDispVals) override;
 };
 
@@ -85,9 +85,9 @@ private:
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runBPAtCurrentLevel(const beliefprop::BPsettings& algSettings,
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-  const beliefprop::checkerboardMessages<T*>& messagesDevice,
+  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+  const beliefprop::CheckerboardMessages<T*>& messagesDevice,
   T* allocatedMemForProcessing)
 {
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
@@ -95,21 +95,21 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
   {
     const beliefprop::Checkerboard_Part checkboardPartUpdate =
       ((iterationNum % 2) == 0) ?
-      beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1 :
-      beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0;
+      beliefprop::Checkerboard_Part::kCheckerboardPart1 :
+      beliefprop::Checkerboard_Part::kCheckerboardPart0;
 
     beliefpropCPU::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS, VECTORIZATION>(
       checkboardPartUpdate, currentLevelProperties,
-      dataCostDeviceCheckerboard.dataCostCheckerboard0_,
-      dataCostDeviceCheckerboard.dataCostCheckerboard1_,
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1)],
-      messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1)],
+      dataCostDeviceCheckerboard[0],
+      dataCostDeviceCheckerboard[1],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
+      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
       algSettings.disc_k_bp_, algSettings.numDispVals_, this->parallelParams_);
   }
   return run_eval::Status::NO_ERROR;
@@ -121,34 +121,34 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::runB
 //need two different "sets" of message values to avoid read-write conflicts
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copyMessageValuesToNextLevelDown(
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& nextlevelProperties,
-  const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyFrom,
-  const beliefprop::checkerboardMessages<T*>& messagesDeviceCopyTo,
+  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& nextLevelProperties,
+  const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyFrom,
+  const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyTo,
   unsigned int bpSettingsNumDispVals)
 {
-  for (const auto& checkerboard_part : {beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0, beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1})
+  for (const auto& checkerboard_part : {beliefprop::Checkerboard_Part::kCheckerboardPart0, beliefprop::Checkerboard_Part::kCheckerboardPart1})
   {
     //call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
     //storing the current message values
     beliefpropCPU::copyMsgDataToNextLevel<T, DISP_VALS>(
-      checkerboard_part, currentLevelProperties, nextlevelProperties,
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1)],
-      messagesDeviceCopyFrom.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1)],
-      messagesDeviceCopyTo.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1)],
+      checkerboard_part, currentLevelProperties, nextLevelProperties,
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
+      messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
+      messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
       bpSettingsNumDispVals, this->parallelParams_);
   }
   return run_eval::Status::NO_ERROR;
@@ -157,13 +157,13 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::copy
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCosts(
-  const beliefprop::BPsettings& algSettings, const beliefprop::levelProperties& currentLevelProperties,
-  const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard)
+  const beliefprop::BPsettings& algSettings, const beliefprop::LevelProperties& currentLevelProperties,
+  const std::array<float*, 2>& imagesOnTargetDevice, const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard)
 {
   //initialize the data the the "bottom" of the image pyramid
   beliefpropCPU::initializeBottomLevelData<T, DISP_VALS>(currentLevelProperties, imagesOnTargetDevice[0],
-    imagesOnTargetDevice[1], dataCostDeviceCheckerboard.dataCostCheckerboard0_,
-    dataCostDeviceCheckerboard.dataCostCheckerboard1_, algSettings.lambda_bp_, algSettings.data_k_bp_,
+    imagesOnTargetDevice[1], dataCostDeviceCheckerboard[0],
+    dataCostDeviceCheckerboard[1], algSettings.lambda_bp_, algSettings.data_k_bp_,
     algSettings.numDispVals_, this->parallelParams_);
   return run_eval::Status::NO_ERROR;
 }
@@ -171,21 +171,21 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
 //initialize the message values with no previous message values...all message values are set to 0
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeMessageValsToDefault(
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::checkerboardMessages<T*>& messagesDevice,
+  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::CheckerboardMessages<T*>& messagesDevice,
   unsigned int bpSettingsNumDispVals)
 {
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
   beliefpropCPU::initializeMessageValsToDefaultKernel<T, DISP_VALS>(
     currentLevelProperties,
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
     bpSettingsNumDispVals, this->parallelParams_);
   return run_eval::Status::NO_ERROR;
 }
@@ -193,25 +193,25 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::initializeDataCurrentLevel(
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::levelProperties& prevLevelProperties,
-  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboardWriteTo,
+  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::LevelProperties& prevLevelProperties,
+  const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+  const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboardWriteTo,
   unsigned int bpSettingsNumDispVals)
 {
   const size_t offsetNum{0};
   for (const auto& checkerboardAndDataCost : {
     std::make_pair(
-      beliefprop::Checkerboard_Part::CHECKERBOARD_PART_0,
-      dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard0_),
+      beliefprop::Checkerboard_Part::kCheckerboardPart0,
+      dataCostDeviceCheckerboardWriteTo[0]),
     std::make_pair(
-      beliefprop::Checkerboard_Part::CHECKERBOARD_PART_1,
-      dataCostDeviceCheckerboardWriteTo.dataCostCheckerboard1_)})
+      beliefprop::Checkerboard_Part::kCheckerboardPart1,
+      dataCostDeviceCheckerboardWriteTo[1])})
   {
     beliefpropCPU::initializeCurrentLevelData<T, DISP_VALS>(
       checkerboardAndDataCost.first, currentLevelProperties, prevLevelProperties,
-      dataCostDeviceCheckerboard.dataCostCheckerboard0_,
-      dataCostDeviceCheckerboard.dataCostCheckerboard1_,
+      dataCostDeviceCheckerboard[0],
+      dataCostDeviceCheckerboard[1],
       checkerboardAndDataCost.second,
       ((int) offsetNum / sizeof(float)),
       bpSettingsNumDispVals, this->parallelParams_);
@@ -221,25 +221,25 @@ inline run_eval::Status ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::init
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline float* ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>::retrieveOutputDisparity(
-  const beliefprop::levelProperties& currentLevelProperties,
-  const beliefprop::dataCostData<T*>& dataCostDeviceCheckerboard,
-  const beliefprop::checkerboardMessages<T*>& messagesDevice,
+  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
+  const beliefprop::CheckerboardMessages<T*>& messagesDevice,
   unsigned int bpSettingsNumDispVals)
 {
   float* resultingDisparityMapCompDevice = new float[currentLevelProperties.widthLevel_ * currentLevelProperties.heightLevel_];
 
   beliefpropCPU::retrieveOutputDisparity<T, DISP_VALS, VECTORIZATION>(
     currentLevelProperties,
-    dataCostDeviceCheckerboard.dataCostCheckerboard0_,
-    dataCostDeviceCheckerboard.dataCostCheckerboard1_,
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_0)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_U_CHECKERBOARD_1)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_D_CHECKERBOARD_1)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_L_CHECKERBOARD_1)],
-    messagesDevice.checkerboardMessagesAtLevel_[static_cast<unsigned int>(beliefprop::Message_Arrays::MESSAGES_R_CHECKERBOARD_1)],
+    dataCostDeviceCheckerboard[0],
+    dataCostDeviceCheckerboard[1],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
+    messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
     resultingDisparityMapCompDevice, bpSettingsNumDispVals, this->parallelParams_);
 
   return resultingDisparityMapCompDevice;

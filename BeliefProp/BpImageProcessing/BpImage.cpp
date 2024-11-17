@@ -22,9 +22,9 @@ void BpImage<T>::loadImageAsGrayScale(const std::string& filePathImage) {
   //use extension to check if image is pgm or ppm
   BpImage<unsigned char> initImage;
   if (token == PGM_EXTENSION) {
-    initImage = imageRead(filePathImage, image_type::PGM_IMAGE);
+    initImage = imageRead(filePathImage, ImageType::PGM_IMAGE);
   } else if (token == PPM_EXTENSION) {
-    initImage = imageRead(filePathImage, image_type::PPM_IMAGE, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
+    initImage = imageRead(filePathImage, ImageType::PPM_IMAGE, USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION);
   } else {
     //end function if not of type pgm or ppm with result
     //being BpImage with default constructor
@@ -59,7 +59,7 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 
 template<class T>
 BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
-  image_type imageType, bool weightedRGBConversion) const
+  ImageType imageType, bool weightedRGBConversion) const
 {
   std::string buf;
 
@@ -81,12 +81,12 @@ BpImage<unsigned char> BpImage<T>::imageRead(const std::string& fileName,
 
   BpImage<unsigned char> outImage(std::array<unsigned int, 2>{cols, rows});
 
-  if (imageType == image_type::PGM_IMAGE) {
+  if (imageType == ImageType::PGM_IMAGE) {
     /* read data */
     file.read((char*) (outImage.getPointerToPixelsStart()),
       (cols * rows * sizeof(char)));
   }
-  else if (imageType == image_type::PPM_IMAGE) {
+  else if (imageType == ImageType::PPM_IMAGE) {
     std::unique_ptr<char[]> rgbImagePtr = std::make_unique<char[]>(3 * cols * rows);
 
     /* read data */

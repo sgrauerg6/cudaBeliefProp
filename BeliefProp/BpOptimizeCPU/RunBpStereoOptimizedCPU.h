@@ -36,7 +36,7 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads
-  unsigned int nthreads = parallelParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::BLUR_IMAGES), 0})[0];
+  unsigned int nthreads = parallelParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0];
   omp_set_num_threads(nthreads);
 
   //add settings for current run to output data

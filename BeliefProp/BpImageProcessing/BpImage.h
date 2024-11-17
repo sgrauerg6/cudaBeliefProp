@@ -20,7 +20,7 @@
 #include <type_traits>
 #include <ranges>
 
-enum class image_type { PGM_IMAGE, PPM_IMAGE };
+enum class ImageType { PGM_IMAGE, PPM_IMAGE };
 constexpr bool USE_WEIGHTED_RGB_TO_GRAYSCALE_CONVERSION{true};
 constexpr std::string_view PGM_EXTENSION{"pgm"};
 constexpr std::string_view PPM_EXTENSION{"ppm"};
@@ -87,7 +87,7 @@ protected:
   void pnm_read(std::ifstream &file, std::string& buf) const;
 
   BpImage<unsigned char> imageRead(const std::string& fileName,
-    image_type imageType, bool weightedRGBConversion = true) const;
+    ImageType imageType, bool weightedRGBConversion = true) const;
 
   //currently assuming single channel
   inline unsigned int getTotalPixels() const {

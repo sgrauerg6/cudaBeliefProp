@@ -15,19 +15,19 @@
 #include <arm_neon.h>
 
 template<> inline
-float16_t GenProcessingFuncts::getZeroVal<float16_t>()
+float16_t run_imp_util::getZeroVal<float16_t>()
 {
   return (float16_t)0.0f;
 }
 
 template<> inline
-float GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<float16_t, float>(const float16_t valToConvert)
+float run_imp_util::convertValToDifferentDataTypeIfNeeded<float16_t, float>(const float16_t valToConvert)
 {
   return (float)valToConvert;
 }
 
 template<> inline
-float16_t GenProcessingFuncts::convertValToDifferentDataTypeIfNeeded<float, float16_t>(const float valToConvert)
+float16_t run_imp_util::convertValToDifferentDataTypeIfNeeded<float, float16_t>(const float valToConvert)
 {
   //seems like simple cast function works
   return (float16_t)valToConvert;

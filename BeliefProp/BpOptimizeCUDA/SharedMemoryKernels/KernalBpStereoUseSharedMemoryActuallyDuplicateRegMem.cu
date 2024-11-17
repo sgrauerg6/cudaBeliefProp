@@ -67,7 +67,7 @@ __device__ inline void dtStereoSharedActuallyRegAndRegLocalMemory(T* dstSharedMe
 
 template<>
 __device__ inline void msgStereo<float, float>(int xVal, int yVal,
-    beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::LevelProperties& currentLevelProperties,
     float messageValsNeighbor1[STEREO_SETS_TO_PROCESS],
     float messageValsNeighbor2[STEREO_SETS_TO_PROCESS],
     float messageValsNeighbor3[STEREO_SETS_TO_PROCESS],
@@ -218,7 +218,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 template<>
 __device__ inline void msgStereo<half, half>(int xVal, int yVal,
-    beliefprop::levelProperties& currentLevelProperties,
+    beliefprop::LevelProperties& currentLevelProperties,
     half messageValsNeighbor1[STEREO_SETS_TO_PROCESS],
     half messageValsNeighbor2[STEREO_SETS_TO_PROCESS],
     half messageValsNeighbor3[STEREO_SETS_TO_PROCESS],
