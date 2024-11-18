@@ -129,7 +129,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
   
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectorsAVX256(
+  void retrieveOutputDisparityUseSIMDVectorskAVX256(
     const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -140,7 +140,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectorsAVX256(
+  void retrieveOutputDisparityUseSIMDVectorskAVX256(
     const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -151,7 +151,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectorsAVX256(
+  void retrieveOutputDisparityUseSIMDVectorskAVX256(
     const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -163,7 +163,7 @@ namespace beliefpropCPU
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectorsAVX512(
+  void retrieveOutputDisparityUseSIMDVectorskAVX512(
     const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -174,7 +174,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectorsAVX512(
+  void retrieveOutputDisparityUseSIMDVectorskAVX512(
     const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -185,7 +185,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void retrieveOutputDisparityUseSIMDVectorsAVX512(
+  void retrieveOutputDisparityUseSIMDVectorskAVX512(
     const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -256,7 +256,7 @@ namespace beliefpropCPU
     unsigned int bpSettingsDispVals);
   
   template<unsigned int DISP_VALS>
-  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256(
     beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -267,7 +267,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256(
     beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -278,7 +278,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256(
     beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -290,7 +290,7 @@ namespace beliefpropCPU
   
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
-  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
+  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
     beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -301,7 +301,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
+  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
     beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -312,7 +312,7 @@ namespace beliefpropCPU
     const ParallelParams& optCPUParams);
 
   template<unsigned int DISP_VALS>
-  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
+  void runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
     beliefprop::Checkerboard_Part checkerboardToUpdate, const beliefprop::LevelProperties& currentLevelProperties,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -449,10 +449,10 @@ namespace beliefpropCPU
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
+#include "KernelBpStereoCPU_kAVX256TemplateSpFuncts.h"
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-#include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-#include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
+#include "KernelBpStereoCPU_kAVX256TemplateSpFuncts.h"
+#include "KernelBpStereoCPU_kAVX512TemplateSpFuncts.h"
 #endif //CPU_VECTORIZATION_DEFINE
 
 #endif //COMPILING_FOR_ARM
@@ -470,19 +470,19 @@ void beliefpropCPU::initializeBottomLevelData(
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
+  for (int val = 0; val < (currentLevelProperties.width_level_*currentLevelProperties.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (currentLevelProperties.widthLevel_*currentLevelProperties.heightLevel_); val++)
+  for (unsigned int val = 0; val < (currentLevelProperties.width_level_*currentLevelProperties.height_level_); val++)
 #endif //_WIN32
   {
-    const unsigned int yVal = val / currentLevelProperties.widthLevel_;
-    const unsigned int xVal = val % currentLevelProperties.widthLevel_;
+    const unsigned int yVal = val / currentLevelProperties.width_level_;
+    const unsigned int xVal = val % currentLevelProperties.width_level_;
 
     beliefprop::initializeBottomLevelDataPixel<T, DISP_VALS>(xVal, yVal, currentLevelProperties,
         image1PixelsDevice, image2PixelsDevice,
@@ -502,19 +502,19 @@ void beliefpropCPU::initializeCurrentLevelData(
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), currentLevelProperties.level_num_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (unsigned int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #endif //_WIN32
   {
-    const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-    const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+    const unsigned int yVal = val / currentLevelProperties.width_checkerboard_level_;
+    const unsigned int xVal = val % currentLevelProperties.width_checkerboard_level_;
 
     beliefprop::initializeCurrentLevelDataPixel<T, T, DISP_VALS>(
         xVal, yVal, checkerboardPart,
@@ -535,19 +535,19 @@ void beliefpropCPU::initializeMessageValsToDefaultKernel(const beliefprop::Level
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (unsigned int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #endif //_WIN32
   {
-    const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-    const unsigned int xValInCheckerboard = val % currentLevelProperties.widthCheckerboardLevel_;
+    const unsigned int yVal = val / currentLevelProperties.width_checkerboard_level_;
+    const unsigned int xValInCheckerboard = val % currentLevelProperties.width_checkerboard_level_;
 
     beliefprop::initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
       xValInCheckerboard, yVal, currentLevelProperties,
@@ -570,22 +570,22 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   float disc_k_bp, unsigned int bpSettingsDispVals,
   const ParallelParams& optCPUParams)
 {
-  const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
+  const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.width_level_ / 2;
 
   //in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool dataAligned = run_imp_util::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.numDataAlignWidth_, currentLevelProperties.divPaddedChBoardWAlign_);
+  const bool dataAligned = run_imp_util::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.num_data_align_width_, currentLevelProperties.div_padded_checkerboard_w_align_);
 
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.level_num_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_); val++)
+  for (int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.heightLevel_); val++)
+  for (unsigned int val = 0; val < (widthCheckerboardRunProcessing * currentLevelProperties.height_level_); val++)
 #endif //_WIN32
   {
     const unsigned int yVal = val / widthCheckerboardRunProcessing;
@@ -665,26 +665,26 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   unsigned int bpSettingsDispVals,
   const ParallelParams& optCPUParams)
 {
-  const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
+  const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.width_level_ / 2;
   const U disc_k_bp_vector = VectProcessingFuncts::createSIMDVectorSameData<U>(disc_k_bp);
 
   if constexpr (DISP_VALS > 0) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.levelNum_})[0]};
+    int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.level_num_})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
 #endif
 #ifdef _WIN32
-    for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+    for (int yVal = 1; yVal < currentLevelProperties.height_level_ - 1; yVal++) {
 #else
-    for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+    for (unsigned int yVal = 1; yVal < currentLevelProperties.height_level_ - 1; yVal++) {
 #endif //_WIN32
       //checkerboardAdjustment used for indexing into current checkerboard to update
       const unsigned int checkerboardAdjustment =
         (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((yVal) % 2) : ((yVal + 1) % 2);
       const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
-      const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
+      const unsigned int endFinal = std::min(currentLevelProperties.width_checkerboard_level_ - checkerboardAdjustment,
                                              widthCheckerboardRunProcessing);
       const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
 
@@ -703,8 +703,8 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         xValProcess = std::max(startX, xValProcess);
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
-          currentLevelProperties.divPaddedChBoardWAlign_);
+        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.num_data_align_width_,
+          currentLevelProperties.div_padded_checkerboard_w_align_);
 
         //initialize arrays for data and message values
         U dataMessage[DISP_VALS], prevUMessage[DISP_VALS], prevDMessage[DISP_VALS], prevLMessage[DISP_VALS], prevRMessage[DISP_VALS];
@@ -787,21 +787,21 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   }
   else {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.levelNum_})[0]};
+    int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.level_num_})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
 #endif
 #ifdef _WIN32
-    for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+    for (int yVal = 1; yVal < currentLevelProperties.height_level_ - 1; yVal++) {
 #else
-    for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+    for (unsigned int yVal = 1; yVal < currentLevelProperties.height_level_ - 1; yVal++) {
 #endif //_WIN32
       //checkerboardAdjustment used for indexing into current checkerboard to update
       const unsigned int checkerboardAdjustment =
         (checkerboardToUpdate == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((yVal) % 2) : ((yVal + 1) % 2);
       const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
-      const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
+      const unsigned int endFinal = std::min(currentLevelProperties.width_checkerboard_level_ - checkerboardAdjustment,
                                              widthCheckerboardRunProcessing);
       const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
 
@@ -820,8 +820,8 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         xValProcess = std::max(startX, xValProcess);
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
-          currentLevelProperties.divPaddedChBoardWAlign_);
+        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.num_data_align_width_,
+          currentLevelProperties.div_padded_checkerboard_w_align_);
 
         //initialize arrays for data and message values
         U* dataMessage = new U[bpSettingsDispVals];
@@ -929,9 +929,9 @@ void beliefpropCPU::runBPIterationUsingCheckerboardUpdates(
   const ParallelParams& optCPUParams)
 {
 #ifdef COMPILING_FOR_ARM
-if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
+if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
   {
-    if (currentLevelProperties.widthCheckerboardLevel_ > 5)
+    if (currentLevelProperties.width_checkerboard_level_ > 5)
     {
       runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON<DISP_VALS>(checkerboardToUpdate,
         currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -964,12 +964,12 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
   }
 #else
 #if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE))
-  if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256)
+  if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX256)
   {
     //only use AVX-256 if width of processing checkerboard is over 10
-    if (currentLevelProperties.widthCheckerboardLevel_ > 10)
+    if (currentLevelProperties.width_checkerboard_level_ > 10)
     {
-      runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256<DISP_VALS>(checkerboardToUpdate,
+      runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256<DISP_VALS>(checkerboardToUpdate,
         currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
         messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -990,12 +990,12 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::NEON)
   }
 #endif //CPU_VECTORIZATION_DEFINE
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-  else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512)
+  else if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX512)
   {
     //only use AVX-512 if width of processing checkerboard is over 20
-    if (currentLevelProperties.widthCheckerboardLevel_ > 20)
+    if (currentLevelProperties.width_checkerboard_level_ > 20)
     {
-      runBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512<DISP_VALS>(checkerboardToUpdate,
+      runBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512<DISP_VALS>(checkerboardToUpdate,
         currentLevelProperties, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
         messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -1045,19 +1045,19 @@ void beliefpropCPU::copyMsgDataToNextLevel(beliefprop::Checkerboard_Part checker
   const ParallelParams& optCPUParams)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), currentLevelProperties.levelNum_})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), currentLevelProperties.level_num_})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (unsigned int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #endif //_WIN32
   {
-    const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-    const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+    const unsigned int yVal = val / currentLevelProperties.width_checkerboard_level_;
+    const unsigned int xVal = val % currentLevelProperties.width_checkerboard_level_;
 
     beliefprop::copyMsgDataToNextLevelPixel<T, DISP_VALS>(xVal, yVal,
       checkerboardPart, currentLevelProperties, nextLevelProperties,
@@ -1084,21 +1084,21 @@ void beliefpropCPU::retrieveOutputDisparity(
   float* disparityBetweenImagesDevice, unsigned int bpSettingsDispVals,
   const ParallelParams& optCPUParams)
 {
-  if constexpr (VECTORIZATION == run_environment::AccSetting::NONE) {
+  if constexpr (VECTORIZATION == run_environment::AccSetting::kNone) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (currentLevelProperties.widthCheckerboardLevel_*currentLevelProperties.heightLevel_); val++)
+  for (unsigned int val = 0; val < (currentLevelProperties.width_checkerboard_level_*currentLevelProperties.height_level_); val++)
 #endif //_WIN32
   {
-    const unsigned int yVal = val / currentLevelProperties.widthCheckerboardLevel_;
-    const unsigned int xVal = val % currentLevelProperties.widthCheckerboardLevel_;
+    const unsigned int yVal = val / currentLevelProperties.width_checkerboard_level_;
+    const unsigned int xVal = val % currentLevelProperties.width_checkerboard_level_;
 
     beliefprop::retrieveOutputDisparityPixel<T, T, DISP_VALS>(
       xVal, yVal, currentLevelProperties,
@@ -1113,9 +1113,9 @@ void beliefpropCPU::retrieveOutputDisparity(
   else {
 #ifndef COMPILING_FOR_ARM
     //SIMD vectorization of output disparity
-    if constexpr (VECTORIZATION == run_environment::AccSetting::AVX512) {
+    if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX512) {
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-      retrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS>(currentLevelProperties,
+      retrieveOutputDisparityUseSIMDVectorskAVX512<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1124,8 +1124,8 @@ void beliefpropCPU::retrieveOutputDisparity(
         disparityBetweenImagesDevice, bpSettingsDispVals, optCPUParams);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     }
-    else if constexpr (VECTORIZATION == run_environment::AccSetting::AVX256) {
-      retrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(currentLevelProperties,
+    else if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX256) {
+      retrieveOutputDisparityUseSIMDVectorskAVX256<DISP_VALS>(currentLevelProperties,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1157,38 +1157,38 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::Leve
   unsigned int numDataInSIMDVector,
   const ParallelParams& optCPUParams)
 {
-  const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.widthLevel_ / 2;
+  const unsigned int widthCheckerboardRunProcessing = currentLevelProperties.width_level_ / 2;
 
   //initially get output for each checkerboard
   //set width of disparity checkerboard to be a multiple of numDataInSIMDVector so that SIMD vectors can be aligned
-  unsigned int widthDispCheckerboard = ((currentLevelProperties.paddedWidthCheckerboardLevel_ % currentLevelProperties.numDataAlignWidth_) == 0) ?
-                                       currentLevelProperties.paddedWidthCheckerboardLevel_  :
-                                       currentLevelProperties.paddedWidthCheckerboardLevel_ + 
-                                       (currentLevelProperties.numDataAlignWidth_ - (currentLevelProperties.paddedWidthCheckerboardLevel_ % currentLevelProperties.numDataAlignWidth_));
-  const unsigned int numDataDispChBoard = widthDispCheckerboard * currentLevelProperties.heightLevel_;
+  unsigned int widthDispCheckerboard = ((currentLevelProperties.padded_width_checkerboard_level_ % currentLevelProperties.num_data_align_width_) == 0) ?
+                                       currentLevelProperties.padded_width_checkerboard_level_  :
+                                       currentLevelProperties.padded_width_checkerboard_level_ + 
+                                       (currentLevelProperties.num_data_align_width_ - (currentLevelProperties.padded_width_checkerboard_level_ % currentLevelProperties.num_data_align_width_));
+  const unsigned int numDataDispChBoard = widthDispCheckerboard * currentLevelProperties.height_level_;
 #ifdef _WIN32
-  V* disparityCheckboard0 = static_cast<V*>(_aligned_malloc(2 * numDataDispChBoard * sizeof(V), currentLevelProperties.numDataAlignWidth_ * sizeof(V)));
+  V* disparityCheckboard0 = static_cast<V*>(_aligned_malloc(2 * numDataDispChBoard * sizeof(V), currentLevelProperties.num_data_align_width_ * sizeof(V)));
 #else
-  V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(currentLevelProperties.numDataAlignWidth_ * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
+  V* disparityCheckboard0 = static_cast<V*>(std::aligned_alloc(currentLevelProperties.num_data_align_width_ * sizeof(V), 2 * numDataDispChBoard * sizeof(V)));
 #endif
 
   for (auto checkerboardGetDispMap : {beliefprop::Checkerboard_Part::kCheckerboardPart0, beliefprop::Checkerboard_Part::kCheckerboardPart1})
   {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+    int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(numThreadsKernel)
 #else
     #pragma omp parallel for
 #endif
 #ifdef _WIN32
-    for (int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+    for (int yVal = 1; yVal < currentLevelProperties.height_level_ - 1; yVal++) {
 #else
-    for (unsigned int yVal = 1; yVal < currentLevelProperties.heightLevel_ - 1; yVal++) {
+    for (unsigned int yVal = 1; yVal < currentLevelProperties.height_level_ - 1; yVal++) {
 #endif //_WIN32
       //checkerboardAdjustment used for indexing into current checkerboard to retrieve best disparities
       const unsigned int checkerboardAdjustment = (checkerboardGetDispMap == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((yVal) % 2) : ((yVal + 1) % 2);
       const unsigned int startX = (checkerboardAdjustment == 1) ? 0 : 1;
-      const unsigned int endFinal = std::min(currentLevelProperties.widthCheckerboardLevel_ - checkerboardAdjustment,
+      const unsigned int endFinal = std::min(currentLevelProperties.width_checkerboard_level_ - checkerboardAdjustment,
                                              widthCheckerboardRunProcessing);
       const unsigned int endXSIMDVectorStart = (endFinal / numDataInSIMDVector) * numDataInSIMDVector - numDataInSIMDVector;
 
@@ -1210,8 +1210,8 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::Leve
         const unsigned int indexOutput = (yVal * widthDispCheckerboard) + xValProcess;
 
         //check if the memory is aligned for AVX instructions at xValProcess location
-        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.numDataAlignWidth_,
-                                                                       currentLevelProperties.divPaddedChBoardWAlign_);
+        const bool dataAlignedAtXValProcess = run_imp_util::MemoryAlignedAtDataStart(xValProcess, numDataInSIMDVector, currentLevelProperties.num_data_align_width_,
+                                                                       currentLevelProperties.div_padded_checkerboard_w_align_);
 
         //declare SIMD vectors for data and message values at each disparity
         //U dataMessage, prevUMessage, prevDMessage, prevLMessage, prevRMessage;
@@ -1441,54 +1441,54 @@ void beliefpropCPU::retrieveOutputDisparityUseSIMDVectors(const beliefprop::Leve
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(numThreadsKernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int y=0; y < currentLevelProperties.heightLevel_; y++)
+  for (int y=0; y < currentLevelProperties.height_level_; y++)
 #else
-  for (unsigned int y=0; y < currentLevelProperties.heightLevel_; y++)
+  for (unsigned int y=0; y < currentLevelProperties.height_level_; y++)
 #endif //_WIN32
   {
     const bool startChBoard0 = ((y%2) == 0);
     unsigned int chBoardIdx = y * widthDispCheckerboard;
-    for (unsigned int x=0; x < (currentLevelProperties.widthLevel_); x += 2) {
-      if ((y == 0) || (y == (currentLevelProperties.heightLevel_ - 1))) {
-        disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] = 0;
-        disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
+    for (unsigned int x=0; x < (currentLevelProperties.width_level_); x += 2) {
+      if ((y == 0) || (y == (currentLevelProperties.height_level_ - 1))) {
+        disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 0)] = 0;
+        disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 1)] = 0;
       }
       else {
         if (startChBoard0) {
-          if ((x == 0) || (x == (currentLevelProperties.widthLevel_ - 1))) {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] = 0;
+          if ((x == 0) || (x == (currentLevelProperties.width_level_ - 1))) {
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 0)] = 0;
           }
           else {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] =
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 0)] =
               (float)disparityCheckboard0[chBoardIdx];
           }
-          if ((x + 1) == (currentLevelProperties.widthLevel_ - 1)) {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
+          if ((x + 1) == (currentLevelProperties.width_level_ - 1)) {
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 1)] = 0;
           }
-          else if ((x + 1) < currentLevelProperties.widthLevel_) {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] =
+          else if ((x + 1) < currentLevelProperties.width_level_) {
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 1)] =
                 (float)disparityCheckboard0[numDataDispChBoard + chBoardIdx];
           }
         }
         else {
-          if ((x == 0) || (x == (currentLevelProperties.widthLevel_ - 1))) {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] = 0;
+          if ((x == 0) || (x == (currentLevelProperties.width_level_ - 1))) {
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 0)] = 0;
           }
           else {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 0)] =
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 0)] =
               (float)disparityCheckboard0[numDataDispChBoard + chBoardIdx];
           }
-          if ((x + 1) == (currentLevelProperties.widthLevel_ - 1)) {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] = 0;
+          if ((x + 1) == (currentLevelProperties.width_level_ - 1)) {
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 1)] = 0;
           }
-          else if ((x + 1) < currentLevelProperties.widthLevel_) {
-            disparityBetweenImagesDevice[y * currentLevelProperties.widthLevel_ + (x + 1)] =
+          else if ((x + 1) < currentLevelProperties.width_level_) {
+            disparityBetweenImagesDevice[y * currentLevelProperties.width_level_ + (x + 1)] =
               (float)disparityCheckboard0[chBoardIdx];
           }
         }
@@ -1580,7 +1580,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
   valToNormalize = VectProcessingFuncts::divideVals<W, W, W>(valToNormalize, VectProcessingFuncts::convertValToDatatype<W, V>((double)DISP_VALS));
 
   unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-    currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, 0, DISP_VALS);
+    currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_, 0, DISP_VALS);
 
   for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
   {
@@ -1595,7 +1595,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
     }
 
     if constexpr (bp_params::kOptimizedIndexingSetting) {
-      destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+      destMessageArrayIndex += currentLevelProperties.padded_width_checkerboard_level_;
     }
     else {
       destMessageArrayIndex++;
@@ -1682,7 +1682,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
   valToNormalize = VectProcessingFuncts::divideVals<W, W, W>(valToNormalize, VectProcessingFuncts::convertValToDatatype<W, V>((float)bpSettingsDispVals));
 
   unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-    currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_, 0, bpSettingsDispVals);
+    currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_, 0, bpSettingsDispVals);
 
   for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
   {
@@ -1697,7 +1697,7 @@ void beliefpropCPU::msgStereoSIMDProcessing(unsigned int xVal, unsigned int yVal
     }
 
     if constexpr (bp_params::kOptimizedIndexingSetting) {
-      destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+      destMessageArrayIndex += currentLevelProperties.padded_width_checkerboard_level_;
     }
     else {
       destMessageArrayIndex++;
@@ -1754,23 +1754,23 @@ void beliefpropCPU::printDataAndMessageValsAtPointKernel(
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float)messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
         (float)messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
         (float)messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
         (float)messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
         (float)dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
     }
   } else {
@@ -1780,23 +1780,23 @@ void beliefpropCPU::printDataAndMessageValsAtPointKernel(
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float)messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
         (float)messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
         (float)messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
         (float)messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
         (float)dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
     }
   }
@@ -1822,23 +1822,23 @@ void beliefpropCPU::printDataAndMessageValsToPointKernel(
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float) messageUDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal + 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal + 1, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
         (float) messageDDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal - 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal - 1, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
         (float) messageLDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2 + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2 + checkerboardAdjustment, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
         (float) messageRDeviceCurrentCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          (xVal / 2 - 1) + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          (xVal / 2 - 1) + checkerboardAdjustment, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
         (float) dataCostStereoCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
     }
   }
@@ -1849,23 +1849,23 @@ void beliefpropCPU::printDataAndMessageValsToPointKernel(
       printf("DISP: %u\n", currentDisparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
         (float) messageUDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal + 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal + 1, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
         (float) messageDDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal - 1, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal - 1, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
         (float) messageLDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2 + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2 + checkerboardAdjustment, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
         (float) messageRDeviceCurrentCheckerboard0[beliefprop::retrieveIndexInDataAndMessage(
-          (xVal / 2 - 1) + checkerboardAdjustment, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          (xVal / 2 - 1) + checkerboardAdjustment, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
         (float) dataCostStereoCheckerboard1[beliefprop::retrieveIndexInDataAndMessage(
-          xVal / 2, yVal, currentLevelProperties.paddedWidthCheckerboardLevel_, currentLevelProperties.heightLevel_,
+          xVal / 2, yVal, currentLevelProperties.padded_width_checkerboard_level_, currentLevelProperties.height_level_,
           currentDisparity, DISP_VALS)]);
     }
   }

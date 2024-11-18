@@ -22,7 +22,7 @@
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 class RunBpStereoOptimizedCPU final : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
 public:
-  std::string getBpRunDescription() const override { return "Optimized CPU"; }
+  std::string BpRunDescription() const override { return "Optimized CPU"; }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
@@ -36,13 +36,13 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads
-  unsigned int nthreads = parallelParams.getOptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0];
+  unsigned int nthreads = parallelParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0];
   omp_set_num_threads(nthreads);
 
   //add settings for current run to output data
-  RunData runData;
-  runData.addDataWHeader("Number of parallel CPU threads in run", nthreads);
-  runData.addDataWHeader("Vectorization", std::string(run_environment::accelerationString<VECTORIZATION>()));
+  RunData run_data;
+  run_data.AddDataWHeader("Number of parallel CPU threads in run", nthreads);
+  run_data.AddDataWHeader("Vectorization", std::string(run_environment::accelerationString<VECTORIZATION>()));
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
@@ -53,8 +53,8 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
       std::make_unique<RunImpMemoryManagement<T>>(),
       std::make_unique<RunImpMemoryManagement<float>>()});
   if (procSetOutput) {
-    runData.appendData(procSetOutput->runData);
-    procSetOutput->runData = runData;
+    run_data.AppendData(procSetOutput->run_data);
+    procSetOutput->run_data = run_data;
   }
 
   return procSetOutput;

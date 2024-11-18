@@ -292,8 +292,8 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
   valToNormalize /= ((float) kStereoSetsToProcess);
 
   unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-      currentLevelProperties.paddedWidthCheckerboardLevel_,
-      currentLevelProperties.heightLevel_, 0,
+      currentLevelProperties.padded_width_checkerboard_level_,
+      currentLevelProperties.height_level_, 0,
       kStereoSetsToProcess);
 
   indexIndexDstShared = startIndexDstShared;
@@ -308,7 +308,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #if bp_params::kOptimizedIndexingSetting == 1
     destMessageArrayIndex +=
-    currentLevelProperties.paddedWidthCheckerboardLevel_;
+    currentLevelProperties.padded_width_checkerboard_level_;
 #else
     destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -389,8 +389,8 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
   valToNormalize /= ((float) kStereoSetsToProcess);
 
   unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-      currentLevelProperties.paddedWidthCheckerboardLevel_,
-      currentLevelProperties.heightLevel_, 0,
+      currentLevelProperties.padded_width_checkerboard_level_,
+      currentLevelProperties.height_level_, 0,
       kStereoSetsToProcess);
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
@@ -406,7 +406,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #if bp_params::kOptimizedIndexingSetting == 1
     destMessageArrayIndex +=
-    currentLevelProperties.paddedWidthCheckerboardLevel_;
+    currentLevelProperties.padded_width_checkerboard_level_;
 #else
     destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -423,7 +423,7 @@ __device__ inline void msgStereo<float, float>(int xVal, int yVal,
 
 #if bp_params::kOptimizedIndexingSetting == 1
     destMessageArrayIndex +=
-    currentLevelProperties.paddedWidthCheckerboardLevel_;
+    currentLevelProperties.padded_width_checkerboard_level_;
 #else
     destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -534,8 +534,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
   {
     int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-            currentLevelProperties.paddedWidthCheckerboardLevel_,
-            currentLevelProperties.heightLevel_, 0,
+            currentLevelProperties.padded_width_checkerboard_level_,
+            currentLevelProperties.height_level_, 0,
             kStereoSetsToProcess);
 
     for (unsigned int currentDisparity = 0;
@@ -544,7 +544,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
       dstMessageArray[destMessageArrayIndex] = (half) 0.0;
 #if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
-      currentLevelProperties.paddedWidthCheckerboardLevel_;
+      currentLevelProperties.padded_width_checkerboard_level_;
 #else
       destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -555,8 +555,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
     valToNormalize /= ((half) kStereoSetsToProcess);
 
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-        currentLevelProperties.paddedWidthCheckerboardLevel_,
-        currentLevelProperties.heightLevel_, 0,
+        currentLevelProperties.padded_width_checkerboard_level_,
+        currentLevelProperties.height_level_, 0,
         kStereoSetsToProcess);
 
     indexIndexDstShared = startIndexDstShared;
@@ -573,7 +573,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
-      currentLevelProperties.paddedWidthCheckerboardLevel_;
+      currentLevelProperties.padded_width_checkerboard_level_;
 #else
       destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -660,8 +660,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0))
     {
       unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-              currentLevelProperties.paddedWidthCheckerboardLevel_,
-              currentLevelProperties.heightLevel_, 0,
+              currentLevelProperties.padded_width_checkerboard_level_,
+              currentLevelProperties.height_level_, 0,
               kStereoSetsToProcess);
 
       for (unsigned int currentDisparity = 0;
@@ -670,7 +670,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
         dstMessageArray[destMessageArrayIndex] = (half) 0.0;
   #if bp_params::kOptimizedIndexingSetting == 1
         destMessageArrayIndex +=
-        currentLevelProperties.paddedWidthCheckerboardLevel_;
+        currentLevelProperties.padded_width_checkerboard_level_;
   #else
         destMessageArrayIndex++;
   #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -680,8 +680,8 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
     valToNormalize /= ((half) kStereoSetsToProcess);
 
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-        currentLevelProperties.paddedWidthCheckerboardLevel_,
-        currentLevelProperties.heightLevel_, 0,
+        currentLevelProperties.padded_width_checkerboard_level_,
+        currentLevelProperties.height_level_, 0,
         kStereoSetsToProcess);
 
 #if DISP_INDEX_START_REG_LOCAL_MEM > 0
@@ -700,7 +700,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
-          currentLevelProperties.paddedWidthCheckerboardLevel_;
+          currentLevelProperties.padded_width_checkerboard_level_;
 #else
       destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1
@@ -717,7 +717,7 @@ __device__ inline void msgStereo<half, half>(int xVal, int yVal,
 
 #if bp_params::kOptimizedIndexingSetting == 1
       destMessageArrayIndex +=
-          currentLevelProperties.paddedWidthCheckerboardLevel_;
+          currentLevelProperties.padded_width_checkerboard_level_;
 #else
       destMessageArrayIndex++;
 #endif //bp_params::kOptimizedIndexingSetting == 1

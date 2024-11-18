@@ -12,7 +12,7 @@
 #include <filesystem>
 
 //retrieve path of belief propagation implementation results
-std::filesystem::path EvaluateBPImpResults::getImpResultsPath() const
+std::filesystem::path EvaluateBPImpResults::GetImpResultsPath() const
 {
   std::filesystem::path currentPath = std::filesystem::current_path();
   while (true) {

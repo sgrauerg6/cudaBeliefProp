@@ -24,11 +24,11 @@ namespace bp_file_handling
 
   #ifdef SMALLER_SETS_ONLY
     constexpr std::array<std::string_view, 2> kBaselineRunDataPathsOptSingleThread{
-      "../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt",
+      "../BeliefProp/BpBaselineRuntimes/baseline_runtimesSmallerSetsOnly.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
   #else
     constexpr std::array<std::string_view, 2> kBaselineRunDataPathsOptSingleThread{
-      "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
+      "../BeliefProp/BpBaselineRuntimes/baseline_runtimes.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
   #endif //SMALLER_SETS_ONLY
 };

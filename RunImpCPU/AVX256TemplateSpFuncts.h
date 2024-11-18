@@ -1,12 +1,12 @@
 /*
- * AVX256TemplateSpFuncts.h
+ * kAVX256TemplateSpFuncts.h
  *
  *  Created on: Jun 26, 2024
  *      Author: scott
  */
 
-#ifndef AVX256TEMPLATESPFUNCTS_H_
-#define AVX256TEMPLATESPFUNCTS_H_
+#ifndef kAVX256TEMPLATESPFUNCTS_H_
+#define kAVX256TEMPLATESPFUNCTS_H_
 #ifdef _WIN32
 #include <intrin.h>
 #else
@@ -19,8 +19,8 @@ template<> inline __m256d VectProcessingFuncts::loadPackedDataAligned<double, __
   const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, double* inData)
 {
   return _mm256_load_pd(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
+    x, y, currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m256 VectProcessingFuncts::loadPackedDataAligned<float, __m256>(
@@ -28,8 +28,8 @@ template<> inline __m256 VectProcessingFuncts::loadPackedDataAligned<float, __m2
   const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float* inData)
 {
   return _mm256_load_ps(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
+    x, y, currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m128i VectProcessingFuncts::loadPackedDataAligned<short, __m128i>(
@@ -37,8 +37,8 @@ template<> inline __m128i VectProcessingFuncts::loadPackedDataAligned<short, __m
   const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, short* inData)
 {
   return _mm_load_si128((__m128i *)(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, currentDisparity,
+    x, y, currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, currentDisparity,
     numDispVals)]));
 }
 
@@ -47,8 +47,8 @@ template<> inline __m256 VectProcessingFuncts::loadPackedDataUnaligned<float, __
   const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float* inData)
 {
   return _mm256_loadu_ps(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
+    x, y, currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m128i VectProcessingFuncts::loadPackedDataUnaligned<short, __m128i>(
@@ -56,8 +56,8 @@ template<> inline __m128i VectProcessingFuncts::loadPackedDataUnaligned<short, _
   const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, short* inData)
 {
   return _mm_loadu_si128((__m128i*)(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]));
+    x, y, currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, currentDisparity, numDispVals)]));
 }
 
 template<> inline __m256d VectProcessingFuncts::loadPackedDataUnaligned<double, __m256d>(
@@ -65,8 +65,8 @@ template<> inline __m256d VectProcessingFuncts::loadPackedDataUnaligned<double, 
   const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, double* inData)
 {
   return _mm256_loadu_pd(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, currentDisparity, numDispVals)]);
+    x, y, currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m256 VectProcessingFuncts::createSIMDVectorSameData<__m256>(float data) {
@@ -169,4 +169,4 @@ template<> inline void VectProcessingFuncts::storePackedDataUnaligned<double, __
   _mm256_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#endif /* AVX256TEMPLATESPFUNCTS_H_ */
+#endif /* kAVX256TEMPLATESPFUNCTS_H_ */

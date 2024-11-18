@@ -20,12 +20,12 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 
-//parameters type requires runData() function to return the parameters as a
+//parameters type requires AsRunData() function to return the parameters as a
 //RunData object
 template <typename T>
 concept Params_t =
   requires(T t) {
-    { t.runData() } -> std::same_as<RunData>;
+    { t.AsRunData() } -> std::same_as<RunData>;
   };
 
 namespace beliefprop {
@@ -34,9 +34,9 @@ namespace beliefprop {
 struct BPsettings
 {
   //initally set to default values
-  unsigned int numLevels_{bp_params::kLevelsBp};
-  unsigned int numIterations_{bp_params::kItersBp};
-  float smoothingSigma_{bp_params::kSigmaBp};
+  unsigned int num_levels_{bp_params::kLevelsBp};
+  unsigned int num_iterations_{bp_params::kItersBp};
+  float smoothing_sigma_{bp_params::kSigmaBp};
   float lambda_bp_{bp_params::kLambdaBp};
   float data_k_bp_{bp_params::kDataKBp};
   //discontinuity cost cap set to infinity by default but is
@@ -44,32 +44,32 @@ struct BPsettings
   //number of disparity values is set
   float disc_k_bp_{bp_consts::kInfBp};
   //number of disparity values must be set for each stereo set
-  unsigned int numDispVals_{0};
+  unsigned int num_disp_vals_{0};
 
   //retrieve bp settings as RunData object containing description headers with corresponding values
   //for each setting
-  RunData runData() const {
-    RunData currRunData;
-    currRunData.addDataWHeader("Num Possible Disparity Values", numDispVals_);
-    currRunData.addDataWHeader("Num BP Levels", numLevels_);
-    currRunData.addDataWHeader("Num BP Iterations", numIterations_);
-    currRunData.addDataWHeader("DISC_K_BP", (double)disc_k_bp_);
-    currRunData.addDataWHeader("kDataKBp", (double)data_k_bp_);
-    currRunData.addDataWHeader("kLambdaBp", (double)lambda_bp_);
-    currRunData.addDataWHeader("kSigmaBp", (double)smoothingSigma_);
+  RunData AsRunData() const {
+    RunData curr_run_data;
+    curr_run_data.AddDataWHeader("Num Possible Disparity Values", num_disp_vals_);
+    curr_run_data.AddDataWHeader("Num BP Levels", num_levels_);
+    curr_run_data.AddDataWHeader("Num BP Iterations", num_iterations_);
+    curr_run_data.AddDataWHeader("DISC_K_BP", (double)disc_k_bp_);
+    curr_run_data.AddDataWHeader("kDataKBp", (double)data_k_bp_);
+    curr_run_data.AddDataWHeader("kLambdaBp", (double)lambda_bp_);
+    curr_run_data.AddDataWHeader("kSigmaBp", (double)smoothing_sigma_);
 
-    return currRunData;
+    return curr_run_data;
   }
 
   //declare friend function to output bp settings to stream
-  friend std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings);
+  friend std::ostream& operator<<(std::ostream& results_stream, const BPsettings& bpSettings);
 };
 
 //function to output bp settings to stream
-inline std::ostream& operator<<(std::ostream& resultsStream, const BPsettings& bpSettings) {
+inline std::ostream& operator<<(std::ostream& results_stream, const BPsettings& bpSettings) {
   //get settings as RunData object and then use overloaded << operator for RunData
-  resultsStream << bpSettings.runData();
-  return resultsStream;  
+  results_stream << bpSettings.AsRunData();
+  return results_stream;  
 }
 
 //structure to store properties of a bp processing level
@@ -77,92 +77,92 @@ struct LevelProperties
 {
   LevelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
     run_environment::AccSetting accSetting) :
-    widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
-    bytesAlignMemory_(run_environment::getBytesAlignMemory(accSetting)),
-    numDataAlignWidth_(run_environment::getNumDataAlignWidth(accSetting)),
-    widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
-    paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
-    offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum),
-    divPaddedChBoardWAlign_{(accSetting == run_environment::AccSetting::AVX512) ? 16u : 8u} {}
+    width_level_(widthHeight[0]), height_level_(widthHeight[1]),
+    bytes_align_memory_(run_environment::getBytesAlignMemory(accSetting)),
+    num_data_align_width_(run_environment::getNumDataAlignWidth(accSetting)),
+    width_checkerboard_level_(CheckerboardWidthTargetDevice(width_level_)),
+    padded_width_checkerboard_level_(PaddedCheckerboardWidth(width_checkerboard_level_)),
+    offset_into_arrays_(offsetIntoArrays), level_num_(levelNum),
+    div_padded_checkerboard_w_align_{(accSetting == run_environment::AccSetting::kAVX512) ? 16u : 8u} {}
   
   LevelProperties(const std::array<unsigned int, 2>& widthHeight, unsigned long offsetIntoArrays, unsigned int levelNum,
     unsigned int bytesAlignMemory, unsigned int numDataAlignWidth, unsigned int divPaddedChBoardWAlign) :
-    widthLevel_(widthHeight[0]), heightLevel_(widthHeight[1]),
-    bytesAlignMemory_(bytesAlignMemory),
-    numDataAlignWidth_(numDataAlignWidth),
-    widthCheckerboardLevel_(getCheckerboardWidthTargetDevice(widthLevel_)),
-    paddedWidthCheckerboardLevel_(getPaddedCheckerboardWidth(widthCheckerboardLevel_)),
-    offsetIntoArrays_(offsetIntoArrays), levelNum_(levelNum), divPaddedChBoardWAlign_(divPaddedChBoardWAlign) {}
+    width_level_(widthHeight[0]), height_level_(widthHeight[1]),
+    bytes_align_memory_(bytesAlignMemory),
+    num_data_align_width_(numDataAlignWidth),
+    width_checkerboard_level_(CheckerboardWidthTargetDevice(width_level_)),
+    padded_width_checkerboard_level_(PaddedCheckerboardWidth(width_checkerboard_level_)),
+    offset_into_arrays_(offsetIntoArrays), level_num_(levelNum), div_padded_checkerboard_w_align_(divPaddedChBoardWAlign) {}
 
   //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
   template <RunData_t T>
-  beliefprop::LevelProperties getNextLevelProperties(unsigned int numDisparityValues) const {
-    const auto offsetNextLevel = offsetIntoArrays_ + getNumDataInBpArrays<T>(numDisparityValues);
-    return LevelProperties({(unsigned int)ceil((float)widthLevel_ / 2.0f), (unsigned int)ceil((float)heightLevel_ / 2.0f)},
-      offsetNextLevel, (levelNum_ + 1), bytesAlignMemory_, numDataAlignWidth_, divPaddedChBoardWAlign_);
+  beliefprop::LevelProperties getNextLevelProperties(unsigned int num_disparity_values) const {
+    const auto offset_next_level = offset_into_arrays_ + getNumDataInBpArrays<T>(num_disparity_values);
+    return LevelProperties({(unsigned int)ceil((float)width_level_ / 2.0f), (unsigned int)ceil((float)height_level_ / 2.0f)},
+      offset_next_level, (level_num_ + 1), bytes_align_memory_, num_data_align_width_, div_padded_checkerboard_w_align_);
   }
 
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
   //with the specified number of possible disparity values
   template <RunData_t T>
-  unsigned int getNumDataInBpArrays(unsigned int numDisparityValues) const {
-    return getNumDataForAlignedMemoryAtLevel<T>({widthLevel_, heightLevel_}, numDisparityValues);
+  unsigned int getNumDataInBpArrays(unsigned int num_disparity_values) const {
+    return getNumDataForAlignedMemoryAtLevel<T>({width_level_, height_level_}, num_disparity_values);
   }
 
-  unsigned int getCheckerboardWidthTargetDevice(unsigned int widthLevel) const {
-    return (unsigned int)std::ceil(((float)widthLevel) / 2.0f);
+  unsigned int CheckerboardWidthTargetDevice(unsigned int width_level) const {
+    return (unsigned int)std::ceil(((float)width_level) / 2.0f);
   }
 
-  unsigned int getPaddedCheckerboardWidth(unsigned int checkerboardWidth) const
+  unsigned int PaddedCheckerboardWidth(unsigned int checkerboardWidth) const
   {
     //add "padding" to checkerboard width if necessary for alignment
-    return ((checkerboardWidth % numDataAlignWidth_) == 0) ?
+    return ((checkerboardWidth % num_data_align_width_) == 0) ?
            checkerboardWidth :
-           (checkerboardWidth + (numDataAlignWidth_ - (checkerboardWidth % numDataAlignWidth_)));
+           (checkerboardWidth + (num_data_align_width_ - (checkerboardWidth % num_data_align_width_)));
   }
 
   template <RunData_t T>
-  unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& widthHeightLevel,
-      unsigned int totalPossibleMovements) const
+  unsigned long getNumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& width_height_level,
+      unsigned int num_possible_disparities) const
   {
-    const unsigned long numDataAtLevel = (unsigned long)getPaddedCheckerboardWidth(getCheckerboardWidthTargetDevice(widthHeightLevel[0])) *
-      ((unsigned long)widthHeightLevel[1]) * (unsigned long)totalPossibleMovements;
+    const unsigned long numDataAtLevel = (unsigned long)PaddedCheckerboardWidth(CheckerboardWidthTargetDevice(width_height_level[0])) *
+      ((unsigned long)width_height_level[1]) * (unsigned long)num_possible_disparities;
     unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
 
-    if ((numBytesAtLevel % bytesAlignMemory_) == 0) {
+    if ((numBytesAtLevel % bytes_align_memory_) == 0) {
       return numDataAtLevel;
     }
     else {
-      numBytesAtLevel += (bytesAlignMemory_ - (numBytesAtLevel % bytesAlignMemory_));
+      numBytesAtLevel += (bytes_align_memory_ - (numBytesAtLevel % bytes_align_memory_));
       return (numBytesAtLevel / sizeof(T));
     }
   }
 
   template <RunData_t T, run_environment::AccSetting ACCELERATION>
-  static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& widthHeightBottomLevel,
-    unsigned int totalPossibleMovements, unsigned int numLevels)
+  static unsigned long getTotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& width_height_bottom_level,
+    unsigned int num_possible_disparities, unsigned int num_levels)
   {
-    beliefprop::LevelProperties currLevelProperties(widthHeightBottomLevel, 0, 0, ACCELERATION);
-    unsigned long totalData = currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
-    for (unsigned int currLevelNum = 1; currLevelNum < numLevels; currLevelNum++) {
-      currLevelProperties = currLevelProperties.getNextLevelProperties<T>(totalPossibleMovements);
-      totalData += currLevelProperties.getNumDataInBpArrays<T>(totalPossibleMovements);
+    beliefprop::LevelProperties curr_level_properties(width_height_bottom_level, 0, 0, ACCELERATION);
+    unsigned long total_data = curr_level_properties.getNumDataInBpArrays<T>(num_possible_disparities);
+    for (unsigned int curr_level = 1; curr_level < num_levels; curr_level++) {
+      curr_level_properties = curr_level_properties.getNextLevelProperties<T>(num_possible_disparities);
+      total_data += curr_level_properties.getNumDataInBpArrays<T>(num_possible_disparities);
     }
 
-    return totalData;
+    return total_data;
   }
 
-  unsigned int widthLevel_;
-  unsigned int heightLevel_;
-  unsigned int bytesAlignMemory_;
-  unsigned int numDataAlignWidth_;
-  unsigned int widthCheckerboardLevel_;
-  unsigned int paddedWidthCheckerboardLevel_;
-  unsigned long offsetIntoArrays_;
-  unsigned int levelNum_;
+  unsigned int width_level_;
+  unsigned int height_level_;
+  unsigned int bytes_align_memory_;
+  unsigned int num_data_align_width_;
+  unsigned int width_checkerboard_level_;
+  unsigned int padded_width_checkerboard_level_;
+  unsigned long offset_into_arrays_;
+  unsigned int level_num_;
   //avx512 requires data to be aligned on 64 bytes (16 float values); otherwise data set to be
   //aligned on 32 bytes (8 float values)
-  unsigned int divPaddedChBoardWAlign_;
+  unsigned int div_padded_checkerboard_w_align_;
 };
 
 //used to define the two checkerboard "parts" that the image is divided into

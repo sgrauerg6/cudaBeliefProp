@@ -41,7 +41,7 @@ template<BpImData_t T>
 __global__ void filterImageAcross(
   T* imagePixelsToFilter, float* filteredImagePixels,
   unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int sizeFilter);
+  float* imageFilter, unsigned int size_filter);
 
 //kernel to apply a vertical filter on each pixel of the image in parallel
 //the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
@@ -50,7 +50,7 @@ template<BpImData_t T>
 __global__ void filterImageVertical(
   T* imagePixelsToFilter, float* filteredImagePixels,
   unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int sizeFilter);
+  float* imageFilter, unsigned int size_filter);
 
 };
 

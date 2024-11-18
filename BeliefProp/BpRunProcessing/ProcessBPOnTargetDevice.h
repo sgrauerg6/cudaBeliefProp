@@ -36,7 +36,7 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class ProcessBPOnTargetDevice {
 public:
-  ProcessBPOnTargetDevice(const ParallelParams& parallelParams) : parallelParams_{parallelParams} { }
+  ProcessBPOnTargetDevice(const ParallelParams& parallelParams) : parallel_params_{parallelParams} { }
 
   virtual run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const {
     return run_eval::Status::kNoError;
@@ -48,10 +48,10 @@ public:
   std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> operator()(const std::array<float*, 2>& imagesOnTargetDevice,
     const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages,
     T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun);
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run);
 
 protected:
-  const ParallelParams& parallelParams_;
+  const ParallelParams& parallel_params_;
 
 private:
   //initialize data cost for each possible disparity at bottom level
@@ -95,21 +95,21 @@ private:
 
   //free memory used for message values in bp processing
   virtual void freeCheckerboardMessagesMemory(const beliefprop::CheckerboardMessages<T*>& checkerboardMessagesToFree,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
   {
     std::ranges::for_each(checkerboardMessagesToFree,
-      [this, &memManagementBpRun](auto& checkerboardMessagesSet) {
-      memManagementBpRun->freeAlignedMemoryOnDevice(checkerboardMessagesSet); });
+      [this, &mem_management_bp_run](auto& checkerboardMessagesSet) {
+      mem_management_bp_run->freeAlignedMemoryOnDevice(checkerboardMessagesSet); });
   }
 
   //allocate memory for message values in bp processing
   virtual beliefprop::CheckerboardMessages<T*> allocateMemoryForCheckerboardMessages(const unsigned long numDataAllocatePerMessage,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
   {
     beliefprop::CheckerboardMessages<T*> outputCheckerboardMessages;
     std::ranges::for_each(outputCheckerboardMessages,
-      [this, numDataAllocatePerMessage, &memManagementBpRun](auto& checkerboardMessagesSet) {
-      checkerboardMessagesSet = memManagementBpRun->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACCELERATION); });
+      [this, numDataAllocatePerMessage, &mem_management_bp_run](auto& checkerboardMessagesSet) {
+      checkerboardMessagesSet = mem_management_bp_run->allocateAlignedMemoryOnDevice(numDataAllocatePerMessage, ACCELERATION); });
 
     return outputCheckerboardMessages;
   }
@@ -129,24 +129,24 @@ private:
 
   //free memory allocated for data costs in bp processing
   virtual void freeDataCostsMemory(const beliefprop::DataCostsCheckerboards<T*>& dataCostsToFree,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
-    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree[0]);
-    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree[1]);
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) {
+    mem_management_bp_run->freeAlignedMemoryOnDevice(dataCostsToFree[0]);
+    mem_management_bp_run->freeAlignedMemoryOnDevice(dataCostsToFree[1]);
   }
 
   //allocate memory for data costs in bp processing
   virtual beliefprop::DataCostsCheckerboards<T*> allocateMemoryForDataCosts(const unsigned long numDataCostsCheckerboards,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun) {
-    return {memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboards, ACCELERATION), 
-            memManagementBpRun->allocateAlignedMemoryOnDevice(numDataCostsCheckerboards, ACCELERATION)};
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) {
+    return {mem_management_bp_run->allocateAlignedMemoryOnDevice(numDataCostsCheckerboards, ACCELERATION), 
+            mem_management_bp_run->allocateAlignedMemoryOnDevice(numDataCostsCheckerboards, ACCELERATION)};
   }
 
   //allocate and organize data cost and message value data at all levels for bp processing
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> allocateAndOrganizeDataCostsAndMessageDataAllLevels(
     const unsigned long numDataAllocatePerDataCostsMessageDataArray,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
   {
-    T* dataAllLevels = memManagementBpRun->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray, ACCELERATION);
+    T* dataAllLevels = mem_management_bp_run->allocateAlignedMemoryOnDevice(10u*numDataAllocatePerDataCostsMessageDataArray, ACCELERATION);
     return organizeDataCostsAndMessageDataAllLevels(dataAllLevels, numDataAllocatePerDataCostsMessageDataArray);
   }
 
@@ -170,9 +170,9 @@ private:
 
   //free data costs at all levels for bp processing that are all together in a single array
   virtual void freeDataCostsAllDataInSingleArray(const beliefprop::DataCostsCheckerboards<T*>& dataCostsToFree,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
   {
-    memManagementBpRun->freeAlignedMemoryOnDevice(dataCostsToFree[0]);
+    mem_management_bp_run->freeAlignedMemoryOnDevice(dataCostsToFree[0]);
   }
 
   //retrieve pointer to data costs for level using specified offset
@@ -190,27 +190,27 @@ private:
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>::operator()(const std::array<float*, 2> & imagesOnTargetDevice,
   const beliefprop::BPsettings& algSettings, const std::array<unsigned int, 2>& widthHeightImages, T* allocatedMemForBpProcessingDevice, T* allocatedMemForProcessing,
-  const std::unique_ptr<RunImpMemoryManagement<T>>& memManagementBpRun)
+  const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
 {
   if (errorCheck() != run_eval::Status::kNoError) { return {}; }
 
   std::unordered_map<beliefprop::Runtime_Type, std::array<timingType, 2>> startEndTimes;
-  std::vector<std::array<timingType, 2>> eachLevelTimingDataCosts(algSettings.numLevels_);
-  std::vector<std::array<timingType, 2>> eachLevelTimingBP(algSettings.numLevels_);
-  std::vector<std::array<timingType, 2>> eachLevelTimingCopy(algSettings.numLevels_);
+  std::vector<std::array<timingType, 2>> eachLevelTimingDataCosts(algSettings.num_levels_);
+  std::vector<std::array<timingType, 2>> eachLevelTimingBP(algSettings.num_levels_);
+  std::vector<std::array<timingType, 2>> eachLevelTimingCopy(algSettings.num_levels_);
   std::chrono::duration<double> totalTimeBpIters{0}, totalTimeCopyData{0}, totalTimeCopyDataKernel{0};
 
   //start at the "bottom level" and work way up to determine amount of space needed to store data costs
   std::vector<beliefprop::LevelProperties> bpLevelProperties;
-  bpLevelProperties.reserve(algSettings.numLevels_);
+  bpLevelProperties.reserve(algSettings.num_levels_);
 
   //set level properties for bottom level that include processing of full image width/height
   bpLevelProperties.push_back(beliefprop::LevelProperties(widthHeightImages, 0, 0, ACCELERATION));
 
   //compute level properties which includes offset for each data/message array for each level after the bottom level
-  for (unsigned int levelNum = 1; levelNum < algSettings.numLevels_; levelNum++) {
+  for (unsigned int levelNum = 1; levelNum < algSettings.num_levels_; levelNum++) {
     //get current level properties from previous level properties
-    bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(algSettings.numDispVals_));
+    bpLevelProperties.push_back(bpLevelProperties[levelNum-1].getNextLevelProperties<T>(algSettings.num_disp_vals_));
   }
 
   startEndTimes[beliefprop::Runtime_Type::kInitSettingsMalloc][0] = std::chrono::system_clock::now();
@@ -222,8 +222,8 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   beliefprop::CheckerboardMessages<T*> messagesDeviceAllLevels;
 
   //data for each array at all levels set to data up to final level (corresponds to offset at final level) plus data amount at final level
-  const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.numLevels_-1].offsetIntoArrays_ +
-    bpLevelProperties[algSettings.numLevels_-1].getNumDataInBpArrays<T>(algSettings.numDispVals_);
+  const unsigned long dataAllLevelsEachDataMessageArr = bpLevelProperties[algSettings.num_levels_-1].offset_into_arrays_ +
+    bpLevelProperties[algSettings.num_levels_-1].getNumDataInBpArrays<T>(algSettings.num_disp_vals_);
 
   //assuming that width includes padding
   if constexpr (bp_params::kUseOptGPUMemManagement) {
@@ -234,11 +234,11 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
     else {
       //call function that allocates all data in single array and then set offsets in array for data costs and message data locations
       std::tie(dataCostsDeviceAllLevels, messagesDeviceAllLevels) =
-        allocateAndOrganizeDataCostsAndMessageDataAllLevels(dataAllLevelsEachDataMessageArr, memManagementBpRun);
+        allocateAndOrganizeDataCostsAndMessageDataAllLevels(dataAllLevelsEachDataMessageArr, mem_management_bp_run);
     }
   }
   else {
-    dataCostsDeviceAllLevels = allocateMemoryForDataCosts(dataAllLevelsEachDataMessageArr, memManagementBpRun);
+    dataCostsDeviceAllLevels = allocateMemoryForDataCosts(dataAllLevelsEachDataMessageArr, mem_management_bp_run);
   }
 
   auto currTime = std::chrono::system_clock::now();
@@ -254,25 +254,25 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   startEndTimes[beliefprop::Runtime_Type::kDataCostsHigherLevel][0] = currTime;
 
   //set the data costs at each level from the bottom level "up"
-  for (unsigned int levelNum = 1u; levelNum < algSettings.numLevels_; levelNum++)
+  for (unsigned int levelNum = 1u; levelNum < algSettings.num_levels_; levelNum++)
   {
     eachLevelTimingDataCosts[levelNum][0] = std::chrono::system_clock::now();
     errCode = initializeDataCurrentLevel(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
-      retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offsetIntoArrays_),
-      retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offsetIntoArrays_),
-      algSettings.numDispVals_);
+      retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1u].offset_into_arrays_),
+      retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum].offset_into_arrays_),
+      algSettings.num_disp_vals_);
     if (errCode != run_eval::Status::kNoError) { return {}; }
 
     eachLevelTimingDataCosts[levelNum][1] = std::chrono::system_clock::now();
   }
 
-  currTime = eachLevelTimingDataCosts[algSettings.numLevels_-1][1];
+  currTime = eachLevelTimingDataCosts[algSettings.num_levels_-1][1];
   startEndTimes[beliefprop::Runtime_Type::kDataCostsHigherLevel][1] = currTime;
   startEndTimes[beliefprop::Runtime_Type::kInitMessages][0] = currTime;
 
   //get and use offset into data at current processing level of pyramid
   beliefprop::DataCostsCheckerboards<T*> dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(
-    dataCostsDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
+    dataCostsDeviceAllLevels, bpLevelProperties[algSettings.num_levels_ - 1u].offset_into_arrays_);
 
   //declare the space to pass the BP messages; need to have two "sets" of checkerboards because the message
   //data at the "higher" level in the image pyramid need copied to a lower level without overwriting values
@@ -280,18 +280,18 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
 
   //assuming that width includes padding
   if constexpr (bp_params::kUseOptGPUMemManagement) {
-    messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.numLevels_ - 1u].offsetIntoArrays_);
+    messagesDevice[0] = retrieveLevelMessageData(messagesDeviceAllLevels, bpLevelProperties[algSettings.num_levels_ - 1u].offset_into_arrays_);
   }
   else {
     //allocate the space for the message values in the first checkboard set at the current level
     messagesDevice[0] = allocateMemoryForCheckerboardMessages(
-      bpLevelProperties[algSettings.numLevels_ - 1u].getNumDataInBpArrays<T>(algSettings.numDispVals_), memManagementBpRun);
+      bpLevelProperties[algSettings.num_levels_ - 1u].getNumDataInBpArrays<T>(algSettings.num_disp_vals_), mem_management_bp_run);
   }
 
   startEndTimes[beliefprop::Runtime_Type::kInitMessagesKernel][0] = std::chrono::system_clock::now();
 
   //initialize all the BP message values at every pixel for every disparity to 0
-  errCode = initializeMessageValsToDefault(bpLevelProperties[algSettings.numLevels_ - 1u], messagesDevice[0], algSettings.numDispVals_);
+  errCode = initializeMessageValsToDefault(bpLevelProperties[algSettings.num_levels_ - 1u], messagesDevice[0], algSettings.num_disp_vals_);
   if (errCode != run_eval::Status::kNoError) { return {}; }
 
   currTime = std::chrono::system_clock::now();
@@ -306,7 +306,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
   //where the final movement values are computed...the message values are passed from
   //the upper level to the lower levels; this pyramid methods causes the BP message values
   //to converge more quickly
-  for (int levelNum = (int)algSettings.numLevels_ - 1; levelNum >= 0; levelNum--)
+  for (int levelNum = (int)algSettings.num_levels_ - 1; levelNum >= 0; levelNum--)
   {
     const auto timeBpIterStart = std::chrono::system_clock::now();
 
@@ -322,17 +322,17 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
     if (levelNum > 0)
     {
       //use offset into allocated memory at next level
-      dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
+      dataCostsDeviceCurrentLevel = retrieveLevelDataCosts(dataCostsDeviceAllLevels, bpLevelProperties[levelNum - 1].offset_into_arrays_);
 
       //assuming that width includes padding
       if constexpr (bp_params::kUseOptGPUMemManagement) {
         messagesDevice[(currCheckerboardSet + 1) % 2] = retrieveLevelMessageData(
-          messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offsetIntoArrays_);
+          messagesDeviceAllLevels, bpLevelProperties[levelNum - 1].offset_into_arrays_);
       }
       else {
         //allocate space in the GPU for the message values in the checkerboard set to copy to
         messagesDevice[(currCheckerboardSet + 1) % 2] = allocateMemoryForCheckerboardMessages(
-          bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(algSettings.numDispVals_));
+          bpLevelProperties[levelNum - 1].getNumDataInBpArrays<T>(algSettings.num_disp_vals_));
       }
 
       const auto timeCopyMessageValuesKernelStart = std::chrono::system_clock::now();
@@ -341,7 +341,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
       //(currentCheckerboardSet + 1) % 2 = index copying data to
       errCode = copyMessageValuesToNextLevelDown(bpLevelProperties[levelNum], bpLevelProperties[levelNum - 1],
         messagesDevice[currCheckerboardSet], messagesDevice[(currCheckerboardSet + 1) % 2],
-        algSettings.numDispVals_);
+        algSettings.num_disp_vals_);
       if (errCode != run_eval::Status::kNoError) { return {}; }
 
       const auto timeCopyMessageValuesKernelEnd = std::chrono::system_clock::now();
@@ -352,7 +352,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
       //assuming that width includes padding
       if constexpr (!bp_params::kUseOptGPUMemManagement) {
         //free the now-copied from computed data of the completed level
-        freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet], memManagementBpRun);
+        freeCheckerboardMessagesMemory(messagesDevice[currCheckerboardSet], mem_management_bp_run);
       }
 
       //alternate between checkerboard parts 1 and 2
@@ -370,7 +370,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
 
   //assume in bottom level when retrieving output disparity
   float* resultingDisparityMapCompDevice = retrieveOutputDisparity(bpLevelProperties[0],
-    dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.numDispVals_);
+    dataCostsDeviceCurrentLevel, messagesDevice[currCheckerboardSet], algSettings.num_disp_vals_);
   if (resultingDisparityMapCompDevice == nullptr) { return {}; }
 
   currTime = std::chrono::system_clock::now();
@@ -384,15 +384,15 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> Proc
     else {
       //now free the allocated data space; all data in single array when
       //bp_params::kUseOptGPUMemManagement set to true
-      freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels, memManagementBpRun);
+      freeDataCostsAllDataInSingleArray(dataCostsDeviceAllLevels, mem_management_bp_run);
     }
   }
   else {
     //free the device storage allocated to the message values used to retrieve the output movement values
-    freeCheckerboardMessagesMemory(messagesDevice[(currCheckerboardSet == 0) ? 0 : 1], memManagementBpRun);
+    freeCheckerboardMessagesMemory(messagesDevice[(currCheckerboardSet == 0) ? 0 : 1], mem_management_bp_run);
 
     //now free the allocated data space
-    freeDataCostsMemory(dataCostsDeviceAllLevels, memManagementBpRun);
+    freeDataCostsMemory(dataCostsDeviceAllLevels, mem_management_bp_run);
   }
 
   startEndTimes[beliefprop::Runtime_Type::kFinalFree][1] = std::chrono::system_clock::now();

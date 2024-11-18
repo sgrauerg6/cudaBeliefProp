@@ -40,7 +40,7 @@ namespace run_eval {
   constexpr std::string_view kSpeedupHalf{"Speedup using half-precision relative to float"};
   constexpr std::string_view kSpeedupDispCountTemplate{"Speedup w/ templated disparity count (known at compile-time)"};
   constexpr std::string_view kSpeedupCPUVectorization{"Speedup using CPU vectorization"};
-  constexpr std::string_view kSpeedupVsAvx256Vectorization{"Speedup over AVX256 CPU vectorization"};
+  constexpr std::string_view kSpeedupVsAvx256Vectorization{"Speedup over kAVX256 CPU vectorization"};
 
   //constants for implementation result
   constexpr std::string_view kImpResultsFolderName{"ImpResults"};

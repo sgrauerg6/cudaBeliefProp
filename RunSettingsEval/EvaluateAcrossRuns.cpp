@@ -56,13 +56,13 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& impResultsFileP
 
   //get header to data of each set of speedups
   //iterate through all speedup data files and get run name to results
-  std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> speedupResultsNameToData;
-  std::vector<std::string> speedupHeadersInOrder;
+  std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> speedup_resultsNameToData;
+  std::vector<std::string> speedup_headers_in_order;
   for (const auto& runName : runNames) {
     std::filesystem::path runSpeedupFp = impResultsFilePath / run_eval::kImpResultsSpeedupsFolderName /
       (std::string(runName) + '_' + std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension));
     if (std::filesystem::is_regular_file(runSpeedupFp)) {
-      speedupResultsNameToData[runName] = getHeaderToDataInCsvFile(runSpeedupFp);
+      speedup_resultsNameToData[runName] = getHeaderToDataInCsvFile(runSpeedupFp);
     }
   }
 
@@ -84,14 +84,14 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& impResultsFileP
   //order of architectures from left to right is in speedup from largest to smallest
   std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> runNamesInOrderWSpeedup;
   std::string firstSpeedupHeader;
-  for (const auto& archWSpeedupData : speedupResultsNameToData.cbegin()->second.first) {
+  for (const auto& archWSpeedupData : speedup_resultsNameToData.cbegin()->second.first) {
     if (!(archWSpeedupData.empty())) {
       firstSpeedupHeader = archWSpeedupData;
       break;
     }
   }
   //add first speedup with run name to get names of runs in order of fastest to slowest first speedup
-  for (const auto& archWSpeedupData : speedupResultsNameToData) {
+  for (const auto& archWSpeedupData : speedup_resultsNameToData) {
     const float avgSpeedupVsBase = std::stof(std::string(archWSpeedupData.second.second.at(firstSpeedupHeader).at(0)));
     runNamesInOrderWSpeedup.insert({avgSpeedupVsBase, archWSpeedupData.first});
   }
@@ -117,18 +117,18 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& impResultsFileP
 
   //write each average speedup with results for each architecture
   resultAcrossArchsSStr << "Average Speedups" << std::endl;
-  std::string firstRunName = speedupResultsNameToData.cbegin()->first;
-  for (const auto& speedupHeader : speedupResultsNameToData.at(firstRunName).first) {
+  std::string firstRunName = speedup_resultsNameToData.cbegin()->first;
+  for (const auto& speedup_header : speedup_resultsNameToData.at(firstRunName).first) {
     //don't process if header is empty
-    if (!(speedupHeader.empty())) {
-      resultAcrossArchsSStr << speedupHeader << ',';
+    if (!(speedup_header.empty())) {
+      resultAcrossArchsSStr << speedup_header << ',';
       //add empty cell for each input parameter after the first that's displayed so speedup shown on same line as runtime for architecture
       for (size_t i = 1; i < evalAcrossRunsInParamsShow.size(); i++) {
         resultAcrossArchsSStr << ',';
       }
       //write speedup for each architecture in separate cells in horizontal direction
       for (const auto& runName : runNamesInOrderWSpeedup) {
-        resultAcrossArchsSStr << speedupResultsNameToData.at(runName.second).second.at(speedupHeader).at(0) << ',';
+        resultAcrossArchsSStr << speedup_resultsNameToData.at(runName.second).second.at(speedup_header).at(0) << ',';
       }
       //continue to next row of table
       resultAcrossArchsSStr << std::endl;

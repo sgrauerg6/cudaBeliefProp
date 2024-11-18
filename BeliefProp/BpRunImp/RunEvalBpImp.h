@@ -35,17 +35,17 @@
 //acceleration method of optimized belief propagation implementation is specified in template parameter
 class RunEvalBpImp final : public RunBenchmarkImp {
 public:
-  RunEvalBpImp(run_environment::AccSetting optImpAccel) : RunBenchmarkImp(optImpAccel) {}
+  RunEvalBpImp(run_environment::AccSetting opt_imp_accel) : RunBenchmarkImp(opt_imp_accel) {}
 
 private:
   //run and evaluate implementation on multiple data sets
-  MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize) const override;
+  MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const override;
   
   template <run_environment::AccSetting OPT_IMP_ACCEL>
-  MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings, size_t dataTypeSize) const;
+  MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const;
 
   template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
-  MultRunData runEvalImpMultDataSets(const run_environment::RunImpSettings& runImpSettings) const;
+  MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const;
 };
 
 #endif /* RUNEVALBPIMP_H_ */

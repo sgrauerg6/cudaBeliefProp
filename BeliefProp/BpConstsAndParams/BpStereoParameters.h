@@ -43,8 +43,8 @@ namespace bp_params
 {
   struct BpStereoSet {
     const std::string_view name_;
-    const unsigned int numDispVals_;
-    const unsigned int scaleFactor_;
+    const unsigned int num_disp_vals_;
+    const unsigned int scale_factor_;
   };
 
   //declare stereo sets to process with name, num disparity values, and scale factor
@@ -95,10 +95,10 @@ namespace bp_params
 
   //retrieve run settings as a RunData object for output
   inline RunData runSettings()  {
-    RunData currRunData;
-    currRunData.addDataWHeader("Memory Optimization Level", std::to_string(kUseOptGPUMemManagement));
-    currRunData.addDataWHeader("Indexing Optimization Level", std::to_string(kOptimizedIndexingSetting));
-    return currRunData;
+    RunData curr_run_data;
+    curr_run_data.AddDataWHeader("Memory Optimization Level", std::to_string(kUseOptGPUMemManagement));
+    curr_run_data.AddDataWHeader("Indexing Optimization Level", std::to_string(kOptimizedIndexingSetting));
+    return curr_run_data;
   }
 };
 

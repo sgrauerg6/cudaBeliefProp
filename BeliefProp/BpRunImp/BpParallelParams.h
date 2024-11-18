@@ -30,40 +30,40 @@ class BpParallelParams final : public ParallelParams {
 public:
   //constructor to set parallel parameters with default dimensions for each kernel
   BpParallelParams(run_environment::OptParallelParamsSetting optParallelParamsSetting,
-    unsigned int numLevels, const std::array<unsigned int, 2>& defaultPDims);
+    unsigned int num_levels, const std::array<unsigned int, 2>& defaultPDims);
 
   //set parallel parameters for each kernel to the same input dimensions
-  void setParallelDims(const std::array<unsigned int, 2>& tbDims) override;
+  void SetParallelDims(const std::array<unsigned int, 2>& tbDims) override;
 
   //add results from run with same specified parallel parameters used every parallel component
-  void addTestResultsForParallelParams(const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& currRunData);
+  void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& curr_run_data);
 
   //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
   //to retrieved optimized parameters
-  void setOptimizedParams() override;
+  void SetOptimizedParams() override;
 
   //get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers
   //that correspond to the kernel name and bp level
-  std::array<unsigned int, 2> getOptParamsForKernel(const std::array<unsigned int, 2>& kernelLocation) const override {
-    return parallelDimsEachKernel_[kernelLocation[0]][kernelLocation[1]];
+  std::array<unsigned int, 2> OptParamsForKernel(const std::array<unsigned int, 2>& kernelLocation) const override {
+    return parallel_dims_each_kernel_[kernelLocation[0]][kernelLocation[1]];
   }
 
   //retrieve current parallel parameters as RunData object
-  RunData runData() const override;
+  RunData AsRunData() const override;
 
 private:
   //setting to determine whether or not to use same parallel parameters for all kernels in run or to allow for different
   //parallel parameters for each kernel
-  const run_environment::OptParallelParamsSetting optParallelParamsSetting_;
+  const run_environment::OptParallelParamsSetting opt_parallel_params_setting_;
   
   //num of levels in bp processing hierarchy
-  const unsigned int numLevels_;
+  const unsigned int num_levels_;
 
   //stores the current parallel parameters for each processing kernel
-  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels> parallelDimsEachKernel_;
+  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels> parallel_dims_each_kernel_;
   
   //mapping of parallel parameters to runtime for each kernel at each level and total runtime
-  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::kNumKernels + 1)> pParamsToRunTimeEachKernel_;
+  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::kNumKernels + 1)> p_params_to_run_time_each_kernel_;
 };
 
 #endif //BP_PARALLEL_PARAMS_H

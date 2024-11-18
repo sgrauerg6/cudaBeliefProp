@@ -21,10 +21,10 @@
 class EvaluateBPImpResults final : public EvaluateImpResults {
 private:
   //retrieve path of belief propagation implementation results
-  std::filesystem::path getImpResultsPath() const override;
+  std::filesystem::path GetImpResultsPath() const override;
 
   //get text at top of results summary file with each string_view in the vector corresponding to a separate line
-  std::vector<std::string> getCombResultsTopText() const override {
+  std::vector<std::string> GetCombResultsTopText() const override {
     return {{"Stereo Processing using optimized CUDA and optimized CPU belief propagation implementations"},
             {"Code available at https://github.com/sgrauerg6/cudaBeliefProp"},
             {"All stereo sets used in evaluation are from (or adapted from) Middlebury stereo datasets at https://vision.middlebury.edu/stereo/data/"},
@@ -34,7 +34,7 @@ private:
   }
 
   //input parameters that are showed in results summary with runtimes
-  std::vector<std::string> getInputParamsShow() const override {
+  std::vector<std::string> GetInputParamsShow() const override {
     return {std::string(belief_prop::kStereoSetHeader), std::string(run_eval::kDatatypeHeader), std::string(belief_prop::kImageWidthHeader),
             std::string(belief_prop::kImageHeightHeader), std::string(belief_prop::kNumDispValsHeader),
             std::string(run_eval::kLoopItersTemplatedHeader)};

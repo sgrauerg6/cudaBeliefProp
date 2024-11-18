@@ -53,7 +53,7 @@ template<BpImData_t T>
 __global__ void filterImageAcross(
   T* imagePixelsToFilter, float* filteredImagePixels,
   unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int sizeFilter)
+  float* imageFilter, unsigned int size_filter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -61,8 +61,8 @@ __global__ void filterImageAcross(
 
   //make sure that (xVal, yVal) is within image bounds
   if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
-    beliefprop::filterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-      widthImages, heightImages, imageFilter, sizeFilter);
+    beliefprop::FilterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
+      widthImages, heightImages, imageFilter, size_filter);
   }
 }
 
@@ -73,7 +73,7 @@ template<BpImData_t T>
 __global__ void filterImageVertical(
   T* imagePixelsToFilter, float* filteredImagePixels,
   unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int sizeFilter)
+  float* imageFilter, unsigned int size_filter)
 {
   //get x and y indices corresponding to current CUDA thread
   const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
@@ -81,8 +81,8 @@ __global__ void filterImageVertical(
 
   //make sure that (xVal, yVal) is within image bounds
   if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
-    beliefprop::filterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-      widthImages, heightImages, imageFilter, sizeFilter);
+    beliefprop::FilterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
+      widthImages, heightImages, imageFilter, size_filter);
   }
 }
 

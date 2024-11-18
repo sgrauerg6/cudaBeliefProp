@@ -21,7 +21,7 @@ public:
   SmoothImageCUDA(const ParallelParams& cudaParams) : SmoothImage(cudaParams) {}
 
   //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-  void operator()(const BpImage<unsigned int>& inImage, float sigmaVal, float* smoothedImage) override;
+  void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) override;
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */

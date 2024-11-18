@@ -8,21 +8,21 @@
 #include "BpEvaluationResults.h"
 
 //initialize evaluation results with evaluation parameters
-void BpEvaluationResults::initializeWithEvalParams(const BpEvaluationParameters& evalParams) {
-  disparityErrorMax_ = evalParams.max_diff_cap_;
-  for (const auto& output_diff_threshold : evalParams.output_diff_thresholds_) {
-    numSigDiffPixelsAtThresholds_[output_diff_threshold] = 0;
+void BpEvaluationResults::InitializeWithEvalParams(const BpEvaluationParameters& eval_params) {
+  disparity_error_max_ = eval_params.max_diff_cap_;
+  for (const auto& output_diff_threshold : eval_params.output_diff_thresholds_) {
+    num_sig_diff_pixels_at_thresholds_[output_diff_threshold] = 0;
   }
 }
 
 //retrieve evaluation results as RunData for output
-RunData BpEvaluationResults::runData() const {
+RunData BpEvaluationResults::AsRunData() const {
   RunData evalRunData;
-  evalRunData.addDataWHeader("Average RMS error", (double)averageDispAbsDiffNoMaxWMax_[0]);
-  evalRunData.addDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparityErrorMax_) + ")",
-                             (double)averageDispAbsDiffNoMaxWMax_[1]);
-  for (const auto& propBadPixelsAtThreshold : propSigDiffPixelsAtThresholds_) {
-    evalRunData.addDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
+  evalRunData.AddDataWHeader("Average RMS error", (double)average_disp_abs_diff_no_max_w_max_[0]);
+  evalRunData.AddDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparity_error_max_) + ")",
+                             (double)average_disp_abs_diff_no_max_w_max_[1]);
+  for (const auto& propBadPixelsAtThreshold : prop_sig_diff_pixels_at_thresholds_) {
+    evalRunData.AddDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
                                (double)propBadPixelsAtThreshold.second);
   }
 

@@ -28,32 +28,32 @@ public:
   DetailedTimings(const std::unordered_map<T, std::string_view>& timingSegments);
 
   //reset all timings
-  void resetTiming() { segmentTimings_.clear(); }
+  void resetTiming() { segment_timings_.clear(); }
 
   //add instance of DetailedTimings to current DetailedTimings
   void addToCurrentTimings(const DetailedTimings& inDetailedTimings);
 
   //add timing by segment index
   void addTiming(const T timingSegment, const std::chrono::duration<double>& segmentTime) {
-    segmentTimings_[timingSegment].push_back(segmentTime);
+    segment_timings_[timingSegment].push_back(segmentTime);
   }
 
   //get median timing for a specified segment that may have been run multiple times
   std::chrono::duration<double> getMedianTiming(const T runSegmentIndex) const;
 
   //return current timing data as a RunData object for evaluation
-  RunData runData() const;
+  RunData AsRunData() const;
 
 private:
-  std::map<T, std::vector<std::chrono::duration<double>>> segmentTimings_;
-  const std::unordered_map<T, std::string_view> timingSegToStr_;
+  std::map<T, std::vector<std::chrono::duration<double>>> segment_timings_;
+  const std::unordered_map<T, std::string_view> timing_seg_to_str_;
 };
 
 //initialize each timing segment
 template <typename T>
 requires std::is_enum_v<T>
-DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string_view>& timingSegments) : timingSegToStr_{timingSegments} {
-  std::ranges::transform(timingSegToStr_, std::inserter(segmentTimings_, segmentTimings_.end()),
+DetailedTimings<T>::DetailedTimings(const std::unordered_map<T, std::string_view>& timingSegments) : timing_seg_to_str_{timingSegments} {
+  std::ranges::transform(timing_seg_to_str_, std::inserter(segment_timings_, segment_timings_.end()),
     [](const auto& segment) -> std::pair<T, std::vector<std::chrono::duration<double>>> {
       return {segment.first, std::vector<std::chrono::duration<double>>()}; });
 }
@@ -63,14 +63,14 @@ template <typename T>
 requires std::is_enum_v<T>
 void DetailedTimings<T>::addToCurrentTimings(const DetailedTimings& inDetailedTimings)
 {
-  std::ranges::for_each(inDetailedTimings.segmentTimings_,
+  std::ranges::for_each(inDetailedTimings.segment_timings_,
     [this](const auto& currentTiming) {
-      auto iter = this->segmentTimings_.find(currentTiming.first);
-      if (iter != this->segmentTimings_.cend()) {
+      auto iter = this->segment_timings_.find(currentTiming.first);
+      if (iter != this->segment_timings_.cend()) {
         iter->second.insert(iter->second.cend(), currentTiming.second.cbegin(), currentTiming.second.cend());
       }
       else {
-        this->segmentTimings_[currentTiming.first] = currentTiming.second;
+        this->segment_timings_[currentTiming.first] = currentTiming.second;
       }
     });
 }
@@ -79,8 +79,8 @@ void DetailedTimings<T>::addToCurrentTimings(const DetailedTimings& inDetailedTi
 template <typename T>
 requires std::is_enum_v<T>
 std::chrono::duration<double> DetailedTimings<T>::getMedianTiming(const T runSegmentIndex) const {
-  if (segmentTimings_.at(runSegmentIndex).size() > 0) {
-    std::vector<std::chrono::duration<double>> segmentTimingVectCopy(segmentTimings_.at(runSegmentIndex));
+  if (segment_timings_.at(runSegmentIndex).size() > 0) {
+    std::vector<std::chrono::duration<double>> segmentTimingVectCopy(segment_timings_.at(runSegmentIndex));
     //get median timing across runs
     std::ranges::nth_element(segmentTimingVectCopy, segmentTimingVectCopy.begin() + segmentTimingVectCopy.size() / 2);
     return (segmentTimingVectCopy[segmentTimingVectCopy.size() / 2]);
@@ -93,19 +93,19 @@ std::chrono::duration<double> DetailedTimings<T>::getMedianTiming(const T runSeg
 //return current timing data as a RunData object for output
 template <typename T>
 requires std::is_enum_v<T>
-RunData DetailedTimings<T>::runData() const {
+RunData DetailedTimings<T>::AsRunData() const {
   RunData timingsRunData;
-  std::ranges::for_each(segmentTimings_,
+  std::ranges::for_each(segment_timings_,
     [this, &timingsRunData](auto currentTiming) {
       //get median timing across runs
       std::ranges::nth_element(currentTiming.second, currentTiming.second.begin() + currentTiming.second.size() / 2);
-      std::string_view headerStart = timingSegToStr_.at(currentTiming.first);
+      std::string_view headerStart = timing_seg_to_str_.at(currentTiming.first);
       if (currentTiming.second.size() > 0) {
-        timingsRunData.addDataWHeader(std::string(headerStart) + " (" + std::to_string(currentTiming.second.size()) +
+        timingsRunData.AddDataWHeader(std::string(headerStart) + " (" + std::to_string(currentTiming.second.size()) +
           " timings)", currentTiming.second[currentTiming.second.size() / 2].count());
       }
       else {
-        timingsRunData.addDataWHeader(std::string(headerStart) + " (No timings) ", "No timings"); 
+        timingsRunData.AddDataWHeader(std::string(headerStart) + " (No timings) ", "No timings"); 
       }
     });
   return timingsRunData;

@@ -19,13 +19,13 @@ public:
   BpFileHandling(const std::string& stereo_set_name) : stereo_set_path_{getStereoSetsPath() / stereo_set_name}, num_out_disp_map_{1} { }
 
   //return path to reference image with valid extension if found, otherwise throw filesystem error
-  std::filesystem::path getRefImagePath() const;
+  std::filesystem::path RefImagePath() const;
 
   //return path to test image with valid extension if found, otherwise throw filesystem error
-  std::filesystem::path getTestImagePath() const;
+  std::filesystem::path TestImagePath() const;
 
   //return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
-  const std::filesystem::path getCurrentOutputDisparityFilePathAndIncrement() {
+  const std::filesystem::path GetCurrentOutputDisparityFilePathAndIncrement() {
     return stereo_set_path_ / (std::string(bp_file_handling::kOutDispImageNameBase) + std::to_string(num_out_disp_map_++) + ".pgm");
   }
 

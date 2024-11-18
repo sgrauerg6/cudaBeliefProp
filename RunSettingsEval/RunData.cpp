@@ -12,67 +12,67 @@
 
 //get header to add...use input header if not yet used
 //user original header with number appended if original header is already used
-std::string RunData::getHeaderToAdd(const std::string& inHeader) const {
-  auto headerToAdd = inHeader;
+std::string RunData::GetHeaderToAdd(const std::string& in_header) const {
+  auto headerToAdd = in_header;
   unsigned int num{0};
-  while (std::find(headersInOrder_.cbegin(), headersInOrder_.cend(), headerToAdd) != headersInOrder_.cend()) {
+  while (std::find(headers_in_order_.cbegin(), headers_in_order_.cend(), headerToAdd) != headers_in_order_.cend()) {
     //add "_{num}" to header if header already in data
     num++;
-    headerToAdd = inHeader + "_" + std::to_string(num);
+    headerToAdd = in_header + "_" + std::to_string(num);
   }
   return headerToAdd;
 }
 
 //add data with header describing added data
-void RunData::addDataWHeader(const std::string& header, const std::string& data) {
-  const auto headerToAdd{getHeaderToAdd(header)};
-  headersInOrder_.push_back(headerToAdd);
-  headersWData_[headerToAdd] = data;
+void RunData::AddDataWHeader(const std::string& header, const std::string& data) {
+  const auto headerToAdd{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(headerToAdd);
+  headers_w_data_[headerToAdd] = data;
 }
 
 //add data with header describing added data
-void RunData::addDataWHeader(const std::string& header, double data) {
-  const auto headerToAdd{getHeaderToAdd(header)};
-  headersInOrder_.push_back(headerToAdd);
-  headersWData_[headerToAdd] = data;
+void RunData::AddDataWHeader(const std::string& header, double data) {
+  const auto headerToAdd{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(headerToAdd);
+  headers_w_data_[headerToAdd] = data;
 }
 
 //add data with header describing added data
-void RunData::addDataWHeader(const std::string& header, bool data) {
-  const auto headerToAdd{getHeaderToAdd(header)};
-  headersInOrder_.push_back(headerToAdd);
-  headersWData_[headerToAdd] = data;
+void RunData::AddDataWHeader(const std::string& header, bool data) {
+  const auto headerToAdd{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(headerToAdd);
+  headers_w_data_[headerToAdd] = data;
 }
 
 //add data with header describing added data
-void RunData::addDataWHeader(const std::string& header, unsigned int data) {
-  const auto headerToAdd{getHeaderToAdd(header)};
-  headersInOrder_.push_back(headerToAdd);
-  headersWData_[headerToAdd] = data;
+void RunData::AddDataWHeader(const std::string& header, unsigned int data) {
+  const auto headerToAdd{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(headerToAdd);
+  headers_w_data_[headerToAdd] = data;
 }
 
 //append current RunData with input RunData
-void RunData::appendData(const RunData& inRunData) {
-  //const auto& inRunDataMapping = inRunData.getAllData();
-  for (const auto& header : inRunData.getHeadersInOrder()) {
-    if (inRunData.getDataAsDouble(header)) {
-      addDataWHeader(header, *(inRunData.getDataAsDouble(header)));
+void RunData::AppendData(const RunData& rundata) {
+  //const auto& rundataMapping = rundata.GetAllData();
+  for (const auto& header : rundata.HeadersInOrder()) {
+    if (rundata.GetDataAsDouble(header)) {
+      AddDataWHeader(header, *(rundata.GetDataAsDouble(header)));
     }
-    else if (inRunData.getDataAsUInt(header)) {
-      addDataWHeader(header, *(inRunData.getDataAsUInt(header)));
+    else if (rundata.GetDataAsUInt(header)) {
+      AddDataWHeader(header, *(rundata.GetDataAsUInt(header)));
     }
-    else if (inRunData.getDataAsBool(header)) {
-      addDataWHeader(header, *(inRunData.getDataAsBool(header)));
+    else if (rundata.GetDataAsBool(header)) {
+      AddDataWHeader(header, *(rundata.GetDataAsBool(header)));
     }
     else {
-      addDataWHeader(header, inRunData.getDataAsStr(header));
+      AddDataWHeader(header, rundata.GetDataAsStr(header));
     }
   }
 }
 
 //get data corresponding to header
-std::string RunData::getDataAsStr(const std::string_view header) const {
-  const auto variantVal = headersWData_.at(std::string(header));
+std::string RunData::GetDataAsStr(const std::string_view header) const {
+  const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<std::string>(variantVal)) {
     return std::get<std::string>(variantVal);
   }
@@ -92,8 +92,8 @@ std::string RunData::getDataAsStr(const std::string_view header) const {
 
 //get data as double if variant corresponding to header is double type
 //return null if data corresponds to a different data type
-std::optional<double> RunData::getDataAsDouble(const std::string_view header) const {
-  const auto variantVal = headersWData_.at(std::string(header));
+std::optional<double> RunData::GetDataAsDouble(const std::string_view header) const {
+  const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<double>(variantVal)) {
     return std::get<double>(variantVal);
   }
@@ -102,8 +102,8 @@ std::optional<double> RunData::getDataAsDouble(const std::string_view header) co
 
 //get data as unsigned integer if variant corresponding to header is unsigned integer type
 //return null if data corresponds to a different data type
-std::optional<unsigned int> RunData::getDataAsUInt(const std::string_view header) const {
-  const auto variantVal = headersWData_.at(std::string(header));
+std::optional<unsigned int> RunData::GetDataAsUInt(const std::string_view header) const {
+  const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<unsigned int>(variantVal)) {
     return std::get<unsigned int>(variantVal);
   }
@@ -112,8 +112,8 @@ std::optional<unsigned int> RunData::getDataAsUInt(const std::string_view header
 
 //get data as boolean if variant corresponding to header is boolean type
 //return null if data corresponds to a different data type
-std::optional<bool> RunData::getDataAsBool(const std::string_view header) const {
-  const auto variantVal = headersWData_.at(std::string(header));
+std::optional<bool> RunData::GetDataAsBool(const std::string_view header) const {
+  const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<bool>(variantVal)) {
     return std::get<bool>(variantVal);
   }
@@ -121,23 +121,23 @@ std::optional<bool> RunData::getDataAsBool(const std::string_view header) const 
 }
 
 //retrieve pair between a set of parameters and a single parameter
-std::optional<std::pair<std::vector<std::string>, double>> RunData::getParamsToRuntime(
-  const std::vector<std::string_view>& keyParams, std::string_view valParam) const
+std::optional<std::pair<std::vector<std::string>, double>> RunData::GetParamsToRuntime(
+  const std::vector<std::string_view>& key_params, std::string_view val_param) const
 {
   std::vector<std::string> keyParamVals;
-  for (const auto& keyParam : keyParams) {
+  for (const auto& keyParam : key_params) {
     //check if current key params exists as header; return null if not
-    if (!(headersWData_.contains(std::string(keyParam)))) {
+    if (!(headers_w_data_.contains(std::string(keyParam)))) {
       return {};
     }
     //add value of key param for first part of pair to return
-    keyParamVals.push_back(getDataAsStr(std::string(keyParam)));
+    keyParamVals.push_back(GetDataAsStr(std::string(keyParam)));
   }
     //check if value params exists as header; return null if not
-  if (!(headersWData_.contains(std::string(valParam)))) {
+  if (!(headers_w_data_.contains(std::string(val_param)))) {
     return {};
   }
 
   //return pair of vector key parameters values with value parameter value for run data
-  return std::pair<std::vector<std::string>, double>{keyParamVals, getDataAsDouble(std::string(valParam)).value()};
+  return std::pair<std::vector<std::string>, double>{keyParamVals, GetDataAsDouble(std::string(val_param)).value()};
 }

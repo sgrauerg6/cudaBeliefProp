@@ -25,7 +25,7 @@ class RunEvalImpMultSettings {
 public:
   //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
   void operator()(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& runBenchmarkImpsByAccSetting,
-    const run_environment::RunImpSettings& runImpSettings) const;
+    const run_environment::RunImpSettings& run_imp_settings) const;
 
 private:
   //get fastest available implementation

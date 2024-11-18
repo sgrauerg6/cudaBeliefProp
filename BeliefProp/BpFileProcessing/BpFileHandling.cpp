@@ -48,7 +48,7 @@ std::filesystem::path BpFileHandling::getStereoSetsPath() const
 }
 
 //return path to reference image with valid extension if found, otherwise throw filesystem error
-std::filesystem::path BpFileHandling::getRefImagePath() const
+std::filesystem::path BpFileHandling::RefImagePath() const
 {
   //check if ref image exists for each possible extension (currently pgm and ppm) and return path if so
   for (const auto& extension : bp_file_handling::kInImagePossExtensions) {
@@ -61,7 +61,7 @@ std::filesystem::path BpFileHandling::getRefImagePath() const
 }
 
 //return path to test image with valid extension if found, otherwise throw filesystem error
-std::filesystem::path BpFileHandling::getTestImagePath() const
+std::filesystem::path BpFileHandling::TestImagePath() const
 {
   //check if test image exists for each possible extension (currently pgm and ppm) and return path if so
   for (const auto& extension : bp_file_handling::kInImagePossExtensions) {

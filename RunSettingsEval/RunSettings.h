@@ -61,14 +61,14 @@ public:
 
   //retrieve environment variable values corresponding to CPU threads being pinned to socket and return
   //as RunData structure
-  RunData currSettingsAsRunData() const {
+  RunData currSettingsAsAsRunData() const {
     RunData pinnedThreadsSettings;
     const std::string ompPlacesSetting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
     const std::string ompProcBindSetting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
     const bool cpuThreadsPinned = ((ompPlacesSetting == "sockets") && (ompProcBindSetting == "true"));
-    pinnedThreadsSettings.addDataWHeader("CPU Threads Pinned To Socket", cpuThreadsPinned);
-    pinnedThreadsSettings.addDataWHeader("OMP_PLACES", ompPlacesSetting);
-    pinnedThreadsSettings.addDataWHeader("OMP_PROC_BIND", ompProcBindSetting);
+    pinnedThreadsSettings.AddDataWHeader("CPU Threads Pinned To Socket", cpuThreadsPinned);
+    pinnedThreadsSettings.AddDataWHeader("OMP_PLACES", ompPlacesSetting);
+    pinnedThreadsSettings.AddDataWHeader("OMP_PROC_BIND", ompProcBindSetting);
     return pinnedThreadsSettings;
   }
 };
@@ -82,45 +82,45 @@ const std::map<std::size_t, std::string_view> kDataSizeToNameMap{
 
 //enum for acceleration setting
 enum class AccSetting {
-  NONE, AVX256, AVX512, NEON, CUDA
+  kNone, kAVX256, kAVX512, kNEON, kCUDA
 };
 
 //get string corresponding to acceleration method at compile time
 template <AccSetting ACCELERATION_SETTING>
 constexpr std::string_view accelerationString() {
-  if constexpr (ACCELERATION_SETTING == AccSetting::NEON) { return "NEON"; }
-  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX256) { return "AVX256"; }
-  else if constexpr (ACCELERATION_SETTING == AccSetting::AVX512) { return "AVX512"; }
+  if constexpr (ACCELERATION_SETTING == AccSetting::kNEON) { return "NEON"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256) { return "kAVX256"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "kAVX512"; }
   else { return "DEFAULT"; }
 }
 
 //get string corresponding to acceleration method at run time
-inline std::string_view accelerationString(AccSetting accelerationSetting) {
-  if (accelerationSetting == AccSetting::NEON) { return accelerationString<AccSetting::NEON>(); }
-  else if (accelerationSetting == AccSetting::AVX256) { return accelerationString<AccSetting::AVX256>(); }
-  else if (accelerationSetting == AccSetting::AVX512) { return accelerationString<AccSetting::AVX512>(); }
+inline std::string_view accelerationString(AccSetting acceleration_setting) {
+  if (acceleration_setting == AccSetting::kNEON) { return accelerationString<AccSetting::kNEON>(); }
+  else if (acceleration_setting == AccSetting::kAVX256) { return accelerationString<AccSetting::kAVX256>(); }
+  else if (acceleration_setting == AccSetting::kAVX512) { return accelerationString<AccSetting::kAVX512>(); }
   else { return "DEFAULT"; }
 }
 
 inline unsigned int getBytesAlignMemory(AccSetting accelSetting) {
   //avx512 requires data to be aligned on 64 bytes
-  return (accelSetting == AccSetting::AVX512) ? 64 : 16;
+  return (accelSetting == AccSetting::kAVX512) ? 64 : 16;
 }
 
 inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
-  //align width with 16 data values in AVX512
-  return (accelSetting == AccSetting::AVX512) ? 16 : 8;
+  //align width with 16 data values in kAVX512
+  return (accelSetting == AccSetting::kAVX512) ? 16 : 8;
 }
 
 //generate RunData object that contains description header with corresponding value for each run setting
 template <AccSetting ACCELERATION_SETTING>
 inline RunData runSettings()  {
-  RunData currRunData;
-  currRunData.addDataWHeader("Total number of CPU threads", std::thread::hardware_concurrency());
-  currRunData.addDataWHeader("BYTES_ALIGN_MEMORY", getBytesAlignMemory(ACCELERATION_SETTING));
-  currRunData.addDataWHeader("NUM_DATA_ALIGN_WIDTH", getNumDataAlignWidth(ACCELERATION_SETTING));
-  currRunData.appendData(CPUThreadsPinnedToSocket().currSettingsAsRunData());
-  return currRunData;
+  RunData curr_run_data;
+  curr_run_data.AddDataWHeader("Total number of CPU threads", std::thread::hardware_concurrency());
+  curr_run_data.AddDataWHeader("BYTES_ALIGN_MEMORY", getBytesAlignMemory(ACCELERATION_SETTING));
+  curr_run_data.AddDataWHeader("NUM_DATA_ALIGN_WIDTH", getNumDataAlignWidth(ACCELERATION_SETTING));
+  curr_run_data.AppendData(CPUThreadsPinnedToSocket().currSettingsAsAsRunData());
+  return curr_run_data;
 }
 
 //enum that specifies whether or not to use templated counts for the number of iterations in processing
@@ -149,7 +149,7 @@ struct RunImpSettings {
   std::optional<std::string> runName_;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
   std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> baseOptSingThreadRTimeForTSetting_;
-  std::vector<std::pair<std::string, std::vector<unsigned int>>> subsetStrIndices_;
+  std::vector<std::pair<std::string, std::vector<unsigned int>>> subset_str_indices_;
 
   //remove parallel parameters with less than specified number of threads
   void removeParallelParamBelowMinThreads(unsigned int minThreads) {

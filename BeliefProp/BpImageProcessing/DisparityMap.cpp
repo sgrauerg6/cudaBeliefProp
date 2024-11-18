@@ -8,40 +8,40 @@
 #include "DisparityMap.h"
 
 template<class T>
-void DisparityMap<T>::saveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor) const {
+void DisparityMap<T>::SaveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor) const {
   //declare and allocate the space for the disparity map image to save
-  BpImage<char> disparityImageToSave(this->widthHeight_);
+  BpImage<char> disparityImageToSave(this->width_height_);
 
   //go though every pixel in the disparity map and compute the intensity value to use in the "disparity map image"
   //by multiplying the pixel disparity value by scale factor
-  std::ranges::transform(this->getPointerToPixelsStart(), this->getPointerToPixelsStart() + this->getTotalPixels(),
-    disparityImageToSave.getPointerToPixelsStart(),
+  std::ranges::transform(this->PointerToPixelsStart(), this->PointerToPixelsStart() + this->TotalPixels(),
+    disparityImageToSave.PointerToPixelsStart(),
     [scale_factor](const T& currentPixel) -> char {
       return (char)(((float)currentPixel)*((float)scale_factor) + 0.5f);
     });
 
-  disparityImageToSave.saveImageAsPgm(disparity_map_file_path);
+  disparityImageToSave.SaveImageAsPgm(disparity_map_file_path);
 }
 
 //TODO: look into case where no known disparity in ground truth disparity map (should not be penalized for wrong disparity in that case)
 template<class T>
-BpEvaluationResults DisparityMap<T>::getOutputComparison(
+BpEvaluationResults DisparityMap<T>::OutputComparison(
   const DisparityMap& disparity_map_to_compare,
   const BpEvaluationParameters& evaluation_parameters) const
 {
   //initialize output evaluation with evaluation parameters
   BpEvaluationResults output_evaluation;
-  output_evaluation.initializeWithEvalParams(evaluation_parameters);
+  output_evaluation.InitializeWithEvalParams(evaluation_parameters);
 
   //initialize total disparity difference across all pixels with and without max for disparity difference to 0
   std::array<float, 2> totalDispAbsDiffNoMaxWMax{0, 0};
 
   //go through each disparity map output pixel and evaluate output
   //against corresponding output in disparity map to compare
-  for (unsigned int i = 0; i < this->getTotalPixels(); i++) {
+  for (unsigned int i = 0; i < this->TotalPixels(); i++) {
     //get disparity difference between disparity maps at pixel i
     const T dispMapVal = (this->pixels_.get())[i];
-    const T dispMapCompareVal = disparity_map_to_compare.getPixelAtPoint(i);
+    const T dispMapCompareVal = disparity_map_to_compare.PixelAtPoint(i);
     const T absDiff = std::abs(dispMapVal - dispMapCompareVal);
 
     //add disparity difference at pixel to total disparity difference across pixels
@@ -53,19 +53,19 @@ BpEvaluationResults DisparityMap<T>::getOutputComparison(
     std::ranges::for_each(evaluation_parameters.output_diff_thresholds_,
       [absDiff, &output_evaluation](auto threshold) {
         if (absDiff > threshold) {
-          output_evaluation.numSigDiffPixelsAtThresholds_[threshold]++;
+          output_evaluation.num_sig_diff_pixels_at_thresholds_[threshold]++;
         }
       });
   }
 
-  output_evaluation.averageDispAbsDiffNoMaxWMax_[0] = totalDispAbsDiffNoMaxWMax[0] / this->getTotalPixels();
-  output_evaluation.averageDispAbsDiffNoMaxWMax_[1] = totalDispAbsDiffNoMaxWMax[1] / this->getTotalPixels();
+  output_evaluation.average_disp_abs_diff_no_max_w_max_[0] = totalDispAbsDiffNoMaxWMax[0] / this->TotalPixels();
+  output_evaluation.average_disp_abs_diff_no_max_w_max_[1] = totalDispAbsDiffNoMaxWMax[1] / this->TotalPixels();
 
   //need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
-  std::ranges::transform(output_evaluation.numSigDiffPixelsAtThresholds_,
-    std::inserter(output_evaluation.propSigDiffPixelsAtThresholds_, output_evaluation.propSigDiffPixelsAtThresholds_.end()),
+  std::ranges::transform(output_evaluation.num_sig_diff_pixels_at_thresholds_,
+    std::inserter(output_evaluation.prop_sig_diff_pixels_at_thresholds_, output_evaluation.prop_sig_diff_pixels_at_thresholds_.end()),
     [this](const auto& sigDiffPixelAtThresholdMap) -> std::pair<float, float> {
-      return { sigDiffPixelAtThresholdMap.first, ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->getTotalPixels())) };
+      return { sigDiffPixelAtThresholdMap.first, ((float)sigDiffPixelAtThresholdMap.second) / ((float)(this->TotalPixels())) };
     });
 
   return output_evaluation;

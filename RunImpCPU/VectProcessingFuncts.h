@@ -76,10 +76,10 @@ namespace VectProcessingFuncts
 #include "AVXTemplateSpFuncts.h"
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
-#include "AVX256TemplateSpFuncts.h"
+#include "kAVX256TemplateSpFuncts.h"
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-#include "AVX256TemplateSpFuncts.h"
-#include "AVX512TemplateSpFuncts.h"
+#include "kAVX256TemplateSpFuncts.h"
+#include "kAVX512TemplateSpFuncts.h"
 #endif
 
 #endif //COMPILING_FOR_ARM

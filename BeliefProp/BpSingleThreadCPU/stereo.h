@@ -29,13 +29,13 @@
 #include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
-class RunBpStereoCPUSingleThread final : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::NONE>
+class RunBpStereoCPUSingleThread final : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::kNone>
 {
 public:
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
       const beliefprop::BPsettings& algSettings,
       const ParallelParams& parallelParams) override;
-  std::string getBpRunDescription() const override { return "Single-Thread CPU"; }
+  std::string BpRunDescription() const override { return "Single-Thread CPU"; }
 
 private:
   // compute message
@@ -112,9 +112,9 @@ inline image<float[DISP_VALS]> * RunBpStereoCPUSingleThread<T, DISP_VALS>::comp_
   image<float[DISP_VALS]> *data = new image<float[DISP_VALS]>(width, height);
 
   image<float> *sm1, *sm2;
-  if (algSettings.smoothingSigma_ >= 0.1) {
-    sm1 = FilterImage::smooth(img1, algSettings.smoothingSigma_);
-    sm2 = FilterImage::smooth(img2, algSettings.smoothingSigma_);
+  if (algSettings.smoothing_sigma_ >= 0.1) {
+    sm1 = FilterImage::smooth(img1, algSettings.smoothing_sigma_);
+    sm2 = FilterImage::smooth(img2, algSettings.smoothing_sigma_);
   } else {
     sm1 = imageUCHARtoFLOAT(img1);
     sm2 = imageUCHARtoFLOAT(img2);
@@ -215,7 +215,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   data[0] = comp_data(img1, img2, algSettings);
 
   // data pyramid
-  for (unsigned int i = 1; i < algSettings.numLevels_; i++) {
+  for (unsigned int i = 1; i < algSettings.num_levels_; i++) {
     const unsigned int old_width = (unsigned int)data[i - 1]->width();
     const unsigned int old_height = (unsigned int)data[i - 1]->height();
     const unsigned int new_width = (unsigned int) ceil(old_width / 2.0);
@@ -236,12 +236,12 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   }
 
   // run bp from coarse to fine
-  for (int i = algSettings.numLevels_ - 1; i >= 0; i--) {
+  for (int i = algSettings.num_levels_ - 1; i >= 0; i--) {
     unsigned int width = (unsigned int)data[i]->width();
     unsigned int height = (unsigned int)data[i]->height();
 
     // allocate & init memory for messages
-    if ((unsigned int)i == (algSettings.numLevels_ - 1)) {
+    if ((unsigned int)i == (algSettings.num_levels_ - 1)) {
       // in the coarsest level messages are initialized to zero
       u[i] = new image<float[DISP_VALS]>(width, height);
       d[i] = new image<float[DISP_VALS]>(width, height);
@@ -277,7 +277,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
     }
 
     // BP
-    bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.numIterations_, algSettings.disc_k_bp_);
+    bp_cb(u[i], d[i], l[i], r[i], data[i], algSettings.num_iterations_, algSettings.disc_k_bp_);
   }
 
   image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
@@ -285,8 +285,8 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   auto timeEnd = std::chrono::system_clock::now();
   runtime = timeEnd-timeStart;
   
-  RunData runData;
-  runData.addDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), runtime.count());
+  RunData run_data;
+  run_data.AddDataWHeader(std::string(run_eval::kSingleThreadRuntimeHeader), runtime.count());
 
   delete u[0];
   delete d[0];
@@ -294,7 +294,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   delete r[0];
   delete data[0];
 
-  return {out, runData};
+  return {out, run_data};
 }
 
 template<typename T, unsigned int DISP_VALS>
@@ -317,14 +317,14 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_
   //set disparity at each point in disparity map
   for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
     for (unsigned int x = 0; x < (unsigned int)img1->width(); x++) {
-      outDispMap.setPixelAtPoint({x, y}, (float)imRef(out, x, y));
+      outDispMap.SetPixelAtPoint({x, y}, (float)imRef(out, x, y));
     }
   }
 
   std::optional<ProcessStereoSetOutput> output{ProcessStereoSetOutput{}};
-  output->runTime = runtime;
-  output->outDisparityMap = std::move(outDispMap);
-  output->runData = outStereo.second;
+  output->run_time = runtime;
+  output->out_disparity_map = std::move(outDispMap);
+  output->run_data = outStereo.second;
 
   delete img1;
   delete img2;

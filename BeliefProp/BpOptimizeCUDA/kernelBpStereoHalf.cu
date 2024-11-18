@@ -26,13 +26,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifdef CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 //set constexpr unsigned int values for number of disparity values for each stereo set used
-constexpr unsigned int kDispVals0{bp_params::kStereoSetsToProcess[0].numDispVals_};
-constexpr unsigned int kDispVals1{bp_params::kStereoSetsToProcess[1].numDispVals_};
-constexpr unsigned int kDispVals2{bp_params::kStereoSetsToProcess[2].numDispVals_};
-constexpr unsigned int kDispVals3{bp_params::kStereoSetsToProcess[3].numDispVals_};
-constexpr unsigned int kDispVals4{bp_params::kStereoSetsToProcess[4].numDispVals_};
-constexpr unsigned int kDispVals5{bp_params::kStereoSetsToProcess[5].numDispVals_};
-constexpr unsigned int kDispVals6{bp_params::kStereoSetsToProcess[6].numDispVals_};
+constexpr unsigned int kDispVals0{bp_params::kStereoSetsToProcess[0].num_disp_vals_};
+constexpr unsigned int kDispVals1{bp_params::kStereoSetsToProcess[1].num_disp_vals_};
+constexpr unsigned int kDispVals2{bp_params::kStereoSetsToProcess[2].num_disp_vals_};
+constexpr unsigned int kDispVals3{bp_params::kStereoSetsToProcess[3].num_disp_vals_};
+constexpr unsigned int kDispVals4{bp_params::kStereoSetsToProcess[4].num_disp_vals_};
+constexpr unsigned int kDispVals5{bp_params::kStereoSetsToProcess[5].num_disp_vals_};
+constexpr unsigned int kDispVals6{bp_params::kStereoSetsToProcess[6].num_disp_vals_};
 
 //device function to process messages using half precision with number of disparity values
 //given in template parameter
@@ -78,14 +78,14 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
   //note that may cause results to differ a little from ideal
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-      currentLevelProperties.paddedWidthCheckerboardLevel_,
-      currentLevelProperties.heightLevel_, 0,
+      currentLevelProperties.padded_width_checkerboard_level_,
+      currentLevelProperties.height_level_, 0,
       DISP_VALS);
 
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       dstMessageArray[destMessageArrayIndex] = (half) 0.0;
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+        destMessageArrayIndex += currentLevelProperties.padded_width_checkerboard_level_;
       }
       else {
         destMessageArrayIndex++;
@@ -97,8 +97,8 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
     valToNormalize /= DISP_VALS;
 
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-      currentLevelProperties.paddedWidthCheckerboardLevel_,
-      currentLevelProperties.heightLevel_, 0,
+      currentLevelProperties.padded_width_checkerboard_level_,
+      currentLevelProperties.height_level_, 0,
       DISP_VALS);
 
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
@@ -106,7 +106,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
       dst[currentDisparity] -= valToNormalize;
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        destMessageArrayIndex += currentLevelProperties.paddedWidthCheckerboardLevel_;
+        destMessageArrayIndex += currentLevelProperties.padded_width_checkerboard_level_;
       }
       else {
         destMessageArrayIndex++;
@@ -130,8 +130,8 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
   // aggregate and find min
   half minimum{(half)bp_consts::kInfBp};
   unsigned int processingArrIndexDisp0 = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-    currentLevelProperties.paddedWidthCheckerboardLevel_,
-    currentLevelProperties.heightLevel_, 0,
+    currentLevelProperties.padded_width_checkerboard_level_,
+    currentLevelProperties.height_level_, 0,
     bpSettingsDispVals);
   unsigned int procArrIdx{processingArrIndexDisp0};
 
@@ -147,7 +147,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
       minimum = dstProcessing[procArrIdx];
 
     if constexpr (bp_params::kOptimizedIndexingSetting) {
-      procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
+      procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
     }
     else {
       procArrIdx++;
@@ -172,7 +172,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
     valToNormalize += dstProcessing[procArrIdx];
 
     if constexpr (bp_params::kOptimizedIndexingSetting) {
-      procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
+      procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
     }
     else {
       procArrIdx++;
@@ -189,7 +189,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
     for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
       dstMessageArray[procArrIdx] = (half)0.0;
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
+        procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
       }
       else {
         procArrIdx++;
@@ -207,7 +207,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
       dstProcessing[procArrIdx] -= valToNormalize;
       dstMessageArray[procArrIdx] = convertValToDifferentDataTypeIfNeeded<half, half>(dstProcessing[procArrIdx]);
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        procArrIdx += currentLevelProperties.paddedWidthCheckerboardLevel_;
+        procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
       }
       else {
         procArrIdx++;

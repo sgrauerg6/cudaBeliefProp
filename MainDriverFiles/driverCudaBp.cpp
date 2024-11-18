@@ -25,17 +25,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  run_environment::RunImpSettings runImpSettings;
+  run_environment::RunImpSettings run_imp_settings;
   //enable optimization of parallel parameters with setting to use the allow different thread block dimensions
   //on kernels in same run
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
   //in different kernels in the optimized CUDA implementation can decrease runtime
-  runImpSettings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
-  runImpSettings.pParamsDefaultOptOptions_ = {run_cuda::kParallelParamsDefault, run_cuda::kParallelParameterOptions};
-  runImpSettings.templatedItersSetting_ = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
-  runImpSettings.baseOptSingThreadRTimeForTSetting_ = 
+  run_imp_settings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
+  run_imp_settings.pParamsDefaultOptOptions_ = {run_cuda::kParallelParamsDefault, run_cuda::kParallelParameterOptions};
+  run_imp_settings.templatedItersSetting_ = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
+  run_imp_settings.baseOptSingThreadRTimeForTSetting_ = 
     {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
-  runImpSettings.subsetStrIndices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
+  run_imp_settings.subset_str_indices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
 #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
 #else
@@ -43,9 +43,9 @@ int main(int argc, char** argv)
 #endif //SMALLER_SETS_ONLY
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
-  runImpSettings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
+  run_imp_settings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
 
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
-  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::CUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::CUDA)}}, runImpSettings);
+  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::kCUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kCUDA)}}, run_imp_settings);
   return 0;
 }
