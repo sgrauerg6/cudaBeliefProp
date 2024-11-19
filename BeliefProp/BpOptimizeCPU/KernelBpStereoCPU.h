@@ -130,7 +130,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
   
   template<unsigned int DISP_VALS>
-  void RetrieveOutputDisparityUseSIMDVectorskAVX256(
+  void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -141,7 +141,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RetrieveOutputDisparityUseSIMDVectorskAVX256(
+  void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -152,7 +152,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RetrieveOutputDisparityUseSIMDVectorskAVX256(
+  void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -164,7 +164,7 @@ namespace beliefpropCPU
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
-  void RetrieveOutputDisparityUseSIMDVectorskAVX512(
+  void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -175,7 +175,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RetrieveOutputDisparityUseSIMDVectorskAVX512(
+  void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -186,7 +186,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RetrieveOutputDisparityUseSIMDVectorskAVX512(
+  void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -257,7 +257,7 @@ namespace beliefpropCPU
     unsigned int bp_settings_disp_vals);
   
   template<unsigned int DISP_VALS>
-  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256(
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -268,7 +268,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256(
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -279,7 +279,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256(
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -291,7 +291,7 @@ namespace beliefpropCPU
   
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   template<unsigned int DISP_VALS>
-  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
     float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
     float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -302,7 +302,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
     short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
     short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -313,7 +313,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
-  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
     double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
     double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -971,7 +971,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
     //only use AVX-256 if width of processing checkerboard is over 10
     if (current_bp_level.width_checkerboard_level_ > 10)
     {
-      RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX256<DISP_VALS>(checkerboard_to_update,
+      RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256<DISP_VALS>(checkerboard_to_update,
         current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
         messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -997,7 +997,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
     //only use AVX-512 if width of processing checkerboard is over 20
     if (current_bp_level.width_checkerboard_level_ > 20)
     {
-      RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512<DISP_VALS>(checkerboard_to_update,
+      RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512<DISP_VALS>(checkerboard_to_update,
         current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
         messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -1117,7 +1117,7 @@ void beliefpropCPU::RetrieveOutputDisparity(
     //SIMD vectorization of output disparity
     if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX512) {
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-      RetrieveOutputDisparityUseSIMDVectorskAVX512<DISP_VALS>(current_bp_level,
+      RetrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS>(current_bp_level,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
@@ -1127,7 +1127,7 @@ void beliefpropCPU::RetrieveOutputDisparity(
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     }
     else if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX256) {
-      RetrieveOutputDisparityUseSIMDVectorskAVX256<DISP_VALS>(current_bp_level,
+      RetrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(current_bp_level,
         dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
         messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
         messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,

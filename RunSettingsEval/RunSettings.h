@@ -61,7 +61,7 @@ public:
 
   //retrieve environment variable values corresponding to CPU threads being pinned to socket and return
   //as RunData structure
-  RunData currSettingsAsAsRunData() const {
+  RunData SettingsAsRunData() const {
     RunData pinned_threads_settings;
     const std::string omp_places_setting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
     const std::string omp_proc_bind_setting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
@@ -89,8 +89,8 @@ enum class AccSetting {
 template <AccSetting ACCELERATION_SETTING>
 constexpr std::string_view AccelerationString() {
   if constexpr (ACCELERATION_SETTING == AccSetting::kNEON) { return "NEON"; }
-  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256) { return "kAVX256"; }
-  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "kAVX512"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256) { return "AVX256"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "AVX512"; }
   else { return "DEFAULT"; }
 }
 
@@ -119,7 +119,7 @@ inline RunData RunSettings()  {
   curr_run_data.AddDataWHeader("Total number of CPU threads", std::thread::hardware_concurrency());
   curr_run_data.AddDataWHeader("BYTES_ALIGN_MEMORY", GetBytesAlignMemory(ACCELERATION_SETTING));
   curr_run_data.AddDataWHeader("NUM_DATA_ALIGN_WIDTH", GetNumDataAlignWidth(ACCELERATION_SETTING));
-  curr_run_data.AppendData(CPUThreadsPinnedToSocket().currSettingsAsAsRunData());
+  curr_run_data.AppendData(CPUThreadsPinnedToSocket().SettingsAsRunData());
   return curr_run_data;
 }
 

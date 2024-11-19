@@ -95,7 +95,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
                                       {"largest stereo set", {8, 9}}};
   #endif //SMALLER_SETS_ONLY
     
-  //run belief propagation with all kAVX512, kAVX256, and no vectorization implementations, with the kAVX512 implementation
+  //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
   RunEvalImpMultSettings().operator()({{run_environment::AccSetting::kAVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
     {run_environment::AccSetting::kAVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX256)},

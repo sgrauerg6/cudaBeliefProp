@@ -1,12 +1,14 @@
 /*
- * kAVX512TemplateSpFuncts.h
+ * AVX512TemplateSpFuncts.h
+ *
+ * Template specializations for processing on SIMD vector data types supported by AVX512.
  *
  *  Created on: Jun 19, 2019
  *      Author: scott
  */
 
-#ifndef kAVX512TEMPLATESPFUNCTS_H_
-#define kAVX512TEMPLATESPFUNCTS_H_
+#ifndef AVX512TEMPLATESPFUNCTS_H_
+#define AVX512TEMPLATESPFUNCTS_H_
 #ifdef _WIN32
 #include <intrin.h>
 #else
@@ -169,4 +171,4 @@ template<> inline void VectProcessingFuncts::StorePackedDataUnaligned<double, __
   _mm512_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#endif /* kAVX512TEMPLATESPFUNCTS_H_ */
+#endif /* AVX512TEMPLATESPFUNCTS_H_ */

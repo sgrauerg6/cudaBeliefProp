@@ -1,12 +1,12 @@
 /*
- * KernelBpStereoCPU_kAVX512TemplateSpFuncts.h
+ * KernelBpStereoCPU_AVX512TemplateSpFuncts.h
  *
  *  Created on: Jun 19, 2019
  *      Author: scott
  */
 
-#ifndef KERNELBPSTEREOCPU_kAVX512TEMPLATESPFUNCTS_H_
-#define KERNELBPSTEREOCPU_kAVX512TEMPLATESPFUNCTS_H_
+#ifndef KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_
+#define KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_
 #ifdef _WIN32
 #include <intrin.h>
 #else
@@ -16,7 +16,7 @@
 #include "RunImpCPU/AVX512TemplateSpFuncts.h"
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
+void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
   float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
@@ -38,7 +38,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
+void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -60,7 +60,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
+void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
   double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
@@ -82,7 +82,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorskAVX512(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorskAVX512(
+void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   const beliefprop::BpLevelProperties& current_bp_level,
   float* dataCostStereoCheckerboard0, float* dataCostStereoCheckerboard1,
   float* messageUPrevStereoCheckerboard0, float* messageDPrevStereoCheckerboard0,
@@ -104,7 +104,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorskAVX512(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorskAVX512(
+void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   const beliefprop::BpLevelProperties& current_bp_level,
   short* dataCostStereoCheckerboard0, short* dataCostStereoCheckerboard1,
   short* messageUPrevStereoCheckerboard0, short* messageDPrevStereoCheckerboard0,
@@ -126,7 +126,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorskAVX512(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorskAVX512(
+void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   const beliefprop::BpLevelProperties& current_bp_level,
   double* dataCostStereoCheckerboard0, double* dataCostStereoCheckerboard1,
   double* messageUPrevStereoCheckerboard0, double* messageDPrevStereoCheckerboard0,
@@ -280,4 +280,4 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m256i>(unsigned int
     dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals);
 }
 
-#endif /* KERNELBPSTEREOCPU_kAVX512TEMPLATESPFUNCTS_H_ */
+#endif /* KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_ */

@@ -1,6 +1,9 @@
 /*
  * NEONTemplateSpFuncts.h
  *
+ * Template specializations for processing on SIMD vector data types supported by NEON
+ * on ARM CPUs.
+ *
  *  Created on: Jun 26, 2024
  *      Author: scott
  */
@@ -8,7 +11,7 @@
 #ifndef NEONTEMPLATESPFUNCTS_H_
 #define NEONTEMPLATESPFUNCTS_H_
 
-//this is only used when processing using an ARM CPU with NEON instructions
+//NEON only used when processing on an ARM CPU that supports NEON instructions
 #include <arm_neon.h>
 
 template<> inline float64x2_t VectProcessingFuncts::LoadPackedDataAligned<double, float64x2_t>(
