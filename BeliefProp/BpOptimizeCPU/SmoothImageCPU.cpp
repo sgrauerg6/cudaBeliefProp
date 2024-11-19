@@ -23,42 +23,42 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& in_image, float sig
   else
   {
     //retrieve output filter (float array in unique_ptr) and size
-    const auto filterWSize = this->MakeFilter(sigma);
+    const auto filter_w_size = this->MakeFilter(sigma);
 
     //space for intermediate image (when the image has been filtered horizontally but not vertically)
     std::unique_ptr<float[]> intermediateImage = std::make_unique<float[]>(in_image.Width() * in_image.Height());
 
      //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
     FilterImageAcrossCPU<unsigned int>(in_image.PointerToPixelsStart(), intermediateImage.get(), in_image.Width(),
-      in_image.Height(), filterWSize.first.get(), filterWSize.second, this->parallel_params_);
+      in_image.Height(), filter_w_size.first.get(), filter_w_size.second, this->parallel_params_);
 
     //now use the vertical filter to complete the smoothing of image 1 on the device
     FilterImageVerticalCPU<float>(intermediateImage.get(), smoothed_image,
-      in_image.Width(), in_image.Height(), filterWSize.first.get(), filterWSize.second, this->parallel_params_);
+      in_image.Width(), in_image.Height(), filter_w_size.first.get(), filter_w_size.second, this->parallel_params_);
   }
 }
 
 //convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
-//the input image is stored as unsigned ints in the texture imagePixelsUnsignedInt
-//output filtered image stored in floatImagePixels
-void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(unsigned int* imagePixelsUnsignedInt, float* floatImagePixels,
-    unsigned int widthImages, unsigned int heightImages,
-    const ParallelParams& optCPUParams)
+//the input image is stored as unsigned ints in the texture uint_image_pixels
+//output filtered image stored in float_image_pixels
+void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(unsigned int* uint_image_pixels, float* float_image_pixels,
+    unsigned int width_images, unsigned int height_images,
+    const ParallelParams& opt_cpu_params)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int numThreadsKernel{(int)optCPUParams.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
-  #pragma omp parallel for num_threads(numThreadsKernel)
+  int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
+  #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < widthImages * heightImages; val++) {
+  for (int val = 0; val < width_images * height_images; val++) {
 #else
-  for (unsigned int val = 0; val < widthImages * heightImages; val++) {
+  for (unsigned int val = 0; val < width_images * height_images; val++) {
 #endif //_WIN32
-    const unsigned int yVal = val / widthImages;
-    const unsigned int xVal = val % widthImages;
-    floatImagePixels[yVal * widthImages + xVal] = 1.0f * imagePixelsUnsignedInt[yVal * widthImages + xVal];
+    const unsigned int y_val = val / width_images;
+    const unsigned int x_val = val % width_images;
+    float_image_pixels[y_val * width_images + x_val] = 1.0f * uint_image_pixels[y_val * width_images + x_val];
   }
 }

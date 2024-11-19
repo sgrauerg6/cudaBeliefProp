@@ -33,56 +33,56 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 class ProcessCUDABP final : public ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>
 {
 public:
-  ProcessCUDABP(const ParallelParams& cudaParams) : 
-    ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>(cudaParams) {}
+  ProcessCUDABP(const ParallelParams& cuda_params) : 
+    ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>(cuda_params) {}
 
 private:
   //initialize the data cost at each pixel for each disparity value
-  run_eval::Status initializeDataCosts(
-    const beliefprop::BpSettings& algSettings,
-    const beliefprop::BpLevel& currentBpLevel,
-    const std::array<float*, 2>& imagesOnTargetDevice,
-    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard) override;
+  run_eval::Status InitializeDataCosts(
+    const beliefprop::BpSettings& alg_settings,
+    const beliefprop::BpLevel& current_bp_level,
+    const std::array<float*, 2>& images_target_device,
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) override;
 
-  run_eval::Status initializeDataCurrentLevel(
-    const beliefprop::BpLevel& currentBpLevel,
-    const beliefprop::BpLevel& prevBpLevel,
-    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboardWriteTo,
+  run_eval::Status InitializeDataCurrentLevel(
+    const beliefprop::BpLevel& current_bp_level,
+    const beliefprop::BpLevel& prev_bp_level,
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
     unsigned int bp_settings_num_disp_vals) override;
 
   //initialize the message values for every pixel at every disparity to 0
-  run_eval::Status initializeMessageValsToDefault(
-    const beliefprop::BpLevel& currentBpLevel,
-    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
+  run_eval::Status InitializeMessageValsToDefault(
+    const beliefprop::BpLevel& current_bp_level,
+    const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) override;
 
   //run the given number of iterations of BP at the current level using the given message values in global device memory
-  run_eval::Status runBPAtCurrentLevel(
-    const beliefprop::BpSettings& algSettings,
-    const beliefprop::BpLevel& currentBpLevel,
-    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
-    T* allocatedMemForProcessing) override;
+  run_eval::Status RunBPAtCurrentLevel(
+    const beliefprop::BpSettings& alg_settings,
+    const beliefprop::BpLevel& current_bp_level,
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
+    const beliefprop::CheckerboardMessages<T*>& messages_device,
+    T* allocated_memory) override;
 
   //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
   //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
   //in the next level down
   //need two different "sets" of message values to avoid read-write conflicts
-  run_eval::Status copyMessageValuesToNextLevelDown(
-    const beliefprop::BpLevel& currentBpLevel,
-    const beliefprop::BpLevel& nextBpLevel,
-    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyFrom,
-    const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyTo,
+  run_eval::Status CopyMessageValuesToNextLevelDown(
+    const beliefprop::BpLevel& current_bp_level,
+    const beliefprop::BpLevel& next_bp_level,
+    const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
+    const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
     unsigned int bp_settings_num_disp_vals) override;
 
-  float* retrieveOutputDisparity(
-    const beliefprop::BpLevel& currentBpLevel,
-    const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
-    const beliefprop::CheckerboardMessages<T*>& messagesDevice,
+  float* RetrieveOutputDisparity(
+    const beliefprop::BpLevel& current_bp_level,
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
+    const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) override;
   
-  run_eval::Status errorCheck(const char *file = "", int line = 0, bool abort = false) const override;
+  run_eval::Status ErrorCheck(const char *file = "", int line = 0, bool abort = false) const override;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_H

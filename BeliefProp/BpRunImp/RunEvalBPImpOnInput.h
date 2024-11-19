@@ -192,7 +192,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImps
   std::cout << std::endl;
 
   //compare resulting disparity maps with ground truth and to each other
-  const filepathtype ground_truth_disp{bp_file_settings.getGroundTruthDisparityFilePath()};
+  const filepathtype ground_truth_disp{bp_file_settings.GroundTruthDisparityFilePath()};
   DisparityMap<float> ground_truth_disparity_map(ground_truth_disp.string(), bp_params::kStereoSetsToProcess[NUM_INPUT].scale_factor);
   run_data.AddDataWHeader(opt_imp_run_description + " output vs. Ground Truth result", std::string());
   run_data.AppendData(run_output[0]->out_disparity_map.OutputComparison(ground_truth_disparity_map, BpEvaluationParameters()).AsRunData());

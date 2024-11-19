@@ -26,13 +26,13 @@ public:
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
-    const beliefprop::BpSettings& algSettings,
+    const beliefprop::BpSettings& alg_settings,
     const ParallelParams& parallel_params) override;
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
-  const beliefprop::BpSettings& algSettings, const ParallelParams& parallel_params)
+  const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params)
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads
@@ -46,18 +46,18 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
-  auto procSetOutput = this->processStereoSet(ref_test_image_path, algSettings, 
+  auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings, 
     BpOnDevice<T, DISP_VALS, VECTORIZATION>{
       std::make_unique<SmoothImageCPU>(parallel_params),
       std::make_unique<ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>>(parallel_params),
       std::make_unique<RunImpMemoryManagement<T>>(),
       std::make_unique<RunImpMemoryManagement<float>>()});
-  if (procSetOutput) {
-    run_data.AppendData(procSetOutput->run_data);
-    procSetOutput->run_data = run_data;
+  if (process_set_output) {
+    run_data.AppendData(process_set_output->run_data);
+    process_set_output->run_data = run_data;
   }
 
-  return procSetOutput;
+  return process_set_output;
 }
 
 #endif /* RUNBPSTEREOOPTIMIZEDCPU_H_ */

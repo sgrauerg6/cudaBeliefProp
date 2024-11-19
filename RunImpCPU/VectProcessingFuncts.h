@@ -19,15 +19,15 @@
 namespace VectProcessingFuncts
 {
   template<RunData_t T, RunDataVect_t U>
-  U loadPackedDataAligned(unsigned int x, unsigned int y, unsigned int currentDisparity,
-    const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, T* inData)
+  U LoadPackedDataAligned(unsigned int x, unsigned int y, unsigned int current_disparity,
+    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, T* inData)
   {
     std::cout << "Data type not supported for loading aligned data" << std::endl;
   }
 
   template<RunData_t T, RunDataVect_t U>
-  U loadPackedDataUnaligned(unsigned int x, unsigned int y, unsigned int currentDisparity,
-    const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, T* inData)
+  U LoadPackedDataUnaligned(unsigned int x, unsigned int y, unsigned int current_disparity,
+    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, T* inData)
   {
     std::cout << "Data type not supported for loading unaligned data" << std::endl;
   }
@@ -38,27 +38,27 @@ namespace VectProcessingFuncts
   }
 
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
-  V addVals(const T& val1, const U& val2) { return (val1 + val2); }
+  V AddVals(const T& val1, const U& val2) { return (val1 + val2); }
 
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
-  V subtractVals(const T& val1, const U& val2) { return (val1 - val2); }
+  V SubtractVals(const T& val1, const U& val2) { return (val1 - val2); }
 
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
 
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t V>
-  T convertValToDatatype(V val) { return (T)val; }
+  T ConvertValToDatatype(V val) { return (T)val; }
 
   template<RunDataSingOrVect_t T>
   T GetMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }
 
   template<RunData_t T, RunDataVectProcess_t U>
-  void storePackedDataAligned(unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
+  void StorePackedDataAligned(unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 
   template<RunData_t T, RunDataVectProcess_t U>
-  void storePackedDataUnaligned(unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
+  void StorePackedDataUnaligned(unsigned int indexDataStore, T* locationDataStore, const U& dataToStore) {
     locationDataStore[indexDataStore] = dataToStore;
   }
 };

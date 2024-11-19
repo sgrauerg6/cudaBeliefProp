@@ -40,8 +40,8 @@ public:
     std::ranges::copy(input_pixel_vals, input_pixel_vals + (TotalPixels()), pixels_.get());
   }
 
-  BpImage(const std::string& fileName) {
-    LoadImageAsGrayScale(fileName);
+  BpImage(const std::string& file_name) {
+    LoadImageAsGrayScale(file_name);
   }
 
   const std::unique_ptr<T[]>& UniquePtrToPixelData() const {
@@ -52,16 +52,16 @@ public:
     return pixels_.get();
   }
 
-  T PixelAtPoint(const std::array<unsigned int, 2>& xyPoint) const {
-    return PixelAtPoint(xyPoint[1]*width_height_[0] + xyPoint[0]);
+  T PixelAtPoint(const std::array<unsigned int, 2>& point_xy) const {
+    return PixelAtPoint(point_xy[1]*width_height_[0] + point_xy[0]);
   }
 
   T PixelAtPoint(unsigned int i) const {
     return (pixels_.get())[i];
   }
 
-  void SetPixelAtPoint(const std::array<unsigned int, 2>& xyPoint, T val) {
-    SetPixelAtPoint((xyPoint[1]*width_height_[0] + xyPoint[0]), val);
+  void SetPixelAtPoint(const std::array<unsigned int, 2>& point_xy, T val) {
+    SetPixelAtPoint((point_xy[1]*width_height_[0] + point_xy[0]), val);
   }
 
   void SetPixelAtPoint(unsigned int i, T val) {
@@ -82,12 +82,12 @@ protected:
   std::array<unsigned int, 2> width_height_;
   std::unique_ptr<T[]> pixels_;
 
-  void LoadImageAsGrayScale(const std::string& filePathImage);
+  void LoadImageAsGrayScale(const std::string& file_path_image);
 
   void pnm_read(std::ifstream &file, std::string& buf) const;
 
-  BpImage<unsigned char> ImageRead(const std::string& fileName,
-    ImageType imageType, bool weightedRGBConversion = true) const;
+  BpImage<unsigned char> ImageRead(const std::string& file_name,
+    ImageType image_type, bool weighted_rgb_conversion = true) const;
 
   //currently assuming single channel
   inline unsigned int TotalPixels() const {

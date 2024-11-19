@@ -29,7 +29,7 @@ public:
   virtual void SetOptimizedParams() = 0;
 
   //get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers
-  virtual std::array<unsigned int, 2> OptParamsForKernel(const std::array<unsigned int, 2>& kernelLocation) const = 0;
+  virtual std::array<unsigned int, 2> OptParamsForKernel(const std::array<unsigned int, 2>& kernel_location) const = 0;
 };
 
 #endif //PARALLEL_PARAMS_H

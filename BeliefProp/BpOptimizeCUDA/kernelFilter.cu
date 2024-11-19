@@ -28,60 +28,60 @@ namespace beliefpropCUDA {
 
 //kernel to convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
-//the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
-//output filtered image stored in floatImagePixels
+//the input image is stored as unsigned ints in the texture uint_image_pixelsToFilterTexture
+//output filtered image stored in float_image_pixels
 __global__ void convertUnsignedIntImageToFloat(
-  unsigned int* imagePixelsUnsignedIntToFilter, float* floatImagePixels,
-  unsigned int widthImages, unsigned int heightImages)
+  unsigned int* uint_image_pixelsToFilter, float* float_image_pixels,
+  unsigned int width_images, unsigned int height_images)
 {
   //get x and y indices corresponding to current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  //make sure that (xVal, yVal) is within image bounds
-  if (run_imp_util::WithinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  //make sure that (x_val, y_val) is within image bounds
+  if (run_imp_util::WithinImageBounds(x_val, y_val, width_images, height_images)) {
     //retrieve the float-value of the unsigned int pixel value at the current location
-    floatImagePixels[yVal*widthImages + xVal] = (float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];;
+    float_image_pixels[y_val*width_images + x_val] = (float)uint_image_pixelsToFilter[y_val*width_images + x_val];;
   }
 }
 
 //kernel to apply a horizontal filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
-//output filtered image stored in filteredImagePixels
+//output filtered image stored in filtered_image
 template<BpImData_t T>
-__global__ void filterImageAcross(
-  T* imagePixelsToFilter, float* filteredImagePixels,
-  unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int size_filter)
+__global__ void FilterImageAcross(
+  T* image_to_filter, float* filtered_image,
+  unsigned int width_images, unsigned int height_images,
+  float* image_filter, unsigned int size_filter)
 {
   //get x and y indices corresponding to current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  //make sure that (xVal, yVal) is within image bounds
-  if (run_imp_util::WithinImageBounds(xVal, yVal, widthImages, heightImages)) {
-    beliefprop::FilterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-      widthImages, heightImages, imageFilter, size_filter);
+  //make sure that (x_val, y_val) is within image bounds
+  if (run_imp_util::WithinImageBounds(x_val, y_val, width_images, height_images)) {
+    beliefprop::FilterImageAcrossProcessPixel<T>(x_val, y_val, image_to_filter, filtered_image,
+      width_images, height_images, image_filter, size_filter);
   }
 }
 
 //kernel to apply a vertical filter on each pixel of the image in parallel
 //input image stored in texture imagePixelsFloatToFilterTexture
-//output filtered image stored in filteredImagePixels
+//output filtered image stored in filtered_image
 template<BpImData_t T>
-__global__ void filterImageVertical(
-  T* imagePixelsToFilter, float* filteredImagePixels,
-  unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int size_filter)
+__global__ void FilterImageVertical(
+  T* image_to_filter, float* filtered_image,
+  unsigned int width_images, unsigned int height_images,
+  float* image_filter, unsigned int size_filter)
 {
   //get x and y indices corresponding to current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  //make sure that (xVal, yVal) is within image bounds
-  if (run_imp_util::WithinImageBounds(xVal, yVal, widthImages, heightImages)) {
-    beliefprop::FilterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
-      widthImages, heightImages, imageFilter, size_filter);
+  //make sure that (x_val, y_val) is within image bounds
+  if (run_imp_util::WithinImageBounds(x_val, y_val, width_images, height_images)) {
+    beliefprop::FilterImageVerticalProcessPixel<T>(x_val, y_val, image_to_filter, filtered_image,
+      width_images, height_images, image_filter, size_filter);
   }
 }
 

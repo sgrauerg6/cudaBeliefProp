@@ -38,24 +38,24 @@ namespace beliefpropCUDA {
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void initializeBottomLevelData(
-  beliefprop::BpLevelProperties currentBpLevel,
-  float* image1PixelsDevice, float* image2PixelsDevice,
+__global__ void InitializeBottomLevelData(
+  beliefprop::BpLevelProperties current_bp_level,
+  float* image_1_pixels_device, float* image_2_pixels_device,
   T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
   //get the x value within the current "checkerboard"
-  const unsigned int xInCheckerboard = xVal / 2;
+  const unsigned int xInCheckerboard = x_val / 2;
 
-  if (run_imp_util::WithinImageBounds(xInCheckerboard, yVal, currentBpLevel.width_level_, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(xInCheckerboard, y_val, current_bp_level.width_level_, current_bp_level.height_level_))
   {
-    beliefprop::initializeBottomLevelDataPixel<T, DISP_VALS>(xVal, yVal,
-      currentBpLevel, image1PixelsDevice,
-      image2PixelsDevice, dataCostDeviceStereoCheckerboard0,
+    beliefprop::InitializeBottomLevelDataPixel<T, DISP_VALS>(x_val, y_val,
+      current_bp_level, image_1_pixels_device,
+      image_2_pixels_device, dataCostDeviceStereoCheckerboard0,
       dataCostDeviceStereoCheckerboard1, lambda_bp,
       data_k_bp, bp_settings_disp_vals);
   }
@@ -63,30 +63,30 @@ __global__ void initializeBottomLevelData(
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void initializeCurrentLevelData(
-  beliefprop::Checkerboard_Part checkerboardPart,
-  beliefprop::BpLevelProperties currentBpLevel,
-  beliefprop::BpLevelProperties prevBpLevel, T* dataCostStereoCheckerboard0,
+__global__ void InitializeCurrentLevelData(
+  beliefprop::Checkerboard_Part checkerboard_part,
+  beliefprop::BpLevelProperties current_bp_level,
+  beliefprop::BpLevelProperties prev_bp_level, T* dataCostStereoCheckerboard0,
   T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
-  unsigned int offsetNum, unsigned int bp_settings_disp_vals)
+  unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(xVal, yVal, currentBpLevel.width_checkerboard_level_, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
-    beliefprop::initializeCurrentLevelDataPixel<T, T, DISP_VALS>(
-      xVal, yVal, checkerboardPart, currentBpLevel, prevBpLevel,
+    beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
+      x_val, y_val, checkerboard_part, current_bp_level, prev_bp_level,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1, dataCostDeviceToWriteTo,
-      offsetNum, bp_settings_disp_vals);
+      offset_num, bp_settings_disp_vals);
   }
 }
 
 //initialize the message values at each pixel of the current level to the default value
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void initializeMessageValsToDefaultKernel(
-  beliefprop::BpLevelProperties currentBpLevel,
+__global__ void InitializeMessageValsToDefaultKernel(
+  beliefprop::BpLevelProperties current_bp_level,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
@@ -94,14 +94,14 @@ __global__ void initializeMessageValsToDefaultKernel(
   unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
-  const unsigned int xValInCheckerboard = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val_in_checkerboard = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(xValInCheckerboard, yVal, currentBpLevel.width_checkerboard_level_, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(x_val_in_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     //initialize message values in both checkerboards
-    beliefprop::initializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
-      xValInCheckerboard,  yVal, currentBpLevel,
+    beliefprop::InitializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
+      x_val_in_checkerboard,  y_val, current_bp_level,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
       messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
       messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
@@ -113,67 +113,67 @@ __global__ void initializeMessageValsToDefaultKernel(
 //kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void runBPIterationUsingCheckerboardUpdates(
-  beliefprop::Checkerboard_Part checkerboardToUpdate, beliefprop::BpLevelProperties currentBpLevel,
+__global__ void RunBPIterationUsingCheckerboardUpdates(
+  beliefprop::Checkerboard_Part checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-  float disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(xVal, yVal, currentBpLevel.width_level_/2, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
   {
-    beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
-      xVal, yVal, checkerboardToUpdate, currentBpLevel,
+    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
+      x_val, y_val, checkerboard_to_update, current_bp_level,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
       messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
       messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
       messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-      disc_k_bp, 0, dataAligned, bp_settings_disp_vals);
+      disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
   }
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void runBPIterationUsingCheckerboardUpdates(
-  beliefprop::Checkerboard_Part checkerboardToUpdate, beliefprop::BpLevelProperties currentBpLevel,
+__global__ void RunBPIterationUsingCheckerboardUpdates(
+  beliefprop::Checkerboard_Part checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
   T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
   T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
-  float disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals,
+  float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
   void* dstProcessing)
 {
   //get the x and y indices for the current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(xVal, yVal, currentBpLevel.width_level_/2, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
   {
-    beliefprop::runBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
-      xVal, yVal, checkerboardToUpdate, currentBpLevel,
+    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
+      x_val, y_val, checkerboard_to_update, current_bp_level,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
       messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
       messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
       messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
-      disc_k_bp, 0, dataAligned, bp_settings_disp_vals, dstProcessing);
+      disc_k_bp, 0, data_aligned, bp_settings_disp_vals, dstProcessing);
   }
 }
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void copyMsgDataToNextLevel(
-  beliefprop::Checkerboard_Part checkerboardPart,
-  beliefprop::BpLevelProperties currentBpLevel,
-  beliefprop::BpLevelProperties nextBpLevel,
+__global__ void CopyMsgDataToNextLevel(
+  beliefprop::Checkerboard_Part checkerboard_part,
+  beliefprop::BpLevelProperties current_bp_level,
+  beliefprop::BpLevelProperties next_bp_level,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
   T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
@@ -185,13 +185,13 @@ __global__ void copyMsgDataToNextLevel(
   unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(xVal, yVal, currentBpLevel.width_checkerboard_level_, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
-    beliefprop::copyMsgDataToNextLevelPixel<T, DISP_VALS>(xVal, yVal,
-      checkerboardPart, currentBpLevel, nextBpLevel,
+    beliefprop::CopyMsgDataToNextLevelPixel<T, DISP_VALS>(x_val, y_val,
+      checkerboard_part, current_bp_level, next_bp_level,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
       messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
       messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
@@ -206,29 +206,29 @@ __global__ void copyMsgDataToNextLevel(
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
 template<RunData_t T, unsigned int DISP_VALS>
-__global__ void retrieveOutputDisparity(
-  beliefprop::BpLevelProperties currentBpLevel,
+__global__ void RetrieveOutputDisparity(
+  beliefprop::BpLevelProperties current_bp_level,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
   T* messageLPrevStereoCheckerboard0, T* messageRPrevStereoCheckerboard0,
   T* messageUPrevStereoCheckerboard1, T* messageDPrevStereoCheckerboard1,
   T* messageLPrevStereoCheckerboard1, T* messageRPrevStereoCheckerboard1,
-  float* disparityBetweenImagesDevice, unsigned int bp_settings_disp_vals)
+  float* disparity_between_images_device, unsigned int bp_settings_disp_vals)
 {
   //get x and y indices for the current CUDA thread
-  const unsigned int xVal = blockIdx.x * blockDim.x + threadIdx.x;
-  const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
+  const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
+  const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(xVal, yVal, currentBpLevel.width_checkerboard_level_, currentBpLevel.height_level_))
+  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
-    beliefprop::retrieveOutputDisparityPixel<T, T, DISP_VALS>(
-      xVal, yVal, currentBpLevel,
+    beliefprop::RetrieveOutputDisparityPixel<T, T, DISP_VALS>(
+      x_val, y_val, current_bp_level,
       dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
       messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
       messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
       messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
       messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
-      disparityBetweenImagesDevice, bp_settings_disp_vals);
+      disparity_between_images_device, bp_settings_disp_vals);
   }
 }
 

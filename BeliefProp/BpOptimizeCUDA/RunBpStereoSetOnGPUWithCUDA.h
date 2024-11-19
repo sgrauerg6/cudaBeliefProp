@@ -34,19 +34,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace bp_cuda_device
 {
-  inline RunData retrieveDeviceProperties(int numDevice)
+  inline RunData retrieveDeviceProperties(int num_device)
   {
     cudaDeviceProp prop;
-    std::array<int, 2> cudaDriverRuntimeVersion;
-    cudaGetDeviceProperties(&prop, numDevice);
-    cudaDriverGetVersion(&(cudaDriverRuntimeVersion[0]));
-    cudaRuntimeGetVersion(&(cudaDriverRuntimeVersion[1]));
+    std::array<int, 2> cuda_version_driver_runtime;
+    cudaGetDeviceProperties(&prop, num_device);
+    cudaDriverGetVersion(&(cuda_version_driver_runtime[0]));
+    cudaRuntimeGetVersion(&(cuda_version_driver_runtime[1]));
 
     RunData run_data;
-    run_data.AddDataWHeader("Device " + std::to_string(numDevice),
+    run_data.AddDataWHeader("Device " + std::to_string(num_device),
       std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) + " multiprocessors");
-    run_data.AddDataWHeader("Cuda version", std::to_string(cudaDriverRuntimeVersion[0]));
-    run_data.AddDataWHeader("Cuda Runtime Version", std::to_string(cudaDriverRuntimeVersion[1]));
+    run_data.AddDataWHeader("Cuda version", std::to_string(cuda_version_driver_runtime[0]));
+    run_data.AddDataWHeader("Cuda Runtime Version", std::to_string(cuda_version_driver_runtime[1]));
     return run_data;
   }
 };
@@ -59,7 +59,7 @@ public:
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
-    const beliefprop::BpSettings& algSettings, 
+    const beliefprop::BpSettings& alg_settings, 
     const ParallelParams& parallel_params) override
   {
     //return no value if acceleration setting is not CUDA
@@ -71,18 +71,18 @@ public:
     //function to run CUDA implementation
     RunData run_data;
     run_data.AppendData(bp_cuda_device::retrieveDeviceProperties(0));
-    auto procSetOutput = this->processStereoSet(ref_test_image_path, algSettings,
+    auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings,
       BpOnDevice<T, DISP_VALS, ACCELERATION>{
         std::make_unique<SmoothImageCUDA>(parallel_params),
         std::make_unique<ProcessCUDABP<T, DISP_VALS, ACCELERATION>>(parallel_params),
         std::make_unique<RunImpCUDAMemoryManagement<T>>(),
         std::make_unique<RunImpCUDAMemoryManagement<float>>()});
-    if (procSetOutput) {
-      run_data.AppendData(procSetOutput->run_data);
-      procSetOutput->run_data = run_data;
+    if (process_set_output) {
+      run_data.AppendData(process_set_output->run_data);
+      process_set_output->run_data = run_data;
     }
     
-    return procSetOutput;
+    return process_set_output;
   }
 };
 

@@ -15,39 +15,39 @@
 namespace beliefprop {
 
 //kernel to apply a horizontal filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
+//the input image is stored as unsigned ints in the texture uint_image_pixelsToFilterTexture
 //the output filtered image is returned as an array of floats
 template <BpImData_t T>
-ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int xVal, unsigned int yVal,
-  T* imagePixelsToFilter, float* filteredImagePixels, unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int size_filter)
+ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_val, unsigned int y_val,
+  T* image_to_filter, float* filtered_image, unsigned int width_images, unsigned int height_images,
+  float* image_filter, unsigned int size_filter)
 {
-  float filteredPixelVal = imageFilter[0] * ((float)imagePixelsToFilter[yVal*widthImages + xVal]);
+  float filtered_pixel_val = image_filter[0] * ((float)image_to_filter[y_val*width_images + x_val]);
 
   for (unsigned int i = 1; i < size_filter; i++) {
-    filteredPixelVal += imageFilter[i] * (((float)imagePixelsToFilter[yVal*widthImages + (unsigned int)run_imp_util::GetMax((int)xVal - (int)i, 0)]) +
-      ((float)imagePixelsToFilter[yVal*widthImages + run_imp_util::GetMin(xVal + i, widthImages - 1)]));
+    filtered_pixel_val += image_filter[i] * (((float)image_to_filter[y_val*width_images + (unsigned int)run_imp_util::GetMax((int)x_val - (int)i, 0)]) +
+      ((float)image_to_filter[y_val*width_images + run_imp_util::GetMin(x_val + i, width_images - 1)]));
   }
 
-  filteredImagePixels[yVal*widthImages + xVal] = filteredPixelVal;
+  filtered_image[y_val*width_images + x_val] = filtered_pixel_val;
 }
 
 //kernel to apply a vertical filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture imagePixelsUnsignedIntToFilterTexture
+//the input image is stored as unsigned ints in the texture uint_image_pixelsToFilterTexture
 //the output filtered image is returned as an array of floats
 template <BpImData_t T>
-ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(unsigned int xVal, unsigned int yVal,
-  T* imagePixelsToFilter, float* filteredImagePixels, unsigned int widthImages, unsigned int heightImages,
-  float* imageFilter, unsigned int size_filter)
+ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(unsigned int x_val, unsigned int y_val,
+  T* image_to_filter, float* filtered_image, unsigned int width_images, unsigned int height_images,
+  float* image_filter, unsigned int size_filter)
 {
-  float filteredPixelVal = imageFilter[0] * ((float)imagePixelsToFilter[yVal*widthImages + xVal]);
+  float filtered_pixel_val = image_filter[0] * ((float)image_to_filter[y_val*width_images + x_val]);
 
   for (unsigned int i = 1; i < size_filter; i++) {
-    filteredPixelVal += imageFilter[i] * ((float) (imagePixelsToFilter[(unsigned int)run_imp_util::GetMax((int)yVal - (int)i, 0) * widthImages + xVal]) +
-      ((float)imagePixelsToFilter[run_imp_util::GetMin(yVal + i, heightImages - 1) * widthImages + xVal]));
+    filtered_pixel_val += image_filter[i] * ((float) (image_to_filter[(unsigned int)run_imp_util::GetMax((int)y_val - (int)i, 0) * width_images + x_val]) +
+      ((float)image_to_filter[run_imp_util::GetMin(y_val + i, height_images - 1) * width_images + x_val]));
   }
 
-  filteredImagePixels[yVal * widthImages + xVal] = filteredPixelVal;
+  filtered_image[y_val * width_images + x_val] = filtered_pixel_val;
 }
 
 }

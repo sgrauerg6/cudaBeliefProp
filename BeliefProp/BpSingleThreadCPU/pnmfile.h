@@ -193,21 +193,21 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
   image<uchar> *imGrayScale = new image<uchar>(width, height);
   file.read((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
 
-  float rChannelWeight = 1.0f / 3.0f;
-  float gChannelWeight = 1.0f / 3.0f;
-  float bChannelWeight = 1.0f / 3.0f;
+  float r_channel_weight = 1.0f / 3.0f;
+  float g_channel_weight = 1.0f / 3.0f;
+  float b_channel_weight = 1.0f / 3.0f;
   if (kUseWeightedRGBToGrayscaleConversion_PNMFILE)
   {
-            rChannelWeight = 0.299f;
-            gChannelWeight = 0.114f;
-            bChannelWeight = 0.587f;
+            r_channel_weight = 0.299f;
+            g_channel_weight = 0.114f;
+            b_channel_weight = 0.587f;
   }
 
   for (int i=0; i<width; i++)
   {
     for (int j=0; j<height; j++)
     {
-      imRef(imGrayScale, i, j) = floor(((float)imRef(im, i, j).r)*rChannelWeight + ((float)imRef(im, i, j).g)*gChannelWeight + ((float)imRef(im, i, j).b)*bChannelWeight + 0.5f);
+      imRef(imGrayScale, i, j) = floor(((float)imRef(im, i, j).r)*r_channel_weight + ((float)imRef(im, i, j).g)*g_channel_weight + ((float)imRef(im, i, j).b)*b_channel_weight + 0.5f);
     }
   }
   delete im;
@@ -228,16 +228,16 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
 static image<uchar> *loadPGMOrPPMImage(const char *name) {
   char pgmExtension[] = "pgm";
   char ppmExtension[] = "ppm";
-  char* filePathImageCopy = new char[strlen(name) + 1]{};
-  std::copy(name, name + strlen(name), filePathImageCopy);
+  char* file_path_image_copy = new char[strlen(name) + 1]{};
+  std::copy(name, name + strlen(name), file_path_image_copy);
 
   //check if PGM or PPM image (types currently supported)
 #ifdef _WIN32
   char* next_token;
   char* token;
-  token = strtok_s(filePathImageCopy, ".", &next_token);
+  token = strtok_s(file_path_image_copy, ".", &next_token);
 #else
-  char* token = strtok(filePathImageCopy, ".");
+  char* token = strtok(file_path_image_copy, ".");
 #endif //_WIN32
   char* lastToken = new char[strlen(token) + 1]{};
   std::copy(token, token + strlen(token), lastToken);
@@ -256,21 +256,21 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
   //last token after "." is file extension
   if (strcmp(lastToken, pgmExtension) == 0)
   {
-    delete [] filePathImageCopy;
+    delete [] file_path_image_copy;
 
     // load input pgm image
     return loadPGM(name);
   }
   else if (strcmp(lastToken, ppmExtension) == 0)
   {
-    delete [] filePathImageCopy;
+    delete [] file_path_image_copy;
 
     // load input ppm image
     return loadPPMAndConvertToGrayScale(name);
   }
   else
   {
-    delete [] filePathImageCopy;
+    delete [] file_path_image_copy;
     std::cout << "CPU ERROR, IMAGE FILE " << name << " NOT SUPPORTED\n";
     return NULL;
   }

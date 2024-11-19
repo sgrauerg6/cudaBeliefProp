@@ -91,14 +91,15 @@ template <RunData_ptr T>
 using DataCostsCheckerboards = std::array<T, 2>;
 
 //enum corresponding to each kernel in belief propagation that can be run in parallel
+constexpr unsigned int kNumKernels{6};
 enum class BpKernel : unsigned int { 
   kBlurImages,
   kDataCostsAtLevel,
   kInitMessageVals,
   kBpAtLevel,
   kCopyAtLevel,
-  kOutputDisp };
-constexpr unsigned int kNumKernels{6};
+  kOutputDisp
+};
 
 };
 
