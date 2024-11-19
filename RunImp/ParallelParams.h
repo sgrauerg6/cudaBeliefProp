@@ -22,7 +22,7 @@ public:
   virtual RunData AsRunData() const = 0;
 
   //add results from run with same specified parallel parameters used every parallel component
-  virtual void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& curr_run_data) = 0;
+  virtual void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data) = 0;
 
   //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
   //to retrieved optimized parameters

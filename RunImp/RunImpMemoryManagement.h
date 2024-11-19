@@ -21,40 +21,40 @@ template <RunData_t T>
 class RunImpMemoryManagement
 {
 public:
-  virtual T* allocateMemoryOnDevice(unsigned int numData) const {
+  virtual T* AllocateMemoryOnDevice(unsigned int numData) const {
     return (new T[numData]);
   }
 
-  virtual void freeMemoryOnDevice(T* arrayToFree) const {
-    delete [] arrayToFree;
+  virtual void FreeMemoryOnDevice(T* array_to_free) const {
+    delete [] array_to_free;
   }
 
-  virtual T* allocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting accSetting) const
+  virtual T* AllocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting acc_setting) const
   {
 #ifdef _WIN32
-    T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), run_environment::getNumDataAlignWidth(accSetting) * sizeof(T)));
+    T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), run_environment::GetNumDataAlignWidth(acc_setting) * sizeof(T)));
     return memoryData;
 #else
-    T* memoryData = static_cast<T*>(std::aligned_alloc(run_environment::getNumDataAlignWidth(accSetting) * sizeof(T), numData * sizeof(T)));
+    T* memoryData = static_cast<T*>(std::aligned_alloc(run_environment::GetNumDataAlignWidth(acc_setting) * sizeof(T), numData * sizeof(T)));
     return memoryData;
 #endif
   }
 
-  virtual void freeAlignedMemoryOnDevice(T* memoryToFree) const
+  virtual void FreeAlignedMemoryOnDevice(T* memory_to_free) const
   {
 #ifdef _WIN32
-    _aligned_free(memoryToFree);
+    _aligned_free(memory_to_free);
 #else
-    free(memoryToFree);
+    free(memory_to_free);
 #endif
   }
 
-  virtual void transferDataFromDeviceToHost(T* destArray, const T* inArray, unsigned int numDataTransfer) const {
-    std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
+  virtual void TransferDataFromDeviceToHost(T* dest_array, const T* in_array, unsigned int num_data_transfer) const {
+    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
   }
 
-  virtual void transferDataFromHostToDevice(T* destArray, const T* inArray, unsigned int numDataTransfer) const {
-    std::ranges::copy(inArray, inArray + numDataTransfer, destArray);
+  virtual void TransferDataFromHostToDevice(T* dest_array, const T* in_array, unsigned int num_data_transfer) const {
+    std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
   }
 };
 

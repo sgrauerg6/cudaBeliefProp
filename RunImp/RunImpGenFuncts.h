@@ -21,39 +21,39 @@ namespace run_imp_util {
 
 //T is input type, U is output type
 template<RunData_t T, RunData_t U>
-ARCHITECTURE_ADDITION inline U convertValToDifferentDataTypeIfNeeded(const T data) {
+ARCHITECTURE_ADDITION inline U ConvertValToDifferentDataTypeIfNeeded(const T data) {
   return data; //by default assume same data type and just return data
 }
 
 template<RunData_t T>
-ARCHITECTURE_ADDITION inline T getZeroVal() {
+ARCHITECTURE_ADDITION inline T ZeroVal() {
   return (T)0.0;
 }
 
 template<typename T>
 requires std::is_arithmetic_v<T>
-ARCHITECTURE_ADDITION inline T getMin(const T val1, const T val2) {
+ARCHITECTURE_ADDITION inline T GetMin(const T val1, const T val2) {
   return ((val1 < val2) ? val1 : val2);
 }
 
 template<typename T>
 requires std::is_arithmetic_v<T>
-ARCHITECTURE_ADDITION inline T getMax(const T val1, const T val2) {
+ARCHITECTURE_ADDITION inline T GetMax(const T val1, const T val2) {
   return ((val1 > val2) ? val1 : val2);
 }
 
 //checks if the current point is within the image bounds
 //assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
-ARCHITECTURE_ADDITION inline bool withinImageBounds(unsigned int xVal, unsigned int yVal, unsigned int width, unsigned int height) {
+ARCHITECTURE_ADDITION inline bool WithinImageBounds(unsigned int xVal, unsigned int yVal, unsigned int width, unsigned int height) {
   return ((xVal < width) && (yVal < height));
 }
 
 //inline function to check if data is aligned at xValDataStart for SIMD loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(unsigned int xValDataStart, unsigned int numDataInSIMDVector, unsigned int numDataAlignWidth,
+inline bool MemoryAlignedAtDataStart(unsigned int xValDataStart, unsigned int numDataInSIMDVector, unsigned int num_data_align_width,
   unsigned int divPaddedChBoardWidthForAlign)
 {
   //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
-  return (((xValDataStart % numDataInSIMDVector) == 0) && ((numDataAlignWidth % divPaddedChBoardWidthForAlign) == 0));
+  return (((xValDataStart % numDataInSIMDVector) == 0) && ((num_data_align_width % divPaddedChBoardWidthForAlign) == 0));
 }
 
 };

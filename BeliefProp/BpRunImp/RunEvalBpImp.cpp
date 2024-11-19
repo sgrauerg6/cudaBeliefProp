@@ -44,21 +44,22 @@ MultRunData RunEvalBpImp::RunEvalImpMultDataSets(
 //run and evaluate implementation on multiple data sets
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
 MultRunData RunEvalBpImp::RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const {
-  std::vector<MultRunData> runResultsEachInput;
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(run_imp_settings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(run_imp_settings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(run_imp_settings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(run_imp_settings));
+  //run and evaluate bp implementation on all stereo sets used for benchmarking
+  std::vector<MultRunData> run_results;
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(run_imp_settings));
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(run_imp_settings));
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(run_imp_settings));
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(run_imp_settings));
 #ifndef SMALLER_SETS_ONLY
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(run_imp_settings));
-  runResultsEachInput.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(run_imp_settings));
+  run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
 #endif //SMALLER_SETS_ONLY
 
-  //add run results for each input to overall results
+  //add results for each input to overall results
   MultRunData run_data_all_runs;
-  for (auto& runResult : runResultsEachInput) {
-    run_data_all_runs.insert(run_data_all_runs.cend(), runResult.cbegin(), runResult.cend());
+  for (const auto& run_result : run_results) {
+    run_data_all_runs.insert(run_data_all_runs.cend(), run_result.cbegin(), run_result.cend());
   }
  
   return run_data_all_runs;

@@ -21,10 +21,10 @@ class DisparityMap : public BpImage<T> {
 public:
   DisparityMap() : BpImage<T>() {}
 
-  DisparityMap(const std::array<unsigned int, 2>& widthHeight) : BpImage<T>(widthHeight) {}
+  DisparityMap(const std::array<unsigned int, 2>& width_height) : BpImage<T>(width_height) {}
 
-  DisparityMap(const std::array<unsigned int, 2>& widthHeight, const T* input_disparity_map_vals,
-    unsigned int disparity_map_vals_scale = 1) : BpImage<T>(widthHeight, input_disparity_map_vals)
+  DisparityMap(const std::array<unsigned int, 2>& width_height, const T* input_disparity_map_vals,
+    unsigned int disparity_map_vals_scale = 1) : BpImage<T>(width_height, input_disparity_map_vals)
   {
     std::ranges::copy(input_disparity_map_vals, input_disparity_map_vals + this->TotalPixels(), this->pixels_.get());
     if (disparity_map_vals_scale > 1u) {

@@ -16,57 +16,57 @@
 
 template<> inline __m512d VectProcessingFuncts::loadPackedDataAligned<double, __m512d>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, double* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, double* inData)
 {
   return _mm512_load_pd(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m512 VectProcessingFuncts::loadPackedDataAligned<float, __m512>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, float* inData)
 {
   return _mm512_load_ps(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m256i VectProcessingFuncts::loadPackedDataAligned<short, __m256i>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, short* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, short* inData)
 {
   return _mm256_load_si256((__m256i*)(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity,
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity,
     numDispVals)]));
 }
 
 template<> inline __m512 VectProcessingFuncts::loadPackedDataUnaligned<float, __m512>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, float* inData)
 {
   return _mm512_loadu_ps(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m256i VectProcessingFuncts::loadPackedDataUnaligned<short, __m256i>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, short* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, short* inData)
 {
   return _mm256_loadu_si256((__m256i*)(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]));
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]));
 }
 
 template<> inline __m512d VectProcessingFuncts::loadPackedDataUnaligned<double, __m512d>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, double* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, double* inData)
 {
   return _mm512_loadu_pd(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline __m512 VectProcessingFuncts::createSIMDVectorSameData<__m512>(float data) {
@@ -125,11 +125,11 @@ template<> inline __m512d VectProcessingFuncts::convertValToDatatype<__m512d, do
   return _mm512_set1_pd(val);
 }
 
-template<> inline __m512 VectProcessingFuncts::getMinByElement<__m512>(const __m512& val1, const __m512& val2) {
+template<> inline __m512 VectProcessingFuncts::GetMinByElement<__m512>(const __m512& val1, const __m512& val2) {
   return _mm512_min_ps(val1, val2);
 }
 
-template<> inline __m512d VectProcessingFuncts::getMinByElement<__m512d>(const __m512d& val1, const __m512d& val2) {
+template<> inline __m512d VectProcessingFuncts::GetMinByElement<__m512d>(const __m512d& val1, const __m512d& val2) {
   return _mm512_min_pd(val1, val2);
 }
 

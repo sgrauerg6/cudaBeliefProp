@@ -47,8 +47,8 @@ inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::errorCheck(co
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
-  const beliefprop::BPsettings& algSettings,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpSettings& algSettings,
+  const beliefprop::BpLevel& currentBpLevel,
   const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
   const beliefprop::CheckerboardMessages<T*>& messagesDevice,
   T* allocatedMemForProcessing)
@@ -56,17 +56,18 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
   //set to prefer L1 cache since shared memory is not used in this implementation
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
   const auto kernelTBlockDims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentLevelProperties.level_num_});
+    {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), currentBpLevel.LevelProperties().level_num_});
   const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
-  const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.width_checkerboard_level_) / (float)threads.x), //only updating half at a time
-                  (unsigned int)ceil((float)currentLevelProperties.height_level_ / (float)threads.y)};
+  const dim3 grid{(unsigned int)ceil((float)(currentBpLevel.LevelProperties().width_checkerboard_level_) / (float)threads.x), //only updating half at a time
+                  (unsigned int)ceil((float)currentBpLevel.LevelProperties().height_level_ / (float)threads.y)};
 
   //in cuda kernel storing data one at a time (though it is coalesced), so numDataInSIMDVector not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool dataAligned{run_imp_util::MemoryAlignedAtDataStart(0, 1, currentLevelProperties.num_data_align_width_, currentLevelProperties.div_padded_checkerboard_w_align_)};
+  const bool dataAligned{run_imp_util::MemoryAlignedAtDataStart(0, 1, currentBpLevel.LevelProperties().num_data_align_width_,
+    currentBpLevel.LevelProperties().div_padded_checkerboard_w_align_)};
 
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
-  for (unsigned int iterationNum = 0; iterationNum < algSettings.num_iterations_; iterationNum++)
+  for (unsigned int iterationNum = 0; iterationNum < algSettings.num_iterations; iterationNum++)
   {
     beliefprop::Checkerboard_Part checkboardPartUpdate =
       ((iterationNum % 2) == 0) ?
@@ -74,36 +75,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
       beliefprop::Checkerboard_Part::kCheckerboardPart0;
     cudaDeviceSynchronize();
 
-#if (((USE_SHARED_MEMORY == 3) || (USE_SHARED_MEMORY == 4))  && (DISP_INDEX_START_REG_LOCAL_MEM > 0))
-    int numDataSharedMemory = beliefprop::DEFAULT_CUDA_TB_WIDTH * beliefprop::DEFAULT_CUDA_TB_HEIGHT * (DISP_INDEX_START_REG_LOCAL_MEM);
-    int numBytesSharedMemory = numDataSharedMemory * sizeof(T);
-
-#if (USE_SHARED_MEMORY == 4)
-
-    numBytesSharedMemory *= 5;
-
-#endif //(USE_SHARED_MEMORY == 4)
-
-    int maxbytes = numBytesSharedMemory; // 96 KB
-    cudaFuncSetAttribute(runBPIterationUsingCheckerboardUpdates<T>, cudaFuncAttributeMaxDynamicSharedMemorySize, maxbytes);
-
-    //std::cout << "numDataSharedMemory: " << numDataSharedMemory << std::endl;
-    beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads, maxbytes>>> (checkboardPartUpdate, currentLevelProperties,
-      dataCostDeviceCheckerboard[0],
-      dataCostDeviceCheckerboard[1],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-      messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-      algSettings.disc_k_bp, dataAligned);
-
-#else
     if constexpr (DISP_VALS > 0) {
-      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkboardPartUpdate, currentLevelProperties,
+      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkboardPartUpdate, currentBpLevel.LevelProperties(),
         dataCostDeviceCheckerboard[0],
         dataCostDeviceCheckerboard[1],
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
@@ -114,10 +87,10 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-        algSettings.disc_k_bp_, dataAligned, algSettings.num_disp_vals_);
+        algSettings.disc_k_bp, dataAligned, algSettings.num_disp_vals);
     }
     else {
-      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkboardPartUpdate, currentLevelProperties,
+      beliefpropCUDA::runBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkboardPartUpdate, currentBpLevel.LevelProperties(),
         dataCostDeviceCheckerboard[0],
         dataCostDeviceCheckerboard[1],
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
@@ -128,9 +101,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
         messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-        algSettings.disc_k_bp_, dataAligned, algSettings.num_disp_vals_, allocatedMemForProcessing);
+        algSettings.disc_k_bp, dataAligned, algSettings.num_disp_vals, allocatedMemForProcessing);
     }
-#endif
 
     cudaDeviceSynchronize();
     if (errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -146,17 +118,17 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::runBPAtCurrentLevel(
 //need two different "sets" of message values to avoid read-write conflicts
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::copyMessageValuesToNextLevelDown(
-  const beliefprop::LevelProperties& currentLevelProperties,
-  const beliefprop::LevelProperties& nextLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
+  const beliefprop::BpLevel& nextBpLevel,
   const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyFrom,
   const beliefprop::CheckerboardMessages<T*>& messagesDeviceCopyTo,
-  unsigned int bpSettingsNumDispVals)
+  unsigned int bp_settings_num_disp_vals)
 {
   const auto kernelTBlockDims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), currentLevelProperties.level_num_});
+    {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), currentBpLevel.LevelProperties().level_num_});
   const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
-  const dim3 grid{(unsigned int)ceil((float)(currentLevelProperties.width_checkerboard_level_) / (float)threads.x),
-                  (unsigned int)ceil((float)(currentLevelProperties.height_level_) / (float)threads.y)};
+  const dim3 grid{(unsigned int)ceil((float)(currentBpLevel.LevelProperties().width_checkerboard_level_) / (float)threads.x),
+                  (unsigned int)ceil((float)(currentBpLevel.LevelProperties().height_level_) / (float)threads.y)};
 
   cudaDeviceSynchronize();
   if (errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -167,7 +139,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::copyMessageValuesToN
   {
     //call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
     //storing the current message values
-    beliefpropCUDA::copyMsgDataToNextLevel<T, DISP_VALS> <<< grid, threads >>> (checkerboard_part, currentLevelProperties, nextLevelProperties,
+    beliefpropCUDA::copyMsgDataToNextLevel<T, DISP_VALS> <<< grid, threads >>> (checkerboard_part,
+      currentBpLevel.LevelProperties(), nextBpLevel.LevelProperties(),
       messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
       messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
       messagesDeviceCopyFrom[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
@@ -184,7 +157,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::copyMessageValuesToN
       messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
       messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
       messagesDeviceCopyTo[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-      bpSettingsNumDispVals);
+      bp_settings_num_disp_vals);
 
     cudaDeviceSynchronize();
     if (errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -197,8 +170,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::copyMessageValuesToN
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCosts(
-  const beliefprop::BPsettings& algSettings,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpSettings& algSettings,
+  const beliefprop::BpLevel& currentBpLevel,
   const std::array<float*, 2>& imagesOnTargetDevice,
   const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard)
 {
@@ -215,14 +188,14 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCosts(
     {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0});
   const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
   //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
-  const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.width_level_ / (float)threads.x),
-                  (unsigned int)ceil((float)currentLevelProperties.height_level_ / (float)threads.y)};
+  const dim3 grid{(unsigned int)ceil((float)currentBpLevel.LevelProperties().width_level_ / (float)threads.x),
+                  (unsigned int)ceil((float)currentBpLevel.LevelProperties().height_level_ / (float)threads.y)};
 
   //initialize the data the the "bottom" of the image pyramid
-  beliefpropCUDA::initializeBottomLevelData<T, DISP_VALS> <<<grid, threads>>> (currentLevelProperties, imagesOnTargetDevice[0],
-    imagesOnTargetDevice[1], dataCostDeviceCheckerboard[0],
-    dataCostDeviceCheckerboard[1], algSettings.lambda_bp_, algSettings.data_k_bp_,
-    algSettings.num_disp_vals_);
+  beliefpropCUDA::initializeBottomLevelData<T, DISP_VALS> <<<grid, threads>>> (currentBpLevel.LevelProperties(),
+    imagesOnTargetDevice[0], imagesOnTargetDevice[1],
+    dataCostDeviceCheckerboard[0], dataCostDeviceCheckerboard[1],
+    algSettings.lambda_bp, algSettings.data_k_bp, algSettings.num_disp_vals);
   cudaDeviceSynchronize();
   
   if (errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -235,18 +208,19 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCosts(
 //initialize the message values with no previous message values...all message values are set to 0
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeMessageValsToDefault(
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   const beliefprop::CheckerboardMessages<T*>& messagesDevice,
-  unsigned int bpSettingsNumDispVals)
+  unsigned int bp_settings_num_disp_vals)
 {
   const auto kernelTBlockDims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0});
   const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
-  const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.width_checkerboard_level_ / (float)threads.x),
-                  (unsigned int)ceil((float)currentLevelProperties.height_level_ / (float)threads.y)};
+  const dim3 grid{(unsigned int)ceil((float)currentBpLevel.LevelProperties().width_checkerboard_level_ / (float)threads.x),
+                  (unsigned int)ceil((float)currentBpLevel.LevelProperties().height_level_ / (float)threads.y)};
 
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
-  beliefpropCUDA::initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (currentLevelProperties,
+  beliefpropCUDA::initializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (
+    currentBpLevel.LevelProperties(),
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
@@ -255,7 +229,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeMessageVal
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-    bpSettingsNumDispVals);
+    bp_settings_num_disp_vals);
   cudaDeviceSynchronize();
   
   if (errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -266,19 +240,19 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeMessageVal
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCurrentLevel(const beliefprop::LevelProperties& currentLevelProperties,
-  const beliefprop::LevelProperties& prevLevelProperties,
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCurrentLevel(const beliefprop::BpLevel& currentBpLevel,
+  const beliefprop::BpLevel& prevBpLevel,
   const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
   const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboardWriteTo,
-  unsigned int bpSettingsNumDispVals)
+  unsigned int bp_settings_num_disp_vals)
 {
   const auto kernelTBlockDims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), currentLevelProperties.level_num_});
+    {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), currentBpLevel.LevelProperties().level_num_});
   const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
   //each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
   //the four-connected neighbors are in the other checkerboard
-  const dim3 grid{(unsigned int)ceil(((float)currentLevelProperties.width_checkerboard_level_) / (float)threads.x),
-                  (unsigned int)ceil((float)currentLevelProperties.height_level_ / (float)threads.y)};
+  const dim3 grid{(unsigned int)ceil(((float)currentBpLevel.LevelProperties().width_checkerboard_level_) / (float)threads.x),
+                  (unsigned int)ceil((float)currentBpLevel.LevelProperties().height_level_ / (float)threads.y)};
 
   if (errorCheck(__FILE__, __LINE__ ) != run_eval::Status::kNoError) {
     return run_eval::Status::kError;
@@ -290,11 +264,11 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCurren
     std::make_pair(beliefprop::Checkerboard_Part::kCheckerboardPart1,  dataCostDeviceCheckerboardWriteTo[1])})
   {
     beliefpropCUDA::initializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>> (checkerboardAndDataCost.first,
-      currentLevelProperties, prevLevelProperties,
+      currentBpLevel.LevelProperties(), prevBpLevel.LevelProperties(),
       dataCostDeviceCheckerboard[0],
       dataCostDeviceCheckerboard[1],
       checkerboardAndDataCost.second, ((unsigned int) offsetNum / sizeof(float)),
-      bpSettingsNumDispVals);
+      bp_settings_num_disp_vals);
 
     cudaDeviceSynchronize();
     if (errorCheck(__FILE__, __LINE__ ) != run_eval::Status::kNoError) {
@@ -306,21 +280,21 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::initializeDataCurren
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::retrieveOutputDisparity(
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   const beliefprop::DataCostsCheckerboards<T*>& dataCostDeviceCheckerboard,
   const beliefprop::CheckerboardMessages<T*>& messagesDevice,
-  unsigned int bpSettingsNumDispVals)
+  unsigned int bp_settings_num_disp_vals)
 {
   float* resultingDisparityMapCompDevice;
-  cudaMalloc((void**)&resultingDisparityMapCompDevice, currentLevelProperties.width_level_ * currentLevelProperties.height_level_ * sizeof(float));
+  cudaMalloc((void**)&resultingDisparityMapCompDevice, currentBpLevel.LevelProperties().width_level_ * currentBpLevel.LevelProperties().height_level_ * sizeof(float));
 
   const auto kernelTBlockDims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0});
   const dim3 threads{kernelTBlockDims[0], kernelTBlockDims[1]};
-  const dim3 grid{(unsigned int)ceil((float)currentLevelProperties.width_checkerboard_level_ / (float)threads.x),
-                  (unsigned int)ceil((float)currentLevelProperties.height_level_ / (float)threads.y)};
+  const dim3 grid{(unsigned int)ceil((float)currentBpLevel.LevelProperties().width_checkerboard_level_ / (float)threads.x),
+                  (unsigned int)ceil((float)currentBpLevel.LevelProperties().height_level_ / (float)threads.y)};
 
-  beliefpropCUDA::retrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (currentLevelProperties,
+  beliefpropCUDA::retrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (currentBpLevel.LevelProperties(),
     dataCostDeviceCheckerboard[0], dataCostDeviceCheckerboard[1],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
@@ -330,7 +304,7 @@ float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::retrieveOutputDisparity(
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
     messagesDevice[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-    resultingDisparityMapCompDevice, bpSettingsNumDispVals);
+    resultingDisparityMapCompDevice, bp_settings_num_disp_vals);
   cudaDeviceSynchronize();
   if (errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
     return nullptr;
@@ -340,26 +314,26 @@ float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::retrieveOutputDisparity(
 }
 
 template class ProcessCUDABP<float, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[0].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[1].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[2].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[3].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[4].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[5].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[6].num_disp_vals_, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<float, bp_params::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
 template class ProcessCUDABP<double, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[0].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[1].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[2].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[3].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[4].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[5].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[6].num_disp_vals_, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<double, bp_params::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
 template class ProcessCUDABP<halftype, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[0].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[1].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[2].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[3].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[4].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[5].num_disp_vals_, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[6].num_disp_vals_, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessCUDABP<halftype, bp_params::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;

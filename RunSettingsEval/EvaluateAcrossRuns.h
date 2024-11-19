@@ -28,16 +28,16 @@ public:
   //generated file starts with specified top text and includes
   //specified input parameters for each input as well as the optimized
   //implementation runtime for each run on each input
-  void operator()(const std::filesystem::path& impResultsFilePath,
-    const std::vector<std::string>& evalAcrossRunsTopText,
-    const std::vector<std::string>& evalAcrossRunsInParamsShow) const;
+  void operator()(const std::filesystem::path& imp_results_file_path,
+    const std::vector<std::string>& eval_across_runs_top_text,
+    const std::vector<std::string>& eval_across_runs_in_params_show) const;
 
 private:
   //get mapping of headers to data in csv file for run results and speedups
   //assumed that there are no commas in data since it is used as delimiter between data
   //first output is headers in order, second output is mapping of headers to results
-  std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>> getHeaderToDataInCsvFile(
-    const std::filesystem::path& csvFilePath) const;
+  std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>> HeaderToDataInCsvFile(
+    const std::filesystem::path& csv_file_path) const;
 };
 
 #endif //EVALUATE_ACROSS_RUNS_H_

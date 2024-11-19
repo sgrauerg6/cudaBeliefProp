@@ -30,12 +30,12 @@ int main(int argc, char** argv)
   //on kernels in same run
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
   //in different kernels in the optimized CUDA implementation can decrease runtime
-  run_imp_settings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
-  run_imp_settings.pParamsDefaultOptOptions_ = {run_cuda::kParallelParamsDefault, run_cuda::kParallelParameterOptions};
-  run_imp_settings.templatedItersSetting_ = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
-  run_imp_settings.baseOptSingThreadRTimeForTSetting_ = 
+  run_imp_settings.opt_parallel_params_setting = {true, run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
+  run_imp_settings.p_params_default_opt_settings = {run_cuda::kParallelParamsDefault, run_cuda::kParallelParameterOptions};
+  run_imp_settings.templated_iters_setting = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
+  run_imp_settings.base_opt_single_thread_runtime_for_template_setting = 
     {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
-  run_imp_settings.subset_str_indices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
+  run_imp_settings.subset_str_indices = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
 #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
 #else
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 #endif //SMALLER_SETS_ONLY
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
-  run_imp_settings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
+  run_imp_settings.run_name = (argc > 1) ? argv[1] : "CurrentRun";
 
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
   RunEvalImpMultSettings().operator()({{run_environment::AccSetting::kCUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kCUDA)}}, run_imp_settings);

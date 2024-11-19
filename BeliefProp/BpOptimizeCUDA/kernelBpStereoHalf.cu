@@ -17,28 +17,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 //This file defines the template specialization to perform belief propagation using half precision for
-//disparity map estimation from stereo images on CUDA
-
-#include "BpConstsAndParams/BpStereoCudaParameters.h"
-
-//only need template specialization for half precision if CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF is set
-//in BpConstsAndParams/BpStereoCudaParameters.h
-#ifdef CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
+//disparity map estimation from stereo images on CUDA to prevent overflow in valToNormalize
+//message value computation
+//shouldn't be an issue if using bfloat instead of half so recommend using that instead of using
+//these template specialization functions
 
 //set constexpr unsigned int values for number of disparity values for each stereo set used
-constexpr unsigned int kDispVals0{bp_params::kStereoSetsToProcess[0].num_disp_vals_};
-constexpr unsigned int kDispVals1{bp_params::kStereoSetsToProcess[1].num_disp_vals_};
-constexpr unsigned int kDispVals2{bp_params::kStereoSetsToProcess[2].num_disp_vals_};
-constexpr unsigned int kDispVals3{bp_params::kStereoSetsToProcess[3].num_disp_vals_};
-constexpr unsigned int kDispVals4{bp_params::kStereoSetsToProcess[4].num_disp_vals_};
-constexpr unsigned int kDispVals5{bp_params::kStereoSetsToProcess[5].num_disp_vals_};
-constexpr unsigned int kDispVals6{bp_params::kStereoSetsToProcess[6].num_disp_vals_};
+constexpr unsigned int kDispVals0{bp_params::kStereoSetsToProcess[0].num_disp_vals};
+constexpr unsigned int kDispVals1{bp_params::kStereoSetsToProcess[1].num_disp_vals};
+constexpr unsigned int kDispVals2{bp_params::kStereoSetsToProcess[2].num_disp_vals};
+constexpr unsigned int kDispVals3{bp_params::kStereoSetsToProcess[3].num_disp_vals};
+constexpr unsigned int kDispVals4{bp_params::kStereoSetsToProcess[4].num_disp_vals};
+constexpr unsigned int kDispVals5{bp_params::kStereoSetsToProcess[5].num_disp_vals};
+constexpr unsigned int kDispVals6{bp_params::kStereoSetsToProcess[6].num_disp_vals};
 
 //device function to process messages using half precision with number of disparity values
 //given in template parameter
 template <unsigned int DISP_VALS>
 __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[DISP_VALS],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[DISP_VALS],
   half messageValsNeighbor2[DISP_VALS], half messageValsNeighbor3[DISP_VALS],
   half dataCosts[DISP_VALS], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
@@ -78,14 +75,14 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
   //note that may cause results to differ a little from ideal
   if (__hisnan(valToNormalize) || ((__hisinf(valToNormalize)) != 0)) {
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-      currentLevelProperties.padded_width_checkerboard_level_,
-      currentLevelProperties.height_level_, 0,
+      currentBpLevel.LevelProperties().padded_width_checkerboard_level_,
+      currentBpLevel.LevelProperties().height_level_, 0,
       DISP_VALS);
 
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++) {
       dstMessageArray[destMessageArrayIndex] = (half) 0.0;
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        destMessageArrayIndex += currentLevelProperties.padded_width_checkerboard_level_;
+        destMessageArrayIndex += currentBpLevel.LevelProperties().padded_width_checkerboard_level_;
       }
       else {
         destMessageArrayIndex++;
@@ -97,8 +94,8 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
     valToNormalize /= DISP_VALS;
 
     unsigned int destMessageArrayIndex = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-      currentLevelProperties.padded_width_checkerboard_level_,
-      currentLevelProperties.height_level_, 0,
+      currentBpLevel.LevelProperties().padded_width_checkerboard_level_,
+      currentBpLevel.LevelProperties().height_level_, 0,
       DISP_VALS);
 
     for (unsigned int currentDisparity = 0; currentDisparity < DISP_VALS; currentDisparity++)
@@ -106,7 +103,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
       dst[currentDisparity] -= valToNormalize;
       dstMessageArray[destMessageArrayIndex] = dst[currentDisparity];
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        destMessageArrayIndex += currentLevelProperties.padded_width_checkerboard_level_;
+        destMessageArrayIndex += currentBpLevel.LevelProperties().padded_width_checkerboard_level_;
       }
       else {
         destMessageArrayIndex++;
@@ -119,35 +116,35 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
 //as an input parameter and not as a template
 template <beliefprop::MessageComp M>
 __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   half* prevUMessageArray, half* prevDMessageArray,
   half* prevLMessageArray, half* prevRMessageArray,
   half* dataMessageArray, half* dstMessageArray,
-  half disc_k_bp, bool dataAligned, unsigned int bpSettingsDispVals,
+  half disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals,
   half* dstProcessing, unsigned int checkerboardAdjustment,
   unsigned int offsetData)
 {
   // aggregate and find min
   half minimum{(half)bp_consts::kInfBp};
   unsigned int processingArrIndexDisp0 = beliefprop::retrieveIndexInDataAndMessage(xVal, yVal,
-    currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, 0,
-    bpSettingsDispVals);
+    currentBpLevel.LevelProperties().padded_width_checkerboard_level_,
+    currentBpLevel.LevelProperties().height_level_, 0,
+    bp_settings_disp_vals);
   unsigned int procArrIdx{processingArrIndexDisp0};
 
-  for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++)
+  for (unsigned int currentDisparity = 0; currentDisparity < bp_settings_disp_vals; currentDisparity++)
   {
     //set initial dst processing array value corresponding to disparity for M message type
-    beliefprop::setInitDstProcessing<half, half, M>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
+    beliefprop::setInitDstProcessing<half, half, M>(xVal, yVal, currentBpLevel, prevUMessageArray, prevDMessageArray,
       prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray,
-      disc_k_bp, dataAligned, bpSettingsDispVals, dstProcessing, checkerboardAdjustment,
+      disc_k_bp, dataAligned, bp_settings_disp_vals, dstProcessing, checkerboardAdjustment,
       offsetData, currentDisparity, procArrIdx);
 
     if (dstProcessing[procArrIdx] < minimum)
       minimum = dstProcessing[procArrIdx];
 
     if constexpr (bp_params::kOptimizedIndexingSetting) {
-      procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
+      procArrIdx += currentBpLevel.LevelProperties().padded_width_checkerboard_level_;
     }
     else {
       procArrIdx++;
@@ -155,7 +152,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-  dtStereo<half>(dstProcessing, bpSettingsDispVals, xVal, yVal, currentLevelProperties);
+  dtStereo<half>(dstProcessing, bp_settings_disp_vals, xVal, yVal, currentBpLevel);
 
   // truncate
   minimum += disc_k_bp;
@@ -164,7 +161,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
   half valToNormalize{(half)0.0};
 
   procArrIdx = processingArrIndexDisp0;
-  for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+  for (unsigned int currentDisparity = 0; currentDisparity < bp_settings_disp_vals; currentDisparity++) {
     if (minimum < dstProcessing[procArrIdx]) {
       dstProcessing[procArrIdx] = minimum;
     }
@@ -172,7 +169,7 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
     valToNormalize += dstProcessing[procArrIdx];
 
     if constexpr (bp_params::kOptimizedIndexingSetting) {
-      procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
+      procArrIdx += currentBpLevel.LevelProperties().padded_width_checkerboard_level_;
     }
     else {
       procArrIdx++;
@@ -186,10 +183,10 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
     //dst processing index and message array index are the same for each disparity value in this processing
     procArrIdx = processingArrIndexDisp0;
 
-    for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+    for (unsigned int currentDisparity = 0; currentDisparity < bp_settings_disp_vals; currentDisparity++) {
       dstMessageArray[procArrIdx] = (half)0.0;
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
+        procArrIdx += currentBpLevel.LevelProperties().padded_width_checkerboard_level_;
       }
       else {
         procArrIdx++;
@@ -198,16 +195,16 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
   }
   else
   {
-    valToNormalize /= ((half)bpSettingsDispVals);
+    valToNormalize /= ((half)bp_settings_disp_vals);
 
     //dst processing index and message array index are the same for each disparity value in this processing
     procArrIdx = processingArrIndexDisp0;
 
-    for (unsigned int currentDisparity = 0; currentDisparity < bpSettingsDispVals; currentDisparity++) {
+    for (unsigned int currentDisparity = 0; currentDisparity < bp_settings_disp_vals; currentDisparity++) {
       dstProcessing[procArrIdx] -= valToNormalize;
-      dstMessageArray[procArrIdx] = convertValToDifferentDataTypeIfNeeded<half, half>(dstProcessing[procArrIdx]);
+      dstMessageArray[procArrIdx] = ConvertValToDifferentDataTypeIfNeeded<half, half>(dstProcessing[procArrIdx]);
       if constexpr (bp_params::kOptimizedIndexingSetting) {
-        procArrIdx += currentLevelProperties.padded_width_checkerboard_level_;
+        procArrIdx += currentBpLevel.LevelProperties().padded_width_checkerboard_level_;
       }
       else {
         procArrIdx++;
@@ -218,132 +215,130 @@ __device__ inline void msgStereoHalf(unsigned int xVal, unsigned int yVal,
 
 template<>
 __device__ inline void msgStereo<half, half, beliefprop::MessageComp::kUMessage>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   half* prevUMessageArray, half* prevDMessageArray,
   half* prevLMessageArray, half* prevRMessageArray,
   half* dataMessageArray, half* dstMessageArray,
-  half disc_k_bp, bool dataAligned, unsigned int bpSettingsDispVals,
+  half disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals,
   half* dstProcessing, unsigned int checkerboardAdjustment,
   unsigned int offsetData)
 {
-  msgStereoHalf<beliefprop::MessageComp::kUMessage>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
-    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bpSettingsDispVals,
+  msgStereoHalf<beliefprop::MessageComp::kUMessage>(xVal, yVal, currentBpLevel, prevUMessageArray, prevDMessageArray,
+    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bp_settings_disp_vals,
     dstProcessing, checkerboardAdjustment, offsetData);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, beliefprop::MessageComp::kDMessage>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   half* prevUMessageArray, half* prevDMessageArray,
   half* prevLMessageArray, half* prevRMessageArray,
   half* dataMessageArray, half* dstMessageArray,
-  half disc_k_bp, bool dataAligned, unsigned int bpSettingsDispVals,
+  half disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals,
   half* dstProcessing, unsigned int checkerboardAdjustment,
   unsigned int offsetData)
 {
-  msgStereoHalf<beliefprop::MessageComp::kDMessage>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
-    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bpSettingsDispVals,
+  msgStereoHalf<beliefprop::MessageComp::kDMessage>(xVal, yVal, currentBpLevel, prevUMessageArray, prevDMessageArray,
+    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bp_settings_disp_vals,
     dstProcessing, checkerboardAdjustment, offsetData);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, beliefprop::MessageComp::kLMessage>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   half* prevUMessageArray, half* prevDMessageArray,
   half* prevLMessageArray, half* prevRMessageArray,
   half* dataMessageArray, half* dstMessageArray,
-  half disc_k_bp, bool dataAligned, unsigned int bpSettingsDispVals,
+  half disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals,
   half* dstProcessing, unsigned int checkerboardAdjustment,
   unsigned int offsetData)
 {
-  msgStereoHalf<beliefprop::MessageComp::kLMessage>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
-    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bpSettingsDispVals,
+  msgStereoHalf<beliefprop::MessageComp::kLMessage>(xVal, yVal, currentBpLevel, prevUMessageArray, prevDMessageArray,
+    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bp_settings_disp_vals,
     dstProcessing, checkerboardAdjustment, offsetData);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, beliefprop::MessageComp::kRMessage>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties,
+  const beliefprop::BpLevel& currentBpLevel,
   half* prevUMessageArray, half* prevDMessageArray,
   half* prevLMessageArray, half* prevRMessageArray,
   half* dataMessageArray, half* dstMessageArray,
-  half disc_k_bp, bool dataAligned, unsigned int bpSettingsDispVals,
+  half disc_k_bp, bool dataAligned, unsigned int bp_settings_disp_vals,
   half* dstProcessing, unsigned int checkerboardAdjustment,
   unsigned int offsetData)
 {
-  msgStereoHalf<beliefprop::MessageComp::kRMessage>(xVal, yVal, currentLevelProperties, prevUMessageArray, prevDMessageArray,
-    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bpSettingsDispVals,
+  msgStereoHalf<beliefprop::MessageComp::kRMessage>(xVal, yVal, currentBpLevel, prevUMessageArray, prevDMessageArray,
+    prevLMessageArray, prevRMessageArray, dataMessageArray, dstMessageArray, disc_k_bp, dataAligned, bp_settings_disp_vals,
     dstProcessing, checkerboardAdjustment, offsetData);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals0>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals0],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals0],
   half messageValsNeighbor2[kDispVals0], half messageValsNeighbor3[kDispVals0],
   half dataCosts[kDispVals0], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals0>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals0>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals1>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals1],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals1],
   half messageValsNeighbor2[kDispVals1], half messageValsNeighbor3[kDispVals1],
   half dataCosts[kDispVals1], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals1>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals1>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals2>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals2],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals2],
   half messageValsNeighbor2[kDispVals2], half messageValsNeighbor3[kDispVals2],
   half dataCosts[kDispVals2], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals2>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals2>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals3>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals3],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals3],
   half messageValsNeighbor2[kDispVals3], half messageValsNeighbor3[kDispVals3],
   half dataCosts[kDispVals3], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals3>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals3>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals4>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals4],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals4],
   half messageValsNeighbor2[kDispVals4], half messageValsNeighbor3[kDispVals4],
   half dataCosts[kDispVals4], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals4>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals4>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals5>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals5],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals5],
   half messageValsNeighbor2[kDispVals5], half messageValsNeighbor3[kDispVals5],
   half dataCosts[kDispVals5], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals5>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals5>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
 
 template<>
 __device__ inline void msgStereo<half, half, kDispVals6>(unsigned int xVal, unsigned int yVal,
-  const beliefprop::LevelProperties& currentLevelProperties, half messageValsNeighbor1[kDispVals6],
+  const beliefprop::BpLevel& currentBpLevel, half messageValsNeighbor1[kDispVals6],
   half messageValsNeighbor2[kDispVals6], half messageValsNeighbor3[kDispVals6],
   half dataCosts[kDispVals6], half* dstMessageArray, half disc_k_bp, bool dataAligned)
 {
-  msgStereoHalf<kDispVals6>(xVal, yVal, currentLevelProperties, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  msgStereoHalf<kDispVals6>(xVal, yVal, currentBpLevel, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
     dataCosts, dstMessageArray, disc_k_bp, dataAligned);
 }
-
-#endif //CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF

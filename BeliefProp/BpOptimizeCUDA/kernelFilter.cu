@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "kernelFilterHeader.cuh"
 #include <cuda_runtime.h>
 #include <cuda.h>
-#include "BpConstsAndParams/BpStereoCudaParameters.h"
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "RunImp/RunImpGenFuncts.h"
 
@@ -40,7 +39,7 @@ __global__ void convertUnsignedIntImageToFloat(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  if (run_imp_util::WithinImageBounds(xVal, yVal, widthImages, heightImages)) {
     //retrieve the float-value of the unsigned int pixel value at the current location
     floatImagePixels[yVal*widthImages + xVal] = (float)imagePixelsUnsignedIntToFilter[yVal*widthImages + xVal];;
   }
@@ -60,7 +59,7 @@ __global__ void filterImageAcross(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  if (run_imp_util::WithinImageBounds(xVal, yVal, widthImages, heightImages)) {
     beliefprop::FilterImageAcrossProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, size_filter);
   }
@@ -80,7 +79,7 @@ __global__ void filterImageVertical(
   const unsigned int yVal = blockIdx.y * blockDim.y + threadIdx.y;
 
   //make sure that (xVal, yVal) is within image bounds
-  if (run_imp_util::withinImageBounds(xVal, yVal, widthImages, heightImages)) {
+  if (run_imp_util::WithinImageBounds(xVal, yVal, widthImages, heightImages)) {
     beliefprop::FilterImageVerticalProcessPixel<T>(xVal, yVal, imagePixelsToFilter, filteredImagePixels,
       widthImages, heightImages, imageFilter, size_filter);
   }

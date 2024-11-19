@@ -36,8 +36,8 @@ public:
   //if true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings
   //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
   //TODO: currently commented out since it doesn't seem to have any effect
-  void operator()(bool cpuThreadsPinned) const {
-    /*if (cpuThreadsPinned) {
+  void operator()(bool cpu_threads_pinned) const {
+    /*if (cpu_threads_pinned) {
       int success = system("export OMP_PLACES=\"sockets\"");
       if (success == 0) {
         std::cout << "export OMP_PLACES=\"sockets\" success" << std::endl;
@@ -62,14 +62,14 @@ public:
   //retrieve environment variable values corresponding to CPU threads being pinned to socket and return
   //as RunData structure
   RunData currSettingsAsAsRunData() const {
-    RunData pinnedThreadsSettings;
-    const std::string ompPlacesSetting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
-    const std::string ompProcBindSetting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
-    const bool cpuThreadsPinned = ((ompPlacesSetting == "sockets") && (ompProcBindSetting == "true"));
-    pinnedThreadsSettings.AddDataWHeader("CPU Threads Pinned To Socket", cpuThreadsPinned);
-    pinnedThreadsSettings.AddDataWHeader("OMP_PLACES", ompPlacesSetting);
-    pinnedThreadsSettings.AddDataWHeader("OMP_PROC_BIND", ompProcBindSetting);
-    return pinnedThreadsSettings;
+    RunData pinned_threads_settings;
+    const std::string omp_places_setting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
+    const std::string omp_proc_bind_setting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
+    const bool cpu_threads_pinned = ((omp_places_setting == "sockets") && (omp_proc_bind_setting == "true"));
+    pinned_threads_settings.AddDataWHeader("CPU Threads Pinned To Socket", cpu_threads_pinned);
+    pinned_threads_settings.AddDataWHeader("OMP_PLACES", omp_places_setting);
+    pinned_threads_settings.AddDataWHeader("OMP_PROC_BIND", omp_proc_bind_setting);
+    return pinned_threads_settings;
   }
 };
 
@@ -87,7 +87,7 @@ enum class AccSetting {
 
 //get string corresponding to acceleration method at compile time
 template <AccSetting ACCELERATION_SETTING>
-constexpr std::string_view accelerationString() {
+constexpr std::string_view AccelerationString() {
   if constexpr (ACCELERATION_SETTING == AccSetting::kNEON) { return "NEON"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256) { return "kAVX256"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "kAVX512"; }
@@ -95,30 +95,30 @@ constexpr std::string_view accelerationString() {
 }
 
 //get string corresponding to acceleration method at run time
-inline std::string_view accelerationString(AccSetting acceleration_setting) {
-  if (acceleration_setting == AccSetting::kNEON) { return accelerationString<AccSetting::kNEON>(); }
-  else if (acceleration_setting == AccSetting::kAVX256) { return accelerationString<AccSetting::kAVX256>(); }
-  else if (acceleration_setting == AccSetting::kAVX512) { return accelerationString<AccSetting::kAVX512>(); }
+inline std::string_view AccelerationString(AccSetting acceleration_setting) {
+  if (acceleration_setting == AccSetting::kNEON) { return AccelerationString<AccSetting::kNEON>(); }
+  else if (acceleration_setting == AccSetting::kAVX256) { return AccelerationString<AccSetting::kAVX256>(); }
+  else if (acceleration_setting == AccSetting::kAVX512) { return AccelerationString<AccSetting::kAVX512>(); }
   else { return "DEFAULT"; }
 }
 
-inline unsigned int getBytesAlignMemory(AccSetting accelSetting) {
+inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
   //avx512 requires data to be aligned on 64 bytes
-  return (accelSetting == AccSetting::kAVX512) ? 64 : 16;
+  return (accel_setting == AccSetting::kAVX512) ? 64 : 16;
 }
 
-inline unsigned int getNumDataAlignWidth(AccSetting accelSetting) {
+inline unsigned int GetNumDataAlignWidth(AccSetting accel_setting) {
   //align width with 16 data values in kAVX512
-  return (accelSetting == AccSetting::kAVX512) ? 16 : 8;
+  return (accel_setting == AccSetting::kAVX512) ? 16 : 8;
 }
 
 //generate RunData object that contains description header with corresponding value for each run setting
 template <AccSetting ACCELERATION_SETTING>
-inline RunData runSettings()  {
+inline RunData RunSettings()  {
   RunData curr_run_data;
   curr_run_data.AddDataWHeader("Total number of CPU threads", std::thread::hardware_concurrency());
-  curr_run_data.AddDataWHeader("BYTES_ALIGN_MEMORY", getBytesAlignMemory(ACCELERATION_SETTING));
-  curr_run_data.AddDataWHeader("NUM_DATA_ALIGN_WIDTH", getNumDataAlignWidth(ACCELERATION_SETTING));
+  curr_run_data.AddDataWHeader("BYTES_ALIGN_MEMORY", GetBytesAlignMemory(ACCELERATION_SETTING));
+  curr_run_data.AddDataWHeader("NUM_DATA_ALIGN_WIDTH", GetNumDataAlignWidth(ACCELERATION_SETTING));
   curr_run_data.AppendData(CPUThreadsPinnedToSocket().currSettingsAsAsRunData());
   return curr_run_data;
 }
@@ -143,26 +143,26 @@ enum class OptParallelParamsSetting {
 
 //structure that stores settings for current implementation run
 struct RunImpSettings {
-  TemplatedItersSetting templatedItersSetting_;
-  std::pair<bool, OptParallelParamsSetting> optParallelParamsOptionSetting_;
-  std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> pParamsDefaultOptOptions_;
-  std::optional<std::string> runName_;
+  TemplatedItersSetting templated_iters_setting;
+  std::pair<bool, OptParallelParamsSetting> opt_parallel_params_setting;
+  std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> p_params_default_opt_settings;
+  std::optional<std::string> run_name;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
-  std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> baseOptSingThreadRTimeForTSetting_;
-  std::vector<std::pair<std::string, std::vector<unsigned int>>> subset_str_indices_;
+  std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> base_opt_single_thread_runtime_for_template_setting;
+  std::vector<std::pair<std::string, std::vector<unsigned int>>> subset_str_indices;
 
   //remove parallel parameters with less than specified number of threads
-  void removeParallelParamBelowMinThreads(unsigned int minThreads) {
-    const auto [firstRemove, lastRemove] = std::ranges::remove_if(pParamsDefaultOptOptions_.second,
-        [minThreads](const auto& pParams) { return pParams[0] < minThreads; });
-    pParamsDefaultOptOptions_.second.erase(firstRemove, lastRemove);
+  void RemoveParallelParamBelowMinThreads(unsigned int min_threads) {
+    const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
+        [min_threads](const auto& p_params) { return p_params[0] < min_threads; });
+    p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 
   //remove parallel parameters with greater than specified number of threads
-  void removeParallelParamAboveMaxThreads(unsigned int maxThreads) {
-    const auto [firstRemove, lastRemove] = std::ranges::remove_if(pParamsDefaultOptOptions_.second,
-        [maxThreads](const auto& pParams) { return pParams[0] > maxThreads; });
-    pParamsDefaultOptOptions_.second.erase(firstRemove, lastRemove);
+  void RemoveParallelParamAboveMaxThreads(unsigned int max_threads) {
+    const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
+        [max_threads](const auto& p_params) { return p_params[0] > max_threads; });
+    p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 };
 

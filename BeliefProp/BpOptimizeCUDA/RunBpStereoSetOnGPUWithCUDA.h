@@ -23,7 +23,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <array>
 #include <cuda_runtime.h>
-#include "BpConstsAndParams/BpStereoCudaParameters.h"
 #include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
@@ -59,9 +58,9 @@ public:
   std::string BpRunDescription() const override { return "CUDA"; }
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
-  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& refTestImagePath,
-    const beliefprop::BPsettings& algSettings, 
-    const ParallelParams& parallelParams) override
+  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+    const beliefprop::BpSettings& algSettings, 
+    const ParallelParams& parallel_params) override
   {
     //return no value if acceleration setting is not CUDA
     if constexpr (ACCELERATION != run_environment::AccSetting::kCUDA) {
@@ -72,10 +71,10 @@ public:
     //function to run CUDA implementation
     RunData run_data;
     run_data.AppendData(bp_cuda_device::retrieveDeviceProperties(0));
-    auto procSetOutput = this->processStereoSet(refTestImagePath, algSettings,
+    auto procSetOutput = this->processStereoSet(ref_test_image_path, algSettings,
       BpOnDevice<T, DISP_VALS, ACCELERATION>{
-        std::make_unique<SmoothImageCUDA>(parallelParams),
-        std::make_unique<ProcessCUDABP<T, DISP_VALS, ACCELERATION>>(parallelParams),
+        std::make_unique<SmoothImageCUDA>(parallel_params),
+        std::make_unique<ProcessCUDABP<T, DISP_VALS, ACCELERATION>>(parallel_params),
         std::make_unique<RunImpCUDAMemoryManagement<T>>(),
         std::make_unique<RunImpCUDAMemoryManagement<float>>()});
     if (procSetOutput) {

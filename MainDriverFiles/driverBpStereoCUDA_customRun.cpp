@@ -27,30 +27,28 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 #include "BpSingleThreadCPU/stereo.h"
-//needed for the current BP parameters for the costs and also the CUDA parameters such as thread block size
-#include "BpConstsAndParams/BpStereoCudaParameters.h"
 //needed to run the implementation a stereo set using CUDA
 #include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 
 int main(int argc, char** argv)
 {
   std::array<std::string, 2> refTestImPath{argv[1], argv[2]};
-  beliefprop::BPsettings algSettings;
-  algSettings.num_disp_vals_ = std::stoi(argv[3]);
-  algSettings.disc_k_bp_ = (float)algSettings.num_disp_vals_ / 7.5f;
-  unsigned int dispMapScale = 256 / algSettings.num_disp_vals_;
+  beliefprop::BpSettings algSettings;
+  algSettings.num_disp_vals = std::stoi(argv[3]);
+  algSettings.disc_k_bp = (float)algSettings.num_disp_vals / 7.5f;
+  unsigned int dispMapScale = 256 / algSettings.num_disp_vals;
 
   const auto cudaTBDims = std::array<unsigned int, 2>{32, 4};
-  BpParallelParams parallelParams{run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels, algSettings.num_levels_, cudaTBDims};
+  BpParallelParams parallel_params{run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels, algSettings.num_levels, cudaTBDims};
 
   std::unique_ptr<RunBpStereoSet<float, 0, run_environment::AccSetting::kCUDA>> runOptBpNumItersNoTemplate =
     std::make_unique<RunBpStereoSetOnGPUWithCUDA<float, 0, run_environment::AccSetting::kCUDA>>();
-  auto run_output = runOptBpNumItersNoTemplate->operator()({refTestImPath[0], refTestImPath[1]}, algSettings, parallelParams);
+  auto run_output = runOptBpNumItersNoTemplate->operator()({refTestImPath[0], refTestImPath[1]}, algSettings, parallel_params);
   std::cout << "BP processing runtime (GPU): " << run_output->run_time.count() << std::endl;
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
     std::unique_ptr<RunBpStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
       std::make_unique<RunBpStereoCPUSingleThread<float, 64>>();
-    auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, algSettings, parallelParams);
+    auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, algSettings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
   }
   std::cout << "Output disparity map saved to " << argv[4] << std::endl;

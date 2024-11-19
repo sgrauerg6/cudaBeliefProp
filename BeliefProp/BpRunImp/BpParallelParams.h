@@ -36,7 +36,7 @@ public:
   void SetParallelDims(const std::array<unsigned int, 2>& tbDims) override;
 
   //add results from run with same specified parallel parameters used every parallel component
-  void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& pParamsCurrRun, const RunData& curr_run_data);
+  void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data);
 
   //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
   //to retrieved optimized parameters
@@ -54,10 +54,10 @@ public:
 private:
   //setting to determine whether or not to use same parallel parameters for all kernels in run or to allow for different
   //parallel parameters for each kernel
-  const run_environment::OptParallelParamsSetting opt_parallel_params_setting_;
+  const run_environment::OptParallelParamsSetting opt_parallel_params_setting;
   
   //num of levels in bp processing hierarchy
-  const unsigned int num_levels_;
+  const unsigned int num_levels;
 
   //stores the current parallel parameters for each processing kernel
   std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels> parallel_dims_each_kernel_;

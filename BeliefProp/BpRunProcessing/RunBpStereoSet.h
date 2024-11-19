@@ -58,16 +58,16 @@ public:
 
   //pure virtual operator() overload that must be defined in child class
   virtual std::optional<ProcessStereoSetOutput> operator()(
-    const std::array<std::string, 2>& refTestImagePath,
-    const beliefprop::BPsettings& algSettings, 
-    const ParallelParams& parallelParams) = 0;
+    const std::array<std::string, 2>& ref_test_image_path,
+    const beliefprop::BpSettings& algSettings, 
+    const ParallelParams& parallel_params) = 0;
 
 protected:
   //protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image,
   //process BP, and memory management child class objects
   std::optional<ProcessStereoSetOutput> processStereoSet(
-    const std::array<std::string, 2>& refTestImagePath,
-    const beliefprop::BPsettings& algSettings,
+    const std::array<std::string, 2>& ref_test_image_path,
+    const beliefprop::BpSettings& algSettings,
     const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice);
 };
 
@@ -75,47 +75,47 @@ protected:
 //process BP, and memory management child class objects
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>::processStereoSet(
-  const std::array<std::string, 2>& refTestImagePath,
-  const beliefprop::BPsettings& algSettings,
+  const std::array<std::string, 2>& ref_test_image_path,
+  const beliefprop::BpSettings& algSettings,
   const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice)
 {
   //retrieve the images as well as the width and height
-  const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(refTestImagePath[0]), BpImage<unsigned int>(refTestImagePath[1])};
-  const std::array<unsigned int, 2> widthHeightImages{inputImages[0].Width(), inputImages[0].Height()};
+  const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(ref_test_image_path[0]), BpImage<unsigned int>(ref_test_image_path[1])};
+  const std::array<unsigned int, 2> width_heightImages{inputImages[0].Width(), inputImages[0].Height()};
 
   //get total number of pixels in input images
-  const unsigned int totNumPixelsImages{widthHeightImages[0] * widthHeightImages[1]};
+  const unsigned int totNumPixelsImages{width_heightImages[0] * width_heightImages[1]};
 
   //initialize structures for timing data
   std::unordered_map<beliefprop::Runtime_Type, std::array<timingType, 2>> runtime_start_end_timings;
   DetailedTimings detailedBPTimings(beliefprop::kTimingNames);
 
   //initialize output disparity map
-  DisparityMap<float> output_disparity_map(widthHeightImages);
+  DisparityMap<float> output_disparity_map(width_heightImages);
 
   //allocate data for bp processing on target device ahead of runs if option selected
   T* bpData{nullptr};
   T* bpProcStore{nullptr};
   if constexpr (bp_params::kAllocateFreeBpMemoryOutsideRuns) {
     //allocate memory on device for bp processing
-    const unsigned long numData = beliefprop::LevelProperties::getTotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
-      widthHeightImages, algSettings.num_disp_vals_, algSettings.num_levels_);
-    bpData = runBpOnDevice.mem_management_bp_run->allocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
+    const unsigned long numData = beliefprop::BpLevel::TotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
+      width_heightImages, algSettings.num_disp_vals, algSettings.num_levels);
+    bpData = runBpOnDevice.mem_management_bp_run->AllocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
     if (runBpOnDevice.run_bp_stereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }
 
-    beliefprop::LevelProperties bottomLevelProperties(widthHeightImages, 0, 0, ACCELERATION);
-    const unsigned long total_dataBottomLevel = bottomLevelProperties.getNumDataInBpArrays<T>(algSettings.num_disp_vals_);
-    bpProcStore = runBpOnDevice.mem_management_bp_run->allocateAlignedMemoryOnDevice(total_dataBottomLevel, ACCELERATION);
+    beliefprop::BpLevel bottomBpLevel(width_heightImages, 0, 0, ACCELERATION);
+    const unsigned long total_dataBottomLevel = bottomBpLevel.NumDataInBpArrays<T>(algSettings.num_disp_vals);
+    bpProcStore = runBpOnDevice.mem_management_bp_run->AllocateAlignedMemoryOnDevice(total_dataBottomLevel, ACCELERATION);
     if (runBpOnDevice.run_bp_stereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }
   }
 
   //run bp processing for specified number of runs
-  for (unsigned int numRun = 0; numRun < bp_params::kNumBpStereoRuns; numRun++)
+  for (unsigned int num_run = 0; num_run < bp_params::kNumBpStereoRuns; num_run++)
   {
     //allocate the device memory to store and x and y smoothed images
     std::array<float*, 2> smoothed_images{
-      runBpOnDevice.mem_management_images->allocateMemoryOnDevice(totNumPixelsImages),
-      runBpOnDevice.mem_management_images->allocateMemoryOnDevice(totNumPixelsImages)};
+      runBpOnDevice.mem_management_images->AllocateMemoryOnDevice(totNumPixelsImages),
+      runBpOnDevice.mem_management_images->AllocateMemoryOnDevice(totNumPixelsImages)};
     
     if (runBpOnDevice.run_bp_stereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
       //return std::optional object with no value indicating error in run
@@ -130,7 +130,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     //first smooth the images using the Gaussian filter with the given smoothing sigma value
     //smoothed images are stored on the target device
     for (unsigned int i = 0; i < 2u; i++) {
-      (*(runBpOnDevice.smooth_image))(inputImages[i], algSettings.smoothing_sigma_, smoothed_images[i]);
+      (*(runBpOnDevice.smooth_image))(inputImages[i], algSettings.smoothing_sigma, smoothed_images[i]);
       if (runBpOnDevice.run_bp_stereo->errorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { 
         //return std::optional object with no value indicating error in run
         return {};
@@ -145,7 +145,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 
     //run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object run_bp_stereo
     //returns detailed timings for bp run
-    auto rpBpStereoOutput = (*(runBpOnDevice.run_bp_stereo))(smoothed_images, algSettings, widthHeightImages,
+    auto rpBpStereoOutput = (*(runBpOnDevice.run_bp_stereo))(smoothed_images, algSettings, width_heightImages,
       bpData, bpProcStore, runBpOnDevice.mem_management_bp_run);
     if (!rpBpStereoOutput) {
       //return std::optional object with no value if null output indicating error in run
@@ -157,7 +157,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalNoTransfer][1] = std::chrono::system_clock::now();
 
     //transfer the disparity map estimation on the device to the host for output
-    runBpOnDevice.mem_management_images->transferDataFromDeviceToHost(
+    runBpOnDevice.mem_management_images->TransferDataFromDeviceToHost(
       output_disparity_map.PointerToPixelsStart(), rpBpStereoOutput->first, totNumPixelsImages);
 
     //compute timings for each portion of interest and add to vector timings
@@ -166,36 +166,36 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     //retrieve the duration for each segment and add to bp timings
     std::ranges::for_each(runtime_start_end_timings,
       [&detailedBPTimings] (const auto& currentRuntimeNameAndTiming) {
-        detailedBPTimings.addTiming(currentRuntimeNameAndTiming.first,
+        detailedBPTimings.AddTiming(currentRuntimeNameAndTiming.first,
           currentRuntimeNameAndTiming.second[1] - currentRuntimeNameAndTiming.second[0]);
     });
 
     //add bp timings from current run to overall timings
-    detailedBPTimings.addToCurrentTimings(rpBpStereoOutput->second);
+    detailedBPTimings.AddToCurrentTimings(rpBpStereoOutput->second);
 
     //free the space allocated to the resulting disparity map and smoothed images on the computation device
-    runBpOnDevice.mem_management_images->freeMemoryOnDevice(rpBpStereoOutput->first);
+    runBpOnDevice.mem_management_images->FreeMemoryOnDevice(rpBpStereoOutput->first);
     for (auto& smoothed_image : smoothed_images) {
-      runBpOnDevice.mem_management_images->freeMemoryOnDevice(smoothed_image);
+      runBpOnDevice.mem_management_images->FreeMemoryOnDevice(smoothed_image);
     }
   }
 
   //free data for bp processing on target device if this memory
   //management set to be done outside of runs
   if constexpr (bp_params::kAllocateFreeBpMemoryOutsideRuns) {
-    runBpOnDevice.mem_management_bp_run->freeAlignedMemoryOnDevice(bpData);
-    runBpOnDevice.mem_management_bp_run->freeAlignedMemoryOnDevice(bpProcStore);
+    runBpOnDevice.mem_management_bp_run->FreeAlignedMemoryOnDevice(bpData);
+    runBpOnDevice.mem_management_bp_run->FreeAlignedMemoryOnDevice(bpProcStore);
   }
 
   //construct RunData object with bp input and timing info
   RunData run_data;
-  run_data.AddDataWHeader(std::string(belief_prop::kImageWidthHeader), widthHeightImages[0]);
-  run_data.AddDataWHeader(std::string(belief_prop::kImageHeightHeader), widthHeightImages[1]);
+  run_data.AddDataWHeader(std::string(belief_prop::kImageWidthHeader), width_heightImages[0]);
+  run_data.AddDataWHeader(std::string(belief_prop::kImageHeightHeader), width_heightImages[1]);
   run_data.AppendData(detailedBPTimings.AsRunData());
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object
   return {ProcessStereoSetOutput{
-    detailedBPTimings.getMedianTiming(beliefprop::Runtime_Type::kTotalWithTransfer), std::move(output_disparity_map), run_data}};
+    detailedBPTimings.MedianTiming(beliefprop::Runtime_Type::kTotalWithTransfer), std::move(output_disparity_map), run_data}};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */

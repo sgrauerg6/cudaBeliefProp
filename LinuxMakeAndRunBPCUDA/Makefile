@@ -6,7 +6,7 @@ BP_PATH = ${TOP_DIR}/BeliefProp
 
 CU_FILE = driverCudaBp.cu
 CU_OBJ = driverCudaBp.o
-FILE_DEPENDENCIES = BpConstsAndParams/BpStereoCudaParameters.h BpConstsAndParams/BpStereoParameters.h BpConstsAndParams/RunSettings.h BpConstsAndParams/BpStructsAndEnums.h
+FILE_DEPENDENCIES = BpConstsAndParams/BpStereoParameters.h BpConstsAndParams/RunSettings.h BpConstsAndParams/BpStructsAndEnums.h
 
 L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
 INCLUDES_CUDA = -I$(CUDA_DIR)/include
@@ -89,10 +89,10 @@ ParallelParams.o:
 RunBenchmarkImp.o:
 	$(CC) ${TOP_DIR}/RunImp/RunBenchmarkImp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverCudaBp.o: ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp ${BP_PATH}/BpConstsAndParams/BpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/BpStereoParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverCudaBp.o: ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp ${BP_PATH}/BpConstsAndParams/BpStereoParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ${TOP_DIR}/MainDriverFiles/driverCudaBp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-driverBpStereoCUDA_customRun.o: ${TOP_DIR}/MainDriverFiles/driverBpStereoCUDA_customRun.cpp ${BP_PATH}/BpConstsAndParams/BpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/BpStereoParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
+driverBpStereoCUDA_customRun.o: ${TOP_DIR}/MainDriverFiles/driverBpStereoCUDA_customRun.cpp ${BP_PATH}/BpConstsAndParams/BpStereoParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h RunBpStereoSetOnGPUWithCUDA.o stereo.o DisparityMap.o
 	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCUDA_customRun.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpFileHandling.o: ${BP_PATH}/BpFileProcessing/BpFileHandling.h ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp ${BP_PATH}/BpFileProcessing/BpFileHandlingConsts.h
@@ -122,7 +122,7 @@ BpEvaluationResults.o: ${BP_PATH}/BpResultsEvaluation/BpEvaluationResults.cpp ${
 DisparityMap.o: ${BP_PATH}/BpImageProcessing/DisparityMap.cpp ${BP_PATH}/BpImageProcessing/DisparityMap.h BpEvaluationParameters.o BpEvaluationResults.o
 	$(CC) ${BP_PATH}/BpImageProcessing/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-stereo.o: ${BP_PATH}/BpSingleThreadCPU/stereo.cpp ${BP_PATH}/BpSingleThreadCPU/stereo.h ${BP_PATH}/BpConstsAndParams/BpStereoCudaParameters.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
+stereo.o: ${BP_PATH}/BpSingleThreadCPU/stereo.cpp ${BP_PATH}/BpSingleThreadCPU/stereo.h ${BP_PATH}/BpConstsAndParams/BpStructsAndEnums.h ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
 	$(CC) ${BP_PATH}/BpSingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 SmoothImage.o: ${BP_PATH}/BpImageProcessing/SmoothImage.cpp ${BP_PATH}/BpImageProcessing/SmoothImage.h 

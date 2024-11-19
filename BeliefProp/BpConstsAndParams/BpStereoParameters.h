@@ -42,9 +42,9 @@ namespace bp_consts
 namespace bp_params
 {
   struct BpStereoSet {
-    const std::string_view name_;
-    const unsigned int num_disp_vals_;
-    const unsigned int scale_factor_;
+    const std::string_view name;
+    const unsigned int num_disp_vals;
+    const unsigned int scale_factor;
   };
 
   //declare stereo sets to process with name, num disparity values, and scale factor
@@ -94,7 +94,7 @@ namespace bp_params
   constexpr bool kAllocateFreeBpMemoryOutsideRuns{true};
 
   //retrieve run settings as a RunData object for output
-  inline RunData runSettings()  {
+  inline RunData RunSettings()  {
     RunData curr_run_data;
     curr_run_data.AddDataWHeader("Memory Optimization Level", std::to_string(kUseOptGPUMemManagement));
     curr_run_data.AddDataWHeader("Indexing Optimization Level", std::to_string(kOptimizedIndexingSetting));

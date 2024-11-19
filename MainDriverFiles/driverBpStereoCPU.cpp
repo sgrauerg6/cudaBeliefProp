@@ -38,11 +38,11 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
-  run_imp_settings.optParallelParamsOptionSetting_ = {true, run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels};
-  run_imp_settings.pParamsDefaultOptOptions_ = {run_cpu::kParallelParamsDefault, run_cpu::kParallelParameterOptions};
+  run_imp_settings.opt_parallel_params_setting = {true, run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels};
+  run_imp_settings.p_params_default_opt_settings = {run_cpu::kParallelParamsDefault, run_cpu::kParallelParameterOptions};
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
-  run_imp_settings.runName_ = (argc > 1) ? argv[1] : "CurrentRun";
+  run_imp_settings.run_name = (argc > 1) ? argv[1] : "CurrentRun";
 
   //adjust thread count to simulate single CPU on dual-CPU system
   //currently only works as expected if environment variables are set before run such that threads are pinned to socket via
@@ -52,10 +52,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
     //are pinned to socket
     //set default parallel threads count to be number of threads on a single CPU in the two-CPU system
-    run_imp_settings.pParamsDefaultOptOptions_.first = {std::thread::hardware_concurrency() / 2, 1};
+    run_imp_settings.p_params_default_opt_settings.first = {std::thread::hardware_concurrency() / 2, 1};
 
     //erase parallel thread count options with more than the number of threads on a single CPU in the two-CPU system
-    run_imp_settings.removeParallelParamAboveMaxThreads(std::thread::hardware_concurrency() / 2);
+    run_imp_settings.RemoveParallelParamAboveMaxThreads(std::thread::hardware_concurrency() / 2);
 
     //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
     //TODO: commented out since currently has no effect; needs to be set before run by
@@ -64,8 +64,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that simulating single CPU on dual-CPU system
-    if (run_imp_settings.runName_) {
-      *(run_imp_settings.runName_) += "_SimSingleCPUOnDualCPUSystem";
+    if (run_imp_settings.run_name) {
+      *(run_imp_settings.run_name) += "_SimSingleCPUOnDualCPUSystem";
     }
   }
   //check if running implementation with CPU threads pinned to socket (for cases with multiple CPUs)
@@ -78,17 +78,17 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that CPU threads pinned to socket
-    if (run_imp_settings.runName_) {
-      *(run_imp_settings.runName_) += "_ThreadsPinnedToSocket";
+    if (run_imp_settings.run_name) {
+      *(run_imp_settings.run_name) += "_ThreadsPinnedToSocket";
     }
   }*/
 
   //remove any parallel processing below given minimum number of threads
-  run_imp_settings.removeParallelParamBelowMinThreads(run_cpu::kMinNumThreadsRun);
-  run_imp_settings.templatedItersSetting_ = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
-  run_imp_settings.baseOptSingThreadRTimeForTSetting_ = 
+  run_imp_settings.RemoveParallelParamBelowMinThreads(run_cpu::kMinNumThreadsRun);
+  run_imp_settings.templated_iters_setting = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
+  run_imp_settings.base_opt_single_thread_runtime_for_template_setting = 
     {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
-  run_imp_settings.subset_str_indices_ = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
+  run_imp_settings.subset_str_indices = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
   #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
   #else

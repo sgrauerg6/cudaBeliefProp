@@ -13,57 +13,57 @@
 
 template<> inline float64x2_t VectProcessingFuncts::loadPackedDataAligned<double, float64x2_t>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, double* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, double* inData)
 {
   return vld1q_f64(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline float32x4_t VectProcessingFuncts::loadPackedDataAligned<float, float32x4_t>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, float* inData)
 {
   return vld1q_f32(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline float16x4_t VectProcessingFuncts::loadPackedDataAligned<float16_t, float16x4_t>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float16_t* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, float16_t* inData)
 {
   return vld1_f16(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity,
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity,
     numDispVals)]);
 }
 
 template<> inline float32x4_t VectProcessingFuncts::loadPackedDataUnaligned<float, float32x4_t>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, float* inData)
 {
   return vld1q_f32(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline float16x4_t VectProcessingFuncts::loadPackedDataUnaligned<float16_t, float16x4_t>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, float16_t* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, float16_t* inData)
 {
   return vld1_f16(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline float64x2_t VectProcessingFuncts::loadPackedDataUnaligned<double, float64x2_t>(
   unsigned int x, unsigned int y, unsigned int currentDisparity,
-  const beliefprop::LevelProperties& currentLevelProperties, unsigned int numDispVals, double* inData)
+  const beliefprop::BpLevelProperties& currentBpLevel, unsigned int numDispVals, double* inData)
 {
   return vld1q_f64(&inData[beliefprop::retrieveIndexInDataAndMessage(
-    x, y, currentLevelProperties.padded_width_checkerboard_level_,
-    currentLevelProperties.height_level_, currentDisparity, numDispVals)]);
+    x, y, currentBpLevel.padded_width_checkerboard_level_,
+    currentBpLevel.height_level_, currentDisparity, numDispVals)]);
 }
 
 template<> inline float32x4_t VectProcessingFuncts::createSIMDVectorSameData<float32x4_t>(float data) {
@@ -122,11 +122,11 @@ template<> inline float64x2_t VectProcessingFuncts::convertValToDatatype<float64
   return vdupq_n_f64(val);
 }
 
-template<> inline float32x4_t VectProcessingFuncts::getMinByElement<float32x4_t>(const float32x4_t& val1, const float32x4_t& val2) {
+template<> inline float32x4_t VectProcessingFuncts::GetMinByElement<float32x4_t>(const float32x4_t& val1, const float32x4_t& val2) {
   return vminnmq_f32(val1, val2);
 }
 
-template<> inline float64x2_t VectProcessingFuncts::getMinByElement<float64x2_t>(const float64x2_t& val1, const float64x2_t& val2) {
+template<> inline float64x2_t VectProcessingFuncts::GetMinByElement<float64x2_t>(const float64x2_t& val1, const float64x2_t& val2) {
   return vminnmq_f64(val1, val2);
 }
 

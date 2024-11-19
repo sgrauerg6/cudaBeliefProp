@@ -23,7 +23,7 @@ public:
     size_t data_type_size) const;
 
   //return acceleration setting for implementation
-  run_environment::AccSetting getAccelerationSetting() const { return opt_imp_accel_; }
+  run_environment::AccSetting AccelerationSetting() const { return opt_imp_accel_; }
 
 protected:
   const run_environment::AccSetting opt_imp_accel_;
