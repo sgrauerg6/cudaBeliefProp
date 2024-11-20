@@ -10,6 +10,7 @@
 
 #include <array>
 #include <string>
+#include <unordered_map>
 
 namespace beliefprop {
 

@@ -10,8 +10,8 @@
 
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
-#include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpRunProcessing/BpStructsAndEnums.h"
 #include "RunImp/RunImpGenFuncts.h"
 
 namespace beliefprop {

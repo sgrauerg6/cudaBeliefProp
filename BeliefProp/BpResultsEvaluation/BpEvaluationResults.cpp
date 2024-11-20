@@ -9,8 +9,8 @@
 
 //initialize evaluation results with evaluation parameters
 void BpEvaluationResults::InitializeWithEvalParams(const BpEvaluationParameters& eval_params) {
-  disparity_error_max_ = eval_params.max_diff_cap_;
-  for (const auto& output_diff_threshold : eval_params.output_diff_thresholds_) {
+  disparity_error_max_ = eval_params.max_diff_cap;
+  for (const auto& output_diff_threshold : eval_params.output_diff_thresholds) {
     num_sig_diff_pixels_at_thresholds_[output_diff_threshold] = 0;
   }
 }

@@ -24,8 +24,8 @@
 #include "imconv.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
-#include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpRunProcessing/BpStructsAndEnums.h"
 #include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>

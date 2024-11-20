@@ -18,8 +18,8 @@
 #include <algorithm>
 #include <set>
 #include "BpRunEvalImp/RunEvalBPImpOnInput.h"
-#include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "BpRunProcessing/RunBpStereoSet.h"

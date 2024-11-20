@@ -47,10 +47,10 @@ BpEvaluationResults DisparityMap<T>::OutputComparison(
     //add disparity difference at pixel to total disparity difference across pixels
     //with and without max disparity difference
     total_disp_abs_diff_no_max_w_max[0] += abs_diff;
-    total_disp_abs_diff_no_max_w_max[1] += std::min(abs_diff, evaluation_parameters.max_diff_cap_);
+    total_disp_abs_diff_no_max_w_max[1] += std::min(abs_diff, evaluation_parameters.max_diff_cap);
 
     //increment number of pixels that differ greater than threshold for each threshold
-    std::ranges::for_each(evaluation_parameters.output_diff_thresholds_,
+    std::ranges::for_each(evaluation_parameters.output_diff_thresholds,
       [abs_diff, &output_evaluation](auto threshold) {
         if (abs_diff > threshold) {
           output_evaluation.num_sig_diff_pixels_at_thresholds_[threshold]++;

@@ -12,7 +12,7 @@
 
 #include "RunSettingsEval/EvaluateImpResults.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include <filesystem>
 #include <vector>
 #include <string>

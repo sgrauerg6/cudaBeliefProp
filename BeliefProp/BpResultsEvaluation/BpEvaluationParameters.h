@@ -26,10 +26,10 @@ namespace beliefprop {
 //structs to store parameters for evaluation of disparity map from stereo processing
 struct BpEvaluationParameters {
   //evaluation done at multiple difference thresholds
-  const std::vector<float> output_diff_thresholds_{
+  const std::vector<float> output_diff_thresholds{
     beliefprop::kDisparityDiffThresholds.cbegin(),
     beliefprop::kDisparityDiffThresholds.cend()};
-  const float max_diff_cap_{beliefprop::kMaxDiffCap};
+  const float max_diff_cap{beliefprop::kMaxDiffCap};
 };
 
 #endif /* BPEVALUATIONPARAMETERS_H_ */

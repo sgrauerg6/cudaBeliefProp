@@ -14,9 +14,9 @@
 #include <string>
 #include <optional>
 #include <ranges>
-#include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/BpStructsAndEnums.h"
-#include "BpConstsAndParams/DetailedTimingBPConsts.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
 #include "BpImageProcessing/SmoothImage.h"

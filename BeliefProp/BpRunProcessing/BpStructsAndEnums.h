@@ -9,15 +9,13 @@
 #define BPSTRUCTSANDENUMS_H_
 
 #include <array>
-#include <vector>
-#include <thread>
-#include <iostream>
-#include <cmath>
-#include <string>
-#include "BpStereoParameters.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunData.h"
+
+namespace bp_consts
+{
+  //float value of "infinity" that works with half-precision
+  constexpr float kInfBp = 65504.0f;
+}
 
 namespace beliefprop {
 

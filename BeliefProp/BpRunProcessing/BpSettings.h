@@ -11,7 +11,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
-#include "BpConstsAndParams/BpStereoParameters.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"

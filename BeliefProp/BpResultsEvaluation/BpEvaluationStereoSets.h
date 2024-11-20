@@ -23,21 +23,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This class defines parameters for the cuda implementation for disparity map estimation for a pair of stereo images
+//This header file contains information about the stereo sets used for evaluation of
+//the bp implementation.
+//Stereo sets are in BpStereoSets folder
 
-#ifndef BPSTEREOPARAMETERS_H_
-#define BPSTEREOPARAMETERS_H_
+#ifndef BP_EVALUATION_STEREO_SETS_H_
+#define BP_EVALUATION_STEREO_SETS_H_
 
-#include <string>
 #include <string_view>
 #include <array>
-#include "RunSettingsEval/RunData.h"
-
-namespace bp_consts
-{
-  //float value of "infinity" that works with half-precision
-  constexpr float kInfBp = 65504.0f;
-}
 
 namespace beliefprop
 {
@@ -65,4 +59,4 @@ namespace beliefprop
   };
 };
 
-#endif /* BPSTEREOPARAMETERS_H_ */
+#endif /* BP_EVALUATION_STEREO_SETS_H_ */
