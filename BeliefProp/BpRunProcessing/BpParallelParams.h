@@ -15,7 +15,6 @@
 #include <cmath>
 #include <string>
 #include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "RunSettingsEval/RunTypeConstraints.h"

@@ -10,10 +10,11 @@
 
 #include <utility>
 #include <memory>
-#include "BpConstsAndParams/BpStructsAndEnums.h"
+//#include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "BpRunImp/BpParallelParams.h"
+#include "BpImageProcessing/BpSmoothTypeConstraints.h"
+#include "BpRunProcessing/BpParallelParams.h"
 
 class SmoothImageCPU final : public SmoothImage {
 public:

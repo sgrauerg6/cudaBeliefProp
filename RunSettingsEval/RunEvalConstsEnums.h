@@ -20,6 +20,9 @@ namespace run_eval {
   //enum for status to indicate if error or no error
   enum class Status { kNoError, kError };
 
+  //define string for display of "true" and "false" values of bool value
+  constexpr std::array<std::string_view, 2> kBoolValFalseTrueDispStr{"NO", "YES"};
+
   //constants for headers corresponding to input, input settings, results, and run success
   constexpr std::string_view kInputIdxHeader{"Input Index"};
   constexpr std::string_view kDatatypeHeader{"Data Type"};

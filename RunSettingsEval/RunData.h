@@ -18,11 +18,6 @@
 #include <optional>
 #include <variant>
 
-namespace run_eval {
-  //define string for display of "true" and "false" values of bool value
-  constexpr std::array<std::string_view, 2> kBoolValFalseTrueDispStr{"NO", "YES"};
-};
-
 //class to store headers with data corresponding to current program run and evaluation
 class RunData {
 public:

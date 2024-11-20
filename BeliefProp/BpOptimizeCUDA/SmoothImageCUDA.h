@@ -10,8 +10,9 @@
 
 #include <cuda_runtime.h>
 #include "BpConstsAndParams/BpStructsAndEnums.h"
+#include "BpImageProcessing/BpSmoothTypeConstraints.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "BpRunImp/BpParallelParams.h"
+#include "BpRunProcessing/BpParallelParams.h"
 
 //include for the kernel functions to be run on the GPU
 #include "kernelFilterHeader.cuh"

@@ -17,11 +17,11 @@
 #include <numeric>
 #include <algorithm>
 #include <set>
-#include "BpRunImp/RunEvalBPImpOnInput.h"
+#include "BpRunEvalImp/RunEvalBPImpOnInput.h"
 #include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "BpFileProcessing/BpFileHandling.h"
+#include "BpRunProcessing/BpParallelParams.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpSingleThreadCPU/stereo.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
@@ -29,7 +29,6 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 #include "RunImp/RunBenchmarkImp.h"
-#include "BpParallelParams.h"
 
 //run and evaluate optimized belief propagation implementation on a number of inputs
 //acceleration method of optimized belief propagation implementation is specified in template parameter

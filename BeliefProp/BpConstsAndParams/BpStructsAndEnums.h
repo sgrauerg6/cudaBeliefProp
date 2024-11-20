@@ -15,62 +15,11 @@
 #include <cmath>
 #include <string>
 #include "BpStereoParameters.h"
-#include "BpTypeConstraints.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 
-//parameters type requires AsRunData() function to return the parameters as a
-//RunData object
-template <typename T>
-concept Params_t =
-  requires(T t) {
-    { t.AsRunData() } -> std::same_as<RunData>;
-  };
-
 namespace beliefprop {
-
-//structure to store the settings for the number of levels and iterations
-struct BpSettings
-{
-  //initally set to default values
-  unsigned int num_levels{bp_params::kLevelsBp};
-  unsigned int num_iterations{bp_params::kItersBp};
-  float smoothing_sigma{bp_params::kSigmaBp};
-  float lambda_bp{bp_params::kLambdaBp};
-  float data_k_bp{bp_params::kDataKBp};
-  //discontinuity cost cap set to infinity by default but is
-  //expected to be dependent on number of disparity values and set when
-  //number of disparity values is set
-  float disc_k_bp{bp_consts::kInfBp};
-  //number of disparity values must be set for each stereo set
-  unsigned int num_disp_vals{0};
-
-  //retrieve bp settings as RunData object containing description headers with corresponding values
-  //for each setting
-  RunData AsRunData() const {
-    RunData curr_run_data;
-    curr_run_data.AddDataWHeader("Num Possible Disparity Values", num_disp_vals);
-    curr_run_data.AddDataWHeader("Num BP Levels", num_levels);
-    curr_run_data.AddDataWHeader("Num BP Iterations", num_iterations);
-    curr_run_data.AddDataWHeader("DISC_K_BP", (double)disc_k_bp);
-    curr_run_data.AddDataWHeader("kDataKBp", (double)data_k_bp);
-    curr_run_data.AddDataWHeader("kLambdaBp", (double)lambda_bp);
-    curr_run_data.AddDataWHeader("kSigmaBp", (double)smoothing_sigma);
-
-    return curr_run_data;
-  }
-
-  //declare friend function to output bp settings to stream
-  friend std::ostream& operator<<(std::ostream& results_stream, const BpSettings& bp_settings);
-};
-
-//function to output bp settings to stream
-inline std::ostream& operator<<(std::ostream& results_stream, const BpSettings& bp_settings) {
-  //get settings as RunData object and then use overloaded << operator for RunData
-  results_stream << bp_settings.AsRunData();
-  return results_stream;  
-}
 
 //used to define the two checkerboard "parts" that the image is divided into
 enum class Checkerboard_Part {kCheckerboardPart0, kCheckerboardPart1 };

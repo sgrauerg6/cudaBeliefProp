@@ -12,7 +12,7 @@
 
 #include "RunSettingsEval/EvaluateImpResults.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "BpConstsAndParams/BpConsts.h"
+#include "BpConstsAndParams/BpStereoParameters.h"
 #include <filesystem>
 #include <vector>
 #include <string>
@@ -35,8 +35,8 @@ private:
 
   //input parameters that are showed in results summary with runtimes
   std::vector<std::string> GetInputParamsShow() const override {
-    return {std::string(belief_prop::kStereoSetHeader), std::string(run_eval::kDatatypeHeader), std::string(belief_prop::kImageWidthHeader),
-            std::string(belief_prop::kImageHeightHeader), std::string(belief_prop::kNumDispValsHeader),
+    return {std::string(beliefprop::kStereoSetHeader), std::string(run_eval::kDatatypeHeader), std::string(beliefprop::kImageWidthHeader),
+            std::string(beliefprop::kImageHeightHeader), std::string(beliefprop::kNumDispValsHeader),
             std::string(run_eval::kLoopItersTemplatedHeader)};
   }
 };

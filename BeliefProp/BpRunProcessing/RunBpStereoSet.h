@@ -14,21 +14,19 @@
 #include <string>
 #include <optional>
 #include <ranges>
-#include "BpConstsAndParams/BpConsts.h"
 #include "BpConstsAndParams/BpStereoParameters.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunData.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
 #include "RunImp/RunImpMemoryManagement.h"
+#include "BpParallelParams.h"
 #include "ProcessBPOnTargetDevice.h"
 
 //structure with output disparity map, runtime, and other evaluation data
@@ -98,7 +96,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
   //allocate data for bp processing on target device ahead of runs if option selected
   T* bpData{nullptr};
   T* bpProcStore{nullptr};
-  if constexpr (bp_params::kAllocateFreeBpMemoryOutsideRuns) {
+  if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
     //allocate memory on device for bp processing
     const unsigned long numData = beliefprop::BpLevel::TotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
       width_height_images, alg_settings.num_disp_vals, alg_settings.num_levels);
@@ -112,7 +110,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
   }
 
   //run bp processing for specified number of runs
-  for (unsigned int num_run = 0; num_run < bp_params::kNumBpStereoRuns; num_run++)
+  for (unsigned int num_run = 0; num_run < beliefprop::kNumBpStereoRuns; num_run++)
   {
     //allocate the device memory to store and x and y smoothed images
     std::array<float*, 2> smoothed_images{
@@ -188,15 +186,15 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 
   //free data for bp processing on target device if this memory
   //management set to be done outside of runs
-  if constexpr (bp_params::kAllocateFreeBpMemoryOutsideRuns) {
+  if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
     runBpOnDevice.mem_management_bp_run->FreeAlignedMemoryOnDevice(bpData);
     runBpOnDevice.mem_management_bp_run->FreeAlignedMemoryOnDevice(bpProcStore);
   }
 
   //construct RunData object with bp input and timing info
   RunData run_data;
-  run_data.AddDataWHeader(std::string(belief_prop::kImageWidthHeader), width_height_images[0]);
-  run_data.AddDataWHeader(std::string(belief_prop::kImageHeightHeader), width_height_images[1]);
+  run_data.AddDataWHeader(std::string(beliefprop::kImageWidthHeader), width_height_images[0]);
+  run_data.AddDataWHeader(std::string(beliefprop::kImageHeightHeader), width_height_images[1]);
   run_data.AppendData(detailedBPTimings.AsRunData());
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object

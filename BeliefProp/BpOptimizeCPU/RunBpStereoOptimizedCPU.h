@@ -11,10 +11,9 @@
 #include <string>
 #include <memory>
 #include <array>
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
-#include "BpRunImp/BpParallelParams.h"
+#include "BpRunProcessing/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"

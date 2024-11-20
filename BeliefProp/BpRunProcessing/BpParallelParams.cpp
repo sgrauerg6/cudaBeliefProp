@@ -7,6 +7,7 @@
 
 #include <ranges>
 #include "BpParallelParams.h"
+#include "BpRunProcessing/BpRunSettings.h"
 
 //constructor to set parallel parameters with default dimensions for each kernel
 BpParallelParams::BpParallelParams(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
@@ -74,7 +75,7 @@ RunData BpParallelParams::AsRunData() const {
 //add results from run with same specified parallel parameters used every parallel component
 void BpParallelParams::AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data)
 {
-  const std::string kNumRunsInParensStr{"(" + std::to_string(bp_params::kNumBpStereoRuns) + " timings)"};
+  const std::string kNumRunsInParensStr{"(" + std::to_string(beliefprop::kNumBpStereoRuns) + " timings)"};
   if (opt_parallel_params_setting_ == run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun) {
     for (unsigned int level=0; level < num_levels_; level++) {
       p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)][level][p_params_curr_run] =

@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <utility>
 #include <algorithm>
 #include "BpConstsAndParams/BpStructsAndEnums.h"
-#include "BpRunImp/BpParallelParams.h"
+#include "BpRunProcessing/BpParallelParams.h"
 #include "BpImage.h"
 
 //don't smooth input images if kSigmaBp below this

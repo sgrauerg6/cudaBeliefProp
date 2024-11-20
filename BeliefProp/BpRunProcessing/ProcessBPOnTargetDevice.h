@@ -18,15 +18,16 @@
 #include <ranges>
 #include "BpConstsAndParams/BpStereoParameters.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/DetailedTimingBPConsts.h"
-#include "BpRunImp/BpLevel.h"
-#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
 #include "RunImp/RunImpMemoryManagement.h"
+#include "BpRunSettings.h"
+#include "BpLevel.h"
+#include "BpSettings.h"
+#include "BpParallelParams.h"
 
 //alias for time point for start and end time for each timing segment
 using timingType = std::chrono::time_point<std::chrono::system_clock>;
@@ -241,8 +242,8 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
     bp_levels[alg_settings.num_levels-1].NumDataInBpArrays<T>(alg_settings.num_disp_vals);
 
   //assuming that width includes padding
-  if constexpr (bp_params::kUseOptGPUMemManagement) {
-    if constexpr (bp_params::kAllocateFreeBpMemoryOutsideRuns) {
+  if constexpr (beliefprop::kUseOptGPUMemManagement) {
+    if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
       std::tie(data_costs_device_all_levels, messages_device_all_levels) =
         OrganizeDataCostsAndMessageDataAllLevels(
           allocatedMemForBpProcessingDevice, data_all_levels_each_data_message_arr);
@@ -296,7 +297,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   std::array<beliefprop::CheckerboardMessages<T*>, 2> messages_device;
 
   //assuming that width includes padding
-  if constexpr (bp_params::kUseOptGPUMemManagement) {
+  if constexpr (beliefprop::kUseOptGPUMemManagement) {
     messages_device[0] = RetrieveLevelMessageData(
       messages_device_all_levels, bp_levels[alg_settings.num_levels - 1u].LevelProperties().offset_into_arrays_);
   }
@@ -350,7 +351,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
         RetrieveLevelDataCosts(data_costs_device_all_levels, bp_levels[level_num - 1].LevelProperties().offset_into_arrays_);
 
       //assuming that width includes padding
-      if constexpr (bp_params::kUseOptGPUMemManagement) {
+      if constexpr (beliefprop::kUseOptGPUMemManagement) {
         messages_device[(current_checkerboard_set + 1) % 2] = RetrieveLevelMessageData(
           messages_device_all_levels, bp_levels[level_num - 1].LevelProperties().offset_into_arrays_);
       }
@@ -375,7 +376,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
       data_copy_timings[level_num][1] = copy_message_values_kernel_end_time;
 
       //assuming that width includes padding
-      if constexpr (!bp_params::kUseOptGPUMemManagement) {
+      if constexpr (!beliefprop::kUseOptGPUMemManagement) {
         //free the now-copied from computed data of the completed level
         FreeCheckerboardMessagesMemory(messages_device[current_checkerboard_set], mem_management_bp_run);
       }
@@ -402,13 +403,13 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   start_end_times[beliefprop::Runtime_Type::kOutputDisparity][1] = curr_time;
   start_end_times[beliefprop::Runtime_Type::kFinalFree][0] = curr_time;
 
-  if constexpr (bp_params::kUseOptGPUMemManagement) {
-    if constexpr (bp_params::kAllocateFreeBpMemoryOutsideRuns) {
+  if constexpr (beliefprop::kUseOptGPUMemManagement) {
+    if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
       //do nothing; memory free outside of runs
     }
     else {
       //now free the allocated data space; all data in single array when
-      //bp_params::kUseOptGPUMemManagement set to true
+      //beliefprop::kUseOptGPUMemManagement set to true
       FreeDataCostsAllDataInSingleArray(data_costs_device_all_levels, mem_management_bp_run);
     }
   }

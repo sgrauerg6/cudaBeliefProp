@@ -29,9 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //#include <format>
 #include "BpConstsAndParams/BpStereoParameters.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpSharedFuncts/SharedBPProcessingFuncts.h"
-#include "BpRunImp/BpParallelParams.h"
+#include "BpRunProcessing/BpParallelParams.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
@@ -1622,7 +1621,7 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
       VectProcessingFuncts::StorePackedDataUnaligned<T, W>(dest_message_array_index, dst_message_array, dst[current_disparity]);
     }
 
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       dest_message_array_index += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -1727,7 +1726,7 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
       VectProcessingFuncts::StorePackedDataUnaligned<T, W>(dest_message_array_index, dst_message_array, dst[current_disparity]);
     }
 
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       dest_message_array_index += current_bp_level.padded_width_checkerboard_level_;
     }
     else {

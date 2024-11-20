@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <iostream>
 #include "BpFileProcessing/BpFileHandlingConsts.h"
-#include "BpRunImp/RunEvalBpImp.h"
-#include "BpRunImp/RunEvalBPImpOnInput.h"
+#include "BpRunEvalImp/RunEvalBpImp.h"
+#include "BpRunEvalImp/RunEvalBPImpOnInput.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunEvalImpMultSettings.h"
 #include "BpRunProcessing/RunBpStereoSet.h"

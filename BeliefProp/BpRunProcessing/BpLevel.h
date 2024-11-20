@@ -6,10 +6,12 @@
  */
 
 #include "BpConstsAndParams/BpStereoParameters.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
+
+#ifndef BP_LEVEL_H
+#define BP_LEVEL_H
 
 namespace beliefprop {
 
@@ -130,3 +132,5 @@ private:
 };
 
 }
+
+#endif //BP_LEVEL_H

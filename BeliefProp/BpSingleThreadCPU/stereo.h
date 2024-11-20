@@ -22,10 +22,10 @@
 #include "pnmfile.h"
 #include "filter.h"
 #include "imconv.h"
+#include "BpRunProcessing/BpParallelParams.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpConstsAndParams/BpStereoParameters.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
-#include "BpRunImp/BpParallelParams.h"
 #include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
@@ -203,11 +203,11 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::bp_cb(image<float[DISP_VAL
 template<typename T, unsigned int DISP_VALS>
 inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) {
-  image<float[DISP_VALS]> *u[bp_params::kLevelsBp];
-  image<float[DISP_VALS]> *d[bp_params::kLevelsBp];
-  image<float[DISP_VALS]> *l[bp_params::kLevelsBp];
-  image<float[DISP_VALS]> *r[bp_params::kLevelsBp];
-  image<float[DISP_VALS]> *data[bp_params::kLevelsBp];
+  image<float[DISP_VALS]> *u[alg_settings.num_levels];
+  image<float[DISP_VALS]> *d[alg_settings.num_levels];
+  image<float[DISP_VALS]> *l[alg_settings.num_levels];
+  image<float[DISP_VALS]> *r[alg_settings.num_levels];
+  image<float[DISP_VALS]> *data[alg_settings.num_levels];
 
   auto timeStart = std::chrono::system_clock::now();
 

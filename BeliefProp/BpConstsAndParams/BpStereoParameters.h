@@ -39,8 +39,13 @@ namespace bp_consts
   constexpr float kInfBp = 65504.0f;
 }
 
-namespace bp_params
+namespace beliefprop
 {
+  constexpr std::string_view kImageWidthHeader{"Image Width"};
+  constexpr std::string_view kImageHeightHeader{"Image Height"};
+  constexpr std::string_view kNumDispValsHeader{"Num Possible Disparity Values"};
+  constexpr std::string_view kStereoSetHeader{"Stereo Set"};
+  
   struct BpStereoSet {
     const std::string_view name;
     const unsigned int num_disp_vals;
@@ -58,48 +63,6 @@ namespace bp_params
     BpStereoSet{"conesFullSizeCropped", 256, 1},
     BpStereoSet{"conesFullSize", 256, 1}
   };
-
-  //number of belief propagation stereo runs of same image set
-  //fewer runs if using limited parameters for faster processing
-#ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
-  constexpr unsigned int kNumBpStereoRuns = 3;
-#else
-  constexpr unsigned int kNumBpStereoRuns = 15;
-#endif //LIMITED_TEST_PARAMS_FEWER_RUNS
-
-  // number of BP iterations at each scale/level
-  constexpr unsigned int kItersBp = 7;
-
-  // number of scales/levels in the pyramid to run BP
-  constexpr unsigned int kLevelsBp = 5;
-
-  // truncation of data cost
-  constexpr float kDataKBp = 15.0f;
-
-  // weighing of data cost
-  constexpr float kLambdaBp = 0.1f;
-
-  // amount to smooth the input images
-  constexpr float kSigmaBp = 0.0f;
-
-  //by default, optimized GPU memory management and optimized indexing used
-  //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these
-  //optimizations (note that the optimized indexing was present in the initial implementation)
-  //Can remove optimized GPU memory management (making the processing more similar to the initial work)
-  //by setting kUseOptGPUMemManagement to false
-  //Optimized indexing can be turned off by changing the kOptimizedIndexingSetting value to false
-  //(not recommended; this slows down processing)
-  constexpr bool kUseOptGPUMemManagement{true};
-  constexpr bool kOptimizedIndexingSetting{true};
-  constexpr bool kAllocateFreeBpMemoryOutsideRuns{true};
-
-  //retrieve run settings as a RunData object for output
-  inline RunData RunSettings()  {
-    RunData curr_run_data;
-    curr_run_data.AddDataWHeader("Memory Optimization Level", std::to_string(kUseOptGPUMemManagement));
-    curr_run_data.AddDataWHeader("Indexing Optimization Level", std::to_string(kOptimizedIndexingSetting));
-    return curr_run_data;
-  }
 };
 
 #endif /* BPSTEREOPARAMETERS_H_ */

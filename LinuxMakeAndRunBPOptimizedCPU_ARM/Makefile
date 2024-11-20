@@ -49,10 +49,10 @@ RunData.o:
 	$(CC) ${TOP_DIR}/RunSettingsEval/RunData.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunEvalBpImp.o:
-	$(CC) ${BP_PATH}/BpRunImp/RunEvalBpImp.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${BP_PATH}/BpRunEvalImp/RunEvalBpImp.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpParallelParams.o:
-	$(CC) ${BP_PATH}/BpRunImp/BpParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${BP_PATH}/BpRunProcessing/BpParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ParallelParams.o:
 	$(CC) ${TOP_DIR}/RunImp/ParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)

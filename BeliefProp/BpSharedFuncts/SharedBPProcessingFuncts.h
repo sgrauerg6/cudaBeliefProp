@@ -10,7 +10,6 @@
 
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
-#include "BpConstsAndParams/BpTypeConstraints.h"
 #include "BpConstsAndParams/BpStereoParameters.h"
 #include "BpConstsAndParams/BpStructsAndEnums.h"
 #include "RunImp/RunImpGenFuncts.h"
@@ -22,7 +21,7 @@ ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned
   unsigned int width, unsigned int height, unsigned int current_disparity, unsigned int total_num_disp_vals,
   unsigned int offsetData = 0u)
 {
-  if constexpr (bp_params::kOptimizedIndexingSetting) {
+  if constexpr (beliefprop::kOptimizedIndexingSetting) {
     //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
     return (y_val * width * total_num_disp_vals + width * current_disparity + x_val) + offsetData;
   }
@@ -85,7 +84,7 @@ ARCHITECTURE_ADDITION inline void DtStereo(T* f, unsigned int bp_settings_disp_v
 
   for (unsigned int current_disparity = 1; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       currFArrayIndex += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -100,7 +99,7 @@ ARCHITECTURE_ADDITION inline void DtStereo(T* f, unsigned int bp_settings_disp_v
 
   for (int current_disparity = (int)bp_settings_disp_vals - 2; current_disparity >= 0; current_disparity--)
   {
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       currFArrayIndex -= current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -163,7 +162,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
     dst[current_disparity] -= val_to_normalize;
     dst_message_array[dest_message_array_index] =
       run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dst[current_disparity]);
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       dest_message_array_index += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -221,7 +220,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
     dst[current_disparity] -= val_to_normalize;
     dst_message_array[dest_message_array_index] =
       run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dst[current_disparity]);
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       dest_message_array_index += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -345,7 +344,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
     if (dstProcessing[procArrIdx] < minimum)
       minimum = dstProcessing[procArrIdx];
 
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       procArrIdx += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -371,7 +370,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
 
     val_to_normalize += dstProcessing[procArrIdx];
 
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       procArrIdx += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
@@ -388,7 +387,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
     dstProcessing[procArrIdx] -= val_to_normalize;
     dst_message_array[procArrIdx] =
       run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dstProcessing[procArrIdx]);
-    if constexpr (bp_params::kOptimizedIndexingSetting) {
+    if constexpr (beliefprop::kOptimizedIndexingSetting) {
       procArrIdx += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
