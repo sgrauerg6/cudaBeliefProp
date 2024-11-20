@@ -28,29 +28,29 @@ namespace beliefpropCUDA {
 
 //kernel to convert the unsigned int pixels to float pixels in an image when
 //smoothing is not desired but the pixels need to be converted to floats
-//the input image is stored as unsigned ints in the texture uint_image_pixelsToFilterTexture
+//the input image is stored as unsigned ints
 //output filtered image stored in float_image_pixels
 __global__ void convertUnsignedIntImageToFloat(
-  unsigned int* uint_image_pixelsToFilter, float* float_image_pixels,
+  const unsigned int* uint_image_pixels, float* float_image_pixels,
   unsigned int width_images, unsigned int height_images);
 
 //kernel to apply a horizontal filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture uint_image_pixelsToFilterTexture
+//the input image is stored as unsigned ints
 //the output filtered image is returned as an array of floats
 template<BpImData_t T>
 __global__ void FilterImageAcross(
-  T* image_to_filter, float* filtered_image,
+  const T* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
-  float* image_filter, unsigned int size_filter);
+  const float* image_filter, unsigned int size_filter);
 
 //kernel to apply a vertical filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture uint_image_pixelsToFilterTexture
+//the input image is stored as unsigned ints
 //the output filtered image is returned as an array of floats
 template<BpImData_t T>
 __global__ void FilterImageVertical(
-  T* image_to_filter, float* filtered_image,
+  const T* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
-  float* image_filter, unsigned int size_filter);
+  const float* image_filter, unsigned int size_filter);
 
 };
 

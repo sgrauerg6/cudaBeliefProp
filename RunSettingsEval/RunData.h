@@ -69,18 +69,19 @@ public:
   friend std::ostream& operator<<(std::ostream& os, const RunData& run_data);
 
 private:
-  //get header to add...use input header if not yet used
-  //user original header with number appended if original header is already used
+  //get header to add...returns input header if not yet used
+  //generates and returns input header with number appended if header already used
   std::string GetHeaderToAdd(const std::string& in_header) const;
 
-  //data stored as mapping between header and data value corresponding to headers
+  //data stored as map between header and value corresponding to header that can
+  //be of type unsigned int, double, bool, or string
   std::map<std::string, std::variant<unsigned int, double, bool, std::string>> headers_w_data_;
   
-  //headers ordered from first header added to last header added
+  //headers in order
   std::vector<std::string> headers_in_order_;
 };
 
-//definition of overloaded << operator for output to stream
+//overloaded << operator for output to stream
 inline std::ostream& operator<<(std::ostream& os, const RunData& run_data) {
   //add each header with corresponding data separated by ':' to stream in a separate line
   for (const auto& header : run_data.headers_in_order_) {

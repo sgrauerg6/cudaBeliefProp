@@ -24,7 +24,7 @@ namespace VectProcessingFuncts
   //use this operation
   template<RunData_t T, RunDataVect_t U>
   U LoadPackedDataAligned(unsigned int x, unsigned int y, unsigned int current_disparity,
-    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, T* inData)
+    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const T* inData)
   {
     std::cout << "Data type not supported for loading aligned data" << std::endl;
   }
@@ -33,7 +33,7 @@ namespace VectProcessingFuncts
   //inData array does not need to be aligned to use this operation
   template<RunData_t T, RunDataVect_t U>
   U LoadPackedDataUnaligned(unsigned int x, unsigned int y, unsigned int current_disparity,
-    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, T* inData)
+    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const T* inData)
   {
     std::cout << "Data type not supported for loading unaligned data" << std::endl;
   }

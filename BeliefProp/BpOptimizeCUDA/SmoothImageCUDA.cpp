@@ -47,7 +47,7 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& in_image, float si
     //copy the image filter to the GPU
     float* filter_device;
     cudaMalloc((void**)&filter_device, filter_w_size.second*sizeof(float));
-    cudaMemcpy(filter_device, filter_w_size.first.get(), filter_w_size.second*sizeof(float), cudaMemcpyHostToDevice);
+    cudaMemcpy(filter_device, filter_w_size.first.data(), filter_w_size.second*sizeof(float), cudaMemcpyHostToDevice);
 
     //allocate the GPU global memory for the original, intermediate (when the image has been filtered horizontally but not vertically), and final image
     unsigned int* original_image_device;

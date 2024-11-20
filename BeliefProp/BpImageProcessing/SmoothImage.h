@@ -50,14 +50,14 @@ public:
 
 protected:
   //create a Gaussian filter from a sigma value
-  std::pair<std::unique_ptr<float[]>, unsigned int> MakeFilter(float sigma);
+  std::pair<std::vector<float>, unsigned int> MakeFilter(float sigma);
 
   //parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA)
   const ParallelParams& parallel_params_;
 
 private:
   //normalize filter mask so it integrates to one
-  void NormalizeFilter(const std::unique_ptr<float[]>& filter, unsigned int size_filter);
+  void NormalizeFilter(std::vector<float>& filter, unsigned int size_filter);
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

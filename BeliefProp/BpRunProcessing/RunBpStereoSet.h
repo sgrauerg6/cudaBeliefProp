@@ -80,7 +80,9 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
   const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice)
 {
   //retrieve the images as well as the width and height
-  const std::array<BpImage<unsigned int>, 2> inputImages{BpImage<unsigned int>(ref_test_image_path[0]), BpImage<unsigned int>(ref_test_image_path[1])};
+  const std::array<BpImage<unsigned int>, 2> inputImages{
+    BpImage<unsigned int>(ref_test_image_path[0]),
+    BpImage<unsigned int>(ref_test_image_path[1])};
   const std::array<unsigned int, 2> width_height_images{inputImages[0].Width(), inputImages[0].Height()};
 
   //get total number of pixels in input images
@@ -145,7 +147,8 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 
     //run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object run_bp_stereo
     //returns detailed timings for bp run
-    auto rpBpStereoOutput = (*(runBpOnDevice.run_bp_stereo))(smoothed_images, alg_settings, width_height_images,
+    auto rpBpStereoOutput = (*(runBpOnDevice.run_bp_stereo))(
+      smoothed_images, alg_settings, width_height_images,
       bpData, bpProcStore, runBpOnDevice.mem_management_bp_run);
     if (!rpBpStereoOutput) {
       //return std::optional object with no value if null output indicating error in run
@@ -153,15 +156,18 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     }
 
     //get and store end timepoint of bp run for computation of total runtime
-    runtime_start_end_timings[beliefprop::Runtime_Type::kTotalBp][1] = std::chrono::system_clock::now();
-    runtime_start_end_timings[beliefprop::Runtime_Type::kTotalNoTransfer][1] = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::kTotalBp][1] =
+      std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::kTotalNoTransfer][1] =
+      std::chrono::system_clock::now();
 
     //transfer the disparity map estimation on the device to the host for output
     runBpOnDevice.mem_management_images->TransferDataFromDeviceToHost(
       output_disparity_map.PointerToPixelsStart(), rpBpStereoOutput->first, totNumPixelsImages);
 
     //compute timings for each portion of interest and add to vector timings
-    runtime_start_end_timings[beliefprop::Runtime_Type::kTotalWithTransfer][1] = std::chrono::system_clock::now();
+    runtime_start_end_timings[beliefprop::Runtime_Type::kTotalWithTransfer][1] =
+      std::chrono::system_clock::now();
 
     //retrieve the duration for each segment and add to bp timings
     std::ranges::for_each(runtime_start_end_timings,
@@ -195,7 +201,8 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object
   return {ProcessStereoSetOutput{
-    detailedBPTimings.MedianTiming(beliefprop::Runtime_Type::kTotalWithTransfer), std::move(output_disparity_map), run_data}};
+    detailedBPTimings.MedianTiming(
+      beliefprop::Runtime_Type::kTotalWithTransfer), std::move(output_disparity_map), run_data}};
 }
 
 #endif /* RUNBPSTEREOSET_H_ */

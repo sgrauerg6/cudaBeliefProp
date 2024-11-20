@@ -18,7 +18,7 @@
 
 template<> inline __m512d VectProcessingFuncts::LoadPackedDataAligned<double, __m512d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, double* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const double* inData)
 {
   return _mm512_load_pd(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -27,7 +27,7 @@ template<> inline __m512d VectProcessingFuncts::LoadPackedDataAligned<double, __
 
 template<> inline __m512 VectProcessingFuncts::LoadPackedDataAligned<float, __m512>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, float* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const float* inData)
 {
   return _mm512_load_ps(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -36,7 +36,7 @@ template<> inline __m512 VectProcessingFuncts::LoadPackedDataAligned<float, __m5
 
 template<> inline __m256i VectProcessingFuncts::LoadPackedDataAligned<short, __m256i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, short* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
 {
   return _mm256_load_si256((__m256i*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -46,7 +46,7 @@ template<> inline __m256i VectProcessingFuncts::LoadPackedDataAligned<short, __m
 
 template<> inline __m512 VectProcessingFuncts::LoadPackedDataUnaligned<float, __m512>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, float* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const float* inData)
 {
   return _mm512_loadu_ps(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -55,7 +55,7 @@ template<> inline __m512 VectProcessingFuncts::LoadPackedDataUnaligned<float, __
 
 template<> inline __m256i VectProcessingFuncts::LoadPackedDataUnaligned<short, __m256i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, short* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
 {
   return _mm256_loadu_si256((__m256i*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -64,7 +64,7 @@ template<> inline __m256i VectProcessingFuncts::LoadPackedDataUnaligned<short, _
 
 template<> inline __m512d VectProcessingFuncts::LoadPackedDataUnaligned<double, __m512d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, double* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const double* inData)
 {
   return _mm512_loadu_pd(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,

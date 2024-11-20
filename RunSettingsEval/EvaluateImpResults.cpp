@@ -436,7 +436,7 @@ MultRunSpeedup EvaluateImpResults::GetAvgMedSpeedupOptPParams(MultRunData& run_o
   for (unsigned int i=0; i < run_output.size(); i++) {
     if (run_output[i]) {
       speedups_vect.push_back(run_output[i]->at(0).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value() / 
-                             run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
+                              run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
       run_output[i]->at(0).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
       run_output[i]->at(1).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
     }

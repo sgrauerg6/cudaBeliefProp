@@ -101,9 +101,10 @@ std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //parallel parameters initialized with default thread count dimensions at every level
-  std::shared_ptr<ParallelParams> parallel_params = std::make_shared<BpParallelParams>(run_imp_settings.opt_parallel_params_setting.second,
-  alg_settings_.num_levels, run_imp_settings.p_params_default_opt_settings.first);
-  return parallel_params;
+  return std::make_shared<BpParallelParams>(
+    run_imp_settings.opt_parallel_params_setting.second,
+    alg_settings_.num_levels,
+    run_imp_settings.p_params_default_opt_settings.first);
 }
 
 //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type

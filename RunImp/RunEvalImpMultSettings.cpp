@@ -10,7 +10,8 @@
 #include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
-void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetting, std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting,
+void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetting,
+  std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting,
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //get fastest implementation available

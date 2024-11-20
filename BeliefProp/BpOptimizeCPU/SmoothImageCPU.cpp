@@ -30,11 +30,11 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& in_image, float sig
 
      //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
     FilterImageAcrossCPU<unsigned int>(in_image.PointerToPixelsStart(), intermediateImage.get(), in_image.Width(),
-      in_image.Height(), filter_w_size.first.get(), filter_w_size.second, this->parallel_params_);
+      in_image.Height(), filter_w_size.first.data(), filter_w_size.second, this->parallel_params_);
 
     //now use the vertical filter to complete the smoothing of image 1 on the device
     FilterImageVerticalCPU<float>(intermediateImage.get(), smoothed_image,
-      in_image.Width(), in_image.Height(), filter_w_size.first.get(), filter_w_size.second, this->parallel_params_);
+      in_image.Width(), in_image.Height(), filter_w_size.first.data(), filter_w_size.second, this->parallel_params_);
   }
 }
 
@@ -42,7 +42,8 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& in_image, float sig
 //smoothing is not desired but the pixels need to be converted to floats
 //the input image is stored as unsigned ints in the texture uint_image_pixels
 //output filtered image stored in float_image_pixels
-void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(unsigned int* uint_image_pixels, float* float_image_pixels,
+void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
+    const unsigned int* uint_image_pixels, float* float_image_pixels,
     unsigned int width_images, unsigned int height_images,
     const ParallelParams& opt_cpu_params)
 {
