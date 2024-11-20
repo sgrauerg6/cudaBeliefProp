@@ -1,12 +1,12 @@
 /*
- * BpStructsAndEnums.h
+ * BpConstsEnumsAliases.h
  *
  *  Created on: Sep 22, 2019
  *      Author: scott
  */
 
-#ifndef BPSTRUCTSANDENUMS_H_
-#define BPSTRUCTSANDENUMS_H_
+#ifndef BP_CONSTS_ENUMS_ALIASES_H_
+#define BP_CONSTS_ENUMS_ALIASES_H_
 
 #include <array>
 #include "RunSettingsEval/RunTypeConstraints.h"
@@ -50,4 +50,4 @@ enum class BpKernel : unsigned int {
 
 };
 
-#endif /* BPSTRUCTSANDENUMS_H_ */
+#endif /* BP_CONSTS_ENUMS_ALIASES_H_ */

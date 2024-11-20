@@ -15,7 +15,7 @@
 #include <optional>
 #include <ranges>
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"

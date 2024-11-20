@@ -16,8 +16,8 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
 
-#ifndef BP_SETTINGS_H
-#define BP_SETTINGS_H
+#ifndef BP_SETTINGS_H_
+#define BP_SETTINGS_H_
 
 //parameters type requires AsRunData() function to return the parameters as a
 //RunData object
@@ -79,4 +79,4 @@ struct BpSettings
 
 }
 
-#endif //BP_SETTINGS_H
+#endif //BP_SETTINGS_H_

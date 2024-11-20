@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <stdlib.h>
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunTypeConstraints.h"

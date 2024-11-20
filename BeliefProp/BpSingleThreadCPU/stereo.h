@@ -25,7 +25,7 @@
 #include "BpRunProcessing/BpParallelParams.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunSettingsEval/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>

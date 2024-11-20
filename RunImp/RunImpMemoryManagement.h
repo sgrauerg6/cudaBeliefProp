@@ -21,7 +21,7 @@ template <RunData_t T>
 class RunImpMemoryManagement
 {
 public:
-  virtual T* AllocateMemoryOnDevice(unsigned int numData) const {
+  virtual T* AllocateMemoryOnDevice(std::size_t numData) const {
     return (new T[numData]);
   }
 
@@ -29,7 +29,7 @@ public:
     delete [] array_to_free;
   }
 
-  virtual T* AllocateAlignedMemoryOnDevice(const unsigned long numData, run_environment::AccSetting acc_setting) const
+  virtual T* AllocateAlignedMemoryOnDevice(std::size_t numData, run_environment::AccSetting acc_setting) const
   {
 #ifdef _WIN32
     T* memoryData = static_cast<T*>(_aligned_malloc(numData * sizeof(T), run_environment::GetNumDataAlignWidth(acc_setting) * sizeof(T)));
@@ -49,11 +49,11 @@ public:
 #endif
   }
 
-  virtual void TransferDataFromDeviceToHost(T* dest_array, const T* in_array, unsigned int num_data_transfer) const {
+  virtual void TransferDataFromDeviceToHost(T* dest_array, const T* in_array, std::size_t num_data_transfer) const {
     std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
   }
 
-  virtual void TransferDataFromHostToDevice(T* dest_array, const T* in_array, unsigned int num_data_transfer) const {
+  virtual void TransferDataFromHostToDevice(T* dest_array, const T* in_array, std::size_t num_data_transfer) const {
     std::ranges::copy(in_array, in_array + num_data_transfer, dest_array);
   }
 };

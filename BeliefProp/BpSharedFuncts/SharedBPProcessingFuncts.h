@@ -11,7 +11,7 @@
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunImp/RunImpGenFuncts.h"
 
 namespace beliefprop {

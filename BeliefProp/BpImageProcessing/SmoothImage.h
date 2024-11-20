@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <memory>
 #include <utility>
 #include <algorithm>
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "BpImage.h"
 
@@ -46,18 +46,18 @@ public:
   //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
   //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma
   //normalize mask so it integrates to one
-  virtual void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) = 0;
+  virtual void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const = 0;
 
 protected:
   //create a Gaussian filter from a sigma value
-  std::pair<std::vector<float>, unsigned int> MakeFilter(float sigma);
+  std::pair<std::vector<float>, unsigned int> MakeFilter(float sigma) const;
 
   //parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA)
   const ParallelParams& parallel_params_;
 
 private:
   //normalize filter mask so it integrates to one
-  void NormalizeFilter(std::vector<float>& filter, unsigned int size_filter);
+  void NormalizeFilter(std::vector<float>& filter, unsigned int size_filter) const;
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_CUH

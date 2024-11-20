@@ -9,7 +9,7 @@
 #define SMOOTHIMAGECUDA_H_
 
 #include <cuda_runtime.h>
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpImageProcessing/BpImageConstraints.h"
 #include "BpImageProcessing/SmoothImage.h"
 #include "BpRunProcessing/BpParallelParams.h"
@@ -22,7 +22,7 @@ public:
   SmoothImageCUDA(const ParallelParams& cuda_params) : SmoothImage(cuda_params) {}
 
   //for the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)
-  void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) override;
+  void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const override;
 };
 
 #endif /* SMOOTHIMAGECUDA_H_ */

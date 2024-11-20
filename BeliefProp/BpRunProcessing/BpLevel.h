@@ -5,13 +5,12 @@
  *      Author: scott
  */
 
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include <array>
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunData.h"
 
-#ifndef BP_LEVEL_H
-#define BP_LEVEL_H
+#ifndef BP_LEVEL_H_
+#define BP_LEVEL_H_
 
 namespace beliefprop {
 
@@ -133,4 +132,4 @@ private:
 
 }
 
-#endif //BP_LEVEL_H
+#endif //BP_LEVEL_H_

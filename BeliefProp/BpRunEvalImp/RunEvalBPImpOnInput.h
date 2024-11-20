@@ -10,7 +10,7 @@
 #include <optional>
 #include <array>
 #include <map>
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpSingleThreadCPU/stereo.h"

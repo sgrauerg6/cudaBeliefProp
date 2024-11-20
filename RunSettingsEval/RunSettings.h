@@ -108,7 +108,7 @@ inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
 }
 
 inline unsigned int GetNumDataAlignWidth(AccSetting accel_setting) {
-  //align width with 16 data values in kAVX512
+  //align width with 16 data values in AVX512
   return (accel_setting == AccSetting::kAVX512) ? 16 : 8;
 }
 
@@ -154,14 +154,14 @@ struct RunImpSettings {
   //remove parallel parameters with less than specified number of threads
   void RemoveParallelParamBelowMinThreads(unsigned int min_threads) {
     const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
-        [min_threads](const auto& p_params) { return p_params[0] < min_threads; });
+      [min_threads](const auto& p_params) { return p_params[0] < min_threads; });
     p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 
   //remove parallel parameters with greater than specified number of threads
   void RemoveParallelParamAboveMaxThreads(unsigned int max_threads) {
     const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
-        [max_threads](const auto& p_params) { return p_params[0] > max_threads; });
+      [max_threads](const auto& p_params) { return p_params[0] > max_threads; });
     p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 };

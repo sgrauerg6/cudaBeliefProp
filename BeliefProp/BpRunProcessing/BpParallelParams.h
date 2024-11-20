@@ -16,7 +16,7 @@
 #include <string>
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpResultsEvaluation/DetailedTimingBPConsts.h"
-#include "BpRunProcessing/BpStructsAndEnums.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
