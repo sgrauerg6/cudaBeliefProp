@@ -58,7 +58,7 @@ public:
   virtual std::optional<ProcessStereoSetOutput> operator()(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
-    const ParallelParams& parallel_params) = 0;
+    const ParallelParams& parallel_params) const = 0;
 
 protected:
   //protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image,
@@ -66,7 +66,7 @@ protected:
   std::optional<ProcessStereoSetOutput> ProcessStereoSet(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,
-    const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice);
+    const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice) const;
 };
 
 //protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image,
@@ -75,7 +75,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>::ProcessStereoSet(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings,
-  const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice)
+  const BpOnDevice<T, DISP_VALS, ACCELERATION>& runBpOnDevice) const
 {
   //retrieve the images as well as the width and height
   const std::array<BpImage<unsigned int>, 2> inputImages{

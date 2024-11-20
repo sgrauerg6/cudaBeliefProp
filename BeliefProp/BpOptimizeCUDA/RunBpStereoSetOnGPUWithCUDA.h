@@ -59,7 +59,7 @@ public:
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
-    const ParallelParams& parallel_params) override
+    const ParallelParams& parallel_params) const override
   {
     //return no value if acceleration setting is not CUDA
     if constexpr (ACCELERATION != run_environment::AccSetting::kCUDA) {
