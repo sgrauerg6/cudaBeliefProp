@@ -30,7 +30,8 @@ public:
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(
+  const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters

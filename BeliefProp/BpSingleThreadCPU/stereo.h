@@ -77,7 +77,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS>::msg(float s1[DISP_VALS],
   float val;
 
   // aggregate and find min
-  float minimum = bp_consts::kInfBp;
+  float minimum = beliefprop::kInfBp;
   for (unsigned int value = 0; value < DISP_VALS; value++) {
     dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
     if (dst[value] < minimum)
@@ -147,7 +147,7 @@ inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS>::output(image<flo
     for (unsigned int x = 1; x < width - 1; x++) {
       // keep track of best value for current pixel
       unsigned int best = 0;
-      float best_val = bp_consts::kInfBp;
+      float best_val = beliefprop::kInfBp;
       for (unsigned int value = 0; value < DISP_VALS; value++) {
         const float val =
         imRef(u, x, y+1)[value] +

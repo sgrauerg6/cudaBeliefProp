@@ -10,7 +10,8 @@
 #include "BpRunProcessing/BpRunSettings.h"
 
 //constructor to set parallel parameters with default dimensions for each kernel
-BpParallelParams::BpParallelParams(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
+BpParallelParams::BpParallelParams(
+    run_environment::OptParallelParamsSetting opt_parallel_params_setting,
     unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims) : 
     opt_parallel_params_setting_{opt_parallel_params_setting_},
     num_levels_{num_levels}

@@ -17,7 +17,7 @@
 
 template<unsigned int DISP_VALS>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
   float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
   float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
@@ -26,7 +26,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int num_data_SIMD_vect{16u};
+  constexpr unsigned int num_data_SIMD_vect{16};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float, __m512, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -39,7 +39,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
 
 template<unsigned int DISP_VALS>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -48,7 +48,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int num_data_SIMD_vect{16u};
+  constexpr unsigned int num_data_SIMD_vect{16};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m256i, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -61,7 +61,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
 
 template<unsigned int DISP_VALS>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
   double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
   double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
@@ -70,7 +70,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int num_data_SIMD_vect{8u};
+  constexpr unsigned int num_data_SIMD_vect{8};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<double, __m512d, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
@@ -92,7 +92,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
-  constexpr unsigned int num_data_SIMD_vect{16u};
+  constexpr unsigned int num_data_SIMD_vect{16};
   RetrieveOutputDisparityUseSIMDVectors<float, __m512, float, __m512, DISP_VALS>(current_bp_level,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -114,7 +114,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
-  constexpr unsigned int num_data_SIMD_vect{16u};
+  constexpr unsigned int num_data_SIMD_vect{16};
   RetrieveOutputDisparityUseSIMDVectors<short, __m256i, float, __m512, DISP_VALS>(current_bp_level,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
@@ -136,7 +136,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
-  constexpr unsigned int num_data_SIMD_vect{8u};
+  constexpr unsigned int num_data_SIMD_vect{8};
   RetrieveOutputDisparityUseSIMDVectors<double, __m512d, double, __m512d, DISP_VALS>(current_bp_level,
     dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
     messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,

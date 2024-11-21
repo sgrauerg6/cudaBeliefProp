@@ -32,27 +32,33 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 int main(int argc, char** argv)
 {
-  std::array<std::string, 2> refTestImPath{argv[1], argv[2]};
+  const std::array<std::string, 2> refTestImPath{argv[1], argv[2]};
   beliefprop::BpSettings alg_settings;
   alg_settings.num_disp_vals = std::stoi(argv[3]);
   alg_settings.disc_k_bp = (float)alg_settings.num_disp_vals / 7.5f;
-  unsigned int dispMapScale = 256 / alg_settings.num_disp_vals;
+  const unsigned int dispMapScale = 256 / alg_settings.num_disp_vals;
 
   const auto cudaTBDims = std::array<unsigned int, 2>{32, 4};
-  BpParallelParams parallel_params{run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels, alg_settings.num_levels, cudaTBDims};
+  BpParallelParams parallel_params{
+    run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels,
+    alg_settings.num_levels,
+    cudaTBDims};
 
   std::unique_ptr<RunBpStereoSet<float, 0, run_environment::AccSetting::kCUDA>> runOptBpNumItersNoTemplate =
     std::make_unique<RunBpStereoSetOnGPUWithCUDA<float, 0, run_environment::AccSetting::kCUDA>>();
-  auto run_output = runOptBpNumItersNoTemplate->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
+  const auto run_output = runOptBpNumItersNoTemplate->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
+  std::cout << "Output disparity map saved to " << argv[4] << std::endl;
+  run_output->out_disparity_map.SaveDisparityMap(argv[4], dispMapScale);
   std::cout << "BP processing runtime (GPU): " << run_output->run_time.count() << std::endl;
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
     std::unique_ptr<RunBpStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
       std::make_unique<RunBpStereoCPUSingleThread<float, 64>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
+    const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, BpEvaluationParameters());
+    std::cout << "Difference between resulting disparity maps (no difference expected)" << std::endl;
+    std::cout << outComp.AsRunData();
   }
-  std::cout << "Output disparity map saved to " << argv[4] << std::endl;
-  run_output->out_disparity_map.SaveDisparityMap(argv[4], dispMapScale);
 
   return 0;
 }

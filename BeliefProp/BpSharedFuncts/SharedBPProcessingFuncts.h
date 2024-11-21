@@ -122,7 +122,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
   T* dst_message_array, U disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
-  U minimum{(U)bp_consts::kInfBp};
+  U minimum{(U)beliefprop::kInfBp};
   U dst[DISP_VALS];
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
@@ -180,7 +180,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
   T* dst_message_array, U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   // aggregate and find min
-  U minimum{(U)bp_consts::kInfBp};
+  U minimum{(U)beliefprop::kInfBp};
   U* dst = new U[bp_settings_disp_vals];
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
@@ -326,7 +326,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
   unsigned int offsetData)
 {
   // aggregate and find min
-  U minimum{(U)bp_consts::kInfBp};
+  U minimum{(U)beliefprop::kInfBp};
   unsigned int processingArrIndexDisp0 = RetrieveIndexInDataAndMessage(x_val, y_val,
     current_bp_level.padded_width_checkerboard_level_,
     current_bp_level.height_level_, 0,
@@ -514,17 +514,17 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
   T* dataCostDeviceToWriteTo, unsigned int offset_num,
   unsigned int bp_settings_disp_vals)
 {
   //add 1 or 0 to the x-value depending on checkerboard part and row
-  //beliefprop::Checkerboard_Part::kCheckerboardPart0 with slot at (0, 0) has adjustment of 0 in row 0,
-  //beliefprop::Checkerboard_Part::kCheckerboardPart1 with slot at (0, 1) has adjustment of 1 in row 0
+  //beliefprop::CheckerboardPart::kCheckerboardPart0 with slot at (0, 0) has adjustment of 0 in row 0,
+  //beliefprop::CheckerboardPart::kCheckerboardPart1 with slot at (0, 1) has adjustment of 1 in row 0
   const unsigned int checkerboard_part_adjustment =
-    (checkerboard_part == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? (y_val % 2) : ((y_val + 1) % 2);
+    (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) ? (y_val % 2) : ((y_val + 1) % 2);
 
   //the corresponding x-values at the "lower" level depends on which checkerboard the pixel is in
   const unsigned int x_valPrev = x_val*2 + checkerboard_part_adjustment;
@@ -775,7 +775,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -786,7 +786,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
 {
   //checkerboard_adjustment used for indexing into current checkerboard to update
   const unsigned int checkerboard_adjustment =
-    (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((y_val)%2) : ((y_val+1)%2);
+    (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ? ((y_val)%2) : ((y_val+1)%2);
 
   //may want to look into (x_val < (width_level_checkerboard_part - 1) since it may affect the edges
   //make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
@@ -799,7 +799,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
         prev_l_message[DISP_VALS], prev_r_message[DISP_VALS];
 
       for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
-        if (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+        if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             dataCostStereoCheckerboard0[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -821,7 +821,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
               current_disparity, DISP_VALS)]);
         }
-        else { //checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart1
+        else { //checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart1
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             dataCostStereoCheckerboard1[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -846,14 +846,14 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
       }
 
       //uses the previous message values and data cost to calculate the current message values and store the results
-      if (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+      if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
         RunBPIterationUpdateMsgVals<T, U, DISP_VALS>(x_val, y_val, current_bp_level,
           prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
           messageUDeviceCurrentCheckerboard0,  messageDDeviceCurrentCheckerboard0,
           messageLDeviceCurrentCheckerboard0,  messageRDeviceCurrentCheckerboard0,
           (U)disc_k_bp, data_aligned);
       }
-      else { //checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart1
+      else { //checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart1
         RunBPIterationUpdateMsgVals<T, U, DISP_VALS>(x_val, y_val, current_bp_level,
           prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
           messageUDeviceCurrentCheckerboard1,  messageDDeviceCurrentCheckerboard1,
@@ -869,7 +869,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
       U* prev_r_message = new U[bp_settings_disp_vals];
 
       for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-        if (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+        if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             dataCostStereoCheckerboard0[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -891,7 +891,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
               current_disparity, bp_settings_disp_vals)]);
         }
-        else { //checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart1
+        else { //checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart1
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             dataCostStereoCheckerboard1[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -916,14 +916,14 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
       }
 
       //uses the previous message values and data cost to calculate the current message values and store the results
-      if (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+      if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
         RunBPIterationUpdateMsgVals<T, U>(x_val, y_val, current_bp_level,
           prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
           messageUDeviceCurrentCheckerboard0,  messageDDeviceCurrentCheckerboard0,
           messageLDeviceCurrentCheckerboard0,  messageRDeviceCurrentCheckerboard0,
           (U)disc_k_bp, data_aligned, bp_settings_disp_vals);
       }
-      else { //checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart1
+      else { //checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart1
         RunBPIterationUpdateMsgVals<T, U>(x_val, y_val, current_bp_level,
           prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
           messageUDeviceCurrentCheckerboard1,  messageDDeviceCurrentCheckerboard1,
@@ -943,7 +943,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -954,7 +954,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
 {
   //checkerboard_adjustment used for indexing into current checkerboard to update
   const unsigned int checkerboard_adjustment = 
-    (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? ((y_val)%2) : ((y_val+1)%2);
+    (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ? ((y_val)%2) : ((y_val+1)%2);
 
   //may want to look into (x_val < (width_level_checkerboard_part - 1) since it may affect the edges
   //make sure that the current point is not an edge/corner that doesn't have four neighbors that can pass values to it
@@ -963,7 +963,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
       (y_val > 0) && (y_val < (current_bp_level.height_level_ - 1u)))
   {
     //uses the previous message values and data cost to calculate the current message values and store the results
-    if (checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+    if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
       RunBPIterationUpdateMsgVals<T, U>(x_val, y_val, current_bp_level,
         messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
         messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
@@ -973,7 +973,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
         (U)disc_k_bp, data_aligned, bp_settings_disp_vals, (U*)dstProcessing,
         checkerboard_adjustment, offsetData);
     }
-    else { //checkerboard_to_update == beliefprop::Checkerboard_Part::kCheckerboardPart1
+    else { //checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart1
       RunBPIterationUpdateMsgVals<T, U>(x_val, y_val, current_bp_level,
         messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
         messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
@@ -991,7 +991,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_part, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_part, const beliefprop::BpLevelProperties& current_bp_level,
   const beliefprop::BpLevelProperties& next_bp_level,
   const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
   const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
@@ -1012,7 +1012,7 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
   unsigned int indexCopyTo, indexCopyFrom;
   T prevValU, prevValD, prevValL, prevValR;
   const unsigned int checkerboard_part_adjustment =
-    (checkerboard_part == beliefprop::Checkerboard_Part::kCheckerboardPart0) ? (y_val % 2) : ((y_val + 1) % 2);
+    (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) ? (y_val % 2) : ((y_val + 1) % 2);
   
   if constexpr (DISP_VALS > 0) {
     for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
@@ -1020,12 +1020,12 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, DISP_VALS);
 
-      if (checkerboard_part == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+      if (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) {
         prevValU = messageUPrevStereoCheckerboard0[indexCopyFrom];
         prevValD = messageDPrevStereoCheckerboard0[indexCopyFrom];
         prevValL = messageLPrevStereoCheckerboard0[indexCopyFrom];
         prevValR = messageRPrevStereoCheckerboard0[indexCopyFrom];
-      } else /*(checkerboard_part == beliefprop::Checkerboard_Part::kCheckerboardPart1)*/ {
+      } else /*(checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart1)*/ {
         prevValU = messageUPrevStereoCheckerboard1[indexCopyFrom];
         prevValD = messageDPrevStereoCheckerboard1[indexCopyFrom];
         prevValL = messageLPrevStereoCheckerboard1[indexCopyFrom];
@@ -1082,12 +1082,12 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, bp_settings_disp_vals);
 
-      if (checkerboard_part == beliefprop::Checkerboard_Part::kCheckerboardPart0) {
+      if (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) {
         prevValU = messageUPrevStereoCheckerboard0[indexCopyFrom];
         prevValD = messageDPrevStereoCheckerboard0[indexCopyFrom];
         prevValL = messageLPrevStereoCheckerboard0[indexCopyFrom];
         prevValR = messageRPrevStereoCheckerboard0[indexCopyFrom];
-      } else /*(checkerboard_part == beliefprop::Checkerboard_Part::kCheckerboardPart1)*/ {
+      } else /*(checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart1)*/ {
         prevValU = messageUPrevStereoCheckerboard1[indexCopyFrom];
         prevValD = messageDPrevStereoCheckerboard1[indexCopyFrom];
         prevValL = messageLPrevStereoCheckerboard1[indexCopyFrom];
@@ -1167,7 +1167,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
     {
       // keep track of "best" disparity for current pixel
       unsigned int bestDisparity{0u};
-      U best_val{(U)bp_consts::kInfBp};
+      U best_val{(U)beliefprop::kInfBp};
       if constexpr (DISP_VALS > 0) {
         for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
           const U val =
@@ -1279,7 +1279,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
     {
       // keep track of "best" disparity for current pixel
       unsigned int bestDisparity{0u};
-      U best_val{(U)bp_consts::kInfBp};
+      U best_val{(U)beliefprop::kInfBp};
       if constexpr (DISP_VALS > 0) {
         for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
           const U val = 

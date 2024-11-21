@@ -51,7 +51,8 @@ __global__ void InitializeBottomLevelData(
   //get the x value within the current "checkerboard"
   const unsigned int xInCheckerboard = x_val / 2;
 
-  if (run_imp_util::WithinImageBounds(xInCheckerboard, y_val, current_bp_level.width_level_, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    xInCheckerboard, y_val, current_bp_level.width_level_, current_bp_level.height_level_))
   {
     beliefprop::InitializeBottomLevelDataPixel<T, DISP_VALS>(x_val, y_val,
       current_bp_level, image_1_pixels_device,
@@ -64,7 +65,7 @@ __global__ void InitializeBottomLevelData(
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeCurrentLevelData(
-  beliefprop::Checkerboard_Part checkerboard_part,
+  beliefprop::CheckerboardPart checkerboard_part,
   beliefprop::BpLevelProperties current_bp_level,
   beliefprop::BpLevelProperties prev_bp_level, T* dataCostStereoCheckerboard0,
   T* dataCostStereoCheckerboard1, T* dataCostDeviceToWriteTo,
@@ -74,7 +75,8 @@ __global__ void InitializeCurrentLevelData(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
       x_val, y_val, checkerboard_part, current_bp_level, prev_bp_level,
@@ -97,7 +99,8 @@ __global__ void InitializeMessageValsToDefaultKernel(
   const unsigned int x_val_in_checkerboard = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(x_val_in_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    x_val_in_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     //initialize message values in both checkerboards
     beliefprop::InitializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
@@ -114,7 +117,7 @@ __global__ void InitializeMessageValsToDefaultKernel(
 //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
-  beliefprop::Checkerboard_Part checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -126,7 +129,8 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
   {
     beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
       x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -141,7 +145,7 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
 
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
-  beliefprop::Checkerboard_Part checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
   T* dataCostStereoCheckerboard0, T* dataCostStereoCheckerboard1,
   T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
   T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
@@ -154,7 +158,8 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
   {
     beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
       x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -171,7 +176,7 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void CopyMsgDataToNextLevel(
-  beliefprop::Checkerboard_Part checkerboard_part,
+  beliefprop::CheckerboardPart checkerboard_part,
   beliefprop::BpLevelProperties current_bp_level,
   beliefprop::BpLevelProperties next_bp_level,
   T* messageUPrevStereoCheckerboard0, T* messageDPrevStereoCheckerboard0,
@@ -188,7 +193,8 @@ __global__ void CopyMsgDataToNextLevel(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     beliefprop::CopyMsgDataToNextLevelPixel<T, DISP_VALS>(x_val, y_val,
       checkerboard_part, current_bp_level, next_bp_level,
@@ -219,7 +225,8 @@ __global__ void RetrieveOutputDisparity(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
+  if (run_imp_util::WithinImageBounds(
+    x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     beliefprop::RetrieveOutputDisparityPixel<T, T, DISP_VALS>(
       x_val, y_val, current_bp_level,

@@ -58,7 +58,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-  const dim3 grid{(unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x), //only updating half at a time
+  //only updating half at a time
+  const dim3 grid{(unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
                   (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 
   //in cuda kernel storing data one at a time (though it is coalesced), so num_data_SIMD_vect not relevant here and set to 1
@@ -69,38 +70,39 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
   for (unsigned int iteration_num = 0; iteration_num < alg_settings.num_iterations; iteration_num++)
   {
-    beliefprop::Checkerboard_Part checkerboard_part_update =
+    beliefprop::CheckerboardPart checkerboard_part_update =
       ((iteration_num % 2) == 0) ?
-      beliefprop::Checkerboard_Part::kCheckerboardPart1 :
-      beliefprop::Checkerboard_Part::kCheckerboardPart0;
+      beliefprop::CheckerboardPart::kCheckerboardPart1 :
+      beliefprop::CheckerboardPart::kCheckerboardPart0;
     cudaDeviceSynchronize();
 
+    using namespace beliefprop;
     if constexpr (DISP_VALS > 0) {
-      beliefpropCUDA::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkerboard_part_update, current_bp_level.LevelProperties(),
-        data_costs_device[0],
-        data_costs_device[1],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
+      beliefpropCUDA::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (
+        checkerboard_part_update, current_bp_level.LevelProperties(),
+        data_costs_device[0], data_costs_device[1],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
         alg_settings.disc_k_bp, data_aligned, alg_settings.num_disp_vals);
     }
     else {
-      beliefpropCUDA::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (checkerboard_part_update, current_bp_level.LevelProperties(),
-        data_costs_device[0],
-        data_costs_device[1],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-        messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
+      beliefpropCUDA::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS> <<<grid, threads>>> (
+        checkerboard_part_update, current_bp_level.LevelProperties(),
+        data_costs_device[0], data_costs_device[1],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+        messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
         alg_settings.disc_k_bp, data_aligned, alg_settings.num_disp_vals, allocated_memory);
     }
 
@@ -135,28 +137,30 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
     return run_eval::Status::kError;
   }
 
-  for (const auto checkerboard_part : {beliefprop::Checkerboard_Part::kCheckerboardPart0, beliefprop::Checkerboard_Part::kCheckerboardPart1})
+  for (const auto checkerboard_part : {beliefprop::CheckerboardPart::kCheckerboardPart0,
+                                       beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
+    using namespace beliefprop;
     //call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
     //storing the current message values
-    beliefpropCUDA::CopyMsgDataToNextLevel<T, DISP_VALS> <<< grid, threads >>> (checkerboard_part,
-      current_bp_level.LevelProperties(), next_bp_level.LevelProperties(),
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-      messages_device_copy_from[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-      messages_device_copy_to[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
+    beliefpropCUDA::CopyMsgDataToNextLevel<T, DISP_VALS> <<< grid, threads >>> (
+      checkerboard_part, current_bp_level.LevelProperties(), next_bp_level.LevelProperties(),
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+      messages_device_copy_to[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
       bp_settings_num_disp_vals);
 
     cudaDeviceSynchronize();
@@ -192,7 +196,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
                   (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 
   //initialize the data the the "bottom" of the image pyramid
-  beliefpropCUDA::InitializeBottomLevelData<T, DISP_VALS> <<<grid, threads>>> (current_bp_level.LevelProperties(),
+  beliefpropCUDA::InitializeBottomLevelData<T, DISP_VALS> <<<grid, threads>>> (
+    current_bp_level.LevelProperties(),
     images_target_device[0], images_target_device[1],
     data_costs_device[0], data_costs_device[1],
     alg_settings.lambda_bp, alg_settings.data_k_bp, alg_settings.num_disp_vals);
@@ -217,18 +222,19 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{(unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
                   (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  using namespace beliefprop;
 
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
   beliefpropCUDA::InitializeMessageValsToDefaultKernel<T, DISP_VALS> <<< grid, threads >>> (
     current_bp_level.LevelProperties(),
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
     bp_settings_num_disp_vals);
   cudaDeviceSynchronize();
   
@@ -240,8 +246,8 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(const beliefprop::BpLevel& current_bp_level,
-  const beliefprop::BpLevel& prev_bp_level,
+run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
+  const beliefprop::BpLevel& current_bp_level, const beliefprop::BpLevel& prev_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
   unsigned int bp_settings_num_disp_vals)
@@ -260,13 +266,13 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
 
   const size_t offset_num{0};
   for (const auto& checkerboard_data_cost : {
-    std::make_pair(beliefprop::Checkerboard_Part::kCheckerboardPart0, data_costs_device_write[0]),
-    std::make_pair(beliefprop::Checkerboard_Part::kCheckerboardPart1, data_costs_device_write[1])})
+    std::make_pair(beliefprop::CheckerboardPart::kCheckerboardPart0, data_costs_device_write[0]),
+    std::make_pair(beliefprop::CheckerboardPart::kCheckerboardPart1, data_costs_device_write[1])})
   {
-    beliefpropCUDA::InitializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>> (checkerboard_data_cost.first,
+    beliefpropCUDA::InitializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>> (
+      checkerboard_data_cost.first,
       current_bp_level.LevelProperties(), prev_bp_level.LevelProperties(),
-      data_costs_device[0],
-      data_costs_device[1],
+      data_costs_device[0], data_costs_device[1],
       checkerboard_data_cost.second, ((unsigned int) offset_num / sizeof(float)),
       bp_settings_num_disp_vals);
 
@@ -286,24 +292,28 @@ float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
   unsigned int bp_settings_num_disp_vals)
 {
   float* result_disp_map_device;
-  cudaMalloc((void**)&result_disp_map_device, current_bp_level.LevelProperties().width_level_ * current_bp_level.LevelProperties().height_level_ * sizeof(float));
+  cudaMalloc(
+    (void**)&result_disp_map_device,
+    current_bp_level.LevelProperties().width_level_ * current_bp_level.LevelProperties().height_level_ * sizeof(float));
 
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{(unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
                   (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  using namespace beliefprop;
 
-  beliefpropCUDA::RetrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (current_bp_level.LevelProperties(),
+  beliefpropCUDA::RetrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (
+    current_bp_level.LevelProperties(),
     data_costs_device[0], data_costs_device[1],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard0)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesUCheckerboard1)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesDCheckerboard1)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesLCheckerboard1)],
-    messages_device[static_cast<unsigned int>(beliefprop::Message_Arrays::kMessagesRCheckerboard1)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesLCheckerboard)],
+    messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart1)][static_cast<unsigned int>(MessageArrays::kMessagesRCheckerboard)],
     result_disp_map_device, bp_settings_num_disp_vals);
   cudaDeviceSynchronize();
   if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {

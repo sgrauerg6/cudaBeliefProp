@@ -13,7 +13,7 @@
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -34,7 +34,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -56,7 +56,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -77,7 +77,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -98,7 +98,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -119,7 +119,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -140,7 +140,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -161,7 +161,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::Checkerboard_Part checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
   short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
@@ -181,7 +181,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_to_update,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_to_update,
   const beliefprop::BpLevelProperties& current_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
@@ -203,7 +203,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, beli
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, 0>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -216,7 +216,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, 0>(
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -229,7 +229,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -242,7 +242,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -255,7 +255,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -268,7 +268,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -281,7 +281,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
@@ -294,7 +294,7 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<> inline
 void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
-  unsigned int x_val, unsigned int y_val, beliefprop::Checkerboard_Part checkerboard_part,
+  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
   short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)

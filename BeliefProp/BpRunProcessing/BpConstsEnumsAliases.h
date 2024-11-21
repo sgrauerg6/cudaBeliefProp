@@ -11,26 +11,27 @@
 #include <array>
 #include "RunSettingsEval/RunTypeConstraints.h"
 
-namespace bp_consts
-{
-  //float value of "infinity" that works with half-precision
-  constexpr float kInfBp = 65504.0f;
-}
-
 namespace beliefprop {
 
+//float value of "infinity" that works with half-precision
+constexpr float kInfBp{65504};
+
 //used to define the two checkerboard "parts" that the image is divided into
-enum class Checkerboard_Part {kCheckerboardPart0, kCheckerboardPart1 };
-enum class Message_Arrays : unsigned int { 
-  kMessagesUCheckerboard0, kMessagesDCheckerboard0, kMessagesLCheckerboard0, kMessagesRCheckerboard0,
-  kMessagesUCheckerboard1, kMessagesDCheckerboard1, kMessagesLCheckerboard1, kMessagesRCheckerboard1 };
+enum class CheckerboardPart : unsigned int { kCheckerboardPart0, kCheckerboardPart1 };
+enum class MessageArrays : unsigned int { 
+  kMessagesUCheckerboard, kMessagesDCheckerboard, kMessagesLCheckerboard, kMessagesRCheckerboard };
 enum class MessageComp { kUMessage, kDMessage, kLMessage, kRMessage };
 
-//each checkerboard messages element corresponds to an array of message values that can be mapped to
-//a unique value within Message_Arrays enum
-//could use a map/unordered map to map Message_Arrays enum to corresponding message array but using array structure is likely faster
+//constants corresponding to number of checkerboard parts for processing
+//and number of message arrays in each checkerboard part
+constexpr unsigned int kNumCheckerboardParts{2};
+constexpr unsigned int kNumMessageArrays{4};
+
+//each checkerboard messages element corresponds to an array of message values
+//could use a map/unordered map to map MessageArrays enum to corresponding message array
+//but using array structure is likely faster
 template <RunData_ptr T>
-using CheckerboardMessages = std::array<T, 8>;
+using CheckerboardMessages = std::array<std::array<T, kNumMessageArrays>, kNumCheckerboardParts>;
 
 //belief propagation checkerboard messages and data costs must be pointers to a bp data type
 //define alias for two-element array with data costs for each bp processing checkerboard

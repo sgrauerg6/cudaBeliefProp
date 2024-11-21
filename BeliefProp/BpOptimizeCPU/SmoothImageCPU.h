@@ -61,7 +61,8 @@ void SmoothImageCPU::FilterImageAcrossCPU(
   const ParallelParams& opt_cpu_params) const
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
+  int num_threads_kernel{
+    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -73,7 +74,8 @@ void SmoothImageCPU::FilterImageAcrossCPU(
 #endif //_WIN32
     const unsigned int y_val = val / width_images;
     const unsigned int x_val = val % width_images;
-    beliefprop::FilterImageAcrossProcessPixel<U>(x_val, y_val, image_to_filter, filtered_image,
+    beliefprop::FilterImageAcrossProcessPixel<U>(
+      x_val, y_val, image_to_filter, filtered_image,
       width_images, height_images, image_filter, size_filter);
   }
 }
@@ -99,8 +101,9 @@ void SmoothImageCPU::FilterImageVerticalCPU(
 #endif //_WIN32
     const unsigned int y_val = val / width_images;
     const unsigned int x_val = val % width_images;
-    beliefprop::FilterImageVerticalProcessPixel<U>(x_val, y_val, image_to_filter,
-      filtered_image, width_images, height_images, image_filter, size_filter);
+    beliefprop::FilterImageVerticalProcessPixel<U>(
+      x_val, y_val, image_to_filter, filtered_image,
+      width_images, height_images, image_filter, size_filter);
   }
 }
 

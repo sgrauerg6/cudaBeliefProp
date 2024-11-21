@@ -106,8 +106,12 @@ private:
     const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
   {
     std::ranges::for_each(checkerboard_messages_to_free,
-      [this, &mem_management_bp_run](auto& checkerboardMessagesSet) {
-      mem_management_bp_run->FreeAlignedMemoryOnDevice(checkerboardMessagesSet); });
+      [&mem_management_bp_run](auto& checkerboardMessagesSet) {
+      std::ranges::for_each(checkerboardMessagesSet,
+        [&mem_management_bp_run](auto& checkerboardMessages) {
+          mem_management_bp_run->FreeAlignedMemoryOnDevice(checkerboardMessages);
+        });
+      });
   }
 
   //allocate memory for message values in bp processing
@@ -118,8 +122,13 @@ private:
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     std::ranges::for_each(output_checkerboard_messages,
       [this, num_data_allocate_per_message, &mem_management_bp_run](auto& checkerboardMessagesSet) {
-      checkerboardMessagesSet =
-        mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_allocate_per_message, ACCELERATION); });
+        std::ranges::for_each(checkerboardMessagesSet, 
+          [this, num_data_allocate_per_message, &mem_management_bp_run](auto& checkerboardMessages) {
+            checkerboardMessages =
+              mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_allocate_per_message, ACCELERATION);
+          });
+      }
+    );
 
     return output_checkerboard_messages;
   }
@@ -130,9 +139,12 @@ private:
     std::size_t offset_into_messages)
   {
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
-    for (unsigned int i = 0; i < output_checkerboard_messages.size(); i++) {
-      output_checkerboard_messages[i] =
-        &((all_checkerboard_messages[i])[offset_into_messages]);
+    for (const auto checkerboard_num : {static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart0),
+                                        static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart1)}) {
+      for (unsigned int i = 0; i < output_checkerboard_messages[checkerboard_num].size(); i++) {
+        output_checkerboard_messages[checkerboard_num][i] =
+          &((all_checkerboard_messages[checkerboard_num][i])[offset_into_messages]);
+      }
     }
 
     return output_checkerboard_messages;
@@ -177,9 +189,15 @@ private:
       &(data_costs_device_checkerboard_all_levels[0][1 * (num_data_allocate_per_data_costs_message_data_array)]);
 
     beliefprop::CheckerboardMessages<T*> messages_device_all_levels;
-    for (unsigned int i = 0; i < messages_device_all_levels.size(); i++) {
-      messages_device_all_levels[i] =
-        &(data_costs_device_checkerboard_all_levels[0][(i + 2) * (num_data_allocate_per_data_costs_message_data_array)]);
+    for (const auto checkerboard_num : {static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart0),
+                                        static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart1)})
+    {
+      for (unsigned int i = 0; i < messages_device_all_levels[checkerboard_num].size(); i++) {
+        messages_device_all_levels[checkerboard_num][i] =
+          &(data_costs_device_checkerboard_all_levels[0][
+            ((checkerboard_num * messages_device_all_levels[checkerboard_num].size()) + (i + 2)) *
+            (num_data_allocate_per_data_costs_message_data_array)]);
+      }
     }
 
     return {data_costs_device_checkerboard_all_levels, messages_device_all_levels};

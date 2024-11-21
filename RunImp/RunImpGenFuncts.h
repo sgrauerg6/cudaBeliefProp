@@ -21,7 +21,7 @@ namespace run_imp_util {
 
 //T is input type, U is output type
 template<RunData_t T, RunData_t U>
-ARCHITECTURE_ADDITION inline U ConvertValToDifferentDataTypeIfNeeded(const T data) {
+ARCHITECTURE_ADDITION inline U ConvertValToDifferentDataTypeIfNeeded(T data) {
   return data; //by default assume same data type and just return data
 }
 
@@ -32,24 +32,30 @@ ARCHITECTURE_ADDITION inline T ZeroVal() {
 
 template<typename T>
 requires std::is_arithmetic_v<T>
-ARCHITECTURE_ADDITION inline T GetMin(const T val1, const T val2) {
+ARCHITECTURE_ADDITION inline T GetMin(T val1, T val2) {
   return ((val1 < val2) ? val1 : val2);
 }
 
 template<typename T>
 requires std::is_arithmetic_v<T>
-ARCHITECTURE_ADDITION inline T GetMax(const T val1, const T val2) {
+ARCHITECTURE_ADDITION inline T GetMax(T val1, T val2) {
   return ((val1 > val2) ? val1 : val2);
 }
 
 //checks if the current point is within the image bounds
 //assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
-ARCHITECTURE_ADDITION inline bool WithinImageBounds(unsigned int x_val, unsigned int y_val, unsigned int width, unsigned int height) {
+ARCHITECTURE_ADDITION inline bool WithinImageBounds(
+  unsigned int x_val, unsigned int y_val,
+  unsigned int width, unsigned int height)
+{
   return ((x_val < width) && (y_val < height));
 }
 
 //inline function to check if data is aligned at x_val_data_start for SIMD loads/stores that require alignment
-inline bool MemoryAlignedAtDataStart(unsigned int x_val_data_start, unsigned int num_data_SIMD_vect, unsigned int num_data_align_width,
+inline bool MemoryAlignedAtDataStart(
+  unsigned int x_val_data_start,
+  unsigned int num_data_SIMD_vect,
+  unsigned int num_data_align_width,
   unsigned int divPaddedChBoardWidthForAlign)
 {
   //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
