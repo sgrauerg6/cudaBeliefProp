@@ -51,7 +51,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
-  T* allocated_memory)
+  T* allocated_memory) const
 {
   //set to prefer L1 cache since shared memory is not used in this implementation
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
@@ -124,7 +124,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
   const beliefprop::BpLevel& next_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
-  unsigned int bp_settings_num_disp_vals)
+  unsigned int bp_settings_num_disp_vals) const
 {
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.LevelProperties().level_num_});
@@ -177,7 +177,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpLevel& current_bp_level,
   const std::array<float*, 2>& images_target_device,
-  const beliefprop::DataCostsCheckerboards<T*>& data_costs_device)
+  const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const
 {
   if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
     return run_eval::Status::kError;
@@ -215,7 +215,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
-  unsigned int bp_settings_num_disp_vals)
+  unsigned int bp_settings_num_disp_vals) const
 {
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0});
@@ -250,7 +250,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
   const beliefprop::BpLevel& current_bp_level, const beliefprop::BpLevel& prev_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
-  unsigned int bp_settings_num_disp_vals)
+  unsigned int bp_settings_num_disp_vals) const
 {
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.LevelProperties().level_num_});
@@ -289,7 +289,7 @@ float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
-  unsigned int bp_settings_num_disp_vals)
+  unsigned int bp_settings_num_disp_vals) const
 {
   float* result_disp_map_device;
   cudaMalloc(

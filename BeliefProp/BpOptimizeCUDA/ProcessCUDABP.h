@@ -41,20 +41,20 @@ private:
     const beliefprop::BpSettings& alg_settings,
     const beliefprop::BpLevel& current_bp_level,
     const std::array<float*, 2>& images_target_device,
-    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) override;
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const override;
 
   run_eval::Status InitializeDataCurrentLevel(
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::BpLevel& prev_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
-    unsigned int bp_settings_num_disp_vals) override;
+    unsigned int bp_settings_num_disp_vals) const override;
 
   //initialize the message values for every pixel at every disparity to 0
   run_eval::Status InitializeMessageValsToDefault(
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
-    unsigned int bp_settings_num_disp_vals) override;
+    unsigned int bp_settings_num_disp_vals) const override;
 
   //run the given number of iterations of BP at the current level using the given message values in global device memory
   run_eval::Status RunBPAtCurrentLevel(
@@ -62,7 +62,7 @@ private:
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
-    T* allocated_memory) override;
+    T* allocated_memory) const override;
 
   //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
   //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
@@ -73,13 +73,13 @@ private:
     const beliefprop::BpLevel& next_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
-    unsigned int bp_settings_num_disp_vals) override;
+    unsigned int bp_settings_num_disp_vals) const override;
 
   float* RetrieveOutputDisparity(
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
-    unsigned int bp_settings_num_disp_vals) override;
+    unsigned int bp_settings_num_disp_vals) const override;
   
   run_eval::Status ErrorCheck(const char *file = "", int line = 0, bool abort = false) const override;
 };

@@ -50,8 +50,8 @@ public:
   std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>> operator()(
     const std::array<float*, 2>& images_target_device, const beliefprop::BpSettings& alg_settings,
     const std::array<unsigned int, 2>& width_height_images,
-    T* allocatedMemForBpProcessingDevice, T* allocated_memory,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run);
+    T* allocated_mem_bp_processing, T* allocated_memory,
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const;
 
 protected:
   const ParallelParams& parallel_params_;
@@ -59,9 +59,10 @@ protected:
 private:
   //initialize data cost for each possible disparity at bottom level
   virtual run_eval::Status InitializeDataCosts(
-    const beliefprop::BpSettings& alg_settings, const beliefprop::BpLevel& current_bp_level,
+    const beliefprop::BpSettings& alg_settings,
+    const beliefprop::BpLevel& current_bp_level,
     const std::array<float*, 2>& images_target_device,
-    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) = 0;
+    const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const = 0;
 
   //initialize data cost for each possible disparity at levels above the bottom level
   virtual run_eval::Status InitializeDataCurrentLevel(
@@ -69,13 +70,13 @@ private:
     const beliefprop::BpLevel& prev_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
-    unsigned int bp_settings_num_disp_vals) = 0;
+    unsigned int bp_settings_num_disp_vals) const = 0;
 
   //initialize message values at first level of bp processing to default value
   virtual run_eval::Status InitializeMessageValsToDefault(
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
-    unsigned int bp_settings_num_disp_vals) = 0;
+    unsigned int bp_settings_num_disp_vals) const = 0;
 
   //run belief propagation processing at current level of processing hierarchy
   virtual run_eval::Status RunBPAtCurrentLevel(
@@ -83,7 +84,7 @@ private:
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
-    T* allocated_memory) = 0;
+    T* allocated_memory) const = 0;
 
   //copy message values from current level of processing to next level of processing
   virtual run_eval::Status CopyMessageValuesToNextLevelDown(
@@ -91,25 +92,25 @@ private:
     const beliefprop::BpLevel& next_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
-    unsigned int bp_settings_num_disp_vals) = 0;
+    unsigned int bp_settings_num_disp_vals) const = 0;
 
   //retrieve computed output disparity at each pixel in bottom level using data and message values
   virtual float* RetrieveOutputDisparity(
     const beliefprop::BpLevel& BpLevel,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
-    unsigned int bp_settings_num_disp_vals) = 0;
+    unsigned int bp_settings_num_disp_vals) const = 0;
 
   //free memory used for message values in bp processing
   virtual void FreeCheckerboardMessagesMemory(
     const beliefprop::CheckerboardMessages<T*>& checkerboard_messages_to_free,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
   {
     std::ranges::for_each(checkerboard_messages_to_free,
-      [&mem_management_bp_run](auto& checkerboardMessagesSet) {
-      std::ranges::for_each(checkerboardMessagesSet,
-        [&mem_management_bp_run](auto& checkerboardMessages) {
-          mem_management_bp_run->FreeAlignedMemoryOnDevice(checkerboardMessages);
+      [&mem_management_bp_run](auto& checkerboard_messages_set) {
+      std::ranges::for_each(checkerboard_messages_set,
+        [&mem_management_bp_run](auto& checkerboard_messages) {
+          mem_management_bp_run->FreeAlignedMemoryOnDevice(checkerboard_messages);
         });
       });
   }
@@ -117,14 +118,14 @@ private:
   //allocate memory for message values in bp processing
   virtual beliefprop::CheckerboardMessages<T*> AllocateMemoryForCheckerboardMessages(
     std::size_t num_data_allocate_per_message,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
   {
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     std::ranges::for_each(output_checkerboard_messages,
-      [this, num_data_allocate_per_message, &mem_management_bp_run](auto& checkerboardMessagesSet) {
-        std::ranges::for_each(checkerboardMessagesSet, 
-          [this, num_data_allocate_per_message, &mem_management_bp_run](auto& checkerboardMessages) {
-            checkerboardMessages =
+      [this, num_data_allocate_per_message, &mem_management_bp_run](auto& checkerboard_messages_set) {
+        std::ranges::for_each(checkerboard_messages_set, 
+          [this, num_data_allocate_per_message, &mem_management_bp_run](auto& checkerboard_messages) {
+            checkerboard_messages =
               mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_allocate_per_message, ACCELERATION);
           });
       }
@@ -136,7 +137,7 @@ private:
   //retrieve pointer to bp message data at current level using specified offset
   virtual beliefprop::CheckerboardMessages<T*> RetrieveLevelMessageData(
     const beliefprop::CheckerboardMessages<T*>& all_checkerboard_messages,
-    std::size_t offset_into_messages)
+    std::size_t offset_into_messages) const
   {
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     for (const auto checkerboard_num : {static_cast<unsigned int>(beliefprop::CheckerboardPart::kCheckerboardPart0),
@@ -153,7 +154,7 @@ private:
   //free memory allocated for data costs in bp processing
   virtual void FreeDataCostsMemory(
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_to_free,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
   {
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[0]);
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[1]);
@@ -162,7 +163,7 @@ private:
   //allocate memory for data costs in bp processing
   virtual beliefprop::DataCostsCheckerboards<T*> AllocateMemoryForDataCosts(
     std::size_t num_data_costs_checkerboards,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
   {
     return {mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_costs_checkerboards, ACCELERATION), 
             mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_costs_checkerboards, ACCELERATION)};
@@ -172,7 +173,7 @@ private:
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
     AllocateAndOrganizeDataCostsAndMessageDataAllLevels(
       std::size_t num_data_allocate_per_data_costs_message_data_array,
-      const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+      const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
   {
     T* data_all_levels = mem_management_bp_run->AllocateAlignedMemoryOnDevice(
       10*num_data_allocate_per_data_costs_message_data_array, ACCELERATION);
@@ -183,7 +184,7 @@ private:
   //organize data cost and message value data at all bp processing levels
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
     OrganizeDataCostsAndMessageDataAllLevels(
-      T* data_all_levels, std::size_t num_data_allocate_per_data_costs_message_data_array)
+      T* data_all_levels, std::size_t num_data_allocate_per_data_costs_message_data_array) const
   {
     beliefprop::DataCostsCheckerboards<T*> data_costs_device_checkerboard_all_levels;
     data_costs_device_checkerboard_all_levels[0] = data_all_levels;
@@ -208,7 +209,7 @@ private:
   //free data costs at all levels for bp processing that are all together in a single array
   virtual void FreeDataCostsAllDataInSingleArray(
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_to_free,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
   {
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[0]);
   }
@@ -216,10 +217,10 @@ private:
   //retrieve pointer to data costs for level using specified offset
   virtual beliefprop::DataCostsCheckerboards<T*> RetrieveLevelDataCosts(
     const beliefprop::DataCostsCheckerboards<T*>& all_data_costs,
-    std::size_t offset_into_all_data_costs)
+    std::size_t offset) const
   {
-    return {&(all_data_costs[0][offset_into_all_data_costs]),
-            &(all_data_costs[1][offset_into_all_data_costs])};
+    return {&(all_data_costs[0][offset]),
+            &(all_data_costs[1][offset])};
   }
 };
 
@@ -230,8 +231,8 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>::operator()(
     const std::array<float*, 2> & images_target_device, const beliefprop::BpSettings& alg_settings,
-    const std::array<unsigned int, 2>& width_height_images, T* allocatedMemForBpProcessingDevice, T* allocated_memory,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run)
+    const std::array<unsigned int, 2>& width_height_images, T* allocated_mem_bp_processing, T* allocated_memory,
+    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
 {
   if (ErrorCheck() != run_eval::Status::kNoError) { return {}; }
 
@@ -264,7 +265,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
 
   //data for each array at all levels set to data up to final level
   //(corresponds to offset at final level) plus data amount at final level
-  const unsigned long data_all_levels_each_data_message_arr =
+  const std::size_t data_all_levels_each_data_message_arr =
     bp_levels[alg_settings.num_levels-1].LevelProperties().offset_into_arrays_ +
     bp_levels[alg_settings.num_levels-1].NumDataInBpArrays<T>(alg_settings.num_disp_vals);
 
@@ -273,7 +274,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
     if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
       std::tie(data_costs_device_all_levels, messages_device_all_levels) =
         OrganizeDataCostsAndMessageDataAllLevels(
-          allocatedMemForBpProcessingDevice, data_all_levels_each_data_message_arr);
+          allocated_mem_bp_processing, data_all_levels_each_data_message_arr);
     }
     else {
       //call function that allocates all data in single array and then

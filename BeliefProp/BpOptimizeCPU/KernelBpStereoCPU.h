@@ -239,8 +239,8 @@ namespace beliefpropCPU
     const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS],
     const U prev_l_message[DISP_VALS], const U prev_r_message[DISP_VALS],
     const U data_message[DISP_VALS],
-    T* currentUMessageArray, T* currentDMessageArray,
-    T* currentLMessageArray, T* currentRMessageArray,
+    T* current_u_message, T* current_d_message,
+    T* current_l_message, T* current_r_message,
     const U disc_k_bp_vect, bool data_aligned);
 
   template<RunData_t T, RunDataVect_t U>
@@ -250,8 +250,8 @@ namespace beliefpropCPU
     const U* prev_u_message, const U* prev_d_message,
     const U* prev_l_message, const U* prev_r_message,
     const U* data_message,
-    T* currentUMessageArray, T* currentDMessageArray,
-    T* currentLMessageArray, T* currentRMessageArray,
+    T* current_u_message, T* current_d_message,
+    T* current_l_message, T* current_r_message,
     const U disc_k_bp_vect, bool data_aligned,
     unsigned int bp_settings_disp_vals);
   
@@ -614,24 +614,24 @@ void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
   const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS],
   const U prev_l_message[DISP_VALS], const U prev_r_message[DISP_VALS],
   const U data_message[DISP_VALS],
-  T* currentUMessageArray, T* currentDMessageArray,
-  T* currentLMessageArray, T* currentRMessageArray,
+  T* current_u_message, T* current_d_message,
+  T* current_l_message, T* current_r_message,
   const U disc_k_bp_vect, bool data_aligned)
 {
-  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level, prev_u_message,
-    prev_l_message, prev_r_message, data_message, currentUMessageArray,
+  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level,
+    prev_u_message, prev_l_message, prev_r_message, data_message, current_u_message,
     disc_k_bp_vect, data_aligned);
 
-  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level, prev_d_message,
-    prev_l_message, prev_r_message, data_message, currentDMessageArray,
+  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level,
+    prev_d_message, prev_l_message, prev_r_message, data_message, current_d_message,
     disc_k_bp_vect, data_aligned);
 
-  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level, prev_u_message,
-    prev_d_message, prev_r_message, data_message, currentRMessageArray,
+  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level,
+    prev_u_message, prev_d_message, prev_r_message, data_message, current_r_message,
     disc_k_bp_vect, data_aligned);
 
-  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level, prev_u_message,
-    prev_d_message, prev_l_message, data_message, currentLMessageArray,
+  MsgStereoSIMD<T, U, DISP_VALS>(x_val_start_processing, y_val, current_bp_level,
+    prev_u_message, prev_d_message, prev_l_message, data_message, current_l_message,
     disc_k_bp_vect, data_aligned);
 }
 
@@ -642,24 +642,24 @@ void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
   const U* prev_u_message, const U* prev_d_message,
   const U* prev_l_message, const U* prev_r_message,
   const U* data_message,
-  T* currentUMessageArray, T* currentDMessageArray,
-  T* currentLMessageArray, T* currentRMessageArray,
+  T* current_u_message, T* current_d_message,
+  T* current_l_message, T* current_r_message,
   const U disc_k_bp_vect, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
-  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level, prev_u_message,
-    prev_l_message, prev_r_message, data_message, currentUMessageArray,
+  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level,
+    prev_u_message, prev_l_message, prev_r_message, data_message, current_u_message,
     disc_k_bp_vect, data_aligned, bp_settings_disp_vals);
 
-  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level, prev_d_message,
-    prev_l_message, prev_r_message, data_message, currentDMessageArray,
+  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level,
+    prev_d_message, prev_l_message, prev_r_message, data_message, current_d_message,
     disc_k_bp_vect, data_aligned, bp_settings_disp_vals);
 
-  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level, prev_u_message,
-    prev_d_message, prev_r_message, data_message, currentRMessageArray,
+  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level,
+    prev_u_message, prev_d_message, prev_r_message, data_message, current_r_message,
     disc_k_bp_vect, data_aligned, bp_settings_disp_vals);
 
-  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level, prev_u_message,
-    prev_d_message, prev_l_message, data_message, currentLMessageArray,
+  MsgStereoSIMD<T, U>(x_val_start_processing, y_val, current_bp_level,
+    prev_u_message, prev_d_message, prev_l_message, data_message, current_l_message,
     disc_k_bp_vect, data_aligned, bp_settings_disp_vals);
 }
 
@@ -696,7 +696,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ? ((y_val) % 2) : ((y_val + 1) % 2);
       const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
       const unsigned int end_final = std::min(current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
-                                             width_checkerboard_run_processing);
+                                              width_checkerboard_run_processing);
       const unsigned int end_x_simd_vect_start = (end_final / num_data_SIMD_vect) * num_data_SIMD_vect - num_data_SIMD_vect;
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += num_data_SIMD_vect) {
@@ -714,67 +714,89 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         x_val_process = std::max(start_x, x_val_process);
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, num_data_SIMD_vect, current_bp_level.num_data_align_width_,
+        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(
+          x_val_process, num_data_SIMD_vect, current_bp_level.num_data_align_width_,
           current_bp_level.div_padded_checkerboard_w_align_);
 
         //initialize arrays for data and message values
-        U data_message[DISP_VALS], prev_u_message[DISP_VALS], prev_d_message[DISP_VALS], prev_l_message[DISP_VALS], prev_r_message[DISP_VALS];
+        U data_message[DISP_VALS], prev_u_message[DISP_VALS], prev_d_message[DISP_VALS],
+          prev_l_message[DISP_VALS], prev_r_message[DISP_VALS];
 
         //load using aligned instructions when possible
         if (data_aligned_x_val) {
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard0);
-              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, DISP_VALS, messageUDeviceCurrentCheckerboard1);
-              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, DISP_VALS, messageDDeviceCurrentCheckerboard1);
-              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageLDeviceCurrentCheckerboard1);
-              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageRDeviceCurrentCheckerboard1);
+              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
+                x_val_process, y_val, current_disparity, current_bp_level,
+                DISP_VALS, dataCostStereoCheckerboard0);
+              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
+                x_val_process, y_val + 1, current_disparity, current_bp_level,
+                DISP_VALS, messageUDeviceCurrentCheckerboard1);
+              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
+                x_val_process, y_val - 1, current_disparity, current_bp_level,
+                DISP_VALS, messageDDeviceCurrentCheckerboard1);
+              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageLDeviceCurrentCheckerboard1);
+              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageRDeviceCurrentCheckerboard1);
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
-              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard1);
-              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, DISP_VALS, messageUDeviceCurrentCheckerboard0);
-              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, DISP_VALS, messageDDeviceCurrentCheckerboard0);
-              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageLDeviceCurrentCheckerboard0);
-              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageRDeviceCurrentCheckerboard0);
+              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
+                x_val_process, y_val, current_disparity, current_bp_level,
+                DISP_VALS, dataCostStereoCheckerboard1);
+              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
+                x_val_process, y_val + 1, current_disparity, current_bp_level,
+                DISP_VALS, messageUDeviceCurrentCheckerboard0);
+              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
+                x_val_process, y_val - 1, current_disparity, current_bp_level,
+                DISP_VALS, messageDDeviceCurrentCheckerboard0);
+              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageLDeviceCurrentCheckerboard0);
+              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageRDeviceCurrentCheckerboard0);
             }
           }
         } else {
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard0);
-              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, DISP_VALS, messageUDeviceCurrentCheckerboard1);
-              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, DISP_VALS, messageDDeviceCurrentCheckerboard1);
-              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageLDeviceCurrentCheckerboard1);
-              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageRDeviceCurrentCheckerboard1);
+              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process, y_val, current_disparity, current_bp_level,
+                DISP_VALS, dataCostStereoCheckerboard0);
+              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process, y_val + 1, current_disparity, current_bp_level,
+                DISP_VALS, messageUDeviceCurrentCheckerboard1);
+              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process, y_val - 1, current_disparity, current_bp_level,
+                DISP_VALS, messageDDeviceCurrentCheckerboard1);
+              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageLDeviceCurrentCheckerboard1);
+              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageRDeviceCurrentCheckerboard1);
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
-              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard1);
-              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, DISP_VALS, messageUDeviceCurrentCheckerboard0);
-              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, DISP_VALS, messageDDeviceCurrentCheckerboard0);
-              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageLDeviceCurrentCheckerboard0);
-              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, DISP_VALS, messageRDeviceCurrentCheckerboard0);
+              data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process, y_val, current_disparity, current_bp_level,
+                DISP_VALS, dataCostStereoCheckerboard1);
+              prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process, y_val + 1, current_disparity, current_bp_level,
+                DISP_VALS, messageUDeviceCurrentCheckerboard0);
+              prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process, y_val - 1, current_disparity, current_bp_level,
+                DISP_VALS, messageDDeviceCurrentCheckerboard0);
+              prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageLDeviceCurrentCheckerboard0);
+              prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
+                (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
+                DISP_VALS, messageRDeviceCurrentCheckerboard0);
             }
           }
         }
@@ -813,7 +835,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) ? ((y_val) % 2) : ((y_val + 1) % 2);
       const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
       const unsigned int end_final = std::min(current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
-                                             width_checkerboard_run_processing);
+                                              width_checkerboard_run_processing);
       const unsigned int end_x_simd_vect_start = (end_final / num_data_SIMD_vect) * num_data_SIMD_vect - num_data_SIMD_vect;
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += num_data_SIMD_vect) {
@@ -1190,7 +1212,8 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
     static_cast<V*>(std::aligned_alloc(current_bp_level.num_data_align_width_ * sizeof(V), 2 * num_data_disp_checkerboard * sizeof(V)));
 #endif
 
-  for (auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0, beliefprop::CheckerboardPart::kCheckerboardPart1})
+  for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
+                                            beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
@@ -1467,7 +1490,8 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+  int num_threads_kernel{
+    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -1528,7 +1552,8 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
   free(disparity_checkerboard_0);
 }
 
-//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
+//(see "Efficient Belief Propagation for Early Vision")
 template<RunDataProcess_t T, RunDataVectProcess_t U, unsigned int DISP_VALS>
 void beliefpropCPU::DtStereoSIMD(U f[DISP_VALS])
 {
@@ -1572,16 +1597,20 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
   {
     //dst[current_disparity] = messageValsNeighbor1[current_disparity] + messageValsNeighbor2[current_disparity] +
     //                         messageValsNeighbor3[current_disparity] + data_costs[current_disparity];
-    dst[current_disparity] = VectProcessingFuncts::AddVals<U, U, W>(messageValsNeighbor1[current_disparity], messageValsNeighbor2[current_disparity]);
-    dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], messageValsNeighbor3[current_disparity]);
-    dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], data_costs[current_disparity]);
+    dst[current_disparity] =
+      VectProcessingFuncts::AddVals<U, U, W>(messageValsNeighbor1[current_disparity], messageValsNeighbor2[current_disparity]);
+    dst[current_disparity] =
+      VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], messageValsNeighbor3[current_disparity]);
+    dst[current_disparity] =
+      VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], data_costs[current_disparity]);
 
     //if (dst[current_disparity] < minimum)
     //  minimum = dst[current_disparity];
     minimum = VectProcessingFuncts::GetMinByElement<W>(minimum, dst[current_disparity]);
   }
 
-  //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+  //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method
+  //(see "Efficient Belief Propagation for Early Vision")
   DtStereoSIMD<V, W, DISP_VALS>(dst);
 
   // truncate
@@ -1604,7 +1633,8 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
   }
 
   //val_to_normalize /= DISP_VALS;
-  val_to_normalize = VectProcessingFuncts::divideVals<W, W, W>(val_to_normalize, VectProcessingFuncts::ConvertValToDatatype<W, V>((double)DISP_VALS));
+  val_to_normalize = VectProcessingFuncts::divideVals<W, W, W>(
+    val_to_normalize, VectProcessingFuncts::ConvertValToDatatype<W, V>((double)DISP_VALS));
 
   unsigned int dest_message_array_index = beliefprop::RetrieveIndexInDataAndMessage(x_val, y_val,
     current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_, 0, DISP_VALS);
@@ -1630,7 +1660,8 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
   }
 }
 
-//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
+//(see "Efficient Belief Propagation for Early Vision")
 template<RunDataProcess_t T, RunDataVectProcess_t U>
 void beliefpropCPU::DtStereoSIMD(U* f, unsigned int bp_settings_disp_vals)
 {
@@ -1676,16 +1707,20 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
   {
     //dst[current_disparity] = messageValsNeighbor1[current_disparity] + messageValsNeighbor2[current_disparity] +
     //                         messageValsNeighbor3[current_disparity] + data_costs[current_disparity];
-    dst[current_disparity] = VectProcessingFuncts::AddVals<U, U, W>(messageValsNeighbor1[current_disparity], messageValsNeighbor2[current_disparity]);
-    dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], messageValsNeighbor3[current_disparity]);
-    dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], data_costs[current_disparity]);
+    dst[current_disparity] = VectProcessingFuncts::AddVals<U, U, W>(
+      messageValsNeighbor1[current_disparity], messageValsNeighbor2[current_disparity]);
+    dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(
+      dst[current_disparity], messageValsNeighbor3[current_disparity]);
+    dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(
+      dst[current_disparity], data_costs[current_disparity]);
 
     //if (dst[current_disparity] < minimum)
     //  minimum = dst[current_disparity];
     minimum = VectProcessingFuncts::GetMinByElement<W>(minimum, dst[current_disparity]);
   }
 
-  //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+  //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method
+  //(see "Efficient Belief Propagation for Early Vision")
   DtStereoSIMD<V, W>(dst, bp_settings_disp_vals);
 
   // truncate

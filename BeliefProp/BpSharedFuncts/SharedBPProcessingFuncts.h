@@ -687,25 +687,25 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
   const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS],
   const U prev_l_message[DISP_VALS], const U prev_r_message[DISP_VALS],
   const U data_message[DISP_VALS],
-  T* currentUMessageArray, T* currentDMessageArray,
-  T* currentLMessageArray, T* currentRMessageArray,
+  T* current_u_message, T* current_d_message,
+  T* current_l_message, T* current_r_message,
   const U disc_k_bp, bool data_aligned)
 {
   MsgStereo<T, U, DISP_VALS>(x_val, y_val, current_bp_level,
     prev_u_message, prev_l_message, prev_r_message, data_message,
-    currentUMessageArray, disc_k_bp, data_aligned);
+    current_u_message, disc_k_bp, data_aligned);
 
   MsgStereo<T, U, DISP_VALS>(x_val, y_val, current_bp_level,
     prev_d_message, prev_l_message, prev_r_message, data_message,
-    currentDMessageArray, disc_k_bp, data_aligned);
+    current_d_message, disc_k_bp, data_aligned);
 
   MsgStereo<T, U, DISP_VALS>(x_val, y_val, current_bp_level,
     prev_u_message, prev_d_message, prev_r_message, data_message,
-    currentRMessageArray, disc_k_bp, data_aligned);
+    current_r_message, disc_k_bp, data_aligned);
 
   MsgStereo<T, U, DISP_VALS>(x_val, y_val, current_bp_level,
     prev_u_message, prev_d_message, prev_l_message, data_message,
-    currentLMessageArray, disc_k_bp, data_aligned);
+    current_l_message, disc_k_bp, data_aligned);
 }
 
 template<RunData_t T, RunData_t U>
@@ -714,25 +714,25 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
   const U* prev_u_message, const U* prev_d_message,
   const U* prev_l_message, const U* prev_r_message,
   const U* data_message,
-  T* currentUMessageArray, T* currentDMessageArray,
-  T* currentLMessageArray, T* currentRMessageArray,
+  T* current_u_message, T* current_d_message,
+  T* current_l_message, T* current_r_message,
   const U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   MsgStereo<T, U>(x_val, y_val, current_bp_level,
     prev_u_message, prev_l_message, prev_r_message, data_message,
-    currentUMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals);
+    current_u_message, disc_k_bp, data_aligned, bp_settings_disp_vals);
 
   MsgStereo<T, U>(x_val, y_val, current_bp_level,
     prev_d_message, prev_l_message, prev_r_message, data_message,
-    currentDMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals);
+    current_d_message, disc_k_bp, data_aligned, bp_settings_disp_vals);
 
   MsgStereo<T, U>(x_val, y_val, current_bp_level,
     prev_u_message, prev_d_message, prev_r_message, data_message,
-    currentRMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals);
+    current_r_message, disc_k_bp, data_aligned, bp_settings_disp_vals);
 
   MsgStereo<T, U>(x_val, y_val, current_bp_level,
     prev_u_message, prev_d_message, prev_l_message, data_message,
-    currentLMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals);
+    current_l_message, disc_k_bp, data_aligned, bp_settings_disp_vals);
 }
 
 template<RunData_t T, RunData_t U>
@@ -741,30 +741,30 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
   const T* prev_u_message_array, const T* prev_d_message_array,
   const T* prev_l_message_array, const T* prev_r_message_array,
   const T* data_message_array,
-  T* currentUMessageArray, T* currentDMessageArray,
-  T* currentLMessageArray, T* currentRMessageArray,
+  T* current_u_message, T* current_d_message,
+  T* current_l_message, T* current_r_message,
   const U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
   U* dstProcessing, unsigned int checkerboard_adjustment,
   unsigned int offsetData)
 {
   MsgStereo<T, U, beliefprop::MessageComp::kUMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
-    currentUMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals,
+    current_u_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
     dstProcessing, checkerboard_adjustment, offsetData);
 
   MsgStereo<T, U, beliefprop::MessageComp::kDMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
-    currentDMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals,
+    current_d_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
     dstProcessing, checkerboard_adjustment, offsetData);
 
   MsgStereo<T, U, beliefprop::MessageComp::kLMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
-    currentLMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals,
+    current_l_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
     dstProcessing, checkerboard_adjustment, offsetData);
 
   MsgStereo<T, U, beliefprop::MessageComp::kRMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
-    currentRMessageArray, disc_k_bp, data_aligned, bp_settings_disp_vals,
+    current_r_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
     dstProcessing, checkerboard_adjustment, offsetData);
 }
 
