@@ -50,17 +50,17 @@ namespace beliefpropCPU
   template<RunData_t T, unsigned int DISP_VALS>
   void InitializeCurrentLevelData(beliefprop::CheckerboardPart checkerboard_part,
     const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
     T* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   //initialize the message values at each pixel of the current level to the default value
   template<RunData_t T, unsigned int DISP_VALS>
   void InitializeMessageValsToDefaultKernel(const beliefprop::BpLevelProperties& current_bp_level,
-    T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-    T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-    T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-    T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+    T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+    T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+    T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+    T* message_l_checkerboard_1, T* message_r_checkerboard_1,
     unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -69,11 +69,11 @@ namespace beliefpropCPU
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   void RunBPIterationUsingCheckerboardUpdates(beliefprop::CheckerboardPart checkerboard_to_update,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-    T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-    T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-    T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+    T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+    T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+    T* message_l_checkerboard_1, T* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_num_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -81,11 +81,11 @@ namespace beliefpropCPU
   void RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
     beliefprop::CheckerboardPart checkerboard_part_update,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-    T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-    T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-    T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+    T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+    T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+    T* message_l_checkerboard_1, T* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -94,36 +94,36 @@ namespace beliefpropCPU
   template<RunData_t T, unsigned int DISP_VALS>
   void CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part,
     const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& next_bp_level,
-    const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
-    const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
-    const T* messageUPrevStereoCheckerboard1, const T* messageDPrevStereoCheckerboard1,
-    const T* messageLPrevStereoCheckerboard1, const T* messageRPrevStereoCheckerboard1,
-    const T* messageUDeviceCurrentCheckerboard0, const T* messageDDeviceCurrentCheckerboard0,
-    const T* messageLDeviceCurrentCheckerboard0, const T* messageRDeviceCurrentCheckerboard0,
-    const T* messageUDeviceCurrentCheckerboard1, const T* messageDDeviceCurrentCheckerboard1,
-    const T* messageLDeviceCurrentCheckerboard1, const T* messageRDeviceCurrentCheckerboard1,
+    const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
+    const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
+    const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
+    const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
+    const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+    const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+    const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+    const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
     unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
   template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
   void RetrieveOutputDisparity(const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
-    const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
-    const T* messageUPrevStereoCheckerboard1, const T* messageDPrevStereoCheckerboard1,
-    const T* messageLPrevStereoCheckerboard1, const T* messageRPrevStereoCheckerboard1,
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
+    const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
+    const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
+    const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectors(const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
-    const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
-    const T* messageUPrevStereoCheckerboard1, const T* messageDPrevStereoCheckerboard1,
-    const T* messageLPrevStereoCheckerboard1, const T* messageRPrevStereoCheckerboard1,
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
+    const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
+    const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
+    const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     unsigned int num_data_SIMD_vect,
     const ParallelParams& opt_cpu_params);
@@ -131,33 +131,33 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
-    const float* messageUPrevStereoCheckerboard0, const float* messageDPrevStereoCheckerboard0,
-    const float* messageLPrevStereoCheckerboard0, const float* messageRPrevStereoCheckerboard0,
-    const float* messageUPrevStereoCheckerboard1, const float* messageDPrevStereoCheckerboard1,
-    const float* messageLPrevStereoCheckerboard1, const float* messageRPrevStereoCheckerboard1,
+    const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+    const float* message_u_prev_checkerboard_0, const float* message_d_prev_checkerboard_0,
+    const float* message_l_prev_checkerboard_0, const float* message_r_prev_checkerboard_0,
+    const float* message_u_prev_checkerboard_1, const float* message_d_prev_checkerboard_1,
+    const float* message_l_prev_checkerboard_1, const float* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
-    const short* messageUPrevStereoCheckerboard0, const short* messageDPrevStereoCheckerboard0,
-    const short* messageLPrevStereoCheckerboard0, const short* messageRPrevStereoCheckerboard0,
-    const short* messageUPrevStereoCheckerboard1, const short* messageDPrevStereoCheckerboard1,
-    const short* messageLPrevStereoCheckerboard1, const short* messageRPrevStereoCheckerboard1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
+    const short* message_l_prev_checkerboard_0, const short* message_r_prev_checkerboard_0,
+    const short* message_u_prev_checkerboard_1, const short* message_d_prev_checkerboard_1,
+    const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
-    const double* messageUPrevStereoCheckerboard0, const double* messageDPrevStereoCheckerboard0,
-    const double* messageLPrevStereoCheckerboard0, const double* messageRPrevStereoCheckerboard0,
-    const double* messageUPrevStereoCheckerboard1, const double* messageDPrevStereoCheckerboard1,
-    const double* messageLPrevStereoCheckerboard1, const double* messageRPrevStereoCheckerboard1,
+    const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+    const double* message_u_prev_checkerboard_0, const double* message_d_prev_checkerboard_0,
+    const double* message_l_prev_checkerboard_0, const double* message_r_prev_checkerboard_0,
+    const double* message_u_prev_checkerboard_1, const double* message_d_prev_checkerboard_1,
+    const double* message_l_prev_checkerboard_1, const double* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -165,33 +165,33 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
-    const float* messageUPrevStereoCheckerboard0, const float* messageDPrevStereoCheckerboard0,
-    const float* messageLPrevStereoCheckerboard0, const float* messageRPrevStereoCheckerboard0,
-    const float* messageUPrevStereoCheckerboard1, const float* messageDPrevStereoCheckerboard1,
-    const float* messageLPrevStereoCheckerboard1, const float* messageRPrevStereoCheckerboard1,
+    const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+    const float* message_u_prev_checkerboard_0, const float* message_d_prev_checkerboard_0,
+    const float* message_l_prev_checkerboard_0, const float* message_r_prev_checkerboard_0,
+    const float* message_u_prev_checkerboard_1, const float* message_d_prev_checkerboard_1,
+    const float* message_l_prev_checkerboard_1, const float* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
-    const short* messageUPrevStereoCheckerboard0, const short* messageDPrevStereoCheckerboard0,
-    const short* messageLPrevStereoCheckerboard0, const short* messageRPrevStereoCheckerboard0,
-    const short* messageUPrevStereoCheckerboard1, const short* messageDPrevStereoCheckerboard1,
-    const short* messageLPrevStereoCheckerboard1, const short* messageRPrevStereoCheckerboard1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
+    const short* message_l_prev_checkerboard_0, const short* message_r_prev_checkerboard_0,
+    const short* message_u_prev_checkerboard_1, const short* message_d_prev_checkerboard_1,
+    const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
-    const double* messageUPrevStereoCheckerboard0, const double* messageDPrevStereoCheckerboard0,
-    const double* messageLPrevStereoCheckerboard0, const double* messageRPrevStereoCheckerboard0,
-    const double* messageUPrevStereoCheckerboard1, const double* messageDPrevStereoCheckerboard1,
-    const double* messageLPrevStereoCheckerboard1, const double* messageRPrevStereoCheckerboard1,
+    const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+    const double* message_u_prev_checkerboard_0, const double* message_d_prev_checkerboard_0,
+    const double* message_l_prev_checkerboard_0, const double* message_r_prev_checkerboard_0,
+    const double* message_u_prev_checkerboard_1, const double* message_d_prev_checkerboard_1,
+    const double* message_l_prev_checkerboard_1, const double* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
@@ -199,22 +199,22 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
-    const float* messageUPrevStereoCheckerboard0, const float* messageDPrevStereoCheckerboard0,
-    const float* messageLPrevStereoCheckerboard0, const float* messageRPrevStereoCheckerboard0,
-    const float* messageUPrevStereoCheckerboard1, const float* messageDPrevStereoCheckerboard1,
-    const float* messageLPrevStereoCheckerboard1, const float* messageRPrevStereoCheckerboard1,
+    const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+    const float* message_u_prev_checkerboard_0, const float* message_d_prev_checkerboard_0,
+    const float* message_l_prev_checkerboard_0, const float* message_r_prev_checkerboard_0,
+    const float* message_u_prev_checkerboard_1, const float* message_d_prev_checkerboard_1,
+    const float* message_l_prev_checkerboard_1, const float* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
-    const double* messageUPrevStereoCheckerboard0, const double* messageDPrevStereoCheckerboard0,
-    const double* messageLPrevStereoCheckerboard0, const double* messageRPrevStereoCheckerboard0,
-    const double* messageUPrevStereoCheckerboard1, const double* messageDPrevStereoCheckerboard1,
-    const double* messageLPrevStereoCheckerboard1, const double* messageRPrevStereoCheckerboard1,
+    const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+    const double* message_u_prev_checkerboard_0, const double* message_d_prev_checkerboard_0,
+    const double* message_l_prev_checkerboard_0, const double* message_r_prev_checkerboard_0,
+    const double* message_u_prev_checkerboard_1, const double* message_d_prev_checkerboard_1,
+    const double* message_l_prev_checkerboard_1, const double* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -222,11 +222,11 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const float16_t* dataCostStereoCheckerboard0, const float16_t* dataCostStereoCheckerboard1,
-    const float16_t* messageUPrevStereoCheckerboard0, const float16_t* messageDPrevStereoCheckerboard0,
-    const float16_t* messageLPrevStereoCheckerboard0, const float16_t* messageRPrevStereoCheckerboard0,
-    const float16_t* messageUPrevStereoCheckerboard1, const float16_t* messageDPrevStereoCheckerboard1,
-    const float16_t* messageLPrevStereoCheckerboard1, const float16_t* messageRPrevStereoCheckerboard1,
+    const float16_t* data_cost_checkerboard_0, const float16_t* data_cost_checkerboard_1,
+    const float16_t* message_u_prev_checkerboard_0, const float16_t* message_d_prev_checkerboard_0,
+    const float16_t* message_l_prev_checkerboard_0, const float16_t* message_r_prev_checkerboard_0,
+    const float16_t* message_u_prev_checkerboard_1, const float16_t* message_d_prev_checkerboard_1,
+    const float16_t* message_l_prev_checkerboard_1, const float16_t* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 #endif //COMPILING_FOR_ARM
@@ -258,33 +258,33 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
-    float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
-    float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
-    float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
-    float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+    const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+    float* message_u_checkerboard_0, float* message_d_checkerboard_0,
+    float* message_l_checkerboard_0, float* message_r_checkerboard_0,
+    float* message_u_checkerboard_1, float* message_d_checkerboard_1,
+    float* message_l_checkerboard_1, float* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
-    short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
-    short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
-    short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
-    short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    short* message_u_checkerboard_0, short* message_d_checkerboard_0,
+    short* message_l_checkerboard_0, short* message_r_checkerboard_0,
+    short* message_u_checkerboard_1, short* message_d_checkerboard_1,
+    short* message_l_checkerboard_1, short* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
-    double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
-    double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
-    double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
-    double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+    const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+    double* message_u_checkerboard_0, double* message_d_checkerboard_0,
+    double* message_l_checkerboard_0, double* message_r_checkerboard_0,
+    double* message_u_checkerboard_1, double* message_d_checkerboard_1,
+    double* message_l_checkerboard_1, double* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
   
@@ -292,33 +292,33 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
-    float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
-    float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
-    float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
-    float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+    const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+    float* message_u_checkerboard_0, float* message_d_checkerboard_0,
+    float* message_l_checkerboard_0, float* message_r_checkerboard_0,
+    float* message_u_checkerboard_1, float* message_d_checkerboard_1,
+    float* message_l_checkerboard_1, float* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const short* dataCostStereoCheckerboard0, const short* dataCostStereoCheckerboard1,
-    short* messageUDeviceCurrentCheckerboard0, short* messageDDeviceCurrentCheckerboard0,
-    short* messageLDeviceCurrentCheckerboard0, short* messageRDeviceCurrentCheckerboard0,
-    short* messageUDeviceCurrentCheckerboard1, short* messageDDeviceCurrentCheckerboard1,
-    short* messageLDeviceCurrentCheckerboard1, short* messageRDeviceCurrentCheckerboard1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    short* message_u_checkerboard_0, short* message_d_checkerboard_0,
+    short* message_l_checkerboard_0, short* message_r_checkerboard_0,
+    short* message_u_checkerboard_1, short* message_d_checkerboard_1,
+    short* message_l_checkerboard_1, short* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
-    double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
-    double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
-    double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
-    double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+    const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+    double* message_u_checkerboard_0, double* message_d_checkerboard_0,
+    double* message_l_checkerboard_0, double* message_r_checkerboard_0,
+    double* message_u_checkerboard_1, double* message_d_checkerboard_1,
+    double* message_l_checkerboard_1, double* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
@@ -326,22 +326,22 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const float* dataCostStereoCheckerboard0, const float* dataCostStereoCheckerboard1,
-    float* messageUDeviceCurrentCheckerboard0, float* messageDDeviceCurrentCheckerboard0,
-    float* messageLDeviceCurrentCheckerboard0, float* messageRDeviceCurrentCheckerboard0,
-    float* messageUDeviceCurrentCheckerboard1, float* messageDDeviceCurrentCheckerboard1,
-    float* messageLDeviceCurrentCheckerboard1, float* messageRDeviceCurrentCheckerboard1,
+    const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+    float* message_u_checkerboard_0, float* message_d_checkerboard_0,
+    float* message_l_checkerboard_0, float* message_r_checkerboard_0,
+    float* message_u_checkerboard_1, float* message_d_checkerboard_1,
+    float* message_l_checkerboard_1, float* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const double* dataCostStereoCheckerboard0, const double* dataCostStereoCheckerboard1,
-    double* messageUDeviceCurrentCheckerboard0, double* messageDDeviceCurrentCheckerboard0,
-    double* messageLDeviceCurrentCheckerboard0, double* messageRDeviceCurrentCheckerboard0,
-    double* messageUDeviceCurrentCheckerboard1, double* messageDDeviceCurrentCheckerboard1,
-    double* messageLDeviceCurrentCheckerboard1, double* messageRDeviceCurrentCheckerboard1,
+    const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+    double* message_u_checkerboard_0, double* message_d_checkerboard_0,
+    double* message_l_checkerboard_0, double* message_r_checkerboard_0,
+    double* message_u_checkerboard_1, double* message_d_checkerboard_1,
+    double* message_l_checkerboard_1, double* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -349,11 +349,11 @@ namespace beliefpropCPU
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const float16_t* dataCostStereoCheckerboard0, const float16_t* dataCostStereoCheckerboard1,
-    float16_t* messageUDeviceCurrentCheckerboard0, float16_t* messageDDeviceCurrentCheckerboard0,
-    float16_t* messageLDeviceCurrentCheckerboard0, float16_t* messageRDeviceCurrentCheckerboard0,
-    float16_t* messageUDeviceCurrentCheckerboard1, float16_t* messageDDeviceCurrentCheckerboard1,
-    float16_t* messageLDeviceCurrentCheckerboard1, float16_t* messageRDeviceCurrentCheckerboard1,
+    const float16_t* data_cost_checkerboard_0, const float16_t* data_cost_checkerboard_1,
+    float16_t* message_u_checkerboard_0, float16_t* message_d_checkerboard_0,
+    float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
+    float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
+    float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 #endif //COMPILING_FOR_ARM
@@ -361,11 +361,11 @@ namespace beliefpropCPU
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-    T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-    T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-    T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+    T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+    T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+    T* message_l_checkerboard_1, T* message_r_checkerboard_1,
     float disc_k_bp, unsigned int num_data_SIMD_vect,
     unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
@@ -420,20 +420,20 @@ namespace beliefpropCPU
   template<RunData_t T, unsigned int DISP_VALS>
   void PrintDataAndMessageValsAtPointKernel(unsigned int x_val, unsigned int y_val,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    const T* messageUDeviceCurrentCheckerboard0, const T* messageDDeviceCurrentCheckerboard0,
-    const T* messageLDeviceCurrentCheckerboard0, const T* messageRDeviceCurrentCheckerboard0,
-    const T* messageUDeviceCurrentCheckerboard1, const T* messageDDeviceCurrentCheckerboard1,
-    const T* messageLDeviceCurrentCheckerboard1, const T* messageRDeviceCurrentCheckerboard1);
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+    const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+    const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+    const T* message_l_checkerboard_1, const T* message_r_checkerboard_1);
 
   template<RunData_t T, unsigned int DISP_VALS>
   void PrintDataAndMessageValsToPointKernel(unsigned int x_val, unsigned int y_val,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-    const T* messageUDeviceCurrentCheckerboard0, const T* messageDDeviceCurrentCheckerboard0,
-    const T* messageLDeviceCurrentCheckerboard0, const T* messageRDeviceCurrentCheckerboard0,
-    const T* messageUDeviceCurrentCheckerboard1, const T* messageDDeviceCurrentCheckerboard1,
-    const T* messageLDeviceCurrentCheckerboard1, const T* messageRDeviceCurrentCheckerboard1);
+    const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+    const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+    const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+    const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+    const T* message_l_checkerboard_1, const T* message_r_checkerboard_1);
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting
@@ -497,7 +497,7 @@ void beliefpropCPU::InitializeCurrentLevelData(
   beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level,
   const beliefprop::BpLevelProperties& prev_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   T* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -520,7 +520,7 @@ void beliefpropCPU::InitializeCurrentLevelData(
     beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
         x_val, y_val, checkerboard_part,
         current_bp_level, prev_bp_level,
-        dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
         dataCostDeviceToWriteTo, offset_num, bp_settings_disp_vals);
   }
 }
@@ -529,10 +529,10 @@ void beliefpropCPU::InitializeCurrentLevelData(
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::InitializeMessageValsToDefaultKernel(
   const beliefprop::BpLevelProperties& current_bp_level,
-  T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-  T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-  T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-  T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+  T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+  T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+  T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+  T* message_l_checkerboard_1, T* message_r_checkerboard_1,
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -553,10 +553,10 @@ void beliefpropCPU::InitializeMessageValsToDefaultKernel(
 
     beliefprop::InitializeMessageValsToDefaultKernelPixel<T, DISP_VALS>(
       x_val_in_checkerboard, y_val, current_bp_level,
-      messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-      messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-      messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-      messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+      message_u_checkerboard_0, message_d_checkerboard_0,
+      message_l_checkerboard_0, message_r_checkerboard_0,
+      message_u_checkerboard_1, message_d_checkerboard_1,
+      message_l_checkerboard_1, message_r_checkerboard_1,
       bp_settings_disp_vals);
   }
 }
@@ -565,11 +565,11 @@ template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   beliefprop::CheckerboardPart checkerboard_part_update,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-  T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-  T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-  T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+  T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+  T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+  T* message_l_checkerboard_1, T* message_r_checkerboard_1,
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -598,11 +598,11 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 
     beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
       x_val, y_val, checkerboard_part_update, current_bp_level,
-      dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-      messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-      messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-      messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-      messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+      data_cost_checkerboard_0, data_cost_checkerboard_1,
+      message_u_checkerboard_0, message_d_checkerboard_0,
+      message_l_checkerboard_0, message_r_checkerboard_0,
+      message_u_checkerboard_1, message_d_checkerboard_1,
+      message_l_checkerboard_1, message_r_checkerboard_1,
       disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
   }
 }
@@ -666,11 +666,11 @@ void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-  T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-  T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-  T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+  T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+  T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+  T* message_l_checkerboard_1, T* message_r_checkerboard_1,
   float disc_k_bp, unsigned int num_data_SIMD_vect,
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
@@ -728,37 +728,37 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, dataCostStereoCheckerboard0);
+                DISP_VALS, data_cost_checkerboard_0);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, messageUDeviceCurrentCheckerboard1);
+                DISP_VALS, message_u_checkerboard_1);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, messageDDeviceCurrentCheckerboard1);
+                DISP_VALS, message_d_checkerboard_1);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageLDeviceCurrentCheckerboard1);
+                DISP_VALS, message_l_checkerboard_1);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageRDeviceCurrentCheckerboard1);
+                DISP_VALS, message_r_checkerboard_1);
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, dataCostStereoCheckerboard1);
+                DISP_VALS, data_cost_checkerboard_1);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, messageUDeviceCurrentCheckerboard0);
+                DISP_VALS, message_u_checkerboard_0);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, messageDDeviceCurrentCheckerboard0);
+                DISP_VALS, message_d_checkerboard_0);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageLDeviceCurrentCheckerboard0);
+                DISP_VALS, message_l_checkerboard_0);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageRDeviceCurrentCheckerboard0);
+                DISP_VALS, message_r_checkerboard_0);
             }
           }
         } else {
@@ -766,37 +766,37 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, dataCostStereoCheckerboard0);
+                DISP_VALS, data_cost_checkerboard_0);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, messageUDeviceCurrentCheckerboard1);
+                DISP_VALS, message_u_checkerboard_1);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, messageDDeviceCurrentCheckerboard1);
+                DISP_VALS, message_d_checkerboard_1);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageLDeviceCurrentCheckerboard1);
+                DISP_VALS, message_l_checkerboard_1);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageRDeviceCurrentCheckerboard1);
+                DISP_VALS, message_r_checkerboard_1);
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
-                DISP_VALS, dataCostStereoCheckerboard1);
+                DISP_VALS, data_cost_checkerboard_1);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
-                DISP_VALS, messageUDeviceCurrentCheckerboard0);
+                DISP_VALS, message_u_checkerboard_0);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
-                DISP_VALS, messageDDeviceCurrentCheckerboard0);
+                DISP_VALS, message_d_checkerboard_0);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 x_val_process + checkerboard_adjustment, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageLDeviceCurrentCheckerboard0);
+                DISP_VALS, message_l_checkerboard_0);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(
                 (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
-                DISP_VALS, messageRDeviceCurrentCheckerboard0);
+                DISP_VALS, message_r_checkerboard_0);
             }
           }
         }
@@ -804,15 +804,15 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U, DISP_VALS>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
-            messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-            messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+            message_u_checkerboard_0, message_d_checkerboard_0,
+            message_l_checkerboard_0, message_r_checkerboard_0,
             disc_k_bp_vect, data_aligned_x_val);
         }
         else {
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U, DISP_VALS>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
-            messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-            messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+            message_u_checkerboard_1, message_d_checkerboard_1,
+            message_l_checkerboard_1, message_r_checkerboard_1,
             disc_k_bp_vect, data_aligned_x_val);
         }
       }
@@ -868,28 +868,28 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
           for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageUDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageDDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageLDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageRDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1);
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageUDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageDDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageLDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageRDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0);
             }
           }
         } 
@@ -897,28 +897,28 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
           for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageUDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageDDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageLDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageRDeviceCurrentCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1);
             } 
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
               data_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard1);
+                current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1);
               prev_u_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageUDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0);
               prev_d_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageDDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0);
               prev_l_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageLDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0);
               prev_r_message[current_disparity] = VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                current_disparity, current_bp_level, bp_settings_disp_vals, messageRDeviceCurrentCheckerboard0);
+                current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0);
             }
           }
         }
@@ -926,15 +926,15 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
-            messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-            messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
+            message_u_checkerboard_0, message_d_checkerboard_0,
+            message_l_checkerboard_0, message_r_checkerboard_0,
             disc_k_bp_vect, data_aligned_x_val, bp_settings_disp_vals);
         }
         else {
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
-            messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-            messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+            message_u_checkerboard_1, message_d_checkerboard_1,
+            message_l_checkerboard_1, message_r_checkerboard_1,
             disc_k_bp_vect, data_aligned_x_val, bp_settings_disp_vals);
         }
 
@@ -955,11 +955,11 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdates(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-  T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-  T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-  T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+  T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+  T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+  T* message_l_checkerboard_1, T* message_r_checkerboard_1,
   float disc_k_bp, unsigned int bp_settings_num_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -969,32 +969,32 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
     if (current_bp_level.width_checkerboard_level_ > 5)
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON<DISP_VALS>(checkerboard_to_update,
-        current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-        messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-        messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-        messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
     }
     else
     {
       RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-        current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-        messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-        messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-        messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
     }
   }
   else
   {
     RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-      current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-      messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-      messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-      messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-      messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+      current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+      message_u_checkerboard_0, message_d_checkerboard_0,
+      message_l_checkerboard_0, message_r_checkerboard_0,
+      message_u_checkerboard_1, message_d_checkerboard_1,
+      message_l_checkerboard_1, message_r_checkerboard_1,
       disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
   }
 #else
@@ -1005,21 +1005,21 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
     if (current_bp_level.width_checkerboard_level_ > 10)
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256<DISP_VALS>(checkerboard_to_update,
-        current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-        messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-        messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-        messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
     }
     else
     {
       RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-        current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-        messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-        messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-        messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
     }
   }
@@ -1031,21 +1031,21 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
     if (current_bp_level.width_checkerboard_level_ > 20)
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512<DISP_VALS>(checkerboard_to_update,
-        current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-        messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-        messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-        messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
     }
     else
     {
       RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-        current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-        messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-        messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-        messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
     }
   }
@@ -1053,11 +1053,11 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
   else
   {
     RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-      current_bp_level, dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-      messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-      messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-      messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-      messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+      current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+      message_u_checkerboard_0, message_d_checkerboard_0,
+      message_l_checkerboard_0, message_r_checkerboard_0,
+      message_u_checkerboard_1, message_d_checkerboard_1,
+      message_l_checkerboard_1, message_r_checkerboard_1,
       disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
   }
 #endif //COMPILING_FOR_ARM
@@ -1068,14 +1068,14 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
 template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& next_bp_level,
-  const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
-  const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
-  const T* messageUPrevStereoCheckerboard1, const T* messageDPrevStereoCheckerboard1,
-  const T* messageLPrevStereoCheckerboard1, const T* messageRPrevStereoCheckerboard1,
-  T* messageUDeviceCurrentCheckerboard0, T* messageDDeviceCurrentCheckerboard0,
-  T* messageLDeviceCurrentCheckerboard0, T* messageRDeviceCurrentCheckerboard0,
-  T* messageUDeviceCurrentCheckerboard1, T* messageDDeviceCurrentCheckerboard1,
-  T* messageLDeviceCurrentCheckerboard1, T* messageRDeviceCurrentCheckerboard1,
+  const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
+  const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
+  const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
+  const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
+  T* message_u_checkerboard_0, T* message_d_checkerboard_0,
+  T* message_l_checkerboard_0, T* message_r_checkerboard_0,
+  T* message_u_checkerboard_1, T* message_d_checkerboard_1,
+  T* message_l_checkerboard_1, T* message_r_checkerboard_1,
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -1097,14 +1097,14 @@ void beliefpropCPU::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerb
 
     beliefprop::CopyMsgDataToNextLevelPixel<T, DISP_VALS>(x_val, y_val,
       checkerboard_part, current_bp_level, next_bp_level,
-      messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
-      messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
-      messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
-      messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
-      messageUDeviceCurrentCheckerboard0, messageDDeviceCurrentCheckerboard0,
-      messageLDeviceCurrentCheckerboard0, messageRDeviceCurrentCheckerboard0,
-      messageUDeviceCurrentCheckerboard1, messageDDeviceCurrentCheckerboard1,
-      messageLDeviceCurrentCheckerboard1, messageRDeviceCurrentCheckerboard1,
+      message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
+      message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,
+      message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
+      message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
+      message_u_checkerboard_0, message_d_checkerboard_0,
+      message_l_checkerboard_0, message_r_checkerboard_0,
+      message_u_checkerboard_1, message_d_checkerboard_1,
+      message_l_checkerboard_1, message_r_checkerboard_1,
       bp_settings_disp_vals);
   }
 }
@@ -1112,11 +1112,11 @@ void beliefpropCPU::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerb
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 void beliefpropCPU::RetrieveOutputDisparity(
   const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
-  const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
-  const T* messageUPrevStereoCheckerboard1, const T* messageDPrevStereoCheckerboard1,
-  const T* messageLPrevStereoCheckerboard1, const T* messageRPrevStereoCheckerboard1,
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+  const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+  const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+  const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -1138,11 +1138,11 @@ void beliefpropCPU::RetrieveOutputDisparity(
 
     beliefprop::RetrieveOutputDisparityPixel<T, T, DISP_VALS>(
       x_val, y_val, current_bp_level,
-      dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-      messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
-      messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
-      messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
-      messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+      data_cost_checkerboard_0, data_cost_checkerboard_1,
+      message_u_checkerboard_0, message_d_checkerboard_0,
+      message_l_checkerboard_0, message_r_checkerboard_0,
+      message_u_checkerboard_1, message_d_checkerboard_1,
+      message_l_checkerboard_1, message_r_checkerboard_1,
       disparity_between_images_device, bp_settings_disp_vals);
     }
   }
@@ -1152,30 +1152,30 @@ void beliefpropCPU::RetrieveOutputDisparity(
     if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX512) {
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
       RetrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS>(current_bp_level,
-        dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
-        messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
-        messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
-        messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     }
     else if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX256) {
       RetrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(current_bp_level,
-        dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
-        messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
-        messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
-        messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
     }
 #else
       RetrieveOutputDisparityUseSIMDVectorsNEON<DISP_VALS>(current_bp_level,
-        dataCostStereoCheckerboard0, dataCostStereoCheckerboard1,
-        messageUPrevStereoCheckerboard0, messageDPrevStereoCheckerboard0,
-        messageLPrevStereoCheckerboard0, messageRPrevStereoCheckerboard0,
-        messageUPrevStereoCheckerboard1, messageDPrevStereoCheckerboard1,
-        messageLPrevStereoCheckerboard1, messageRPrevStereoCheckerboard1,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
         disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
 #endif //COMPILING_FOR_ARM
   }
@@ -1185,11 +1185,11 @@ void beliefpropCPU::RetrieveOutputDisparity(
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
 void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
   const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  const T* messageUPrevStereoCheckerboard0, const T* messageDPrevStereoCheckerboard0,
-  const T* messageLPrevStereoCheckerboard0, const T* messageRPrevStereoCheckerboard0,
-  const T* messageUPrevStereoCheckerboard1, const T* messageDPrevStereoCheckerboard1,
-  const T* messageLPrevStereoCheckerboard1, const T* messageRPrevStereoCheckerboard1,
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+  const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+  const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+  const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   unsigned int num_data_SIMD_vect,
   const ParallelParams& opt_cpu_params)
@@ -1269,35 +1269,35 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>(
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageUPrevStereoCheckerboard1),
+                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_1),
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageDPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageLPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageRPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
               }
               else {
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>(
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageUPrevStereoCheckerboard1),
+                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_1),
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageDPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageLPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageRPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_0));
               }
             }
             else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
@@ -1306,35 +1306,35 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>(
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageUPrevStereoCheckerboard0),
+                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_0),
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageDPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageLPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageRPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_1));
               }
               else {
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>(
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageUPrevStereoCheckerboard0),
+                    current_disparity, current_bp_level, DISP_VALS, message_u_checkerboard_0),
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, DISP_VALS, messageDPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, message_d_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageLPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, message_l_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, messageRPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, DISP_VALS, message_r_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, DISP_VALS, dataCostStereoCheckerboard1));
+                    current_disparity, current_bp_level, DISP_VALS, data_cost_checkerboard_1));
               }
             }
             if (current_disparity == 0) {
@@ -1378,35 +1378,35 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>(
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageUPrevStereoCheckerboard1),
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1),
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageDPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageLPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageRPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp,
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
               }
               else {
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>(
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageUPrevStereoCheckerboard1),
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_1),
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageDPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageLPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageRPrevStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_1));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_0));
               }
             }
             else //checkerboardGetDispMap == beliefprop::CheckerboardPart::kCheckerboardPart1
@@ -1415,35 +1415,35 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>( 
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageUPrevStereoCheckerboard0),
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0),
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageDPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageLPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageRPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataAligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1));
               }
               else {
                 //retrieve and get sum of message and data values
                 val_at_disp = VectProcessingFuncts::AddVals<U, U, W>( 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val + 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageUPrevStereoCheckerboard0),
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_u_checkerboard_0),
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val - 1,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageDPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_d_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process + checkerboard_adjustment, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageLPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_l_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp, 
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>((x_val_process + checkerboard_adjustment) - 1, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, messageRPrevStereoCheckerboard0));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0));
                 val_at_disp = VectProcessingFuncts::AddVals<W, U, W>(val_at_disp,
                   VectProcessingFuncts::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
-                    current_disparity, current_bp_level, bp_settings_disp_vals, dataCostStereoCheckerboard1));
+                    current_disparity, current_bp_level, bp_settings_disp_vals, data_cost_checkerboard_1));
               }
             }
             if (current_disparity == 0) {
@@ -1807,11 +1807,11 @@ template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::PrintDataAndMessageValsAtPointKernel(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  const T* messageUDeviceCurrentCheckerboard0, const T* messageDDeviceCurrentCheckerboard0,
-  const T* messageLDeviceCurrentCheckerboard0, const T* messageRDeviceCurrentCheckerboard0,
-  const T* messageUDeviceCurrentCheckerboard1, const T* messageDDeviceCurrentCheckerboard1,
-  const T* messageLDeviceCurrentCheckerboard1, const T* messageRDeviceCurrentCheckerboard1)
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+  const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+  const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+  const T* message_l_checkerboard_1, const T* message_r_checkerboard_1)
 {
   if (((x_val + y_val) % 2) == 0) {
     printf("x_val: %u\n", x_val);
@@ -1819,23 +1819,23 @@ void beliefpropCPU::PrintDataAndMessageValsAtPointKernel(
     for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float)messageUDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float)messageDDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_d_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float)messageLDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_l_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float)messageRDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_r_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float)dataCostStereoCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)data_cost_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
     }
@@ -1845,23 +1845,23 @@ void beliefpropCPU::PrintDataAndMessageValsAtPointKernel(
     for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float)messageUDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float)messageDDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_d_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float)messageLDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_l_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float)messageRDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)message_r_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float)dataCostStereoCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float)data_cost_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
     }
@@ -1872,11 +1872,11 @@ template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::PrintDataAndMessageValsToPointKernel(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const T* dataCostStereoCheckerboard0, const T* dataCostStereoCheckerboard1,
-  const T* messageUDeviceCurrentCheckerboard0, const T* messageDDeviceCurrentCheckerboard0,
-  const T* messageLDeviceCurrentCheckerboard0, const T* messageRDeviceCurrentCheckerboard0,
-  const T* messageUDeviceCurrentCheckerboard1, const T* messageDDeviceCurrentCheckerboard1,
-  const T* messageLDeviceCurrentCheckerboard1, const T* messageRDeviceCurrentCheckerboard1)
+  const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
+  const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
+  const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
+  const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
+  const T* message_l_checkerboard_1, const T* message_r_checkerboard_1)
 {
   const unsigned int checkerboard_adjustment = (((x_val + y_val) % 2) == 0) ? ((y_val)%2) : ((y_val+1)%2);
   if (((x_val + y_val) % 2) == 0) {
@@ -1887,23 +1887,23 @@ void beliefpropCPU::PrintDataAndMessageValsToPointKernel(
     for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float) messageUDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_u_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val + 1, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float) messageDDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_d_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val - 1, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float) messageLDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_l_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2 + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float) messageRDeviceCurrentCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_r_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           (x_val / 2 - 1) + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float) dataCostStereoCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) data_cost_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
     }
@@ -1914,23 +1914,23 @@ void beliefpropCPU::PrintDataAndMessageValsToPointKernel(
     for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
       printf("DISP: %u\n", current_disparity);
       printf("messageUPrevStereoCheckerboard: %f \n",
-        (float) messageUDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_u_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val + 1, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageDPrevStereoCheckerboard: %f \n",
-        (float) messageDDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_d_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val - 1, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageLPrevStereoCheckerboard: %f \n",
-        (float) messageLDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_l_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2 + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("messageRPrevStereoCheckerboard: %f \n",
-        (float) messageRDeviceCurrentCheckerboard0[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) message_r_checkerboard_0[beliefprop::RetrieveIndexInDataAndMessage(
           (x_val / 2 - 1) + checkerboard_adjustment, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
       printf("dataCostStereoCheckerboard: %f \n",
-        (float) dataCostStereoCheckerboard1[beliefprop::RetrieveIndexInDataAndMessage(
+        (float) data_cost_checkerboard_1[beliefprop::RetrieveIndexInDataAndMessage(
           x_val / 2, y_val, current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
           current_disparity, DISP_VALS)]);
     }
