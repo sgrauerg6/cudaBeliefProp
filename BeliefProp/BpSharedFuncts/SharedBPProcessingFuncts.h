@@ -403,29 +403,29 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const float* image_1_pixels_device, const float* image_2_pixels_device,
-  T* dataCostDeviceStereoCheckerboard0,
-  T* dataCostDeviceStereoCheckerboard1, 
+  T* data_cost_stereo_checkerboard_0,
+  T* data_cost_stereo_checkerboard_1, 
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)
 {
   if constexpr (DISP_VALS > 0) {
     unsigned int index_val;
-    const unsigned int xInCheckerboard = x_val / 2;
+    const unsigned int x_checkerboard = x_val / 2;
 
     if (run_imp_util::WithinImageBounds(
-      xInCheckerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_)) {
+      x_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_)) {
       //make sure that it is possible to check every disparity value
       //need to cast DISP_VALS from unsigned int to int
       //for conditional to work as expected
       if (((int)x_val - ((int)DISP_VALS - 1)) >= 0) {
         for (unsigned int current_disparity = 0u; current_disparity < DISP_VALS; current_disparity++) {
-          float currentPixelImage1 = 0.0f, currentPixelImage2 = 0.0f;
+          float current_pixel_image_1 = 0.0f, current_pixel_image_2 = 0.0f;
 
           if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
-            currentPixelImage1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
-            currentPixelImage2 = image_2_pixels_device[y_val * current_bp_level.width_level_ + (x_val - current_disparity)];
+            current_pixel_image_1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
+            current_pixel_image_2 = image_2_pixels_device[y_val * current_bp_level.width_level_ + (x_val - current_disparity)];
           }
 
-          index_val = RetrieveIndexInDataAndMessage(xInCheckerboard, y_val,
+          index_val = RetrieveIndexInDataAndMessage(x_checkerboard, y_val,
             current_bp_level.padded_width_checkerboard_level_,
             current_bp_level.height_level_, current_disparity,
             DISP_VALS);
@@ -433,26 +433,26 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
           //data cost is equal to dataWeight value for weighting times the absolute difference
           //in corresponding pixel intensity values capped at dataCostCap
           if (((x_val + y_val) % 2) == 0) {
-            dataCostDeviceStereoCheckerboard0[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
-              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(currentPixelImage1 - currentPixelImage2)), data_k_bp)));
+            data_cost_stereo_checkerboard_0[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
+              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(current_pixel_image_1 - current_pixel_image_2)), data_k_bp)));
           }
           else {
-            dataCostDeviceStereoCheckerboard1[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
-              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(currentPixelImage1 - currentPixelImage2)), data_k_bp)));
+            data_cost_stereo_checkerboard_1[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
+              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(current_pixel_image_1 - current_pixel_image_2)), data_k_bp)));
           }
         }
       } else {
         for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
-          index_val = RetrieveIndexInDataAndMessage(xInCheckerboard, y_val,
+          index_val = RetrieveIndexInDataAndMessage(x_checkerboard, y_val,
             current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
             current_disparity, DISP_VALS);
 
           //set data cost to zero if not possible to determine cost at disparity for pixel
           if (((x_val + y_val) % 2) == 0) {
-            dataCostDeviceStereoCheckerboard0[index_val] = run_imp_util::ZeroVal<T>();
+            data_cost_stereo_checkerboard_0[index_val] = run_imp_util::ZeroVal<T>();
           }
           else {
-            dataCostDeviceStereoCheckerboard1[index_val] = run_imp_util::ZeroVal<T>();
+            data_cost_stereo_checkerboard_1[index_val] = run_imp_util::ZeroVal<T>();
           }
         }
       }
@@ -460,23 +460,23 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
   }
   else {
     unsigned int index_val;
-    const unsigned int xInCheckerboard = x_val / 2;
+    const unsigned int x_checkerboard = x_val / 2;
 
     if (run_imp_util::WithinImageBounds(
-      xInCheckerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_)) {
+      x_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_)) {
       //make sure that it is possible to check every disparity value
       //need to cast bp_settings_disp_vals from unsigned int to int
       //for conditional to work as expected
       if (((int)x_val - ((int)bp_settings_disp_vals - 1)) >= 0) {
         for (unsigned int current_disparity = 0u; current_disparity < bp_settings_disp_vals; current_disparity++) {
-          float currentPixelImage1 = 0.0f, currentPixelImage2 = 0.0f;
+          float current_pixel_image_1 = 0.0f, current_pixel_image_2 = 0.0f;
 
           if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
-            currentPixelImage1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
-            currentPixelImage2 = image_2_pixels_device[y_val * current_bp_level.width_level_ + (x_val - current_disparity)];
+            current_pixel_image_1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
+            current_pixel_image_2 = image_2_pixels_device[y_val * current_bp_level.width_level_ + (x_val - current_disparity)];
           }
 
-          index_val = RetrieveIndexInDataAndMessage(xInCheckerboard, y_val,
+          index_val = RetrieveIndexInDataAndMessage(x_checkerboard, y_val,
             current_bp_level.padded_width_checkerboard_level_,
             current_bp_level.height_level_, current_disparity,
             bp_settings_disp_vals);
@@ -484,26 +484,26 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
           //data cost is equal to dataWeight value for weighting times the absolute difference
           //in corresponding pixel intensity values capped at dataCostCap
           if (((x_val + y_val) % 2) == 0) {
-            dataCostDeviceStereoCheckerboard0[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
-              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(currentPixelImage1 - currentPixelImage2)), data_k_bp)));
+            data_cost_stereo_checkerboard_0[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
+              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(current_pixel_image_1 - current_pixel_image_2)), data_k_bp)));
           }
           else {
-            dataCostDeviceStereoCheckerboard1[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
-              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(currentPixelImage1 - currentPixelImage2)), data_k_bp)));
+            data_cost_stereo_checkerboard_1[index_val] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, T>(
+              (float)(lambda_bp * run_imp_util::GetMin<float>((fabs(current_pixel_image_1 - current_pixel_image_2)), data_k_bp)));
           }
         }
       } else {
         for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-          index_val = RetrieveIndexInDataAndMessage(xInCheckerboard, y_val,
+          index_val = RetrieveIndexInDataAndMessage(x_checkerboard, y_val,
             current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
             current_disparity, bp_settings_disp_vals);
 
           //set data cost to zero if not possible to determine cost at disparity for pixel
           if (((x_val + y_val) % 2) == 0) {
-            dataCostDeviceStereoCheckerboard0[index_val] = run_imp_util::ZeroVal<T>();
+            data_cost_stereo_checkerboard_0[index_val] = run_imp_util::ZeroVal<T>();
           }
           else {
-            dataCostDeviceStereoCheckerboard1[index_val] = run_imp_util::ZeroVal<T>();
+            data_cost_stereo_checkerboard_1[index_val] = run_imp_util::ZeroVal<T>();
           }
         }
       }
@@ -517,7 +517,7 @@ ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
-  T* dataCostDeviceToWriteTo, unsigned int offset_num,
+  T* data_cost_current_level, unsigned int offset_num,
   unsigned int bp_settings_disp_vals)
 {
   //add 1 or 0 to the x-value depending on checkerboard part and row
@@ -548,7 +548,7 @@ ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
             x_valPrev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, DISP_VALS, offset_num)]);
 
-        dataCostDeviceToWriteTo[RetrieveIndexInDataAndMessage(x_val, y_val,
+        data_cost_current_level[RetrieveIndexInDataAndMessage(x_val, y_val,
           current_bp_level.padded_width_checkerboard_level_,
           current_bp_level.height_level_, current_disparity,
           DISP_VALS)] =
@@ -571,7 +571,7 @@ ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
             x_valPrev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, bp_settings_disp_vals, offset_num)]);
 
-        dataCostDeviceToWriteTo[RetrieveIndexInDataAndMessage(x_val, y_val,
+        data_cost_current_level[RetrieveIndexInDataAndMessage(x_val, y_val,
           current_bp_level.padded_width_checkerboard_level_,
           current_bp_level.height_level_, current_disparity,
           bp_settings_disp_vals)] =
@@ -1009,27 +1009,27 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
     (((x_val >= (current_bp_level.width_checkerboard_level_ - 2)) ||
       (y_val >= (current_bp_level.height_level_ - 2)))));
   
-  unsigned int indexCopyTo, indexCopyFrom;
-  T prevValU, prevValD, prevValL, prevValR;
+  unsigned int index_copy_to, index_copy_from;
+  T prev_val_u, prev_val_d, prev_val_l, prev_val_r;
   const unsigned int checkerboard_part_adjustment =
     (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) ? (y_val % 2) : ((y_val + 1) % 2);
   
   if constexpr (DISP_VALS > 0) {
     for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
-      indexCopyFrom = RetrieveIndexInDataAndMessage(x_val, y_val,
+      index_copy_from = RetrieveIndexInDataAndMessage(x_val, y_val,
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, DISP_VALS);
 
       if (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-        prevValU = message_u_prev_checkerboard_0[indexCopyFrom];
-        prevValD = message_d_prev_checkerboard_0[indexCopyFrom];
-        prevValL = message_l_prev_checkerboard_0[indexCopyFrom];
-        prevValR = message_r_prev_checkerboard_0[indexCopyFrom];
+        prev_val_u = message_u_prev_checkerboard_0[index_copy_from];
+        prev_val_d = message_d_prev_checkerboard_0[index_copy_from];
+        prev_val_l = message_l_prev_checkerboard_0[index_copy_from];
+        prev_val_r = message_r_prev_checkerboard_0[index_copy_from];
       } else /*(checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart1)*/ {
-        prevValU = message_u_prev_checkerboard_1[indexCopyFrom];
-        prevValD = message_d_prev_checkerboard_1[indexCopyFrom];
-        prevValL = message_l_prev_checkerboard_1[indexCopyFrom];
-        prevValR = message_r_prev_checkerboard_1[indexCopyFrom];
+        prev_val_u = message_u_prev_checkerboard_1[index_copy_from];
+        prev_val_d = message_d_prev_checkerboard_1[index_copy_from];
+        prev_val_l = message_l_prev_checkerboard_1[index_copy_from];
+        prev_val_r = message_r_prev_checkerboard_1[index_copy_from];
       }
 
       if (run_imp_util::WithinImageBounds(
@@ -1037,20 +1037,20 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         next_bp_level.width_checkerboard_level_,
         next_bp_level.height_level_))
       {
-        indexCopyTo = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2,
+        index_copy_to = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2,
           next_bp_level.padded_width_checkerboard_level_, next_bp_level.height_level_,
           current_disparity, DISP_VALS);
 
-        message_u_checkerboard_0[indexCopyTo] = prevValU;
-        message_d_checkerboard_0[indexCopyTo] = prevValD;
-        message_l_checkerboard_0[indexCopyTo] = prevValL;
-        message_r_checkerboard_0[indexCopyTo] = prevValR;
+        message_u_checkerboard_0[index_copy_to] = prev_val_u;
+        message_d_checkerboard_0[index_copy_to] = prev_val_d;
+        message_l_checkerboard_0[index_copy_to] = prev_val_l;
+        message_r_checkerboard_0[index_copy_to] = prev_val_r;
 
         if (copyCheckerboard1) {
-          message_u_checkerboard_1[indexCopyTo] = prevValU;
-          message_d_checkerboard_1[indexCopyTo] = prevValD;
-          message_l_checkerboard_1[indexCopyTo] = prevValL;
-          message_r_checkerboard_1[indexCopyTo] = prevValR;
+          message_u_checkerboard_1[index_copy_to] = prev_val_u;
+          message_d_checkerboard_1[index_copy_to] = prev_val_d;
+          message_l_checkerboard_1[index_copy_to] = prev_val_l;
+          message_r_checkerboard_1[index_copy_to] = prev_val_r;
         }
       }
 
@@ -1058,60 +1058,60 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
         next_bp_level.width_checkerboard_level_, next_bp_level.height_level_))
       {
-        indexCopyTo = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
+        index_copy_to = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
           next_bp_level.padded_width_checkerboard_level_, next_bp_level.height_level_,
           current_disparity, DISP_VALS);
 
-        message_u_checkerboard_0[indexCopyTo] = prevValU;
-        message_d_checkerboard_0[indexCopyTo] = prevValD;
-        message_l_checkerboard_0[indexCopyTo] = prevValL;
-        message_r_checkerboard_0[indexCopyTo] = prevValR;
+        message_u_checkerboard_0[index_copy_to] = prev_val_u;
+        message_d_checkerboard_0[index_copy_to] = prev_val_d;
+        message_l_checkerboard_0[index_copy_to] = prev_val_l;
+        message_r_checkerboard_0[index_copy_to] = prev_val_r;
 
         if (copyCheckerboard1) {
-          message_u_checkerboard_1[indexCopyTo] = prevValU;
-          message_d_checkerboard_1[indexCopyTo] = prevValD;
-          message_l_checkerboard_1[indexCopyTo] = prevValL;
-          message_r_checkerboard_1[indexCopyTo] = prevValR;
+          message_u_checkerboard_1[index_copy_to] = prev_val_u;
+          message_d_checkerboard_1[index_copy_to] = prev_val_d;
+          message_l_checkerboard_1[index_copy_to] = prev_val_l;
+          message_r_checkerboard_1[index_copy_to] = prev_val_r;
         }
       }
     }
   }
   else {
     for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-      indexCopyFrom = RetrieveIndexInDataAndMessage(x_val, y_val,
+      index_copy_from = RetrieveIndexInDataAndMessage(x_val, y_val,
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, bp_settings_disp_vals);
 
       if (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-        prevValU = message_u_prev_checkerboard_0[indexCopyFrom];
-        prevValD = message_d_prev_checkerboard_0[indexCopyFrom];
-        prevValL = message_l_prev_checkerboard_0[indexCopyFrom];
-        prevValR = message_r_prev_checkerboard_0[indexCopyFrom];
+        prev_val_u = message_u_prev_checkerboard_0[index_copy_from];
+        prev_val_d = message_d_prev_checkerboard_0[index_copy_from];
+        prev_val_l = message_l_prev_checkerboard_0[index_copy_from];
+        prev_val_r = message_r_prev_checkerboard_0[index_copy_from];
       } else /*(checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart1)*/ {
-        prevValU = message_u_prev_checkerboard_1[indexCopyFrom];
-        prevValD = message_d_prev_checkerboard_1[indexCopyFrom];
-        prevValL = message_l_prev_checkerboard_1[indexCopyFrom];
-        prevValR = message_r_prev_checkerboard_1[indexCopyFrom];
+        prev_val_u = message_u_prev_checkerboard_1[index_copy_from];
+        prev_val_d = message_d_prev_checkerboard_1[index_copy_from];
+        prev_val_l = message_l_prev_checkerboard_1[index_copy_from];
+        prev_val_r = message_r_prev_checkerboard_1[index_copy_from];
       }
 
       if (run_imp_util::WithinImageBounds(
         x_val*2 + checkerboard_part_adjustment, y_val*2,
         next_bp_level.width_checkerboard_level_, next_bp_level.height_level_))
       {
-        indexCopyTo = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2,
+        index_copy_to = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2,
           next_bp_level.padded_width_checkerboard_level_, next_bp_level.height_level_,
           current_disparity, bp_settings_disp_vals);
 
-        message_u_checkerboard_0[indexCopyTo] = prevValU;
-        message_d_checkerboard_0[indexCopyTo] = prevValD;
-        message_l_checkerboard_0[indexCopyTo] = prevValL;
-        message_r_checkerboard_0[indexCopyTo] = prevValR;
+        message_u_checkerboard_0[index_copy_to] = prev_val_u;
+        message_d_checkerboard_0[index_copy_to] = prev_val_d;
+        message_l_checkerboard_0[index_copy_to] = prev_val_l;
+        message_r_checkerboard_0[index_copy_to] = prev_val_r;
 
         if (copyCheckerboard1) {
-          message_u_checkerboard_1[indexCopyTo] = prevValU;
-          message_d_checkerboard_1[indexCopyTo] = prevValD;
-          message_l_checkerboard_1[indexCopyTo] = prevValL;
-          message_r_checkerboard_1[indexCopyTo] = prevValR;
+          message_u_checkerboard_1[index_copy_to] = prev_val_u;
+          message_d_checkerboard_1[index_copy_to] = prev_val_d;
+          message_l_checkerboard_1[index_copy_to] = prev_val_l;
+          message_r_checkerboard_1[index_copy_to] = prev_val_r;
         }
       }
 
@@ -1119,20 +1119,20 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
         next_bp_level.width_checkerboard_level_, next_bp_level.height_level_))
       {
-        indexCopyTo = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
+        index_copy_to = RetrieveIndexInDataAndMessage(x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
           next_bp_level.padded_width_checkerboard_level_, next_bp_level.height_level_,
           current_disparity, bp_settings_disp_vals);
 
-        message_u_checkerboard_0[indexCopyTo] = prevValU;
-        message_d_checkerboard_0[indexCopyTo] = prevValD;
-        message_l_checkerboard_0[indexCopyTo] = prevValL;
-        message_r_checkerboard_0[indexCopyTo] = prevValR;
+        message_u_checkerboard_0[index_copy_to] = prev_val_u;
+        message_d_checkerboard_0[index_copy_to] = prev_val_d;
+        message_l_checkerboard_0[index_copy_to] = prev_val_l;
+        message_r_checkerboard_0[index_copy_to] = prev_val_r;
 
         if (copyCheckerboard1) {
-          message_u_checkerboard_1[indexCopyTo] = prevValU;
-          message_d_checkerboard_1[indexCopyTo] = prevValD;
-          message_l_checkerboard_1[indexCopyTo] = prevValL;
-          message_r_checkerboard_1[indexCopyTo] = prevValR;
+          message_u_checkerboard_1[index_copy_to] = prev_val_u;
+          message_d_checkerboard_1[index_copy_to] = prev_val_d;
+          message_l_checkerboard_1[index_copy_to] = prev_val_l;
+          message_r_checkerboard_1[index_copy_to] = prev_val_r;
         }
       }
     }

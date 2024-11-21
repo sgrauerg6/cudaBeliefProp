@@ -206,10 +206,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, 0>(
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, 0>(x_val, y_val, checkerboard_part, current_bp_level, prev_bp_level,
-    data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo, offset_num, bp_settings_disp_vals);
+    data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level, offset_num, bp_settings_disp_vals);
 }
 
 
@@ -219,10 +219,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 
@@ -232,10 +232,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 
@@ -245,10 +245,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 
@@ -258,10 +258,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 
@@ -271,10 +271,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 
@@ -284,10 +284,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 
@@ -297,10 +297,10 @@ void beliefprop::InitializeCurrentLevelDataPixel<short, short, beliefprop::kSter
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-  short* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals)
+  short* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   beliefprop::InitializeCurrentLevelDataPixel<short, float, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(x_val, y_val, checkerboard_part,
-    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+    current_bp_level, prev_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
     offset_num, bp_settings_disp_vals);
 }
 

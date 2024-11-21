@@ -41,7 +41,7 @@ template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeBottomLevelData(
   beliefprop::BpLevelProperties current_bp_level,
   float* image_1_pixels_device, float* image_2_pixels_device,
-  T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
+  T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
@@ -49,15 +49,15 @@ __global__ void InitializeBottomLevelData(
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
   //get the x value within the current "checkerboard"
-  const unsigned int xInCheckerboard = x_val / 2;
+  const unsigned int x_checkerboard = x_val / 2;
 
   if (run_imp_util::WithinImageBounds(
-    xInCheckerboard, y_val, current_bp_level.width_level_, current_bp_level.height_level_))
+    x_checkerboard, y_val, current_bp_level.width_level_, current_bp_level.height_level_))
   {
     beliefprop::InitializeBottomLevelDataPixel<T, DISP_VALS>(x_val, y_val,
       current_bp_level, image_1_pixels_device,
-      image_2_pixels_device, dataCostDeviceStereoCheckerboard0,
-      dataCostDeviceStereoCheckerboard1, lambda_bp,
+      image_2_pixels_device, data_cost_stereo_checkerboard_0,
+      data_cost_stereo_checkerboard_1, lambda_bp,
       data_k_bp, bp_settings_disp_vals);
   }
 }
@@ -68,7 +68,7 @@ __global__ void InitializeCurrentLevelData(
   beliefprop::CheckerboardPart checkerboard_part,
   beliefprop::BpLevelProperties current_bp_level,
   beliefprop::BpLevelProperties prev_bp_level, T* data_cost_checkerboard_0,
-  T* data_cost_checkerboard_1, T* dataCostDeviceToWriteTo,
+  T* data_cost_checkerboard_1, T* data_cost_current_level,
   unsigned int offset_num, unsigned int bp_settings_disp_vals)
 {
   //get the x and y indices for the current CUDA thread
@@ -80,7 +80,7 @@ __global__ void InitializeCurrentLevelData(
   {
     beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
       x_val, y_val, checkerboard_part, current_bp_level, prev_bp_level,
-      data_cost_checkerboard_0, data_cost_checkerboard_1, dataCostDeviceToWriteTo,
+      data_cost_checkerboard_0, data_cost_checkerboard_1, data_cost_current_level,
       offset_num, bp_settings_disp_vals);
   }
 }

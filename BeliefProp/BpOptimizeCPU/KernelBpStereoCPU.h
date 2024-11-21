@@ -42,7 +42,7 @@ namespace beliefpropCPU
   template<RunData_t T, unsigned int DISP_VALS>
   void InitializeBottomLevelData(const beliefprop::BpLevelProperties& current_bp_level,
     const float* image_1_pixels_device, const float* image_2_pixels_device,
-    T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
+    T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,
     float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -51,7 +51,7 @@ namespace beliefpropCPU
   void InitializeCurrentLevelData(beliefprop::CheckerboardPart checkerboard_part,
     const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
     const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
-    T* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals,
+    T* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   //initialize the message values at each pixel of the current level to the default value
@@ -465,7 +465,7 @@ template<RunData_t T, unsigned int DISP_VALS>
 void beliefpropCPU::InitializeBottomLevelData(
   const beliefprop::BpLevelProperties& current_bp_level,
   const float* image_1_pixels_device, const float* image_2_pixels_device,
-  T* dataCostDeviceStereoCheckerboard0, T* dataCostDeviceStereoCheckerboard1,
+  T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -486,7 +486,7 @@ void beliefpropCPU::InitializeBottomLevelData(
 
     beliefprop::InitializeBottomLevelDataPixel<T, DISP_VALS>(x_val, y_val, current_bp_level,
         image_1_pixels_device, image_2_pixels_device,
-        dataCostDeviceStereoCheckerboard0, dataCostDeviceStereoCheckerboard1,
+        data_cost_stereo_checkerboard_0, data_cost_stereo_checkerboard_1,
         lambda_bp, data_k_bp, bp_settings_disp_vals);
   }
 }
@@ -498,7 +498,7 @@ void beliefpropCPU::InitializeCurrentLevelData(
   const beliefprop::BpLevelProperties& current_bp_level,
   const beliefprop::BpLevelProperties& prev_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
-  T* dataCostDeviceToWriteTo, unsigned int offset_num, unsigned int bp_settings_disp_vals,
+  T* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
@@ -521,7 +521,7 @@ void beliefpropCPU::InitializeCurrentLevelData(
         x_val, y_val, checkerboard_part,
         current_bp_level, prev_bp_level,
         data_cost_checkerboard_0, data_cost_checkerboard_1,
-        dataCostDeviceToWriteTo, offset_num, bp_settings_disp_vals);
+        data_cost_current_level, offset_num, bp_settings_disp_vals);
   }
 }
 
