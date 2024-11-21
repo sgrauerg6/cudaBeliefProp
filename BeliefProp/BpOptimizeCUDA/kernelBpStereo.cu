@@ -152,7 +152,7 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   T* message_u_checkerboard_1, T* message_d_checkerboard_1,
   T* message_l_checkerboard_1, T* message_r_checkerboard_1,
   float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  void* dstProcessing)
+  void* dst_processing)
 {
   //get the x and y indices for the current CUDA thread
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
@@ -168,7 +168,7 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
       message_l_checkerboard_0, message_r_checkerboard_0,
       message_u_checkerboard_1, message_d_checkerboard_1,
       message_l_checkerboard_1, message_r_checkerboard_1,
-      disc_k_bp, 0, data_aligned, bp_settings_disp_vals, dstProcessing);
+      disc_k_bp, 0, data_aligned, bp_settings_disp_vals, dst_processing);
   }
 }
 

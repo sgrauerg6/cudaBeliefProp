@@ -19,11 +19,11 @@ namespace beliefprop {
 //retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
 ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned int x_val, unsigned int y_val,
   unsigned int width, unsigned int height, unsigned int current_disparity, unsigned int total_num_disp_vals,
-  unsigned int offsetData = 0u)
+  unsigned int offset_data = 0u)
 {
   if constexpr (beliefprop::kOptimizedIndexingSetting) {
     //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
-    return (y_val * width * total_num_disp_vals + width * current_disparity + x_val) + offsetData;
+    return (y_val * width * total_num_disp_vals + width * current_disparity + x_val) + offset_data;
   }
   else {
     return ((y_val * width + x_val) * total_num_disp_vals + current_disparity);
@@ -239,14 +239,14 @@ ARCHITECTURE_ADDITION void inline SetInitDstProcessing(
   const T* prev_l_message_array, const T* prev_r_message_array,
   const T* data_message_array, T* dst_message_array,
   U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  U* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData, unsigned int current_disparity,
-  unsigned int procArrIdx)
+  U* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data, unsigned int current_disparity,
+  unsigned int proc_array_idx)
 {
   const U dataVal = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_message_array[
     RetrieveIndexInDataAndMessage(x_val, y_val,
       current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
-      current_disparity, bp_settings_disp_vals, offsetData)]);
+      current_disparity, bp_settings_disp_vals, offset_data)]);
 
   if constexpr (M == beliefprop::MessageComp::kUMessage) {
     const U prevUVal = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(prev_u_message_array[
@@ -262,7 +262,7 @@ ARCHITECTURE_ADDITION void inline SetInitDstProcessing(
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, bp_settings_disp_vals)]);
 
-    dstProcessing[procArrIdx] = prevUVal + prevLVal + prevRVal + dataVal;
+    dst_processing[proc_array_idx] = prevUVal + prevLVal + prevRVal + dataVal;
   }
   else if constexpr (M == beliefprop::MessageComp::kDMessage) {
     const U prevDVal = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(prev_d_message_array[
@@ -278,7 +278,7 @@ ARCHITECTURE_ADDITION void inline SetInitDstProcessing(
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, bp_settings_disp_vals)]);
 
-    dstProcessing[procArrIdx] = prevDVal + prevLVal + prevRVal + dataVal;
+    dst_processing[proc_array_idx] = prevDVal + prevLVal + prevRVal + dataVal;
   }
   else if constexpr (M == beliefprop::MessageComp::kLMessage) {
     const U prevUVal = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(prev_u_message_array[
@@ -294,7 +294,7 @@ ARCHITECTURE_ADDITION void inline SetInitDstProcessing(
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, bp_settings_disp_vals)]);
 
-    dstProcessing[procArrIdx] = prevUVal + prevDVal + prevLVal + dataVal;
+    dst_processing[proc_array_idx] = prevUVal + prevDVal + prevLVal + dataVal;
   }
   else if constexpr (M == beliefprop::MessageComp::kRMessage) {
     const U prevUVal = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(prev_u_message_array[
@@ -310,7 +310,7 @@ ARCHITECTURE_ADDITION void inline SetInitDstProcessing(
         current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
         current_disparity, bp_settings_disp_vals)]);
 
-    dstProcessing[procArrIdx] = prevUVal + prevDVal + prevRVal + dataVal;
+    dst_processing[proc_array_idx] = prevUVal + prevDVal + prevRVal + dataVal;
   }
 }
 
@@ -322,39 +322,39 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
   const T* prev_l_message_array, const T* prev_r_message_array,
   const T* data_message_array, T* dst_message_array,
   U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  U* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  U* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   // aggregate and find min
   U minimum{(U)beliefprop::kInfBp};
-  unsigned int processingArrIndexDisp0 = RetrieveIndexInDataAndMessage(x_val, y_val,
+  unsigned int proc_array_idx_disp_0 = RetrieveIndexInDataAndMessage(x_val, y_val,
     current_bp_level.padded_width_checkerboard_level_,
     current_bp_level.height_level_, 0,
     bp_settings_disp_vals);
-  unsigned int procArrIdx{processingArrIndexDisp0};
+  unsigned int proc_array_idx{proc_array_idx_disp_0};
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
     //set initial dst processing array value corresponding to disparity for M message type
     SetInitDstProcessing<T, U, M>(x_val, y_val, current_bp_level, prev_u_message_array, prev_d_message_array,
       prev_l_message_array, prev_r_message_array, data_message_array, dst_message_array,
-      disc_k_bp, data_aligned, bp_settings_disp_vals, dstProcessing, checkerboard_adjustment,
-      offsetData, current_disparity, procArrIdx);
+      disc_k_bp, data_aligned, bp_settings_disp_vals, dst_processing, checkerboard_adjustment,
+      offset_data, current_disparity, proc_array_idx);
 
-    if (dstProcessing[procArrIdx] < minimum)
-      minimum = dstProcessing[procArrIdx];
+    if (dst_processing[proc_array_idx] < minimum)
+      minimum = dst_processing[proc_array_idx];
 
     if constexpr (beliefprop::kOptimizedIndexingSetting) {
-      procArrIdx += current_bp_level.padded_width_checkerboard_level_;
+      proc_array_idx += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
-      procArrIdx++;
+      proc_array_idx++;
     }
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method
   //(see "Efficient Belief Propagation for Early Vision")
-  DtStereo<U>(dstProcessing, bp_settings_disp_vals, x_val, y_val, current_bp_level);
+  DtStereo<U>(dst_processing, bp_settings_disp_vals, x_val, y_val, current_bp_level);
 
   // truncate
   minimum += disc_k_bp;
@@ -362,36 +362,36 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
   // normalize
   U val_to_normalize{(U)0.0};
 
-  procArrIdx = processingArrIndexDisp0;
+  proc_array_idx = proc_array_idx_disp_0;
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-    if (minimum < dstProcessing[procArrIdx]) {
-      dstProcessing[procArrIdx] = minimum;
+    if (minimum < dst_processing[proc_array_idx]) {
+      dst_processing[proc_array_idx] = minimum;
     }
 
-    val_to_normalize += dstProcessing[procArrIdx];
+    val_to_normalize += dst_processing[proc_array_idx];
 
     if constexpr (beliefprop::kOptimizedIndexingSetting) {
-      procArrIdx += current_bp_level.padded_width_checkerboard_level_;
+      proc_array_idx += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
-      procArrIdx++;
+      proc_array_idx++;
     }
   }
 
   val_to_normalize /= ((U)bp_settings_disp_vals);
 
   //dst processing index and message array index are the same for each disparity value in this processing
-  procArrIdx = processingArrIndexDisp0;
+  proc_array_idx = proc_array_idx_disp_0;
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-    dstProcessing[procArrIdx] -= val_to_normalize;
-    dst_message_array[procArrIdx] =
-      run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dstProcessing[procArrIdx]);
+    dst_processing[proc_array_idx] -= val_to_normalize;
+    dst_message_array[proc_array_idx] =
+      run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dst_processing[proc_array_idx]);
     if constexpr (beliefprop::kOptimizedIndexingSetting) {
-      procArrIdx += current_bp_level.padded_width_checkerboard_level_;
+      proc_array_idx += current_bp_level.padded_width_checkerboard_level_;
     }
     else {
-      procArrIdx++;
+      proc_array_idx++;
     }
   }
 }
@@ -417,8 +417,8 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
       //need to cast DISP_VALS from unsigned int to int
       //for conditional to work as expected
       if (((int)x_val - ((int)DISP_VALS - 1)) >= 0) {
-        for (unsigned int current_disparity = 0u; current_disparity < DISP_VALS; current_disparity++) {
-          float current_pixel_image_1 = 0.0f, current_pixel_image_2 = 0.0f;
+        for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
+          float current_pixel_image_1{0}, current_pixel_image_2{0};
 
           if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
             current_pixel_image_1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
@@ -468,8 +468,8 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
       //need to cast bp_settings_disp_vals from unsigned int to int
       //for conditional to work as expected
       if (((int)x_val - ((int)bp_settings_disp_vals - 1)) >= 0) {
-        for (unsigned int current_disparity = 0u; current_disparity < bp_settings_disp_vals; current_disparity++) {
-          float current_pixel_image_1 = 0.0f, current_pixel_image_2 = 0.0f;
+        for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
+          float current_pixel_image_1{0}, current_pixel_image_2{0};
 
           if (run_imp_util::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
             current_pixel_image_1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
@@ -527,55 +527,55 @@ ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
     (checkerboard_part == beliefprop::CheckerboardPart::kCheckerboardPart0) ? (y_val % 2) : ((y_val + 1) % 2);
 
   //the corresponding x-values at the "lower" level depends on which checkerboard the pixel is in
-  const unsigned int x_valPrev = x_val*2 + checkerboard_part_adjustment;
+  const unsigned int x_val_prev = x_val*2 + checkerboard_part_adjustment;
 
   if (run_imp_util::WithinImageBounds(
-    x_valPrev, (y_val * 2 + 1), prev_bp_level.width_checkerboard_level_, prev_bp_level.height_level_))
+    x_val_prev, (y_val * 2 + 1), prev_bp_level.width_checkerboard_level_, prev_bp_level.height_level_))
   {
     if constexpr (DISP_VALS > 0) {
       for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
-        const U dataCostVal =
+        const U data_cost =
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_0[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, DISP_VALS, offset_num)]) +
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_1[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, DISP_VALS, offset_num)]) +
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_1[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, DISP_VALS, offset_num)]) +
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_0[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, DISP_VALS, offset_num)]);
 
         data_cost_current_level[RetrieveIndexInDataAndMessage(x_val, y_val,
           current_bp_level.padded_width_checkerboard_level_,
           current_bp_level.height_level_, current_disparity,
           DISP_VALS)] =
-            run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dataCostVal);
+            run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(data_cost);
       }
     }
     else {
       for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-        const U dataCostVal =
+        const U data_cost =
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_0[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, bp_settings_disp_vals, offset_num)]) +
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_1[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, bp_settings_disp_vals, offset_num)]) +
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_1[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, bp_settings_disp_vals, offset_num)]) +
           run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_0[RetrieveIndexInDataAndMessage(
-            x_valPrev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
+            x_val_prev, y_val*2 + 1, prev_bp_level.padded_width_checkerboard_level_, prev_bp_level.height_level_,
             current_disparity, bp_settings_disp_vals, offset_num)]);
 
         data_cost_current_level[RetrieveIndexInDataAndMessage(x_val, y_val,
           current_bp_level.padded_width_checkerboard_level_,
           current_bp_level.height_level_, current_disparity,
           bp_settings_disp_vals)] =
-            run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(dataCostVal);
+            run_imp_util::ConvertValToDifferentDataTypeIfNeeded<U, T>(data_cost);
       }
     }
   }
@@ -744,28 +744,28 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
   T* current_u_message, T* current_d_message,
   T* current_l_message, T* current_r_message,
   const U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  U* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  U* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   MsgStereo<T, U, beliefprop::MessageComp::kUMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
     current_u_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 
   MsgStereo<T, U, beliefprop::MessageComp::kDMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
     current_d_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 
   MsgStereo<T, U, beliefprop::MessageComp::kLMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
     current_l_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 
   MsgStereo<T, U, beliefprop::MessageComp::kRMessage>(x_val, y_val, current_bp_level,
     prev_u_message_array, prev_d_message_array, prev_l_message_array, prev_r_message_array, data_message_array,
     current_r_message, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 }
 
 //device portion of the kernel function to run the current iteration of belief propagation in parallel
@@ -781,7 +781,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
   T* message_u_checkerboard_1, T* message_d_checkerboard_1,
   T* message_l_checkerboard_1, T* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned,
+  float disc_k_bp, unsigned int offset_data, bool data_aligned,
   unsigned int bp_settings_disp_vals)
 {
   //checkerboard_adjustment used for indexing into current checkerboard to update
@@ -803,7 +803,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             data_cost_checkerboard_0[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
-              current_disparity, DISP_VALS, offsetData)]);
+              current_disparity, DISP_VALS, offset_data)]);
           prev_u_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             message_u_checkerboard_1[RetrieveIndexInDataAndMessage(x_val, (y_val+1),
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -825,7 +825,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             data_cost_checkerboard_1[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
-              current_disparity, DISP_VALS, offsetData)]);
+              current_disparity, DISP_VALS, offset_data)]);
           prev_u_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             message_u_checkerboard_0[RetrieveIndexInDataAndMessage(x_val, (y_val+1),
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -873,7 +873,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             data_cost_checkerboard_0[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
-              current_disparity, bp_settings_disp_vals, offsetData)]);
+              current_disparity, bp_settings_disp_vals, offset_data)]);
           prev_u_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             message_u_checkerboard_1[RetrieveIndexInDataAndMessage(x_val, (y_val+1),
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -895,7 +895,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
           data_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             data_cost_checkerboard_1[RetrieveIndexInDataAndMessage(x_val, y_val,
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
-              current_disparity, bp_settings_disp_vals, offsetData)]);
+              current_disparity, bp_settings_disp_vals, offset_data)]);
           prev_u_message[current_disparity] = run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(
             message_u_checkerboard_0[RetrieveIndexInDataAndMessage(x_val, (y_val+1),
               current_bp_level.padded_width_checkerboard_level_, current_bp_level.height_level_,
@@ -949,8 +949,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
   T* message_u_checkerboard_1, T* message_d_checkerboard_1,
   T* message_l_checkerboard_1, T* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned,
-  unsigned int bp_settings_disp_vals, void* dstProcessing)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned,
+  unsigned int bp_settings_disp_vals, void* dst_processing)
 {
   //checkerboard_adjustment used for indexing into current checkerboard to update
   const unsigned int checkerboard_adjustment = 
@@ -970,8 +970,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
         data_cost_checkerboard_0,
         message_u_checkerboard_0,  message_d_checkerboard_0,
         message_l_checkerboard_0,  message_r_checkerboard_0,
-        (U)disc_k_bp, data_aligned, bp_settings_disp_vals, (U*)dstProcessing,
-        checkerboard_adjustment, offsetData);
+        (U)disc_k_bp, data_aligned, bp_settings_disp_vals, (U*)dst_processing,
+        checkerboard_adjustment, offset_data);
     }
     else { //checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart1
       RunBPIterationUpdateMsgVals<T, U>(x_val, y_val, current_bp_level,
@@ -980,8 +980,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
         data_cost_checkerboard_1,
         message_u_checkerboard_1,  message_d_checkerboard_1,
         message_l_checkerboard_1, message_r_checkerboard_1,
-        (U)disc_k_bp, data_aligned, bp_settings_disp_vals, (U*)dstProcessing,
-        checkerboard_adjustment, offsetData);
+        (U)disc_k_bp, data_aligned, bp_settings_disp_vals, (U*)dst_processing,
+        checkerboard_adjustment, offset_data);
     }
   }
 }
@@ -1149,7 +1149,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
   const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals)
 {
-  const unsigned int x_val_in_checkerboard_part = x_val;
+  const unsigned int x_val_checkerboard = x_val;
 
   //first processing from first part of checkerboard
 
@@ -1158,11 +1158,11 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
   unsigned int checkerboard_part_adjustment = (y_val % 2);
 
   if (run_imp_util::WithinImageBounds(
-    x_val_in_checkerboard_part*2 + checkerboard_part_adjustment, y_val,
+    x_val_checkerboard*2 + checkerboard_part_adjustment, y_val,
     current_bp_level.width_level_, current_bp_level.height_level_))
   {
-    if ((x_val_in_checkerboard_part >= (1 - checkerboard_part_adjustment)) &&
-        (x_val_in_checkerboard_part < (current_bp_level.width_checkerboard_level_ - checkerboard_part_adjustment)) &&
+    if ((x_val_checkerboard >= (1 - checkerboard_part_adjustment)) &&
+        (x_val_checkerboard < (current_bp_level.width_checkerboard_level_ - checkerboard_part_adjustment)) &&
         (y_val > 0u) && (y_val < (current_bp_level.height_level_ - 1u)))
     {
       // keep track of "best" disparity for current pixel
@@ -1173,35 +1173,35 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
           const U val =
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_u_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val + 1u),
+                x_val_checkerboard, (y_val + 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_d_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val - 1u),
+                x_val_checkerboard, (y_val - 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_l_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part  + checkerboard_part_adjustment), y_val,
+                (x_val_checkerboard  + checkerboard_part_adjustment), y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_r_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part + checkerboard_part_adjustment) - 1u, y_val,
+                (x_val_checkerboard + checkerboard_part_adjustment) - 1u, y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, y_val,
+                x_val_checkerboard, y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
@@ -1217,35 +1217,35 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
           const U val =
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_u_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val + 1u),
+                x_val_checkerboard, (y_val + 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_d_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val - 1u),
+                x_val_checkerboard, (y_val - 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_l_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part  + checkerboard_part_adjustment), y_val,
+                (x_val_checkerboard  + checkerboard_part_adjustment), y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_r_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part + checkerboard_part_adjustment) - 1u, y_val,
+                (x_val_checkerboard + checkerboard_part_adjustment) - 1u, y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, y_val,
+                x_val_checkerboard, y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
@@ -1258,10 +1258,10 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
       }
 
       disparity_between_images_device[y_val*current_bp_level.width_level_ +
-        (x_val_in_checkerboard_part * 2 + checkerboard_part_adjustment)] = bestDisparity;
+        (x_val_checkerboard * 2 + checkerboard_part_adjustment)] = bestDisparity;
     } else {
       disparity_between_images_device[y_val* current_bp_level.width_level_ +
-        (x_val_in_checkerboard_part * 2 + checkerboard_part_adjustment)] = 0;
+        (x_val_checkerboard * 2 + checkerboard_part_adjustment)] = 0;
     }
   }
 
@@ -1270,11 +1270,11 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
   checkerboard_part_adjustment = ((y_val + 1u) % 2);
 
   if (run_imp_util::WithinImageBounds(
-    x_val_in_checkerboard_part*2 + checkerboard_part_adjustment, y_val,
+    x_val_checkerboard*2 + checkerboard_part_adjustment, y_val,
     current_bp_level.width_level_, current_bp_level.height_level_))
   {
-    if ((x_val_in_checkerboard_part >= (1 - checkerboard_part_adjustment)) &&
-        (x_val_in_checkerboard_part < (current_bp_level.width_checkerboard_level_ - checkerboard_part_adjustment)) &&
+    if ((x_val_checkerboard >= (1 - checkerboard_part_adjustment)) &&
+        (x_val_checkerboard < (current_bp_level.width_checkerboard_level_ - checkerboard_part_adjustment)) &&
         (y_val > 0) && (y_val < (current_bp_level.height_level_ - 1)))
     {
       // keep track of "best" disparity for current pixel
@@ -1285,35 +1285,35 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
           const U val = 
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_u_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val + 1u),
+                x_val_checkerboard, (y_val + 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_d_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val - 1u),
+                x_val_checkerboard, (y_val - 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_l_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part  + checkerboard_part_adjustment), y_val,
+                (x_val_checkerboard  + checkerboard_part_adjustment), y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_r_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part + checkerboard_part_adjustment) - 1u,  y_val,
+                (x_val_checkerboard + checkerboard_part_adjustment) - 1u,  y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 DISP_VALS)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, y_val,
+                x_val_checkerboard, y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
@@ -1329,35 +1329,35 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
           const U val =
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_u_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val + 1u),
+                x_val_checkerboard, (y_val + 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_d_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, (y_val - 1u),
+                x_val_checkerboard, (y_val - 1u),
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_l_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part  + checkerboard_part_adjustment), y_val,
+                (x_val_checkerboard  + checkerboard_part_adjustment), y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(message_r_checkerboard_0[
               RetrieveIndexInDataAndMessage(
-                (x_val_in_checkerboard_part + checkerboard_part_adjustment) - 1u,  y_val,
+                (x_val_checkerboard + checkerboard_part_adjustment) - 1u,  y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
                 bp_settings_disp_vals)]) +
             run_imp_util::ConvertValToDifferentDataTypeIfNeeded<T, U>(data_cost_checkerboard_1[
               RetrieveIndexInDataAndMessage(
-                x_val_in_checkerboard_part, y_val,
+                x_val_checkerboard, y_val,
                 current_bp_level.padded_width_checkerboard_level_,
                 current_bp_level.height_level_,
                 current_disparity,
@@ -1370,10 +1370,10 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
       }
 
       disparity_between_images_device[y_val * current_bp_level.width_level_ +
-        (x_val_in_checkerboard_part*2 + checkerboard_part_adjustment)] = bestDisparity;
+        (x_val_checkerboard*2 + checkerboard_part_adjustment)] = bestDisparity;
     } else {
       disparity_between_images_device[y_val * current_bp_level.width_level_ +
-        (x_val_in_checkerboard_part*2 + checkerboard_part_adjustment)] = 0;
+        (x_val_checkerboard*2 + checkerboard_part_adjustment)] = 0;
     }
   }
 }

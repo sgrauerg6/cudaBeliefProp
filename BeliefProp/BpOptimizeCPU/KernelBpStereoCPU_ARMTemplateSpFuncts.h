@@ -25,7 +25,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, 0>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -34,7 +34,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -46,7 +46,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -55,7 +55,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -67,7 +67,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -76,7 +76,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -88,7 +88,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -97,7 +97,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -109,7 +109,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -118,7 +118,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -130,7 +130,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -139,7 +139,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -151,7 +151,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -160,7 +160,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 template<> inline
@@ -172,7 +172,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
   float16_t* message_l_checkerboard_1, float16_t* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int offsetData, bool data_aligned, unsigned int bp_settings_disp_vals)
+  float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
     x_val, y_val, checkerboard_to_update, current_bp_level,
@@ -181,7 +181,7 @@ void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<float16_t, float16
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, offsetData, data_aligned, bp_settings_disp_vals);
+    disc_k_bp, offset_data, data_aligned, bp_settings_disp_vals);
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set

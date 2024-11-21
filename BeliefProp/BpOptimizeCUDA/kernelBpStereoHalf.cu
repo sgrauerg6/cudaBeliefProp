@@ -121,38 +121,38 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   half* prev_l_messageArray, half* prev_r_messageArray,
   half* data_message_array, half* dst_message_array,
   half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  half* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  half* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   // aggregate and find min
   half minimum{(half)beliefprop::kInfBp};
-  unsigned int processingArrIndexDisp0 = beliefprop::RetrieveIndexInDataAndMessage(x_val, y_val,
+  unsigned int proc_array_idx_disp_0 = beliefprop::RetrieveIndexInDataAndMessage(x_val, y_val,
     current_bp_level.LevelProperties().padded_width_checkerboard_level_,
     current_bp_level.LevelProperties().height_level_, 0,
     bp_settings_disp_vals);
-  unsigned int procArrIdx{processingArrIndexDisp0};
+  unsigned int proc_array_idx{proc_array_idx_disp_0};
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
     //set initial dst processing array value corresponding to disparity for M message type
     beliefprop::SetInitDstProcessing<half, half, M>(x_val, y_val, current_bp_level, prev_u_messageArray, prev_d_messageArray,
       prev_l_messageArray, prev_r_messageArray, data_message_array, dst_message_array,
-      disc_k_bp, data_aligned, bp_settings_disp_vals, dstProcessing, checkerboard_adjustment,
-      offsetData, current_disparity, procArrIdx);
+      disc_k_bp, data_aligned, bp_settings_disp_vals, dst_processing, checkerboard_adjustment,
+      offset_data, current_disparity, proc_array_idx);
 
-    if (dstProcessing[procArrIdx] < minimum)
-      minimum = dstProcessing[procArrIdx];
+    if (dst_processing[proc_array_idx] < minimum)
+      minimum = dst_processing[proc_array_idx];
 
     if constexpr (beliefprop::kOptimizedIndexingSetting) {
-      procArrIdx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
+      proc_array_idx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
     }
     else {
-      procArrIdx++;
+      proc_array_idx++;
     }
   }
 
   //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
-  DtStereo<half>(dstProcessing, bp_settings_disp_vals, x_val, y_val, current_bp_level);
+  DtStereo<half>(dst_processing, bp_settings_disp_vals, x_val, y_val, current_bp_level);
 
   // truncate
   minimum += disc_k_bp;
@@ -160,19 +160,19 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   // normalize
   half val_to_normalize{(half)0.0};
 
-  procArrIdx = processingArrIndexDisp0;
+  proc_array_idx = proc_array_idx_disp_0;
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-    if (minimum < dstProcessing[procArrIdx]) {
-      dstProcessing[procArrIdx] = minimum;
+    if (minimum < dst_processing[proc_array_idx]) {
+      dst_processing[proc_array_idx] = minimum;
     }
 
-    val_to_normalize += dstProcessing[procArrIdx];
+    val_to_normalize += dst_processing[proc_array_idx];
 
     if constexpr (beliefprop::kOptimizedIndexingSetting) {
-      procArrIdx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
+      proc_array_idx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
     }
     else {
-      procArrIdx++;
+      proc_array_idx++;
     }
   }
 
@@ -181,15 +181,15 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   //note that may cause results to differ a little from ideal
   if (__hisnan(val_to_normalize) || ((__hisinf(val_to_normalize)) != 0)) {
     //dst processing index and message array index are the same for each disparity value in this processing
-    procArrIdx = processingArrIndexDisp0;
+    proc_array_idx = proc_array_idx_disp_0;
 
     for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-      dst_message_array[procArrIdx] = (half)0.0;
+      dst_message_array[proc_array_idx] = (half)0.0;
       if constexpr (beliefprop::kOptimizedIndexingSetting) {
-        procArrIdx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
+        proc_array_idx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
       }
       else {
-        procArrIdx++;
+        proc_array_idx++;
       }
     }
   }
@@ -198,16 +198,16 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
     val_to_normalize /= ((half)bp_settings_disp_vals);
 
     //dst processing index and message array index are the same for each disparity value in this processing
-    procArrIdx = processingArrIndexDisp0;
+    proc_array_idx = proc_array_idx_disp_0;
 
     for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
-      dstProcessing[procArrIdx] -= val_to_normalize;
-      dst_message_array[procArrIdx] = ConvertValToDifferentDataTypeIfNeeded<half, half>(dstProcessing[procArrIdx]);
+      dst_processing[proc_array_idx] -= val_to_normalize;
+      dst_message_array[proc_array_idx] = ConvertValToDifferentDataTypeIfNeeded<half, half>(dst_processing[proc_array_idx]);
       if constexpr (beliefprop::kOptimizedIndexingSetting) {
-        procArrIdx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
+        proc_array_idx += current_bp_level.LevelProperties().padded_width_checkerboard_level_;
       }
       else {
-        procArrIdx++;
+        proc_array_idx++;
       }
     }
   }
@@ -221,12 +221,12 @@ __device__ inline void MsgStereo<half, half, beliefprop::MessageComp::kUMessage>
   half* prev_l_messageArray, half* prev_r_messageArray,
   half* data_message_array, half* dst_message_array,
   half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  half* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  half* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   MsgStereoHalf<beliefprop::MessageComp::kUMessage>(x_val, y_val, current_bp_level, prev_u_messageArray, prev_d_messageArray,
     prev_l_messageArray, prev_r_messageArray, data_message_array, dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 }
 
 template<>
@@ -237,12 +237,12 @@ __device__ inline void MsgStereo<half, half, beliefprop::MessageComp::kDMessage>
   half* prev_l_messageArray, half* prev_r_messageArray,
   half* data_message_array, half* dst_message_array,
   half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  half* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  half* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   MsgStereoHalf<beliefprop::MessageComp::kDMessage>(x_val, y_val, current_bp_level, prev_u_messageArray, prev_d_messageArray,
     prev_l_messageArray, prev_r_messageArray, data_message_array, dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 }
 
 template<>
@@ -253,12 +253,12 @@ __device__ inline void MsgStereo<half, half, beliefprop::MessageComp::kLMessage>
   half* prev_l_messageArray, half* prev_r_messageArray,
   half* data_message_array, half* dst_message_array,
   half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  half* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  half* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   MsgStereoHalf<beliefprop::MessageComp::kLMessage>(x_val, y_val, current_bp_level, prev_u_messageArray, prev_d_messageArray,
     prev_l_messageArray, prev_r_messageArray, data_message_array, dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 }
 
 template<>
@@ -269,12 +269,12 @@ __device__ inline void MsgStereo<half, half, beliefprop::MessageComp::kRMessage>
   half* prev_l_messageArray, half* prev_r_messageArray,
   half* data_message_array, half* dst_message_array,
   half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals,
-  half* dstProcessing, unsigned int checkerboard_adjustment,
-  unsigned int offsetData)
+  half* dst_processing, unsigned int checkerboard_adjustment,
+  unsigned int offset_data)
 {
   MsgStereoHalf<beliefprop::MessageComp::kRMessage>(x_val, y_val, current_bp_level, prev_u_messageArray, prev_d_messageArray,
     prev_l_messageArray, prev_r_messageArray, data_message_array, dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals,
-    dstProcessing, checkerboard_adjustment, offsetData);
+    dst_processing, checkerboard_adjustment, offset_data);
 }
 
 template<>
