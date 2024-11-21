@@ -362,8 +362,9 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   {
     const auto bp_iter_start_time = std::chrono::system_clock::now();
 
-    //alternate which checkerboard set to work on since copying from one to the other
-    //to avoid read-write conflict when copying in parallel
+    //alternate which checkerboard messages set to use for each level
+    //to support copying from one to the other in parallel
+    //without read-write conflicts
     error_code = RunBPAtCurrentLevel(
       alg_settings, bp_levels[(unsigned int)level_num],
       data_costs_device_current_level,
@@ -371,6 +372,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
       allocated_memory);
     if (error_code != run_eval::Status::kNoError) { return {}; }
 
+    //retrieve and update total run time for bp processing at levels
     const auto bp_iter_end_time = std::chrono::system_clock::now();
     total_time_bp_iters += bp_iter_end_time - bp_iter_start_time;
     const auto copy_message_values_start_time = std::chrono::system_clock::now();
@@ -395,13 +397,15 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
 
       const auto copy_message_values_kernel_start_time = std::chrono::system_clock::now();
 
-      //currentCheckerboardSet = index copying data from
-      //(currentCheckerboardSet + 1) % 2 = index copying data to
+      //copying messages values from messages_curr_next_level[current_level_messages_idx] to
+      //messages_curr_next_level[next_levels_messages_idx]
+      //current_level_messages_idx is later set to next_levels_messages_idx when processing next level
       error_code = CopyMessageValuesToNextLevelDown(bp_levels[level_num], bp_levels[level_num - 1],
         messages_curr_next_level[current_level_messages_idx], messages_curr_next_level[next_level_messages_idx],
         alg_settings.num_disp_vals);
       if (error_code != run_eval::Status::kNoError) { return {}; }
 
+      //get timing of copying bp message values to next level
       const auto copy_message_values_kernel_end_time = std::chrono::system_clock::now();
       total_time_copy_data_kernel += copy_message_values_kernel_end_time - copy_message_values_kernel_start_time;
       data_copy_timings[level_num][0] = copy_message_values_kernel_start_time;
@@ -413,12 +417,13 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
         FreeCheckerboardMessagesMemory(messages_curr_next_level[current_level_messages_idx], mem_management_bp_run);
       }
 
-      //alternate between array indices 0 and 1 for current and next level messages when going to the next
-      //processing level
+      //update current and next level messages indices for processing at next level
+      //specifically indices of each which are 0 and 1 are swapped with each other
       current_level_messages_idx = (current_level_messages_idx + 1) % 2;
       next_level_messages_idx = (current_level_messages_idx + 1) % 2;
     }
 
+    //update total timing for copying messages and bp timing at level
     const auto copy_message_values_end_time = std::chrono::system_clock::now();
     total_time_copy_data += copy_message_values_end_time - copy_message_values_start_time;
     bp_timings[level_num][0] = bp_iter_start_time;
@@ -458,6 +463,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
 
   start_end_times[beliefprop::Runtime_Type::kFinalFree][1] = std::chrono::system_clock::now();
 
+  //retrieve and store processing runtimes for bp at each level
   start_end_times[beliefprop::Runtime_Type::kLevel0DataCosts] = data_costs_timings[0];
   start_end_times[beliefprop::Runtime_Type::kLevel0Bp] = bp_timings[0];
   start_end_times[beliefprop::Runtime_Type::kLevel0Copy] = data_copy_timings[0];
@@ -519,6 +525,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   segment_timings.AddTiming(beliefprop::Runtime_Type::kCopyData, total_time_copy_data);
   segment_timings.AddTiming(beliefprop::Runtime_Type::kCopyDataKernel, total_time_copy_data_kernel);
 
+  //compute total runtime
   const auto total_time = segment_timings.MedianTiming(beliefprop::Runtime_Type::kInitSettingsMalloc)
     + segment_timings.MedianTiming(beliefprop::Runtime_Type::kLevel0DataCosts)
     + segment_timings.MedianTiming(beliefprop::Runtime_Type::kDataCostsHigherLevel)
@@ -528,6 +535,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
     + segment_timings.MedianTiming(beliefprop::Runtime_Type::kFinalFree);
   segment_timings.AddTiming(beliefprop::Runtime_Type::kTotalTimed, total_time);
 
+  //return resulting disparity map and runtime data
   return std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>{result_disp_map_device, segment_timings};
 }
 
