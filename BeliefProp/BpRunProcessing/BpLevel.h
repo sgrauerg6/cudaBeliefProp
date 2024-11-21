@@ -28,14 +28,14 @@ struct BpLevelProperties {
   //avx512 requires data to be aligned on 64 bytes (16 float values); otherwise data set to be
   //aligned on 32 bytes (8 float values)
   unsigned int div_padded_checkerboard_w_align_;
-  unsigned long offset_into_arrays_;
+  std::size_t offset_into_arrays_;
 };
 
 //class to store and retrieve properties of a bp processing level
 class BpLevel
 {
 public:
-  BpLevel(const std::array<unsigned int, 2>& width_height, unsigned long offset_into_arrays, unsigned int level_num,
+  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
     run_environment::AccSetting acc_setting)
   {
     level_properties_.width_level_ = width_height[0];
@@ -49,7 +49,7 @@ public:
     level_properties_.div_padded_checkerboard_w_align_ = (acc_setting == run_environment::AccSetting::kAVX512) ? 16u : 8u;
   }
   
-  BpLevel(const std::array<unsigned int, 2>& width_height, unsigned long offset_into_arrays, unsigned int level_num,
+  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
     unsigned int bytes_align_memory, unsigned int num_data_align_width, unsigned int div_padded_ch_board_w_align)
   {
     level_properties_.width_level_ = width_height[0];
@@ -66,7 +66,7 @@ public:
   //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
   template <RunData_t T>
   beliefprop::BpLevel NextBpLevel(unsigned int num_disparity_values) const {
-    const auto offset_next_level = level_properties_.offset_into_arrays_ + NumDataInBpArrays<T>(num_disparity_values);
+    const std::size_t offset_next_level = level_properties_.offset_into_arrays_ + NumDataInBpArrays<T>(num_disparity_values);
     return BpLevel({(unsigned int)ceil((float)level_properties_.width_level_ / 2.0f),
       (unsigned int)ceil((float)level_properties_.height_level_ / 2.0f)},
       offset_next_level, (level_properties_.level_num_ + 1), level_properties_.bytes_align_memory_,
@@ -76,7 +76,7 @@ public:
   //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
   //with the specified number of possible disparity values
   template <RunData_t T>
-  unsigned int NumDataInBpArrays(unsigned int num_disparity_values) const {
+  std::size_t NumDataInBpArrays(unsigned int num_disparity_values) const {
     return NumDataForAlignedMemoryAtLevel<T>({level_properties_.width_level_, level_properties_.height_level_}, num_disparity_values);
   }
 
@@ -93,12 +93,12 @@ public:
   }
 
   template <RunData_t T>
-  unsigned long NumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& width_height_level,
+  std::size_t NumDataForAlignedMemoryAtLevel(const std::array<unsigned int, 2>& width_height_level,
       unsigned int num_possible_disparities) const
   {
-    const unsigned long numDataAtLevel = (unsigned long)PaddedCheckerboardWidth(CheckerboardWidthTargetDevice(width_height_level[0])) *
-      ((unsigned long)width_height_level[1]) * (unsigned long)num_possible_disparities;
-    unsigned long numBytesAtLevel = numDataAtLevel * sizeof(T);
+    const std::size_t numDataAtLevel = (std::size_t)PaddedCheckerboardWidth(CheckerboardWidthTargetDevice(width_height_level[0])) *
+      ((std::size_t)width_height_level[1]) * (std::size_t)num_possible_disparities;
+    std::size_t numBytesAtLevel = numDataAtLevel * sizeof(T);
 
     if ((numBytesAtLevel % level_properties_.bytes_align_memory_) == 0) {
       return numDataAtLevel;
@@ -110,11 +110,11 @@ public:
   }
 
   template <RunData_t T, run_environment::AccSetting ACCELERATION>
-  static unsigned long TotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& width_height_bottom_level,
+  static std::size_t TotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& width_height_bottom_level,
     unsigned int num_possible_disparities, unsigned int num_levels)
   {
     beliefprop::BpLevel curr_level_properties(width_height_bottom_level, 0, 0, ACCELERATION);
-    unsigned long total_data = curr_level_properties.NumDataInBpArrays<T>(num_possible_disparities);
+    std::size_t total_data = curr_level_properties.NumDataInBpArrays<T>(num_possible_disparities);
     for (unsigned int curr_level = 1; curr_level < num_levels; curr_level++) {
       curr_level_properties = curr_level_properties.NextBpLevel<T>(num_possible_disparities);
       total_data += curr_level_properties.NumDataInBpArrays<T>(num_possible_disparities);

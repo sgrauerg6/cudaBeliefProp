@@ -100,7 +100,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     //allocate memory on device for bp processing
     const unsigned long numData = beliefprop::BpLevel::TotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
       width_height_images, alg_settings.num_disp_vals, alg_settings.num_levels);
-    bpData = runBpOnDevice.mem_management_bp_run->AllocateAlignedMemoryOnDevice(10u*numData, ACCELERATION);
+    bpData = runBpOnDevice.mem_management_bp_run->AllocateAlignedMemoryOnDevice(10*numData, ACCELERATION);
     if (runBpOnDevice.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }
 
     beliefprop::BpLevel bottomBpLevel(width_height_images, 0, 0, ACCELERATION);
@@ -129,7 +129,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 
     //first smooth the images using the Gaussian filter with the given smoothing sigma value
     //smoothed images are stored on the target device
-    for (unsigned int i = 0; i < 2u; i++) {
+    for (unsigned int i = 0; i < 2; i++) {
       (*(runBpOnDevice.smooth_image))(inputImages[i], alg_settings.smoothing_sigma, smoothed_images[i]);
       if (runBpOnDevice.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { 
         //return std::optional object with no value indicating error in run

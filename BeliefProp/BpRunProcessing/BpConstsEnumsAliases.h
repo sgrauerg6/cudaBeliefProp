@@ -36,7 +36,7 @@ using CheckerboardMessages = std::array<std::array<T, kNumMessageArrays>, kNumCh
 //belief propagation checkerboard messages and data costs must be pointers to a bp data type
 //define alias for two-element array with data costs for each bp processing checkerboard
 template <RunData_ptr T>
-using DataCostsCheckerboards = std::array<T, 2>;
+using DataCostsCheckerboards = std::array<T, kNumCheckerboardParts>;
 
 //enum corresponding to each kernel in belief propagation that can be run in parallel
 constexpr unsigned int kNumKernels{6};

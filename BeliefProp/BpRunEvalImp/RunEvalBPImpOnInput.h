@@ -146,10 +146,12 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImps
   //run optimized implementation and retrieve structure with runtime and output disparity map
   std::array<std::optional<ProcessStereoSetOutput>, 2> run_output;
   if (run_imp_templated_loop_iters) {
-    run_output[0] = run_opt_bp_num_iters_templated_->operator()({ref_test_image_path[0].string(), ref_test_image_path[1].string()}, alg_settings_, *parallel_params);
+    run_output[0] = run_opt_bp_num_iters_templated_->operator()(
+      {ref_test_image_path[0].string(), ref_test_image_path[1].string()}, alg_settings_, *parallel_params);
   }
   else {
-    run_output[0] = run_opt_bp_num_iters_no_template_->operator()({ref_test_image_path[0].string(), ref_test_image_path[1].string()}, alg_settings_, *parallel_params);
+    run_output[0] = run_opt_bp_num_iters_no_template_->operator()(
+      {ref_test_image_path[0].string(), ref_test_image_path[1].string()}, alg_settings_, *parallel_params);
   }
     
   //check if error in run
