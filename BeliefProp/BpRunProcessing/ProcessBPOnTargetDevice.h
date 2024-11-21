@@ -464,6 +464,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   start_end_times[beliefprop::Runtime_Type::kFinalFree][1] = std::chrono::system_clock::now();
 
   //retrieve and store processing runtimes for bp at each level
+  //currently a maximum of 10 levels is supported
   start_end_times[beliefprop::Runtime_Type::kLevel0DataCosts] = data_costs_timings[0];
   start_end_times[beliefprop::Runtime_Type::kLevel0Bp] = bp_timings[0];
   start_end_times[beliefprop::Runtime_Type::kLevel0Copy] = data_copy_timings[0];
@@ -535,7 +536,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
     + segment_timings.MedianTiming(beliefprop::Runtime_Type::kFinalFree);
   segment_timings.AddTiming(beliefprop::Runtime_Type::kTotalTimed, total_time);
 
-  //return resulting disparity map and runtime data
+  //return resulting disparity map and timings for each processing segment
   return std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>{result_disp_map_device, segment_timings};
 }
 
