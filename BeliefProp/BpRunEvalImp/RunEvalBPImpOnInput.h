@@ -230,6 +230,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImps
       }
     }
     else {
+      run_output[run_environment::AccSetting::kNone] = ProcessStereoSetOutput();
       //retrieve stored results from previous run on single threaded implementation
       run_output[run_environment::AccSetting::kNone]->run_time = std::get<0>(bpSingleThread::single_thread_run_output[ref_test_image_path]);
       run_output[run_environment::AccSetting::kNone]->run_data = std::get<1>(bpSingleThread::single_thread_run_output[ref_test_image_path]);
