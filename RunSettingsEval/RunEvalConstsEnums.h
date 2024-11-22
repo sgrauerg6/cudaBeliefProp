@@ -12,6 +12,7 @@
 #include <array>
 #include <vector>
 #include <optional>
+#include <charconv>
 #include "RunData.h"
 #include "RunSettings.h"
 
@@ -52,40 +53,54 @@ namespace run_eval {
   constexpr std::string_view kImpResultsSpeedupsFolderName{"Speedups"};
   constexpr std::string_view kImpResultsAcrossArchsFolderName{"ResultsAcrossArchitectures"};
   
-  //headers that correspond to unique "signature" for input mapping in run across multiple inputs on an architecture
-  constexpr std::array<std::string_view, 3> kRunInputSigHeaders{kInputIdxHeader, kDatatypeHeader, kLoopItersTemplatedHeader};
-  constexpr size_t kRunInputNumInputIdx{0};
-  constexpr size_t kRunInputDatatypeIdx{1};
-  constexpr size_t kRunInputLoopItersTemplatedIdx{2};
+  //headers that correspond to unique "signature" set of inputs in run
+  constexpr std::array<std::string_view, 3> kRunInputSigHeaders{
+    kInputIdxHeader, kDatatypeHeader, kLoopItersTemplatedHeader};
+  constexpr std::size_t kRunInputNumInputIdx{0};
+  constexpr std::size_t kRunInputDatatypeIdx{1};
+  constexpr std::size_t kRunInputLoopItersTemplatedIdx{2};
 
-  //comparison for sorting of input signature for each run (datatype, then input number, then whether or not using templated iter count)
+  //comparison for sorting of input signature for each run
+  //(datatype, evaluation data number, whether or not using templated iter count)
   struct LessThanRunSigHdrs {
-    inline bool operator()(const std::array<std::string, 3>& a, const std::array<std::string, 3>& b) const {
-      //sort by datatype followed by input number followed by templated iters setting
+    inline bool operator()(const std::array<std::string_view, 3>& a, const std::array<std::string_view, 3>& b) const {
+      //sort by datatype followed by evaluation data number followed by templated iters setting
       if (a[1] != b[1]) {
-        if (a[1] == "FLOAT") { return true; /* a < b is true */ }
-        else if (a[1] == "HALF") { return false; /* a < b is false */ }
-        else if (b[1] == "FLOAT") { return false; /* a < b is false */ }
-        else if (b[1] == "HALF") { return true; /* a < b is true */ }
+        //compare datatype
+        //order is float, double, half
+        //define mapping of datatype string to value for comparison
+        const std::map<std::string_view, unsigned int> datatype_str_to_val{
+          {run_environment::kDataSizeToNameMap.at(sizeof(float)), 0},
+          {run_environment::kDataSizeToNameMap.at(sizeof(double)), 1},
+          {run_environment::kDataSizeToNameMap.at(sizeof(short)), 2}};
+        return (datatype_str_to_val.at(a[1]) < datatype_str_to_val.at(b[1]));
       }
       else if (a[0] != b[0]) {
-        return std::stoi(a[0]) < std::stoi(b[0]);
+        //compare evaluation data number
+        //ordering is as expected by numeric value (such as 0 < 1)
+        int a_val, b_val;
+        std::from_chars(a[0].begin(), a[0].begin() + a[0].size(), a_val);
+        std::from_chars(b[0].begin(), b[0].begin() + b[0].size(), b_val);
+        return (a_val < b_val);
       }
       else if (a[2] != b[2]) {
-        if (a[2] == std::string(kBoolValFalseTrueDispStr[1])) { return true; /* a < b is true */ }
+        //compare whether or not using templated iter count
+        //order is using templated iter count followed by not using templated iter count
+        if (a[2] == kBoolValFalseTrueDispStr[1]) { return true; /* a < b is true */ }
       }
       return false; /* a <= b is false */
     }
 
-    inline bool operator()(const std::array<std::string_view, 3>& a, const std::array<std::string_view, 3>& b) const {
-      return operator()(std::array<std::string, 3>{std::string(a[0]), std::string(a[1]), std::string(a[2])},
-                        std::array<std::string, 3>{std::string(b[0]), std::string(b[1]), std::string(b[2])});
-    }
+    /*inline bool operator()(const std::array<std::string, 3>& a, const std::array<std::string, 3>& b) const {
+      return operator()(std::array<std::string_view, 3>{a[0], a[1], a[2]},
+                        std::array<std::string_view, 3>{b[0], b[1], b[2]});
+    }*/
   };
 };
 
 using MultRunData = std::vector<std::optional<std::vector<RunData>>>;
 using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
-using MultRunDataWSpeedupByAcc = std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>;
+using MultRunDataWSpeedupByAcc =
+  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>;
 
 #endif //RUN_EVAL_CONSTS_ENUMS_H

@@ -9,20 +9,26 @@
 
 #include "EvaluateAcrossRuns.h"
 
-void EvaluateAcrossRuns::operator()(const std::filesystem::path& imp_results_file_path,
+//process runtime and speedup data across multiple runs (likely on different architectures)
+//from csv files corresponding to each run and
+//write results to file where the runtimes and speedups for each run are shown in a single file
+//where the runs are displayed from fastest to slowest
+void EvaluateAcrossRuns::operator()(
+  const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
   const std::vector<std::string>& eval_across_runs_in_params_show) const
 {
   //get header to data of each set of run results
   //iterate through all run results files and get run name to results
   //create directory iterator with all results files
-  std::filesystem::directory_iterator results_files_iter = std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
+  std::filesystem::directory_iterator results_files_iter =
+    std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
   std::vector<std::string> run_names;
   std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> run_results_name_to_data;
   for (const auto& results_fp : results_files_iter) {
     std::string file_name_no_ext = results_fp.path().stem();
     if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName))) {
-      std::string run_name = file_name_no_ext.substr(0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
+      const std::string run_name = file_name_no_ext.substr(0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
       run_names.push_back(run_name);
       run_results_name_to_data[run_name] = HeaderToDataInCsvFile(results_fp);
     }
@@ -30,28 +36,46 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& imp_results_fil
 
   //get input "signature" for run mapped to optimized implementation runtime for each run on input
   //as well as input "signature" for each input mapped to input info to show in evaluation output
-  std::map<std::string, std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>> input_to_runtime_across_archs;
-  std::set<std::array<std::string, 3>, run_eval::LessThanRunSigHdrs> input_set;
-  std::map<std::array<std::string, 3>, std::vector<std::string>, run_eval::LessThanRunSigHdrs> input_set_to_input_disp;
+  std::map<std::string, std::map<std::array<std::string_view, 3>, std::string, run_eval::LessThanRunSigHdrs>> input_to_runtime_across_archs;
+  std::set<std::array<std::string_view, 3>, run_eval::LessThanRunSigHdrs> input_set;
+  std::map<std::array<std::string_view, 3>, std::vector<std::string>, run_eval::LessThanRunSigHdrs> input_set_to_input_disp;
+  std::vector<decltype(run_results_name_to_data)::key_type> key_results_remove;
   for (const auto& run_result : run_results_name_to_data) {
-    input_to_runtime_across_archs[run_result.first] = std::map<std::array<std::string, 3>, std::string, run_eval::LessThanRunSigHdrs>();
+    input_to_runtime_across_archs[run_result.first] = std::map<std::array<std::string_view, 3>, std::string, run_eval::LessThanRunSigHdrs>();
     const auto& result_keys_to_result_vect = run_result.second.second;
-    const unsigned int tot_num_runs = result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0])).size();
-    for (size_t num_run = 0; num_run < tot_num_runs; num_run++) {
-      const std::array<std::string, 3> run_input{
-        result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
-        result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
-        result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]};
-      input_to_runtime_across_archs[run_result.first][run_input] = result_keys_to_result_vect.at(std::string(run_eval::kOptimizedRuntimeHeader))[num_run];
-      input_set.insert(run_input);
-      //add mapping from run input signature to run input to be displayed
-      if (!(input_set_to_input_disp.contains(run_input))) {
-        input_set_to_input_disp[run_input] = std::vector<std::string>();
-        for (const auto& dispParam : eval_across_runs_in_params_show) {
-          input_set_to_input_disp[run_input].push_back(result_keys_to_result_vect.at(dispParam)[num_run]);
+    if (result_keys_to_result_vect.contains(std::string(run_eval::kRunInputSigHeaders[0]))) {
+      const unsigned int tot_num_runs = result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0])).size();
+      for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
+        //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
+        //have loops with templated iteration counts)
+        const std::array<std::string_view, 3> run_input{
+          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
+          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
+          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]};
+        //add mapping of total runtime to corresponding run name and input signature
+        input_to_runtime_across_archs[run_result.first][run_input] =
+          result_keys_to_result_vect.at(std::string(run_eval::kOptimizedRuntimeHeader))[num_run];
+        input_set.insert(run_input);
+        //add mapping from run input signature to run input to be displayed
+        if (!(input_set_to_input_disp.contains(run_input))) {
+          input_set_to_input_disp[run_input] = std::vector<std::string>();
+          //add input parameters to display in evaluation across runs
+          for (const auto& disp_param : eval_across_runs_in_params_show) {
+            input_set_to_input_disp[run_input].push_back(result_keys_to_result_vect.at(disp_param)[num_run]);
+          }
         }
       }
     }
+    else {
+      std::cout << "Invalid data in " << run_result.first << std::endl;
+      key_results_remove.push_back(run_result.first);
+    }
+  }
+  //remove any results that have been flagged to remove due to not having
+  //the necessary data
+  for (const auto& key_data_remove : key_results_remove) {
+    std::cout << "Remove run result: " << key_data_remove << std::endl;
+    run_results_name_to_data.erase(key_data_remove);
   }
 
   //get header to data of each set of speedups
@@ -79,9 +103,9 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& imp_results_fil
     result_across_archs_sstream << input_param_disp_header << ',';
   }
 
-  //write each architecture name and save order of architectures with speedup corresponding to first
+  //write each evaluation run name and save order of runs with speedup corresponding to first
   //speedup header
-  //order of architectures from left to right is in speedup from largest to smallest
+  //order of run names is in speedup from largest to smallest
   std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> run_names_in_order_w_speedup;
   std::string first_speedup_header;
   for (const auto& arch_w_speedup_data : speedup_results_name_to_data.cbegin()->second.first) {
@@ -90,18 +114,21 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& imp_results_fil
       break;
     }
   }
-  //add first speedup with run name to get names of runs in order of fastest to slowest first speedup
+
+  //add first speedup with run name to order runs from fastest to slowest based on first speedup
   for (const auto& arch_w_speedup_data : speedup_results_name_to_data) {
     const float avgSpeedupVsBase = std::stof(std::string(arch_w_speedup_data.second.second.at(first_speedup_header).at(0)));
     run_names_in_order_w_speedup.insert({avgSpeedupVsBase, arch_w_speedup_data.first});
   }
+
   //write all the run names in order from fastest to slowest
   for (const auto& run_name : run_names_in_order_w_speedup) {
     result_across_archs_sstream << run_name.second << ',';
   }
   result_across_archs_sstream << std::endl;
 
-  //write input data and runtime for each run for each architecture
+  //write evaluation stereo set info, bp parameters, and total runtime for optimized bp implementation
+  //across each run in the evaluation
   for (const auto& curr_run_input : input_set_to_input_disp) {
     for (const auto& run_input_val : curr_run_input.second) {
       result_across_archs_sstream << run_input_val << ',';
@@ -115,25 +142,27 @@ void EvaluateAcrossRuns::operator()(const std::filesystem::path& imp_results_fil
   }
   result_across_archs_sstream << std::endl;
 
-  //write each average speedup with results for each architecture
+  //write average speedup results for each run that correspond to a number of
+  //different evaluations of runtimes compared to a baseline
   result_across_archs_sstream << "Average Speedups" << std::endl;
-  std::string first_run_name = speedup_results_name_to_data.cbegin()->first;
+  const std::string first_run_name = speedup_results_name_to_data.cbegin()->first;
   for (const auto& speedup_header : speedup_results_name_to_data.at(first_run_name).first) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       result_across_archs_sstream << speedup_header << ',';
-      //add empty cell for each input parameter after the first that's displayed so speedup shown on same line as runtime for architecture
+      //add empty cell for each input parameter after the first that's displayed so speedup shown in the same column same line as runtime
       for (size_t i = 1; i < eval_across_runs_in_params_show.size(); i++) {
         result_across_archs_sstream << ',';
       }
-      //write speedup for each architecture in separate cells in horizontal direction
+      //write speedup for each run in separate cells in horizontal direction where each column corresponds to a different evaluation run
       for (const auto& run_name : run_names_in_order_w_speedup) {
         result_across_archs_sstream << speedup_results_name_to_data.at(run_name.second).second.at(speedup_header).at(0) << ',';
       }
-      //continue to next row of table
+      //continue to next row of table to write data for next speedup result
       result_across_archs_sstream << std::endl;
     }
   }
+
   //get file path for evaluation across runs and save evaluation across runs to csv file
   std::filesystem::path results_across_run_fp = imp_results_file_path /
     (std::string(run_eval::kEvalAcrossRunsFileName) + std::string(run_eval::kCsvFileExtension));

@@ -9,10 +9,8 @@
 
 template<class T>
 void BpImage<T>::LoadImageAsGrayScale(const std::string& file_path_image) {
-  std::string file_path_image_copy(file_path_image);
-
   //check if PGM or PPM image (types currently supported)
-  std::istringstream iss(file_path_image_copy);
+  std::istringstream iss(file_path_image);
   std::string token;
   while (std::getline(iss, token, '.')) {
     //continue to get last token with the file extension

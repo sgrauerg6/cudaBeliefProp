@@ -126,8 +126,8 @@ void EvaluateImpResults::WriteRunOutput(const std::pair<MultRunData, std::vector
     for (const auto& speedup : run_output.second) {
       speedups_headers_left_top_sstr[1] << speedup.first << ',';
     }
-    for (const auto& speedup_desc_w_index : {std::pair<std::string, size_t>{"Average Speedup", 0},
-                                             std::pair<std::string, size_t>{"Median Speedup", 1}}) {
+    for (const auto& speedup_desc_w_index : {std::pair<std::string_view, size_t>{"Average Speedup", 0},
+                                             std::pair<std::string_view, size_t>{"Median Speedup", 1}}) {
       speedups_headers_left_top_sstr[1] << std::endl << speedup_desc_w_index.first << ',';
       for (const auto& speedup : run_output.second) {
         speedups_headers_left_top_sstr[1] << speedup.second[speedup_desc_w_index.second] << ',';
