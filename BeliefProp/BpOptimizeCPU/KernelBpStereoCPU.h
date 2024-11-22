@@ -125,7 +125,7 @@ namespace beliefpropCPU
     const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
     const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
-    unsigned int num_data_SIMD_vect,
+    unsigned int simd_data_size,
     const ParallelParams& opt_cpu_params);
   
   template<unsigned int DISP_VALS>
@@ -366,7 +366,7 @@ namespace beliefpropCPU
     T* message_l_checkerboard_0, T* message_r_checkerboard_0,
     T* message_u_checkerboard_1, T* message_d_checkerboard_1,
     T* message_l_checkerboard_1, T* message_r_checkerboard_1,
-    float disc_k_bp, unsigned int num_data_SIMD_vect,
+    float disc_k_bp, unsigned int simd_data_size,
     unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -374,16 +374,16 @@ namespace beliefpropCPU
   template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
   void MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const U messageValsNeighbor1[DISP_VALS], const U messageValsNeighbor2[DISP_VALS],
-    const U messageValsNeighbor3[DISP_VALS], const U data_costs[DISP_VALS],
+    const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
+    const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
     T* dst_message_array, const U& disc_k_bp, bool data_aligned);
 
   // compute current message
   template<RunData_t T, RunDataVect_t U>
   void MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const U* messageValsNeighbor1, const U* messageValsNeighbor2,
-    const U* messageValsNeighbor3, const U* data_costs,
+    const U* messages_neighbor_1, const U* messages_neighbor_2,
+    const U* messages_neighbor_3, const U* data_costs,
     T* dst_message_array, const U& disc_k_bp, bool data_aligned,
     unsigned int bp_settings_disp_vals);
 
@@ -391,8 +391,8 @@ namespace beliefpropCPU
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
   void MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const U* messageValsNeighbor1, const U* messageValsNeighbor2,
-    const U* messageValsNeighbor3, const U* data_costs,
+    const U* messages_neighbor_1, const U* messages_neighbor_2,
+    const U* messages_neighbor_3, const U* data_costs,
     T* dst_message_array, const U& disc_k_bp, bool data_aligned,
     unsigned int bp_settings_disp_vals);
 
@@ -400,15 +400,17 @@ namespace beliefpropCPU
   template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
   void MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const U messageValsNeighbor1[DISP_VALS], const U messageValsNeighbor2[DISP_VALS],
-    const U messageValsNeighbor3[DISP_VALS], const U data_costs[DISP_VALS],
+    const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
+    const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
     T* dst_message_array, const U& disc_k_bp, bool data_aligned);
 
-  //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+  //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
+  //(see "Efficient Belief Propagation for Early Vision")
   template<RunDataProcess_t T, RunDataVectProcess_t U, unsigned int DISP_VALS>
   void DtStereoSIMD(U f[DISP_VALS]);
 
-  //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+  //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
+  //(see "Efficient Belief Propagation for Early Vision")
   template<RunDataProcess_t T, RunDataVectProcess_t U>
   void DtStereoSIMD(U* f, unsigned int bp_settings_disp_vals);
 
@@ -537,7 +539,8 @@ void beliefpropCPU::InitializeMessageValsToDefaultKernel(
   const ParallelParams& opt_cpu_params)
 {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
+  int num_threads_kernel{
+    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -575,7 +578,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 {
   const unsigned int width_checkerboard_run_processing = current_bp_level.width_level_ / 2;
 
-  //in cuda kernel storing data one at a time (though it is coalesced), so num_data_SIMD_vect not relevant here and set to 1
+  //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
   //still is a check if start of row is aligned
   const bool data_aligned = run_imp_util::MemoryAlignedAtDataStart(
     0, 1, current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_);
@@ -671,7 +674,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
   T* message_u_checkerboard_1, T* message_d_checkerboard_1,
   T* message_l_checkerboard_1, T* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int num_data_SIMD_vect,
+  float disc_k_bp, unsigned int simd_data_size,
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
@@ -697,17 +700,17 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
       const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
       const unsigned int end_final = std::min(current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
                                               width_checkerboard_run_processing);
-      const unsigned int end_x_simd_vect_start = (end_final / num_data_SIMD_vect) * num_data_SIMD_vect - num_data_SIMD_vect;
+      const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
-      for (unsigned int x_val = 0; x_val < end_final; x_val += num_data_SIMD_vect) {
+      for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
         //if past the last AVX start (since the next one would go beyond the row),
-        //set to num_data_SIMD_vect from the final pixel so processing the last numDataInAvxVector in avx
+        //set to simd_data_size from the final pixel so processing the last numDataInAvxVector in avx
         //may be a few pixels that are computed twice but that's OK
         if (x_val_process > end_x_simd_vect_start) {
-          x_val_process = end_final - num_data_SIMD_vect;
+          x_val_process = end_final - simd_data_size;
         }
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
@@ -715,7 +718,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 
         //check if the memory is aligned for AVX instructions at x_val_process location
         const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(
-          x_val_process, num_data_SIMD_vect, current_bp_level.num_data_align_width_,
+          x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
           current_bp_level.div_padded_checkerboard_w_align_);
 
         //initialize arrays for data and message values
@@ -820,7 +823,8 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   }
   else {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
+    int num_threads_kernel{
+      (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
     #pragma omp parallel for
@@ -836,24 +840,24 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
       const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
       const unsigned int end_final = std::min(current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
                                               width_checkerboard_run_processing);
-      const unsigned int end_x_simd_vect_start = (end_final / num_data_SIMD_vect) * num_data_SIMD_vect - num_data_SIMD_vect;
+      const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
-      for (unsigned int x_val = 0; x_val < end_final; x_val += num_data_SIMD_vect) {
+      for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
         //if past the last AVX start (since the next one would go beyond the row),
-        //set to num_data_SIMD_vect from the final pixel so processing the last numDataInAvxVector in avx
+        //set to simd_data_size from the final pixel so processing the last numDataInAvxVector in avx
         //may be a few pixels that are computed twice but that's OK
         if (x_val_process > end_x_simd_vect_start) {
-          x_val_process = end_final - num_data_SIMD_vect;
+          x_val_process = end_final - simd_data_size;
         }
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
         x_val_process = std::max(start_x, x_val_process);
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, num_data_SIMD_vect, current_bp_level.num_data_align_width_,
+        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
           current_bp_level.div_padded_checkerboard_w_align_);
 
         //initialize arrays for data and message values
@@ -1122,7 +1126,8 @@ void beliefpropCPU::RetrieveOutputDisparity(
 {
   if constexpr (VECTORIZATION == run_environment::AccSetting::kNone) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+  int num_threads_kernel{
+    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
   #pragma omp parallel for
@@ -1191,13 +1196,13 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
   const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
   const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
-  unsigned int num_data_SIMD_vect,
+  unsigned int simd_data_size,
   const ParallelParams& opt_cpu_params)
 {
   const unsigned int width_checkerboard_run_processing = current_bp_level.width_level_ / 2;
 
   //initially get output for each checkerboard
-  //set width of disparity checkerboard to be a multiple of num_data_SIMD_vect so that SIMD vectors can be aligned
+  //set width of disparity checkerboard to be a multiple of simd_data_size so that SIMD vectors can be aligned
   unsigned int width_disp_checkerboard =
     ((current_bp_level.padded_width_checkerboard_level_ % current_bp_level.num_data_align_width_) == 0) ?
       current_bp_level.padded_width_checkerboard_level_  :
@@ -1206,17 +1211,20 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
   const unsigned int num_data_disp_checkerboard = width_disp_checkerboard * current_bp_level.height_level_;
 #ifdef _WIN32
   V* disparity_checkerboard_0 = 
-    static_cast<V*>(_aligned_malloc(2 * num_data_disp_checkerboard * sizeof(V), current_bp_level.num_data_align_width_ * sizeof(V)));
+    static_cast<V*>(
+      _aligned_malloc(2 * num_data_disp_checkerboard * sizeof(V), current_bp_level.num_data_align_width_ * sizeof(V)));
 #else
   V* disparity_checkerboard_0 =
-    static_cast<V*>(std::aligned_alloc(current_bp_level.num_data_align_width_ * sizeof(V), 2 * num_data_disp_checkerboard * sizeof(V)));
+    static_cast<V*>(std::aligned_alloc(
+      current_bp_level.num_data_align_width_ * sizeof(V), 2 * num_data_disp_checkerboard * sizeof(V)));
 #endif
 
   for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
                                             beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-    int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+    int num_threads_kernel{
+      (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
     #pragma omp parallel for
@@ -1232,17 +1240,17 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
       const unsigned int start_x = (checkerboard_adjustment == 1) ? 0 : 1;
       const unsigned int end_final = std::min(current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
                                               width_checkerboard_run_processing);
-      const unsigned int end_x_simd_vect_start = (end_final / num_data_SIMD_vect) * num_data_SIMD_vect - num_data_SIMD_vect;
+      const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
-      for (unsigned int x_val = 0; x_val < end_final; x_val += num_data_SIMD_vect) {
+      for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
         //if past the last AVX start (since the next one would go beyond the row),
-        //set to num_data_SIMD_vect from the final pixel so processing the last numDataInAvxVector in avx
+        //set to simd_data_size from the final pixel so processing the last numDataInAvxVector in avx
         //may be a few pixels that are computed twice but that's OK
         if (x_val_process > end_x_simd_vect_start) {
-          x_val_process = end_final - num_data_SIMD_vect;
+          x_val_process = end_final - simd_data_size;
         }
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
@@ -1252,7 +1260,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
         const unsigned int index_output = (y_val * width_disp_checkerboard) + x_val_process;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, num_data_SIMD_vect,
+        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, simd_data_size,
           current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_);
 
         //declare SIMD vectors for data and message values at each disparity
@@ -1584,8 +1592,8 @@ void beliefpropCPU::DtStereoSIMD(U f[DISP_VALS])
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
 void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const U messageValsNeighbor1[DISP_VALS], const U messageValsNeighbor2[DISP_VALS],
-  const U messageValsNeighbor3[DISP_VALS], const U data_costs[DISP_VALS],
+  const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
+  const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
   T* dst_message_array, const U& disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
@@ -1595,12 +1603,12 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
   {
-    //dst[current_disparity] = messageValsNeighbor1[current_disparity] + messageValsNeighbor2[current_disparity] +
-    //                         messageValsNeighbor3[current_disparity] + data_costs[current_disparity];
+    //dst[current_disparity] = messages_neighbor_1[current_disparity] + messages_neighbor_2[current_disparity] +
+    //                         messages_neighbor_3[current_disparity] + data_costs[current_disparity];
     dst[current_disparity] =
-      VectProcessingFuncts::AddVals<U, U, W>(messageValsNeighbor1[current_disparity], messageValsNeighbor2[current_disparity]);
+      VectProcessingFuncts::AddVals<U, U, W>(messages_neighbor_1[current_disparity], messages_neighbor_2[current_disparity]);
     dst[current_disparity] =
-      VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], messageValsNeighbor3[current_disparity]);
+      VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], messages_neighbor_3[current_disparity]);
     dst[current_disparity] =
       VectProcessingFuncts::AddVals<W, U, W>(dst[current_disparity], data_costs[current_disparity]);
 
@@ -1692,8 +1700,8 @@ void beliefpropCPU::DtStereoSIMD(U* f, unsigned int bp_settings_disp_vals)
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
 void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const U* messageValsNeighbor1, const U* messageValsNeighbor2,
-  const U* messageValsNeighbor3, const U* data_costs,
+  const U* messages_neighbor_1, const U* messages_neighbor_2,
+  const U* messages_neighbor_3, const U* data_costs,
   T* dst_message_array,
   const U& disc_k_bp, bool data_aligned,
   unsigned int bp_settings_disp_vals)
@@ -1705,12 +1713,12 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
-    //dst[current_disparity] = messageValsNeighbor1[current_disparity] + messageValsNeighbor2[current_disparity] +
-    //                         messageValsNeighbor3[current_disparity] + data_costs[current_disparity];
+    //dst[current_disparity] = messages_neighbor_1[current_disparity] + messages_neighbor_2[current_disparity] +
+    //                         messages_neighbor_3[current_disparity] + data_costs[current_disparity];
     dst[current_disparity] = VectProcessingFuncts::AddVals<U, U, W>(
-      messageValsNeighbor1[current_disparity], messageValsNeighbor2[current_disparity]);
+      messages_neighbor_1[current_disparity], messages_neighbor_2[current_disparity]);
     dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(
-      dst[current_disparity], messageValsNeighbor3[current_disparity]);
+      dst[current_disparity], messages_neighbor_3[current_disparity]);
     dst[current_disparity] = VectProcessingFuncts::AddVals<W, U, W>(
       dst[current_disparity], data_costs[current_disparity]);
 
@@ -1776,29 +1784,29 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
 void beliefpropCPU::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const U messageValsNeighbor1[DISP_VALS], const U messageValsNeighbor2[DISP_VALS],
-  const U messageValsNeighbor3[DISP_VALS], const U data_costs[DISP_VALS],
+  const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
+  const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
   T* dst_message_array,
   const U& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<T, U, T, U, DISP_VALS>(x_val, y_val,
-    current_bp_level, messageValsNeighbor1, messageValsNeighbor2,
-    messageValsNeighbor3, data_costs, dst_message_array, disc_k_bp, data_aligned);
+    current_bp_level, messages_neighbor_1, messages_neighbor_2,
+    messages_neighbor_3, data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 // compute current message
 template<RunData_t T, RunDataVect_t U>
 void beliefpropCPU::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const U* messageValsNeighbor1, const U* messageValsNeighbor2,
-  const U* messageValsNeighbor3, const U* data_costs,
+  const U* messages_neighbor_1, const U* messages_neighbor_2,
+  const U* messages_neighbor_3, const U* data_costs,
   T* dst_message_array,
   const U& disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   MsgStereoSIMDProcessing<T, U, T, U>(
     x_val, y_val, current_bp_level,
-    messageValsNeighbor1, messageValsNeighbor2,
-    messageValsNeighbor3, data_costs,
+    messages_neighbor_1, messages_neighbor_2,
+    messages_neighbor_3, data_costs,
     dst_message_array, disc_k_bp, data_aligned,
     bp_settings_disp_vals);
 }

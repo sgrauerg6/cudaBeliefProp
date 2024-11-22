@@ -16,7 +16,8 @@
 class BpFileHandling {
 public:
   //constructor takes stereo set name as input, which must match the directory name of the stereo set
-  BpFileHandling(const std::string& stereo_set_name) : stereo_set_path_{StereoSetsPath() / stereo_set_name}, num_out_disp_map_{1} { }
+  BpFileHandling(const std::string& stereo_set_name) : 
+    stereo_set_path_{StereoSetsPath() / stereo_set_name}, num_out_disp_map_{1} { }
 
   //return path to reference image with valid extension if found, otherwise throw filesystem error
   std::filesystem::path RefImagePath() const;
@@ -26,7 +27,8 @@ public:
 
   //return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
   const std::filesystem::path GetCurrentOutputDisparityFilePathAndIncrement() {
-    return stereo_set_path_ / (std::string(bp_file_handling::kOutDispImageNameBase) + std::to_string(num_out_disp_map_++) + ".pgm");
+    return stereo_set_path_ / 
+      (std::string(bp_file_handling::kOutDispImageNameBase) + std::to_string(num_out_disp_map_++) + ".pgm");
   }
 
   //get file path to ground truth disparity map

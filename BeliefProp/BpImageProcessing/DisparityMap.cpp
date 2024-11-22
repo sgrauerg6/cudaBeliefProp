@@ -23,7 +23,7 @@ void DisparityMap<T>::SaveDisparityMap(const std::string& disparity_map_file_pat
   disparity_image.SaveImageAsPgm(disparity_map_file_path);
 }
 
-//TODO: look into case where no known disparity in ground truth disparity map (should not be penalized for wrong disparity in that case)
+//TODO: look into case where no known disparity in ground truth disparity map
 template<class T>
 BpEvaluationResults DisparityMap<T>::OutputComparison(
   const DisparityMap& disparity_map_to_compare,

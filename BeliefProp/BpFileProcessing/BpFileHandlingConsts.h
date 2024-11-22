@@ -17,18 +17,18 @@ namespace bp_file_handling
   constexpr std::string_view kRefImageName = "refImage";
   constexpr std::string_view kTestImageName = "testImage";
   constexpr std::string_view kInImagePossExtensions[] = {"pgm", "ppm"};
-  constexpr std::string_view kGroundTruthDispFile = "ground_truth_disparity.pgm";
+  constexpr std::string_view kGroundTruthDispFile = "groundTruthDisparity.pgm";
   constexpr std::string_view kOutDispImageNameBase = "computedDisparity";
   constexpr std::string_view kBeliefPropDirectoryName = "BeliefProp";
   constexpr std::string_view kStereoSetsDirectoryName = "BpStereoSets";
 
   #ifdef SMALLER_SETS_ONLY
     constexpr std::array<std::string_view, 2> kBaselineRunDataPathsOptSingleThread{
-      "../BeliefProp/BpBaselineRuntimes/baseline_runtimesSmallerSetsOnly.txt",
+      "../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
   #else
     constexpr std::array<std::string_view, 2> kBaselineRunDataPathsOptSingleThread{
-      "../BeliefProp/BpBaselineRuntimes/baseline_runtimes.txt",
+      "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
       "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
   #endif //SMALLER_SETS_ONLY
 };

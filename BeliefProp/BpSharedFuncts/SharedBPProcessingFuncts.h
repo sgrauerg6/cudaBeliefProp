@@ -117,8 +117,8 @@ template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void MsgStereo(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const U messageValsNeighbor1[DISP_VALS], const U messageValsNeighbor2[DISP_VALS],
-  const U messageValsNeighbor3[DISP_VALS], const U data_costs[DISP_VALS],
+  const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
+  const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
   T* dst_message_array, U disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
@@ -127,8 +127,8 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
   {
-    dst[current_disparity] = messageValsNeighbor1[current_disparity] + messageValsNeighbor2[current_disparity] +
-                             messageValsNeighbor3[current_disparity] + data_costs[current_disparity];
+    dst[current_disparity] = messages_neighbor_1[current_disparity] + messages_neighbor_2[current_disparity] +
+                             messages_neighbor_3[current_disparity] + data_costs[current_disparity];
     if (dst[current_disparity] < minimum)
       minimum = dst[current_disparity];
   }
@@ -175,8 +175,8 @@ template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void MsgStereo(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  const U* messageValsNeighbor1, const U* messageValsNeighbor2,
-  const U* messageValsNeighbor3, const U* data_costs,
+  const U* messages_neighbor_1, const U* messages_neighbor_2,
+  const U* messages_neighbor_3, const U* data_costs,
   T* dst_message_array, U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   // aggregate and find min
@@ -185,8 +185,8 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
   {
-    dst[current_disparity] = messageValsNeighbor1[current_disparity] + messageValsNeighbor2[current_disparity] +
-                             messageValsNeighbor3[current_disparity] + data_costs[current_disparity];
+    dst[current_disparity] = messages_neighbor_1[current_disparity] + messages_neighbor_2[current_disparity] +
+                             messages_neighbor_3[current_disparity] + data_costs[current_disparity];
     if (dst[current_disparity] < minimum)
       minimum = dst[current_disparity];
   }

@@ -62,7 +62,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const dim3 grid{(unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
                   (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 
-  //in cuda kernel storing data one at a time (though it is coalesced), so num_data_SIMD_vect not relevant here and set to 1
+  //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
   //still is a check if start of row is aligned
   const bool data_aligned{run_imp_util::MemoryAlignedAtDataStart(0, 1, current_bp_level.LevelProperties().num_data_align_width_,
     current_bp_level.LevelProperties().div_padded_checkerboard_w_align_)};
@@ -255,8 +255,9 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-  //each pixel "checkerboard" is half the width of the level and there are two of them; each "pixel/point" at the level belongs to one checkerboard and
-  //the four-connected neighbors are in the other checkerboard
+  //each pixel "checkerboard" is half the width of the level and there are two of them
+  //each "pixel/point" at the level belongs to one checkerboard and
+  //the four-connected neighbors of the pixel are in the counterpart checkerboard
   const dim3 grid{(unsigned int)ceil(((float)current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
                   (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 

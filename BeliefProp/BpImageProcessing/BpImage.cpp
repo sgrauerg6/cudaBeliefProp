@@ -24,7 +24,8 @@ void BpImage<T>::LoadImageAsGrayScale(const std::string& file_path_image) {
   if (token == kPGMExt) {
     init_image = ImageRead(file_path_image, ImageType::kPgmImage);
   } else if (token == kPPMExt) {
-    init_image = ImageRead(file_path_image, ImageType::kPpmImage, kUseWeightedRGBToGrayscaleConversion);
+    init_image = ImageRead(
+      file_path_image, ImageType::kPpmImage, kUseWeightedRGBToGrayscaleConversion);
   } else {
     //end function if not of type pgm or ppm with result
     //being BpImage with default constructor
@@ -37,7 +38,9 @@ void BpImage<T>::LoadImageAsGrayScale(const std::string& file_path_image) {
   pixels_ = std::make_unique<T[]>(TotalPixels());
 
   //convert each pixel in dataRead to data type T and place in imageData array in same location
-  std::ranges::transform(init_image.PointerToPixelsStart(), init_image.PointerToPixelsStart() + TotalPixels(),
+  std::ranges::transform(
+    init_image.PointerToPixelsStart(),
+    init_image.PointerToPixelsStart() + TotalPixels(),
     pixels_.get(), [] (const unsigned char i) -> T {return (T)i;});
 }
 
@@ -67,7 +70,7 @@ BpImage<unsigned char> BpImage<T>::ImageRead(const std::string& file_name,
   std::ifstream file(file_name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (buf != "P5")
-    std::cout << "ERROR READING FILE\n";
+    std::cout << "ERROR READING FILE P5: " << file_name << std::endl;
 
   unsigned int cols, rows;
   pnm_read(file, buf);
@@ -77,7 +80,7 @@ BpImage<unsigned char> BpImage<T>::ImageRead(const std::string& file_name,
 
   pnm_read(file, buf);
   if (std::stoul(buf) > UCHAR_MAX)
-    std::cout << "ERROR READING FILE\n";
+    std::cout << "ERROR READING FILE UCHAR MAX: " << file_name << std::endl;
 
   BpImage<unsigned char> out_image(std::array<unsigned int, 2>{cols, rows});
 

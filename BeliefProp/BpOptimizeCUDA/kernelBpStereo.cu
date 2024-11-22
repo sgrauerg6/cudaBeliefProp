@@ -113,8 +113,10 @@ __global__ void InitializeMessageValsToDefaultKernel(
   }
 }
 
-//kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard"
-//scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
+//kernel function to run the current iteration of belief propagation in parallel using the
+//checkerboard update method where half the pixels in the "checkerboard"
+//scheme retrieve messages from each 4-connected neighbor and then update
+//their message based on the retrieved messages and the data cost
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
   beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,

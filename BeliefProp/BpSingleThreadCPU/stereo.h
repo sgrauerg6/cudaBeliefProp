@@ -218,8 +218,8 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
   for (unsigned int i = 1; i < alg_settings.num_levels; i++) {
     const unsigned int old_width = (unsigned int)data[i - 1]->width();
     const unsigned int old_height = (unsigned int)data[i - 1]->height();
-    const unsigned int new_width = (unsigned int) ceil(old_width / 2.0);
-    const unsigned int new_height = (unsigned int) ceil(old_height / 2.0);
+    const unsigned int new_width = (unsigned int)ceil(old_width / 2.0);
+    const unsigned int new_height = (unsigned int)ceil(old_height / 2.0);
 
     assert(new_width >= 1);
     assert(new_height >= 1);

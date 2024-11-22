@@ -41,7 +41,7 @@ MultRunData RunEvalBpImp::RunEvalImpMultDataSets(
   }
 }
 
-//run and evaluate implementation on multiple data sets
+//run and evaluate optimized bp implementation on evaluation stereo sets
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
 MultRunData RunEvalBpImp::RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const {
   //run and evaluate bp implementation on all stereo sets used for benchmarking

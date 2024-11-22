@@ -24,6 +24,7 @@ std::filesystem::path EvaluateBPImpResults::GetImpResultsPath() const
     //found in current path
     std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dir_iter), std::filesystem::end(dir_iter), 
       [](const auto &p) { return p.path().stem() == bp_file_handling::kBeliefPropDirectoryName; });
+    
     //check if return from find_if at iterator end and therefore didn't find belief propagation directory;
     //if that's the case continue to outer directory
     //for now assuming stereo sets directory exists in some outer directory and program won't work without it
@@ -47,5 +48,7 @@ std::filesystem::path EvaluateBPImpResults::GetImpResultsPath() const
       return impResultsPath;
     }
   }
+
+  //return empty path if no path found
   return std::filesystem::path();
 }

@@ -35,8 +35,8 @@ constexpr unsigned int kDispVals6{beliefprop::kStereoSetsToProcess[6].num_disp_v
 //given in template parameter
 template <unsigned int DISP_VALS>
 __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[DISP_VALS],
-  half messageValsNeighbor2[DISP_VALS], half messageValsNeighbor3[DISP_VALS],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[DISP_VALS],
+  half messages_neighbor_2[DISP_VALS], half messages_neighbor_3[DISP_VALS],
   half data_costs[DISP_VALS], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
@@ -44,9 +44,9 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   half dst[DISP_VALS];
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
-    dst[current_disparity] = messageValsNeighbor1[current_disparity] +
-                            messageValsNeighbor2[current_disparity] +
-                            messageValsNeighbor3[current_disparity] +
+    dst[current_disparity] = messages_neighbor_1[current_disparity] +
+                            messages_neighbor_2[current_disparity] +
+                            messages_neighbor_3[current_disparity] +
                             data_costs[current_disparity];
     if (dst[current_disparity] < minimum) {
       minimum = dst[current_disparity];
@@ -151,7 +151,8 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
     }
   }
 
-  //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")
+  //retrieve the minimum value at each disparity in O(n) time using Felzenszwalb's method
+  //(see "Efficient Belief Propagation for Early Vision")
   DtStereo<half>(dst_processing, bp_settings_disp_vals, x_val, y_val, current_bp_level);
 
   // truncate
@@ -280,76 +281,76 @@ __device__ inline void MsgStereo<half, half, beliefprop::MessageComp::kRMessage>
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals0>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals0],
-  half messageValsNeighbor2[kDispVals0], half messageValsNeighbor3[kDispVals0],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals0],
+  half messages_neighbor_2[kDispVals0], half messages_neighbor_3[kDispVals0],
   half data_costs[kDispVals0], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals0>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals0>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals1>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals1],
-  half messageValsNeighbor2[kDispVals1], half messageValsNeighbor3[kDispVals1],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals1],
+  half messages_neighbor_2[kDispVals1], half messages_neighbor_3[kDispVals1],
   half data_costs[kDispVals1], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals1>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals1>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals2>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals2],
-  half messageValsNeighbor2[kDispVals2], half messageValsNeighbor3[kDispVals2],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals2],
+  half messages_neighbor_2[kDispVals2], half messages_neighbor_3[kDispVals2],
   half data_costs[kDispVals2], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals2>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals2>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals3>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals3],
-  half messageValsNeighbor2[kDispVals3], half messageValsNeighbor3[kDispVals3],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals3],
+  half messages_neighbor_2[kDispVals3], half messages_neighbor_3[kDispVals3],
   half data_costs[kDispVals3], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals3>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals3>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals4>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals4],
-  half messageValsNeighbor2[kDispVals4], half messageValsNeighbor3[kDispVals4],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals4],
+  half messages_neighbor_2[kDispVals4], half messages_neighbor_3[kDispVals4],
   half data_costs[kDispVals4], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals4>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals4>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals5>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals5],
-  half messageValsNeighbor2[kDispVals5], half messageValsNeighbor3[kDispVals5],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals5],
+  half messages_neighbor_2[kDispVals5], half messages_neighbor_3[kDispVals5],
   half data_costs[kDispVals5], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals5>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals5>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
 template<>
 __device__ inline void MsgStereo<half, half, kDispVals6>(
   unsigned int x_val, unsigned int y_val,
-  const beliefprop::BpLevel& current_bp_level, half messageValsNeighbor1[kDispVals6],
-  half messageValsNeighbor2[kDispVals6], half messageValsNeighbor3[kDispVals6],
+  const beliefprop::BpLevel& current_bp_level, half messages_neighbor_1[kDispVals6],
+  half messages_neighbor_2[kDispVals6], half messages_neighbor_3[kDispVals6],
   half data_costs[kDispVals6], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
-  MsgStereoHalf<kDispVals6>(x_val, y_val, current_bp_level, messageValsNeighbor1, messageValsNeighbor2, messageValsNeighbor3,
+  MsgStereoHalf<kDispVals6>(x_val, y_val, current_bp_level, messages_neighbor_1, messages_neighbor_2, messages_neighbor_3,
     data_costs, dst_message_array, disc_k_bp, data_aligned);
 }

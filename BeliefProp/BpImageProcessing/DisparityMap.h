@@ -26,13 +26,17 @@ public:
   DisparityMap(const std::array<unsigned int, 2>& width_height, const T* input_disparity_map_vals,
     unsigned int disparity_map_vals_scale = 1) : BpImage<T>(width_height, input_disparity_map_vals)
   {
-    std::ranges::copy(input_disparity_map_vals, input_disparity_map_vals + this->TotalPixels(), this->pixels_.get());
+    std::ranges::copy(input_disparity_map_vals,
+      input_disparity_map_vals + this->TotalPixels(),
+      this->pixels_.get());
+
     if (disparity_map_vals_scale > 1u) {
       RemoveScaleFromDisparity_vals(disparity_map_vals_scale);
     }
   }
 
-  DisparityMap(const std::string& file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : BpImage<T>(file_path_disparity_map)
+  DisparityMap(const std::string& file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : 
+    BpImage<T>(file_path_disparity_map)
   {
     if (disparity_map_vals_scale > 1) {
       RemoveScaleFromDisparity_vals(disparity_map_vals_scale);
@@ -49,8 +53,10 @@ private:
   {
     if (disparity_map_vals_scale > 1) {
       //divide each disparity value by disparity_map_vals_scale
-      std::ranges::transform(this->pixels_.get(), this->pixels_.get() + this->TotalPixels(), this->pixels_.get(),
-        [disparity_map_vals_scale](const auto& disp_val) { return (disp_val / disparity_map_vals_scale); });
+      std::ranges::transform(this->pixels_.get(), this->pixels_.get() + this->TotalPixels(),
+        this->pixels_.get(),
+        [disparity_map_vals_scale](const auto& disp_val) { 
+          return (disp_val / disparity_map_vals_scale); });
     }
   }
 };

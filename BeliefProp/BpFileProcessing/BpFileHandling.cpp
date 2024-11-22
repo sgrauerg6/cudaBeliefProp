@@ -21,7 +21,7 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
     //if so return iterator to directory; otherwise return iterator to end indicating that directory not
     //found in current path
     std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dir_iter), std::filesystem::end(dir_iter), 
-      [](const auto &p) { return p.path().stem() == bp_file_handling::kBeliefPropDirectoryName; });
+      [](const auto& p) { return p.path().stem() == bp_file_handling::kBeliefPropDirectoryName; });
 
     //check if return from find_if at iterator end and therefore didn't find stereo sets directory;
     //if that's the case continue to outer directory
