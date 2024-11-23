@@ -14,7 +14,10 @@
 #include <sstream>
 
 //evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
-void EvaluateImpResults::operator()(const MultRunData& run_results, const run_environment::RunImpSettings run_imp_settings,
+//return run data with speedup from evaluation of implementation runs using multiple inputs with runs
+//having the same data type and acceleration method
+std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::EvalResultsSingDataTypeAcc(
+  const MultRunData& run_results, const run_environment::RunImpSettings run_imp_settings,
   run_environment::AccSetting opt_imp_acc, size_t data_size)
 {
   run_imp_orig_results_ = run_results;
@@ -22,23 +25,22 @@ void EvaluateImpResults::operator()(const MultRunData& run_results, const run_en
   opt_imp_accel_ = opt_imp_acc;
   data_size_ = data_size;
   EvalResultsSingDTypeAccRun();
+  
+  //return run data with speedup from evaluation of implementation runs using multiple inputs with runs
+  //having the same data type and acceleration method
+  return {run_imp_opt_results_, run_imp_speedups_};
 }
 
 //evaluate results for implementation runs on multiple inputs with the runs having
 //different data type and acceleration methods
-void EvaluateImpResults::operator()(const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
+void EvaluateImpResults::EvalResultsWriteOutput(
+  const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
   const run_environment::RunImpSettings run_imp_settings, run_environment::AccSetting opt_imp_acc)
 {
   run_imp_results_mult_runs_ = run_results_mult_runs;
   run_imp_settings_ = run_imp_settings;
   opt_imp_accel_ = opt_imp_acc;
   EvalResultsMultDTypeAccRuns();
-}
-
-//get run data with speedup from evaluation of implementation runs using multiple inputs with runs
-//having the same data type and acceleration method
-std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::RunDataWSpeedups() const {
-  return {run_imp_opt_results_, run_imp_speedups_};
 }
 
 //write data for file corresponding to runs for a specified data type or across all data type

@@ -10,6 +10,8 @@
 
 #include <utility>
 #include <numeric>
+#include <memory>
+#include "RunSettingsEval/EvaluateImpResults.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
 
@@ -20,7 +22,7 @@ public:
 
   //run and evaluate runs on one or more input of benchmark implementation using multiple settings
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> operator()(const run_environment::RunImpSettings& run_imp_settings,
-    size_t data_type_size) const;
+    size_t data_type_size, std::unique_ptr<EvaluateImpResults>& evalResults) const;
 
   //return acceleration setting for implementation
   run_environment::AccSetting AccelerationSetting() const { return opt_imp_accel_; }

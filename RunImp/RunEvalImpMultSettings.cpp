@@ -23,12 +23,14 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
     run_imp_results[data_size] = MultRunDataWSpeedupByAcc();
     //run implementation using each acceleration setting
     for (auto& run_imp : run_benchmark_imps_by_acc_setting) {
-      run_imp_results[data_size][run_imp.first] = run_imp.second->operator()(run_imp_settings, data_size);
+      run_imp_results[data_size][run_imp.first] = run_imp.second->operator()(
+        run_imp_settings, data_size, evalResultsPtr);
     }
   }
 
   //evaluate results including writing results to output file
-  evalResultsPtr->operator()(run_imp_results, run_imp_settings, fastest_acc);
+  evalResultsPtr->EvalResultsWriteOutput(
+    run_imp_results, run_imp_settings, fastest_acc);
 }
 
 //get fastest available acceleration
