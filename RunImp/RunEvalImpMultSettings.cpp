@@ -7,12 +7,12 @@
 
 #include "RunEvalImpMultSettings.h"
 #include "RunSettingsEval/EvaluateImpResults.h"
-#include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
 void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetting,
   std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting,
-  const run_environment::RunImpSettings& run_imp_settings) const
+  const run_environment::RunImpSettings& run_imp_settings,
+  std::unique_ptr<EvaluateImpResults> evalResultsPtr) const
 {
   //get fastest implementation available
   const auto fastest_acc = FastestAvailableAcc(run_benchmark_imps_by_acc_setting);
@@ -28,11 +28,12 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
   }
 
   //evaluate results including writing results to output file
-  EvaluateBPImpResults().operator()(run_imp_results, run_imp_settings, fastest_acc);
+  evalResultsPtr->operator()(run_imp_results, run_imp_settings, fastest_acc);
 }
 
 //get fastest available acceleration
-run_environment::AccSetting RunEvalImpMultSettings::FastestAvailableAcc(const std::map<run_environment::AccSetting,
+run_environment::AccSetting RunEvalImpMultSettings::FastestAvailableAcc(
+  const std::map<run_environment::AccSetting,
   std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting) const
 {
   if (run_benchmark_imps_by_acc_setting.contains(run_environment::AccSetting::kCUDA)) {

@@ -18,9 +18,12 @@ void BpEvaluationResults::InitializeWithEvalParams(const BpEvaluationParameters&
 //retrieve evaluation results as RunData for output
 RunData BpEvaluationResults::AsRunData() const {
   RunData evalRunData;
-  evalRunData.AddDataWHeader("Average RMS error", (double)average_disp_abs_diff_no_max_w_max_[0]);
-  evalRunData.AddDataWHeader("Average RMS error (with disparity error cap at " + std::to_string(disparity_error_max_) + ")",
-                             (double)average_disp_abs_diff_no_max_w_max_[1]);
+  evalRunData.AddDataWHeader(std::string(beliefprop::kAvgRMSErrorHeader),
+    (double)average_disp_abs_diff_no_max_w_max_[0]);
+  evalRunData.AddDataWHeader(
+    std::string(beliefprop::kAvgRMSErrorHeader) + " (with disparity error cap at " + 
+      std::to_string(disparity_error_max_) + ")",
+    (double)average_disp_abs_diff_no_max_w_max_[1]);
   for (const auto& propBadPixelsAtThreshold : prop_sig_diff_pixels_at_thresholds_) {
     evalRunData.AddDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
                                (double)propBadPixelsAtThreshold.second);

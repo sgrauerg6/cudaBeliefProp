@@ -19,11 +19,12 @@ void BpImage<T>::LoadImageAsGrayScale(const std::string& file_path_image) {
   //last token after "." is file extension
   //use extension to check if image is pgm or ppm
   BpImage<unsigned char> init_image;
-  if (token == kPGMExt) {
-    init_image = ImageRead(file_path_image, ImageType::kPgmImage);
-  } else if (token == kPPMExt) {
+  if (token == beliefprop::kPGMExt) {
+    init_image = ImageRead(file_path_image, beliefprop::ImageType::kPgmImage);
+  } else if (token == beliefprop::kPPMExt) {
     init_image = ImageRead(
-      file_path_image, ImageType::kPpmImage, kUseWeightedRGBToGrayscaleConversion);
+      file_path_image, beliefprop::ImageType::kPpmImage,
+      beliefprop::kUseWeightedRGBToGrayscaleConversion);
   } else {
     //end function if not of type pgm or ppm with result
     //being BpImage with default constructor
@@ -60,7 +61,7 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 
 template<class T>
 BpImage<unsigned char> BpImage<T>::ImageRead(const std::string& file_name,
-  ImageType image_type, bool weighted_rgb_conversion) const
+  beliefprop::ImageType image_type, bool weighted_rgb_conversion) const
 {
   std::string buf;
 
@@ -82,12 +83,12 @@ BpImage<unsigned char> BpImage<T>::ImageRead(const std::string& file_name,
 
   BpImage<unsigned char> out_image(std::array<unsigned int, 2>{cols, rows});
 
-  if (image_type == ImageType::kPgmImage) {
+  if (image_type == beliefprop::ImageType::kPgmImage) {
     /* read data */
     file.read((char*) (out_image.PointerToPixelsStart()),
       (cols * rows * sizeof(char)));
   }
-  else if (image_type == ImageType::kPpmImage) {
+  else if (image_type == beliefprop::ImageType::kPpmImage) {
     std::unique_ptr<char[]> rgb_image_ptr = std::make_unique<char[]>(3 * cols * rows);
 
     /* read data */

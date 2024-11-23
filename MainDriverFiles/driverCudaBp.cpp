@@ -18,10 +18,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file contains the "main" function that drives the CUDA BP implementation
 
-#include "BpFileProcessing/BpFileHandlingConsts.h"
-#include "RunImpCUDA/RunCUDASettings.h"
-#include "BpRunEvalImp/RunEvalBpImp.h"
 #include "RunImp/RunEvalImpMultSettings.h"
+#include "RunImpCUDA/RunCUDASettings.h"
+#include "BpFileProcessing/BpFileHandlingConsts.h"
+#include "BpRunEvalImp/RunEvalBpImp.h"
+#include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 int main(int argc, char** argv)
 {
@@ -46,6 +47,10 @@ int main(int argc, char** argv)
   run_imp_settings.run_name = (argc > 1) ? argv[1] : "CurrentRun";
 
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
-  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::kCUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kCUDA)}}, run_imp_settings);
+  RunEvalImpMultSettings().operator()(
+    {{run_environment::AccSetting::kCUDA, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kCUDA)}},
+    run_imp_settings,
+    std::make_unique<EvaluateBPImpResults>());
+
   return 0;
 }

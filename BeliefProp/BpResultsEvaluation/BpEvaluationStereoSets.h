@@ -32,12 +32,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <string_view>
 #include <array>
+#include "BpRunProcessing/BpSettings.h"
 
 namespace beliefprop
 {
   constexpr std::string_view kImageWidthHeader{"Image Width"};
   constexpr std::string_view kImageHeightHeader{"Image Height"};
-  constexpr std::string_view kNumDispValsHeader{"Num Possible Disparity Values"};
   constexpr std::string_view kStereoSetHeader{"Stereo Set"};
   
   struct BpStereoSet {

@@ -15,7 +15,7 @@
 #include <iostream>
 #include <algorithm>
 #include <ranges>
-#include "RunSettingsEval/RunData.h"
+#include "RunData.h"
 
 //set data type used for half-precision
 #ifdef OPTIMIZED_CPU_RUN
@@ -28,6 +28,14 @@ using halftype = short;
 #endif //OPTIMIZED_CPU_RUN
 
 namespace run_environment {
+
+//constants for headers corresponding to run settings
+constexpr std::string_view kCPUThreadsPinnedHeader{"CPU Threads Pinned To Socket"};
+constexpr std::string_view kOmpPlacesHeader{"OMP_PLACES"};
+constexpr std::string_view kOmpProcBindHeader{"OMP_PROC_BIND"};
+constexpr std::string_view kNumCPUThreadsHeader{"Total number of CPU threads"};
+constexpr std::string_view kBytesAlignMemHeader{"BYTES_ALIGN_MEMORY"};
+constexpr std::string_view kNumDataAlignWidthHeader{"NUM_DATA_ALIGN_WIDTH"};
 
 //class to adjust and retrieve settings corresponding to CPU threads pinned to socket
 class CPUThreadsPinnedToSocket {
@@ -66,9 +74,9 @@ public:
     const std::string omp_places_setting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");
     const std::string omp_proc_bind_setting = (std::getenv("OMP_PROC_BIND") == nullptr) ? "" : std::getenv("OMP_PROC_BIND");
     const bool cpu_threads_pinned = ((omp_places_setting == "sockets") && (omp_proc_bind_setting == "true"));
-    pinned_threads_settings.AddDataWHeader("CPU Threads Pinned To Socket", cpu_threads_pinned);
-    pinned_threads_settings.AddDataWHeader("OMP_PLACES", omp_places_setting);
-    pinned_threads_settings.AddDataWHeader("OMP_PROC_BIND", omp_proc_bind_setting);
+    pinned_threads_settings.AddDataWHeader(std::string(kCPUThreadsPinnedHeader), cpu_threads_pinned);
+    pinned_threads_settings.AddDataWHeader(std::string(kOmpPlacesHeader), omp_places_setting);
+    pinned_threads_settings.AddDataWHeader(std::string(kOmpProcBindHeader), omp_proc_bind_setting);
     return pinned_threads_settings;
   }
 };
@@ -116,9 +124,9 @@ inline unsigned int GetNumDataAlignWidth(AccSetting accel_setting) {
 template <AccSetting ACCELERATION_SETTING>
 inline RunData RunSettings()  {
   RunData curr_run_data;
-  curr_run_data.AddDataWHeader("Total number of CPU threads", std::thread::hardware_concurrency());
-  curr_run_data.AddDataWHeader("BYTES_ALIGN_MEMORY", GetBytesAlignMemory(ACCELERATION_SETTING));
-  curr_run_data.AddDataWHeader("NUM_DATA_ALIGN_WIDTH", GetNumDataAlignWidth(ACCELERATION_SETTING));
+  curr_run_data.AddDataWHeader(std::string(kNumCPUThreadsHeader), std::thread::hardware_concurrency());
+  curr_run_data.AddDataWHeader(std::string(kBytesAlignMemHeader), GetBytesAlignMemory(ACCELERATION_SETTING));
+  curr_run_data.AddDataWHeader(std::string(kNumDataAlignWidthHeader), GetNumDataAlignWidth(ACCELERATION_SETTING));
   curr_run_data.AppendData(CPUThreadsPinnedToSocket().SettingsAsRunData());
   return curr_run_data;
 }

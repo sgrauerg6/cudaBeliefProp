@@ -20,10 +20,12 @@
 #include <type_traits>
 #include <ranges>
 
-enum class ImageType { kPgmImage, kPpmImage };
-constexpr bool kUseWeightedRGBToGrayscaleConversion{true};
-constexpr std::string_view kPGMExt{"pgm"};
-constexpr std::string_view kPPMExt{"ppm"};
+namespace beliefprop {
+  enum class ImageType { kPgmImage, kPpmImage };
+  constexpr bool kUseWeightedRGBToGrayscaleConversion{true};
+  constexpr std::string_view kPGMExt{"pgm"};
+  constexpr std::string_view kPPMExt{"ppm"};
+};
 
 template <class T>
 requires std::is_arithmetic_v<T>
@@ -87,7 +89,7 @@ protected:
   void pnm_read(std::ifstream &file, std::string& buf) const;
 
   BpImage<unsigned char> ImageRead(const std::string& file_name,
-    ImageType image_type, bool weighted_rgb_conversion = true) const;
+    beliefprop::ImageType image_type, bool weighted_rgb_conversion = true) const;
 
   //currently assuming single channel
   inline unsigned int TotalPixels() const {

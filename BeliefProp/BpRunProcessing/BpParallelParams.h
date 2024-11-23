@@ -23,6 +23,16 @@
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunImp/ParallelParams.h"
 
+namespace beliefprop {
+  constexpr std::string_view kBlurImagesPDimsHeader{"Blur Images Parallel Dimensions"};
+  constexpr std::string_view kInitMValsPDimsHeader{"Init Message Values Parallel Dimensions"};
+  constexpr std::string_view kDataCostsPDimsHeader{"Data Costs Parallel Dimensions"};
+  constexpr std::string_view kBpItersPDimsHeader{"BP Thread Parallel Dimensions"};
+  constexpr std::string_view kCopyToNextLevelPDimsHeader{"Copy Thread Parallel Dimensions"};
+  constexpr std::string_view kCompOutputDispPDimsHeader{"Get Output Disparity Parallel Dimensions"};
+  constexpr std::string_view kLevelText{"Level"};
+};
+
 //structure containing parameters including parallelization parameters
 //to use at each BP level
 class BpParallelParams final : public ParallelParams {

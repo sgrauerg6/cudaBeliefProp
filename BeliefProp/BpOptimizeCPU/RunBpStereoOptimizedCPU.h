@@ -18,10 +18,16 @@
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
 
+namespace beliefprop {
+  constexpr std::string_view kBpOptimizeCPUDesc{"Optimized CPU"};
+  constexpr std::string_view kNumParallelCPUThreadsHeader{"Number of parallel CPU threads in run"};
+  constexpr std::string_view kCPUVectorizationHeader{"Vectorization"};
+};
+
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
 class RunBpStereoOptimizedCPU final : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
 public:
-  std::string BpRunDescription() const override { return "Optimized CPU"; }
+  std::string BpRunDescription() const override { return std::string(beliefprop::kBpOptimizeCPUDesc); }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
@@ -42,8 +48,9 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
 
   //add settings for current run to output data
   RunData run_data;
-  run_data.AddDataWHeader("Number of parallel CPU threads in run", nthreads);
-  run_data.AddDataWHeader("Vectorization", std::string(run_environment::AccelerationString<VECTORIZATION>()));
+  run_data.AddDataWHeader(std::string(beliefprop::kNumParallelCPUThreadsHeader), nthreads);
+  run_data.AddDataWHeader(std::string(beliefprop::kCPUVectorizationHeader),
+    std::string(run_environment::AccelerationString<VECTORIZATION>()));
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation

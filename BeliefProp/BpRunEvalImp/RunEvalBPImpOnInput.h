@@ -48,6 +48,10 @@ namespace bpSingleThread {
     single_thread_run_output;
 };
 
+namespace beliefprop {
+  constexpr std::string_view kAccelerationDescHeader{"Acceleration"};
+}
+
 //run and evaluate belief propagation implementation on a specified input
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 class RunEvalBPImpOnInput final : public RunEvalImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
@@ -193,7 +197,7 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImps
     
   //check if error in run
   RunData run_data;
-  run_data.AddDataWHeader("Acceleration", opt_imp_run_description);
+  run_data.AddDataWHeader(std::string(beliefprop::kAccelerationDescHeader), opt_imp_run_description);
   if (!(run_output[OPT_IMP_ACCEL])) {
     return {};
   }

@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunEvalImp/RunEvalBpImp.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunEvalImpMultSettings.h"
+#include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //enum to define setting to run implementation
 enum class RunImpSetting {
@@ -94,13 +95,13 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   #else
                                       {"largest stereo set", {8, 9}}};
   #endif //SMALLER_SETS_ONLY
-    
+
   //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
   RunEvalImpMultSettings().operator()({{run_environment::AccSetting::kAVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
     {run_environment::AccSetting::kAVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX256)},
     {run_environment::AccSetting::kNone, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kNone)}},
-    run_imp_settings);
+    run_imp_settings, std::make_unique<EvaluateBPImpResults>());
 }
 
 int main(int argc, char** argv)

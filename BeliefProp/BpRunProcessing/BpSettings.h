@@ -11,7 +11,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
@@ -28,6 +28,15 @@ concept Params_t =
   };
 
 namespace beliefprop {
+
+//constants for headers corresponding to belief propagation settings in evaluation
+constexpr std::string_view kNumDispValsHeader{"Num Possible Disparity Values"};
+constexpr std::string_view kNumBpLevelsHeader{"Num BP Levels",};
+constexpr std::string_view kNumBpItersHeader{"Num BP Iterations"};
+constexpr std::string_view kDiscCostCapHeader{"DISC_K_BP"};
+constexpr std::string_view kDataCostCapHeader{"DataKBp"};
+constexpr std::string_view kBpSettingsLambdaHeader{"LambdaBp"};
+constexpr std::string_view kBpSettingsSigmaHeader{"SigmaBp"};
 
 //default values for BP settings
 //number of scales/levels in the pyramid to run BP
@@ -65,13 +74,13 @@ struct BpSettings
   //for each setting
   RunData AsRunData() const {
     RunData curr_run_data;
-    curr_run_data.AddDataWHeader("Num Possible Disparity Values", num_disp_vals);
-    curr_run_data.AddDataWHeader("Num BP Levels", num_levels);
-    curr_run_data.AddDataWHeader("Num BP Iterations", num_iterations);
-    curr_run_data.AddDataWHeader("DISC_K_BP", (double)disc_k_bp);
-    curr_run_data.AddDataWHeader("DataKBp", (double)data_k_bp);
-    curr_run_data.AddDataWHeader("LambdaBp", (double)lambda_bp);
-    curr_run_data.AddDataWHeader("SigmaBp", (double)smoothing_sigma);
+    curr_run_data.AddDataWHeader(std::string(kNumDispValsHeader), num_disp_vals);
+    curr_run_data.AddDataWHeader(std::string(kNumBpLevelsHeader), num_levels);
+    curr_run_data.AddDataWHeader(std::string(kNumBpItersHeader), num_iterations);
+    curr_run_data.AddDataWHeader(std::string(kDiscCostCapHeader), (double)disc_k_bp);
+    curr_run_data.AddDataWHeader(std::string(kDataCostCapHeader), (double)data_k_bp);
+    curr_run_data.AddDataWHeader(std::string(kBpSettingsLambdaHeader), (double)lambda_bp);
+    curr_run_data.AddDataWHeader(std::string(kBpSettingsSigmaHeader), (double)smoothing_sigma);
 
     return curr_run_data;
   }

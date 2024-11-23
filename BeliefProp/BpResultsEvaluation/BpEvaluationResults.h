@@ -14,6 +14,10 @@
 #include "RunSettingsEval/RunData.h"
 #include "BpEvaluationParameters.h"
 
+namespace beliefprop {
+  constexpr std::string_view kAvgRMSErrorHeader{"Average RMS error"};
+};
+
 //class to store stereo processing evaluation results
 class BpEvaluationResults {
 public:

@@ -34,11 +34,17 @@ namespace beliefprop {
   constexpr bool kOptimizedIndexingSetting{true};
   constexpr bool kAllocateFreeBpMemoryOutsideRuns{true};
 
+  //constants for headers for run settings in evaluation
+  constexpr std::string_view kMemOptLevelHeader{"Memory Optimization Level"};
+  constexpr std::string_view kIndexingOptLevelHeader{"Indexing Optimization Level"};
+
   //retrieve run settings as a RunData object for output
   inline RunData RunSettings()  {
     RunData curr_run_data;
-    curr_run_data.AddDataWHeader("Memory Optimization Level", std::to_string(kUseOptGPUMemManagement));
-    curr_run_data.AddDataWHeader("Indexing Optimization Level", std::to_string(kOptimizedIndexingSetting));
+    curr_run_data.AddDataWHeader(std::string(kMemOptLevelHeader),
+      std::to_string(kUseOptGPUMemManagement));
+    curr_run_data.AddDataWHeader(std::string(kIndexingOptLevelHeader),
+      std::to_string(kOptimizedIndexingSetting));
     return curr_run_data;
   }
 };

@@ -31,6 +31,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessCUDABP.h"
 #include "SmoothImageCUDA.h"
 
+namespace beliefprop {
+  constexpr std::string_view kBpOptimizeCUDADesc{"CUDA"};
+  constexpr std::string_view kCUDAVersionHeader{"Cuda version"};
+  constexpr std::string_view kCUDARuntimeHeader{"Cuda Runtime Version"};
+};
+
 namespace bp_cuda_device
 {
   inline RunData retrieveDeviceProperties(int num_device)
@@ -43,9 +49,12 @@ namespace bp_cuda_device
 
     RunData run_data;
     run_data.AddDataWHeader("Device " + std::to_string(num_device),
-      std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) + " multiprocessors");
-    run_data.AddDataWHeader("Cuda version", std::to_string(cuda_version_driver_runtime[0]));
-    run_data.AddDataWHeader("Cuda Runtime Version", std::to_string(cuda_version_driver_runtime[1]));
+      std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) +
+      " multiprocessors");
+    run_data.AddDataWHeader(std::string(beliefprop::kCUDAVersionHeader),
+      std::to_string(cuda_version_driver_runtime[0]));
+    run_data.AddDataWHeader(std::string(beliefprop::kCUDARuntimeHeader),
+      std::to_string(cuda_version_driver_runtime[1]));
     return run_data;
   }
 };
@@ -54,7 +63,8 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 class RunBpStereoSetOnGPUWithCUDA final : public RunBpStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
-  std::string BpRunDescription() const override { return "CUDA"; }
+  std::string BpRunDescription() const override { 
+    return std::string(beliefprop::kBpOptimizeCUDADesc); }
 
   //run the disparity map estimation BP on a set of stereo images and save the results between each set of images
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,

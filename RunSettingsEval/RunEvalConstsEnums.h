@@ -42,7 +42,7 @@ namespace run_eval {
   constexpr std::string_view kSpeedupOptParParamsHeader{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
   constexpr std::string_view kSpeedupDouble{"Speedup using double-precision relative to float (actually slowdown)"};
   constexpr std::string_view kSpeedupHalf{"Speedup using half-precision relative to float"};
-  constexpr std::string_view kSpeedupDispCountTemplate{"Speedup w/ templated disparity count (known at compile-time)"};
+  constexpr std::string_view kSpeedupLoopItersCountTemplate{"Speedup w/ templated disparity count (known at compile-time)"};
   constexpr std::string_view kSpeedupCPUVectorization{"Speedup using CPU vectorization"};
   constexpr std::string_view kSpeedupVsAvx256Vectorization{"Speedup over AVX256 CPU vectorization"};
 

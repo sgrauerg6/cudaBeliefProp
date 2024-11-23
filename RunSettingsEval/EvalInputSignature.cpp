@@ -39,11 +39,12 @@ bool EvalInputSignature::operator<(const EvalInputSignature& rhs) const {
     //compare datatype
     //order is float, double, half
     //define mapping of datatype string to value for comparison
-    const std::map<unsigned int, unsigned int> datatype_size_to_val{
+    const std::map<unsigned int, unsigned int> datatype_size_to_order_num{
       {sizeof(float), 0},
       {sizeof(double), 1},
       {sizeof(short), 2}};
-    return (datatype_size_to_val.at(data_type_size_) < datatype_size_to_val.at(rhs.data_type_size_));
+    return (datatype_size_to_order_num.at(data_type_size_) <
+            datatype_size_to_order_num.at(rhs.data_type_size_));
   }
   else if (eval_set_num_ != rhs.eval_set_num_) {
     //compare evaluation data number
