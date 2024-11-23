@@ -9,7 +9,7 @@
 #include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //run and evaluate runs on one or more input of benchmark implementation using multiple settings
-std::pair<MultRunData, std::vector<MultRunSpeedup>> RunBenchmarkImp::operator()(const run_environment::RunImpSettings& run_imp_settings,
+std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunBenchmarkImp::operator()(const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size) const
 {
   //run belief propagation implementation on multiple datasets and return run data for all runs

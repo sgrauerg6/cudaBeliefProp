@@ -62,8 +62,8 @@ namespace run_eval {
 };
 
 using MultRunData = std::vector<std::optional<std::vector<RunData>>>;
-using MultRunSpeedup = std::pair<std::string, std::array<double, 2>>;
+using RunSpeedupAvgMedian = std::pair<std::string, std::array<double, 2>>;
 using MultRunDataWSpeedupByAcc =
-  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<MultRunSpeedup>>>;
+  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
 
 #endif //RUN_EVAL_CONSTS_ENUMS_H

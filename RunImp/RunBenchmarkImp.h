@@ -19,7 +19,7 @@ public:
   RunBenchmarkImp(run_environment::AccSetting opt_imp_accel) : opt_imp_accel_(opt_imp_accel) {}
 
   //run and evaluate runs on one or more input of benchmark implementation using multiple settings
-  std::pair<MultRunData, std::vector<MultRunSpeedup>> operator()(const run_environment::RunImpSettings& run_imp_settings,
+  std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> operator()(const run_environment::RunImpSettings& run_imp_settings,
     size_t data_type_size) const;
 
   //return acceleration setting for implementation
