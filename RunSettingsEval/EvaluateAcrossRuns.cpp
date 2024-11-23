@@ -8,6 +8,7 @@
  */
 
 #include "EvaluateAcrossRuns.h"
+#include "EvalInputSignature.h"
 
 //process runtime and speedup data across multiple runs (likely on different architectures)
 //from csv files corresponding to each run and
@@ -36,26 +37,24 @@ void EvaluateAcrossRuns::operator()(
 
   //get input "signature" for run mapped to optimized implementation runtime for each run on input
   //as well as input "signature" for each input mapped to input info to show in evaluation output
-  std::map<std::string, std::map<std::array<std::string_view, 3>, std::string, run_eval::LessThanRunSigHdrs>> input_to_runtime_across_archs;
-  std::set<std::array<std::string_view, 3>, run_eval::LessThanRunSigHdrs> input_set;
-  std::map<std::array<std::string_view, 3>, std::vector<std::string>, run_eval::LessThanRunSigHdrs> input_set_to_input_disp;
+  std::map<std::string, std::map<EvalInputSignature, std::string>> input_to_runtime_across_archs;
+  std::map<EvalInputSignature, std::vector<std::string>> input_set_to_input_disp;
   std::vector<decltype(run_results_name_to_data)::key_type> key_results_remove;
   for (const auto& run_result : run_results_name_to_data) {
-    input_to_runtime_across_archs[run_result.first] = std::map<std::array<std::string_view, 3>, std::string, run_eval::LessThanRunSigHdrs>();
+    input_to_runtime_across_archs[run_result.first] = std::map<EvalInputSignature, std::string>();
     const auto& result_keys_to_result_vect = run_result.second.second;
     if (result_keys_to_result_vect.contains(std::string(run_eval::kRunInputSigHeaders[0]))) {
       const unsigned int tot_num_runs = result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0])).size();
       for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
         //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
         //have loops with templated iteration counts)
-        const std::array<std::string_view, 3> run_input{
+        const EvalInputSignature run_input({
           result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
           result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
-          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]};
+          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]});
         //add mapping of total runtime to corresponding run name and input signature
         input_to_runtime_across_archs[run_result.first][run_input] =
           result_keys_to_result_vect.at(std::string(run_eval::kOptimizedRuntimeHeader))[num_run];
-        input_set.insert(run_input);
         //add mapping from run input signature to run input to be displayed
         if (!(input_set_to_input_disp.contains(run_input))) {
           input_set_to_input_disp[run_input] = std::vector<std::string>();
