@@ -28,30 +28,36 @@ public:
   //speedups with headers describing speedups
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvalResultsSingDataTypeAcc(
     const MultRunData& run_results, const run_environment::RunImpSettings run_imp_settings,
-    run_environment::AccSetting opt_imp_acc, size_t data_size);
+    run_environment::AccSetting opt_imp_acc, size_t data_size) const;
 
   //evaluate results for implementation runs on multiple inputs with the runs having
   //different data type and acceleration methods and write output to file
   void EvalResultsWriteOutput(
     const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
-    const run_environment::RunImpSettings run_imp_settings, run_environment::AccSetting opt_imp_acc);
+    const run_environment::RunImpSettings run_imp_settings,
+    run_environment::AccSetting opt_imp_acc) const;
 
 private:
   //process results for implementation runs on multiple inputs with all the runs having the
   //same data type and acceleration method
-  void EvalResultsSingDTypeAccRun();
+  std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvalResultsSingDTypeAccRun(
+    const MultRunData& run_results,
+    const run_environment::RunImpSettings run_imp_settings,
+    run_environment::AccSetting opt_imp_acc,
+    size_t data_size) const;
 
   //process results for implementation runs on multiple inputs with the runs having
   //different data type and acceleration methods
-  void EvalResultsMultDTypeAccRuns();
+  void EvalResultsMultDTypeAccRuns(
+    const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
+    const run_environment::RunImpSettings run_imp_settings,
+    run_environment::AccSetting opt_imp_acc) const;
 
   //write data for file corresponding to runs for a specified data type or across all data type
   //includes results for each run as well as average and median speedup data across multiple runs
-  template <bool kMultDataTypes>
   void WriteRunOutput(const std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>& run_output,
     const run_environment::RunImpSettings& run_imp_settings,
-    run_environment::AccSetting acceleration_setting,
-    unsigned int data_type_size = 0) const;
+    run_environment::AccSetting acceleration_setting) const;
 
   //perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
   //CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
@@ -107,14 +113,12 @@ private:
   //input parameters that are shown in results across runs with runtimes
   virtual std::vector<std::string> GetInputParamsShow() const = 0;
 
-  run_environment::RunImpSettings run_imp_settings_;
+  /*run_environment::RunImpSettings run_imp_settings_;
   run_environment::AccSetting opt_imp_accel_;
   size_t data_size_;
   MultRunData run_imp_orig_results_;
   MultRunData run_imp_opt_results_;
-  std::vector<RunSpeedupAvgMedian> run_imp_speedups_;
-  std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_imp_results_mult_runs_;
-  bool write_debug_output_files_{false};
+  std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_imp_results_mult_runs_;*/
 };
 
 #endif //EVALUATE_IMP_RESULTS_H_

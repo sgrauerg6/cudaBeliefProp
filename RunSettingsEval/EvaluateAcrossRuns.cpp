@@ -17,15 +17,20 @@
 void EvaluateAcrossRuns::operator()(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
-  const std::vector<std::string>& eval_across_runs_in_params_show) const
+  const std::vector<std::string>& eval_across_runs_in_params_show,
+  const std::pair<std::vector<std::string>, size_t>& speedup_headers_w_ordering_idx) const
 {
+  //get header to use for speedup ordering
+  auto speedup_ordering = speedup_headers_w_ordering_idx.first[
+    speedup_headers_w_ordering_idx.second];
+
   //get header to data of each set of run results
   //iterate through all run results files and get run name to results
   //create directory iterator with all results files
   std::filesystem::directory_iterator results_files_iter =
     std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
   std::vector<std::string> run_names;
-  std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> run_results_name_to_data;
+  std::map<std::string, std::map<std::string, std::vector<std::string>>> run_results_name_to_data;
   for (const auto& results_fp : results_files_iter) {
     std::string file_name_no_ext = results_fp.path().stem();
     if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName))) {
@@ -42,7 +47,7 @@ void EvaluateAcrossRuns::operator()(
   std::vector<decltype(run_results_name_to_data)::key_type> key_results_remove;
   for (const auto& run_result : run_results_name_to_data) {
     input_to_runtime_across_archs[run_result.first] = std::map<EvalInputSignature, std::string>();
-    const auto& result_keys_to_result_vect = run_result.second.second;
+    const auto& result_keys_to_result_vect = run_result.second;
     if (result_keys_to_result_vect.contains(std::string(run_eval::kRunInputSigHeaders[0]))) {
       const unsigned int tot_num_runs = result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0])).size();
       for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
@@ -79,8 +84,7 @@ void EvaluateAcrossRuns::operator()(
 
   //get header to data of each set of speedups
   //iterate through all speedup data files and get run name to results
-  std::map<std::string, std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>> speedup_results_name_to_data;
-  std::vector<std::string> speedup_headers_in_order;
+  std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
   for (const auto& run_name : run_names) {
     std::filesystem::path run_speedup_fp = imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
       (std::string(run_name) + '_' + std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension));
@@ -106,18 +110,16 @@ void EvaluateAcrossRuns::operator()(
   //speedup header
   //order of run names is in speedup from largest to smallest
   std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> run_names_in_order_w_speedup;
-  std::string first_speedup_header;
-  for (const auto& arch_w_speedup_data : speedup_results_name_to_data.cbegin()->second.first) {
-    if (!(arch_w_speedup_data.empty())) {
-      first_speedup_header = arch_w_speedup_data;
-      break;
-    }
-  }
 
   //add first speedup with run name to order runs from fastest to slowest based on first speedup
   for (const auto& arch_w_speedup_data : speedup_results_name_to_data) {
-    const float avgSpeedupVsBase = std::stof(std::string(arch_w_speedup_data.second.second.at(first_speedup_header).at(0)));
-    run_names_in_order_w_speedup.insert({avgSpeedupVsBase, arch_w_speedup_data.first});
+    if (arch_w_speedup_data.second.contains(speedup_ordering)) {
+      const float avgSpeedupVsBase = std::stof(std::string(arch_w_speedup_data.second.at(speedup_ordering).at(0)));
+      run_names_in_order_w_speedup.insert({avgSpeedupVsBase, arch_w_speedup_data.first});
+    }
+    else {
+      run_names_in_order_w_speedup.insert({0, arch_w_speedup_data.first});
+    }
   }
 
   //write all the run names in order from fastest to slowest
@@ -136,6 +138,9 @@ void EvaluateAcrossRuns::operator()(
       if (input_to_runtime_across_archs.at(run_name.second).contains(curr_run_input.first)) {
         result_across_archs_sstream << input_to_runtime_across_archs.at(run_name.second).at(curr_run_input.first) << ',';
       }
+      else {
+        result_across_archs_sstream << "NO RESULT" << ',';
+      }
     }
     result_across_archs_sstream << std::endl;
   }
@@ -145,7 +150,7 @@ void EvaluateAcrossRuns::operator()(
   //different evaluations of runtimes compared to a baseline
   result_across_archs_sstream << "Average Speedups" << std::endl;
   const std::string first_run_name = speedup_results_name_to_data.cbegin()->first;
-  for (const auto& speedup_header : speedup_results_name_to_data.at(first_run_name).first) {
+  for (const auto& speedup_header : speedup_headers_w_ordering_idx.first) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       result_across_archs_sstream << speedup_header << ',';
@@ -155,7 +160,12 @@ void EvaluateAcrossRuns::operator()(
       }
       //write speedup for each run in separate cells in horizontal direction where each column corresponds to a different evaluation run
       for (const auto& run_name : run_names_in_order_w_speedup) {
-        result_across_archs_sstream << speedup_results_name_to_data.at(run_name.second).second.at(speedup_header).at(0) << ',';
+        if (speedup_results_name_to_data.at(run_name.second).contains(speedup_header)) {
+          result_across_archs_sstream << speedup_results_name_to_data.at(run_name.second).at(speedup_header).at(0) << ',';
+        }
+        else {
+          result_across_archs_sstream << "NO DATA" << ',';
+        }
       }
       //continue to next row of table to write data for next speedup result
       result_across_archs_sstream << std::endl;
@@ -173,9 +183,12 @@ void EvaluateAcrossRuns::operator()(
 //get mapping of headers to data in csv file for run results and speedups
 //assumed that there are no commas in data since it is used as delimiter between data
 //first output is headers in order, second output is mapping of headers to results
-std::pair<std::vector<std::string>, std::map<std::string, std::vector<std::string>>>
+std::map<std::string, std::vector<std::string>>
 EvaluateAcrossRuns::HeaderToDataInCsvFile(const std::filesystem::path& csv_file_path) const {
   std::ifstream csv_file_str(csv_file_path);
+  if (!(csv_file_str.is_open())) {
+    std::cout << "ERROR CREATING STREAM: " << csv_file_path << std::endl;
+  }
   //retrieve data headers from top row
   std::string headers_line;
   std::getline(csv_file_str, headers_line);
@@ -197,5 +210,5 @@ EvaluateAcrossRuns::HeaderToDataInCsvFile(const std::filesystem::path& csv_file_
       header_to_data[data_headers[num_data++]].push_back(data);
     }
   }
-  return {data_headers, header_to_data};
+  return header_to_data;
 }

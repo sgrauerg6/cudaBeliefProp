@@ -98,7 +98,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
 
   //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
-  RunEvalImpMultSettings().operator()({{run_environment::AccSetting::kAVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
+  RunEvalImpMultSettings().operator()({
+    {run_environment::AccSetting::kAVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
     {run_environment::AccSetting::kAVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX256)},
     {run_environment::AccSetting::kNone, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kNone)}},
     run_imp_settings, std::make_unique<EvaluateBPImpResults>());

@@ -19,7 +19,7 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
 
   //get results using each datatype and possible acceleration
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_imp_results;
-  for (const size_t data_size : {sizeof(float), sizeof(double), sizeof(halftype)}) {
+  for (const size_t data_size : run_eval::kDataTypesEvalSizes) {
     run_imp_results[data_size] = MultRunDataWSpeedupByAcc();
     //run implementation using each acceleration setting
     for (auto& run_imp : run_benchmark_imps_by_acc_setting) {

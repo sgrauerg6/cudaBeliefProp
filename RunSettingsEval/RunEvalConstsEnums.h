@@ -21,6 +21,16 @@ namespace run_eval {
   //enum for status to indicate if error or no error
   enum class Status { kNoError, kError };
 
+//set data types to use in evaluation
+//by default evaluate using float, double, and half data types
+//but can set to only evaluate using float datatype
+#ifdef EVAL_FLOAT_DATATYPE_ONLY
+  constexpr std::array<size_t, 1> kDataTypesEvalSizes{sizeof(float)};
+#else
+  constexpr std::array<size_t, 3> kDataTypesEvalSizes{sizeof(float), sizeof(double), sizeof(halftype)};
+#endif //EVAL_FLOAT_DATATYPE_ONLY
+
+
   //define string for display of "true" and "false" values of bool value
   constexpr std::array<std::string_view, 2> kBoolValFalseTrueDispStr{"NO", "YES"};
 
