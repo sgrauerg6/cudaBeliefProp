@@ -18,7 +18,7 @@
 //having the same data type and acceleration method
 std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::EvalResultsSingDataTypeAcc(
   const MultRunData& run_results, const run_environment::RunImpSettings run_imp_settings,
-  run_environment::AccSetting opt_imp_acc, size_t data_size) const
+  size_t data_size) const
 {
   //initialize and add speedup results over baseline data if available for current input
   auto run_imp_opt_results = run_results;
@@ -55,10 +55,13 @@ void EvaluateImpResults::EvalResultsWriteOutput(
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
   //get speedup/slowdown using alternate accelerations
+  //and update optimized run result for input with result using alternate acceleration if it is faster than
+  //result with "optimal" acceleration for specific input
   std::unordered_map<size_t, std::vector<RunSpeedupAvgMedian>> alt_imp_speedup;
   std::unordered_map<size_t, RunSpeedupAvgMedian> alt_datatype_speedup;
   for (const size_t data_size : run_eval::kDataTypesEvalSizes) {
-    alt_imp_speedup[data_size] = GetAltAccelSpeedups(run_result_mult_runs_opt[data_size], run_imp_settings, data_size, opt_imp_acc);
+    alt_imp_speedup[data_size] = GetAltAccelSpeedups(
+      run_result_mult_runs_opt[data_size], run_imp_settings, data_size, opt_imp_acc);
     if (data_size != sizeof(float)) {
       //get speedup or slowdown using alternate data type (double or half) compared with float
       alt_datatype_speedup[data_size] = GetAvgMedSpeedup(
@@ -72,24 +75,34 @@ void EvaluateImpResults::EvalResultsWriteOutput(
   auto results_w_speedups = run_result_mult_runs_opt[sizeof(float)][opt_imp_acc];
   if (run_result_mult_runs_opt.contains(sizeof(double))) {
     results_w_speedups.first.insert(results_w_speedups.first.cend(),
-      run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].first.cbegin(), run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].first.cend());
+      run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].first.cbegin(),
+      run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].first.cend());
   }
   if (run_result_mult_runs_opt.contains(sizeof(halftype))) {
     results_w_speedups.first.insert(results_w_speedups.first.cend(),
-      run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].first.cbegin(), run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].first.cend());
+      run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].first.cbegin(),
+      run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].first.cend());
   }
 
   //add speedup data from double and half precision runs to speedup results
-  results_w_speedups.second.insert(results_w_speedups.second.cend(), alt_imp_speedup[sizeof(float)].cbegin(), alt_imp_speedup[sizeof(float)].cend());
+  results_w_speedups.second.insert(results_w_speedups.second.cend(),
+    alt_imp_speedup[sizeof(float)].cbegin(),
+    alt_imp_speedup[sizeof(float)].cend());
   if (run_result_mult_runs_opt.contains(sizeof(double))) {
     results_w_speedups.second.insert(results_w_speedups.second.cend(),
-      run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].second.cbegin(), run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].second.cend());
-    results_w_speedups.second.insert(results_w_speedups.second.cend(), alt_imp_speedup[sizeof(double)].cbegin(), alt_imp_speedup[sizeof(double)].cend());
+      run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].second.cbegin(),
+      run_result_mult_runs_opt[sizeof(double)][opt_imp_acc].second.cend());
+    results_w_speedups.second.insert(results_w_speedups.second.cend(), 
+      alt_imp_speedup[sizeof(double)].cbegin(),
+      alt_imp_speedup[sizeof(double)].cend());
   }
   if (run_result_mult_runs_opt.contains(sizeof(halftype))) {
     results_w_speedups.second.insert(results_w_speedups.second.cend(),
-      run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].second.cbegin(), run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].second.cend());
-    results_w_speedups.second.insert(results_w_speedups.second.cend(), alt_imp_speedup[sizeof(halftype)].cbegin(), alt_imp_speedup[sizeof(halftype)].cend());
+      run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].second.cbegin(),
+      run_result_mult_runs_opt[sizeof(halftype)][opt_imp_acc].second.cend());
+    results_w_speedups.second.insert(results_w_speedups.second.cend(),
+      alt_imp_speedup[sizeof(halftype)].cbegin(),
+      alt_imp_speedup[sizeof(halftype)].cend());
   }
 
   //get speedup over baseline runtimes...can only compare with baseline runtimes that are
@@ -103,7 +116,9 @@ void EvaluateImpResults::EvalResultsWriteOutput(
 
   //get speedup info for using optimized parallel parameters
   if (run_imp_settings.opt_parallel_params_setting.first) {
-    results_w_speedups.second.push_back(GetAvgMedSpeedupOptPParams(results_w_speedups.first, std::string(run_eval::kSpeedupOptParParamsHeader) + " - All Runs"));
+    results_w_speedups.second.push_back(
+      GetAvgMedSpeedupOptPParams(
+        results_w_speedups.first, std::string(run_eval::kSpeedupOptParParamsHeader) + " - All Runs"));
   }
 
   //get speedup when using templated number for loop iteration count
@@ -130,14 +145,16 @@ void EvaluateImpResults::WriteRunOutput(
   run_environment::AccSetting acceleration_setting) const
 {
   //get iterator to first run with success
-  const auto first_success_run = std::find_if(run_output.first.cbegin(), run_output.first.cend(), [](const auto& run_result)
-    { return run_result; } );
+  const auto first_success_run =
+    std::find_if(run_output.first.cbegin(), run_output.first.cend(),
+      [](const auto& run_result) { return run_result; } );
 
   //check if there was at least one successful run
   if (first_success_run != run_output.first.cend()) {
     //write results from default and optimized parallel parameters runs to csv file
     //file name contains info about data type, parameter settings, and processor name if available
-    //only show data type string and acceleration string for runs using a single data type that are used for debugging (not multidata type results) 
+    //only show data type string and acceleration string for runs using a single data type that are
+    //used for debugging (not multidata type results) 
     //get directory to store implementation results for specific implementation
     const auto imp_results_fp = GetImpResultsPath();
     //create any results directories if needed
@@ -255,8 +272,8 @@ void EvaluateImpResults::WriteRunOutput(
   }
 }
 
-//perform runs without CPU vectorization and get speedup for each run and overall when using vectorization
-//CPU vectorization does not apply to CUDA acceleration so "NO_DATA" output is returned in that case
+//process results for runs with alternate acceleration from optimal acceleration and
+//get speedup for each run and overall when using optimal acceleration compared to alternate accelerations
 std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
   MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
   const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size, run_environment::AccSetting fastest_acc) const
@@ -396,7 +413,9 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
                        std::string(curr_subset_str_indices.first) + " - " + std::string(data_type_str);
       for (unsigned int i : curr_subset_str_indices.second) {
         if (run_output[i]) {
-          speedups_vect.push_back(baseline_runtimes[i] / run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
+          speedups_vect.push_back(
+            baseline_runtimes[i] / 
+            run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
           for (auto& run_data : run_output[i].value()) {
             run_data.AddDataWHeader(std::string(speedup_header), speedups_vect.back());
           }

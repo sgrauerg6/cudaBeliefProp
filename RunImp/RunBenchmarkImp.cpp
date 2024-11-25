@@ -16,5 +16,5 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunBenchmarkImp::operat
 
   //evaluate results
   //return data for each run and multiple average and median speedup results across the data
-  return evalResults->EvalResultsSingDataTypeAcc(run_data_all_runs, run_imp_settings, opt_imp_accel_, data_type_size);
+  return evalResults->EvalResultsSingDataTypeAcc(run_data_all_runs, run_imp_settings, data_type_size);
 }

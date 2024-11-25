@@ -28,7 +28,7 @@ public:
   //speedups with headers describing speedups
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvalResultsSingDataTypeAcc(
     const MultRunData& run_results, const run_environment::RunImpSettings run_imp_settings,
-    run_environment::AccSetting opt_imp_acc, size_t data_size) const;
+    size_t data_size) const;
 
   //evaluate results for implementation runs on multiple inputs with the runs having
   //different data type and acceleration methods and write output to file
