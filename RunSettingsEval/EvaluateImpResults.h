@@ -38,21 +38,6 @@ public:
     run_environment::AccSetting opt_imp_acc) const;
 
 private:
-  //process results for implementation runs on multiple inputs with all the runs having the
-  //same data type and acceleration method
-  std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvalResultsSingDTypeAccRun(
-    const MultRunData& run_results,
-    const run_environment::RunImpSettings run_imp_settings,
-    run_environment::AccSetting opt_imp_acc,
-    size_t data_size) const;
-
-  //process results for implementation runs on multiple inputs with the runs having
-  //different data type and acceleration methods
-  void EvalResultsMultDTypeAccRuns(
-    const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
-    const run_environment::RunImpSettings run_imp_settings,
-    run_environment::AccSetting opt_imp_acc) const;
-
   //write data for file corresponding to runs for a specified data type or across all data type
   //includes results for each run as well as average and median speedup data across multiple runs
   void WriteRunOutput(const std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>& run_output,
@@ -112,13 +97,6 @@ private:
 
   //input parameters that are shown in results across runs with runtimes
   virtual std::vector<std::string> GetInputParamsShow() const = 0;
-
-  /*run_environment::RunImpSettings run_imp_settings_;
-  run_environment::AccSetting opt_imp_accel_;
-  size_t data_size_;
-  MultRunData run_imp_orig_results_;
-  MultRunData run_imp_opt_results_;
-  std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_imp_results_mult_runs_;*/
 };
 
 #endif //EVALUATE_IMP_RESULTS_H_
