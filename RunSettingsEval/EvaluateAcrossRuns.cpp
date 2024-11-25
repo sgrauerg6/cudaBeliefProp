@@ -18,11 +18,12 @@ void EvaluateAcrossRuns::operator()(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
   const std::vector<std::string>& eval_across_runs_in_params_show,
-  const std::pair<std::vector<std::string>, size_t>& speedup_headers_w_ordering_idx) const
+  const std::vector<std::string>& speedup_headers) const
 {
   //get header to use for speedup ordering
-  auto speedup_ordering = speedup_headers_w_ordering_idx.first[
-    speedup_headers_w_ordering_idx.second];
+  //use first speedup in speedup headers for ordering
+  //of runs from fastest to slowest
+  const auto speedup_ordering = speedup_headers.front();
 
   //get header to data of each set of run results
   //iterate through all run results files and get run name to results
@@ -150,7 +151,7 @@ void EvaluateAcrossRuns::operator()(
   //different evaluations of runtimes compared to a baseline
   result_across_archs_sstream << "Average Speedups" << std::endl;
   const std::string first_run_name = speedup_results_name_to_data.cbegin()->first;
-  for (const auto& speedup_header : speedup_headers_w_ordering_idx.first) {
+  for (const auto& speedup_header : speedup_headers) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       result_across_archs_sstream << speedup_header << ',';

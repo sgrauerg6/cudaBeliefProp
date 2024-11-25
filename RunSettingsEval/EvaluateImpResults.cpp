@@ -248,7 +248,7 @@ void EvaluateImpResults::WriteRunOutput(
       speedup_headers.push_back(speedup_header_data.first);
     }
     EvaluateAcrossRuns().operator()(
-      imp_results_fp, GetCombResultsTopText(), GetInputParamsShow(), {speedup_headers, 0});
+      imp_results_fp, GetCombResultsTopText(), GetInputParamsShow(), speedup_headers);
   }
   else {
     std::cout << "Error, no runs completed successfully" << std::endl;

@@ -31,7 +31,7 @@ public:
   void operator()(const std::filesystem::path& imp_results_file_path,
     const std::vector<std::string>& eval_across_runs_top_text,
     const std::vector<std::string>& eval_across_runs_in_params_show,
-    const std::pair<std::vector<std::string>, size_t>& speedup_headers_w_ordering_idx) const;
+    const std::vector<std::string>& speedup_headers) const;
 
 private:
   //get mapping of headers to data in csv file for run results and speedups
