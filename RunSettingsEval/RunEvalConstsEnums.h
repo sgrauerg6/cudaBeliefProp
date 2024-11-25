@@ -30,7 +30,6 @@ namespace run_eval {
   constexpr std::array<size_t, 3> kDataTypesEvalSizes{sizeof(float), sizeof(double), sizeof(halftype)};
 #endif //EVAL_FLOAT_DATATYPE_ONLY
 
-
   //define string for display of "true" and "false" values of bool value
   constexpr std::array<std::string_view, 2> kBoolValFalseTrueDispStr{"NO", "YES"};
 
@@ -39,6 +38,9 @@ namespace run_eval {
   constexpr std::string_view kDatatypeHeader{"Data Type"};
   constexpr std::string_view kLoopItersTemplatedHeader{"Loop Iters Templated"};
   constexpr std::string_view kRunSuccessHeader{"Run Success"};
+
+  //constant for "all runs" string
+  constexpr std::string_view kAllRunsStr{"All Runs"};
 
   //constants for output results for individual and sets of runs
   constexpr std::string_view kRunResultsDescFileName{"RunResults"};

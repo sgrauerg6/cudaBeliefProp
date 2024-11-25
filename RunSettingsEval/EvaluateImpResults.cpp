@@ -32,13 +32,18 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::Eva
 
   //compute and add speedup info for using optimized parallel parameters and disparity count as template parameter to speedup results
   if (run_imp_settings.opt_parallel_params_setting.first) {
-    run_imp_speedups.push_back(GetAvgMedSpeedupOptPParams(run_imp_opt_results, std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
-      std::string(run_environment::kDataSizeToNameMap.at(data_size))));
+    const std::string speedup_header_optimized_p_params =
+      std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
+      std::string(run_environment::kDataSizeToNameMap.at(data_size));
+    run_imp_speedups.push_back(GetAvgMedSpeedupOptPParams(
+      run_imp_opt_results, speedup_header_optimized_p_params));
   }
   if (run_imp_settings.templated_iters_setting == run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated) {
-    run_imp_speedups.push_back(
-      GetAvgMedSpeedupLoopItersInTemplate(run_imp_opt_results, std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " +
-        std::string(run_environment::kDataSizeToNameMap.at(data_size))));
+    const std::string speedup_header_loop_iters_templated =
+      std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " +
+      std::string(run_environment::kDataSizeToNameMap.at(data_size));
+    run_imp_speedups.push_back(GetAvgMedSpeedupLoopItersInTemplate(
+      run_imp_opt_results, speedup_header_loop_iters_templated));
   }
 
   //return run data with speedup from evaluation of implementation runs using multiple inputs with runs
@@ -110,7 +115,8 @@ void EvaluateImpResults::EvalResultsWriteOutput(
   if ((run_imp_settings.base_opt_single_thread_runtime_for_template_setting) &&
       (run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().second == run_imp_settings.templated_iters_setting)) {
       const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
-        results_w_speedups.first, "All Runs", run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
+        results_w_speedups.first, run_eval::kAllRunsStr,
+        run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
       results_w_speedups.second.insert(results_w_speedups.second.cend(), speedup_over_baseline.cbegin(), speedup_over_baseline.cend());
   }
 
@@ -118,13 +124,16 @@ void EvaluateImpResults::EvalResultsWriteOutput(
   if (run_imp_settings.opt_parallel_params_setting.first) {
     results_w_speedups.second.push_back(
       GetAvgMedSpeedupOptPParams(
-        results_w_speedups.first, std::string(run_eval::kSpeedupOptParParamsHeader) + " - All Runs"));
+        results_w_speedups.first,
+        std::string(run_eval::kSpeedupOptParParamsHeader) + " - " + std::string(run_eval::kAllRunsStr)));
   }
 
   //get speedup when using templated number for loop iteration count
   if (run_imp_settings.templated_iters_setting == run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated) {
     results_w_speedups.second.push_back(
-      GetAvgMedSpeedupLoopItersInTemplate(results_w_speedups.first, std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - All Runs"));
+      GetAvgMedSpeedupLoopItersInTemplate(
+        results_w_speedups.first,
+        std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " + std::string(run_eval::kAllRunsStr)));
   }
 
   //add speedups when using doubles and half precision compared to float to end of speedup data
