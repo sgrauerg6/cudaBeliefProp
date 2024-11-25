@@ -29,7 +29,7 @@ void RunEvalImpMultSettings::operator()(const std::map<run_environment::AccSetti
   }
 
   //evaluate results including writing results to output file
-  evalResultsPtr->EvalResultsWriteOutput(
+  evalResultsPtr->EvalAllResultsWriteOutput(
     run_imp_results, run_imp_settings, fastest_acc);
 }
 

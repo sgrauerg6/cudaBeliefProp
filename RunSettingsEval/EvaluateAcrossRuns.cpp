@@ -155,11 +155,13 @@ void EvaluateAcrossRuns::operator()(
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       result_across_archs_sstream << speedup_header << ',';
-      //add empty cell for each input parameter after the first that's displayed so speedup shown in the same column same line as runtime
+      //add empty cell for each input parameter after the first that's displayed
+      //so speedup shown in the same column same line as runtime
       for (size_t i = 1; i < eval_across_runs_in_params_show.size(); i++) {
         result_across_archs_sstream << ',';
       }
-      //write speedup for each run in separate cells in horizontal direction where each column corresponds to a different evaluation run
+      //write speedup for each run in separate cells in horizontal direction
+      //where each column corresponds to a different evaluation run
       for (const auto& run_name : run_names_in_order_w_speedup) {
         if (speedup_results_name_to_data.at(run_name.second).contains(speedup_header)) {
           result_across_archs_sstream << speedup_results_name_to_data.at(run_name.second).at(speedup_header).at(0) << ',';

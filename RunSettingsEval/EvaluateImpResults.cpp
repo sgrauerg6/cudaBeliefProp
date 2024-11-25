@@ -17,7 +17,8 @@
 //return run data with speedup from evaluation of implementation runs using multiple inputs with runs
 //having the same data type and acceleration method
 std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::EvalResultsSingDataTypeAcc(
-  const MultRunData& run_results, const run_environment::RunImpSettings run_imp_settings,
+  const MultRunData& run_results,
+  const run_environment::RunImpSettings run_imp_settings,
   size_t data_size) const
 {
   //initialize and add speedup results over baseline data if available for current input
@@ -51,11 +52,13 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::Eva
   return {run_imp_opt_results, run_imp_speedups};
 }
 
-//evaluate results for implementation runs on multiple inputs with the runs having
-//different data type and acceleration methods
-void EvaluateImpResults::EvalResultsWriteOutput(
+//evaluate results for all implementation runs on multiple inputs with the runs
+//potentially having different data types and acceleration methods and
+//write run result and speedup outputs to files
+void EvaluateImpResults::EvalAllResultsWriteOutput(
   const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
-  const run_environment::RunImpSettings run_imp_settings, run_environment::AccSetting opt_imp_acc) const
+  const run_environment::RunImpSettings run_imp_settings,
+  run_environment::AccSetting opt_imp_acc) const
 {
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
@@ -117,7 +120,10 @@ void EvaluateImpResults::EvalResultsWriteOutput(
       const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
         results_w_speedups.first, run_eval::kAllRunsStr,
         run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
-      results_w_speedups.second.insert(results_w_speedups.second.cend(), speedup_over_baseline.cbegin(), speedup_over_baseline.cend());
+      results_w_speedups.second.insert(
+        results_w_speedups.second.cend(),
+        speedup_over_baseline.cbegin(),
+        speedup_over_baseline.cend());
   }
 
   //get speedup info for using optimized parallel parameters
@@ -191,7 +197,7 @@ void EvaluateImpResults::WriteRunOutput(
       std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension))};
     std::array<std::ostringstream, 2> run_data_opt_default_sstr;
     std::array<std::ostringstream, 2> speedups_headers_left_top_sstr;
-        
+
     //get headers from first successful run and write headers to top of output files
     const auto headers_in_order = (*first_success_run)->back().HeadersInOrder();
     for (unsigned int i=0; i < (run_imp_settings.opt_parallel_params_setting.first ? run_data_opt_default_sstr.size() : 1); i++) {
@@ -285,7 +291,9 @@ void EvaluateImpResults::WriteRunOutput(
 //get speedup for each run and overall when using optimal acceleration compared to alternate accelerations
 std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
   MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
-  const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size, run_environment::AccSetting fastest_acc) const
+  const run_environment::RunImpSettings& run_imp_settings,
+  size_t data_type_size,
+  run_environment::AccSetting fastest_acc) const
 {
   //set up mapping from acceleration type to description
   const std::map<run_environment::AccSetting, std::string> acc_to_speedup_str{
@@ -352,8 +360,10 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaseline(
 }
 
 //get speedup over baseline run for subsets of smallest and largest sets if data available
-std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaselineSubsets(const run_environment::RunImpSettings& run_imp_settings,
-  MultRunData& run_data_all_runs, const size_t data_type_size) const
+std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaselineSubsets(
+  const run_environment::RunImpSettings& run_imp_settings,
+  MultRunData& run_data_all_runs,
+  size_t data_type_size) const
 {
   if ((data_type_size == sizeof(float)) &&
       (run_imp_settings.base_opt_single_thread_runtime_for_template_setting && 
@@ -511,7 +521,9 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupOptPParams(
 
 //get average and median speedup between base and target runtime data and also add
 //speedup for each target runtime data run as compared to corresponding base run
-RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedup(MultRunData& run_output_base, MultRunData& run_output_target,
+RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedup(
+  MultRunData& run_output_base,
+  MultRunData& run_output_target,
   std::string_view speedup_header) const
 {
   std::vector<double> speedups_vect;

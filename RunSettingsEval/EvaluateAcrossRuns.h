@@ -28,7 +28,8 @@ public:
   //generated file starts with specified top text and includes
   //specified input parameters for each input as well as the optimized
   //implementation runtime for each run on each input
-  void operator()(const std::filesystem::path& imp_results_file_path,
+  void operator()(
+    const std::filesystem::path& imp_results_file_path,
     const std::vector<std::string>& eval_across_runs_top_text,
     const std::vector<std::string>& eval_across_runs_in_params_show,
     const std::vector<std::string>& speedup_headers) const;

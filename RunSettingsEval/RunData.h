@@ -37,11 +37,13 @@ public:
   const std::vector<std::string>& HeadersInOrder() const { return headers_in_order_; }
 
   //return data mapped to corresponding headers
-  const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& GetAllData() const { return headers_w_data_; }
+  const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& GetAllData() const {
+    return headers_w_data_; }
 
   //return whether or not there is data corresponding to a specific header
   bool IsData(const std::string_view header) const { 
-    return (std::find(headers_in_order_.cbegin(), headers_in_order_.cend(), std::string(header)) != headers_in_order_.cend()); }
+    return (std::find(headers_in_order_.cbegin(), headers_in_order_.cend(),
+                      std::string(header)) != headers_in_order_.cend()); }
 
   //get data corresponding to header as a string
   //returns data as string regardless of underlying data type
