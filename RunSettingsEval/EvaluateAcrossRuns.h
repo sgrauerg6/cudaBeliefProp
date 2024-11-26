@@ -35,11 +35,9 @@ public:
     const std::vector<std::string>& speedup_headers) const;
 
 private:
-  //get mapping of headers to data in csv file for run results and speedups
-  //assumed that there are no commas in data since it is used as delimiter between data
-  //first output is headers in order, second output is mapping of headers to results
-  std::map<std::string, std::vector<std::string>> HeaderToDataInCsvFile(
-    const std::filesystem::path& csv_file_path) const;
+  //function to get names of runs with results from implementation results file path
+  std::vector<std::string> GetRunNames(
+    const std::filesystem::path& imp_results_file_path) const;
 };
 
 #endif //EVALUATE_ACROSS_RUNS_H_

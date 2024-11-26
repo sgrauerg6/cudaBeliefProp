@@ -9,6 +9,8 @@
 
 #include "EvaluateAcrossRuns.h"
 #include "EvalInputSignature.h"
+#include "RunResultsSpeedups.h"
+#include <iostream>
 
 //process runtime and speedup data across multiple runs (likely on different architectures)
 //from csv files corresponding to each run and
@@ -20,77 +22,37 @@ void EvaluateAcrossRuns::operator()(
   const std::vector<std::string>& eval_across_runs_in_params_show,
   const std::vector<std::string>& speedup_headers) const
 {
-  //get header to use for speedup ordering
-  //use first speedup in speedup headers for ordering
-  //of runs from fastest to slowest
-  const auto speedup_ordering = speedup_headers.front();
-
-  //get header to data of each set of run results
-  //iterate through all run results files and get run name to results
-  //create directory iterator with all results files
-  std::filesystem::directory_iterator results_files_iter =
-    std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
-  std::vector<std::string> run_names;
-  std::map<std::string, std::map<std::string, std::vector<std::string>>> run_results_name_to_data;
-  for (const auto& results_fp : results_files_iter) {
-    std::string file_name_no_ext = results_fp.path().stem();
-    if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName))) {
-      const std::string run_name = file_name_no_ext.substr(0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
-      run_names.push_back(run_name);
-      run_results_name_to_data[run_name] = HeaderToDataInCsvFile(results_fp);
-    }
-  }
-
-  //get input "signature" for run mapped to optimized implementation runtime for each run on input
-  //as well as input "signature" for each input mapped to input info to show in evaluation output
-  std::map<std::string, std::map<EvalInputSignature, std::string>> input_to_runtime_across_archs;
-  std::map<EvalInputSignature, std::vector<std::string>> input_set_to_input_disp;
-  std::vector<decltype(run_results_name_to_data)::key_type> key_results_remove;
-  for (const auto& run_result : run_results_name_to_data) {
-    input_to_runtime_across_archs[run_result.first] = std::map<EvalInputSignature, std::string>();
-    const auto& result_keys_to_result_vect = run_result.second;
-    if (result_keys_to_result_vect.contains(std::string(run_eval::kRunInputSigHeaders[0]))) {
-      const unsigned int tot_num_runs = result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0])).size();
-      for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
-        //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
-        //have loops with templated iteration counts)
-        const EvalInputSignature run_input({
-          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
-          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
-          result_keys_to_result_vect.at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]});
-        //add mapping of total runtime to corresponding run name and input signature
-        input_to_runtime_across_archs[run_result.first][run_input] =
-          result_keys_to_result_vect.at(std::string(run_eval::kOptimizedRuntimeHeader))[num_run];
-        //add mapping from run input signature to run input to be displayed
-        if (!(input_set_to_input_disp.contains(run_input))) {
-          input_set_to_input_disp[run_input] = std::vector<std::string>();
-          //add input parameters to display in evaluation across runs
-          for (const auto& disp_param : eval_across_runs_in_params_show) {
-            input_set_to_input_disp[run_input].push_back(result_keys_to_result_vect.at(disp_param)[num_run]);
-          }
-        }
-      }
-    }
-    else {
-      std::cout << "Invalid data in " << run_result.first << std::endl;
-      key_results_remove.push_back(run_result.first);
-    }
-  }
-  //remove any results that have been flagged to remove due to not having
-  //the necessary data
-  for (const auto& key_data_remove : key_results_remove) {
-    std::cout << "Remove run result: " << key_data_remove << std::endl;
-    run_results_name_to_data.erase(key_data_remove);
-  }
-
-  //get header to data of each set of speedups
-  //iterate through all speedup data files and get run name to results
-  std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
+  //retrieve names of runs with results
+  //run names usually correspond to architecture of run
+  const std::vector<std::string> run_names = GetRunNames(imp_results_file_path);
+  
+  //initialize vector of run results with speedups for each run name
+  std::map<std::string, RunResultsSpeedups> run_results_by_name;
   for (const auto& run_name : run_names) {
-    std::filesystem::path run_speedup_fp = imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
-      (std::string(run_name) + '_' + std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension));
-    if (std::filesystem::is_regular_file(run_speedup_fp)) {
-      speedup_results_name_to_data[run_name] = HeaderToDataInCsvFile(run_speedup_fp);
+    run_results_by_name.insert(
+      {run_name, RunResultsSpeedups(imp_results_file_path, run_name)});
+  }
+
+  //get header to data of run results and speedups for each run
+  //as well as mapping from input signature to runtime
+  std::map<std::string, std::map<std::string, std::vector<std::string>>> run_results_name_to_data;
+  std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
+  std::map<std::string, std::map<EvalInputSignature, std::string>> input_to_runtime_across_archs;
+  for (const auto& run_name : run_names) {
+    run_results_name_to_data[run_name] = run_results_by_name.at(run_name).RunResults();
+    speedup_results_name_to_data[run_name] = run_results_by_name.at(run_name).Speedups();
+    input_to_runtime_across_archs[run_name] = run_results_by_name.at(run_name).InputsToRuntimes();
+  }
+
+  //get run inputs to parameters to display in evaluation across runs
+  const auto& inputs_to_runtimes = run_results_by_name.at(run_names[0]).InputsToRuntimes();
+  std::map<EvalInputSignature, std::vector<std::string>> input_set_to_input_disp;
+  for (const auto& input_runtime : inputs_to_runtimes) {
+    input_set_to_input_disp.insert({input_runtime.first, std::vector<std::string>()});
+    //add input parameters to display in evaluation across runs
+    for (const auto& disp_param : eval_across_runs_in_params_show) {
+      input_set_to_input_disp.at(input_runtime.first).push_back(
+        run_results_by_name.at(run_names[0]).DataForInput(input_runtime.first).at(disp_param));
     }
   }
 
@@ -106,6 +68,11 @@ void EvaluateAcrossRuns::operator()(
   for (const auto& input_param_disp_header : eval_across_runs_in_params_show) {
     result_across_archs_sstream << input_param_disp_header << ',';
   }
+
+  //get header to use for speedup ordering
+  //use first speedup in speedup headers for ordering
+  //of runs from fastest to slowest
+  const auto speedup_ordering = speedup_headers.front();
 
   //write each evaluation run name and save order of runs with speedup corresponding to first
   //speedup header
@@ -183,35 +150,22 @@ void EvaluateAcrossRuns::operator()(
   std::cout << "Evaluation of results across all runs in " << results_across_run_fp << std::endl;
 }
 
-//get mapping of headers to data in csv file for run results and speedups
-//assumed that there are no commas in data since it is used as delimiter between data
-//first output is headers in order, second output is mapping of headers to results
-std::map<std::string, std::vector<std::string>>
-EvaluateAcrossRuns::HeaderToDataInCsvFile(const std::filesystem::path& csv_file_path) const {
-  std::ifstream csv_file_str(csv_file_path);
-  if (!(csv_file_str.is_open())) {
-    std::cout << "ERROR CREATING STREAM: " << csv_file_path << std::endl;
-  }
-  //retrieve data headers from top row
-  std::string headers_line;
-  std::getline(csv_file_str, headers_line);
-  std::stringstream headers_str(headers_line);
-  std::vector<std::string> data_headers;
-  std::string header;
-  std::map<std::string, std::vector<std::string>> header_to_data;
-  while (std::getline(headers_str, header, ',')) {
-    data_headers.push_back(header);
-    header_to_data[header] = std::vector<std::string>();
-  }
-  //go through each data line and add to mapping from headers to data
-  std::string data_line;
-  while (std::getline(csv_file_str, data_line)) {
-    std::stringstream data_line_str(data_line);
-    std::string data;
-    unsigned int num_data{0};
-    while (std::getline(data_line_str, data, ',')) {
-      header_to_data[data_headers[num_data++]].push_back(data);
+//function to get names of runs with results from implementation results file path
+std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
+  const std::filesystem::path& imp_results_file_path) const
+{
+  //iterate through all run results files all run names with results
+  //create directory iterator with all results files
+  std::filesystem::directory_iterator results_files_iter =
+    std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
+  std::vector<std::string> run_names;
+  for (const auto& results_fp : results_files_iter) {
+    std::string file_name_no_ext = results_fp.path().stem();
+    if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName))) {
+      const std::string run_name = file_name_no_ext.substr(0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
+      run_names.push_back(run_name);
     }
   }
-  return header_to_data;
+
+  return run_names;
 }

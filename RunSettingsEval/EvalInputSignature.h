@@ -31,6 +31,28 @@ public:
   //is used as std::map key and also for evaluation output order
   bool operator<(const EvalInputSignature& rhs) const;
 
+  std::string DataTypeStr() const {
+    if (data_type_size_ == 2) {
+      return "HALF";
+    }
+    else if (data_type_size_ == 4) {
+      return "FLOAT";
+    }
+    else if (data_type_size_ == 8) {
+      return "DOUBLE";
+    }
+    return "UNKNOWN";
+  }
+
+  unsigned int EvalSetNum() const {
+    return eval_set_num_;
+  }
+
+  bool UseTemplatedLoopIters() const {
+    return use_templated_loop_iters_;
+  }
+
+
 private:
   unsigned int data_type_size_;
   unsigned int eval_set_num_;
