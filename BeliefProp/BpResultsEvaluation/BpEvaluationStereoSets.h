@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string_view>
 #include <array>
 #include "BpRunProcessing/BpSettings.h"
+#include "RunSettingsEval/EvalInputSignature.h"
 
 namespace beliefprop
 {
@@ -47,6 +48,9 @@ namespace beliefprop
   };
 
   //declare stereo sets to process with name, num disparity values, and scale factor
+  //currently conesFullSize is not used
+  //the first three stereo sets are labeled as "smallest 3 stereo sets"
+  //the last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"
   constexpr std::array<BpStereoSet, 8> kStereoSetsToProcess{
     BpStereoSet{"tsukubaSetHalfSize", 8, 32},
     BpStereoSet{"tsukubaSet", 16, 16},
@@ -57,6 +61,30 @@ namespace beliefprop
     BpStereoSet{"conesFullSizeCropped", 256, 1},
     BpStereoSet{"conesFullSize", 256, 1}
   };
+
+  //constants defined indices of smallest and largest three stereo sets
+  //used in evaluation
+  constexpr std::array<std::array<std::size_t, 3>, 2> kSmallLargeStereoSetsEvalNums{
+    std::array<std::size_t, 3>{0, 1, 2},
+    std::array<std::size_t, 3>{4, 5, 6}};
+
+  //input signature for small stereo sets in evaluation
+  //currently only evaluating small stereo sets by themselves with float data type
+  const std::vector<EvalInputSignature> kSmallStereoSetsInputSigs{
+    EvalInputSignature(sizeof(float), 0, false), EvalInputSignature(sizeof(float), 0, true),
+    EvalInputSignature(sizeof(float), 1, false), EvalInputSignature(sizeof(float), 1, true),
+    EvalInputSignature(sizeof(float), 2, false), EvalInputSignature(sizeof(float), 2, true)};
+
+  //input signature for large stereo sets in evaluation
+  //currently only evaluating large stereo sets by themselves with float data type
+  const std::vector<EvalInputSignature> kLargeStereoSetsInputSigs{
+    EvalInputSignature(sizeof(float), 4, false), EvalInputSignature(sizeof(float), 4, true),
+    EvalInputSignature(sizeof(float), 5, false), EvalInputSignature(sizeof(float), 5, true),
+    EvalInputSignature(sizeof(float), 6, false), EvalInputSignature(sizeof(float), 6, true)};
+
+  //strings for description of smallest and largest stereo sets in evaluation
+  constexpr std::array<std::string_view, 2> kSmallLargeStereoSetsEvalStr{
+    "smallest 3 stereo sets", "largest 3 stereo sets"};
 };
 
 #endif /* BP_EVALUATION_STEREO_SETS_H_ */

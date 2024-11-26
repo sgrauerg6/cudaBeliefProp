@@ -30,6 +30,16 @@ EvalInputSignature::EvalInputSignature(const std::array<std::string_view, 3>& in
      run_eval::kBoolValFalseTrueDispStr[1]) ? true : false;      
 }
 
+//constructor to generate evaluation input signature from parameters
+//corresponding to each part
+EvalInputSignature::EvalInputSignature(
+  unsigned int data_type_size,
+  unsigned int eval_set_num,
+  bool use_templated_loop_iters) :
+  data_type_size_(data_type_size),
+  eval_set_num_(eval_set_num),
+  use_templated_loop_iters_(use_templated_loop_iters) {}
+
 //less than operator for comparing evaluation input signatures
 //so they can be ordered
 //operator needed to support ordering since input signature

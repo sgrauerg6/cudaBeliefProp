@@ -429,7 +429,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
     for (const auto& curr_subset_str_indices : subset_str_indices) {
       std::vector<double> speedups_vect;
       const std::string speedup_header = "Speedup relative to " + std::string((*baseline_run_data).first) + " on " +
-                       std::string(curr_subset_str_indices.first) + " - " + std::string(data_type_str);
+        std::string(curr_subset_str_indices.first) + " - " + std::string(data_type_str);
       for (unsigned int i : curr_subset_str_indices.second) {
         if (run_output[i]) {
           speedups_vect.push_back(

@@ -25,6 +25,13 @@ public:
   //strings corresponding to each part
   EvalInputSignature(const std::array<std::string_view, 3>& in_sig_strings);
 
+  //constructor to generate evaluation input signature from parameters
+  //corresponding to each part
+  EvalInputSignature(
+    unsigned int data_type_size,
+    unsigned int eval_set_num,
+    bool use_templated_loop_iters);
+
   //less than operator for comparing evaluation input signatures
   //so they can be ordered
   //operator needed to support ordering since input signature

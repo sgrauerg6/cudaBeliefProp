@@ -89,12 +89,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   run_imp_settings.templated_iters_setting = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
   run_imp_settings.base_opt_single_thread_runtime_for_template_setting = 
     {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
-  run_imp_settings.subset_str_indices = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
-  #ifndef SMALLER_SETS_ONLY
-                                      {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
-  #else
-                                      {"largest stereo set", {8, 9}}};
-  #endif //SMALLER_SETS_ONLY
+  run_imp_settings.subset_str_indices = {{std::string(beliefprop::kSmallLargeStereoSetsEvalStr[0]), {0, 1, 2, 3, 4, 5}},
+                                         {std::string(beliefprop::kSmallLargeStereoSetsEvalStr[1]), {8, 9, 10, 11, 12, 13}}};
 
   //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
