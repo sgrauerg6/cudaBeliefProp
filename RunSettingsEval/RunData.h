@@ -25,6 +25,9 @@ public:
   void AddDataWHeader(const std::string& header, const std::string& data);
 
   //add data with header describing added data
+  void AddDataWHeader(const std::string& header, const char* data);
+
+  //add data with header describing added data
   void AddDataWHeader(const std::string& header, double data);
 
   //add data with header describing added data

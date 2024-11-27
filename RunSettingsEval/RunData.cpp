@@ -31,6 +31,13 @@ void RunData::AddDataWHeader(const std::string& header, const std::string& data)
 }
 
 //add data with header describing added data
+void RunData::AddDataWHeader(const std::string& header, const char* data) {
+  const auto headerToAdd{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(headerToAdd);
+  headers_w_data_[headerToAdd] = std::string(data);
+}
+
+//add data with header describing added data
 void RunData::AddDataWHeader(const std::string& header, double data) {
   const auto headerToAdd{GetHeaderToAdd(header)};
   headers_in_order_.push_back(headerToAdd);
