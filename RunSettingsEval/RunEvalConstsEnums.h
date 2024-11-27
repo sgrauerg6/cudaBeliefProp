@@ -16,6 +16,10 @@
 #include "RunData.h"
 #include "RunSettings.h"
 
+#ifdef OPTIMIZED_CUDA_RUN
+#include "RunImpCUDA/RunCUDASettings.h"
+#endif //OPTIMIZED_CUDA_RUN
+
 //namespace for general program run evaluation
 namespace run_eval {
   //enum for status to indicate if error or no error
