@@ -161,12 +161,14 @@ void EvaluateImpResults::WriteRunOutput(
   run_environment::AccSetting acceleration_setting) const
 {
   //get iterator to first run with success
-  const auto first_success_run =
+  //run_result corresponds to a std::optional object that contains run data
+  //if run successful and returns false if no data (indicating run not successful)
+  const auto first_success_run_iter =
     std::find_if(run_output.first.cbegin(), run_output.first.cend(),
       [](const auto& run_result) { return run_result; } );
 
   //check if there was at least one successful run
-  if (first_success_run != run_output.first.cend()) {
+  if (first_success_run_iter != run_output.first.cend()) {
     //write results from default and optimized parallel parameters runs to csv file
     //file name contains info about data type, parameter settings, and processor name if available
     //only show data type string and acceleration string for runs using a single data type that are
@@ -221,7 +223,8 @@ void EvaluateImpResults::WriteRunOutput(
     speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] = std::ostringstream();
 
     //get headers from first successful run and write headers to top of output files
-    const auto headers_in_order = (*first_success_run)->at(run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
+    const auto headers_in_order = (*first_success_run_iter)->at(
+      run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
     for (const auto& curr_header : headers_in_order) {
       for (const auto& p_param_setting : parallel_param_settings) {
         run_data_sstr[p_param_setting] << curr_header << ',';
@@ -251,11 +254,13 @@ void EvaluateImpResults::WriteRunOutput(
     }
 
     //generate speedup results with headers on left side (saved to file with run results)
-    speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << "Speedup Results,Average Speedup,Median Speedup" << std::endl;
+    speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] <<
+      "Speedup Results,Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : run_output.second) {
       speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << speedup.first;
       if (speedup.second[0] > 0) {
-        speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << ',' << speedup.second[0] << ',' << speedup.second[1];
+        speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << ',' <<
+          speedup.second[0] << ',' << speedup.second[1];
       }
       speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << std::endl;
     }
@@ -274,14 +279,21 @@ void EvaluateImpResults::WriteRunOutput(
     }
     
     //write run results strings to output streams
-    //one results file contains only speedup results, another contains only run results,
-    //and a third contains run results followed by speedups
+    //one results file contains speedup results, two contain run results
+    //(with and without optimized parallel parameters), and another
+    //contains run results followed by speedups
+
+    //write speedup results to file
     std::ofstream speedup_results_str{speedups_results_file_path};
     speedup_results_str << speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop].str();
+
+    //write run results with and without optimized parallel parameters to files
     std::map<run_environment::ParallelParamsSetting, std::ofstream> results_stream;
-    results_stream[run_environment::ParallelParamsSetting::kDefault] = std::ofstream(default_params_results_file_path);
+    results_stream[run_environment::ParallelParamsSetting::kDefault] =
+      std::ofstream(default_params_results_file_path);
     if (run_imp_settings.opt_parallel_params_setting.first) {
-      results_stream[run_environment::ParallelParamsSetting::kOptimized] = std::ofstream(opt_results_file_path);
+      results_stream[run_environment::ParallelParamsSetting::kOptimized] =
+        std::ofstream(opt_results_file_path);
     }
     std::ofstream run_result_w_speedup_sstr(opt_results_w_speedup_file_path);
     //write run results file with default parallel params
@@ -291,6 +303,7 @@ void EvaluateImpResults::WriteRunOutput(
       //write run results file with optimized parallel params
       results_stream[run_environment::ParallelParamsSetting::kOptimized] <<
         run_data_sstr[run_environment::ParallelParamsSetting::kOptimized].str();
+      //add optimized run results to ostringstream for output containing run results and speedups
       run_result_w_speedup_sstr << run_data_sstr[run_environment::ParallelParamsSetting::kOptimized].str() << std::endl;
     }
     else {
@@ -299,6 +312,7 @@ void EvaluateImpResults::WriteRunOutput(
     //add speedups with headers on left to file containing run results and speedups
     run_result_w_speedup_sstr << speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft].str();
 
+    //print location of output evaluation files to standard output
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in "
               << opt_results_w_speedup_file_path << std::endl;
     std::cout << "Run inputs and results in " << opt_results_file_path << std::endl;
@@ -311,6 +325,10 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& speedup_header_data : run_output.second) {
       speedup_headers.push_back(speedup_header_data.first);
     }
+
+    //run evaluation across current and previous runs across architectures
+    //using run results and speedups saved from previous runs along with
+    //current run results
     EvaluateAcrossRuns().operator()(
       imp_results_fp, GetCombResultsTopText(), GetInputParamsShow(), speedup_headers);
   }

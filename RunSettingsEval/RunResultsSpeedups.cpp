@@ -13,8 +13,8 @@
 //constructor that takes in implementation file path and run name and retrieves
 //run results and speedup evaluation for the run if available
 RunResultsSpeedups::RunResultsSpeedups(
-    const std::filesystem::path& imp_results_file_path,
-    const std::string& run_name) : run_name_{run_name}
+  const std::filesystem::path& imp_results_file_path,
+  const std::string& run_name) : run_name_{run_name}
 {
   //get run results data from file if available
   std::filesystem::path run_results_fp = imp_results_file_path / run_eval::kImpResultsRunDataFolderName /

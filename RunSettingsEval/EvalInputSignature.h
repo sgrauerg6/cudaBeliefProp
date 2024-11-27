@@ -15,6 +15,8 @@
 #include <string_view>
 #include <string>
 #include <charconv>
+#include <iostream>
+#include <fstream>
 #include "RunEvalConstsEnums.h"
 
 //class defines input signature for evaluation run that contains evaluation set
@@ -55,15 +57,25 @@ public:
     return eval_set_num_;
   }
 
-  bool UseTemplatedLoopIters() const {
-    return use_templated_loop_iters_;
+  std::string_view UseTemplatedLoopItersStr() const {
+    return ((!use_templated_loop_iters_) ?
+      run_eval::kBoolValFalseTrueDispStr[0] : run_eval::kBoolValFalseTrueDispStr[1]);
   }
 
+  //overloaded << operator to write EvalInputSignature object to stream
+  friend std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig);
 
 private:
   unsigned int data_type_size_;
   unsigned int eval_set_num_;
   bool use_templated_loop_iters_;
 };
+
+//overloaded << operator to write EvalInputSignature object to stream
+inline std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig) {
+  os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.eval_set_num_ << " " << eval_input_sig.UseTemplatedLoopItersStr();
+  return os;
+}
+
 
 #endif //EVAL_INPUT_SIGNATURE_H_
