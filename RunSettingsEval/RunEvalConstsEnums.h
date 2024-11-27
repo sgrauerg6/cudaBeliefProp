@@ -44,6 +44,7 @@ namespace run_eval {
 
   //constants for output results for individual and sets of runs
   constexpr std::string_view kRunResultsDescFileName{"RunResults"};
+  constexpr std::string_view kRunResultsDefaultPParamsDescFileName{"RunResultsDefaultPParams"};
   constexpr std::string_view kRunResultsWSpeedupsDescFileName{"RunResultsWSpeedups"};
   constexpr std::string_view kRunResultsDescDefaultPParamsFileName{"ResultsDefaultParallelParams"};
   constexpr std::string_view kSpeedupsDescFileName{"Speedups"};
@@ -61,6 +62,7 @@ namespace run_eval {
   //constants for implementation result
   constexpr std::string_view kImpResultsFolderName{"ImpResults"};
   constexpr std::string_view kImpResultsRunDataFolderName{"RunResults"};
+  constexpr std::string_view kImpResultsRunDataDefaultPParamsFolderName{"RunResultsDefaultPParams"};
   constexpr std::string_view kImpResultsRunDataWSpeedupsFolderName{"RunResultsWSpeedups"};
   constexpr std::string_view kImpResultsSpeedupsFolderName{"Speedups"};
   constexpr std::string_view kImpResultsAcrossArchsFolderName{"ResultsAcrossArchitectures"};
@@ -73,7 +75,7 @@ namespace run_eval {
   constexpr std::size_t kRunInputLoopItersTemplatedIdx{2};
 };
 
-using MultRunData = std::vector<std::optional<std::vector<RunData>>>;
+using MultRunData = std::vector<std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
 using RunSpeedupAvgMedian = std::pair<std::string, std::array<double, 2>>;
 using MultRunDataWSpeedupByAcc =
   std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;

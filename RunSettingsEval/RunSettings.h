@@ -141,6 +141,9 @@ enum class TemplatedItersSetting {
   kRunTemplatedAndNotTemplated
 };
 
+//enum for parallel parameters settings in run
+enum class ParallelParamsSetting { kDefault, kOptimized };
+
 //enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run
 //in initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster
 //on CPU

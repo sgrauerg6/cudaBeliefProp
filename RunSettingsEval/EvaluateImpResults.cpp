@@ -176,6 +176,9 @@ void EvaluateImpResults::WriteRunOutput(
     if (!(std::filesystem::is_directory(imp_results_fp / run_eval::kImpResultsRunDataFolderName))) {
       std::filesystem::create_directory(imp_results_fp / run_eval::kImpResultsRunDataFolderName);
     }
+    if (!(std::filesystem::is_directory(imp_results_fp / run_eval::kImpResultsRunDataDefaultPParamsFolderName))) {
+      std::filesystem::create_directory(imp_results_fp / run_eval::kImpResultsRunDataDefaultPParamsFolderName);
+    }
     if (!(std::filesystem::is_directory(imp_results_fp / run_eval::kImpResultsRunDataWSpeedupsFolderName))) {
       std::filesystem::create_directory(imp_results_fp / run_eval::kImpResultsRunDataWSpeedupsFolderName);
     }
@@ -186,62 +189,91 @@ void EvaluateImpResults::WriteRunOutput(
     const std::filesystem::path opt_results_file_path{imp_results_fp / run_eval::kImpResultsRunDataFolderName /
       std::filesystem::path(((run_imp_settings.run_name) ? std::string(run_imp_settings.run_name.value()) + "_" : "") + 
       std::string(run_eval::kRunResultsDescFileName) + std::string(run_eval::kCsvFileExtension))};
+    const std::filesystem::path default_params_results_file_path{imp_results_fp / run_eval::kImpResultsRunDataDefaultPParamsFolderName /
+      std::filesystem::path(((run_imp_settings.run_name) ? std::string(run_imp_settings.run_name.value()) + "_" : "") + 
+      std::string(run_eval::kRunResultsDefaultPParamsDescFileName) + std::string(run_eval::kCsvFileExtension))};
     const std::filesystem::path opt_results_w_speedup_file_path{imp_results_fp / run_eval::kImpResultsRunDataWSpeedupsFolderName /
       std::filesystem::path(((run_imp_settings.run_name) ? std::string(run_imp_settings.run_name.value()) + "_" : "") + 
       std::string(run_eval::kRunResultsWSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension))};
-    const std::filesystem::path default_params_results_file_path{imp_results_fp / run_eval::kImpResultsRunDataFolderName /
-      std::filesystem::path(((run_imp_settings.run_name) ? std::string(run_imp_settings.run_name.value()) + "_" : "") + 
-      std::string(run_eval::kRunResultsDescDefaultPParamsFileName) + std::string(run_eval::kCsvFileExtension))};
     const std::filesystem::path speedups_results_file_path{imp_results_fp / run_eval::kImpResultsSpeedupsFolderName /
       std::filesystem::path(((run_imp_settings.run_name) ? std::string(run_imp_settings.run_name.value()) + "_" : "") + 
       std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension))};
-    std::array<std::ostringstream, 2> run_data_opt_default_sstr;
-    std::array<std::ostringstream, 2> speedups_headers_left_top_sstr;
+    
+    //initialize parallel params setting enum and vector of parallel params settings that are
+    //enabled in run
+    std::vector<run_environment::ParallelParamsSetting> parallel_param_settings{run_environment::ParallelParamsSetting::kDefault};
+    if (run_imp_settings.opt_parallel_params_setting.first) {
+      //add optimized parallel parameters settings if enabled
+      parallel_param_settings.push_back(run_environment::ParallelParamsSetting::kOptimized);
+    }
+
+    //initialize map of ostringstreams for run data using default and optimized parallel parameters
+    std::map<run_environment::ParallelParamsSetting, std::ostringstream> run_data_sstr;
+    for (const auto& p_param_setting : parallel_param_settings) {
+      run_data_sstr[p_param_setting] = std::ostringstream();
+    }
+
+    //initialize map of ostringstreams for speedup data with speedup headers on left and top
+    enum class SpeedupHeaderPlacement { kLeft, kTop };
+    std::map<SpeedupHeaderPlacement, std::ostringstream> speedups_w_headers_sstr;
+    speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] = std::ostringstream();
+    speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] = std::ostringstream();
 
     //get headers from first successful run and write headers to top of output files
-    const auto headers_in_order = (*first_success_run)->back().HeadersInOrder();
-    for (unsigned int i=0; i < (run_imp_settings.opt_parallel_params_setting.first ? run_data_opt_default_sstr.size() : 1); i++) {
-      for (const auto& curr_header : headers_in_order) {
-        run_data_opt_default_sstr[i] << curr_header << ',';
+    const auto headers_in_order = (*first_success_run)->at(run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
+    for (const auto& curr_header : headers_in_order) {
+      for (const auto& p_param_setting : parallel_param_settings) {
+        run_data_sstr[p_param_setting] << curr_header << ',';
       }
-      run_data_opt_default_sstr[i] << std::endl;
     }
+    for (const auto& p_param_setting : parallel_param_settings) {
+      run_data_sstr[p_param_setting] << std::endl;
+    }
+
+    //set mapping between parallel params setting and result index
+    const std::map<run_environment::ParallelParamsSetting, unsigned int> p_params_to_results_idx{
+      {run_environment::ParallelParamsSetting::kDefault, 0},
+      {run_environment::ParallelParamsSetting::kOptimized, 1}};
 
     //write output for run on each input with each data type
-    for (unsigned int i=0; i < (run_imp_settings.opt_parallel_params_setting.first ? run_data_opt_default_sstr.size() : 1); i++) {
+    //for (unsigned int i=0; i < (run_imp_settings.opt_parallel_params_setting.first ? run_data_opt_default_sstr.size() : 1); i++) {
+    //write data for default parallel parameters
+    for (const auto& p_param_setting : parallel_param_settings) {
       for (unsigned int run_num=0; run_num < run_output.first.size(); run_num++) {
         //if run not successful only have single set of output data from run
-        const unsigned int run_result_idx = run_output.first[run_num] ? i : 0;
         for (const auto& curr_header : headers_in_order) {
-          if (!(run_output.first[run_num]->at(run_result_idx).IsData(curr_header))) {
-            run_data_opt_default_sstr[i] << "No Data" << ',';
+          if (!(run_output.first[run_num]->at(p_param_setting).IsData(curr_header))) {
+            run_data_sstr[p_param_setting] << "No Data" << ',';
           }
           else {
-            run_data_opt_default_sstr[i] << run_output.first[run_num]->at(run_result_idx).GetDataAsStr(curr_header) << ',';
+            run_data_sstr[p_param_setting] <<
+              run_output.first[run_num]->at(p_param_setting).GetDataAsStr(curr_header) << ',';
           }
         }
-        run_data_opt_default_sstr[i] << std::endl;
+        run_data_sstr[p_param_setting] << std::endl;
       }
     }
 
-    //generate speedup results with headers on left side and with headers on top row
-    speedups_headers_left_top_sstr[0] << "Speedup Results,Average Speedup,Median Speedup" << std::endl;
+    //generate speedup results with headers on left side (saved to file with run results)
+    speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << "Speedup Results,Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : run_output.second) {
-      speedups_headers_left_top_sstr[0] << speedup.first;
+      speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << speedup.first;
       if (speedup.second[0] > 0) {
-        speedups_headers_left_top_sstr[0] << ',' << speedup.second[0] << ',' << speedup.second[1];
+        speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << ',' << speedup.second[0] << ',' << speedup.second[1];
       }
-      speedups_headers_left_top_sstr[0] << std::endl;
+      speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << std::endl;
     }
-    speedups_headers_left_top_sstr[1] << ',';
+
+    //generate speedup results with headers on top row (saved to separate "speedup" file)
+    speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << ',';
     for (const auto& speedup : run_output.second) {
-      speedups_headers_left_top_sstr[1] << speedup.first << ',';
+      speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << speedup.first << ',';
     }
     for (const auto& speedup_desc_w_index : {std::pair<std::string_view, size_t>{"Average Speedup", 0},
                                              std::pair<std::string_view, size_t>{"Median Speedup", 1}}) {
-      speedups_headers_left_top_sstr[1] << std::endl << speedup_desc_w_index.first << ',';
+      speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << std::endl << speedup_desc_w_index.first << ',';
       for (const auto& speedup : run_output.second) {
-        speedups_headers_left_top_sstr[1] << speedup.second[speedup_desc_w_index.second] << ',';
+        speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << speedup.second[speedup_desc_w_index.second] << ',';
       }
     }
     
@@ -249,30 +281,34 @@ void EvaluateImpResults::WriteRunOutput(
     //one results file contains only speedup results, another contains only run results,
     //and a third contains run results followed by speedups
     std::ofstream speedup_results_str{speedups_results_file_path};
-    speedup_results_str << speedups_headers_left_top_sstr[1].str();
-    std::array<std::ofstream, 2> results_stream_default_tb_final{
-      (run_imp_settings.opt_parallel_params_setting.first ?
-        std::ofstream() : std::ofstream(opt_results_file_path)),
-      run_imp_settings.opt_parallel_params_setting.first ? std::ofstream(opt_results_file_path) : std::ofstream()};
-    std::ofstream run_result_w_speedup_sstr(opt_results_w_speedup_file_path);
-    if (!run_imp_settings.opt_parallel_params_setting.first) {
-      //only write file with default params when there are not results with optimized params
-      results_stream_default_tb_final[0] << run_data_opt_default_sstr[0].str();
-    }
+    speedup_results_str << speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop].str();
+    std::map<run_environment::ParallelParamsSetting, std::ofstream> results_stream;
+    results_stream[run_environment::ParallelParamsSetting::kDefault] = std::ofstream(default_params_results_file_path);
     if (run_imp_settings.opt_parallel_params_setting.first) {
-      results_stream_default_tb_final[1] << run_data_opt_default_sstr[1].str();
-      run_result_w_speedup_sstr << run_data_opt_default_sstr[1].str() << std::endl;
+      results_stream[run_environment::ParallelParamsSetting::kOptimized] = std::ofstream(opt_results_file_path);
+    }
+    std::ofstream run_result_w_speedup_sstr(opt_results_w_speedup_file_path);
+    //write run results file with default parallel params
+    results_stream[run_environment::ParallelParamsSetting::kDefault] <<
+      run_data_sstr[run_environment::ParallelParamsSetting::kDefault].str();
+    if (run_imp_settings.opt_parallel_params_setting.first) {
+      //write run results file with optimized parallel params
+      results_stream[run_environment::ParallelParamsSetting::kOptimized] <<
+        run_data_sstr[run_environment::ParallelParamsSetting::kOptimized].str();
+      run_result_w_speedup_sstr << run_data_sstr[run_environment::ParallelParamsSetting::kOptimized].str() << std::endl;
     }
     else {
-      run_result_w_speedup_sstr << run_data_opt_default_sstr[0].str() << std::endl;        
+      run_result_w_speedup_sstr << run_data_sstr[run_environment::ParallelParamsSetting::kDefault].str() << std::endl;        
     }
     //add speedups with headers on left to file containing run results and speedups
-    run_result_w_speedup_sstr << speedups_headers_left_top_sstr[0].str();
+    run_result_w_speedup_sstr << speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft].str();
 
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in "
               << opt_results_w_speedup_file_path << std::endl;
     std::cout << "Run inputs and results in " << opt_results_file_path << std::endl;
     std::cout << "Speedup results in " << speedups_results_file_path << std::endl;
+    std::cout << "Run inputs and results using default parallel parameters in "
+              << default_params_results_file_path << std::endl;
 
     //get vector of speedup headers to use for evaluation across runs
     std::vector<std::string> speedup_headers;
@@ -317,9 +353,11 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
         for (unsigned int i = 0; i < run_imp_results_by_acc_setting[fastest_acc].first.size(); i++) {
           if (run_imp_results_by_acc_setting[fastest_acc].first[i] && alt_acc_imp_results.second.first[i]) {
             const double init_result_time =
-              run_imp_results_by_acc_setting[fastest_acc].first[i]->back().GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value();
+              run_imp_results_by_acc_setting[fastest_acc].first[i]->at(
+                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value();
             const double alt_acc_result_time =
-              alt_acc_imp_results.second.first[i]->back().GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value();
+              alt_acc_imp_results.second.first[i]->at(
+                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value();
             if (alt_acc_result_time < init_result_time) {
               run_imp_results_by_acc_setting[fastest_acc].first[i] = alt_acc_imp_results.second.first[i];
             }
@@ -434,9 +472,9 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
         if (run_output[i]) {
           speedups_vect.push_back(
             baseline_runtimes[i] / 
-            run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
+            run_output[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
           for (auto& run_data : run_output[i].value()) {
-            run_data.AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+            run_data.second.AddDataWHeader(std::string(speedup_header), speedups_vect.back());
           }
         }
       }
@@ -463,9 +501,10 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
     for (unsigned int i=0; i < run_output.size(); i++) {
       if (run_output[i]) {
         speedups_vect.push_back(
-          baseline_runtimes[i] / run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
+          baseline_runtimes[i] /
+          run_output[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
         for (auto& run_data : run_output[i].value()) {
-          run_data.AddDataWHeader(speedup_header, speedups_vect.back());
+          run_data.second.AddDataWHeader(speedup_header, speedups_vect.back());
         }
       }
     }
@@ -484,9 +523,9 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
     for (unsigned int i=0; i < run_output.size(); i++) {
       if (run_output[i]) {
         speedups_vect.push_back(baseline_runtimesSThread[i] /
-          run_output[i]->at(1).GetDataAsDouble(run_eval::kSingleThreadRuntimeHeader).value());
+          run_output[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kSingleThreadRuntimeHeader).value());
         for (auto& run_data : run_output[i].value()) {
-          run_data.AddDataWHeader(speedup_header, speedups_vect.back());
+          run_data.second.AddDataWHeader(speedup_header, speedups_vect.back());
         }
       }
     }
@@ -507,10 +546,10 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupOptPParams(
   std::vector<double> speedups_vect;
   for (unsigned int i=0; i < run_output.size(); i++) {
     if (run_output[i]) {
-      speedups_vect.push_back(run_output[i]->at(0).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value() / 
-                              run_output[i]->at(1).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
-      run_output[i]->at(0).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
-      run_output[i]->at(1).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+      speedups_vect.push_back(run_output[i]->at(run_environment::ParallelParamsSetting::kDefault).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value() / 
+                              run_output[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
+      run_output[i]->at(run_environment::ParallelParamsSetting::kDefault).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+      run_output[i]->at(run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
     }
   }
   if (!(speedups_vect.empty())) {
@@ -529,10 +568,10 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedup(
   std::vector<double> speedups_vect;
   for (unsigned int i=0; i < run_output_base.size(); i++) {
     if (run_output_base[i] && run_output_target[i]) {
-      speedups_vect.push_back(run_output_base[i]->back().GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value() / 
-                             run_output_target[i]->back().GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
-      run_output_base[i]->at(1).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
-      run_output_target[i]->at(1).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+      speedups_vect.push_back(run_output_base[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value() / 
+                              run_output_target[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value());
+      run_output_base[i]->at(run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+      run_output_target[i]->at(run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
     }
   }
   if (!(speedups_vect.empty())) {
@@ -551,7 +590,7 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(Mult
   std::map<std::vector<std::string>, std::pair<double, size_t>> run_input_settings_to_time_w_idx;
   for (unsigned int i=0; i < run_output.size(); i++) {
     if (run_output[i]) {
-      const auto input_settings_to_time = run_output[i]->back().GetParamsToRuntime(
+      const auto input_settings_to_time = run_output[i]->at(run_environment::ParallelParamsSetting::kOptimized).GetParamsToRuntime(
         std::vector<std::string_view>(run_eval::kRunInputSigHeaders.cbegin(), run_eval::kRunInputSigHeaders.cend()),
         run_eval::kOptimizedRuntimeHeader);
       if (input_settings_to_time) {
@@ -589,13 +628,13 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(Mult
         (run_comp_2->first[run_eval::kRunInputLoopItersTemplatedIdx] == run_eval::kBoolValFalseTrueDispStr[0]))
     {
       speedups_vect.push_back(run_comp_2->second.first / run_comp_1->second.first);
-      run_output[run_comp_1->second.second]->back().AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+      run_output[run_comp_1->second.second]->at(run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
     }
     else if ((run_comp_1->first[run_eval::kRunInputLoopItersTemplatedIdx] == run_eval::kBoolValFalseTrueDispStr[0]) &&
              (run_comp_2->first[run_eval::kRunInputLoopItersTemplatedIdx] == run_eval::kBoolValFalseTrueDispStr[1]))
     {
       speedups_vect.push_back(run_comp_1->second.first / run_comp_2->second.first);
-      run_output[run_comp_2->second.second]->back().AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+      run_output[run_comp_2->second.second]->at(run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(std::string(speedup_header), speedups_vect.back());
     }
     //remove runs that have been processed from mapping
     run_input_settings_to_time_w_idx.erase(run_comp_1);

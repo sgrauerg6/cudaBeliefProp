@@ -47,7 +47,7 @@ protected:
   MultRunData::value_type RunEvalBenchmark(const run_environment::RunImpSettings& run_imp_settings,
     bool run_w_loop_iters_templated) const
   {
-    MultRunData::value_type::value_type out_run_data(run_imp_settings.opt_parallel_params_setting.first ? 2 : 1);
+    MultRunData::value_type::value_type out_run_data;
     enum class RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };
 
     //set up parallel parameters for specific benchmark
@@ -123,10 +123,16 @@ protected:
       if (curr_run_type != RunType::TEST_PARAMS) {
         //set output for runs using default parallel parameters and final run (which is the same run if not optimizing parallel parameters)
         if (curr_run_type == RunType::OPTIMIZED_RUN) {
-          out_run_data[1] = curr_run_data;
+          out_run_data[run_environment::ParallelParamsSetting::kOptimized] = curr_run_data;
         }
         else {
-          out_run_data[0] = curr_run_data;
+          out_run_data[run_environment::ParallelParamsSetting::kDefault] = curr_run_data;
+          if (curr_run_type == RunType::ONLY_RUN) {
+            //if current run is only run due to setting of not optimizing parallel parameters,
+            //set optimized parallel parameters output to current run data, resulting in same
+            //run data mapped to default and optimized parallel parameters enums
+            out_run_data[run_environment::ParallelParamsSetting::kOptimized] = curr_run_data;
+          }
         }
       }
 
