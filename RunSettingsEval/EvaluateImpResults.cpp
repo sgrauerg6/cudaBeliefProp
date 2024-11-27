@@ -116,14 +116,15 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //get speedup over baseline runtimes...can only compare with baseline runtimes that are
   //generated using same templated iterations setting as current run
   if ((run_imp_settings.base_opt_single_thread_runtime_for_template_setting) &&
-      (run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().second == run_imp_settings.templated_iters_setting)) {
-      const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
-        results_w_speedups.first, run_eval::kAllRunsStr,
-        run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
-      results_w_speedups.second.insert(
-        results_w_speedups.second.cend(),
-        speedup_over_baseline.cbegin(),
-        speedup_over_baseline.cend());
+      (run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().second == run_imp_settings.templated_iters_setting))
+  {
+    const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
+      results_w_speedups.first, run_eval::kAllRunsStr,
+      run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
+    results_w_speedups.second.insert(
+      results_w_speedups.second.cend(),
+      speedup_over_baseline.cbegin(),
+      speedup_over_baseline.cend());
   }
 
   //get speedup info for using optimized parallel parameters
@@ -229,11 +230,6 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& p_param_setting : parallel_param_settings) {
       run_data_sstr[p_param_setting] << std::endl;
     }
-
-    //set mapping between parallel params setting and result index
-    const std::map<run_environment::ParallelParamsSetting, unsigned int> p_params_to_results_idx{
-      {run_environment::ParallelParamsSetting::kDefault, 0},
-      {run_environment::ParallelParamsSetting::kOptimized, 1}};
 
     //write output for run on each input with each data type
     //for (unsigned int i=0; i < (run_imp_settings.opt_parallel_params_setting.first ? run_data_opt_default_sstr.size() : 1); i++) {
