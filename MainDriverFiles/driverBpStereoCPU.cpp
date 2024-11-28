@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //This file contains the "main" function that drives the optimized CPU BP implementation
 
 #include <iostream>
+#include <array>
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunEvalImp/RunEvalBpImp.h"
 #include "RunImpCPU/RunCPUSettings.h"
@@ -87,8 +88,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //remove any parallel processing below given minimum number of threads
   run_imp_settings.RemoveParallelParamBelowMinThreads(run_cpu::kMinNumThreadsRun);
   run_imp_settings.templated_iters_setting = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
-  run_imp_settings.base_opt_single_thread_runtime_for_template_setting = 
-    {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
+  run_imp_settings.baseline_runtimes_path_desc =
+    std::array<std::string_view, 2>{
+      bp_file_handling::kBaselineRunDataPath,
+      bp_file_handling::kBaselineRunDesc};
   run_imp_settings.subset_str_indices = {{std::string(beliefprop::kSmallLargeStereoSetsEvalStr[0]), {0, 1, 2, 3, 4, 5}},
                                          {std::string(beliefprop::kSmallLargeStereoSetsEvalStr[1]), {8, 9, 10, 11, 12, 13}}};
 

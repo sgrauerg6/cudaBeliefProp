@@ -21,16 +21,9 @@ namespace bp_file_handling
   constexpr std::string_view kOutDispImageNameBase = "computedDisparity";
   constexpr std::string_view kBeliefPropDirectoryName = "BeliefProp";
   constexpr std::string_view kStereoSetsDirectoryName = "BpStereoSets";
-
-  #ifdef SMALLER_SETS_ONLY
-    constexpr std::array<std::string_view, 2> kBaselineRunDataPathsOptSingleThread{
-      "../BeliefProp/BpBaselineRuntimes/baselineRuntimesSmallerSetsOnly.txt",
-      "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimesSmallerSetsOnly.txt"};
-  #else
-    constexpr std::array<std::string_view, 2> kBaselineRunDataPathsOptSingleThread{
-      "../BeliefProp/BpBaselineRuntimes/baselineRuntimes.txt",
-      "../BeliefProp/BpBaselineRuntimes/singleThreadBaselineRuntimes.txt"};
-  #endif //SMALLER_SETS_ONLY
+  constexpr std::string_view kBaselineRunDataPath{
+    "../BeliefProp/ImpResults/RunResults/AMDRome48Cores_RunResults.csv"};
+  constexpr std::string_view kBaselineRunDesc{"AMD Rome (48 Cores)"};
 };
 
 #endif /* BPFILEHANDLINGCONSTS_H_ */

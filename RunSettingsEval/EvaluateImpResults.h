@@ -80,7 +80,8 @@ private:
 
   //get baseline runtime data if available...return null if baseline data not available
   std::optional<std::pair<std::string, std::vector<double>>> GetBaselineRuntimeData(
-    std::string_view baseline_data_path) const;
+    const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
+    std::string_view key_runtime_data) const;
 
   //get average and median speedup from vector of speedup values
   std::array<double, 2> GetAvgMedSpeedup(const std::vector<double>& speedups_vect) const;
@@ -89,7 +90,7 @@ private:
   std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupOverBaselineSubsets(
     MultRunData& run_output,
     std::string_view data_type_str,
-    const std::array<std::string_view, 2>& base_data_path_opt_single_thread,
+    const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
     const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subset_str_indices =
       std::vector<std::pair<std::string, std::vector<unsigned int>>>()) const;
 
@@ -97,7 +98,7 @@ private:
   std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupOverBaseline(
     MultRunData& run_output,
     std::string_view data_type_str,
-    const std::array<std::string_view, 2>& baseline_path_opt_single_thread) const;
+    const std::array<std::string_view, 2>& baseline_runtimes_path_desc) const;
 
   //get average and median speedup using optimized parallel parameters compared to default parallel parameters
   RunSpeedupAvgMedian GetAvgMedSpeedupOptPParams(

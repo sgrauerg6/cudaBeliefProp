@@ -34,8 +34,10 @@ int main(int argc, char** argv)
   run_imp_settings.opt_parallel_params_setting = {true, run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
   run_imp_settings.p_params_default_opt_settings = {run_cuda::kParallelParamsDefault, run_cuda::kParallelParameterOptions};
   run_imp_settings.templated_iters_setting = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
-  run_imp_settings.base_opt_single_thread_runtime_for_template_setting = 
-    {bp_file_handling::kBaselineRunDataPathsOptSingleThread, run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated};
+  run_imp_settings.baseline_runtimes_path_desc =
+    std::array<std::string_view, 2>{
+      bp_file_handling::kBaselineRunDataPath,
+      bp_file_handling::kBaselineRunDesc};
   run_imp_settings.subset_str_indices = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
 #ifndef SMALLER_SETS_ONLY
                                       {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};

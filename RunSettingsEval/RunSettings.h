@@ -159,7 +159,7 @@ struct RunImpSettings {
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> p_params_default_opt_settings;
   std::optional<std::string> run_name;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
-  std::optional<std::pair<std::array<std::string_view, 2>, TemplatedItersSetting>> base_opt_single_thread_runtime_for_template_setting;
+  std::optional<std::array<std::string_view, 2>> baseline_runtimes_path_desc;
   std::vector<std::pair<std::string, std::vector<unsigned int>>> subset_str_indices;
 
   //remove parallel parameters with less than specified number of threads

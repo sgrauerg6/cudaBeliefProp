@@ -11,6 +11,7 @@
 #include "EvalInputSignature.h"
 #include "RunResultsSpeedups.h"
 #include <iostream>
+#include <algorithm>
 
 //process runtime and speedup data across multiple runs (likely on different architectures)
 //from csv files corresponding to each run and
@@ -41,11 +42,13 @@ void EvaluateAcrossRuns::operator()(
   for (const auto& run_name : run_names) {
     run_results_name_to_data[run_name] = run_results_by_name.at(run_name).RunResults();
     speedup_results_name_to_data[run_name] = run_results_by_name.at(run_name).Speedups();
-    input_to_runtime_across_archs[run_name] = run_results_by_name.at(run_name).InputsToRuntimes();
+    input_to_runtime_across_archs[run_name] = run_results_by_name.at(run_name).InputsToKeyVal(
+      run_eval::kOptimizedRuntimeHeader);
   }
 
   //get run inputs to parameters to display in evaluation across runs
-  const auto& inputs_to_runtimes = run_results_by_name.at(run_names[0]).InputsToRuntimes();
+  const auto& inputs_to_runtimes = run_results_by_name.at(run_names[0]).InputsToKeyVal(
+    run_eval::kOptimizedRuntimeHeader);
   std::map<EvalInputSignature, std::vector<std::string>> input_set_to_input_disp;
   for (const auto& input_runtime : inputs_to_runtimes) {
     input_set_to_input_disp.insert({input_runtime.first, std::vector<std::string>()});
@@ -154,16 +157,32 @@ void EvaluateAcrossRuns::operator()(
 std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
   const std::filesystem::path& imp_results_file_path) const
 {
-  //iterate through all run results files all run names with results
+  //iterate through all run results files all run names with results and speedups
   //create directory iterator with all results files
   std::filesystem::directory_iterator results_files_iter =
     std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
+  std::filesystem::directory_iterator speedups_files_iter =
+    std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName);
   std::vector<std::string> run_names;
   for (const auto& results_fp : results_files_iter) {
     std::string file_name_no_ext = results_fp.path().stem();
     if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName))) {
       const std::string run_name = file_name_no_ext.substr(0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
       run_names.push_back(run_name);
+    }
+  }
+
+  //remove run name from runs to evaluate across runs if no speedup data
+  //example where this could be the case is baseline data that is used for comparison with other runs
+  for (auto run_names_iter = run_names.begin(); run_names_iter != run_names.end();) {
+    std::filesystem::path run_speedup_fp = imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
+      (std::string(*run_names_iter) + '_' + std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension));
+    //remove run from evaluation if no valid speedup data file that corresponds to run results data file
+    if ((!(std::filesystem::exists(run_speedup_fp))) || (!(std::filesystem::is_regular_file(run_speedup_fp)))) {
+      run_names_iter = run_names.erase(std::ranges::find(run_names, *run_names_iter));
+    }
+    else {
+      run_names_iter++;
     }
   }
 

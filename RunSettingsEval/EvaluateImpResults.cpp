@@ -9,6 +9,7 @@
 
 #include "EvaluateImpResults.h"
 #include "EvaluateAcrossRuns.h"
+#include "RunResultsSpeedups.h"
 #include <fstream>
 #include <numeric>
 #include <sstream>
@@ -115,12 +116,11 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
 
   //get speedup over baseline runtimes...can only compare with baseline runtimes that are
   //generated using same templated iterations setting as current run
-  if ((run_imp_settings.base_opt_single_thread_runtime_for_template_setting) &&
-      (run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().second == run_imp_settings.templated_iters_setting))
+  if (run_imp_settings.baseline_runtimes_path_desc)
   {
     const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
       results_w_speedups.first, run_eval::kAllRunsStr,
-      run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
+      run_imp_settings.baseline_runtimes_path_desc.value());
     results_w_speedups.second.insert(
       results_w_speedups.second.cend(),
       speedup_over_baseline.cbegin(),
@@ -399,12 +399,11 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaseline(
   if (data_type_size == sizeof(float)) {
     //get speedup over baseline runtimes...can only compare with baseline runtimes that are
     //generated using same templated iterations setting as current run
-    if ((run_imp_settings.base_opt_single_thread_runtime_for_template_setting) &&
-        (run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().second == run_imp_settings.templated_iters_setting))
+    if (run_imp_settings.baseline_runtimes_path_desc)
     {
       const auto speedup_over_baseline_subsets = GetAvgMedSpeedupOverBaseline(
         run_data_all_runs, run_environment::kDataSizeToNameMap.at(data_type_size),
-        run_imp_settings.base_opt_single_thread_runtime_for_template_setting.value().first);
+        run_imp_settings.baseline_runtimes_path_desc.value());
       speedup_results.insert(speedup_results.cend(), speedup_over_baseline_subsets.cbegin(), speedup_over_baseline_subsets.cend());
     }
   }
@@ -418,42 +417,32 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaselineSubse
   size_t data_type_size) const
 {
   if ((data_type_size == sizeof(float)) &&
-      (run_imp_settings.base_opt_single_thread_runtime_for_template_setting && 
-        (run_imp_settings.base_opt_single_thread_runtime_for_template_setting->second == run_imp_settings.templated_iters_setting)))
+      (run_imp_settings.baseline_runtimes_path_desc))
   {
     return GetAvgMedSpeedupOverBaselineSubsets(run_data_all_runs, run_environment::kDataSizeToNameMap.at(data_type_size),
-      run_imp_settings.base_opt_single_thread_runtime_for_template_setting->first, run_imp_settings.subset_str_indices);
+      run_imp_settings.baseline_runtimes_path_desc.value(), run_imp_settings.subset_str_indices);
   }
   //return empty vector if doesn't match settings to get speedup over baseline for subsets
   return std::vector<RunSpeedupAvgMedian>();
 }
 
 //get baseline runtime data if available...return null if baseline data not available
+//key for runtime data in results is different to retrieve optimized runtime compared to
+//single thread runtime for baseline run
 std::optional<std::pair<std::string, std::vector<double>>> EvaluateImpResults::GetBaselineRuntimeData(
-  std::string_view baseline_data_path) const
+  const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
+  std::string_view key_runtime_data) const
 {
-  std::ifstream baseline_data_stream(std::string{baseline_data_path});
-  if (!(baseline_data_stream.is_open())) {
-    return {};
-  }
-  std::string line;
-  //first line of data is string with baseline processor description and all subsequent data is runtimes
-  //on that processor in same order as runtimes from runBenchmark() function
-  std::string baseline_name;
+  RunResultsSpeedups baseline_run_results(baseline_runtimes_path_desc.at(0));
+  const auto input_sig_runtime_mapping =  baseline_run_results.InputsToKeyVal(
+    key_runtime_data);
   std::vector<double> baseline_data;
-  bool first_line{true};
-  while (std::getline(baseline_data_stream, line)) {
-    if (first_line) {
-      baseline_name = line;
-      first_line = false;
-    }
-    else {
-      baseline_data.push_back(std::stod(line));
-    }
+  for (const auto& input_sig_runtime : input_sig_runtime_mapping) {
+    baseline_data.push_back(std::stod(input_sig_runtime.second));
   }
 
   return std::pair<std::string, std::vector<double>>{
-    baseline_name, baseline_data};
+    std::string(baseline_runtimes_path_desc.at(1)), baseline_data};
 }
 
 //get average and median speedup from vector of speedup values
@@ -469,12 +458,12 @@ std::array<double, 2> EvaluateImpResults::GetAvgMedSpeedup(const std::vector<dou
 
 //get average and median speedup of specified subset(s) of runs compared to baseline data from file
 std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(MultRunData& run_output,
-  std::string_view data_type_str, const std::array<std::string_view, 2>& base_data_path_opt_single_thread,
+  std::string_view data_type_str, const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
   const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subset_str_indices) const
 {
   //get speedup over baseline for optimized runs
   std::vector<RunSpeedupAvgMedian> speedup_data;
-  const auto baseline_run_data = GetBaselineRuntimeData(base_data_path_opt_single_thread[0]);
+  const auto baseline_run_data = GetBaselineRuntimeData(baseline_runtimes_path_desc, run_eval::kOptimizedRuntimeHeader);
   if (baseline_run_data) {
     const auto baseline_runtimes = (*baseline_run_data).second;
     //retrieve speedup data for any subsets of optimized runs
@@ -503,11 +492,11 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
 
 //get average and median speedup of current runs compared to baseline data from file
 std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaseline(MultRunData& run_output,
-  std::string_view data_type_str, const std::array<std::string_view, 2>& baseline_path_opt_single_thread) const
+  std::string_view data_type_str, const std::array<std::string_view, 2>& baseline_runtimes_path_desc) const
 {
   //get speedup over baseline for optimized runs
   std::vector<RunSpeedupAvgMedian> speedup_data;
-  const auto baseline_run_data = GetBaselineRuntimeData(baseline_path_opt_single_thread[0]);
+  const auto baseline_run_data = GetBaselineRuntimeData(baseline_runtimes_path_desc, run_eval::kOptimizedRuntimeHeader);
   if (baseline_run_data) {
     std::vector<double> speedups_vect;
     const std::string speedup_header = "Speedup relative to " + baseline_run_data->first + " - " + std::string(data_type_str);
@@ -528,7 +517,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
   }
 
   //get speedup over baseline for single thread runs
-  const auto baseline_run_data_single_thread = GetBaselineRuntimeData(baseline_path_opt_single_thread[1]);
+  const auto baseline_run_data_single_thread = GetBaselineRuntimeData(baseline_runtimes_path_desc, run_eval::kSingleThreadRuntimeHeader);
   if (baseline_run_data_single_thread) {
     std::vector<double> speedups_vect;
     const std::string speedup_header = "Single-Thread (Orig Imp) speedup relative to " +
