@@ -30,50 +30,68 @@ public:
   //constructor to generate evaluation input signature from parameters
   //corresponding to each part
   EvalInputSignature(
-    unsigned int data_type_size,
-    unsigned int eval_set_num,
-    bool use_templated_loop_iters);
+    std::optional<unsigned int> data_type_size,
+    std::optional<unsigned int> eval_set_num,
+    std::optional<bool> use_templated_loop_iters);
 
   //less than operator for comparing evaluation input signatures
   //so they can be ordered
   //operator needed to support ordering since input signature
   //is used as std::map key and also for evaluation output order
+  //if any EvalInputSignature member is "no value" that property is considered
+  //"any" and is ignored in the comparison
   bool operator<(const EvalInputSignature& rhs) const;
 
+  //equality operator for comparing evaluation input signatures
+  //if any EvalInputSignature member is "no value" that property is considered
+  //"any" and is ignored in the comparison
+  bool operator==(const EvalInputSignature& rhs) const;
+
   std::string DataTypeStr() const {
-    if (data_type_size_ == 2) {
+    if (!(data_type_size_.has_value())) {
+      return "ANY";
+    }
+    if (data_type_size_.value() == 2) {
       return "HALF";
     }
-    else if (data_type_size_ == 4) {
+    else if (data_type_size_.value() == 4) {
       return "FLOAT";
     }
-    else if (data_type_size_ == 8) {
+    else if (data_type_size_.value() == 8) {
       return "DOUBLE";
     }
     return "UNKNOWN";
   }
 
-  unsigned int EvalSetNum() const {
-    return eval_set_num_;
+  std::string EvalSetNumStr() const {
+    if (!(eval_set_num_.has_value())) {
+      return "ANY";
+    }
+    else {
+      return std::to_string(eval_set_num_.value());
+    }
   }
 
-  std::string_view UseTemplatedLoopItersStr() const {
-    return ((!use_templated_loop_iters_) ?
-      run_eval::kBoolValFalseTrueDispStr[0] : run_eval::kBoolValFalseTrueDispStr[1]);
+  std::string UseTemplatedLoopItersStr() const {
+    if (!(use_templated_loop_iters_.has_value())) {
+      return "BOTH";
+    }
+    return ((!(use_templated_loop_iters_.value())) ?
+      std::string(run_eval::kBoolValFalseTrueDispStr[0]) : std::string(run_eval::kBoolValFalseTrueDispStr[1]));
   }
 
   //overloaded << operator to write EvalInputSignature object to stream
   friend std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig);
 
 private:
-  unsigned int data_type_size_;
-  unsigned int eval_set_num_;
-  bool use_templated_loop_iters_;
+  std::optional<unsigned int> data_type_size_;
+  std::optional<unsigned int> eval_set_num_;
+  std::optional<bool> use_templated_loop_iters_;
 };
 
 //overloaded << operator to write EvalInputSignature object to stream
 inline std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig) {
-  os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.eval_set_num_ << " " << eval_input_sig.UseTemplatedLoopItersStr();
+  os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.EvalSetNumStr() << " " << eval_input_sig.UseTemplatedLoopItersStr();
   return os;
 }
 
