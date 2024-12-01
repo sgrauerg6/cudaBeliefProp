@@ -19,6 +19,8 @@
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
 
+//enum to define difference between "base" and "target" result sets
+//when evaluating speedup
 enum class BaseTargetDiff { kDiffAcceleration, kDiffDatatype };
 
 //class with operator function to evaluate implementations of the same algorithm across
