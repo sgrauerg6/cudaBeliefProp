@@ -79,9 +79,4 @@ namespace run_eval {
   constexpr std::size_t kRunInputLoopItersTemplatedIdx{2};
 };
 
-using MultRunData = std::vector<std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
-using RunSpeedupAvgMedian = std::pair<std::string, std::array<double, 2>>;
-using MultRunDataWSpeedupByAcc =
-  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
-
 #endif //RUN_EVAL_CONSTS_ENUMS_H

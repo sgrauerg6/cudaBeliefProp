@@ -18,6 +18,7 @@
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
 #include "RunImp/RunEvalImpOnInput.h"
+#include "RunSettingsEval/EvalInputSignature.h"
 
 #ifndef RUN_EVAL_BP_IMP_SINGLE_SET_H_
 #define RUN_EVAL_BP_IMP_SINGLE_SET_H_
@@ -117,13 +118,15 @@ MultRunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
     run_opt_bp_num_iters_templated_ =
       std::make_unique<RunBpOptimized<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, OPT_IMP_ACCEL>>();
     constexpr bool run_w_loop_iters_templated{true};
-    run_results.push_back(this->RunEvalBenchmark(run_imp_settings, run_w_loop_iters_templated));
+    EvalInputSignature input_sig(sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
+    run_results.insert({input_sig, (this->RunEvalBenchmark(run_imp_settings, run_w_loop_iters_templated))});
   }
   if (run_imp_settings.templated_iters_setting != run_environment::TemplatedItersSetting::kRunOnlyTempated) {
     run_opt_bp_num_iters_no_template_ =
       std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
     constexpr bool run_w_loop_iters_templated{false};
-    run_results.push_back(this->RunEvalBenchmark(run_imp_settings, run_w_loop_iters_templated));
+    EvalInputSignature input_sig(sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
+    run_results.insert({input_sig, this->RunEvalBenchmark(run_imp_settings, run_w_loop_iters_templated)});
   }
 
   //return bp run results across multiple implementations

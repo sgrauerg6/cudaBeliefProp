@@ -56,10 +56,10 @@ MultRunData RunEvalBpImp::RunEvalImpMultDataSets(const run_environment::RunImpSe
   run_results.push_back(RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
 #endif //SMALLER_SETS_ONLY
 
-  //add results for each input to overall results
+  //merge results for each input to overall results
   MultRunData run_data_all_runs;
-  for (const auto& run_result : run_results) {
-    run_data_all_runs.insert(run_data_all_runs.cend(), run_result.cbegin(), run_result.cend());
+  for (auto& run_result : run_results) {
+    run_data_all_runs.merge(run_result);
   }
  
   return run_data_all_runs;

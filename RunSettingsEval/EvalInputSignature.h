@@ -79,6 +79,15 @@ public:
     return ((!(use_templated_loop_iters_.value())) ?
       std::string(run_eval::kBoolValFalseTrueDispStr[0]) : std::string(run_eval::kBoolValFalseTrueDispStr[1]));
   }
+  
+  //remove templated loop iter setting and change it to "any"
+  void RemoveTemplatedLoopIterSetting() {
+    use_templated_loop_iters_.reset();
+  }
+
+  void RemoveDatatypeSetting() {
+    data_type_size_.reset();
+  }
 
   //overloaded << operator to write EvalInputSignature object to stream
   friend std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig);
@@ -95,5 +104,9 @@ inline std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval
   return os;
 }
 
+using MultRunData = std::map<EvalInputSignature, std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
+using RunSpeedupAvgMedian = std::pair<std::string, std::array<double, 2>>;
+using MultRunDataWSpeedupByAcc =
+  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
 
 #endif //EVAL_INPUT_SIGNATURE_H_

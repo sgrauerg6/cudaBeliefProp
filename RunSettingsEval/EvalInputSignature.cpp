@@ -79,44 +79,6 @@ bool EvalInputSignature::operator<(const EvalInputSignature& rhs) const {
 //for part of input signature so only consider parts where both have valid
 //values
 bool EvalInputSignature::operator==(const EvalInputSignature& rhs) const {
-  if (((data_type_size_.has_value()) && (rhs.data_type_size_.has_value())) &&
-      ((eval_set_num_.has_value()) && (rhs.eval_set_num_.has_value())) &&
-      ((use_templated_loop_iters_.has_value()) && (rhs.use_templated_loop_iters_.has_value())))
-  {
-    return (std::tie(data_type_size_.value(), eval_set_num_.value(), use_templated_loop_iters_.value()) ==
-            std::tie(rhs.data_type_size_.value(), rhs.eval_set_num_.value(), rhs.use_templated_loop_iters_.value()));
-  }
-  else if (((eval_set_num_.has_value()) && (rhs.eval_set_num_.has_value())) &&
-           ((use_templated_loop_iters_.has_value()) && (rhs.use_templated_loop_iters_.has_value())))
-  {
-    return (std::tie(eval_set_num_.value(), use_templated_loop_iters_.value()) ==
-            std::tie(rhs.eval_set_num_.value(), rhs.use_templated_loop_iters_.value()));
-  }
-  else if (((data_type_size_.has_value()) && (rhs.data_type_size_.has_value())) &&
-           ((use_templated_loop_iters_.has_value()) && (rhs.use_templated_loop_iters_.has_value())))
-  {
-    return (std::tie(data_type_size_.value(), use_templated_loop_iters_.value()) ==
-            std::tie(rhs.data_type_size_.value(), rhs.use_templated_loop_iters_.value()));
-  }
-  else if (((data_type_size_.has_value()) && (rhs.data_type_size_.has_value())) &&
-           ((eval_set_num_.has_value()) && (rhs.eval_set_num_.has_value())))
-  {
-    return (std::tie(data_type_size_.value(), use_templated_loop_iters_.value()) ==
-            std::tie(rhs.eval_set_num_.value(), rhs.eval_set_num_.value()));
-  }
-  else if ((data_type_size_.has_value()) && (rhs.data_type_size_.has_value()))
-  {
-    return (data_type_size_.value() == rhs.data_type_size_.value());
-  }
-  else if ((eval_set_num_.has_value()) && (rhs.eval_set_num_.has_value()))
-  {
-    return (eval_set_num_.value() == rhs.eval_set_num_.value());
-  }
-  else if ((use_templated_loop_iters_.has_value()) && (rhs.use_templated_loop_iters_.has_value()))
-  {
-    return (use_templated_loop_iters_.value() == rhs.use_templated_loop_iters_.value());
-  }
-  //if there is "no value" for one of the evaluation parts for both sides of comparison, both
-  //sides are considered equal
-  return true;
+  return (std::tie(data_type_size_, eval_set_num_, use_templated_loop_iters_) ==
+          std::tie(rhs.data_type_size_, rhs.eval_set_num_, rhs.use_templated_loop_iters_));
 }

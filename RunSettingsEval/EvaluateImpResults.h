@@ -12,11 +12,14 @@
 
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"
+#include "RunSettingsEval/EvalInputSignature.h"
 #include <filesystem>
 
 #ifdef OPTIMIZED_CUDA_RUN
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
+
+enum class BaseTargetDiff { kDiffAcceleration, kDiffDatatype };
 
 //class with operator function to evaluate implementations of the same algorithm across
 //different data types and acceleration methods
@@ -79,7 +82,7 @@ private:
     size_t data_type_size) const;
 
   //get baseline runtime data if available...return null if baseline data not available
-  std::optional<std::pair<std::string, std::vector<double>>> GetBaselineRuntimeData(
+  std::optional<std::pair<std::string, std::map<EvalInputSignature, std::string>>> GetBaselineRuntimeData(
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
     std::string_view key_runtime_data) const;
 
@@ -106,10 +109,11 @@ private:
     std::string_view speedup_header) const;
 
   //get average and median speedup between base and target runtime data
-  RunSpeedupAvgMedian GetAvgMedSpeedup(
+  RunSpeedupAvgMedian GetAvgMedSpeedupBaseVsTarget(
     MultRunData& run_output_base,
     MultRunData& run_output_target,
-    std::string_view speedup_header) const;
+    std::string_view speedup_header,
+    BaseTargetDiff base_target_diff) const;
 
   //get average and median speedup when loop iterations are given at compile time as template value
   RunSpeedupAvgMedian GetAvgMedSpeedupLoopItersInTemplate(MultRunData& run_output,
