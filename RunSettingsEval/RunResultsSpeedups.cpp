@@ -10,46 +10,6 @@
 #include "RunResultsSpeedups.h"
 #include "RunEvalConstsEnums.h"
 
-//constructor that takes in run results path and processes run results
-//speedups not available when using this constructor
-RunResultsSpeedups::RunResultsSpeedups(
-  const std::filesystem::path& run_results_file_path)
-{
-  //get run results data from file if available
-  if (std::filesystem::exists(run_results_file_path) && (std::filesystem::is_regular_file(run_results_file_path))) {
-    run_results_header_to_data_ = HeaderToDataInCsvFile(run_results_file_path);
-  }
-
-  //process run results, specifically generate input signature to data mappings
-  ProcessRunResults();
-}
-
-//process run results, specifically generate input sig to data mappings from run results
-void RunResultsSpeedups::ProcessRunResults() {
-  if (run_results_header_to_data_)
-  {
-    input_sig_to_run_results_ = decltype(input_sig_to_run_results_)::value_type();
-    //get input "signature" for run mapped to optimized implementation runtime for each run on input
-    //as well as input "signature" for each input mapped to input info to show in evaluation output
-    const unsigned int tot_num_runs = run_results_header_to_data_->at(std::string(run_eval::kOptimizedRuntimeHeader)).size();
-    for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
-      //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
-      //have loops with templated iteration counts)
-      const EvalInputSignature run_input({
-        run_results_header_to_data_->at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
-        run_results_header_to_data_->at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
-        run_results_header_to_data_->at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]});
-      //retrieve all data corresponding to run which corresponds to input signature for run
-      std::map<std::string, std::string> run_headers_to_data;
-      for (const auto& header_data : run_results_header_to_data_.value()) {
-        run_headers_to_data[header_data.first] = header_data.second.at(num_run);
-      }
-      input_sig_to_run_results_->insert({run_input, run_headers_to_data});
-    }
-  }
-}
-
-
 //constructor that takes in implementation file path and run name and retrieves
 //run results and speedup evaluation for the run if available
 RunResultsSpeedups::RunResultsSpeedups(
@@ -59,8 +19,9 @@ RunResultsSpeedups::RunResultsSpeedups(
   //get run results data from file if available
   std::filesystem::path run_results_fp = imp_results_file_path / run_eval::kImpResultsRunDataFolderName /
     (std::string(run_name_) + '_' + std::string(run_eval::kImpResultsRunDataFolderName) + std::string(run_eval::kCsvFileExtension));
+  std::map<std::string, std::vector<std::string>> run_results_header_to_data;
   if (std::filesystem::exists(run_results_fp) && (std::filesystem::is_regular_file(run_results_fp))) {
-    run_results_header_to_data_ = HeaderToDataInCsvFile(run_results_fp);
+    run_results_header_to_data = HeaderToDataInCsvFile(run_results_fp);
   }
 
   //get speedup evaluation data from file if available
@@ -71,41 +32,73 @@ RunResultsSpeedups::RunResultsSpeedups(
   }
 
   //process run results, specifically generate input signature to data mappings
-  ProcessRunResults();
+  GenInputSignatureToDataMapping(run_results_header_to_data);
 }
 
-std::map<EvalInputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::string_view key) {
+//constructor that takes in run results path and processes run results
+//speedups not available when using this constructor
+RunResultsSpeedups::RunResultsSpeedups(
+  const std::filesystem::path& run_results_file_path)
+{
+  //get run results data from file if available
+  std::map<std::string, std::vector<std::string>> run_results_header_to_data;
+  if (std::filesystem::exists(run_results_file_path) && (std::filesystem::is_regular_file(run_results_file_path))) {
+    run_results_header_to_data = HeaderToDataInCsvFile(run_results_file_path);
+  }
+
+  //process run results, specifically generate input signature to data mappings
+  GenInputSignatureToDataMapping(run_results_header_to_data);
+}
+
+//generate input sig to run data mappings from run results as read from file
+void RunResultsSpeedups::GenInputSignatureToDataMapping(
+  const std::optional<std::map<std::string, std::vector<std::string>>>& run_results_header_to_data)
+{
+  if (run_results_header_to_data)
+  {
+    //initialize input signature to run data mapping
+    input_sig_to_run_data_ = decltype(input_sig_to_run_data_)::value_type();
+    
+    //get input "signature" mapped to run data for each run in run results
+    const unsigned int tot_num_runs = 
+      run_results_header_to_data->at(std::string(run_eval::kOptimizedRuntimeHeader)).size();
+    for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
+      //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
+      //have loops with templated iteration counts)
+      const EvalInputSignature run_input({
+        run_results_header_to_data->at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
+        run_results_header_to_data->at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
+        run_results_header_to_data->at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]});
+
+      //retrieve all data for run corresponding to current input signature
+      //and generate mapping between input signature and run data
+      std::map<std::string, std::string> run_headers_to_data;
+      for (const auto& header_data : run_results_header_to_data.value()) {
+        run_headers_to_data.insert({header_data.first, header_data.second.at(num_run)});
+      }
+      input_sig_to_run_data_->insert({run_input, run_headers_to_data});
+    }
+  }
+}
+
+//get mapping of run input signature to value corresponding to input key
+//for each run result
+std::map<EvalInputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::string_view key)
+{
   std::map<EvalInputSignature, std::string> input_sig_to_key_val;
-  //get input "signature" for run mapped to corresponding key value for each run on input
-  const unsigned int tot_num_runs = run_results_header_to_data_->at(std::string(run_eval::kOptimizedRuntimeHeader)).size();
-  for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
-    //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
-    //have loops with templated iteration counts)
-    const EvalInputSignature run_input({
-      run_results_header_to_data_->at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
-      run_results_header_to_data_->at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
-      run_results_header_to_data_->at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]});
-    //add mapping of key value to corresponding run name and input signature
-    input_sig_to_key_val.insert({run_input, run_results_header_to_data_->at(std::string(key))[num_run]});
-    //retrieve all data corresponding to run which corresponds to input signature for run
-    std::map<std::string, std::string> run_headers_to_data;
-    for (const auto& header_data : run_results_header_to_data_.value()) {
-      run_headers_to_data[header_data.first] = header_data.second.at(num_run);
+  if (input_sig_to_run_data_) {
+    //get input "signature" for run mapped to corresponding key value for each run on input
+    for (auto input_sig_to_data_iter = input_sig_to_run_data_->begin();
+         input_sig_to_data_iter != input_sig_to_run_data_->end();
+         input_sig_to_data_iter++)
+    {
+      //add mapping of key value to corresponding input signature
+      input_sig_to_key_val.insert({input_sig_to_data_iter->first, input_sig_to_data_iter->second.at(std::string(key))});
     }
   }
 
   return input_sig_to_key_val;
 }
-
-
-//constructor that takes in run and speedup data
-RunResultsSpeedups::RunResultsSpeedups(
-  const std::string& run_name,
-  const std::map<std::string, std::vector<std::string>>& run_results_header_to_data,
-  const std::map<std::string, std::vector<std::string>>& speedup_header_to_result) :
-  run_name_{run_name},
-  run_results_header_to_data_{run_results_header_to_data},
-  speedup_header_to_result_{speedup_header_to_result} {}
 
 //get mapping of headers to data in csv file for run results and speedups
 //assumed that there are no commas in data since it is used as delimiter between data

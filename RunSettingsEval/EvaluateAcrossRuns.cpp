@@ -36,11 +36,9 @@ void EvaluateAcrossRuns::operator()(
 
   //get header to data of run results and speedups for each run
   //as well as mapping from input signature to runtime
-  std::map<std::string, std::map<std::string, std::vector<std::string>>> run_results_name_to_data;
   std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
   std::map<std::string, std::map<EvalInputSignature, std::string>> input_to_runtime_across_archs;
   for (const auto& run_name : run_names) {
-    run_results_name_to_data[run_name] = run_results_by_name.at(run_name).RunResults();
     speedup_results_name_to_data[run_name] = run_results_by_name.at(run_name).Speedups();
     input_to_runtime_across_archs[run_name] = run_results_by_name.at(run_name).InputsToKeyVal(
       run_eval::kOptimizedRuntimeHeader);
