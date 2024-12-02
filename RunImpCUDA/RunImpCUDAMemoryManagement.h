@@ -12,34 +12,49 @@ class RunImpCUDAMemoryManagement final : public RunImpMemoryManagement<T>
 {
 public:
   //allocate specified amount of data of type T on CUDA device
-  T* AllocateMemoryOnDevice(std::size_t numData) const override {
+  T* AllocateMemoryOnDevice(std::size_t numData) const override
+  {
     T* array_to_allocate;
     cudaMalloc((void **) &array_to_allocate, numData * sizeof(T));
     return array_to_allocate;
   }
 
   //free memory on CUDA device
-  void FreeMemoryOnDevice(T* array_to_free) const override {
+  void FreeMemoryOnDevice(T* array_to_free) const override
+  {
     cudaFree(array_to_free);
   }
 
   //allocate aligned memory on CUDA device (same as default allocating of memory for CUDA)
-  T* AllocateAlignedMemoryOnDevice(std::size_t numData, run_environment::AccSetting acc_setting) const override
+  T* AllocateAlignedMemoryOnDevice(
+    std::size_t numData,
+    run_environment::AccSetting acc_setting) const override
   {
     return AllocateMemoryOnDevice(numData);
   }
 
   //free aligned memory on CUDA device (same as default free memory for CUDA)
-  void FreeAlignedMemoryOnDevice(T* memory_to_free) const override {
+  void FreeAlignedMemoryOnDevice(T* memory_to_free) const override
+  {
     FreeMemoryOnDevice(memory_to_free);
   }
 
-  void TransferDataFromDeviceToHost(T* dest_array, const T* in_array, std::size_t num_data_transfer) const override {
-    cudaMemcpy(dest_array, in_array, num_data_transfer * sizeof(T), cudaMemcpyDeviceToHost);
+  void TransferDataFromDeviceToHost(
+    T* dest_array,
+    const T* in_array,
+    std::size_t num_data_transfer) const override
+  {
+    cudaMemcpy(
+      dest_array, in_array, num_data_transfer * sizeof(T), cudaMemcpyDeviceToHost);
   }
 
-  void TransferDataFromHostToDevice(T* dest_array, const T* in_array, std::size_t num_data_transfer) const override {
-    cudaMemcpy(dest_array, in_array, num_data_transfer * sizeof(T), cudaMemcpyHostToDevice);
+  void TransferDataFromHostToDevice(
+    T* dest_array,
+    const T* in_array,
+    std::size_t num_data_transfer) const override
+  {
+    cudaMemcpy(
+      dest_array, in_array, num_data_transfer * sizeof(T), cudaMemcpyHostToDevice);
   }
 };
 

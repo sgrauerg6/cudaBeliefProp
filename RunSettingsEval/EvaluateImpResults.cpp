@@ -31,8 +31,12 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::Eva
 
   //initialize implementation run speedups
   std::vector<RunSpeedupAvgMedian> run_imp_speedups;
-  run_imp_speedups.insert(run_imp_speedups.cend(), speedup_over_baseline.cbegin(), speedup_over_baseline.cend());
-  run_imp_speedups.insert(run_imp_speedups.cend(), speedup_over_baseline_subsets.cbegin(), speedup_over_baseline_subsets.cend());
+  run_imp_speedups.insert(run_imp_speedups.cend(),
+                          speedup_over_baseline.cbegin(),
+                          speedup_over_baseline.cend());
+  run_imp_speedups.insert(run_imp_speedups.cend(),
+                          speedup_over_baseline_subsets.cbegin(),
+                          speedup_over_baseline_subsets.cend());
 
   //compute and add speedup info for using optimized parallel parameters
   //compared to default parallel parameters
