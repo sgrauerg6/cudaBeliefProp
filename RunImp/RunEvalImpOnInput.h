@@ -14,6 +14,7 @@
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunSettingsEval/EvaluateImpAliases.h"
 #include "ParallelParams.h"
 
 //virtual class to run and evaluate benchmark on a input specified by index number
@@ -24,27 +25,37 @@ public:
 
 protected:
   //set up parallel parameters for benchmark
-  virtual std::shared_ptr<ParallelParams> SetUpParallelParams(const run_environment::RunImpSettings& run_imp_settings) const = 0;
+  virtual std::shared_ptr<ParallelParams> SetUpParallelParams(
+    const run_environment::RunImpSettings& run_imp_settings) const = 0;
 
   //retrieve input and parameters for run of current benchmark
   virtual RunData InputAndParamsForCurrBenchmark(bool loop_iters_templated) const = 0;
 
-  //run one or two implementations of benchmark and compare results if running multiple implementations
-  virtual std::optional<RunData> RunImpsAndCompare(std::shared_ptr<ParallelParams> parallel_params,
-    bool run_opt_imp_only, bool run_imp_templated_loop_iters) const = 0;
+  //run one or two implementations of benchmark and compare results if
+  //running multiple implementations
+  virtual std::optional<RunData> RunImpsAndCompare(
+    std::shared_ptr<ParallelParams> parallel_params,
+    bool run_opt_imp_only,
+    bool run_imp_templated_loop_iters) const = 0;
 
   //get current run inputs and parameters in RunData structure
   RunData InputAndParamsRunData(bool loop_iters_templated) const {
     RunData curr_run_data;
-    curr_run_data.AddDataWHeader(std::string(run_eval::kDatatypeHeader), std::string(run_environment::kDataSizeToNameMap.at(sizeof(T))));
+    curr_run_data.AddDataWHeader(
+      std::string(run_eval::kDatatypeHeader),
+      std::string(run_environment::kDataSizeToNameMap.at(sizeof(T))));
     curr_run_data.AppendData(run_environment::RunSettings<OPT_IMP_ACCEL>());
-    curr_run_data.AddDataWHeader(std::string(run_eval::kLoopItersTemplatedHeader), loop_iters_templated);
+    curr_run_data.AddDataWHeader(
+      std::string(run_eval::kLoopItersTemplatedHeader), loop_iters_templated);
     return curr_run_data;
   }
 
-  //run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set
-  //to optimize parallel parameters returns data from runs using default and optimized parallel parameters
-  MultRunData::mapped_type RunEvalBenchmark(const run_environment::RunImpSettings& run_imp_settings,
+  //run optimized and single threaded implementations using multiple sets of
+  //parallel parameters in optimized implementation if set to optimize parallel
+  //parameters
+  //returns data from runs using default and optimized parallel parameters
+  MultRunData::mapped_type RunEvalBenchmark(
+    const run_environment::RunImpSettings& run_imp_settings,
     bool run_w_loop_iters_templated) const
   {
     MultRunData::mapped_type::value_type out_run_data;
@@ -56,13 +67,17 @@ protected:
     //if optimizing parallel parameters, parallel_params_vect contains parallel parameter settings to run
     //(and contains only the default parallel parameters if not)
     std::vector<std::array<unsigned int, 2>> parallel_params_vect{
-      run_imp_settings.opt_parallel_params_setting.first ? run_imp_settings.p_params_default_opt_settings.second : std::vector<std::array<unsigned int, 2>>()};
+      run_imp_settings.opt_parallel_params_setting.first ? 
+      run_imp_settings.p_params_default_opt_settings.second :
+      std::vector<std::array<unsigned int, 2>>()};
       
-    //if optimizing parallel parameters, run BP for each parallel parameters option, retrieve best parameters for each kernel or overall for the run,
+    //if optimizing parallel parameters, run BP for each parallel parameters option,
+    //retrieve best parameters for each kernel or overall for the run,
     //and then run BP with best found parallel parameters
     //if not optimizing parallel parameters, run BP once using default parallel parameters
     for (unsigned int run_num = 0; run_num < (parallel_params_vect.size() + 1); run_num++) {
-      //initialize current run type to specify if current run is only run, run with default params, test params run, or final run with optimized params
+      //initialize current run type to specify if current run is only run, run with
+      //default params, test params run, or final run with optimized params
       RunType curr_run_type{RunType::TEST_PARAMS};
       if (!run_imp_settings.opt_parallel_params_setting.first) {
         curr_run_type = RunType::ONLY_RUN;
@@ -90,26 +105,35 @@ protected:
       RunData curr_run_data;
       if (curr_run_type != RunType::TEST_PARAMS) {
         //add input and parameters data for specific benchmark to current run data
-        curr_run_data.AddDataWHeader(std::string(run_eval::kInputIdxHeader), std::to_string(NUM_INPUT));
+        curr_run_data.AddDataWHeader(
+          std::string(run_eval::kInputIdxHeader),
+          std::to_string(NUM_INPUT));
         curr_run_data.AppendData(InputAndParamsForCurrBenchmark(run_w_loop_iters_templated));
         if ((run_imp_settings.opt_parallel_params_setting.first) &&
             (run_imp_settings.opt_parallel_params_setting.second ==
              run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun))
         {
-          //add parallel parameters for each kernel to current input data if allowing different parallel parameters for each kernel in the same run
+          //add parallel parameters for each kernel to current input data if
+          //allowing different parallel parameters for each kernel
+          //in the same run
           curr_run_data.AppendData(parallel_params->AsRunData());
         }
       }
 
-      //run only optimized implementation and not single-threaded run if current run is not final run or is using default parameter parameters
+      //run only optimized implementation and not single-threaded run if
+      //current run is not final run or is using default parameter parameters
       const bool run_opt_imp_only{curr_run_type == RunType::TEST_PARAMS};
 
       //run benchmark implementation(s) and return null output if error in run
       //detailed results stored to file that is generated using stream
-      const auto run_imps_results = RunImpsAndCompare(parallel_params, run_opt_imp_only, run_w_loop_iters_templated);
-      curr_run_data.AddDataWHeader(std::string(run_eval::kRunSuccessHeader), run_imps_results.has_value());
+      const auto run_imps_results =
+        RunImpsAndCompare(parallel_params, run_opt_imp_only, run_w_loop_iters_templated);
+      curr_run_data.AddDataWHeader(
+        std::string(run_eval::kRunSuccessHeader),
+        run_imps_results.has_value());
 
-      //if error in run and run is any type other than for testing parameters, exit function with null output to indicate error
+      //if error in run and run is any type other than for testing parameters,
+      //exit function with null output to indicate error
       if ((!run_imps_results) && (curr_run_type != RunType::TEST_PARAMS)) {
         return {};
       }
@@ -119,9 +143,11 @@ protected:
         curr_run_data.AppendData(run_imps_results.value());
       }
 
-      //add current run results for output if using default parallel parameters or is final run w/ optimized parallel parameters
+      //add current run results for output if using default parallel 
+      //parameters or is final run w/ optimized parallel parameters
       if (curr_run_type != RunType::TEST_PARAMS) {
-        //set output for runs using default parallel parameters and final run (which is the same run if not optimizing parallel parameters)
+        //set output for runs using default parallel parameters and final run
+        //(which is the same run if not optimizing parallel parameters)
         if (curr_run_type == RunType::OPTIMIZED_RUN) {
           out_run_data[run_environment::ParallelParamsSetting::kOptimized] = curr_run_data;
         }
@@ -137,7 +163,8 @@ protected:
       }
 
       if (run_imp_settings.opt_parallel_params_setting.first) {
-        //retrieve and store results including runtimes for each kernel if allowing different parallel parameters for each kernel and
+        //retrieve and store results including runtimes for each kernel if
+        //allowing different parallel parameters for each kernel and
         //total runtime for current run
         //if error in run, don't add results for current parallel parameters to results set
         if (run_imps_results) {
@@ -146,8 +173,10 @@ protected:
           }
         }
 
-        //set optimized parallel parameters if next run is final run that uses optimized parallel parameters
-        //optimized parallel parameters are determined from previous test runs using multiple test parallel parameters
+        //set optimized parallel parameters if next run is final run
+        //that uses optimized parallel parameters
+        //optimized parallel parameters are determined from previous test runs
+        //using multiple test parallel parameters
         if (run_num == (parallel_params_vect.size() - 1)) {
           parallel_params->SetOptimizedParams();
         }

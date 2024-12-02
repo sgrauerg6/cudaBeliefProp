@@ -12,7 +12,8 @@
 
 #include "RunEvalConstsEnums.h"
 #include "RunSettings.h"
-#include "RunSettingsEval/EvalInputSignature.h"
+#include "EvalInputSignature.h"
+#include "EvaluateImpAliases.h"
 #include <filesystem>
 
 #ifdef OPTIMIZED_CUDA_RUN
@@ -96,7 +97,7 @@ private:
     MultRunData& run_output,
     std::string_view data_type_str,
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
-    const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subset_str_indices =
+    const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subset_str_input_indices =
       std::vector<std::pair<std::string, std::vector<unsigned int>>>()) const;
 
   //get average and median speedup of current runs compared to baseline data from file

@@ -17,16 +17,20 @@ RunResultsSpeedups::RunResultsSpeedups(
   const std::string& run_name) : run_name_{run_name}
 {
   //get run results data from file if available
-  std::filesystem::path run_results_fp = imp_results_file_path / run_eval::kImpResultsRunDataFolderName /
-    (std::string(run_name_) + '_' + std::string(run_eval::kImpResultsRunDataFolderName) + std::string(run_eval::kCsvFileExtension));
+  std::filesystem::path run_results_fp = 
+    imp_results_file_path / run_eval::kImpResultsRunDataFolderName /
+    (std::string(run_name_) + '_' + std::string(run_eval::kImpResultsRunDataFolderName) +
+    std::string(run_eval::kCsvFileExtension));
   std::map<std::string, std::vector<std::string>> run_results_header_to_data;
   if (std::filesystem::exists(run_results_fp) && (std::filesystem::is_regular_file(run_results_fp))) {
     run_results_header_to_data = HeaderToDataInCsvFile(run_results_fp);
   }
 
   //get speedup evaluation data from file if available
-  std::filesystem::path run_speedup_fp = imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
-    (std::string(run_name_) + '_' + std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension));
+  std::filesystem::path run_speedup_fp =
+    imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
+    (std::string(run_name_) + '_' + std::string(run_eval::kSpeedupsDescFileName) +
+    std::string(run_eval::kCsvFileExtension));
   if (std::filesystem::exists(run_speedup_fp) && (std::filesystem::is_regular_file(run_speedup_fp))) {
     speedup_header_to_result_ = HeaderToDataInCsvFile(run_speedup_fp);
   }
@@ -52,7 +56,8 @@ RunResultsSpeedups::RunResultsSpeedups(
 
 //generate input sig to run data mappings from run results as read from file
 void RunResultsSpeedups::GenInputSignatureToDataMapping(
-  const std::optional<std::map<std::string, std::vector<std::string>>>& run_results_header_to_data)
+  const std::optional<std::map<std::string,
+  std::vector<std::string>>>& run_results_header_to_data)
 {
   if (run_results_header_to_data)
   {
@@ -93,7 +98,8 @@ std::map<EvalInputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std
          input_sig_to_data_iter++)
     {
       //add mapping of key value to corresponding input signature
-      input_sig_to_key_val.insert({input_sig_to_data_iter->first, input_sig_to_data_iter->second.at(std::string(key))});
+      input_sig_to_key_val.insert(
+          {input_sig_to_data_iter->first, input_sig_to_data_iter->second.at(std::string(key))});
     }
   }
 
@@ -104,7 +110,9 @@ std::map<EvalInputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std
 //assumed that there are no commas in data since it is used as delimiter between data
 //first output is headers in order, second output is mapping of headers to results
 std::map<std::string, std::vector<std::string>>
-RunResultsSpeedups::HeaderToDataInCsvFile(const std::filesystem::path& csv_file_path) const {
+RunResultsSpeedups::HeaderToDataInCsvFile(
+  const std::filesystem::path& csv_file_path) const
+{
   std::ifstream csv_file_str(csv_file_path);
   if (!(csv_file_str.is_open())) {
     std::cout << "ERROR CREATING STREAM: " << csv_file_path << std::endl;

@@ -38,12 +38,8 @@ int main(int argc, char** argv)
     std::array<std::string_view, 2>{
       bp_file_handling::kBaselineRunDataPath,
       bp_file_handling::kBaselineRunDesc};
-  run_imp_settings.subset_str_indices = {{"smallest 3 stereo sets", {0, 1, 2, 3, 4, 5}},
-#ifndef SMALLER_SETS_ONLY
-                                      {"largest 3 stereo sets", {8, 9, 10, 11, 12, 13}}};
-#else
-                                      {"largest stereo set", {8, 9}}};
-#endif //SMALLER_SETS_ONLY
+  run_imp_settings.subset_str_input_indices = {
+    {"smallest 3 stereo sets", {0, 1, 2}}, {"largest 3 stereo sets", {4, 5, 6}}};
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
   run_imp_settings.run_name = (argc > 1) ? argv[1] : "CurrentRun";

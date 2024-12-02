@@ -28,6 +28,7 @@
 #include "RunSettingsEval/RunEvalConstsEnums.h"
 #include "RunSettingsEval/RunSettings.h"
 #include "RunSettingsEval/RunData.h"
+#include "RunSettingsEval/EvaluateImpAliases.h"
 #include "RunImp/RunBenchmarkImp.h"
 
 //run and evaluate optimized belief propagation implementation on a number of inputs

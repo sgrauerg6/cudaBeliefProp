@@ -72,12 +72,22 @@ public:
     }
   }
 
+  unsigned int EvalSetNum() const {
+    if (!(eval_set_num_.has_value())) {
+      return std::numeric_limits<unsigned int>::max();
+    }
+    else {
+      return eval_set_num_.value();
+    }
+  }
+
   std::string UseTemplatedLoopItersStr() const {
     if (!(use_templated_loop_iters_.has_value())) {
       return "BOTH";
     }
     return ((!(use_templated_loop_iters_.value())) ?
-      std::string(run_eval::kBoolValFalseTrueDispStr[0]) : std::string(run_eval::kBoolValFalseTrueDispStr[1]));
+      std::string(run_eval::kBoolValFalseTrueDispStr[0]) :
+      std::string(run_eval::kBoolValFalseTrueDispStr[1]));
   }
   
   //remove templated loop iter setting and change it to "any"
@@ -100,13 +110,9 @@ private:
 
 //overloaded << operator to write EvalInputSignature object to stream
 inline std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig) {
-  os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.EvalSetNumStr() << " " << eval_input_sig.UseTemplatedLoopItersStr();
+  os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.EvalSetNumStr()
+     << " " << eval_input_sig.UseTemplatedLoopItersStr();
   return os;
 }
-
-using MultRunData = std::map<EvalInputSignature, std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
-using RunSpeedupAvgMedian = std::pair<std::string, std::array<double, 2>>;
-using MultRunDataWSpeedupByAcc =
-  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
 
 #endif //EVAL_INPUT_SIGNATURE_H_

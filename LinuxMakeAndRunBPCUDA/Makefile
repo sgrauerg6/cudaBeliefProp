@@ -110,13 +110,13 @@ BpFileHandling.o: ${BP_PATH}/BpFileProcessing/BpFileHandling.h ${BP_PATH}/BpFile
 DetailedTimings.o: ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp ${TOP_DIR}/RuntimeTiming/DetailedTimings.h
 	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessBPOnTargetDevice.o : ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h ${TOP_DIR}/RunSettingsEval/RunSettings.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h
+ProcessBPOnTargetDevice.o : ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h ${TOP_DIR}/RunSettingsEval/RunSettings.h ${TOP_DIR}/RunSettingsEval/EvaluateImpAliases.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h
 	$(CC) ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessOptimizedCPUBP.o : ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.cpp ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o ${BP_PATH}/BpOptimizeCPU/KernelBpStereoCPU.h ${BP_PATH}/BpOptimizeCPU/KernelBpStereoCPU.cpp
 	$(CC) ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSet.o: ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp ${BP_PATH}/BpRunProcessing/RunBpStereoSet.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${TOP_DIR}/RunSettingsEval/RunSettings.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h
+RunBpStereoSet.o: ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp ${BP_PATH}/BpRunProcessing/RunBpStereoSet.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${TOP_DIR}/RunSettingsEval/RunSettings.h ${TOP_DIR}/RunSettingsEval/EvaluateImpAliases.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h
 	$(CC) ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpImage.o: ${BP_PATH}/BpImageProcessing/BpImage.cpp ${BP_PATH}/BpImageProcessing/BpImage.h

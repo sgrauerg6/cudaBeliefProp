@@ -20,19 +20,23 @@
 #include "RunSettingsEval/EvaluateImpResults.h"
 #include "RunImp/RunBenchmarkImp.h"
 
-//class to run and evaluate a optimized benchmark implementation using multiple settings
+//class to run and evaluate a optimized benchmark implementation using
+//multiple settings
 //optimization may be on the CPU using vectorization or on the GPU using CUDA
 class RunEvalImpMultSettings {
 public:
-  //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
-  void operator()(const std::map<run_environment::AccSetting,
-  std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting,
+  //run and evaluate benchmark using multiple datatypes,
+  //inputs, and implementations if available
+  void operator()(
+    const std::map<run_environment::AccSetting,
+    std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting,
     const run_environment::RunImpSettings& run_imp_settings,
-  std::unique_ptr<EvaluateImpResults> evalResultsPtr) const;
+    std::unique_ptr<EvaluateImpResults> evalResultsPtr) const;
 
 private:
   //get fastest available implementation
-  run_environment::AccSetting FastestAvailableAcc(const std::map<run_environment::AccSetting,
+  run_environment::AccSetting FastestAvailableAcc(
+    const std::map<run_environment::AccSetting,
     std::shared_ptr<RunBenchmarkImp>>& run_benchmark_imps_by_acc_setting) const;
 };
 

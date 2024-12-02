@@ -21,15 +21,20 @@ public:
   //retrieve current parallel parameters as RunData type
   virtual RunData AsRunData() const = 0;
 
-  //add results from run with same specified parallel parameters used every parallel component
-  virtual void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data) = 0;
+  //add results from run with same specified parallel parameters
+  //used every parallel component
+  virtual void AddTestResultsForParallelParams(
+    const std::array<unsigned int, 2>& p_params_curr_run,
+    const RunData& curr_run_data) = 0;
 
-  //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
-  //to retrieved optimized parameters
+  //retrieve optimized parameters from results across multiple runs with different
+  //parallel parameters and set current parameters to retrieved optimized parameters
   virtual void SetOptimizedParams() = 0;
 
-  //get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers
-  virtual std::array<unsigned int, 2> OptParamsForKernel(const std::array<unsigned int, 2>& kernel_location) const = 0;
+  //get optimized parallel parameters for parallel processing kernel for
+  //kernel that is indexed as an array of two unsigned integers
+  virtual std::array<unsigned int, 2> OptParamsForKernel(
+    const std::array<unsigned int, 2>& kernel_location) const = 0;
 };
 
 #endif //PARALLEL_PARAMS_H

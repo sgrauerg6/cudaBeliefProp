@@ -92,8 +92,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     std::array<std::string_view, 2>{
       bp_file_handling::kBaselineRunDataPath,
       bp_file_handling::kBaselineRunDesc};
-  run_imp_settings.subset_str_indices = {{std::string(beliefprop::kSmallLargeStereoSetsEvalStr[0]), {0, 1, 2, 3, 4, 5}},
-                                         {std::string(beliefprop::kSmallLargeStereoSetsEvalStr[1]), {8, 9, 10, 11, 12, 13}}};
+  run_imp_settings.subset_str_input_indices = {
+    {"smallest 3 stereo sets", {0, 1, 2}}, {"largest 3 stereo sets", {4, 5, 6}}};
 
   //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation
