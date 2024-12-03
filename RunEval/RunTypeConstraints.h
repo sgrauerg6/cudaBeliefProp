@@ -5,6 +5,8 @@
 #ifndef RUN_TYPE_CONSTRAINTS_H_
 #define RUN_TYPE_CONSTRAINTS_H_
 
+#include <type_traits>
+
 //define concepts of allowed data types for data storage and processing
 #if defined(OPTIMIZED_CUDA_RUN)
 

@@ -10,11 +10,9 @@
 
 #include <utility>
 #include <memory>
-//#include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpSharedFuncts/SharedSmoothImageFuncts.h"
 #include "BpImageProcessing/SmoothImage.h"
 #include "BpImageProcessing/BpImageConstraints.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "RunSettingsParams/ParallelParams.h"
 
 class SmoothImageCPU final : public SmoothImage {
 public:
@@ -51,62 +49,5 @@ private:
     const float* image_filter, unsigned int size_filter,
     const ParallelParams& opt_cpu_params) const;
 };
-
-//apply a horizontal filter on each pixel of the image in parallel
-template<BpImData_t U>
-void SmoothImageCPU::FilterImageAcrossCPU(
-  const U* image_to_filter, float* filtered_image,
-  unsigned int width_images, unsigned int height_images,
-  const float* image_filter, unsigned int size_filter,
-  const ParallelParams& opt_cpu_params) const
-{
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{
-    (int)opt_cpu_params.OptParamsForKernel(
-      {static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
-  #pragma omp parallel for num_threads(num_threads_kernel)
-#else
-  #pragma omp parallel for
-#endif
-#ifdef _WIN32
-  for (int val = 0; val < width_images * height_images; val++) {
-#else
-  for (unsigned int val = 0; val < width_images * height_images; val++) {
-#endif //_WIN32
-    const unsigned int y_val = val / width_images;
-    const unsigned int x_val = val % width_images;
-    beliefprop::FilterImageAcrossProcessPixel<U>(
-      x_val, y_val, image_to_filter, filtered_image,
-      width_images, height_images, image_filter, size_filter);
-  }
-}
-
-//apply a vertical filter on each pixel of the image in parallel
-template<BpImData_t U>
-void SmoothImageCPU::FilterImageVerticalCPU(
-  const U* image_to_filter, float* filtered_image,
-  unsigned int width_images, unsigned int height_images,
-  const float* image_filter, unsigned int size_filter,
-  const ParallelParams& opt_cpu_params) const
-{
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{
-    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
-  #pragma omp parallel for num_threads(num_threads_kernel)
-#else
-  #pragma omp parallel for
-#endif
-#ifdef _WIN32
-  for (int val = 0; val < width_images * height_images; val++) {
-#else
-  for (unsigned int val = 0; val < width_images * height_images; val++) {
-#endif //_WIN32
-    const unsigned int y_val = val / width_images;
-    const unsigned int x_val = val % width_images;
-    beliefprop::FilterImageVerticalProcessPixel<U>(
-      x_val, y_val, image_to_filter, filtered_image,
-      width_images, height_images, image_filter, size_filter);
-  }
-}
 
 #endif /* SMOOTHIMAGECPU_H_ */
