@@ -46,6 +46,11 @@ public:
   //"any" and is ignored in the comparison
   bool operator==(const InputSignature& rhs) const;
 
+  //alternate "equal" operator where an attribute is considered "equal"
+  //in cases where one side is "ANY" for the attribute as indicated
+  //by "no value" for std::optional object
+  bool EqualsUsingAny(const InputSignature& rhs) const;
+
   std::string DataTypeStr() const {
     if (!(data_type_size_.has_value())) {
       return "ANY";
@@ -96,6 +101,10 @@ public:
 
   void RemoveDatatypeSetting() {
     data_type_size_.reset();
+  }
+
+  std::optional<bool> TemplatedLoopIters() const {
+    return use_templated_loop_iters_;
   }
 
   //overloaded << operator to write InputSignature object to stream

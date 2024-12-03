@@ -26,7 +26,7 @@
 
 //enum to define difference between "base" and "target" result sets
 //when evaluating speedup
-enum class BaseTargetDiff { kDiffAcceleration, kDiffDatatype };
+enum class BaseTargetDiff { kDiffAcceleration, kDiffDatatype, kDiffTemplatedSetting };
 
 //class with operator function to evaluate implementations of the same algorithm across
 //different data types and acceleration methods

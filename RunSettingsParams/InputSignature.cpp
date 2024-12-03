@@ -83,3 +83,15 @@ bool InputSignature::operator==(const InputSignature& rhs) const {
   return (std::tie(data_type_size_, eval_set_num_, use_templated_loop_iters_) ==
           std::tie(rhs.data_type_size_, rhs.eval_set_num_, rhs.use_templated_loop_iters_));
 }
+
+//alternate "equal" operator where an attribute is considered "equal"
+//in cases where one side is "ANY" for the attribute as indicated
+//by "no value" for std::optional object
+bool InputSignature::EqualsUsingAny(const InputSignature& rhs) const {
+  return (std::tie(rhs.data_type_size_ ? data_type_size_ : std::optional<unsigned int>(),
+                   rhs.eval_set_num_ ? eval_set_num_ : std::optional<unsigned int>(),
+                   rhs.use_templated_loop_iters_ ? use_templated_loop_iters_ : std::optional<bool>()) ==
+          std::tie(data_type_size_ ? rhs.data_type_size_ : std::optional<unsigned int>(),
+                   eval_set_num_ ? rhs.eval_set_num_ : std::optional<unsigned int>(),
+                   use_templated_loop_iters_ ? rhs.use_templated_loop_iters_ : std::optional<bool>()));
+}
