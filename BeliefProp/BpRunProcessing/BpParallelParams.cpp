@@ -6,6 +6,7 @@
  */
 
 #include <ranges>
+#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpRunProcessing/BpRunSettings.h"
 #include "BpParallelParams.h"
 
@@ -41,8 +42,10 @@ void BpParallelParams::SetParallelDims(const std::array<unsigned int, 2>& parall
     {parallel_dims};
 }
 
-//add current parallel parameters to data for current run
-RunData BpParallelParams::AsRunData() const {
+//get current parallel parameters to data as RunData object
+RunData BpParallelParams::AsRunData() const
+{
+  //initialize RunData object
   RunData curr_run_data;
 
   //show parallel parameters for each kernel1
