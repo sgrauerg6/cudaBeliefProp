@@ -17,11 +17,10 @@
 #include <utility>
 #include <string>
 #include <optional>
-#include "RunSettings.h"
 #include "RunData.h"
-#include "EvalInputSignature.h"
+#include "RunSettingsParams/InputSignature.h"
 
-using MultRunData = std::map<EvalInputSignature, std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
+using MultRunData = std::map<InputSignature, std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
 using RunSpeedupAvgMedian = std::pair<std::string, std::array<double, 2>>;
 using MultRunDataWSpeedupByAcc =
   std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;

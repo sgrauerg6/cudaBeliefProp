@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "BpRunProcessing/BpParallelParams.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
 #include "ProcessCUDABP.h"
 #include "SmoothImageCUDA.h"

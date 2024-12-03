@@ -5,9 +5,8 @@
  *      Author: scott
  */
 
+#include "RunEval/EvaluateImpAliases.h"
 #include "RunEvalImpMultSettings.h"
-#include "RunSettingsEval/EvaluateImpResults.h"
-#include "RunSettingsEval/EvaluateImpAliases.h"
 
 //run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
 void RunEvalImpMultSettings::operator()(

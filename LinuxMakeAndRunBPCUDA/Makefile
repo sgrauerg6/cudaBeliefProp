@@ -56,32 +56,32 @@ ARCHITECTURES_GENCODE = -arch=native
 
 all: impDriverCUDA impDriverCUDACustom
 
-impDriverCUDA: driverCudaBp.o EvaluateAcrossRuns.o EvalInputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
-	$(CC) driverCudaBp.o EvaluateAcrossRuns.o EvalInputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
+impDriverCUDA: driverCudaBp.o EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
+	$(CC) driverCudaBp.o EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBp -O
 
-impDriverCUDACustom: driverBpStereoCUDA_customRun.o EvaluateAcrossRuns.o EvalInputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
-	$(CC) driverBpStereoCUDA_customRun.o EvaluateAcrossRuns.o EvalInputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBpCustom -O
+impDriverCUDACustom: driverBpStereoCUDA_customRun.o EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o
+	$(CC) driverBpStereoCUDA_customRun.o EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImageCUDA.o SmoothImage.o DetailedTimings.o ProcessBPOnTargetDevice.o ProcessCUDABP.o $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o driverCudaBpCustom -O
 
 EvaluateAcrossRuns.o :
-	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${TOP_DIR}/RunEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-EvalInputSignature.o :
-	$(CC) ${TOP_DIR}/RunSettingsEval/EvalInputSignature.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+InputSignature.o :
+	$(CC) ${TOP_DIR}/RunSettingsParams/InputSignature.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunResultsSpeedups.o :
-	$(CC) ${TOP_DIR}/RunSettingsEval/RunResultsSpeedups.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${TOP_DIR}/RunEval/RunResultsSpeedups.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 EvaluateBPImpResults.o : 
 	$(CC) ${BP_PATH}/BpResultsEvaluation/EvaluateBPImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 EvaluateImpResults.o:
-	$(CC) ${TOP_DIR}/RunSettingsEval/EvaluateImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${TOP_DIR}/RunEval/EvaluateImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunEvalImpMultSettings.o:
 	$(CC) ${TOP_DIR}/RunImp/RunEvalImpMultSettings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunData.o:
-	$(CC) ${TOP_DIR}/RunSettingsEval/RunData.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${TOP_DIR}/RunEval/RunData.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunEvalBpImp.o:
 	$(CC) ${BP_PATH}/BpRunEvalImp/RunEvalBpImp.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -93,7 +93,7 @@ BpLevel.o:
 	$(CC) ${BP_PATH}/BpRunProcessing/BpLevel.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ParallelParams.o:
-	$(CC) ${TOP_DIR}/RunImp/ParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+	$(CC) ${TOP_DIR}/RunSettingsParams/ParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 RunBenchmarkImp.o:
 	$(CC) ${TOP_DIR}/RunImp/RunBenchmarkImp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
@@ -110,13 +110,13 @@ BpFileHandling.o: ${BP_PATH}/BpFileProcessing/BpFileHandling.h ${BP_PATH}/BpFile
 DetailedTimings.o: ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp ${TOP_DIR}/RuntimeTiming/DetailedTimings.h
 	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-ProcessBPOnTargetDevice.o : ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h ${TOP_DIR}/RunSettingsEval/RunSettings.h ${TOP_DIR}/RunSettingsEval/EvaluateImpAliases.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h
+ProcessBPOnTargetDevice.o : ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.h DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h ${TOP_DIR}/RunSettingsParams/RunSettings.h ${TOP_DIR}/RunEval/EvaluateImpAliases.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h
 	$(CC) ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 ProcessOptimizedCPUBP.o : ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.cpp ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.h ProcessBPOnTargetDevice.o ${BP_PATH}/BpOptimizeCPU/KernelBpStereoCPU.h ${BP_PATH}/BpOptimizeCPU/KernelBpStereoCPU.cpp
 	$(CC) ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c -fopenmp $(ARCHITECTURE_COMPILE_FLAG) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
-RunBpStereoSet.o: ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp ${BP_PATH}/BpRunProcessing/RunBpStereoSet.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${TOP_DIR}/RunSettingsEval/RunSettings.h ${TOP_DIR}/RunSettingsEval/EvaluateImpAliases.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h
+RunBpStereoSet.o: ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp ${BP_PATH}/BpRunProcessing/RunBpStereoSet.h ${BP_PATH}/BpResultsEvaluation/BpEvaluationStereoSets.h ${TOP_DIR}/RunSettingsParams/RunSettings.h ${TOP_DIR}/RunEval/EvaluateImpAliases.h ${BP_PATH}/BpRunProcessing/BpConstsEnumsAliases.h SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o ${BP_PATH}/BpResultsEvaluation/DetailedTimingBPConsts.h
 	$(CC) ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
 
 BpImage.o: ${BP_PATH}/BpImageProcessing/BpImage.cpp ${BP_PATH}/BpImageProcessing/BpImage.h

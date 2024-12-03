@@ -8,9 +8,9 @@
 #ifndef SHAREDSMOOTHIMAGEFUNCTS_H_
 #define SHAREDSMOOTHIMAGEFUNCTS_H_
 
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "BpImageProcessing/BpImageConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "BpImageProcessing/BpImageConstraints.h"
 
 namespace beliefprop {
 

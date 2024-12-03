@@ -10,8 +10,8 @@
 #ifndef EVALUATE_BP_IMP_RESULTS_H_
 #define EVALUATE_BP_IMP_RESULTS_H_
 
-#include "RunSettingsEval/EvaluateImpResults.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
+#include "RunEval/EvaluateImpResults.h"
+#include "RunEval/RunEvalConstsEnums.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include <filesystem>
 #include <vector>

@@ -16,18 +16,18 @@
 #include <array>
 #include <utility>
 #include <ranges>
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RuntimeTiming/DetailedTimings.h"
+#include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunImpMemoryManagement.h"
-#include "BpRunSettings.h"
-#include "BpLevel.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "RunEval/RunEvalConstsEnums.h"
+#include "RuntimeTiming/DetailedTimings.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpSettings.h"
+#include "BpRunSettings.h"
 #include "BpParallelParams.h"
+#include "BpLevel.h"
 
 //alias for time point for start and end time for each timing segment
 using timingType = std::chrono::time_point<std::chrono::system_clock>;

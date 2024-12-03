@@ -9,7 +9,7 @@
 #define BP_CONSTS_ENUMS_ALIASES_H_
 
 #include <array>
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 
 namespace beliefprop {
 

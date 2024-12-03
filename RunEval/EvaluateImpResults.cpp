@@ -7,12 +7,12 @@
  *  Function definitions for class to evaluate implementation results.
  */
 
-#include "EvaluateImpResults.h"
+#include <sstream>
+#include <numeric>
+#include <fstream>
 #include "EvaluateAcrossRuns.h"
 #include "RunResultsSpeedups.h"
-#include <fstream>
-#include <numeric>
-#include <sstream>
+#include "EvaluateImpResults.h"
 
 //evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method
 //return run data with speedup from evaluation of implementation runs using multiple inputs with runs
@@ -438,7 +438,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaselineSubse
       run_data_all_runs,
       run_environment::kDataSizeToNameMap.at(data_type_size),
       run_imp_settings.baseline_runtimes_path_desc.value(),
-      run_imp_settings.subset_str_input_indices);
+      run_imp_settings.subset_desc_input_sig);
   }
   //return empty vector if doesn't match settings to get speedup over baseline for subsets
   return std::vector<RunSpeedupAvgMedian>();
@@ -447,12 +447,12 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaselineSubse
 //get baseline runtime data if available...return null if baseline data not available
 //key for runtime data in results is different to retrieve optimized runtime compared to
 //single thread runtime for baseline run
-std::optional<std::pair<std::string, std::map<EvalInputSignature, std::string>>> EvaluateImpResults::GetBaselineRuntimeData(
+std::optional<std::pair<std::string, std::map<InputSignature, std::string>>> EvaluateImpResults::GetBaselineRuntimeData(
   const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
   std::string_view key_runtime_data) const
 {
   RunResultsSpeedups baseline_run_results(baseline_runtimes_path_desc.at(0));
-  return std::pair<std::string, std::map<EvalInputSignature, std::string>>{
+  return std::pair<std::string, std::map<InputSignature, std::string>>{
     std::string(baseline_runtimes_path_desc.at(1)),
     baseline_run_results.InputsToKeyVal(key_runtime_data)};
 }
@@ -476,8 +476,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
   MultRunData& run_output,
   std::string_view data_type_str,
   const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
-  const std::vector<std::pair<std::string,
-  std::vector<unsigned int>>>& subset_str_input_indices) const
+  const std::vector<std::pair<std::string, std::vector<InputSignature>>>& subset_desc_input_sig) const
 {
   //get speedup over baseline for optimized runs
   std::vector<RunSpeedupAvgMedian> speedup_data;
@@ -487,11 +486,12 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
     const auto& baseline_runtimes = (*baseline_run_data).second;
     //retrieve speedup data for subsets of optimized runs over corresponding
     //run in baseline data
-    for (const auto& curr_subset_str_input_indices : subset_str_input_indices) {
+    for (const auto& curr_subset_desc_input_sig : subset_desc_input_sig) {
       std::vector<double> speedups_vect;
       const std::string speedup_header = "Speedup relative to " + std::string((*baseline_run_data).first) + " on " +
-        std::string(curr_subset_str_input_indices.first) + " - " + std::string(data_type_str);
-      for (unsigned int input_index : curr_subset_str_input_indices.second) {
+        std::string(curr_subset_desc_input_sig.first) + " - " + std::string(data_type_str);
+      for (const auto& eval_input_signature : curr_subset_desc_input_sig.second) {
+        unsigned int input_index = eval_input_signature.EvalSetNum();
         for (auto run_output_iter = run_output.begin(); run_output_iter != run_output.end(); run_output_iter++) {
           if (run_output_iter->first.EvalSetNum() == input_index) {
             if (run_output.at(run_output_iter->first)) {
@@ -630,12 +630,12 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
             run_input_data_iter_base != run_output_base.end();
             run_input_data_iter_base++)
   {
-    EvalInputSignature base_in_sig_no_datatype(run_input_data_iter_base->first);
+    InputSignature base_in_sig_no_datatype(run_input_data_iter_base->first);
     for (auto run_input_data_iter_target=run_output_target.begin();
          run_input_data_iter_target != run_output_target.end();
          run_input_data_iter_target++)
     {
-      EvalInputSignature target_in_sig_no_datatype(run_input_data_iter_target->first);
+      InputSignature target_in_sig_no_datatype(run_input_data_iter_target->first);
       if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
         //remove datatype from input signature if different datatype
         //between base and target output
@@ -677,7 +677,7 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
   //differs in disp values templated and get speedup for each of templated compared to non-templated
   std::vector<double> speedups_vect;
   for (auto run_input_data_iter=run_output.begin(); run_input_data_iter != run_output.end();) {
-    EvalInputSignature run_sig_any_template_setting(run_input_data_iter->first);
+    InputSignature run_sig_any_template_setting(run_input_data_iter->first);
     run_sig_any_template_setting.RemoveTemplatedLoopIterSetting();
     auto run_input_data_iter_2 = run_input_data_iter;
     while (true) {
@@ -685,7 +685,7 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
       if (run_input_data_iter_2 == run_output.end()) {
         break;
       }
-      EvalInputSignature run_sig_2_any_template_setting(run_input_data_iter_2->first);
+      InputSignature run_sig_2_any_template_setting(run_input_data_iter_2->first);
       run_sig_2_any_template_setting.RemoveTemplatedLoopIterSetting();
       if (run_sig_any_template_setting == run_sig_2_any_template_setting) {
         //know that run_input_data_iter has templated loop iterations and run_input_data_iter_2 doesn't have templated loop iterations

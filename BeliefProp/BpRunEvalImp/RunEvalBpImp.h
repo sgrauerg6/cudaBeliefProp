@@ -8,28 +8,10 @@
 #ifndef RUNEVALBPIMP_H_
 #define RUNEVALBPIMP_H_
 
-#include <omp.h>
-#include <memory>
-#include <array>
-#include <fstream>
-#include <map>
-#include <vector>
-#include <numeric>
-#include <algorithm>
-#include <set>
-#include "BpRunEvalImp/RunEvalBPImpOnInput.h"
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
-#include "BpFileProcessing/BpFileHandling.h"
-#include "BpRunProcessing/BpParallelParams.h"
-#include "BpRunProcessing/RunBpStereoSet.h"
-#include "BpSingleThreadCPU/stereo.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunData.h"
-#include "RunSettingsEval/EvaluateImpAliases.h"
+#include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunBenchmarkImp.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "RunEval/EvaluateImpAliases.h"
 
 //run and evaluate optimized belief propagation implementation on a number of inputs
 //acceleration method of optimized belief propagation implementation is specified in template parameter

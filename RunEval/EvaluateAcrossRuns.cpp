@@ -7,11 +7,14 @@
  *  Definition of functions in class for evaluating results across multiple runs, potentially on different architectures.
  */
 
-#include "EvaluateAcrossRuns.h"
-#include "EvalInputSignature.h"
-#include "RunResultsSpeedups.h"
-#include <iostream>
+#include <fstream>
 #include <algorithm>
+#include <set>
+#include <utility>
+#include <iostream>
+#include "RunSettingsParams/InputSignature.h"
+#include "EvaluateAcrossRuns.h"
+#include "RunResultsSpeedups.h"
 
 //process runtime and speedup data across multiple runs (likely on different architectures)
 //from csv files corresponding to each run and
@@ -37,7 +40,7 @@ void EvaluateAcrossRuns::operator()(
   //get header to data of run results and speedups for each run
   //as well as mapping from input signature to runtime
   std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
-  std::map<std::string, std::map<EvalInputSignature, std::string>> input_to_runtime_across_archs;
+  std::map<std::string, std::map<InputSignature, std::string>> input_to_runtime_across_archs;
   for (const auto& run_name : run_names) {
     speedup_results_name_to_data[run_name] = run_results_by_name.at(run_name).Speedups();
     input_to_runtime_across_archs[run_name] = run_results_by_name.at(run_name).InputsToKeyVal(
@@ -47,7 +50,7 @@ void EvaluateAcrossRuns::operator()(
   //get run inputs to parameters to display in evaluation across runs
   const auto& inputs_to_runtimes = run_results_by_name.at(run_names[0]).InputsToKeyVal(
     run_eval::kOptimizedRuntimeHeader);
-  std::map<EvalInputSignature, std::vector<std::string>> input_set_to_input_disp;
+  std::map<InputSignature, std::vector<std::string>> input_set_to_input_disp;
   for (const auto& input_runtime : inputs_to_runtimes) {
     input_set_to_input_disp.insert({input_runtime.first, std::vector<std::string>()});
     //add input parameters to display in evaluation across runs

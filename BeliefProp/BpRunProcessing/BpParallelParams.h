@@ -17,11 +17,11 @@
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunData.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RunImp/ParallelParams.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/RunData.h"
+#include "RunEval/RunEvalConstsEnums.h"
+#include "RunSettingsParams/ParallelParams.h"
 
 namespace beliefprop {
   constexpr std::string_view kBlurImagesPDimsHeader{"Blur Images Parallel Dimensions"};

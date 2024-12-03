@@ -11,7 +11,7 @@
 #include <string>
 #include <string_view>
 #include <array>
-#include "RunSettingsEval/RunData.h"
+#include "RunEval/RunData.h"
 
 namespace beliefprop {
 

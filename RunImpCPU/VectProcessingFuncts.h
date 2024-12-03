@@ -12,7 +12,7 @@
 #include <omp.h>
 #include <algorithm>
 #include <iostream>
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "RunImpCPU/RunCPUSettings.h"
 
 //general functions for processing using SIMD vector data types on CPU

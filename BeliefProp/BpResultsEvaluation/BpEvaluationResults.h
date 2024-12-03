@@ -11,7 +11,7 @@
 #include <map>
 #include <iostream>
 #include <numeric>
-#include "RunSettingsEval/RunData.h"
+#include "RunEval/RunData.h"
 #include "BpEvaluationParameters.h"
 
 namespace beliefprop {

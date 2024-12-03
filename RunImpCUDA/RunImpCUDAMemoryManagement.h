@@ -2,7 +2,7 @@
 #define RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_
 
 #include <cuda_runtime.h>
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "RunImp/RunImpMemoryManagement.h"
 
 //functions to manage memory on CUDA device including transferring data between host and CUDA device

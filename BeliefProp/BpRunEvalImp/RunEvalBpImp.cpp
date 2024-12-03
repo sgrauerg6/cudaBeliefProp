@@ -5,6 +5,7 @@
  *      Author: scott
  */
 
+#include "RunEvalBPImpOnInput.h"
 #include "RunEvalBpImp.h"
 
 MultRunData RunEvalBpImp::RunEvalImpMultDataSets(

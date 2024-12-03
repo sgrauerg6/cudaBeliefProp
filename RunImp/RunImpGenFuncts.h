@@ -8,7 +8,7 @@
 #ifndef RUNIMPGENFUNCTS_H_
 #define RUNIMPGENFUNCTS_H_
 
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 
 #ifdef OPTIMIZED_CUDA_RUN
 //added in front of function header to indicate that function is device function to be processed on GPU

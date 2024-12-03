@@ -11,7 +11,7 @@
 #include <vector>
 #include <array>
 #include <thread>
-#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsParams/RunSettings.h"
 
 //check if running on ARM architecture
 #ifdef COMPILING_FOR_ARM

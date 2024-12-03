@@ -9,12 +9,11 @@
 #define RUN_BENCHMARK_IMP_H
 
 #include <utility>
-#include <numeric>
 #include <memory>
-#include "RunSettingsEval/EvaluateImpResults.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/EvaluateImpAliases.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/EvaluateImpResults.h"
+#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/EvaluateImpAliases.h"
 
 //base class for running and evaluating multiple runs of benchmark that may be optimized on CPU or GPU
 class RunBenchmarkImp {

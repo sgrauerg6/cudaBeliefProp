@@ -1,5 +1,5 @@
 /*
- * EvalInputSignature.cpp
+ * InputSignature.cpp
  *
  *  Created on: Nov 22, 2024
  *      Author: scott
@@ -9,11 +9,12 @@
  *   templated loop iteration count.
  */
 
-#include "EvalInputSignature.h"
+#include <charconv>
+#include "InputSignature.h"
 
 //constructor to generate evaluation input signature from string array with
 //strings corresponding to each part
-EvalInputSignature::EvalInputSignature(const std::array<std::string_view, 3>& in_sig_strings) {
+InputSignature::InputSignature(const std::array<std::string_view, 3>& in_sig_strings) {
   const std::map<std::string_view, unsigned int> datatype_str_to_size{
     {run_environment::kDataSizeToNameMap.at(sizeof(float)), sizeof(float)},
     {run_environment::kDataSizeToNameMap.at(sizeof(double)), sizeof(double)},
@@ -32,7 +33,7 @@ EvalInputSignature::EvalInputSignature(const std::array<std::string_view, 3>& in
 
 //constructor to generate evaluation input signature from parameters
 //corresponding to each part
-EvalInputSignature::EvalInputSignature(
+InputSignature::InputSignature(
   std::optional<unsigned int> data_type_size,
   std::optional<unsigned int> eval_set_num,
   std::optional<bool> use_templated_loop_iters) :
@@ -46,7 +47,7 @@ EvalInputSignature::EvalInputSignature(
 //is used as std::map key and also for evaluation output order
 //don't use input signature parts where one of the comparison sides
 //has "no value" which corresponds to "any" for the input signature
-bool EvalInputSignature::operator<(const EvalInputSignature& rhs) const {
+bool InputSignature::operator<(const InputSignature& rhs) const {
   if (((data_type_size_.has_value()) && (rhs.data_type_size_.has_value())) &&
       ((data_type_size_.value() != rhs.data_type_size_.value()))) {
     //compare datatype
@@ -78,7 +79,7 @@ bool EvalInputSignature::operator<(const EvalInputSignature& rhs) const {
 //only compare inputs with valid values...no value corresponds to "any value"
 //for part of input signature so only consider parts where both have valid
 //values
-bool EvalInputSignature::operator==(const EvalInputSignature& rhs) const {
+bool InputSignature::operator==(const InputSignature& rhs) const {
   return (std::tie(data_type_size_, eval_set_num_, use_templated_loop_iters_) ==
           std::tie(rhs.data_type_size_, rhs.eval_set_num_, rhs.use_templated_loop_iters_));
 }

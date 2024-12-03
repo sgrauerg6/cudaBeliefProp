@@ -8,24 +8,24 @@
 #ifndef RUNBPSTEREOSET_H_
 #define RUNBPSTEREOSET_H_
 
-#include <unordered_map>
-#include <memory>
 #include <array>
 #include <string>
+#include <unordered_map>
+#include <memory>
 #include <optional>
 #include <ranges>
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
+#include "RunImp/RunImpMemoryManagement.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/RunData.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "RunEval/RunEvalConstsEnums.h"
+#include "RuntimeTiming/DetailedTimings.h"
 #include "BpImageProcessing/BpImage.h"
 #include "BpImageProcessing/DisparityMap.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "RunSettingsEval/RunData.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RuntimeTiming/DetailedTimings.h"
-#include "RunImp/RunImpMemoryManagement.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpParallelParams.h"
 #include "ProcessBPOnTargetDevice.h"
 

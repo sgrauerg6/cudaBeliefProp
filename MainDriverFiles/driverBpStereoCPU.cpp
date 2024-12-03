@@ -20,10 +20,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <iostream>
 #include <array>
-#include "BpFileProcessing/BpFileHandlingConsts.h"
-#include "BpRunEvalImp/RunEvalBpImp.h"
-#include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunEvalImpMultSettings.h"
+#include "RunImpCPU/RunCPUSettings.h"
+#include "BpFileProcessing/BpFileHandlingConsts.h"
+#include "BpRunProcessing/BpSettings.h"
+#include "BpRunEvalImp/RunEvalBpImp.h"
 #include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //enum to define setting to run implementation
@@ -92,8 +93,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     std::array<std::string_view, 2>{
       bp_file_handling::kBaselineRunDataPath,
       bp_file_handling::kBaselineRunDesc};
-  run_imp_settings.subset_str_input_indices = {
-    {"smallest 3 stereo sets", {0, 1, 2}}, {"largest 3 stereo sets", {4, 5, 6}}};
+  run_imp_settings.subset_desc_input_sig = beliefprop::kEvalDataSubsets;
 
   //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
   //given first as the expected fastest implementation

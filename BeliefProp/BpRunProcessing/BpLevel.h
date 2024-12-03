@@ -7,8 +7,8 @@
 
 #include <array>
 #include <cmath>
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/RunTypeConstraints.h"
 
 #ifndef BP_LEVEL_H_
 #define BP_LEVEL_H_

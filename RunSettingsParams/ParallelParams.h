@@ -9,7 +9,7 @@
 #define PARALLEL_PARAMS_H
 
 #include <array>
-#include "RunSettingsEval/RunData.h"
+#include "RunEval/RunData.h"
 
 //abstract class for holding and processing parallelization parameters
 //child class(es) specific to processing implementation(s) must be defined

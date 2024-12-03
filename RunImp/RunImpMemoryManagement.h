@@ -10,10 +10,9 @@
 #define RUN_IMP_MEMORY_MANAGEMENT_H_
 
 #include <new>
-#include <algorithm>
 #include <ranges>
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/RunTypeConstraints.h"
 
 //Class for memory management with functions defined for standard memory allocation using CPU
 //Class functions can be overridden to support other computation devices such as GPU

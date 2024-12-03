@@ -14,7 +14,7 @@
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpRunProcessing/ProcessBPOnTargetDevice.h"
 #include "BpRunProcessing/BpParallelParams.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "SmoothImageCPU.h"
 #include "ProcessOptimizedCPUBP.h"
 

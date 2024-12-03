@@ -30,9 +30,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpRunProcessing/BpParallelParams.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "RunEval/RunEvalConstsEnums.h"
 
 //include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.h"

@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
 
 #include <iostream>
-#include "RunSettingsEval/RunEvalConstsEnums.h"
+#include "RunEval/RunEvalConstsEnums.h"
 #include "RunImp/RunImpGenFuncts.h"
 #include "ProcessCUDABP.h"
 #include "kernelBpStereo.cu"

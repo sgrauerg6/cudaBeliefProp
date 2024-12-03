@@ -11,11 +11,14 @@
 #include <utility>
 #include <memory>
 #include <optional>
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/EvaluateImpAliases.h"
-#include "ParallelParams.h"
+#include <vector>
+#include <array>
+#include <string>
+#include "RunSettingsParams/RunSettings.h"
+#include "RunSettingsParams/ParallelParams.h"
+#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/RunTypeConstraints.h"
+#include "RunEval/EvaluateImpAliases.h"
 
 //virtual class to run and evaluate benchmark on a input specified by index number
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>

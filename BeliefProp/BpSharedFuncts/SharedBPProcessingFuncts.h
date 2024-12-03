@@ -8,11 +8,11 @@
 #ifndef SHAREDBPPROCESSINGFUNCTS_H_
 #define SHAREDBPPROCESSINGFUNCTS_H_
 
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpRunProcessing/BpConstsEnumsAliases.h"
+#include "RunSettingsParams/RunSettings.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
+#include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 
 namespace beliefprop {
 

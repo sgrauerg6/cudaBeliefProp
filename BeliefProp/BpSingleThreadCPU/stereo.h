@@ -26,7 +26,7 @@
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "RunSettingsEval/RunSettings.h"
+#include "RunSettingsParams/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS>
 class RunBpStereoCPUSingleThread final : public RunBpStereoSet<T, DISP_VALS, run_environment::AccSetting::kNone>

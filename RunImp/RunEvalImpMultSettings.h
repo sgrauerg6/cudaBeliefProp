@@ -9,16 +9,12 @@
 #define RUNEVALIMPMULTSETTINGS_H_
 
 #include <memory>
-#include <array>
 #include <vector>
-#include <numeric>
 #include <map>
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunEvalConstsEnums.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunData.h"
-#include "RunSettingsEval/EvaluateImpResults.h"
+#include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunBenchmarkImp.h"
+#include "RunEval/RunEvalConstsEnums.h"
+#include "RunEval/EvaluateImpResults.h"
 
 //class to run and evaluate a optimized benchmark implementation using
 //multiple settings

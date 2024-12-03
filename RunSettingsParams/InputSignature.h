@@ -1,5 +1,5 @@
 /*
- * EvalInputSignature.h
+ * InputSignature.h
  *
  *  Created on: Nov 22, 2024
  *      Author: scott
@@ -8,28 +8,27 @@
  *  data type, and whether or not to use templated loop iteration count.
  */
 
-#ifndef EVAL_INPUT_SIGNATURE_H_
-#define EVAL_INPUT_SIGNATURE_H_
+#ifndef INPUT_SIGNATURE_H_
+#define INPUT_SIGNATURE_H_
 
-#include <map>
 #include <string_view>
 #include <string>
-#include <charconv>
-#include <iostream>
-#include <fstream>
-#include "RunEvalConstsEnums.h"
+#include <ostream>
+#include <limits>
+#include <optional>
+#include "RunEval/RunEvalConstsEnums.h"
 
 //class defines input signature for evaluation run that contains evaluation set
 //number, data type, and whether or not to use templated loop iteration count
-class EvalInputSignature {
+class InputSignature {
 public:
   //constructor to generate evaluation input signature from string array with
   //strings corresponding to each part
-  EvalInputSignature(const std::array<std::string_view, 3>& in_sig_strings);
+  InputSignature(const std::array<std::string_view, 3>& in_sig_strings);
 
   //constructor to generate evaluation input signature from parameters
   //corresponding to each part
-  EvalInputSignature(
+  InputSignature(
     std::optional<unsigned int> data_type_size,
     std::optional<unsigned int> eval_set_num,
     std::optional<bool> use_templated_loop_iters);
@@ -38,14 +37,14 @@ public:
   //so they can be ordered
   //operator needed to support ordering since input signature
   //is used as std::map key and also for evaluation output order
-  //if any EvalInputSignature member is "no value" that property is considered
+  //if any InputSignature member is "no value" that property is considered
   //"any" and is ignored in the comparison
-  bool operator<(const EvalInputSignature& rhs) const;
+  bool operator<(const InputSignature& rhs) const;
 
   //equality operator for comparing evaluation input signatures
-  //if any EvalInputSignature member is "no value" that property is considered
+  //if any InputSignature member is "no value" that property is considered
   //"any" and is ignored in the comparison
-  bool operator==(const EvalInputSignature& rhs) const;
+  bool operator==(const InputSignature& rhs) const;
 
   std::string DataTypeStr() const {
     if (!(data_type_size_.has_value())) {
@@ -99,8 +98,8 @@ public:
     data_type_size_.reset();
   }
 
-  //overloaded << operator to write EvalInputSignature object to stream
-  friend std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig);
+  //overloaded << operator to write InputSignature object to stream
+  friend std::ostream& operator<<(std::ostream& os, const InputSignature& eval_input_sig);
 
 private:
   std::optional<unsigned int> data_type_size_;
@@ -108,11 +107,11 @@ private:
   std::optional<bool> use_templated_loop_iters_;
 };
 
-//overloaded << operator to write EvalInputSignature object to stream
-inline std::ostream& operator<<(std::ostream& os, const EvalInputSignature& eval_input_sig) {
+//overloaded << operator to write InputSignature object to stream
+inline std::ostream& operator<<(std::ostream& os, const InputSignature& eval_input_sig) {
   os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.EvalSetNumStr()
      << " " << eval_input_sig.UseTemplatedLoopItersStr();
   return os;
 }
 
-#endif //EVAL_INPUT_SIGNATURE_H_
+#endif //INPUT_SIGNATURE_H_

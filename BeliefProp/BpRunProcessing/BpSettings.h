@@ -5,19 +5,15 @@
  *      Author: scott
  */
 
-#include <array>
-#include <vector>
-#include <thread>
-#include <iostream>
-#include <cmath>
-#include <string>
-#include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
-#include "RunSettingsEval/RunSettings.h"
-#include "RunSettingsEval/RunData.h"
-
 #ifndef BP_SETTINGS_H_
 #define BP_SETTINGS_H_
+
+#include <vector>
+#include <string>
+#include <string_view>
+#include "RunSettingsParams/InputSignature.h"
+#include "RunEval/RunData.h"
+#include "BpConstsEnumsAliases.h"
 
 //parameters type requires AsRunData() function to return the parameters as a
 //RunData object

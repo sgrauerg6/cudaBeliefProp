@@ -16,7 +16,7 @@
 #include <iostream>
 #include <chrono>
 #include <ranges>
-#include "RunSettingsEval/RunData.h"
+#include "RunEval/RunData.h"
 
 //Class to store timings
 //Index for timing segments must be enum type (either scoped via "enum class" or not scoped)

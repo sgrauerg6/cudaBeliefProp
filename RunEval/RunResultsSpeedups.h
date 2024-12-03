@@ -12,7 +12,8 @@
 #include <vector>
 #include <string>
 #include <filesystem>
-#include "EvalInputSignature.h"
+#include <optional>
+#include "RunSettingsParams/InputSignature.h"
 
 //class to save, load, and store run results data include speedups from evaluation
 class RunResultsSpeedups {
@@ -34,17 +35,17 @@ public:
 
   //get mapping of run input signature to value corresponding to input key
   //for each run result
-  std::map<EvalInputSignature, std::string> InputsToKeyVal(std::string_view key);
+  std::map<InputSignature, std::string> InputsToKeyVal(std::string_view key);
 
   //return data for specified input signature
-  std::map<std::string, std::string> DataForInput(const EvalInputSignature& input_sig) const {
+  std::map<std::string, std::string> DataForInput(const InputSignature& input_sig) const {
     return input_sig_to_run_data_->at(input_sig);
   }
 
 private:
   std::string run_name_;
   std::optional<std::map<std::string, std::vector<std::string>>> speedup_header_to_result_;
-  std::optional<std::map<EvalInputSignature, std::map<std::string, std::string>>> input_sig_to_run_data_;
+  std::optional<std::map<InputSignature, std::map<std::string, std::string>>> input_sig_to_run_data_;
 
   //generate input signature to run data mappings from run results as read from file
   void GenInputSignatureToDataMapping(

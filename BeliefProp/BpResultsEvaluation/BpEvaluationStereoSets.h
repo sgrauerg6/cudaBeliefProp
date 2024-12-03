@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string_view>
 #include <array>
 #include "BpRunProcessing/BpSettings.h"
-#include "RunSettingsEval/EvalInputSignature.h"
+#include "RunSettingsParams/InputSignature.h"
 
 namespace beliefprop
 {
@@ -64,29 +64,12 @@ namespace beliefprop
     BpStereoSet{"conesFullSize", 256, 1}
   };
 
-  //constants defined indices of smallest and largest three stereo sets
-  //used in evaluation
-  constexpr std::array<std::array<std::size_t, 3>, 2> kSmallLargeStereoSetsEvalNums{
-    std::array<std::size_t, 3>{0, 1, 2},
-    std::array<std::size_t, 3>{4, 5, 6}};
-
-  //input signature for small stereo sets in evaluation
-  //specifies evaluation stereo sets allowing for any data type and templated loop iterations setting
-  const std::vector<EvalInputSignature> kFloatSmallStereoSetsInputSigs{
-    EvalInputSignature(std::nullopt, 0, std::nullopt),
-    EvalInputSignature(std::nullopt, 1, std::nullopt),
-    EvalInputSignature(std::nullopt, 2, std::nullopt)};
-
-  //input signature for large stereo sets in evaluation
-  //specifies evaluation stereo sets allowing for any data type and templated loop iterations setting
-  const std::vector<EvalInputSignature> kFloatLargeStereoSetsInputSigs{
-    EvalInputSignature(std::nullopt, 4, std::nullopt),
-    EvalInputSignature(std::nullopt, 5, std::nullopt),
-    EvalInputSignature(std::nullopt, 6, std::nullopt)};
-
-  //strings for description of smallest and largest stereo sets in evaluation
-  constexpr std::array<std::string_view, 2> kSmallLargeStereoSetsEvalStr{
-    "smallest 3 stereo sets", "largest 3 stereo sets"};
+  //small stereo sets and large stereo set data subsets for evaluating run results
+  const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{
+    {"smallest 3 stereo sets", 
+      {InputSignature({}, 0, {}), InputSignature({}, 1, {}), InputSignature({}, 2, {})}},
+    {"largest 3 stereo sets",
+      {InputSignature({}, 4, {}), InputSignature({}, 5, {}), InputSignature({}, 6, {})}}};
 };
 
 #endif /* BP_EVALUATION_STEREO_SETS_H_ */

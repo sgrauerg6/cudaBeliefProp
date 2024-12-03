@@ -5,25 +5,18 @@
  *      Author: scott
  */
 
-#ifndef RUN_EVAL_CONSTS_ENUMS_H
-#define RUN_EVAL_CONSTS_ENUMS_H
+#ifndef RUN_EVAL_CONSTS_ENUMS_H_
+#define RUN_EVAL_CONSTS_ENUMS_H_
 
-#include <string_view>
 #include <array>
-#include <vector>
-#include <optional>
-#include <charconv>
-#include "RunData.h"
-#include "RunSettings.h"
-
-#ifdef OPTIMIZED_CUDA_RUN
-#include "RunImpCUDA/RunCUDASettings.h"
-#endif //OPTIMIZED_CUDA_RUN
+#include <string_view>
+#include "RunSettingsParams/RunSettingsConstsEnums.h"
 
 //namespace for general program run evaluation
 namespace run_eval {
-  //enum for status to indicate if error or no error
-  enum class Status { kNoError, kError };
+
+//enum for status to indicate if error or no error
+enum class Status { kNoError, kError };
 
 //set data types to use in evaluation
 //by default evaluate using float, double, and half data types
@@ -79,4 +72,4 @@ namespace run_eval {
   constexpr std::size_t kRunInputLoopItersTemplatedIdx{2};
 };
 
-#endif //RUN_EVAL_CONSTS_ENUMS_H
+#endif //RUN_EVAL_CONSTS_ENUMS_H_

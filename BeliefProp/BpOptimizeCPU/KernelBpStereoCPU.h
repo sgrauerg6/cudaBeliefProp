@@ -31,7 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpSharedFuncts/SharedBPProcessingFuncts.h"
 #include "BpRunProcessing/BpParallelParams.h"
-#include "RunSettingsEval/RunTypeConstraints.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImpCPU/VectProcessingFuncts.h"

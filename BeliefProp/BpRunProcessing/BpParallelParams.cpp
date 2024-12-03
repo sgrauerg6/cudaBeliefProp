@@ -6,8 +6,8 @@
  */
 
 #include <ranges>
-#include "BpParallelParams.h"
 #include "BpRunProcessing/BpRunSettings.h"
+#include "BpParallelParams.h"
 
 //constructor to set parallel parameters with default dimensions for each kernel
 BpParallelParams::BpParallelParams(
@@ -44,7 +44,7 @@ void BpParallelParams::SetParallelDims(const std::array<unsigned int, 2>& parall
 //add current parallel parameters to data for current run
 RunData BpParallelParams::AsRunData() const {
   RunData curr_run_data;
-  
+
   //show parallel parameters for each kernel1
   curr_run_data.AddDataWHeader(std::string(beliefprop::kBlurImagesPDimsHeader),
     std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][0]) + " x " +

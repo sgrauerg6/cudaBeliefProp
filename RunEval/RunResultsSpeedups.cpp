@@ -7,8 +7,8 @@
 
 #include <iostream>
 #include <fstream>
-#include "RunResultsSpeedups.h"
 #include "RunEvalConstsEnums.h"
+#include "RunResultsSpeedups.h"
 
 //constructor that takes in implementation file path and run name and retrieves
 //run results and speedup evaluation for the run if available
@@ -70,7 +70,7 @@ void RunResultsSpeedups::GenInputSignatureToDataMapping(
     for (unsigned int num_run = 0; num_run < tot_num_runs; num_run++) {
       //get unique input signature for evaluation run (evaluation data number, data type, setting of whether to not to
       //have loops with templated iteration counts)
-      const EvalInputSignature run_input({
+      const InputSignature run_input({
         run_results_header_to_data->at(std::string(run_eval::kRunInputSigHeaders[0]))[num_run],
         run_results_header_to_data->at(std::string(run_eval::kRunInputSigHeaders[1]))[num_run],
         run_results_header_to_data->at(std::string(run_eval::kRunInputSigHeaders[2]))[num_run]});
@@ -88,9 +88,9 @@ void RunResultsSpeedups::GenInputSignatureToDataMapping(
 
 //get mapping of run input signature to value corresponding to input key
 //for each run result
-std::map<EvalInputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::string_view key)
+std::map<InputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::string_view key)
 {
-  std::map<EvalInputSignature, std::string> input_sig_to_key_val;
+  std::map<InputSignature, std::string> input_sig_to_key_val;
   if (input_sig_to_run_data_) {
     //get input "signature" for run mapped to corresponding key value for each run on input
     for (auto input_sig_to_data_iter = input_sig_to_run_data_->begin();

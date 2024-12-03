@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImp/RunEvalImpMultSettings.h"
 #include "RunImpCUDA/RunCUDASettings.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
+#include "BpRunProcessing/BpSettings.h"
 #include "BpRunEvalImp/RunEvalBpImp.h"
 #include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
@@ -38,8 +39,7 @@ int main(int argc, char** argv)
     std::array<std::string_view, 2>{
       bp_file_handling::kBaselineRunDataPath,
       bp_file_handling::kBaselineRunDesc};
-  run_imp_settings.subset_str_input_indices = {
-    {"smallest 3 stereo sets", {0, 1, 2}}, {"largest 3 stereo sets", {4, 5, 6}}};
+  run_imp_settings.subset_desc_input_sig = beliefprop::kEvalDataSubsets;
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
   run_imp_settings.run_name = (argc > 1) ? argv[1] : "CurrentRun";

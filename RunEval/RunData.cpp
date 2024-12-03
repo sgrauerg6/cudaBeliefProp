@@ -7,8 +7,8 @@
  * Implementation of functions in RunData class
  */
 
-#include "RunData.h"
 #include "RunEvalConstsEnums.h"
+#include "RunData.h"
 
 //get header to add...use input header if not yet used
 //user original header with number appended if original header is already used

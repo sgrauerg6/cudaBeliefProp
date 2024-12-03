@@ -81,6 +81,6 @@ const std::unordered_map<Runtime_Type, std::string_view> kTimingNames{
   {Runtime_Type::kTotalBp, "Total BP Runtime"}, 
   {Runtime_Type::kTotalNoTransfer, "Total Runtime not including data transfer time"},
   {Runtime_Type::kTotalWithTransfer, "Total runtime including data transfer time"}};
-}
+};
 
 #endif /* DETAILEDTIMINGBPCONSTS_H_ */

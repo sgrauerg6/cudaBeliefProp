@@ -10,11 +10,15 @@
 #ifndef EVALUATE_IMP_RESULTS_H_
 #define EVALUATE_IMP_RESULTS_H_
 
-#include "RunEvalConstsEnums.h"
-#include "RunSettings.h"
-#include "EvalInputSignature.h"
-#include "EvaluateImpAliases.h"
 #include <filesystem>
+#include <unordered_map>
+#include <vector>
+#include <array>
+#include <utility>
+#include <string_view>
+#include "RunSettingsParams/RunSettings.h"
+#include "RunSettingsParams/InputSignature.h"
+#include "EvaluateImpAliases.h"
 
 #ifdef OPTIMIZED_CUDA_RUN
 #include "RunImpCUDA/RunCUDASettings.h"
@@ -85,7 +89,7 @@ private:
     size_t data_type_size) const;
 
   //get baseline runtime data if available...return null if baseline data not available
-  std::optional<std::pair<std::string, std::map<EvalInputSignature, std::string>>> GetBaselineRuntimeData(
+  std::optional<std::pair<std::string, std::map<InputSignature, std::string>>> GetBaselineRuntimeData(
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
     std::string_view key_runtime_data) const;
 
@@ -97,8 +101,8 @@ private:
     MultRunData& run_output,
     std::string_view data_type_str,
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
-    const std::vector<std::pair<std::string, std::vector<unsigned int>>>& subset_str_input_indices =
-      std::vector<std::pair<std::string, std::vector<unsigned int>>>()) const;
+    const std::vector<std::pair<std::string, std::vector<InputSignature>>>& subset_desc_input_sig =
+      std::vector<std::pair<std::string, std::vector<InputSignature>>>()) const;
 
   //get average and median speedup of current runs compared to baseline data from file
   std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupOverBaseline(
