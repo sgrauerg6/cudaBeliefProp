@@ -1,10 +1,10 @@
 OSLOWER := $(shell uname -s 2>/dev/null | tr [:upper:] [:lower:])
 
-TOP_DIR = ..
-BP_PATH = ${TOP_DIR}/BeliefProp
+SRC_DIR = ../src
+SRC_DIR_BP = ${SRC_DIR}/beliefprop
 
 # contains the directories to include...
-INCLUDE_DIRS := -I. -I./ -I./.. -I./../BeliefProp -I$(COMMONDIR)/inc -I$(SHAREDDIR)/inc
+INCLUDE_DIRS := -I. -I./ -I${SRC_DIR} -I${SRC_DIR_BP} -I$(COMMONDIR)/inc -I$(SHAREDDIR)/inc
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work
@@ -24,92 +24,45 @@ CPU_VECTORIZATION_DEFINE =
 USE_ONLY_SMALLER_DATA_SETTING = 
 #-DSMALLER_SETS_ONLY
 
-# have include directory as flag
-COMPILE_FLAGS += $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATION_DEFINE} ${USE_ONLY_SMALLER_DATA_SETTING} -O3 -std=c++20 -Wall -march=native
-DBG    = -g
+# set to use limited set of test parameters and fewer runs for faster results for testing
+USE_LIMITED_TEST_PARAMS_FEWER_RUNS = -DLIMITED_TEST_PARAMS_FEWER_RUNS
 
-all: impDriverCPU
+# set compile flags and debug setting
+DBG_SETTING    =
+#-g
+COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATION_DEFINE} ${USE_ONLY_SMALLER_DATA_SETTING} \
+                ${USE_LIMITED_TEST_PARAMS_FEWER_RUNS} ${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native
 
-impDriverCPU: driverBpStereoCPU.o EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
-	$(CC) driverBpStereoCPU.o EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o driverCPUBp -O
+# define directory for compiled objects and object files to generate during compilation
+OBJ_DIR = obj
+OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
+${OBJ_DIR}/EvaluateBPImpResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunEvalImpMultSettings.o \
+${OBJ_DIR}/RunData.o ${OBJ_DIR}/BpParallelParams.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
+${OBJ_DIR}/RunEvalBpImp.o ${OBJ_DIR}/RunBenchmarkImp.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
+${OBJ_DIR}/BpEvaluationResults.o ${OBJ_DIR}/BpEvaluationParameters.o ${OBJ_DIR}/stereo.o \
+${OBJ_DIR}/RunBpStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o \
+${OBJ_DIR}/ProcessBPOnTargetDevice.o ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBpStereoOptimizedCPU.o \
+${OBJ_DIR}/ProcessOptimizedCPUBP.o
+DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/driverBpStereoCPU.o
+DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/driverBpStereoCPU_customRun.o
 
-EvaluateAcrossRuns.o :
-	$(CC) ${TOP_DIR}/RunEval/EvaluateAcrossRuns.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+# executables for belief propagation CPU implementations
+DRIVER_BENCHMARK_CPU = driverCPUBp
+DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBpCustom
 
-InputSignature.o :
-	$(CC) ${TOP_DIR}/RunEval/InputSignature.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+all: impDriverCPU impDriverCPUCustom
 
-RunResultsSpeedups.o :
-	$(CC) ${TOP_DIR}/RunEval/RunResultsSpeedups.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+${OBJ_DIR}/%.o: ${SRC_DIR}/*/%.cpp
+	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
-EvaluateBPImpResults.o : 
-	$(CC) ${BP_PATH}/BpResultsEvaluation/EvaluateBPImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
+	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
-EvaluateImpResults.o :
-	$(CC) ${TOP_DIR}/RunEval/EvaluateImpResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+impDriverCPU: ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS} 
+	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS}  $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o ${DRIVER_BENCHMARK_CPU}
 
-RunEvalImpMultSettings.o:
-	$(CC) ${TOP_DIR}/RunImp/RunEvalImpMultSettings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-RunData.o:
-	$(CC) ${TOP_DIR}/RunEval/RunData.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-RunEvalBpImp.o:
-	$(CC) ${BP_PATH}/BpRunEvalImp/RunEvalBpImp.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-BpParallelParams.o:
-	$(CC) ${BP_PATH}/BpRunProcessing/BpParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-BpLevel.o:
-	$(CC) ${BP_PATH}/BpRunProcessing/BpLevel.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-ParallelParams.o:
-	$(CC) ${TOP_DIR}/RunImp/ParallelParams.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-RunBenchmarkImp.o:
-	$(CC) ${TOP_DIR}/RunImp/RunBenchmarkImp.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-BpFileHandling.o:
-	$(CC) ${BP_PATH}/BpFileProcessing/BpFileHandling.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-	
-DetailedTimings.o:
-	$(CC) ${TOP_DIR}/RuntimeTiming/DetailedTimings.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-driverBpStereoCPU.o: BpImage.o stereo.o RunBpStereoOptimizedCPU.o DisparityMap.o
-	$(CC) ${TOP_DIR}/MainDriverFiles/driverBpStereoCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-ProcessBPOnTargetDevice.o : DetailedTimings.o
-	$(CC) ${BP_PATH}/BpRunProcessing/ProcessBPOnTargetDevice.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-ProcessOptimizedCPUBP.o : ProcessBPOnTargetDevice.o
-	$(CC) ${BP_PATH}/BpOptimizeCPU/ProcessOptimizedCPUBP.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-RunBpStereoSet.o: SmoothImage.o ProcessBPOnTargetDevice.o BpImage.o DetailedTimings.o
-	$(CC) ${BP_PATH}/BpRunProcessing/RunBpStereoSet.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-BpImage.o:
-	$(CC) ${BP_PATH}/BpImageProcessing/BpImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-BpEvaluationParameters.o:
-	$(CC) ${BP_PATH}/BpResultsEvaluation/BpEvaluationParameters.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-BpEvaluationResults.o:
-	$(CC) ${BP_PATH}/BpResultsEvaluation/BpEvaluationResults.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-		
-DisparityMap.o: BpEvaluationParameters.o BpEvaluationResults.o
-	$(CC) ${BP_PATH}/BpImageProcessing/DisparityMap.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-stereo.o: ProcessBPOnTargetDevice.o RunBpStereoSet.o SmoothImage.o
-	$(CC) ${BP_PATH}/BpSingleThreadCPU/stereo.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-SmoothImage.o:
-	$(CC) ${BP_PATH}/BpImageProcessing/SmoothImage.cpp -c $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-SmoothImageCPU.o: SmoothImage.o
-	$(CC) ${BP_PATH}/BpOptimizeCPU/SmoothImageCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
-
-RunBpStereoOptimizedCPU.o: SmoothImageCPU.o RunBpStereoSet.o ProcessBPOnTargetDevice.o ProcessOptimizedCPUBP.o
-	$(CC) ${BP_PATH}/BpOptimizeCPU/RunBpStereoOptimizedCPU.cpp -c $(OPENMP_LIB) $(INCLUDE_DIRS) $(COMPILE_FLAGS)
+impDriverCPUCustom: ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS} 
+	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS}  $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o ${DRIVER_BENCHMARK_CPU_CUSTOM}
 
 make clean:
-	rm *.o driverCPUBp
+	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom
