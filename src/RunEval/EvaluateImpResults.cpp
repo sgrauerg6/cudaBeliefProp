@@ -717,9 +717,6 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupLoopItersInTemplate(
         }
     });
   }
-  std::cout << "Run output size: " << run_output.size() << std::endl;
-  std::cout << "Runs w/ templated loop iters size: " << templated_non_templated_loops_data[0].size() << std::endl;
-  std::cout << "Runs w/o templated loop iters size: " << templated_non_templated_loops_data[1].size() << std::endl;
 
   //get speedup using templated loop iteration counts with non-templated loop
   //iters being base data and templated loop iterations counts being target data
