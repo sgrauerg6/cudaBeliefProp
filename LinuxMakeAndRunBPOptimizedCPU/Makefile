@@ -33,21 +33,29 @@ DBG_SETTING    =
 COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${USE_ONLY_SMALLER_DATA_SETTING} \
                 ${USE_LIMITED_TEST_PARAMS_FEWER_RUNS} ${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native
 
+# define directory for compiled objects and object files to generate during compilation
+OBJ_DIR = obj
+OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
+${OBJ_DIR}/EvaluateBPImpResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunEvalImpMultSettings.o \
+${OBJ_DIR}/RunData.o ${OBJ_DIR}/BpParallelParams.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
+${OBJ_DIR}/RunEvalBpImp.o ${OBJ_DIR}/RunBenchmarkImp.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
+${OBJ_DIR}/BpEvaluationResults.o ${OBJ_DIR}/BpEvaluationParameters.o ${OBJ_DIR}/stereo.o \
+${OBJ_DIR}/RunBpStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o \
+${OBJ_DIR}/ProcessBPOnTargetDevice.o ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBpStereoOptimizedCPU.o \
+${OBJ_DIR}/ProcessOptimizedCPUBP.o
+DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/driverBpStereoCPU.o
+DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/driverBpStereoCPU_customRun.o
+
+# executables for belief propagation CPU implementations
 DRIVER_BENCHMARK_CPU = driverCPUBp
-DRIVER_BENCHMARK_CPU_OBJECT = driverBpStereoCPU.o
 DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBpCustom
-DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = driverBpStereoCPU_customRun.o
-OBJECTS = EvaluateAcrossRuns.o InputSignature.o RunResultsSpeedups.o EvaluateBPImpResults.o EvaluateImpResults.o RunEvalImpMultSettings.o RunData.o \
-BpParallelParams.o BpLevel.o ParallelParams.o RunEvalBpImp.o RunBenchmarkImp.o BpFileHandling.o DisparityMap.o BpEvaluationResults.o \
-BpEvaluationParameters.o stereo.o RunBpStereoSet.o BpImage.o SmoothImage.o SmoothImageCPU.o ProcessBPOnTargetDevice.o DetailedTimings.o \
-RunBpStereoOptimizedCPU.o ProcessOptimizedCPUBP.o
 
 all: impDriverCPU impDriverCPUCustom
 
-%.o: ${TOP_DIR}/*/%.cpp
+${OBJ_DIR}/%.o: ${TOP_DIR}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
-%.o: ${BP_PATH}/*/%.cpp
+${OBJ_DIR}/%.o: ${BP_PATH}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
 impDriverCPU: ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS} 
@@ -57,4 +65,4 @@ impDriverCPUCustom: ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS}
 	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS}  $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o ${DRIVER_BENCHMARK_CPU_CUSTOM} -O
 
 make clean:
-	rm *.o driverCPUBp driverCPUBpCustom
+	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom
