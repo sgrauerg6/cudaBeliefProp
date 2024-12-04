@@ -66,6 +66,7 @@ all: impDriverCUDA impDriverCUDACustom
 %.o: ${BP_PATH}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
+# specify compile commands using NVCC compiler for objects with CUDA for processing on GPU
 ProcessCUDABP.o:
 	$(NVCC) -x cu -c ${BP_PATH}/BpOptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o ProcessCUDABP.o $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
 
