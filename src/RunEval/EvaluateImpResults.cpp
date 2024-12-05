@@ -266,22 +266,24 @@ void EvaluateImpResults::WriteRunOutput(
     }
 
     //write output for run on each input with each data type
-    //for (unsigned int i=0; i < (run_imp_settings.opt_parallel_params_setting.first ? run_data_opt_default_sstr.size() : 1); i++) {
-    //write data for default parallel parameters
+    //write data for default parallel parameters and for optimized parallel parameters
     for (const auto& p_param_setting : parallel_param_settings) {
       for (auto run_sig_data_iter=run_output.first.begin(); run_sig_data_iter != run_output.first.end(); run_sig_data_iter++) {
         //if run not successful only have single set of output data from run
-        for (const auto& curr_header : headers_in_order) {
-          //run_output.first[run_num]
-          if (run_sig_data_iter->second->at(p_param_setting).IsData(curr_header)) {
-            run_data_sstr[p_param_setting] <<
-              run_sig_data_iter->second->at(p_param_setting).GetDataAsStr(curr_header) << ',';
+        //don't write data if no data for run
+        if (run_sig_data_iter->second.has_value()) {
+          for (const auto& curr_header : headers_in_order) {
+            if (run_sig_data_iter->second->at(p_param_setting).IsData(curr_header))
+            {
+              run_data_sstr[p_param_setting] <<
+                run_sig_data_iter->second->at(p_param_setting).GetDataAsStr(curr_header) << ',';
+            }
+            else {
+              run_data_sstr[p_param_setting] << "No Data" << ',';            
+            }
           }
-          else {
-            run_data_sstr[p_param_setting] << "No Data" << ',';            
-          }
+          run_data_sstr[p_param_setting] << std::endl;
         }
-        run_data_sstr[p_param_setting] << std::endl;
       }
     }
 
@@ -309,7 +311,7 @@ void EvaluateImpResults::WriteRunOutput(
         speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << speedup.second[speedup_desc_w_index.second] << ',';
       }
     }
-    
+
     //write run results strings to output streams
     //one results file contains speedup results, two contain run results
     //(with and without optimized parallel parameters), and another
@@ -342,7 +344,7 @@ void EvaluateImpResults::WriteRunOutput(
 
     //add speedups with headers on left to file containing run results and speedups
     run_result_w_speedup_sstr << speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft].str();
-    
+
     //close streams for writing to results files since file writing is done
     speedup_results_str.close();
     results_stream[run_environment::ParallelParamsSetting::kDefault].close();
@@ -682,21 +684,25 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
       if (base_in_sig_adjusted == target_in_sig_adjusted) {
         //compute speedup between corresponding base and target data and
         //add it to vector of speedups across all data
-        speedups_vect.push_back(
-          run_input_data_iter_base->second->at(
-            run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-              run_eval::kOptimizedRuntimeHeader).value() / 
-          run_input_data_iter_target->second->at(
-            run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-              run_eval::kOptimizedRuntimeHeader).value());
+        if (run_input_data_iter_base->second.has_value() && 
+            run_input_data_iter_target->second.has_value())
+        {
+          speedups_vect.push_back(
+            run_input_data_iter_base->second->at(
+              run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                run_eval::kOptimizedRuntimeHeader).value() / 
+            run_input_data_iter_target->second->at(
+              run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                run_eval::kOptimizedRuntimeHeader).value());
 
-        //add speedup data to corresponding base and target data
-        run_input_data_iter_base->second->at(
-          run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
-            std::string(speedup_header), speedups_vect.back());
-        run_input_data_iter_target->second->at(
-          run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
-            std::string(speedup_header), speedups_vect.back());
+          //add speedup data to corresponding base and target data
+          run_input_data_iter_base->second->at(
+            run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
+              std::string(speedup_header), speedups_vect.back());
+          run_input_data_iter_target->second->at(
+            run_environment::ParallelParamsSetting::kOptimized).AddDataWHeader(
+              std::string(speedup_header), speedups_vect.back());
+        }
       }
     }
   }
