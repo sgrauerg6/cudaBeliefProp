@@ -232,8 +232,30 @@ void EvaluateImpResults::WriteRunOutput(
     speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] = std::ostringstream();
 
     //get headers from first successful run and write headers to top of output files
-    const auto headers_in_order = first_success_run_iter->second->at(
+    auto headers_in_order = first_success_run_iter->second->at(
       run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
+
+    //get vector of speedup headers to use for evaluation across runs
+    //and also for run results
+    std::vector<std::string> speedup_headers;
+    for (const auto& speedup_header_data : run_output.second) {
+      speedup_headers.push_back(speedup_header_data.first);
+    }
+    //delete any speedup headers already in headers_in_order since not all
+    //of them may be included in first successful run
+    //then use vector of speedup headers to add to other headers for
+    //run resuls
+    for (const auto& speedup_header : speedup_headers) {
+      auto speedup_header_iter =
+        std::find(headers_in_order.begin(), headers_in_order.end(), speedup_header);
+      if (speedup_header_iter != headers_in_order.end()) {
+        headers_in_order.erase(speedup_header_iter);
+      }
+    }
+    //add speedup headers to the end of headers in order
+    headers_in_order.insert(
+      headers_in_order.end(), speedup_headers.begin(), speedup_headers.end());
+
     for (const auto& curr_header : headers_in_order) {
       for (const auto& p_param_setting : parallel_param_settings) {
         run_data_sstr[p_param_setting] << curr_header << ',';
@@ -327,12 +349,6 @@ void EvaluateImpResults::WriteRunOutput(
     std::cout << "Speedup results in " << speedups_results_file_path << std::endl;
     std::cout << "Run inputs and results using default parallel parameters in "
               << default_params_results_file_path << std::endl;
-
-    //get vector of speedup headers to use for evaluation across runs
-    std::vector<std::string> speedup_headers;
-    for (const auto& speedup_header_data : run_output.second) {
-      speedup_headers.push_back(speedup_header_data.first);
-    }
 
     //run evaluation across current and previous runs across architectures
     //using run results and speedups saved from previous runs along with
