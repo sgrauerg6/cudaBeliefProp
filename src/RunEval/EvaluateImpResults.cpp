@@ -339,8 +339,15 @@ void EvaluateImpResults::WriteRunOutput(
     else {
       run_result_w_speedup_sstr << run_data_sstr[run_environment::ParallelParamsSetting::kDefault].str() << std::endl;        
     }
+
     //add speedups with headers on left to file containing run results and speedups
     run_result_w_speedup_sstr << speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft].str();
+    
+    //close streams for writing to results files since file writing is done
+    speedup_results_str.close();
+    results_stream[run_environment::ParallelParamsSetting::kDefault].close();
+    results_stream[run_environment::ParallelParamsSetting::kOptimized].close();
+    run_result_w_speedup_sstr.close();
 
     //print location of output evaluation files to standard output
     std::cout << "Input/settings/parameters info, detailed timings, and evaluation for each run and across runs in "
