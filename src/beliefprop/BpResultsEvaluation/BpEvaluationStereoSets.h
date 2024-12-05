@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace beliefprop
 {
+  //headers for image width, height, and stereo set name
   constexpr std::string_view kImageWidthHeader{"Image Width"};
   constexpr std::string_view kImageHeightHeader{"Image Height"};
   constexpr std::string_view kStereoSetHeader{"Stereo Set"};
@@ -51,8 +52,6 @@ namespace beliefprop
 
   //declare stereo sets to process with name, num disparity values, and scale factor
   //currently conesFullSize is not used
-  //the first three stereo sets are labeled as "smallest 3 stereo sets"
-  //the last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"
   constexpr std::array<BpStereoSet, 8> kStereoSetsToProcess{
     BpStereoSet{"tsukubaSetHalfSize", 8, 32},
     BpStereoSet{"tsukubaSet", 16, 16},
@@ -64,12 +63,18 @@ namespace beliefprop
     BpStereoSet{"conesFullSize", 256, 1}
   };
 
-  //small stereo sets and large stereo set data subsets for evaluating run results
+  //define subsets for evaluating run results on specified inputs
+  //the first three stereo sets are labeled as "smallest 3 stereo sets"
+  //the last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"
   const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{
     {"smallest 3 stereo sets", 
       {InputSignature({}, 0, {}), InputSignature({}, 1, {}), InputSignature({}, 2, {})}},
     {"largest 3 stereo sets",
-      {InputSignature({}, 4, {}), InputSignature({}, 5, {}), InputSignature({}, 6, {})}}};
+      {InputSignature({}, 4, {}), InputSignature({}, 5, {}), InputSignature({}, 6, {})}},
+    {"runs w/ disparity count templated",
+      {InputSignature({}, {}, true)}},
+    {"runs w/ disparity count not templated",
+      {InputSignature({}, {}, false)}}};
 };
 
 #endif /* BP_EVALUATION_STEREO_SETS_H_ */
