@@ -17,7 +17,7 @@
 #include <utility>
 #include <ranges>
 #include "RunSettingsParams/RunSettings.h"
-#include "RunImp/RunImpMemoryManagement.h"
+#include "RunImp/MemoryManagement.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RuntimeTiming/DetailedTimings.h"
@@ -51,7 +51,7 @@ public:
     const std::array<float*, 2>& images_target_device, const beliefprop::BpSettings& alg_settings,
     const std::array<unsigned int, 2>& width_height_images,
     T* allocated_mem_bp_processing, T* allocated_memory,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const;
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const;
 
 protected:
   const ParallelParams& parallel_params_;
@@ -104,7 +104,7 @@ private:
   //free memory used for message values in bp processing
   virtual void FreeCheckerboardMessagesMemory(
     const beliefprop::CheckerboardMessages<T*>& checkerboard_messages_to_free,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     std::ranges::for_each(checkerboard_messages_to_free,
       [&mem_management_bp_run](auto& checkerboard_messages_set) {
@@ -118,7 +118,7 @@ private:
   //allocate memory for message values in bp processing
   virtual beliefprop::CheckerboardMessages<T*> AllocateMemoryForCheckerboardMessages(
     std::size_t num_data_allocate_per_message,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     beliefprop::CheckerboardMessages<T*> output_checkerboard_messages;
     std::ranges::for_each(output_checkerboard_messages,
@@ -154,7 +154,7 @@ private:
   //free memory allocated for data costs in bp processing
   virtual void FreeDataCostsMemory(
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_to_free,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[0]);
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[1]);
@@ -163,7 +163,7 @@ private:
   //allocate memory for data costs in bp processing
   virtual beliefprop::DataCostsCheckerboards<T*> AllocateMemoryForDataCosts(
     std::size_t num_data_costs_checkerboards,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     return {mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_costs_checkerboards, ACCELERATION), 
             mem_management_bp_run->AllocateAlignedMemoryOnDevice(num_data_costs_checkerboards, ACCELERATION)};
@@ -173,7 +173,7 @@ private:
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
     AllocateAndOrganizeDataCostsAndMessageDataAllLevels(
       std::size_t num_data_allocate_per_data_costs_message_data_array,
-      const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+      const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     T* data_all_levels = mem_management_bp_run->AllocateAlignedMemoryOnDevice(
       10*num_data_allocate_per_data_costs_message_data_array, ACCELERATION);
@@ -209,7 +209,7 @@ private:
   //free data costs at all levels for bp processing that are all together in a single array
   virtual void FreeDataCostsAllDataInSingleArray(
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_to_free,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     mem_management_bp_run->FreeAlignedMemoryOnDevice(data_costs_to_free[0]);
   }
@@ -232,7 +232,7 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
     const std::array<float*, 2> & images_target_device, const beliefprop::BpSettings& alg_settings,
     const std::array<unsigned int, 2>& width_height_images, T* allocated_mem_bp_processing, T* allocated_memory,
-    const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
 {
   if (ErrorCheck() != run_eval::Status::kNoError) { return {}; }
 

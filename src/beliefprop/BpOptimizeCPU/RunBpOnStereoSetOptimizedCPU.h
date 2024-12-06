@@ -58,8 +58,8 @@ inline std::optional<ProcessStereoSetOutput> RunBpOnStereoSetOptimizedCPU<T, DIS
     BpOnDevice<T, DISP_VALS, ACCELERATION>{
       std::make_unique<SmoothImageCPU>(parallel_params),
       std::make_unique<ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
-      std::make_unique<RunImpMemoryManagement<T>>(),
-      std::make_unique<RunImpMemoryManagement<float>>()});
+      std::make_unique<MemoryManagement<T>>(),
+      std::make_unique<MemoryManagement<float>>()});
   if (process_set_output) {
     run_data.AppendData(process_set_output->run_data);
     process_set_output->run_data = run_data;

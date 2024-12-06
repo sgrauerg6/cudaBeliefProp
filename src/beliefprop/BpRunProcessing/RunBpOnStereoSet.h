@@ -14,7 +14,7 @@
 #include <memory>
 #include <optional>
 #include <ranges>
-#include "RunImp/RunImpMemoryManagement.h"
+#include "RunImp/MemoryManagement.h"
 #include "RunSettingsParams/RunSettings.h"
 #include "RunEval/RunData.h"
 #include "RunEval/RunTypeConstraints.h"
@@ -43,8 +43,8 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smooth_image;
   const std::unique_ptr<ProcessBp<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
-  const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run;
-  const std::unique_ptr<RunImpMemoryManagement<float>>& mem_management_images;
+  const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run;
+  const std::unique_ptr<MemoryManagement<float>>& mem_management_images;
 };
 
 //abstract class to set up and run belief propagation on target device using specified acceleration

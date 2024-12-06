@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/ProcessBp.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
+#include "RunImpCUDA/MemoryManagementCUDA.h"
 #include "ProcessBpCUDA.h"
 #include "SmoothImageCUDA.h"
 
@@ -84,8 +84,8 @@ public:
       BpOnDevice<T, DISP_VALS, ACCELERATION>{
         std::make_unique<SmoothImageCUDA>(parallel_params),
         std::make_unique<ProcessBpCUDA<T, DISP_VALS, ACCELERATION>>(parallel_params),
-        std::make_unique<RunImpCUDAMemoryManagement<T>>(),
-        std::make_unique<RunImpCUDAMemoryManagement<float>>()});
+        std::make_unique<MemoryManagementCUDA<T>>(),
+        std::make_unique<MemoryManagementCUDA<float>>()});
     if (process_set_output) {
       run_data.AppendData(process_set_output->run_data);
       process_set_output->run_data = run_data;

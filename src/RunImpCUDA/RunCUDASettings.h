@@ -5,8 +5,8 @@
  *      Author: scott
  */
 
-#ifndef RUNCUDASETTINGS_H_
-#define RUNCUDASETTINGS_H_
+#ifndef RUN_CUDA_SETTINGS_H_
+#define RUN_CUDA_SETTINGS_H_
 
 #include <vector>
 #include <array>
@@ -38,4 +38,4 @@ constexpr std::array<unsigned int, 2> kParallelParamsDefault{{32, 4}};
 
 };
 
-#endif /* RUNCUDASETTINGS_H_ */
+#endif /* RUN_CUDA_SETTINGS_H_ */

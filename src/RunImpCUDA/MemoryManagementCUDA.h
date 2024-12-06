@@ -1,14 +1,14 @@
-#ifndef RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_
-#define RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_
+#ifndef MEMORY_MANAGEMENT_CUDA_H_
+#define MEMORY_MANAGEMENT_CUDA_H_
 
 #include <cuda_runtime.h>
 #include "RunEval/RunTypeConstraints.h"
-#include "RunImp/RunImpMemoryManagement.h"
+#include "RunImp/MemoryManagement.h"
 
 //functions to manage memory on CUDA device including transferring data between host and CUDA device
-//functions defined in class override functions in parent class RunImpMemoryManagement which is used for CPU only processing
+//functions defined in class override functions in parent class MemoryManagement which is used for CPU only processing
 template <RunData_t T>
-class RunImpCUDAMemoryManagement final : public RunImpMemoryManagement<T>
+class MemoryManagementCUDA final : public MemoryManagement<T>
 {
 public:
   //allocate specified amount of data of type T on CUDA device
@@ -58,4 +58,4 @@ public:
   }
 };
 
-#endif //RUN_IMP_CUDA_MEMORY_MANAGEMENT_H_
+#endif //MEMORY_MANAGEMENT_CUDA_H_

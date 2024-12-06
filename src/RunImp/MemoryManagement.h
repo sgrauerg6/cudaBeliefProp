@@ -1,13 +1,13 @@
 /*
- * RunImpMemoryManagement.h
+ * MemoryManagement.h
  *
  * Class for memory management with functions defined
  * for standard memory allocation using CPU and can be
  * overridden to support other computation devices
  */
 
-#ifndef RUN_IMP_MEMORY_MANAGEMENT_H_
-#define RUN_IMP_MEMORY_MANAGEMENT_H_
+#ifndef MEMORY_MANAGEMENT_H_
+#define MEMORY_MANAGEMENT_H_
 
 #include <new>
 #include <ranges>
@@ -17,7 +17,7 @@
 //Class for memory management with functions defined for standard memory allocation using CPU
 //Class functions can be overridden to support other computation devices such as GPU
 template <RunData_t T>
-class RunImpMemoryManagement
+class MemoryManagement
 {
 public:
   virtual T* AllocateMemoryOnDevice(std::size_t numData) const {
@@ -69,4 +69,4 @@ public:
   }
 };
 
-#endif //RUN_IMP_MEMORY_MANAGEMENT_H_
+#endif //MEMORY_MANAGEMENT_H_
