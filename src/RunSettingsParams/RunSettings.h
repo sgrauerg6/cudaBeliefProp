@@ -42,6 +42,7 @@ inline RunData RunSettings()  {
 
 //structure that stores settings for current implementation run
 struct RunImpSettings {
+  std::vector<unsigned int> datatypes_eval_sizes;
   TemplatedItersSetting templated_iters_setting;
   std::pair<bool, OptParallelParamsSetting> opt_parallel_params_setting;
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> p_params_default_opt_settings;

@@ -35,14 +35,24 @@ enum class RunImpSetting {
 };
 
 //run implementation using input parameters from command line with specified setting
-void runImp(int argc, char** argv, RunImpSetting impSetting) {
+void runImp(int argc, char** argv, RunImpSetting impSetting)
+{
   //initialize settings to run implementation and evaluation
   run_environment::RunImpSettings run_imp_settings;
+
   //enable optimization of parallel parameters with setting to use the same parallel parameters for all kernels in run
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
-  run_imp_settings.opt_parallel_params_setting = {true, run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels};
-  run_imp_settings.p_params_default_opt_settings = {run_cpu::kParallelParamsDefault, run_cpu::kParallelParameterOptions};
+  run_imp_settings.opt_parallel_params_setting =
+    {true,
+     run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels};
+
+  //set default parallel parameters and parallel parameters to benchmark when searching for optimal
+  //parallel parameters
+  run_imp_settings.p_params_default_opt_settings =
+    {run_cpu::kParallelParamsDefault,
+     run_cpu::kParallelParameterOptions};
+
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
   run_imp_settings.run_name = (argc > 1) ? argv[1] : "CurrentRun";
@@ -50,15 +60,18 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
   //adjust thread count to simulate single CPU on dual-CPU system
   //currently only works as expected if environment variables are set before run such that threads are pinned to socket via
   //"export OMP_PLACES="sockets"" and "export OMP_PROC_BIND=true" commands on command line
-  if (impSetting == RunImpSetting::kRunImpSimSingleCPUTwoCPUSystem) {
+  if (impSetting == RunImpSetting::kRunImpSimSingleCPUTwoCPUSystem)
+  {
     //adjust settings to simulate run on single CPU in two-CPU system, specifically set parallel thread count options so that
     //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
     //are pinned to socket
     //set default parallel threads count to be number of threads on a single CPU in the two-CPU system
-    run_imp_settings.p_params_default_opt_settings.first = {std::thread::hardware_concurrency() / 2, 1};
+    run_imp_settings.p_params_default_opt_settings.first =
+      {std::thread::hardware_concurrency() / 2, 1};
 
     //erase parallel thread count options with more than the number of threads on a single CPU in the two-CPU system
-    run_imp_settings.RemoveParallelParamAboveMaxThreads(std::thread::hardware_concurrency() / 2);
+    run_imp_settings.RemoveParallelParamAboveMaxThreads(
+      std::thread::hardware_concurrency() / 2);
 
     //adjust settings so that CPU threads pinned to socket to simulate run on single CPU
     //TODO: commented out since currently has no effect; needs to be set before run by
@@ -86,22 +99,39 @@ void runImp(int argc, char** argv, RunImpSetting impSetting) {
     }
   }*/
 
+  //set datatype(s) to use in run processing in evaluation
+  run_imp_settings.datatypes_eval_sizes =
+    {run_eval::kDataTypesEvalSizes.begin(),
+     run_eval::kDataTypesEvalSizes.end()};
+
   //remove any parallel processing below given minimum number of threads
-  run_imp_settings.RemoveParallelParamBelowMinThreads(run_cpu::kMinNumThreadsRun);
-  run_imp_settings.templated_iters_setting = run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
+  run_imp_settings.RemoveParallelParamBelowMinThreads(
+    run_cpu::kMinNumThreadsRun);
+
+  //set setting of whether or not to use templated loop iterations in implementation
+  //in evaluation runs
+  run_imp_settings.templated_iters_setting =
+    run_environment::TemplatedItersSetting::kRunOnlyNonTemplated;
+
+  //set path of baseline runtimes and baseline description
   run_imp_settings.baseline_runtimes_path_desc =
-    std::array<std::string_view, 2>{
-      bp_file_handling::kBaselineRunDataPath,
-      bp_file_handling::kBaselineRunDesc};
+    {bp_file_handling::kBaselineRunDataPath,
+     bp_file_handling::kBaselineRunDesc};
+
+  //set data subsets to evaluate separate from all data
   run_imp_settings.subset_desc_input_sig = beliefprop::kEvalDataSubsets;
 
-  //run belief propagation with AVX512, AVX256, and no vectorization implementations, with the AVX512 implementation
-  //given first as the expected fastest implementation
+  //run belief propagation with AVX512, AVX256, and no vectorization implementations,
+  //with the AVX512 implementation given first as the expected fastest implementation
   RunEvalImpMultSettings().operator()({
-    {run_environment::AccSetting::kAVX512, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
-    {run_environment::AccSetting::kAVX256, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX256)},
-    {run_environment::AccSetting::kNone, std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kNone)}},
-    run_imp_settings, std::make_unique<EvaluateBPImpResults>());
+    {run_environment::AccSetting::kAVX512,
+     std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
+    {run_environment::AccSetting::kAVX256,
+     std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX256)},
+    {run_environment::AccSetting::kNone,
+     std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kNone)}},
+    run_imp_settings,
+    std::make_unique<EvaluateBPImpResults>());
 }
 
 int main(int argc, char** argv)

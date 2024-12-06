@@ -79,7 +79,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //result with "optimal" acceleration for specific input
   std::unordered_map<size_t, std::vector<RunSpeedupAvgMedian>> alt_imp_speedup;
   std::unordered_map<size_t, RunSpeedupAvgMedian> alt_datatype_speedup;
-  for (const size_t data_size : run_eval::kDataTypesEvalSizes) {
+  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes) {
     alt_imp_speedup[data_size] = GetAltAccelSpeedups(
       run_result_mult_runs_opt[data_size], run_imp_settings, data_size, opt_imp_acc);
     if (data_size != sizeof(float)) {
