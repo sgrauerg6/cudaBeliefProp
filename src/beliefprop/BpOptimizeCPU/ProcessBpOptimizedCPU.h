@@ -37,6 +37,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //include for the "kernel" functions to be run on the CPU
 #include "KernelBpStereoCPU.h"
 
+/**
+ * @brief Class that define functions used in processing bp in the
+ * optimized CPU implementation
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class ProcessBpOptimizedCPU final : public ProcessBp<T, DISP_VALS, ACCELERATION>
 {

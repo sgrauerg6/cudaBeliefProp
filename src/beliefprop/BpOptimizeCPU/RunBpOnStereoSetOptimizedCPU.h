@@ -24,6 +24,14 @@ namespace beliefprop {
   constexpr std::string_view kCPUVectorizationHeader{"Vectorization"};
 };
 
+/**
+ * @brief Class to run optimized CPU implementation of belief propagation on a
+ * given stereo set as defined by reference and test image file paths
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpOnStereoSetOptimizedCPU final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION> {
 public:

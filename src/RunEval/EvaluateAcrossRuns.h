@@ -15,6 +15,12 @@
 #include <filesystem>
 #include "RunEvalConstsEnums.h"
 
+/**
+ * @brief Class with operator function to evaluate implementation runs across
+ * multiple architectures. Outputs a file with speedup data on every run
+ * with the runs ordered from fastest to slowest.
+ * 
+ */
 class EvaluateAcrossRuns {
 public:
   /**

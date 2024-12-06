@@ -27,6 +27,11 @@ namespace beliefprop {
   constexpr std::string_view kPPMExt{"ppm"};
 };
 
+/**
+ * @brief Class to define images that are used in bp processing
+ * 
+ * @tparam T 
+ */
 template <class T>
 requires std::is_arithmetic_v<T>
 class BpImage {

@@ -28,6 +28,14 @@
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunSettingsParams/RunSettings.h"
 
+/**
+ * @brief Class to run single-threaded CPU implementation of belief propagation on a
+ * given stereo set as defined by reference and test image file paths
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpStereoCPUSingleThread final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {

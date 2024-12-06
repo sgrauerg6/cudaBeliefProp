@@ -14,6 +14,10 @@
 #include "BpImageProcessing/BpImageConstraints.h"
 #include "RunSettingsParams/ParallelParams.h"
 
+/**
+ * @brief Class for smoothing images in the optimized CPU implementation
+ * 
+ */
 class SmoothImageCPU final : public SmoothImage {
 public:
   SmoothImageCPU(const ParallelParams& opt_cpu_params) : SmoothImage(opt_cpu_params) {}

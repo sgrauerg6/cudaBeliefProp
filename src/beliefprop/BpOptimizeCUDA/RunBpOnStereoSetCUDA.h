@@ -59,6 +59,14 @@ namespace bp_cuda_device
   }
 };
 
+/**
+ * @brief Class to run CUDA implementation of belief propagation on a
+ * given stereo set as defined by reference and test image file paths
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpOnStereoSetCUDA final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {

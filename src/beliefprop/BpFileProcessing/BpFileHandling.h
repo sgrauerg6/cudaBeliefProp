@@ -12,7 +12,10 @@
 #include <algorithm>
 #include "BpFileHandlingConsts.h"
 
-//class for retrieve path of stereo set files for reading and for output
+/**
+ * @brief Class to retrieve path of stereo set files for reading and for output
+ * 
+ */
 class BpFileHandling {
 public:
   /**

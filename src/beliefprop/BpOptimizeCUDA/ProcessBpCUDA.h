@@ -28,6 +28,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
 
+/**
+ * @brief Class that define functions used in processing bp in the
+ * CUDA implementation
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class ProcessBpCUDA final : public ProcessBp<T, DISP_VALS, ACCELERATION>
 {

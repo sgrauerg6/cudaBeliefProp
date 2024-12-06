@@ -15,6 +15,11 @@
 #include "BpResultsEvaluation/BpEvaluationResults.h"
 #include "BpResultsEvaluation/BpEvaluationParameters.h"
 
+/**
+ * @brief Class to define disparity map image that is output from bp processing
+ * 
+ * @tparam T 
+ */
 template<class T>
 requires std::is_arithmetic_v<T>
 class DisparityMap : public BpImage<T> {

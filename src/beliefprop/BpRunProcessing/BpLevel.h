@@ -16,8 +16,8 @@
 namespace beliefprop {
 
 /**
- * @brief POD struct to store bp level data
- * struct can be passed to __global__ CUDAs kernel so needs to take restrictions of what's allowed for
+ * @brief POD struct to store bp level data.
+ * Struct can be passed to global CUDAs kernel so needs to take restrictions of what's allowed for
  * passing data from the host to a CUDA kernel into account
  * 
  */
