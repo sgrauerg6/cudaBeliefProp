@@ -1,0 +1,4 @@
+<map id="beliefprop::RunSettings" name="beliefprop::RunSettings">
+<area shape="rect" id="node1" title="Retrieve run settings as a RunData object for output." alt="" coords="260,13,435,39"/>
+<area shape="rect" id="node2" href="$class_run_bp_imp_on_input.html#a5a4dbb1b3f6f37e13a49553a951f095f" title="Get input data and parameter info about current benchmark (belief propagation in this case) and retur..." alt="" coords="5,5,212,47"/>
+</map>

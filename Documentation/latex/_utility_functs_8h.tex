@@ -1,0 +1,57 @@
+\hypertarget{_utility_functs_8h}{}\doxysection{src/\+Run\+Imp/\+Utility\+Functs.h File Reference}
+\label{_utility_functs_8h}\index{src/RunImp/UtilityFuncts.h@{src/RunImp/UtilityFuncts.h}}
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
+Include dependency graph for Utility\+Functs.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{_utility_functs_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_utility_functs_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespaceutil__functs}{util\+\_\+functs}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} U \mbox{\hyperlink{namespaceutil__functs_a6a1aba89f14c521198e0f8a0640f7e00}{util\+\_\+functs\+::\+Convert\+Val\+To\+Different\+Data\+Type\+If\+Needed}} (T data)
+\begin{DoxyCompactList}\small\item\em T is input type, U is output type. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespaceutil__functs_af509aad8fbf0c563f8880ac1f1572b99}{util\+\_\+functs\+::\+Zero\+Val}} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\requires std\+::is\+\_\+arithmetic\+\_\+v$<$ T $>$ \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespaceutil__functs_a152949893a393787be955df9fb4a638d}{util\+\_\+functs\+::\+Get\+Min}} (T val1, T val2)
+\item 
+{\footnotesize template$<$typename T $>$ }\\requires std\+::is\+\_\+arithmetic\+\_\+v$<$ T $>$ \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespaceutil__functs_aca34e7c44469367a700c4e23d2637cbb}{util\+\_\+functs\+::\+Get\+Max}} (T val1, T val2)
+\item 
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool \mbox{\hyperlink{namespaceutil__functs_a02d622e2afabbaa1396d0213c5a505af}{util\+\_\+functs\+::\+Within\+Image\+Bounds}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height)
+\begin{DoxyCompactList}\small\item\em Checks if the current point is within the image bounds Assumed that input x/y vals are above zero since their unsigned int so no need for $>$= 0 check. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespaceutil__functs_a9d24a6a516382fc3d84c9a2076d244f2}{util\+\_\+functs\+::\+Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
+\begin{DoxyCompactList}\small\item\em Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}\label{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}} 
+\index{UtilityFuncts.h@{UtilityFuncts.h}!ARCHITECTURE\_ADDITION@{ARCHITECTURE\_ADDITION}}
+\index{ARCHITECTURE\_ADDITION@{ARCHITECTURE\_ADDITION}!UtilityFuncts.h@{UtilityFuncts.h}}
+\doxysubsubsection{\texorpdfstring{ARCHITECTURE\_ADDITION}{ARCHITECTURE\_ADDITION}}
+{\footnotesize\ttfamily \#define ARCHITECTURE\+\_\+\+ADDITION}
+
+
+
+Definition at line 17 of file Utility\+Functs.\+h.
+

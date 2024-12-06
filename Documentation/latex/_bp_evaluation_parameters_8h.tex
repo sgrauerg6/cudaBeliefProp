@@ -1,0 +1,35 @@
+\hypertarget{_bp_evaluation_parameters_8h}{}\doxysection{beliefprop/\+Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Parameters.h File Reference}
+\label{_bp_evaluation_parameters_8h}\index{beliefprop/BpResultsEvaluation/BpEvaluationParameters.h@{beliefprop/BpResultsEvaluation/BpEvaluationParameters.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+Include dependency graph for Bp\+Evaluation\+Parameters.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{_bp_evaluation_parameters_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_evaluation_parameters_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_bp_evaluation_parameters}{Bp\+Evaluation\+Parameters}}
+\begin{DoxyCompactList}\small\item\em Struct to store parameters for evaluation of disparity map from stereo processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr std\+::array$<$ float, 4 $>$ \mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{beliefprop\+::k\+Disparity\+Diff\+Thresholds}}
+\begin{DoxyCompactList}\small\item\em Difference thresholds in output disparity for a computed disparity at a pixel to be considered a \char`\"{}bad pixel\char`\"{} when compared to the ground truth in the evaluation. \end{DoxyCompactList}\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}{beliefprop\+::k\+Max\+Diff\+Cap}}
+\begin{DoxyCompactList}\small\item\em Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers in the average difference across all pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}

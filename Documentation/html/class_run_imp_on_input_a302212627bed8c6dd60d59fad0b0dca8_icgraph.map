@@ -1,0 +1,4 @@
+<map id="RunImpOnInput::SetUpParallelParams" name="RunImpOnInput::SetUpParallelParams">
+<area shape="rect" id="node1" title="Set up parallel parameters for benchmark." alt="" coords="312,5,531,47"/>
+<area shape="rect" id="node2" href="$class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef" title="Run optimized and single threaded implementations using multiple sets of parallel parameters in optim..." alt="" coords="5,13,264,39"/>
+</map>

@@ -1,0 +1,48 @@
+\hypertarget{kernel_bp_stereo_debug_8cu}{}\doxysection{src/beliefprop/\+Bp\+Optimize\+CUDA/kernel\+Bp\+Stereo\+Debug.cu File Reference}
+\label{kernel_bp_stereo_debug_8cu}\index{src/beliefprop/BpOptimizeCUDA/kernelBpStereoDebug.cu@{src/beliefprop/BpOptimizeCUDA/kernelBpStereoDebug.cu}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+device\+\_\+\+\_\+ void \mbox{\hyperlink{kernel_bp_stereo_debug_8cu_ae0891794806910b92158b98ddef37fb8}{print\+Data\+And\+Message\+Vals\+At\+Point\+Device}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int width\+\_\+level\+\_\+checkerboard\+\_\+part, unsigned int height\+Level)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+device\+\_\+\+\_\+ void \mbox{\hyperlink{kernel_bp_stereo_debug_8cu_a3e866b02eed4e07788dc0eafce35239a}{print\+Data\+And\+Message\+Vals\+To\+Point\+Device}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int width\+\_\+level\+\_\+checkerboard\+\_\+part, unsigned int height\+Level)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{kernel_bp_stereo_debug_8cu_ae0891794806910b92158b98ddef37fb8}\label{kernel_bp_stereo_debug_8cu_ae0891794806910b92158b98ddef37fb8}} 
+\index{kernelBpStereoDebug.cu@{kernelBpStereoDebug.cu}!printDataAndMessageValsAtPointDevice@{printDataAndMessageValsAtPointDevice}}
+\index{printDataAndMessageValsAtPointDevice@{printDataAndMessageValsAtPointDevice}!kernelBpStereoDebug.cu@{kernelBpStereoDebug.cu}}
+\doxysubsubsection{\texorpdfstring{printDataAndMessageValsAtPointDevice()}{printDataAndMessageValsAtPointDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+device\+\_\+\+\_\+ void print\+Data\+And\+Message\+Vals\+At\+Point\+Device (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{width\+\_\+level\+\_\+checkerboard\+\_\+part,  }\item[{unsigned int}]{height\+Level }\end{DoxyParamCaption})}
+
+
+
+Definition at line 88 of file kernel\+Bp\+Stereo\+Debug.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{kernel_bp_stereo_debug_8cu_ae0891794806910b92158b98ddef37fb8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{kernel_bp_stereo_debug_8cu_a3e866b02eed4e07788dc0eafce35239a}\label{kernel_bp_stereo_debug_8cu_a3e866b02eed4e07788dc0eafce35239a}} 
+\index{kernelBpStereoDebug.cu@{kernelBpStereoDebug.cu}!printDataAndMessageValsToPointDevice@{printDataAndMessageValsToPointDevice}}
+\index{printDataAndMessageValsToPointDevice@{printDataAndMessageValsToPointDevice}!kernelBpStereoDebug.cu@{kernelBpStereoDebug.cu}}
+\doxysubsubsection{\texorpdfstring{printDataAndMessageValsToPointDevice()}{printDataAndMessageValsToPointDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+device\+\_\+\+\_\+ void print\+Data\+And\+Message\+Vals\+To\+Point\+Device (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{width\+\_\+level\+\_\+checkerboard\+\_\+part,  }\item[{unsigned int}]{height\+Level }\end{DoxyParamCaption})}
+
+
+
+Definition at line 221 of file kernel\+Bp\+Stereo\+Debug.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{kernel_bp_stereo_debug_8cu_a3e866b02eed4e07788dc0eafce35239a_cgraph}
+\end{center}
+\end{figure}

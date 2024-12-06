@@ -1,0 +1,5 @@
+<map id="DetailedTimings::AsRunData" name="DetailedTimings::AsRunData">
+<area shape="rect" id="node1" title="Return current timing data as a RunData object for evaluation." alt="" coords="487,13,696,39"/>
+<area shape="rect" id="node2" href="$class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,5,439,47"/>
+<area shape="rect" id="node3" href="$class_run_bp_on_stereo_set_c_u_d_a.html#ae8e0dd1cd0c36fa75769a2dc8f49dd42" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,5,188,47"/>
+</map>

@@ -1,0 +1,554 @@
+\hypertarget{namespacebeliefprop_c_p_u}{}\doxysection{beliefprop\+CPU Namespace Reference}
+\label{namespacebeliefprop_c_p_u}\index{beliefpropCPU@{beliefpropCPU}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a5780eec38de355362567165aa2c81e02}{Initialize\+Bottom\+Level\+Data}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$image\+\_\+1\+\_\+pixels\+\_\+device, const float $\ast$image\+\_\+2\+\_\+pixels\+\_\+device, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1, float lambda\+\_\+bp, float data\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_ad0eb9d91117883907e1cdf53e8782c6c}{Initialize\+Current\+Level\+Data}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_ab7e56053523e0ce7a577c1033725bd4a}{Initialize\+Message\+Vals\+To\+Default\+Kernel}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a7d9c6668e803537cbb8a07e0b5d1c1bf}{Run\+BPIteration\+Using\+Checkerboard\+Updates}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+num\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a955c3398c2d327e758da9a2c40a2a262}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+No\+Packed\+Instructions}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a95cc6d0a18e912e0af921f35441c4594}{Copy\+Msg\+Data\+To\+Next\+Level}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&next\+\_\+bp\+\_\+level, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_acd3c4a1364c13cba9f180a18dd1c6a23}{Retrieve\+Output\+Disparity}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, Run\+Data\+Process\+\_\+t V, Run\+Data\+Vect\+Process\+\_\+t W, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a64141ccc62bed8128e4dc46a019228a2}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, unsigned int simd\+\_\+data\+\_\+size, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a558b3c5eb964bb260a05e7f06069c647}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX256}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a1a97e23befb5ee8c5a2dfdae5d6c6483}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX256}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a8a13cd59833cc5d61650e24f3fb8c429}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX256}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_ab601bd71f807332cf9af05f138ba9bf7}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX512}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_ad3acb9cc9168f79aa922e5719714443d}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX512}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a60b68fd668a275a1b6fc2d039890f705}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX512}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a3d1ca3f4cc1bec525b53c44dd3a5445b}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+NEON}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const float $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const float $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a788dec772e0e3ef0bbfec911313bc4aa}{Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+NEON}} (const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const double $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const double $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a3e9af0fe340e03d02e4f9f1183323d87}{Run\+BPIteration\+Update\+Msg\+Vals\+Use\+SIMDVectors}} (unsigned int x\+\_\+val\+\_\+start\+\_\+processing, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U prev\+\_\+u\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U prev\+\_\+d\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U prev\+\_\+l\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U prev\+\_\+r\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U data\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, T $\ast$current\+\_\+u\+\_\+message, T $\ast$current\+\_\+d\+\_\+message, T $\ast$current\+\_\+l\+\_\+message, T $\ast$current\+\_\+r\+\_\+message, const U disc\+\_\+k\+\_\+bp\+\_\+vect, bool data\+\_\+aligned)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a192dc0e2cbc39c9b7b34372080b73104}{Run\+BPIteration\+Update\+Msg\+Vals\+Use\+SIMDVectors}} (unsigned int x\+\_\+val\+\_\+start\+\_\+processing, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U $\ast$prev\+\_\+u\+\_\+message, const U $\ast$prev\+\_\+d\+\_\+message, const U $\ast$prev\+\_\+l\+\_\+message, const U $\ast$prev\+\_\+r\+\_\+message, const U $\ast$data\+\_\+message, T $\ast$current\+\_\+u\+\_\+message, T $\ast$current\+\_\+d\+\_\+message, T $\ast$current\+\_\+l\+\_\+message, T $\ast$current\+\_\+r\+\_\+message, const U disc\+\_\+k\+\_\+bp\+\_\+vect, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_af9154d05d3ba2e406760833bc96a3328}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX256}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_aa42dd7a9f45b3eacb00c080976bbebbd}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX256}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a881af5c170a112deacc8e6f7e38be18d}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX256}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a9e8a064417f9498f8322e1c3da128aee}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX512}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_aaa4954cfd73e383bebc4a3892c42d7c3}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX512}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a5f1e2c4d7ae97ebf5d174e41d492016c}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX512}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a331c6f0c8d8dba1856bc0a991be783ba}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+NEON}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const float $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, float $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, float $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a229b5a43f9d4e4b7c81fce78483a7069}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+NEON}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const double $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, double $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, double $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a3af66d30eb16713911cc5e8a6a7ef794}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+Process}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int simd\+\_\+data\+\_\+size, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&opt\+\_\+cpu\+\_\+params)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{Msg\+Stereo\+SIMD}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U messages\+\_\+neighbor\+\_\+1\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U messages\+\_\+neighbor\+\_\+2\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U messages\+\_\+neighbor\+\_\+3\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U data\+\_\+costs\mbox{[}DISP\+\_\+\+VALS\mbox{]}, T $\ast$dst\+\_\+message\+\_\+array, const U \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_aa227243880e90356eec9da5352c1c6b1}{Msg\+Stereo\+SIMD}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U $\ast$messages\+\_\+neighbor\+\_\+1, const U $\ast$messages\+\_\+neighbor\+\_\+2, const U $\ast$messages\+\_\+neighbor\+\_\+3, const U $\ast$data\+\_\+costs, T $\ast$dst\+\_\+message\+\_\+array, const U \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, Run\+Data\+Process\+\_\+t V, Run\+Data\+Vect\+Process\+\_\+t W$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_adb8b086a2bd4634084003584c63c341b}{Msg\+Stereo\+SIMDProcessing}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U $\ast$messages\+\_\+neighbor\+\_\+1, const U $\ast$messages\+\_\+neighbor\+\_\+2, const U $\ast$messages\+\_\+neighbor\+\_\+3, const U $\ast$data\+\_\+costs, T $\ast$dst\+\_\+message\+\_\+array, const U \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, Run\+Data\+Process\+\_\+t V, Run\+Data\+Vect\+Process\+\_\+t W, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_ae4241f07ead9d7e35ce97fda430d163a}{Msg\+Stereo\+SIMDProcessing}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U messages\+\_\+neighbor\+\_\+1\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U messages\+\_\+neighbor\+\_\+2\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U messages\+\_\+neighbor\+\_\+3\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U data\+\_\+costs\mbox{[}DISP\+\_\+\+VALS\mbox{]}, T $\ast$dst\+\_\+message\+\_\+array, const U \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+{\footnotesize template$<$Run\+Data\+Process\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a2185dd205490e4d78be9aa8af3c12788}{Dt\+Stereo\+SIMD}} (U f\mbox{[}DISP\+\_\+\+VALS\mbox{]})
+\item 
+{\footnotesize template$<$Run\+Data\+Process\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a155cd4b8cd654314fe5973c4b886647a}{Dt\+Stereo\+SIMD}} (U $\ast$f, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+Vect\+Process\+\_\+t T$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a405e657a4b5d238a28682ace4f9eb086}{Update\+Best\+Disp\+Best\+Vals}} (T \&best\+\_\+disparities, T \&best\+\_\+vals, const T \&current\+\_\+disparity, const T \&val\+\_\+at\+\_\+disp)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_ae0f2240415020ec80d3b79ad3cd35afd}{Print\+Data\+And\+Message\+Vals\+At\+Point\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a8ae046dfc3fc8d99f38a353906a7bf10}{Print\+Data\+And\+Message\+Vals\+To\+Point\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a95cc6d0a18e912e0af921f35441c4594}\label{namespacebeliefprop_c_p_u_a95cc6d0a18e912e0af921f35441c4594}} 
+\index{beliefpropCPU@{beliefpropCPU}!CopyMsgDataToNextLevel@{CopyMsgDataToNextLevel}}
+\index{CopyMsgDataToNextLevel@{CopyMsgDataToNextLevel}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{CopyMsgDataToNextLevel()}{CopyMsgDataToNextLevel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Copy\+Msg\+Data\+To\+Next\+Level (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{next\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a155cd4b8cd654314fe5973c4b886647a}\label{namespacebeliefprop_c_p_u_a155cd4b8cd654314fe5973c4b886647a}} 
+\index{beliefpropCPU@{beliefpropCPU}!DtStereoSIMD@{DtStereoSIMD}}
+\index{DtStereoSIMD@{DtStereoSIMD}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{DtStereoSIMD()}{DtStereoSIMD()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Process\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ \\
+void beliefprop\+CPU\+::\+Dt\+Stereo\+SIMD (\begin{DoxyParamCaption}\item[{U $\ast$}]{f,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1674 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a2185dd205490e4d78be9aa8af3c12788}\label{namespacebeliefprop_c_p_u_a2185dd205490e4d78be9aa8af3c12788}} 
+\index{beliefpropCPU@{beliefpropCPU}!DtStereoSIMD@{DtStereoSIMD}}
+\index{DtStereoSIMD@{DtStereoSIMD}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{DtStereoSIMD()}{DtStereoSIMD()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Process\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Dt\+Stereo\+SIMD (\begin{DoxyParamCaption}\item[{U}]{f\mbox{[}\+DISP\+\_\+\+VALS\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1566 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a5780eec38de355362567165aa2c81e02}\label{namespacebeliefprop_c_p_u_a5780eec38de355362567165aa2c81e02}} 
+\index{beliefpropCPU@{beliefpropCPU}!InitializeBottomLevelData@{InitializeBottomLevelData}}
+\index{InitializeBottomLevelData@{InitializeBottomLevelData}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{InitializeBottomLevelData()}{InitializeBottomLevelData()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Initialize\+Bottom\+Level\+Data (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{image\+\_\+1\+\_\+pixels\+\_\+device,  }\item[{const float $\ast$}]{image\+\_\+2\+\_\+pixels\+\_\+device,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1,  }\item[{float}]{lambda\+\_\+bp,  }\item[{float}]{data\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 467 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_a5780eec38de355362567165aa2c81e02_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_ad0eb9d91117883907e1cdf53e8782c6c}\label{namespacebeliefprop_c_p_u_ad0eb9d91117883907e1cdf53e8782c6c}} 
+\index{beliefpropCPU@{beliefpropCPU}!InitializeCurrentLevelData@{InitializeCurrentLevelData}}
+\index{InitializeCurrentLevelData@{InitializeCurrentLevelData}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{InitializeCurrentLevelData()}{InitializeCurrentLevelData()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Initialize\+Current\+Level\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 498 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_ad0eb9d91117883907e1cdf53e8782c6c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_ab7e56053523e0ce7a577c1033725bd4a}\label{namespacebeliefprop_c_p_u_ab7e56053523e0ce7a577c1033725bd4a}} 
+\index{beliefpropCPU@{beliefpropCPU}!InitializeMessageValsToDefaultKernel@{InitializeMessageValsToDefaultKernel}}
+\index{InitializeMessageValsToDefaultKernel@{InitializeMessageValsToDefaultKernel}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{InitializeMessageValsToDefaultKernel()}{InitializeMessageValsToDefaultKernel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Initialize\+Message\+Vals\+To\+Default\+Kernel (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 532 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_ab7e56053523e0ce7a577c1033725bd4a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_aa227243880e90356eec9da5352c1c6b1}\label{namespacebeliefprop_c_p_u_aa227243880e90356eec9da5352c1c6b1}} 
+\index{beliefpropCPU@{beliefpropCPU}!MsgStereoSIMD@{MsgStereoSIMD}}
+\index{MsgStereoSIMD@{MsgStereoSIMD}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{MsgStereoSIMD()}{MsgStereoSIMD()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ \\
+void beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+1,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+2,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+3,  }\item[{const U $\ast$}]{data\+\_\+costs,  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const U \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1799 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}\label{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}} 
+\index{beliefpropCPU@{beliefpropCPU}!MsgStereoSIMD@{MsgStereoSIMD}}
+\index{MsgStereoSIMD@{MsgStereoSIMD}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{MsgStereoSIMD()}{MsgStereoSIMD()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U}]{messages\+\_\+neighbor\+\_\+1\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{messages\+\_\+neighbor\+\_\+2\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{messages\+\_\+neighbor\+\_\+3\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{data\+\_\+costs\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const U \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1785 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_adb8b086a2bd4634084003584c63c341b}\label{namespacebeliefprop_c_p_u_adb8b086a2bd4634084003584c63c341b}} 
+\index{beliefpropCPU@{beliefpropCPU}!MsgStereoSIMDProcessing@{MsgStereoSIMDProcessing}}
+\index{MsgStereoSIMDProcessing@{MsgStereoSIMDProcessing}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{MsgStereoSIMDProcessing()}{MsgStereoSIMDProcessing()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, Run\+Data\+Process\+\_\+t V, Run\+Data\+Vect\+Process\+\_\+t W$>$ \\
+void beliefprop\+CPU\+::\+Msg\+Stereo\+SIMDProcessing (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+1,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+2,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+3,  }\item[{const U $\ast$}]{data\+\_\+costs,  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const U \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1701 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_adb8b086a2bd4634084003584c63c341b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{namespacebeliefprop_c_p_u_adb8b086a2bd4634084003584c63c341b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_ae4241f07ead9d7e35ce97fda430d163a}\label{namespacebeliefprop_c_p_u_ae4241f07ead9d7e35ce97fda430d163a}} 
+\index{beliefpropCPU@{beliefpropCPU}!MsgStereoSIMDProcessing@{MsgStereoSIMDProcessing}}
+\index{MsgStereoSIMDProcessing@{MsgStereoSIMDProcessing}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{MsgStereoSIMDProcessing()}{MsgStereoSIMDProcessing()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, Run\+Data\+Process\+\_\+t V, Run\+Data\+Vect\+Process\+\_\+t W, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Msg\+Stereo\+SIMDProcessing (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U}]{messages\+\_\+neighbor\+\_\+1\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{messages\+\_\+neighbor\+\_\+2\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{messages\+\_\+neighbor\+\_\+3\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{data\+\_\+costs\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const U \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1593 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_ae4241f07ead9d7e35ce97fda430d163a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_ae0f2240415020ec80d3b79ad3cd35afd}\label{namespacebeliefprop_c_p_u_ae0f2240415020ec80d3b79ad3cd35afd}} 
+\index{beliefpropCPU@{beliefpropCPU}!PrintDataAndMessageValsAtPointKernel@{PrintDataAndMessageValsAtPointKernel}}
+\index{PrintDataAndMessageValsAtPointKernel@{PrintDataAndMessageValsAtPointKernel}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{PrintDataAndMessageValsAtPointKernel()}{PrintDataAndMessageValsAtPointKernel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Print\+Data\+And\+Message\+Vals\+At\+Point\+Kernel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1 }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1815 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_ae0f2240415020ec80d3b79ad3cd35afd_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a8ae046dfc3fc8d99f38a353906a7bf10}\label{namespacebeliefprop_c_p_u_a8ae046dfc3fc8d99f38a353906a7bf10}} 
+\index{beliefpropCPU@{beliefpropCPU}!PrintDataAndMessageValsToPointKernel@{PrintDataAndMessageValsToPointKernel}}
+\index{PrintDataAndMessageValsToPointKernel@{PrintDataAndMessageValsToPointKernel}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{PrintDataAndMessageValsToPointKernel()}{PrintDataAndMessageValsToPointKernel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Print\+Data\+And\+Message\+Vals\+To\+Point\+Kernel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1 }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1880 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_a8ae046dfc3fc8d99f38a353906a7bf10_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_acd3c4a1364c13cba9f180a18dd1c6a23}\label{namespacebeliefprop_c_p_u_acd3c4a1364c13cba9f180a18dd1c6a23}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparity@{RetrieveOutputDisparity}}
+\index{RetrieveOutputDisparity@{RetrieveOutputDisparity}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparity()}{RetrieveOutputDisparity()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1117 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_acd3c4a1364c13cba9f180a18dd1c6a23_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_acd3c4a1364c13cba9f180a18dd1c6a23_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a64141ccc62bed8128e4dc46a019228a2}\label{namespacebeliefprop_c_p_u_a64141ccc62bed8128e4dc46a019228a2}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectors@{RetrieveOutputDisparityUseSIMDVectors}}
+\index{RetrieveOutputDisparityUseSIMDVectors@{RetrieveOutputDisparityUseSIMDVectors}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectors()}{RetrieveOutputDisparityUseSIMDVectors()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, Run\+Data\+Process\+\_\+t V, Run\+Data\+Vect\+Process\+\_\+t W, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1191 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_a64141ccc62bed8128e4dc46a019228a2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a8a13cd59833cc5d61650e24f3fb8c429}\label{namespacebeliefprop_c_p_u_a8a13cd59833cc5d61650e24f3fb8c429}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsAVX256@{RetrieveOutputDisparityUseSIMDVectorsAVX256}}
+\index{RetrieveOutputDisparityUseSIMDVectorsAVX256@{RetrieveOutputDisparityUseSIMDVectorsAVX256}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsAVX256()}{RetrieveOutputDisparityUseSIMDVectorsAVX256()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX256 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 129 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX256\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a558b3c5eb964bb260a05e7f06069c647}\label{namespacebeliefprop_c_p_u_a558b3c5eb964bb260a05e7f06069c647}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsAVX256@{RetrieveOutputDisparityUseSIMDVectorsAVX256}}
+\index{RetrieveOutputDisparityUseSIMDVectorsAVX256@{RetrieveOutputDisparityUseSIMDVectorsAVX256}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsAVX256()}{RetrieveOutputDisparityUseSIMDVectorsAVX256()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX256 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 85 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX256\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a1a97e23befb5ee8c5a2dfdae5d6c6483}\label{namespacebeliefprop_c_p_u_a1a97e23befb5ee8c5a2dfdae5d6c6483}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsAVX256@{RetrieveOutputDisparityUseSIMDVectorsAVX256}}
+\index{RetrieveOutputDisparityUseSIMDVectorsAVX256@{RetrieveOutputDisparityUseSIMDVectorsAVX256}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsAVX256()}{RetrieveOutputDisparityUseSIMDVectorsAVX256()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX256 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 107 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX256\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a60b68fd668a275a1b6fc2d039890f705}\label{namespacebeliefprop_c_p_u_a60b68fd668a275a1b6fc2d039890f705}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsAVX512@{RetrieveOutputDisparityUseSIMDVectorsAVX512}}
+\index{RetrieveOutputDisparityUseSIMDVectorsAVX512@{RetrieveOutputDisparityUseSIMDVectorsAVX512}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsAVX512()}{RetrieveOutputDisparityUseSIMDVectorsAVX512()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX512 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 129 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX512\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_ab601bd71f807332cf9af05f138ba9bf7}\label{namespacebeliefprop_c_p_u_ab601bd71f807332cf9af05f138ba9bf7}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsAVX512@{RetrieveOutputDisparityUseSIMDVectorsAVX512}}
+\index{RetrieveOutputDisparityUseSIMDVectorsAVX512@{RetrieveOutputDisparityUseSIMDVectorsAVX512}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsAVX512()}{RetrieveOutputDisparityUseSIMDVectorsAVX512()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX512 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 85 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX512\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_ad3acb9cc9168f79aa922e5719714443d}\label{namespacebeliefprop_c_p_u_ad3acb9cc9168f79aa922e5719714443d}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsAVX512@{RetrieveOutputDisparityUseSIMDVectorsAVX512}}
+\index{RetrieveOutputDisparityUseSIMDVectorsAVX512@{RetrieveOutputDisparityUseSIMDVectorsAVX512}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsAVX512()}{RetrieveOutputDisparityUseSIMDVectorsAVX512()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+AVX512 (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 107 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX512\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a788dec772e0e3ef0bbfec911313bc4aa}\label{namespacebeliefprop_c_p_u_a788dec772e0e3ef0bbfec911313bc4aa}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsNEON@{RetrieveOutputDisparityUseSIMDVectorsNEON}}
+\index{RetrieveOutputDisparityUseSIMDVectorsNEON@{RetrieveOutputDisparityUseSIMDVectorsNEON}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsNEON()}{RetrieveOutputDisparityUseSIMDVectorsNEON()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+NEON (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const double $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a3d1ca3f4cc1bec525b53c44dd3a5445b}\label{namespacebeliefprop_c_p_u_a3d1ca3f4cc1bec525b53c44dd3a5445b}} 
+\index{beliefpropCPU@{beliefpropCPU}!RetrieveOutputDisparityUseSIMDVectorsNEON@{RetrieveOutputDisparityUseSIMDVectorsNEON}}
+\index{RetrieveOutputDisparityUseSIMDVectorsNEON@{RetrieveOutputDisparityUseSIMDVectorsNEON}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityUseSIMDVectorsNEON()}{RetrieveOutputDisparityUseSIMDVectorsNEON()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Retrieve\+Output\+Disparity\+Use\+SIMDVectors\+NEON (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const float $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a192dc0e2cbc39c9b7b34372080b73104}\label{namespacebeliefprop_c_p_u_a192dc0e2cbc39c9b7b34372080b73104}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUpdateMsgValsUseSIMDVectors@{RunBPIterationUpdateMsgValsUseSIMDVectors}}
+\index{RunBPIterationUpdateMsgValsUseSIMDVectors@{RunBPIterationUpdateMsgValsUseSIMDVectors}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUpdateMsgValsUseSIMDVectors()}{RunBPIterationUpdateMsgValsUseSIMDVectors()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Update\+Msg\+Vals\+Use\+SIMDVectors (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+start\+\_\+processing,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U $\ast$}]{prev\+\_\+u\+\_\+message,  }\item[{const U $\ast$}]{prev\+\_\+d\+\_\+message,  }\item[{const U $\ast$}]{prev\+\_\+l\+\_\+message,  }\item[{const U $\ast$}]{prev\+\_\+r\+\_\+message,  }\item[{const U $\ast$}]{data\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+u\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+d\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+l\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+r\+\_\+message,  }\item[{const U}]{disc\+\_\+k\+\_\+bp\+\_\+vect,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Definition at line 642 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a3e9af0fe340e03d02e4f9f1183323d87}\label{namespacebeliefprop_c_p_u_a3e9af0fe340e03d02e4f9f1183323d87}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUpdateMsgValsUseSIMDVectors@{RunBPIterationUpdateMsgValsUseSIMDVectors}}
+\index{RunBPIterationUpdateMsgValsUseSIMDVectors@{RunBPIterationUpdateMsgValsUseSIMDVectors}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUpdateMsgValsUseSIMDVectors()}{RunBPIterationUpdateMsgValsUseSIMDVectors()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Update\+Msg\+Vals\+Use\+SIMDVectors (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+start\+\_\+processing,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U}]{prev\+\_\+u\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{prev\+\_\+d\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{prev\+\_\+l\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{prev\+\_\+r\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{data\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{T $\ast$}]{current\+\_\+u\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+d\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+l\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+r\+\_\+message,  }\item[{const U}]{disc\+\_\+k\+\_\+bp\+\_\+vect,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})}
+
+
+
+Definition at line 614 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a7d9c6668e803537cbb8a07e0b5d1c1bf}\label{namespacebeliefprop_c_p_u_a7d9c6668e803537cbb8a07e0b5d1c1bf}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdates@{RunBPIterationUsingCheckerboardUpdates}}
+\index{RunBPIterationUsingCheckerboardUpdates@{RunBPIterationUsingCheckerboardUpdates}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdates()}{RunBPIterationUsingCheckerboardUpdates()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+num\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 960 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a955c3398c2d327e758da9a2c40a2a262}\label{namespacebeliefprop_c_p_u_a955c3398c2d327e758da9a2c40a2a262}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions@{RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions}}
+\index{RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions@{RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions()}{RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+No\+Packed\+Instructions (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 568 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_a955c3398c2d327e758da9a2c40a2a262_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a881af5c170a112deacc8e6f7e38be18d}\label{namespacebeliefprop_c_p_u_a881af5c170a112deacc8e6f7e38be18d}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX256 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 63 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX256\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_af9154d05d3ba2e406760833bc96a3328}\label{namespacebeliefprop_c_p_u_af9154d05d3ba2e406760833bc96a3328}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX256 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 19 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX256\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_aa42dd7a9f45b3eacb00c080976bbebbd}\label{namespacebeliefprop_c_p_u_aa42dd7a9f45b3eacb00c080976bbebbd}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX256 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 41 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX256\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a5f1e2c4d7ae97ebf5d174e41d492016c}\label{namespacebeliefprop_c_p_u_a5f1e2c4d7ae97ebf5d174e41d492016c}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX512 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 63 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX512\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a9e8a064417f9498f8322e1c3da128aee}\label{namespacebeliefprop_c_p_u_a9e8a064417f9498f8322e1c3da128aee}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX512 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 19 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX512\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_aaa4954cfd73e383bebc4a3892c42d7c3}\label{namespacebeliefprop_c_p_u_aaa4954cfd73e383bebc4a3892c42d7c3}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+AVX512 (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 41 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+AVX512\+Template\+Sp\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a229b5a43f9d4e4b7c81fce78483a7069}\label{namespacebeliefprop_c_p_u_a229b5a43f9d4e4b7c81fce78483a7069}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+NEON (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const double $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{double $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{double $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a331c6f0c8d8dba1856bc0a991be783ba}\label{namespacebeliefprop_c_p_u_a331c6f0c8d8dba1856bc0a991be783ba}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+NEON (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const float $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{float $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a3af66d30eb16713911cc5e8a6a7ef794}\label{namespacebeliefprop_c_p_u_a3af66d30eb16713911cc5e8a6a7ef794}} 
+\index{beliefpropCPU@{beliefpropCPU}!RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess}}
+\index{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess@{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess()}{RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+void beliefprop\+CPU\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Use\+SIMDVectors\+Process (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{opt\+\_\+cpu\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Definition at line 670 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_a3af66d30eb16713911cc5e8a6a7ef794_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_c_p_u_a405e657a4b5d238a28682ace4f9eb086}\label{namespacebeliefprop_c_p_u_a405e657a4b5d238a28682ace4f9eb086}} 
+\index{beliefpropCPU@{beliefpropCPU}!UpdateBestDispBestVals@{UpdateBestDispBestVals}}
+\index{UpdateBestDispBestVals@{UpdateBestDispBestVals}!beliefpropCPU@{beliefpropCPU}}
+\doxysubsubsection{\texorpdfstring{UpdateBestDispBestVals()}{UpdateBestDispBestVals()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Vect\+Process\+\_\+t T$>$ \\
+void beliefprop\+CPU\+::\+Update\+Best\+Disp\+Best\+Vals (\begin{DoxyParamCaption}\item[{T \&}]{best\+\_\+disparities,  }\item[{T \&}]{best\+\_\+vals,  }\item[{const T \&}]{current\+\_\+disparity,  }\item[{const T \&}]{val\+\_\+at\+\_\+disp }\end{DoxyParamCaption})}
+
+
+
+Definition at line 418 of file Kernel\+Bp\+Stereo\+CPU.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_c_p_u_a405e657a4b5d238a28682ace4f9eb086_icgraph}
+\end{center}
+\end{figure}

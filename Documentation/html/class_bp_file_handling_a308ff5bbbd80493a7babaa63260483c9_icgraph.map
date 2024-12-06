@@ -1,0 +1,4 @@
+<map id="BpFileHandling::RefImagePath" name="BpFileHandling::RefImagePath">
+<area shape="rect" id="node1" title="Return path to reference image with valid extension if found, otherwise throw filesystem error." alt="" coords="259,13,477,39"/>
+<area shape="rect" id="node2" href="$class_run_bp_imp_on_input.html#a7b1982434fcf152f7791e1f2efd3d2cf" title="Run and compare output disparity maps using the given optimized and single&#45;threaded stereo implementa..." alt="" coords="5,5,211,47"/>
+</map>

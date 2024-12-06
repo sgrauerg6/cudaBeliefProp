@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['dataforinput_902',['DataForInput',['../class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883',1,'RunResultsSpeedups']]],
+  ['datatypestr_903',['DataTypeStr',['../class_input_signature.html#ac5936d8d8fa37916818caf50100181c1',1,'InputSignature']]],
+  ['detailedtimings_904',['DetailedTimings',['../class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379',1,'DetailedTimings']]],
+  ['disparitymap_905',['DisparityMap',['../class_disparity_map.html#aa8c7376c44bf6780536eaa5f8f5e8b7f',1,'DisparityMap::DisparityMap()'],['../class_disparity_map.html#ab957c4ae8c9e8f3977e86c2b4e31d1c8',1,'DisparityMap::DisparityMap(const std::array&lt; unsigned int, 2 &gt; &amp;width_height)'],['../class_disparity_map.html#a21a27d8890d7b11ae5d3c2c4e63f1efb',1,'DisparityMap::DisparityMap(const std::array&lt; unsigned int, 2 &gt; &amp;width_height, const T *input_disparity_map_vals, unsigned int disparity_map_vals_scale=1)'],['../class_disparity_map.html#af71c675246800ef43acaf1a63c58d311',1,'DisparityMap::DisparityMap(const std::string &amp;file_path_disparity_map, unsigned int disparity_map_vals_scale=1)']]],
+  ['dividevals_906',['divideVals',['../namespace_vect_processing_functs.html#a95096009e977088cd9938c1096cd0c99',1,'VectProcessingFuncts']]],
+  ['dtstereo_907',['DtStereo',['../namespacebeliefprop.html#ae68eab6f8bff8879cdf5eef4d4fe6fa8',1,'beliefprop::DtStereo(T f[DISP_VALS])'],['../namespacebeliefprop.html#aa78f83157a3b8ea34135bd45d86e75f5',1,'beliefprop::DtStereo(T *f, unsigned int bp_settings_disp_vals)'],['../namespacebeliefprop.html#a482a4e6f83ad07ea3b4484cca463e6e8',1,'beliefprop::DtStereo(T *f, unsigned int bp_settings_disp_vals, unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties &amp;current_bp_level)']]],
+  ['dtstereosimd_908',['DtStereoSIMD',['../namespacebeliefprop_c_p_u.html#a2185dd205490e4d78be9aa8af3c12788',1,'beliefpropCPU::DtStereoSIMD(U f[DISP_VALS])'],['../namespacebeliefprop_c_p_u.html#a155cd4b8cd654314fe5973c4b886647a',1,'beliefpropCPU::DtStereoSIMD(U *f, unsigned int bp_settings_disp_vals)']]]
+];

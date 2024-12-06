@@ -1,0 +1,158 @@
+\hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h}{}\doxysection{src/beliefprop/\+Bp\+Optimize\+CPU/\+Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.h File Reference}
+\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h}\index{src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU\_NEON.h@{src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU\_NEON.h}}
+{\ttfamily \#include $<$arm\+\_\+neon.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp\+CPU/\+NEONTemplate\+Sp\+Functs.\+h\char`\"{}}\newline
+Include dependency graph for Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aefdd867ce49225da609c688b02609895}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a16812692b8204aaad9ab6f1acd8db28a}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_af6abcc78555232fb684c7579db3e4a83}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a46676b910fc2872e0a0278e353c8535c}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a0fe38ed90945b9f90179db110d32ed46}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aeb55c8bc28f216a57abc4da38bbbe7a3}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a9c4aec4e3fd53bb046f7f02682b3516d}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD$<$ float16\+\_\+t, float16x4\+\_\+t, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16x4\+\_\+t data\+\_\+costs\mbox{[}\mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals\mbox{]}, float16\+\_\+t $\ast$dst\+\_\+message\+\_\+array, const float16x4\+\_\+t \&disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aefdd867ce49225da609c688b02609895}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aefdd867ce49225da609c688b02609895}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 167 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aefdd867ce49225da609c688b02609895_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a16812692b8204aaad9ab6f1acd8db28a}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a16812692b8204aaad9ab6f1acd8db28a}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 182 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a16812692b8204aaad9ab6f1acd8db28a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_af6abcc78555232fb684c7579db3e4a83}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_af6abcc78555232fb684c7579db3e4a83}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 197 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_af6abcc78555232fb684c7579db3e4a83_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a46676b910fc2872e0a0278e353c8535c}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a46676b910fc2872e0a0278e353c8535c}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 212 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a46676b910fc2872e0a0278e353c8535c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a0fe38ed90945b9f90179db110d32ed46}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a0fe38ed90945b9f90179db110d32ed46}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 227 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a0fe38ed90945b9f90179db110d32ed46_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aeb55c8bc28f216a57abc4da38bbbe7a3}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aeb55c8bc28f216a57abc4da38bbbe7a3}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 242 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aeb55c8bc28f216a57abc4da38bbbe7a3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a9c4aec4e3fd53bb046f7f02682b3516d}\label{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a9c4aec4e3fd53bb046f7f02682b3516d}} 
+\index{KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}!beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}}
+\index{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}!KernelBpStereoCPU\_NEON.h@{KernelBpStereoCPU\_NEON.h}}
+\doxysubsubsection{\texorpdfstring{beliefpropCPU::MsgStereoSIMD$<$ float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$()}{beliefpropCPU::MsgStereoSIMD< float16\_t, float16x4\_t, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_c_p_u_a567d7e59ddc6af589c94e9f5e3116afc}{beliefprop\+CPU\+::\+Msg\+Stereo\+SIMD}}$<$ float16\+\_\+t, float16x4\+\_\+t, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+1.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+2.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]},  }\item[{float16x4\+\_\+t messages\+\_\+neighbor\+\_\+3.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]},  }\item[{float16x4\+\_\+t data\+\_\+costs.\+num\+\_\+disp\+\_\+vals\mbox{]}}]{\mbox{[}beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]},  }\item[{float16\+\_\+t $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{const float16x4\+\_\+t \&}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 257 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+NEON.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a9c4aec4e3fd53bb046f7f02682b3516d_cgraph}
+\end{center}
+\end{figure}

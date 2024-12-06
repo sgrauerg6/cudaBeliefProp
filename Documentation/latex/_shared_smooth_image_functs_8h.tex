@@ -1,0 +1,33 @@
+\hypertarget{_shared_smooth_image_functs_8h}{}\doxysection{src/beliefprop/\+Bp\+Shared\+Functs/\+Shared\+Smooth\+Image\+Functs.h File Reference}
+\label{_shared_smooth_image_functs_8h}\index{src/beliefprop/BpSharedFuncts/SharedSmoothImageFuncts.h@{src/beliefprop/BpSharedFuncts/SharedSmoothImageFuncts.h}}
+{\ttfamily \#include \char`\"{}Run\+Imp/\+Utility\+Functs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Image\+Processing/\+Bp\+Image\+Constraints.\+h\char`\"{}}\newline
+Include dependency graph for Shared\+Smooth\+Image\+Functs.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_shared_smooth_image_functs_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_shared_smooth_image_functs_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}{beliefprop\+::\+Filter\+Image\+Across\+Process\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture the output filtered image is returned as an array of floats \end{DoxyCompactList}\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a527bc69220d92b30d3f74e8aaf182824}{beliefprop\+::\+Filter\+Image\+Vertical\+Process\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture uint\+\_\+image\+\_\+pixels\+Texture the output filtered image is returned as an array of floats \end{DoxyCompactList}\end{DoxyCompactItemize}

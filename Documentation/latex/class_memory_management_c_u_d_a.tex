@@ -1,0 +1,231 @@
+\hypertarget{class_memory_management_c_u_d_a}{}\doxysection{Memory\+Management\+CUDA$<$ T $>$ Class Template Reference}
+\label{class_memory_management_c_u_d_a}\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+
+
+Functions to manage memory on CUDA device including transferring data between host and CUDA device. Functions defined in class override functions in parent class \mbox{\hyperlink{class_memory_management}{Memory\+Management}} which is used for CPU only processing.  
+
+
+
+
+{\ttfamily \#include $<$Memory\+Management\+CUDA.\+h$>$}
+
+
+
+Inheritance diagram for Memory\+Management\+CUDA$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{class_memory_management_c_u_d_a__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Memory\+Management\+CUDA$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{class_memory_management_c_u_d_a__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T $\ast$ \mbox{\hyperlink{class_memory_management_c_u_d_a_a9d3d64ff492e8246b92e4306b97ab6e0}{Allocate\+Memory\+On\+Device}} (std\+::size\+\_\+t num\+Data) const override
+\begin{DoxyCompactList}\small\item\em Allocate specified amount of data of type T on CUDA device. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_memory_management_c_u_d_a_a133ad2071e9e6e7af363311570da853d}{Free\+Memory\+On\+Device}} (T $\ast$array\+\_\+to\+\_\+free) const override
+\begin{DoxyCompactList}\small\item\em Free memory on CUDA device. \end{DoxyCompactList}\item 
+T $\ast$ \mbox{\hyperlink{class_memory_management_c_u_d_a_ad2509b638b9e0c99258f678b92391c7f}{Allocate\+Aligned\+Memory\+On\+Device}} (std\+::size\+\_\+t num\+Data, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} acc\+\_\+setting) const override
+\begin{DoxyCompactList}\small\item\em Allocate aligned memory on CUDA device (same as default allocating of memory for CUDA) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_memory_management_c_u_d_a_a5c4f2f4fda7c25cdc1501b04189068b7}{Free\+Aligned\+Memory\+On\+Device}} (T $\ast$memory\+\_\+to\+\_\+free) const override
+\begin{DoxyCompactList}\small\item\em Free aligned memory on CUDA device (same as default free memory for CUDA) \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_memory_management_c_u_d_a_a6ad40a9e553bcc2edf3c7a185b099f0a}{Transfer\+Data\+From\+Device\+To\+Host}} (T $\ast$dest\+\_\+array, const T $\ast$in\+\_\+array, std\+::size\+\_\+t num\+\_\+data\+\_\+transfer) const override
+\item 
+void \mbox{\hyperlink{class_memory_management_c_u_d_a_a1a4702b5132d2ec82f981020dd491f37}{Transfer\+Data\+From\+Host\+To\+Device}} (T $\ast$dest\+\_\+array, const T $\ast$in\+\_\+array, std\+::size\+\_\+t num\+\_\+data\+\_\+transfer) const override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T$>$\newline
+class Memory\+Management\+CUDA$<$ T $>$}
+
+Functions to manage memory on CUDA device including transferring data between host and CUDA device. Functions defined in class override functions in parent class \mbox{\hyperlink{class_memory_management}{Memory\+Management}} which is used for CPU only processing. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 16 of file Memory\+Management\+CUDA.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_memory_management_c_u_d_a_ad2509b638b9e0c99258f678b92391c7f}\label{class_memory_management_c_u_d_a_ad2509b638b9e0c99258f678b92391c7f}} 
+\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}!AllocateAlignedMemoryOnDevice@{AllocateAlignedMemoryOnDevice}}
+\index{AllocateAlignedMemoryOnDevice@{AllocateAlignedMemoryOnDevice}!MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocateAlignedMemoryOnDevice()}{AllocateAlignedMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+T$\ast$ \mbox{\hyperlink{class_memory_management_c_u_d_a}{Memory\+Management\+CUDA}}$<$ T $>$\+::Allocate\+Aligned\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{num\+Data,  }\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}}]{acc\+\_\+setting }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Allocate aligned memory on CUDA device (same as default allocating of memory for CUDA) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Data} & \\
+\hline
+{\em acc\+\_\+setting} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T$\ast$ 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_memory_management_a46cf20a44494da312f5872d62c53a2db}{Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 49 of file Memory\+Management\+CUDA.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_memory_management_c_u_d_a_ad2509b638b9e0c99258f678b92391c7f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_memory_management_c_u_d_a_a9d3d64ff492e8246b92e4306b97ab6e0}\label{class_memory_management_c_u_d_a_a9d3d64ff492e8246b92e4306b97ab6e0}} 
+\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}!AllocateMemoryOnDevice@{AllocateMemoryOnDevice}}
+\index{AllocateMemoryOnDevice@{AllocateMemoryOnDevice}!MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocateMemoryOnDevice()}{AllocateMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+T$\ast$ \mbox{\hyperlink{class_memory_management_c_u_d_a}{Memory\+Management\+CUDA}}$<$ T $>$\+::Allocate\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{num\+Data }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Allocate specified amount of data of type T on CUDA device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em num\+Data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T$\ast$ 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{class_memory_management_a6aa75de1d5a7749a8cce7f4378a98d3c}{Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 25 of file Memory\+Management\+CUDA.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_memory_management_c_u_d_a_a9d3d64ff492e8246b92e4306b97ab6e0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_memory_management_c_u_d_a_a5c4f2f4fda7c25cdc1501b04189068b7}\label{class_memory_management_c_u_d_a_a5c4f2f4fda7c25cdc1501b04189068b7}} 
+\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}!FreeAlignedMemoryOnDevice@{FreeAlignedMemoryOnDevice}}
+\index{FreeAlignedMemoryOnDevice@{FreeAlignedMemoryOnDevice}!MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{FreeAlignedMemoryOnDevice()}{FreeAlignedMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_memory_management_c_u_d_a}{Memory\+Management\+CUDA}}$<$ T $>$\+::Free\+Aligned\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{memory\+\_\+to\+\_\+free }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Free aligned memory on CUDA device (same as default free memory for CUDA) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em memory\+\_\+to\+\_\+free} & \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_memory_management_aec50b4bb3048839df9efacb032947036}{Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 61 of file Memory\+Management\+CUDA.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_memory_management_c_u_d_a_a5c4f2f4fda7c25cdc1501b04189068b7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_memory_management_c_u_d_a_a133ad2071e9e6e7af363311570da853d}\label{class_memory_management_c_u_d_a_a133ad2071e9e6e7af363311570da853d}} 
+\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}!FreeMemoryOnDevice@{FreeMemoryOnDevice}}
+\index{FreeMemoryOnDevice@{FreeMemoryOnDevice}!MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{FreeMemoryOnDevice()}{FreeMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_memory_management_c_u_d_a}{Memory\+Management\+CUDA}}$<$ T $>$\+::Free\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{array\+\_\+to\+\_\+free }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Free memory on CUDA device. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em array\+\_\+to\+\_\+free} & \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \mbox{\hyperlink{class_memory_management_ae5421bee769043e15b28e339a2589f62}{Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 37 of file Memory\+Management\+CUDA.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_memory_management_c_u_d_a_a133ad2071e9e6e7af363311570da853d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_memory_management_c_u_d_a_a6ad40a9e553bcc2edf3c7a185b099f0a}\label{class_memory_management_c_u_d_a_a6ad40a9e553bcc2edf3c7a185b099f0a}} 
+\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}!TransferDataFromDeviceToHost@{TransferDataFromDeviceToHost}}
+\index{TransferDataFromDeviceToHost@{TransferDataFromDeviceToHost}!MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TransferDataFromDeviceToHost()}{TransferDataFromDeviceToHost()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_memory_management_c_u_d_a}{Memory\+Management\+CUDA}}$<$ T $>$\+::Transfer\+Data\+From\+Device\+To\+Host (\begin{DoxyParamCaption}\item[{T $\ast$}]{dest\+\_\+array,  }\item[{const T $\ast$}]{in\+\_\+array,  }\item[{std\+::size\+\_\+t}]{num\+\_\+data\+\_\+transfer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_memory_management_aab09c0b137fc68646ffe341b383d65fb}{Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 66 of file Memory\+Management\+CUDA.\+h.
+
+\mbox{\Hypertarget{class_memory_management_c_u_d_a_a1a4702b5132d2ec82f981020dd491f37}\label{class_memory_management_c_u_d_a_a1a4702b5132d2ec82f981020dd491f37}} 
+\index{MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}!TransferDataFromHostToDevice@{TransferDataFromHostToDevice}}
+\index{TransferDataFromHostToDevice@{TransferDataFromHostToDevice}!MemoryManagementCUDA$<$ T $>$@{MemoryManagementCUDA$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TransferDataFromHostToDevice()}{TransferDataFromHostToDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_memory_management_c_u_d_a}{Memory\+Management\+CUDA}}$<$ T $>$\+::Transfer\+Data\+From\+Host\+To\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{dest\+\_\+array,  }\item[{const T $\ast$}]{in\+\_\+array,  }\item[{std\+::size\+\_\+t}]{num\+\_\+data\+\_\+transfer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_memory_management_a826115cf54e69b4727133c9b61584018}{Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 75 of file Memory\+Management\+CUDA.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Imp\+CUDA/\mbox{\hyperlink{_memory_management_c_u_d_a_8h}{Memory\+Management\+CUDA.\+h}}\end{DoxyCompactItemize}

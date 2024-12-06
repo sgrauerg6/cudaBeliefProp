@@ -1,0 +1,150 @@
+\hypertarget{class_bp_evaluation_results}{}\doxysection{Bp\+Evaluation\+Results Class Reference}
+\label{class_bp_evaluation_results}\index{BpEvaluationResults@{BpEvaluationResults}}
+
+
+Class to store stereo processing evaluation results.  
+
+
+
+
+{\ttfamily \#include $<$Bp\+Evaluation\+Results.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_bp_evaluation_results_a98228624864c2bbbeedeeff14c934385}{Initialize\+With\+Eval\+Params}} (const \mbox{\hyperlink{struct_bp_evaluation_parameters}{Bp\+Evaluation\+Parameters}} \&eval\+\_\+params)
+\begin{DoxyCompactList}\small\item\em Initialize evaluation results with evaluation parameters. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_bp_evaluation_results_aad1add59977338ce6164a0cad0fedee6}{As\+Run\+Data}} () const
+\begin{DoxyCompactList}\small\item\em Retrieve evaluation results as \mbox{\hyperlink{class_run_data}{Run\+Data}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::array$<$ float, 2 $>$ \mbox{\hyperlink{class_bp_evaluation_results_acdc01a4cfbac688d952cadf5c54f601b}{average\+\_\+disp\+\_\+abs\+\_\+diff\+\_\+no\+\_\+max\+\_\+w\+\_\+max\+\_\+}} \{0, 0\}
+\begin{DoxyCompactList}\small\item\em Total and average value of the absolute difference between the disparity values for all pixels in disparity images 1 and 2 with and without maximum disparity difference at each pixel. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_bp_evaluation_results_a326a1abfd3d767ec4b809092e99288c2}{disparity\+\_\+error\+\_\+max\+\_\+}} \{std\+::numeric\+\_\+limits$<$float$>$\+::max()\}
+\item 
+std\+::map$<$ float, float $>$ \mbox{\hyperlink{class_bp_evaluation_results_aa64179c08b88383bc6813e8e22bc06a5}{prop\+\_\+sig\+\_\+diff\+\_\+pixels\+\_\+at\+\_\+thresholds\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Proportion of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG\+\_\+\+DIFF\+\_\+\+THRESHOLD\+\_\+\+STEREO\+\_\+\+EVAL (not including border regions) \end{DoxyCompactList}\item 
+std\+::map$<$ float, unsigned int $>$ \mbox{\hyperlink{class_bp_evaluation_results_a51c2288e6e29375a149dd272a2fed1b1}{num\+\_\+sig\+\_\+diff\+\_\+pixels\+\_\+at\+\_\+thresholds\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Stores the number of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG\+\_\+\+DIFF\+\_\+\+THRESHOLD\+\_\+\+STEREO\+\_\+\+EVAL. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to store stereo processing evaluation results. 
+
+Definition at line 25 of file Bp\+Evaluation\+Results.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_bp_evaluation_results_aad1add59977338ce6164a0cad0fedee6}\label{class_bp_evaluation_results_aad1add59977338ce6164a0cad0fedee6}} 
+\index{BpEvaluationResults@{BpEvaluationResults}!AsRunData@{AsRunData}}
+\index{AsRunData@{AsRunData}!BpEvaluationResults@{BpEvaluationResults}}
+\doxysubsubsection{\texorpdfstring{AsRunData()}{AsRunData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_run_data}{Run\+Data}} Bp\+Evaluation\+Results\+::\+As\+Run\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Retrieve evaluation results as \mbox{\hyperlink{class_run_data}{Run\+Data}}. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Definition at line 19 of file Bp\+Evaluation\+Results.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_evaluation_results_aad1add59977338ce6164a0cad0fedee6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_evaluation_results_a98228624864c2bbbeedeeff14c934385}\label{class_bp_evaluation_results_a98228624864c2bbbeedeeff14c934385}} 
+\index{BpEvaluationResults@{BpEvaluationResults}!InitializeWithEvalParams@{InitializeWithEvalParams}}
+\index{InitializeWithEvalParams@{InitializeWithEvalParams}!BpEvaluationResults@{BpEvaluationResults}}
+\doxysubsubsection{\texorpdfstring{InitializeWithEvalParams()}{InitializeWithEvalParams()}}
+{\footnotesize\ttfamily void Bp\+Evaluation\+Results\+::\+Initialize\+With\+Eval\+Params (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_bp_evaluation_parameters}{Bp\+Evaluation\+Parameters}} \&}]{eval\+\_\+params }\end{DoxyParamCaption})}
+
+
+
+Initialize evaluation results with evaluation parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em eval\+\_\+params} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 11 of file Bp\+Evaluation\+Results.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_evaluation_results_a98228624864c2bbbeedeeff14c934385_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_bp_evaluation_results_acdc01a4cfbac688d952cadf5c54f601b}\label{class_bp_evaluation_results_acdc01a4cfbac688d952cadf5c54f601b}} 
+\index{BpEvaluationResults@{BpEvaluationResults}!average\_disp\_abs\_diff\_no\_max\_w\_max\_@{average\_disp\_abs\_diff\_no\_max\_w\_max\_}}
+\index{average\_disp\_abs\_diff\_no\_max\_w\_max\_@{average\_disp\_abs\_diff\_no\_max\_w\_max\_}!BpEvaluationResults@{BpEvaluationResults}}
+\doxysubsubsection{\texorpdfstring{average\_disp\_abs\_diff\_no\_max\_w\_max\_}{average\_disp\_abs\_diff\_no\_max\_w\_max\_}}
+{\footnotesize\ttfamily std\+::array$<$float, 2$>$ Bp\+Evaluation\+Results\+::average\+\_\+disp\+\_\+abs\+\_\+diff\+\_\+no\+\_\+max\+\_\+w\+\_\+max\+\_\+ \{0, 0\}}
+
+
+
+Total and average value of the absolute difference between the disparity values for all pixels in disparity images 1 and 2 with and without maximum disparity difference at each pixel. 
+
+
+
+Definition at line 47 of file Bp\+Evaluation\+Results.\+h.
+
+\mbox{\Hypertarget{class_bp_evaluation_results_a326a1abfd3d767ec4b809092e99288c2}\label{class_bp_evaluation_results_a326a1abfd3d767ec4b809092e99288c2}} 
+\index{BpEvaluationResults@{BpEvaluationResults}!disparity\_error\_max\_@{disparity\_error\_max\_}}
+\index{disparity\_error\_max\_@{disparity\_error\_max\_}!BpEvaluationResults@{BpEvaluationResults}}
+\doxysubsubsection{\texorpdfstring{disparity\_error\_max\_}{disparity\_error\_max\_}}
+{\footnotesize\ttfamily float Bp\+Evaluation\+Results\+::disparity\+\_\+error\+\_\+max\+\_\+ \{std\+::numeric\+\_\+limits$<$float$>$\+::max()\}}
+
+
+
+Definition at line 48 of file Bp\+Evaluation\+Results.\+h.
+
+\mbox{\Hypertarget{class_bp_evaluation_results_a51c2288e6e29375a149dd272a2fed1b1}\label{class_bp_evaluation_results_a51c2288e6e29375a149dd272a2fed1b1}} 
+\index{BpEvaluationResults@{BpEvaluationResults}!num\_sig\_diff\_pixels\_at\_thresholds\_@{num\_sig\_diff\_pixels\_at\_thresholds\_}}
+\index{num\_sig\_diff\_pixels\_at\_thresholds\_@{num\_sig\_diff\_pixels\_at\_thresholds\_}!BpEvaluationResults@{BpEvaluationResults}}
+\doxysubsubsection{\texorpdfstring{num\_sig\_diff\_pixels\_at\_thresholds\_}{num\_sig\_diff\_pixels\_at\_thresholds\_}}
+{\footnotesize\ttfamily std\+::map$<$float, unsigned int$>$ Bp\+Evaluation\+Results\+::num\+\_\+sig\+\_\+diff\+\_\+pixels\+\_\+at\+\_\+thresholds\+\_\+}
+
+
+
+Stores the number of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG\+\_\+\+DIFF\+\_\+\+THRESHOLD\+\_\+\+STEREO\+\_\+\+EVAL. 
+
+
+
+Definition at line 64 of file Bp\+Evaluation\+Results.\+h.
+
+\mbox{\Hypertarget{class_bp_evaluation_results_aa64179c08b88383bc6813e8e22bc06a5}\label{class_bp_evaluation_results_aa64179c08b88383bc6813e8e22bc06a5}} 
+\index{BpEvaluationResults@{BpEvaluationResults}!prop\_sig\_diff\_pixels\_at\_thresholds\_@{prop\_sig\_diff\_pixels\_at\_thresholds\_}}
+\index{prop\_sig\_diff\_pixels\_at\_thresholds\_@{prop\_sig\_diff\_pixels\_at\_thresholds\_}!BpEvaluationResults@{BpEvaluationResults}}
+\doxysubsubsection{\texorpdfstring{prop\_sig\_diff\_pixels\_at\_thresholds\_}{prop\_sig\_diff\_pixels\_at\_thresholds\_}}
+{\footnotesize\ttfamily std\+::map$<$float, float$>$ Bp\+Evaluation\+Results\+::prop\+\_\+sig\+\_\+diff\+\_\+pixels\+\_\+at\+\_\+thresholds\+\_\+}
+
+
+
+Proportion of pixels where the difference between the disparity values in disparity images 1 and 2 is greater than SIG\+\_\+\+DIFF\+\_\+\+THRESHOLD\+\_\+\+STEREO\+\_\+\+EVAL (not including border regions) 
+
+
+
+Definition at line 56 of file Bp\+Evaluation\+Results.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+beliefprop/\+Bp\+Results\+Evaluation/\mbox{\hyperlink{_bp_evaluation_results_8h}{Bp\+Evaluation\+Results.\+h}}\item 
+beliefprop/\+Bp\+Results\+Evaluation/\mbox{\hyperlink{_bp_evaluation_results_8cpp}{Bp\+Evaluation\+Results.\+cpp}}\end{DoxyCompactItemize}

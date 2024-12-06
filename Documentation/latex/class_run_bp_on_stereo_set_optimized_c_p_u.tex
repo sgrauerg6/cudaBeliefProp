@@ -1,0 +1,126 @@
+\hypertarget{class_run_bp_on_stereo_set_optimized_c_p_u}{}\doxysection{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ Class Template Reference}
+\label{class_run_bp_on_stereo_set_optimized_c_p_u}\index{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$}}
+
+
+Class to run optimized CPU implementation of belief propagation on a given stereo set as defined by reference and test image file paths.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h$>$}
+
+
+
+Inheritance diagram for Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{class_run_bp_on_stereo_set_optimized_c_p_u__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{class_run_bp_on_stereo_set_optimized_c_p_u__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u_a78d05e0c1d14367f9e5c951f49f486df}{Bp\+Run\+Description}} () const override
+\begin{DoxyCompactList}\small\item\em Pure virtual function to return run description corresponding to target acceleration. \end{DoxyCompactList}\item 
+std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u_aaf001fae4f5a536ad1ab07057d6b7fe0}{operator()}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params) const override
+\begin{DoxyCompactList}\small\item\em Pure virtual operator() overload that must be defined in child class. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$\newline
+class Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}
+
+Class to run optimized CPU implementation of belief propagation on a given stereo set as defined by reference and test image file paths. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+{\em ACCELERATION} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 36 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_bp_on_stereo_set_optimized_c_p_u_a78d05e0c1d14367f9e5c951f49f486df}\label{class_run_bp_on_stereo_set_optimized_c_p_u_a78d05e0c1d14367f9e5c951f49f486df}} 
+\index{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$}!BpRunDescription@{BpRunDescription}}
+\index{BpRunDescription@{BpRunDescription}!RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{BpRunDescription()}{BpRunDescription()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+std\+::string \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::Bp\+Run\+Description (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Pure virtual function to return run description corresponding to target acceleration. 
+
+\begin{DoxyReturn}{Returns}
+std\+::string 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_run_bp_on_stereo_set_a6c70f066d355522c0c01f896d12b3970}{Run\+Bp\+On\+Stereo\+Set$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
+
+
+
+Definition at line 38 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
+
+\mbox{\Hypertarget{class_run_bp_on_stereo_set_optimized_c_p_u_aaf001fae4f5a536ad1ab07057d6b7fe0}\label{class_run_bp_on_stereo_set_optimized_c_p_u_aaf001fae4f5a536ad1ab07057d6b7fe0}} 
+\index{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetOptimizedCPU$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Pure virtual operator() overload that must be defined in child class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ref\+\_\+test\+\_\+image\+\_\+path} & \\
+\hline
+{\em alg\+\_\+settings} & \\
+\hline
+{\em parallel\+\_\+params} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$\+Process\+Stereo\+Set\+Output$>$ 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_run_bp_on_stereo_set_a6fcf78b3ea23a566300e0413a1cc0002}{Run\+Bp\+On\+Stereo\+Set$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
+
+
+
+Definition at line 47 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_bp_on_stereo_set_optimized_c_p_u_aaf001fae4f5a536ad1ab07057d6b7fe0_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Optimize\+CPU/\mbox{\hyperlink{_run_bp_on_stereo_set_optimized_c_p_u_8h}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h}}\end{DoxyCompactItemize}

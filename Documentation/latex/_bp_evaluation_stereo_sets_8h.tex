@@ -1,0 +1,45 @@
+\hypertarget{_bp_evaluation_stereo_sets_8h}{}\doxysection{src/beliefprop/\+Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Stereo\+Sets.h File Reference}
+\label{_bp_evaluation_stereo_sets_8h}\index{src/beliefprop/BpResultsEvaluation/BpEvaluationStereoSets.h@{src/beliefprop/BpResultsEvaluation/BpEvaluationStereoSets.h}}
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Settings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
+Include dependency graph for Bp\+Evaluation\+Stereo\+Sets.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_evaluation_stereo_sets_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_evaluation_stereo_sets_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_stereo_set}{beliefprop\+::\+Bp\+Stereo\+Set}}
+\begin{DoxyCompactList}\small\item\em Structure with stereo set name, disparity count, and scale factor for output disparity map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a8778b3e5a5eacd6b90b010227e13f0b5}{beliefprop\+::k\+Image\+Width\+Header}} \{\char`\"{}Image Width\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}{beliefprop\+::k\+Image\+Height\+Header}} \{\char`\"{}Image Height\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a0fe14039eac011f72a659873a7ef6e09}{beliefprop\+::k\+Stereo\+Set\+Header}} \{\char`\"{}Stereo Set\char`\"{}\}
+\item 
+constexpr std\+::array$<$ Bp\+Stereo\+Set, 8 $>$ \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}
+\begin{DoxyCompactList}\small\item\em Declare stereo sets to process with name, num disparity values, and scale factor currently cones\+Full\+Size is not used. \end{DoxyCompactList}\item 
+const std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::vector$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}} $>$ $>$ $>$ \mbox{\hyperlink{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}{beliefprop\+::k\+Eval\+Data\+Subsets}}
+\begin{DoxyCompactList}\small\item\em Define subsets for evaluating run results on specified inputs the first three stereo sets are labeled as \char`\"{}smallest 3 stereo sets\char`\"{} the last three stereo sets (excluding \char`\"{}cones\+Full\+Sized\char`\"{}) are labeled as \char`\"{}largest 3 stereo sets\char`\"{}. \end{DoxyCompactList}\end{DoxyCompactItemize}

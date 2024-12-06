@@ -1,0 +1,130 @@
+\hypertarget{class_run_b_p_imp_on_input}{}\doxysection{Run\+BPImp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$ Class Template Reference}
+\label{class_run_b_p_imp_on_input}\index{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+
+
+{\ttfamily \#include $<$Run\+BPImp\+On\+Input.\+h$>$}
+
+
+
+Inheritance diagram for Run\+BPImp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{class_run_b_p_imp_on_input__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Run\+BPImp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{class_run_b_p_imp_on_input__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_b_p_imp_on_input_a63ab1220e27fd4286466582d010be82d}{operator()}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings) override
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ \mbox{\hyperlink{class_run_b_p_imp_on_input_a1c23ad686725e75a09c392f99de23800}{Set\+Up\+Parallel\+Params}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings) const override
+\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_b_p_imp_on_input_ad43c091efb0ad4a870cd82d23154e41c}{Input\+And\+Params\+For\+Curr\+Benchmark}} (bool loop\+\_\+iters\+\_\+templated) const override
+\item 
+std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_b_p_imp_on_input_abde79872905922d97b10def957b5ec6f}{Run\+Imps\+And\+Compare}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ parallel\+\_\+params, bool run\+\_\+opt\+\_\+imp\+\_\+only, bool run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters) const override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$\newline
+class Run\+BPImp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}
+
+
+
+Definition at line 59 of file Run\+BPImp\+On\+Input.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_b_p_imp_on_input_ad43c091efb0ad4a870cd82d23154e41c}\label{class_run_b_p_imp_on_input_ad43c091efb0ad4a870cd82d23154e41c}} 
+\index{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!InputAndParamsForCurrBenchmark@{InputAndParamsForCurrBenchmark}}
+\index{InputAndParamsForCurrBenchmark@{InputAndParamsForCurrBenchmark}!RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{InputAndParamsForCurrBenchmark()}{InputAndParamsForCurrBenchmark()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_b_p_imp_on_input}{Run\+BPImp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Input\+And\+Params\+For\+Curr\+Benchmark (\begin{DoxyParamCaption}\item[{bool}]{loop\+\_\+iters\+\_\+templated }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a34a6f5d3387c29607e2249786b725257}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 151 of file Run\+BPImp\+On\+Input.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_b_p_imp_on_input_ad43c091efb0ad4a870cd82d23154e41c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_b_p_imp_on_input_a63ab1220e27fd4286466582d010be82d}\label{class_run_b_p_imp_on_input_a63ab1220e27fd4286466582d010be82d}} 
+\index{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_b_p_imp_on_input}{Run\+BPImp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3e9d9}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 100 of file Run\+BPImp\+On\+Input.\+h.
+
+\mbox{\Hypertarget{class_run_b_p_imp_on_input_abde79872905922d97b10def957b5ec6f}\label{class_run_b_p_imp_on_input_abde79872905922d97b10def957b5ec6f}} 
+\index{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!RunImpsAndCompare@{RunImpsAndCompare}}
+\index{RunImpsAndCompare@{RunImpsAndCompare}!RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{RunImpsAndCompare()}{RunImpsAndCompare()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_b_p_imp_on_input}{Run\+BPImp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Run\+Imps\+And\+Compare (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$}]{parallel\+\_\+params,  }\item[{bool}]{run\+\_\+opt\+\_\+imp\+\_\+only,  }\item[{bool}]{run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c815ac4}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 165 of file Run\+BPImp\+On\+Input.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_b_p_imp_on_input_abde79872905922d97b10def957b5ec6f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_b_p_imp_on_input_a1c23ad686725e75a09c392f99de23800}\label{class_run_b_p_imp_on_input_a1c23ad686725e75a09c392f99de23800}} 
+\index{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!SetUpParallelParams@{SetUpParallelParams}}
+\index{SetUpParallelParams@{SetUpParallelParams}!RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBPImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{SetUpParallelParams()}{SetUpParallelParams()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ \mbox{\hyperlink{class_run_b_p_imp_on_input}{Run\+BPImp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Set\+Up\+Parallel\+Params (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0dca8}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 139 of file Run\+BPImp\+On\+Input.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+beliefprop/\+Bp\+Run\+Eval\+Imp/\mbox{\hyperlink{_run_b_p_imp_on_input_8h}{Run\+BPImp\+On\+Input.\+h}}\end{DoxyCompactItemize}

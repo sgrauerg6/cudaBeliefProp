@@ -1,0 +1,104 @@
+\hypertarget{class_filter_image}{}\doxysection{Filter\+Image Class Reference}
+\label{class_filter_image}\index{FilterImage@{FilterImage}}
+
+
+{\ttfamily \#include $<$filter.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_filter_image_af20463a7a30fa61028fbef0a51b8efe0}{MAKE\+\_\+\+FILTER}} (f0, exp(-\/0.\+5 $\ast$\mbox{\hyperlink{misc_8h_a7c7f6ef2b1ebd0ca3e756f1b0489e67c}{square}}(i/sigma)))
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_filter_image_ac8b57329f8aac9ae6cb4d589b9cd210d}{normalize}} (std\+::vector$<$ float $>$ \&mask)
+\item 
+static \mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$ \mbox{\hyperlink{class_filter_image_a237d84f89d045c77927cb2ce5363ca58}{smooth}} (\mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$src, float sigma)
+\item 
+static \mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$ \mbox{\hyperlink{class_filter_image_a16ce040f9b25781405bb040cae14ae63}{smooth}} (\mbox{\hyperlink{classimage}{image}}$<$ \mbox{\hyperlink{misc_8h_a65f85814a8290f9797005d3b28e7e5fc}{uchar}} $>$ $\ast$src, float sigma)
+\item 
+static \mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$ \mbox{\hyperlink{class_filter_image_a824422496ac3378c6d5d0fe348432aeb}{laplacian}} (\mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$src)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 33 of file filter.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_filter_image_a824422496ac3378c6d5d0fe348432aeb}\label{class_filter_image_a824422496ac3378c6d5d0fe348432aeb}} 
+\index{FilterImage@{FilterImage}!laplacian@{laplacian}}
+\index{laplacian@{laplacian}!FilterImage@{FilterImage}}
+\doxysubsubsection{\texorpdfstring{laplacian()}{laplacian()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classimage}{image}}$<$float$>$$\ast$ Filter\+Image\+::laplacian (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$}]{src }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 86 of file filter.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{class_filter_image_a824422496ac3378c6d5d0fe348432aeb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_filter_image_af20463a7a30fa61028fbef0a51b8efe0}\label{class_filter_image_af20463a7a30fa61028fbef0a51b8efe0}} 
+\index{FilterImage@{FilterImage}!MAKE\_FILTER@{MAKE\_FILTER}}
+\index{MAKE\_FILTER@{MAKE\_FILTER}!FilterImage@{FilterImage}}
+\doxysubsubsection{\texorpdfstring{MAKE\_FILTER()}{MAKE\_FILTER()}}
+{\footnotesize\ttfamily Filter\+Image\+::\+MAKE\+\_\+\+FILTER (\begin{DoxyParamCaption}\item[{f0}]{,  }\item[{exp(-\/0.\+5 $\ast$\mbox{\hyperlink{misc_8h_a7c7f6ef2b1ebd0ca3e756f1b0489e67c}{square}}(i/sigma))}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{class_filter_image_ac8b57329f8aac9ae6cb4d589b9cd210d}\label{class_filter_image_ac8b57329f8aac9ae6cb4d589b9cd210d}} 
+\index{FilterImage@{FilterImage}!normalize@{normalize}}
+\index{normalize@{normalize}!FilterImage@{FilterImage}}
+\doxysubsubsection{\texorpdfstring{normalize()}{normalize()}}
+{\footnotesize\ttfamily static void Filter\+Image\+::normalize (\begin{DoxyParamCaption}\item[{std\+::vector$<$ float $>$ \&}]{mask }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 37 of file filter.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_filter_image_ac8b57329f8aac9ae6cb4d589b9cd210d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_filter_image_a237d84f89d045c77927cb2ce5363ca58}\label{class_filter_image_a237d84f89d045c77927cb2ce5363ca58}} 
+\index{FilterImage@{FilterImage}!smooth@{smooth}}
+\index{smooth@{smooth}!FilterImage@{FilterImage}}
+\doxysubsubsection{\texorpdfstring{smooth()}{smooth()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classimage}{image}}$<$float$>$$\ast$ Filter\+Image\+::smooth (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classimage}{image}}$<$ float $>$ $\ast$}]{src,  }\item[{float}]{sigma }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 64 of file filter.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_filter_image_a237d84f89d045c77927cb2ce5363ca58_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_filter_image_a16ce040f9b25781405bb040cae14ae63}\label{class_filter_image_a16ce040f9b25781405bb040cae14ae63}} 
+\index{FilterImage@{FilterImage}!smooth@{smooth}}
+\index{smooth@{smooth}!FilterImage@{FilterImage}}
+\doxysubsubsection{\texorpdfstring{smooth()}{smooth()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classimage}{image}}$<$float$>$$\ast$ Filter\+Image\+::smooth (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classimage}{image}}$<$ \mbox{\hyperlink{misc_8h_a65f85814a8290f9797005d3b28e7e5fc}{uchar}} $>$ $\ast$}]{src,  }\item[{float}]{sigma }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 78 of file filter.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Single\+Thread\+CPU/\mbox{\hyperlink{filter_8h}{filter.\+h}}\end{DoxyCompactItemize}

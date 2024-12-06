@@ -1,0 +1,4 @@
+<map id="EvaluateImpResults" name="EvaluateImpResults">
+<area shape="rect" id="node1" title="Class with operator function to evaluate implementations of the same algorithm across different data ..." alt="" coords="14,5,166,32"/>
+<area shape="rect" id="node2" href="$class_evaluate_bp_imp_results.html" title="Child class of EvaluateImpResults that defines member functions for belief propagation evaluation whi..." alt="" coords="5,80,175,107"/>
+</map>

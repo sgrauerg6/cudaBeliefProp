@@ -1,0 +1,104 @@
+\hypertarget{driver_bp_stereo_c_p_u_8cpp}{}\doxysection{src/\+Main\+Driver\+Files/driver\+Bp\+Stereo\+CPU.cpp File Reference}
+\label{driver_bp_stereo_c_p_u_8cpp}\index{src/MainDriverFiles/driverBpStereoCPU.cpp@{src/MainDriverFiles/driverBpStereoCPU.cpp}}
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp/\+Run\+Imp\+Mult\+Types\+Accels.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp\+CPU/\+Run\+CPUSettings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+File\+Processing/\+Bp\+File\+Handling\+Consts.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Settings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Eval\+Imp/\+Run\+Bp\+Imp\+Mult\+Inputs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Results\+Evaluation/\+Evaluate\+Bp\+Imp\+Results.\+h\char`\"{}}\newline
+Include dependency graph for driver\+Bp\+Stereo\+CPU.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{driver_bp_stereo_c_p_u_8cpp__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}{Run\+Imp\+Setting}} \{ \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6acc3d86223c94c469eab5c8009aec32a2}{k\+Run\+Imp\+Default}}
+, \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6a1634bb6aeee5fdcefb89d6a4f0549f13}{k\+Run\+Imp\+Threads\+Pinned\+To\+Socket}}
+, \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6a19a72559544c6f4d8bb586ca381b1cc1}{k\+Run\+Imp\+Sim\+Single\+CPUTwo\+CPUSystem}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_afd0dafa5176b51fbc42b5066484aa593}{run\+Imp}} (int argc, char $\ast$$\ast$argv, \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}{Run\+Imp\+Setting}} imp\+Setting)
+\item 
+int \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}\label{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}} 
+\index{driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}!RunImpSetting@{RunImpSetting}}
+\index{RunImpSetting@{RunImpSetting}!driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}}
+\doxysubsubsection{\texorpdfstring{RunImpSetting}{RunImpSetting}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}{Run\+Imp\+Setting}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRunImpDefault@{kRunImpDefault}!driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}}\index{driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}!kRunImpDefault@{kRunImpDefault}}}\mbox{\Hypertarget{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6acc3d86223c94c469eab5c8009aec32a2}\label{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6acc3d86223c94c469eab5c8009aec32a2}} 
+k\+Run\+Imp\+Default&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRunImpThreadsPinnedToSocket@{kRunImpThreadsPinnedToSocket}!driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}}\index{driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}!kRunImpThreadsPinnedToSocket@{kRunImpThreadsPinnedToSocket}}}\mbox{\Hypertarget{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6a1634bb6aeee5fdcefb89d6a4f0549f13}\label{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6a1634bb6aeee5fdcefb89d6a4f0549f13}} 
+k\+Run\+Imp\+Threads\+Pinned\+To\+Socket&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRunImpSimSingleCPUTwoCPUSystem@{kRunImpSimSingleCPUTwoCPUSystem}!driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}}\index{driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}!kRunImpSimSingleCPUTwoCPUSystem@{kRunImpSimSingleCPUTwoCPUSystem}}}\mbox{\Hypertarget{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6a19a72559544c6f4d8bb586ca381b1cc1}\label{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6a19a72559544c6f4d8bb586ca381b1cc1}} 
+k\+Run\+Imp\+Sim\+Single\+CPUTwo\+CPUSystem&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 31 of file driver\+Bp\+Stereo\+CPU.\+cpp.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}\label{driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}} 
+\index{driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}!main@{main}}
+\index{main@{main}!driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}}
+\doxysubsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv }\end{DoxyParamCaption})}
+
+
+
+Definition at line 137 of file driver\+Bp\+Stereo\+CPU.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{driver_bp_stereo_c_p_u_8cpp_afd0dafa5176b51fbc42b5066484aa593}\label{driver_bp_stereo_c_p_u_8cpp_afd0dafa5176b51fbc42b5066484aa593}} 
+\index{driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}!runImp@{runImp}}
+\index{runImp@{runImp}!driverBpStereoCPU.cpp@{driverBpStereoCPU.cpp}}
+\doxysubsubsection{\texorpdfstring{runImp()}{runImp()}}
+{\footnotesize\ttfamily void run\+Imp (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$$\ast$}]{argv,  }\item[{\mbox{\hyperlink{driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}{Run\+Imp\+Setting}}}]{imp\+Setting }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file driver\+Bp\+Stereo\+CPU.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{driver_bp_stereo_c_p_u_8cpp_afd0dafa5176b51fbc42b5066484aa593_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{driver_bp_stereo_c_p_u_8cpp_afd0dafa5176b51fbc42b5066484aa593_icgraph}
+\end{center}
+\end{figure}

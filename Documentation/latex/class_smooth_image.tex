@@ -1,0 +1,144 @@
+\hypertarget{class_smooth_image}{}\doxysection{Smooth\+Image Class Reference}
+\label{class_smooth_image}\index{SmoothImage@{SmoothImage}}
+
+
+Class for smoothing the images before running BP. Smoothing image always uses float data type.  
+
+
+
+
+{\ttfamily \#include $<$Smooth\+Image.\+h$>$}
+
+
+
+Inheritance diagram for Smooth\+Image\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{class_smooth_image__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Smooth\+Image\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{class_smooth_image__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_smooth_image_a9a0cdc76bb759f0e200d001dc7577248}{Smooth\+Image}} (const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params)
+\item 
+virtual void \mbox{\hyperlink{class_smooth_image_a37eeb6579ddfacbf4d651832f3f3d4be}{operator()}} (const \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned int $>$ \&in\+\_\+image, float sigma, float $\ast$smoothed\+\_\+image) const =0
+\begin{DoxyCompactList}\small\item\em Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-\/bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::pair$<$ std\+::vector$<$ float $>$, unsigned int $>$ \mbox{\hyperlink{class_smooth_image_ac5320911cc70ee47757dc0cf1c2671cb}{Make\+Filter}} (float sigma) const
+\begin{DoxyCompactList}\small\item\em Create a Gaussian filter from a sigma value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \& \mbox{\hyperlink{class_smooth_image_a9f00cb579941dd7f8be3449d9fc01a18}{parallel\+\_\+params\+\_\+}}
+\begin{DoxyCompactList}\small\item\em Parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class for smoothing the images before running BP. Smoothing image always uses float data type. 
+
+Definition at line 43 of file Smooth\+Image.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_smooth_image_a9a0cdc76bb759f0e200d001dc7577248}\label{class_smooth_image_a9a0cdc76bb759f0e200d001dc7577248}} 
+\index{SmoothImage@{SmoothImage}!SmoothImage@{SmoothImage}}
+\index{SmoothImage@{SmoothImage}!SmoothImage@{SmoothImage}}
+\doxysubsubsection{\texorpdfstring{SmoothImage()}{SmoothImage()}}
+{\footnotesize\ttfamily Smooth\+Image\+::\+Smooth\+Image (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 46 of file Smooth\+Image.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_smooth_image_ac5320911cc70ee47757dc0cf1c2671cb}\label{class_smooth_image_ac5320911cc70ee47757dc0cf1c2671cb}} 
+\index{SmoothImage@{SmoothImage}!MakeFilter@{MakeFilter}}
+\index{MakeFilter@{MakeFilter}!SmoothImage@{SmoothImage}}
+\doxysubsubsection{\texorpdfstring{MakeFilter()}{MakeFilter()}}
+{\footnotesize\ttfamily std\+::pair$<$ std\+::vector$<$ float $>$, unsigned int $>$ Smooth\+Image\+::\+Make\+Filter (\begin{DoxyParamCaption}\item[{float}]{sigma }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Create a Gaussian filter from a sigma value. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em sigma} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::pair$<$std\+::vector$<$float$>$, unsigned int$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 22 of file Smooth\+Image.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_smooth_image_ac5320911cc70ee47757dc0cf1c2671cb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_smooth_image_a37eeb6579ddfacbf4d651832f3f3d4be}\label{class_smooth_image_a37eeb6579ddfacbf4d651832f3f3d4be}} 
+\index{SmoothImage@{SmoothImage}!operator()@{operator()}}
+\index{operator()@{operator()}!SmoothImage@{SmoothImage}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily virtual void Smooth\+Image\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned int $>$ \&}]{in\+\_\+image,  }\item[{float}]{sigma,  }\item[{float $\ast$}]{smoothed\+\_\+image }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Function to use the image filter to apply a guassian filter to the a single images input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-\/bit grayscale image used) output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma normalize mask so it integrates to one. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in\+\_\+image} & \\
+\hline
+{\em sigma} & \\
+\hline
+{\em smoothed\+\_\+image} & \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_smooth_image_c_u_d_a_ac810f2f4cb5608673dd21a6f69214444}{Smooth\+Image\+CUDA}}, and \mbox{\hyperlink{class_smooth_image_c_p_u_a1c9a703874e1112ff7da7ce3b310653a}{Smooth\+Image\+CPU}}.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_smooth_image_a9f00cb579941dd7f8be3449d9fc01a18}\label{class_smooth_image_a9f00cb579941dd7f8be3449d9fc01a18}} 
+\index{SmoothImage@{SmoothImage}!parallel\_params\_@{parallel\_params\_}}
+\index{parallel\_params\_@{parallel\_params\_}!SmoothImage@{SmoothImage}}
+\doxysubsubsection{\texorpdfstring{parallel\_params\_}{parallel\_params\_}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}}\& Smooth\+Image\+::parallel\+\_\+params\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA) 
+
+
+
+Definition at line 74 of file Smooth\+Image.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Image\+Processing/\mbox{\hyperlink{_smooth_image_8h}{Smooth\+Image.\+h}}\item 
+src/beliefprop/\+Bp\+Image\+Processing/\mbox{\hyperlink{_smooth_image_8cpp}{Smooth\+Image.\+cpp}}\end{DoxyCompactItemize}

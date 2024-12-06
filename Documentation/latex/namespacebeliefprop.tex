@@ -1,0 +1,1686 @@
+\hypertarget{namespacebeliefprop}{}\doxysection{beliefprop Namespace Reference}
+\label{namespacebeliefprop}\index{beliefprop@{beliefprop}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_stereo_set}{Bp\+Stereo\+Set}}
+\begin{DoxyCompactList}\small\item\em Structure with stereo set name, disparity count, and scale factor for output disparity map. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{Bp\+Level\+Properties}}
+\begin{DoxyCompactList}\small\item\em POD struct to store bp level data. Struct can be passed to global CUDAs kernel so needs to take restrictions of what\textquotesingle{}s allowed for passing data from the host to a CUDA kernel into account. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classbeliefprop_1_1_bp_level}{Bp\+Level}}
+\begin{DoxyCompactList}\small\item\em Class to store and retrieve properties of a bp processing level. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{Bp\+Settings}}
+\begin{DoxyCompactList}\small\item\em Structure to store the settings for the number of levels and iterations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+ptr T$>$ }\\using \mbox{\hyperlink{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}{Checkerboard\+Messages}} = std\+::array$<$ std\+::array$<$ T, \mbox{\hyperlink{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}{k\+Num\+Message\+Arrays}} $>$, \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{k\+Num\+Checkerboard\+Parts}} $>$
+\begin{DoxyCompactList}\small\item\em Each checkerboard messages element corresponds to an array of message values could use a map/unordered map to map Message\+Arrays enum to corresponding message array but using array structure is likely faster. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+ptr T$>$ }\\using \mbox{\hyperlink{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}{Data\+Costs\+Checkerboards}} = std\+::array$<$ T, \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{k\+Num\+Checkerboard\+Parts}} $>$
+\begin{DoxyCompactList}\small\item\em Belief propagation checkerboard messages and data costs must be pointers to a bp data type define alias for two-\/element array with data costs for each bp processing checkerboard. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}{Image\+Type}} \{ \mbox{\hyperlink{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59fa62f407c572458a322d2cd94755d3a86a}{k\+Pgm\+Image}}
+, \mbox{\hyperlink{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59faae638412381b935cbb0314e0c4e5f5d5}{k\+Ppm\+Image}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{Runtime\+\_\+\+Type}} \{ \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a511da485b6e4d23aa4a670bb0b43fc41}{k\+Init\+Settings\+Malloc}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951ad341b6e6ac466b8286ab38aad98b4d4b}{k\+Level0\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951afc5c42b24d2977d807fabd63104bfffa}{k\+Level1\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a19de836887faa4554088edd79c60f27c}{k\+Level2\+Data\+Costs}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a372e394ff1dd6f104eb3495252b3e5d6}{k\+Level3\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951aa58d7dbe945e3be6ac1213f6761ce317}{k\+Level4\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951aacb18d0ed030f45807c7c8eca70e0a63}{k\+Level5\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951abc77bc9930edbee6ccff375264ce26c5}{k\+Level6\+Data\+Costs}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a7dd55a01988ab341e95f285bd851dc9b}{k\+Level7\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a3b9adcdf0814ee36e4ea2a28f969898d}{k\+Level8\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a95e5eb5b2454e870bfff559ca40dd5e1}{k\+Level9\+Data\+Costs}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86a72a8d0220a2333a7586ef40f35061}{k\+Data\+Costs\+Higher\+Level}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a55f96e4cf81471bd12382af6cf97bc59}{k\+Init\+Messages}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951aae8985def4335d3cc26c9c868d89d370}{k\+Init\+Messages\+Kernel}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a2b91786492fcbbc28bd4d183e2d39ffd}{k\+Bp\+Iters}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951ab3b5456b1f99f4ba82d6778730d5813e}{k\+Copy\+Data}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a87db21329cc2c5c418bc918639882927}{k\+Copy\+Data\+Kernel}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a556745a9440fb8125943a7e7b5dbf2e1}{k\+Copy\+Data\+Mem\+Management}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a43562e66569f926ce064747f674f1684}{k\+Output\+Disparity}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a29e77ab3febbf033ad2f5db675ecfc6a}{k\+Final\+Free}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a3f19a03f0cfb7f105363ecbae247707c}{k\+Total\+Timed}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a1d31c5e509601d214782a90778f2224c}{k\+Smoothing}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a113b1a699dc0034ab1dce37a86361952}{k\+Level0\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a647cbe03178e5442c4fdbf0b32b7647c}{k\+Level1\+Bp}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a8796739d6908261b4d2f428c6ed4e374}{k\+Level2\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951ab2a536e6214cfd71953557b690b86cbb}{k\+Level3\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951ad39367cf58c4abfb0c0a8fe3ff158325}{k\+Level4\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a916f11b90c00a1c5fa64054e0afef553}{k\+Level5\+Bp}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951ac4c07c09d4612cbad7c764dfab4fda2b}{k\+Level6\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86bf8e0fe2ab014cbebe147c4f881896}{k\+Level7\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951adea673d556b221dfb6aa12b36db7231c}{k\+Level8\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a44235c61a188c8ab7bdbc2ba931cad66}{k\+Level9\+Bp}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951ae34c894f938b37c915337473a6fac12c}{k\+Level0\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a10bb2f058e927f709c8b8bef41b4d0ba}{k\+Level1\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a84c94aeff5d2175bd0adf7747dfd5521}{k\+Level2\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a53e64579f69aed0484fb6f7d562086a3}{k\+Level3\+Copy}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a7ac112ee2baf0ddcb8eec531cb91f0da}{k\+Level4\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a434dc1bb681619f178ade64d458787b3}{k\+Level5\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a1427783db62a5e71bb2043fa44e16643}{k\+Level6\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a34764866bd83b909b076f30463800c54}{k\+Level7\+Copy}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a6ffeef1932411b66109b21be905998d3}{k\+Level8\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86807b5dbfb872aed337238681d7c675}{k\+Level9\+Copy}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a978014634c933997b35b74ff167d06fb}{k\+Total\+Bp}}
+, \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951a042c56efc97a03095336f83b03627b3b}{k\+Total\+No\+Transfer}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951afd5ada7824d5f5f2fde3f68552685b46}{k\+Total\+With\+Transfer}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{Checkerboard\+Part}} \+: unsigned int \{ \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5a8bd57edbe16314c8e500cec6778c2fca}{k\+Checkerboard\+Part0}}
+, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5ab3976af25494bc13a8a62bf61d0b7411}{k\+Checkerboard\+Part1}}
+ \}
+\begin{DoxyCompactList}\small\item\em Define the two checkerboard \char`\"{}parts\char`\"{} that the image is divided into. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4d}{Message\+Arrays}} \+: unsigned int \{ \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da3a58cb5615fc13e055c527e11750e7c3}{k\+Messages\+UCheckerboard}}
+, \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da9a179f84d62bbd2cbde01d7dc6fe3ccf}{k\+Messages\+DCheckerboard}}
+, \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4daeb9dffa1d9477f915baa1d340166af7b}{k\+Messages\+LCheckerboard}}
+, \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da01a238d90d63de26ed7e56a2ccf7ca44}{k\+Messages\+RCheckerboard}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}{Message\+Comp}} \{ \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca6adc7ce8ffadd4a76448220f3195c8ae}{k\+UMessage}}
+, \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca895baeedf73572889edbc96929120edc}{k\+DMessage}}
+, \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf35518af99db869d5869510c4bbbd5d1}{k\+LMessage}}
+, \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf7c5e94ac53aff1a29af626d99e2f651}{k\+RMessage}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906}{Bp\+Kernel}} \+: unsigned int \{ \newline
+\mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a66cfb84630289cb7250dd31170937f26}{k\+Blur\+Images}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a207fb72ea8f46ac7007929122982eebe}{k\+Data\+Costs\+At\+Level}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a615e1e41f1c80d611d5822780d239dd7}{k\+Init\+Message\+Vals}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a05755e13d36f2bca0e9484a9ac5e5ba1}{k\+Bp\+At\+Level}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aee780e8bd275dbe845fd72ccbbc57b25}{k\+Copy\+At\+Level}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aa4d6694818fc8b0338c6516e15a7cb78}{k\+Output\+Disp}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}{Run\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for output. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} unsigned int \mbox{\hyperlink{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}{Retrieve\+Index\+In\+Data\+And\+Message}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height, unsigned int current\+\_\+disparity, unsigned int total\+\_\+num\+\_\+disp\+\_\+vals, unsigned int offset\+\_\+data=0u)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ae68eab6f8bff8879cdf5eef4d4fe6fa8}{Dt\+Stereo}} (T f\mbox{[}DISP\+\_\+\+VALS\mbox{]})
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_aa78f83157a3b8ea34135bd45d86e75f5}{Dt\+Stereo}} (T $\ast$f, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8}{Dt\+Stereo}} (T $\ast$f, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a719026072592bb9a4c99be94655253ef}{Msg\+Stereo}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U messages\+\_\+neighbor\+\_\+1\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U messages\+\_\+neighbor\+\_\+2\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U messages\+\_\+neighbor\+\_\+3\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U data\+\_\+costs\mbox{[}DISP\+\_\+\+VALS\mbox{]}, T $\ast$dst\+\_\+message\+\_\+array, U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ae3cc8d125413e32c293999d93666714a}{Msg\+Stereo}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U $\ast$messages\+\_\+neighbor\+\_\+1, const U $\ast$messages\+\_\+neighbor\+\_\+2, const U $\ast$messages\+\_\+neighbor\+\_\+3, const U $\ast$data\+\_\+costs, T $\ast$dst\+\_\+message\+\_\+array, U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, beliefprop\+::\+Message\+Comp M$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a449917ceaa07c2271c379759b2c08400}{Set\+Init\+Dst\+Processing}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$prev\+\_\+u\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+d\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+l\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+r\+\_\+message\+\_\+array, const T $\ast$data\+\_\+message\+\_\+array, T $\ast$dst\+\_\+message\+\_\+array, U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, U $\ast$dst\+\_\+processing, unsigned int checkerboard\+\_\+adjustment, unsigned int offset\+\_\+data, unsigned int current\+\_\+disparity, unsigned int proc\+\_\+array\+\_\+idx)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, beliefprop\+::\+Message\+Comp M$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}{Msg\+Stereo}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$prev\+\_\+u\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+d\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+l\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+r\+\_\+message\+\_\+array, const T $\ast$data\+\_\+message\+\_\+array, T $\ast$dst\+\_\+message\+\_\+array, U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, U $\ast$dst\+\_\+processing, unsigned int checkerboard\+\_\+adjustment, unsigned int offset\+\_\+data)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ac627a17eca812709ebdcde3f44013238}{Initialize\+Bottom\+Level\+Data\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const float $\ast$image\+\_\+1\+\_\+pixels\+\_\+device, const float $\ast$image\+\_\+2\+\_\+pixels\+\_\+device, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1, float lambda\+\_\+bp, float data\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{Initialize\+Current\+Level\+Data\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18}{Initialize\+Message\+Vals\+To\+Default\+Kernel\+Pixel}} (unsigned int x\+\_\+val\+\_\+in\+\_\+checkerboard, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a01e4c1fb7d6c8647a0050e9e5c3213bb}{Run\+BPIteration\+Update\+Msg\+Vals}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U prev\+\_\+u\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U prev\+\_\+d\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U prev\+\_\+l\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U prev\+\_\+r\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, const U data\+\_\+message\mbox{[}DISP\+\_\+\+VALS\mbox{]}, T $\ast$current\+\_\+u\+\_\+message, T $\ast$current\+\_\+d\+\_\+message, T $\ast$current\+\_\+l\+\_\+message, T $\ast$current\+\_\+r\+\_\+message, const U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a2ffa558874a17f1d28f6587e89be8eec}{Run\+BPIteration\+Update\+Msg\+Vals}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const U $\ast$prev\+\_\+u\+\_\+message, const U $\ast$prev\+\_\+d\+\_\+message, const U $\ast$prev\+\_\+l\+\_\+message, const U $\ast$prev\+\_\+r\+\_\+message, const U $\ast$data\+\_\+message, T $\ast$current\+\_\+u\+\_\+message, T $\ast$current\+\_\+d\+\_\+message, T $\ast$current\+\_\+l\+\_\+message, T $\ast$current\+\_\+r\+\_\+message, const U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ac36b5b646e6c8bc15b731b2ec71325eb}{Run\+BPIteration\+Update\+Msg\+Vals}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$prev\+\_\+u\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+d\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+l\+\_\+message\+\_\+array, const T $\ast$prev\+\_\+r\+\_\+message\+\_\+array, const T $\ast$data\+\_\+message\+\_\+array, T $\ast$current\+\_\+u\+\_\+message, T $\ast$current\+\_\+d\+\_\+message, T $\ast$current\+\_\+l\+\_\+message, T $\ast$current\+\_\+r\+\_\+message, const U disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, U $\ast$dst\+\_\+processing, unsigned int checkerboard\+\_\+adjustment, unsigned int offset\+\_\+data)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a7b7d67f60b6b77a21c95aa186d3d15c0}{Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, void $\ast$dst\+\_\+processing)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_aecabdea7725f13ae860736d9073df825}{Copy\+Msg\+Data\+To\+Next\+Level\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&next\+\_\+bp\+\_\+level, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{Retrieve\+Output\+Disparity\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a5085344408155d487a5c63ad64236eab}{Print\+Data\+And\+Message\+Vals\+At\+Point\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals=0)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a81aace5409ee7378733e21689955b681}{Print\+Data\+And\+Message\+Vals\+To\+Point\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals=0)
+\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}{Filter\+Image\+Across\+Process\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture the output filtered image is returned as an array of floats \end{DoxyCompactList}\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a527bc69220d92b30d3f74e8aaf182824}{Filter\+Image\+Vertical\+Process\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture uint\+\_\+image\+\_\+pixels\+Texture the output filtered image is returned as an array of floats \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}{k\+Use\+Weighted\+RGBTo\+Grayscale\+Conversion}} \{true\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a1fac75fef6dd56eb148c38941ce78290}{k\+PGMExt}} \{\char`\"{}pgm\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_adb49c59888b7948f60ef72e5c9b45085}{k\+PPMExt}} \{\char`\"{}ppm\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ab3250ec5e02b035ac6f5290c04068521}{k\+Bp\+Optimize\+CPUDesc}} \{\char`\"{}Optimized CPU\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a1d0ee3d94819fc462712ab9a45d0808a}{k\+Num\+Parallel\+CPUThreads\+Header}} \{\char`\"{}Number of parallel CPU threads in run\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a7525a88a7c61114d68d619797c28b82c}{k\+CPUVectorization\+Header}} \{\char`\"{}Vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_abc3d515f5c6acdf84668ae8445a28dd5}{k\+Bp\+Optimize\+CUDADesc}} \{\char`\"{}CUDA\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aa3e2f34ee6b0852564617fdd4a22079c}{k\+CUDAVersion\+Header}} \{\char`\"{}Cuda version\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a6a6afcc9f7fdd032580bb44c0733124b}{k\+CUDARuntime\+Header}} \{\char`\"{}Cuda Runtime Version\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a8778b3e5a5eacd6b90b010227e13f0b5}{k\+Image\+Width\+Header}} \{\char`\"{}Image Width\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}{k\+Image\+Height\+Header}} \{\char`\"{}Image Height\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a0fe14039eac011f72a659873a7ef6e09}{k\+Stereo\+Set\+Header}} \{\char`\"{}Stereo Set\char`\"{}\}
+\item 
+constexpr std\+::array$<$ \mbox{\hyperlink{structbeliefprop_1_1_bp_stereo_set}{Bp\+Stereo\+Set}}, 8 $>$ \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{k\+Stereo\+Sets\+To\+Process}}
+\begin{DoxyCompactList}\small\item\em Declare stereo sets to process with name, num disparity values, and scale factor currently cones\+Full\+Size is not used. \end{DoxyCompactList}\item 
+const std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::vector$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}} $>$ $>$ $>$ \mbox{\hyperlink{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}{k\+Eval\+Data\+Subsets}}
+\begin{DoxyCompactList}\small\item\em Define subsets for evaluating run results on specified inputs the first three stereo sets are labeled as \char`\"{}smallest 3 stereo sets\char`\"{} the last three stereo sets (excluding \char`\"{}cones\+Full\+Sized\char`\"{}) are labeled as \char`\"{}largest 3 stereo sets\char`\"{}. \end{DoxyCompactList}\item 
+constexpr std\+::array$<$ std\+::array$<$ std\+::string\+\_\+view, 3 $>$, 10 $>$ \mbox{\hyperlink{namespacebeliefprop_af2ed8e4173e3700fa5a358b3d689b995}{k\+Level\+DCost\+Bp\+Time\+CTime\+Names}}
+\item 
+const std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{Runtime\+\_\+\+Type}}, std\+::string\+\_\+view $>$ \mbox{\hyperlink{namespacebeliefprop_a790873cf6727591d5674d7fafa90c497}{k\+Timing\+Names}}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}{k\+Avg\+RMSError\+Header}} \{\char`\"{}Average RMS error\char`\"{}\}
+\item 
+constexpr std\+::array$<$ float, 4 $>$ \mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{k\+Disparity\+Diff\+Thresholds}}
+\begin{DoxyCompactList}\small\item\em Difference thresholds in output disparity for a computed disparity at a pixel to be considered a \char`\"{}bad pixel\char`\"{} when compared to the ground truth in the evaluation. \end{DoxyCompactList}\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}{k\+Max\+Diff\+Cap}}
+\begin{DoxyCompactList}\small\item\em Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers in the average difference across all pixels. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}{k\+Acceleration\+Desc\+Header}} \{\char`\"{}Acceleration\char`\"{}\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{k\+Inf\+Bp}} \{65504\}
+\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{k\+Num\+Checkerboard\+Parts}} \{2\}
+\begin{DoxyCompactList}\small\item\em Number of checkerboard parts for processing. \end{DoxyCompactList}\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}{k\+Num\+Message\+Arrays}} \{4\}
+\begin{DoxyCompactList}\small\item\em Number of message arrays in each checkerboard part. \end{DoxyCompactList}\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a6651cc44f605190082858f8c391e417c}{k\+Num\+Kernels}} \{6\}
+\begin{DoxyCompactList}\small\item\em Enum corresponding to each kernel in belief propagation that can be run in parallel. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}{k\+Blur\+Images\+PDims\+Header}} \{\char`\"{}Blur Images Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}{k\+Init\+MVals\+PDims\+Header}} \{\char`\"{}Init Message Values Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}{k\+Data\+Costs\+PDims\+Header}} \{\char`\"{}Data Costs Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}{k\+Bp\+Iters\+PDims\+Header}} \{\char`\"{}BP Thread Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}{k\+Copy\+To\+Next\+Level\+PDims\+Header}} \{\char`\"{}Copy Thread Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}{k\+Comp\+Output\+Disp\+PDims\+Header}} \{\char`\"{}Get Output Disparity Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a967ce853e69a6075f1fa1f572efcc999}{k\+Level\+Text}} \{\char`\"{}Level\char`\"{}\}
+\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a4f9aba3d1636709e30a6781a1aafe151}{k\+Num\+Bp\+Stereo\+Runs}} = 15
+\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}{k\+Use\+Opt\+GPUMem\+Management}} \{true\}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}{k\+Optimized\+Indexing\+Setting}} \{true\}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}{k\+Allocate\+Free\+Bp\+Memory\+Outside\+Runs}} \{true\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5afcf811c27dd005009bc134e9a7c4bb}{k\+Mem\+Opt\+Level\+Header}} \{\char`\"{}Memory Optimization Level\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a83752776983b00dc2b06270e4639ede7}{k\+Indexing\+Opt\+Level\+Header}} \{\char`\"{}Indexing Optimization Level\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}{k\+Num\+Disp\+Vals\+Header}} \{\char`\"{}Num Possible Disparity Values\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a6c32b79a4a0cd6395898595b62e7e022}{k\+Num\+Bp\+Levels\+Header}} \{\char`\"{}Num BP Levels\char`\"{},\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}{k\+Num\+Bp\+Iters\+Header}} \{\char`\"{}Num BP Iterations\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a7db5ca97e804117029e4986b2d46dbf9}{k\+Disc\+Cost\+Cap\+Header}} \{\char`\"{}DISC\+\_\+\+K\+\_\+\+BP\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a35a079b98adae166d0f527cf840a8df5}{k\+Data\+Cost\+Cap\+Header}} \{\char`\"{}Data\+KBp\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a3bd976de25e1c840fa0cc97e6e721da0}{k\+Bp\+Settings\+Lambda\+Header}} \{\char`\"{}Lambda\+Bp\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}{k\+Bp\+Settings\+Sigma\+Header}} \{\char`\"{}Sigma\+Bp\char`\"{}\}
+\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}{k\+Default\+Levels\+Bp}} \{5\}
+\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}{k\+Default\+Iters\+Bp}} \{7\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}{k\+Default\+Sigma\+Bp}} \{0.\+0\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}{k\+Default\+Lambda\+Bp}} \{0.\+1\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}{k\+Default\+Data\+KBp}} \{15.\+0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}\label{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}} 
+\index{beliefprop@{beliefprop}!CheckerboardMessages@{CheckerboardMessages}}
+\index{CheckerboardMessages@{CheckerboardMessages}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{CheckerboardMessages}{CheckerboardMessages}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+ptr T$>$ \\
+using \mbox{\hyperlink{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}{beliefprop\+::\+Checkerboard\+Messages}} = typedef std\+::array$<$std\+::array$<$T, \mbox{\hyperlink{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}{k\+Num\+Message\+Arrays}}$>$, \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{k\+Num\+Checkerboard\+Parts}}$>$}
+
+
+
+Each checkerboard messages element corresponds to an array of message values could use a map/unordered map to map Message\+Arrays enum to corresponding message array but using array structure is likely faster. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 52 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}\label{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}} 
+\index{beliefprop@{beliefprop}!DataCostsCheckerboards@{DataCostsCheckerboards}}
+\index{DataCostsCheckerboards@{DataCostsCheckerboards}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{DataCostsCheckerboards}{DataCostsCheckerboards}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+ptr T$>$ \\
+using \mbox{\hyperlink{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}{beliefprop\+::\+Data\+Costs\+Checkerboards}} = typedef std\+::array$<$T, \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{k\+Num\+Checkerboard\+Parts}}$>$}
+
+
+
+Belief propagation checkerboard messages and data costs must be pointers to a bp data type define alias for two-\/element array with data costs for each bp processing checkerboard. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 61 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906}} 
+\index{beliefprop@{beliefprop}!BpKernel@{BpKernel}}
+\index{BpKernel@{BpKernel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{BpKernel}{BpKernel}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906}{beliefprop\+::\+Bp\+Kernel}} \+: unsigned int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kBlurImages@{kBlurImages}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kBlurImages@{kBlurImages}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a66cfb84630289cb7250dd31170937f26}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a66cfb84630289cb7250dd31170937f26}} 
+k\+Blur\+Images&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDataCostsAtLevel@{kDataCostsAtLevel}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kDataCostsAtLevel@{kDataCostsAtLevel}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a207fb72ea8f46ac7007929122982eebe}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a207fb72ea8f46ac7007929122982eebe}} 
+k\+Data\+Costs\+At\+Level&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kInitMessageVals@{kInitMessageVals}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kInitMessageVals@{kInitMessageVals}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a615e1e41f1c80d611d5822780d239dd7}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a615e1e41f1c80d611d5822780d239dd7}} 
+k\+Init\+Message\+Vals&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kBpAtLevel@{kBpAtLevel}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kBpAtLevel@{kBpAtLevel}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a05755e13d36f2bca0e9484a9ac5e5ba1}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a05755e13d36f2bca0e9484a9ac5e5ba1}} 
+k\+Bp\+At\+Level&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCopyAtLevel@{kCopyAtLevel}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kCopyAtLevel@{kCopyAtLevel}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aee780e8bd275dbe845fd72ccbbc57b25}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aee780e8bd275dbe845fd72ccbbc57b25}} 
+k\+Copy\+At\+Level&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kOutputDisp@{kOutputDisp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kOutputDisp@{kOutputDisp}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aa4d6694818fc8b0338c6516e15a7cb78}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aa4d6694818fc8b0338c6516e15a7cb78}} 
+k\+Output\+Disp&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 68 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}\label{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}} 
+\index{beliefprop@{beliefprop}!CheckerboardPart@{CheckerboardPart}}
+\index{CheckerboardPart@{CheckerboardPart}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{CheckerboardPart}{CheckerboardPart}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} \+: unsigned int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Define the two checkerboard \char`\"{}parts\char`\"{} that the image is divided into. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCheckerboardPart0@{kCheckerboardPart0}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kCheckerboardPart0@{kCheckerboardPart0}}}\mbox{\Hypertarget{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5a8bd57edbe16314c8e500cec6778c2fca}\label{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5a8bd57edbe16314c8e500cec6778c2fca}} 
+k\+Checkerboard\+Part0&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCheckerboardPart1@{kCheckerboardPart1}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kCheckerboardPart1@{kCheckerboardPart1}}}\mbox{\Hypertarget{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5ab3976af25494bc13a8a62bf61d0b7411}\label{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5ab3976af25494bc13a8a62bf61d0b7411}} 
+k\+Checkerboard\+Part1&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 27 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}\label{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}} 
+\index{beliefprop@{beliefprop}!ImageType@{ImageType}}
+\index{ImageType@{ImageType}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{ImageType}{ImageType}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}{beliefprop\+::\+Image\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kPgmImage@{kPgmImage}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kPgmImage@{kPgmImage}}}\mbox{\Hypertarget{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59fa62f407c572458a322d2cd94755d3a86a}\label{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59fa62f407c572458a322d2cd94755d3a86a}} 
+k\+Pgm\+Image&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kPpmImage@{kPpmImage}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kPpmImage@{kPpmImage}}}\mbox{\Hypertarget{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59faae638412381b935cbb0314e0c4e5f5d5}\label{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59faae638412381b935cbb0314e0c4e5f5d5}} 
+k\+Ppm\+Image&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 24 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a4217a55475830195c82b9937ec941b4d}\label{namespacebeliefprop_a4217a55475830195c82b9937ec941b4d}} 
+\index{beliefprop@{beliefprop}!MessageArrays@{MessageArrays}}
+\index{MessageArrays@{MessageArrays}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{MessageArrays}{MessageArrays}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4d}{beliefprop\+::\+Message\+Arrays}} \+: unsigned int\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kMessagesUCheckerboard@{kMessagesUCheckerboard}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kMessagesUCheckerboard@{kMessagesUCheckerboard}}}\mbox{\Hypertarget{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da3a58cb5615fc13e055c527e11750e7c3}\label{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da3a58cb5615fc13e055c527e11750e7c3}} 
+k\+Messages\+UCheckerboard&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kMessagesDCheckerboard@{kMessagesDCheckerboard}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kMessagesDCheckerboard@{kMessagesDCheckerboard}}}\mbox{\Hypertarget{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da9a179f84d62bbd2cbde01d7dc6fe3ccf}\label{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da9a179f84d62bbd2cbde01d7dc6fe3ccf}} 
+k\+Messages\+DCheckerboard&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kMessagesLCheckerboard@{kMessagesLCheckerboard}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kMessagesLCheckerboard@{kMessagesLCheckerboard}}}\mbox{\Hypertarget{namespacebeliefprop_a4217a55475830195c82b9937ec941b4daeb9dffa1d9477f915baa1d340166af7b}\label{namespacebeliefprop_a4217a55475830195c82b9937ec941b4daeb9dffa1d9477f915baa1d340166af7b}} 
+k\+Messages\+LCheckerboard&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kMessagesRCheckerboard@{kMessagesRCheckerboard}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kMessagesRCheckerboard@{kMessagesRCheckerboard}}}\mbox{\Hypertarget{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da01a238d90d63de26ed7e56a2ccf7ca44}\label{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da01a238d90d63de26ed7e56a2ccf7ca44}} 
+k\+Messages\+RCheckerboard&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 28 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}\label{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}} 
+\index{beliefprop@{beliefprop}!MessageComp@{MessageComp}}
+\index{MessageComp@{MessageComp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{MessageComp}{MessageComp}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}{beliefprop\+::\+Message\+Comp}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kUMessage@{kUMessage}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kUMessage@{kUMessage}}}\mbox{\Hypertarget{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca6adc7ce8ffadd4a76448220f3195c8ae}\label{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca6adc7ce8ffadd4a76448220f3195c8ae}} 
+k\+UMessage&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDMessage@{kDMessage}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kDMessage@{kDMessage}}}\mbox{\Hypertarget{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca895baeedf73572889edbc96929120edc}\label{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca895baeedf73572889edbc96929120edc}} 
+k\+DMessage&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLMessage@{kLMessage}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLMessage@{kLMessage}}}\mbox{\Hypertarget{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf35518af99db869d5869510c4bbbd5d1}\label{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf35518af99db869d5869510c4bbbd5d1}} 
+k\+LMessage&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRMessage@{kRMessage}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kRMessage@{kRMessage}}}\mbox{\Hypertarget{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf7c5e94ac53aff1a29af626d99e2f651}\label{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf7c5e94ac53aff1a29af626d99e2f651}} 
+k\+RMessage&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 30 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951}} 
+\index{beliefprop@{beliefprop}!Runtime\_Type@{Runtime\_Type}}
+\index{Runtime\_Type@{Runtime\_Type}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{Runtime\_Type}{Runtime\_Type}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{beliefprop\+::\+Runtime\+\_\+\+Type}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kInitSettingsMalloc@{kInitSettingsMalloc}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kInitSettingsMalloc@{kInitSettingsMalloc}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a511da485b6e4d23aa4a670bb0b43fc41}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a511da485b6e4d23aa4a670bb0b43fc41}} 
+k\+Init\+Settings\+Malloc&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel0DataCosts@{kLevel0DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel0DataCosts@{kLevel0DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951ad341b6e6ac466b8286ab38aad98b4d4b}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951ad341b6e6ac466b8286ab38aad98b4d4b}} 
+k\+Level0\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel1DataCosts@{kLevel1DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel1DataCosts@{kLevel1DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951afc5c42b24d2977d807fabd63104bfffa}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951afc5c42b24d2977d807fabd63104bfffa}} 
+k\+Level1\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel2DataCosts@{kLevel2DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel2DataCosts@{kLevel2DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a19de836887faa4554088edd79c60f27c}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a19de836887faa4554088edd79c60f27c}} 
+k\+Level2\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel3DataCosts@{kLevel3DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel3DataCosts@{kLevel3DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a372e394ff1dd6f104eb3495252b3e5d6}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a372e394ff1dd6f104eb3495252b3e5d6}} 
+k\+Level3\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel4DataCosts@{kLevel4DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel4DataCosts@{kLevel4DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951aa58d7dbe945e3be6ac1213f6761ce317}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951aa58d7dbe945e3be6ac1213f6761ce317}} 
+k\+Level4\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel5DataCosts@{kLevel5DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel5DataCosts@{kLevel5DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951aacb18d0ed030f45807c7c8eca70e0a63}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951aacb18d0ed030f45807c7c8eca70e0a63}} 
+k\+Level5\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel6DataCosts@{kLevel6DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel6DataCosts@{kLevel6DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951abc77bc9930edbee6ccff375264ce26c5}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951abc77bc9930edbee6ccff375264ce26c5}} 
+k\+Level6\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel7DataCosts@{kLevel7DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel7DataCosts@{kLevel7DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a7dd55a01988ab341e95f285bd851dc9b}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a7dd55a01988ab341e95f285bd851dc9b}} 
+k\+Level7\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel8DataCosts@{kLevel8DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel8DataCosts@{kLevel8DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a3b9adcdf0814ee36e4ea2a28f969898d}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a3b9adcdf0814ee36e4ea2a28f969898d}} 
+k\+Level8\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel9DataCosts@{kLevel9DataCosts}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel9DataCosts@{kLevel9DataCosts}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a95e5eb5b2454e870bfff559ca40dd5e1}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a95e5eb5b2454e870bfff559ca40dd5e1}} 
+k\+Level9\+Data\+Costs&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDataCostsHigherLevel@{kDataCostsHigherLevel}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kDataCostsHigherLevel@{kDataCostsHigherLevel}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86a72a8d0220a2333a7586ef40f35061}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86a72a8d0220a2333a7586ef40f35061}} 
+k\+Data\+Costs\+Higher\+Level&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kInitMessages@{kInitMessages}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kInitMessages@{kInitMessages}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a55f96e4cf81471bd12382af6cf97bc59}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a55f96e4cf81471bd12382af6cf97bc59}} 
+k\+Init\+Messages&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kInitMessagesKernel@{kInitMessagesKernel}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kInitMessagesKernel@{kInitMessagesKernel}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951aae8985def4335d3cc26c9c868d89d370}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951aae8985def4335d3cc26c9c868d89d370}} 
+k\+Init\+Messages\+Kernel&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kBpIters@{kBpIters}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kBpIters@{kBpIters}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a2b91786492fcbbc28bd4d183e2d39ffd}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a2b91786492fcbbc28bd4d183e2d39ffd}} 
+k\+Bp\+Iters&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCopyData@{kCopyData}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kCopyData@{kCopyData}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951ab3b5456b1f99f4ba82d6778730d5813e}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951ab3b5456b1f99f4ba82d6778730d5813e}} 
+k\+Copy\+Data&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCopyDataKernel@{kCopyDataKernel}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kCopyDataKernel@{kCopyDataKernel}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a87db21329cc2c5c418bc918639882927}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a87db21329cc2c5c418bc918639882927}} 
+k\+Copy\+Data\+Kernel&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCopyDataMemManagement@{kCopyDataMemManagement}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kCopyDataMemManagement@{kCopyDataMemManagement}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a556745a9440fb8125943a7e7b5dbf2e1}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a556745a9440fb8125943a7e7b5dbf2e1}} 
+k\+Copy\+Data\+Mem\+Management&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kOutputDisparity@{kOutputDisparity}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kOutputDisparity@{kOutputDisparity}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a43562e66569f926ce064747f674f1684}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a43562e66569f926ce064747f674f1684}} 
+k\+Output\+Disparity&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kFinalFree@{kFinalFree}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kFinalFree@{kFinalFree}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a29e77ab3febbf033ad2f5db675ecfc6a}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a29e77ab3febbf033ad2f5db675ecfc6a}} 
+k\+Final\+Free&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kTotalTimed@{kTotalTimed}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kTotalTimed@{kTotalTimed}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a3f19a03f0cfb7f105363ecbae247707c}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a3f19a03f0cfb7f105363ecbae247707c}} 
+k\+Total\+Timed&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kSmoothing@{kSmoothing}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kSmoothing@{kSmoothing}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a1d31c5e509601d214782a90778f2224c}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a1d31c5e509601d214782a90778f2224c}} 
+k\+Smoothing&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel0Bp@{kLevel0Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel0Bp@{kLevel0Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a113b1a699dc0034ab1dce37a86361952}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a113b1a699dc0034ab1dce37a86361952}} 
+k\+Level0\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel1Bp@{kLevel1Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel1Bp@{kLevel1Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a647cbe03178e5442c4fdbf0b32b7647c}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a647cbe03178e5442c4fdbf0b32b7647c}} 
+k\+Level1\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel2Bp@{kLevel2Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel2Bp@{kLevel2Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a8796739d6908261b4d2f428c6ed4e374}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a8796739d6908261b4d2f428c6ed4e374}} 
+k\+Level2\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel3Bp@{kLevel3Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel3Bp@{kLevel3Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951ab2a536e6214cfd71953557b690b86cbb}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951ab2a536e6214cfd71953557b690b86cbb}} 
+k\+Level3\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel4Bp@{kLevel4Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel4Bp@{kLevel4Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951ad39367cf58c4abfb0c0a8fe3ff158325}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951ad39367cf58c4abfb0c0a8fe3ff158325}} 
+k\+Level4\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel5Bp@{kLevel5Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel5Bp@{kLevel5Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a916f11b90c00a1c5fa64054e0afef553}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a916f11b90c00a1c5fa64054e0afef553}} 
+k\+Level5\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel6Bp@{kLevel6Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel6Bp@{kLevel6Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951ac4c07c09d4612cbad7c764dfab4fda2b}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951ac4c07c09d4612cbad7c764dfab4fda2b}} 
+k\+Level6\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel7Bp@{kLevel7Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel7Bp@{kLevel7Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86bf8e0fe2ab014cbebe147c4f881896}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86bf8e0fe2ab014cbebe147c4f881896}} 
+k\+Level7\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel8Bp@{kLevel8Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel8Bp@{kLevel8Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951adea673d556b221dfb6aa12b36db7231c}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951adea673d556b221dfb6aa12b36db7231c}} 
+k\+Level8\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel9Bp@{kLevel9Bp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel9Bp@{kLevel9Bp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a44235c61a188c8ab7bdbc2ba931cad66}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a44235c61a188c8ab7bdbc2ba931cad66}} 
+k\+Level9\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel0Copy@{kLevel0Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel0Copy@{kLevel0Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951ae34c894f938b37c915337473a6fac12c}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951ae34c894f938b37c915337473a6fac12c}} 
+k\+Level0\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel1Copy@{kLevel1Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel1Copy@{kLevel1Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a10bb2f058e927f709c8b8bef41b4d0ba}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a10bb2f058e927f709c8b8bef41b4d0ba}} 
+k\+Level1\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel2Copy@{kLevel2Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel2Copy@{kLevel2Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a84c94aeff5d2175bd0adf7747dfd5521}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a84c94aeff5d2175bd0adf7747dfd5521}} 
+k\+Level2\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel3Copy@{kLevel3Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel3Copy@{kLevel3Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a53e64579f69aed0484fb6f7d562086a3}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a53e64579f69aed0484fb6f7d562086a3}} 
+k\+Level3\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel4Copy@{kLevel4Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel4Copy@{kLevel4Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a7ac112ee2baf0ddcb8eec531cb91f0da}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a7ac112ee2baf0ddcb8eec531cb91f0da}} 
+k\+Level4\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel5Copy@{kLevel5Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel5Copy@{kLevel5Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a434dc1bb681619f178ade64d458787b3}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a434dc1bb681619f178ade64d458787b3}} 
+k\+Level5\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel6Copy@{kLevel6Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel6Copy@{kLevel6Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a1427783db62a5e71bb2043fa44e16643}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a1427783db62a5e71bb2043fa44e16643}} 
+k\+Level6\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel7Copy@{kLevel7Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel7Copy@{kLevel7Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a34764866bd83b909b076f30463800c54}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a34764866bd83b909b076f30463800c54}} 
+k\+Level7\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel8Copy@{kLevel8Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel8Copy@{kLevel8Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a6ffeef1932411b66109b21be905998d3}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a6ffeef1932411b66109b21be905998d3}} 
+k\+Level8\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kLevel9Copy@{kLevel9Copy}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kLevel9Copy@{kLevel9Copy}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86807b5dbfb872aed337238681d7c675}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a86807b5dbfb872aed337238681d7c675}} 
+k\+Level9\+Copy&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kTotalBp@{kTotalBp}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kTotalBp@{kTotalBp}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a978014634c933997b35b74ff167d06fb}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a978014634c933997b35b74ff167d06fb}} 
+k\+Total\+Bp&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kTotalNoTransfer@{kTotalNoTransfer}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kTotalNoTransfer@{kTotalNoTransfer}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951a042c56efc97a03095336f83b03627b3b}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951a042c56efc97a03095336f83b03627b3b}} 
+k\+Total\+No\+Transfer&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kTotalWithTransfer@{kTotalWithTransfer}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kTotalWithTransfer@{kTotalWithTransfer}}}\mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951afd5ada7824d5f5f2fde3f68552685b46}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951afd5ada7824d5f5f2fde3f68552685b46}} 
+k\+Total\+With\+Transfer&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 30 of file Detailed\+Timing\+Bp\+Consts.\+h.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacebeliefprop_aecabdea7725f13ae860736d9073df825}\label{namespacebeliefprop_aecabdea7725f13ae860736d9073df825}} 
+\index{beliefprop@{beliefprop}!CopyMsgDataToNextLevelPixel@{CopyMsgDataToNextLevelPixel}}
+\index{CopyMsgDataToNextLevelPixel@{CopyMsgDataToNextLevelPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{CopyMsgDataToNextLevelPixel()}{CopyMsgDataToNextLevelPixel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Copy\+Msg\+Data\+To\+Next\+Level\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{next\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 992 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_aecabdea7725f13ae860736d9073df825_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_aa78f83157a3b8ea34135bd45d86e75f5}\label{namespacebeliefprop_aa78f83157a3b8ea34135bd45d86e75f5}} 
+\index{beliefprop@{beliefprop}!DtStereo@{DtStereo}}
+\index{DtStereo@{DtStereo}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{DtStereo()}{DtStereo()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Dt\+Stereo (\begin{DoxyParamCaption}\item[{T $\ast$}]{f,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 55 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8}\label{namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8}} 
+\index{beliefprop@{beliefprop}!DtStereo@{DtStereo}}
+\index{DtStereo@{DtStereo}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{DtStereo()}{DtStereo()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Dt\+Stereo (\begin{DoxyParamCaption}\item[{T $\ast$}]{f,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 74 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_ae68eab6f8bff8879cdf5eef4d4fe6fa8}\label{namespacebeliefprop_ae68eab6f8bff8879cdf5eef4d4fe6fa8}} 
+\index{beliefprop@{beliefprop}!DtStereo@{DtStereo}}
+\index{DtStereo@{DtStereo}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{DtStereo()}{DtStereo()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Dt\+Stereo (\begin{DoxyParamCaption}\item[{T}]{f\mbox{[}\+DISP\+\_\+\+VALS\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 36 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}\label{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}} 
+\index{beliefprop@{beliefprop}!FilterImageAcrossProcessPixel@{FilterImageAcrossProcessPixel}}
+\index{FilterImageAcrossProcessPixel@{FilterImageAcrossProcessPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{FilterImageAcrossProcessPixel()}{FilterImageAcrossProcessPixel()}}
+{\footnotesize\ttfamily template$<$Bp\+Im\+Data\+\_\+t T$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Filter\+Image\+Across\+Process\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const T $\ast$}]{image\+\_\+to\+\_\+filter,  }\item[{float $\ast$}]{filtered\+\_\+image,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images,  }\item[{const float $\ast$}]{image\+\_\+filter,  }\item[{unsigned int}]{size\+\_\+filter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture the output filtered image is returned as an array of floats 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+val} & \\
+\hline
+{\em y\+\_\+val} & \\
+\hline
+{\em image\+\_\+to\+\_\+filter} & \\
+\hline
+{\em filtered\+\_\+image} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+{\em image\+\_\+filter} & \\
+\hline
+{\em size\+\_\+filter} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ARCHITECTURE\+\_\+\+ADDITION 
+\end{DoxyReturn}
+
+
+Definition at line 34 of file Shared\+Smooth\+Image\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a527bc69220d92b30d3f74e8aaf182824}\label{namespacebeliefprop_a527bc69220d92b30d3f74e8aaf182824}} 
+\index{beliefprop@{beliefprop}!FilterImageVerticalProcessPixel@{FilterImageVerticalProcessPixel}}
+\index{FilterImageVerticalProcessPixel@{FilterImageVerticalProcessPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{FilterImageVerticalProcessPixel()}{FilterImageVerticalProcessPixel()}}
+{\footnotesize\ttfamily template$<$Bp\+Im\+Data\+\_\+t T$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Filter\+Image\+Vertical\+Process\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const T $\ast$}]{image\+\_\+to\+\_\+filter,  }\item[{float $\ast$}]{filtered\+\_\+image,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images,  }\item[{const float $\ast$}]{image\+\_\+filter,  }\item[{unsigned int}]{size\+\_\+filter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture uint\+\_\+image\+\_\+pixels\+Texture the output filtered image is returned as an array of floats 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+val} & \\
+\hline
+{\em y\+\_\+val} & \\
+\hline
+{\em image\+\_\+to\+\_\+filter} & \\
+\hline
+{\em filtered\+\_\+image} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+{\em image\+\_\+filter} & \\
+\hline
+{\em size\+\_\+filter} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ARCHITECTURE\+\_\+\+ADDITION 
+\end{DoxyReturn}
+
+
+Definition at line 67 of file Shared\+Smooth\+Image\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a527bc69220d92b30d3f74e8aaf182824_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_ac627a17eca812709ebdcde3f44013238}\label{namespacebeliefprop_ac627a17eca812709ebdcde3f44013238}} 
+\index{beliefprop@{beliefprop}!InitializeBottomLevelDataPixel@{InitializeBottomLevelDataPixel}}
+\index{InitializeBottomLevelDataPixel@{InitializeBottomLevelDataPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{InitializeBottomLevelDataPixel()}{InitializeBottomLevelDataPixel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Initialize\+Bottom\+Level\+Data\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const float $\ast$}]{image\+\_\+1\+\_\+pixels\+\_\+device,  }\item[{const float $\ast$}]{image\+\_\+2\+\_\+pixels\+\_\+device,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1,  }\item[{float}]{lambda\+\_\+bp,  }\item[{float}]{data\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 402 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_ac627a17eca812709ebdcde3f44013238_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}\label{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}} 
+\index{beliefprop@{beliefprop}!InitializeCurrentLevelDataPixel@{InitializeCurrentLevelDataPixel}}
+\index{InitializeCurrentLevelDataPixel@{InitializeCurrentLevelDataPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{InitializeCurrentLevelDataPixel()}{InitializeCurrentLevelDataPixel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 516 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18}\label{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18}} 
+\index{beliefprop@{beliefprop}!InitializeMessageValsToDefaultKernelPixel@{InitializeMessageValsToDefaultKernelPixel}}
+\index{InitializeMessageValsToDefaultKernelPixel@{InitializeMessageValsToDefaultKernelPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{InitializeMessageValsToDefaultKernelPixel()}{InitializeMessageValsToDefaultKernelPixel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Initialize\+Message\+Vals\+To\+Default\+Kernel\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+in\+\_\+checkerboard,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 586 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}\label{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}} 
+\index{beliefprop@{beliefprop}!MsgStereo@{MsgStereo}}
+\index{MsgStereo@{MsgStereo}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{MsgStereo()}{MsgStereo()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, beliefprop\+::\+Message\+Comp M$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Msg\+Stereo (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{prev\+\_\+u\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+d\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+l\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+r\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{data\+\_\+message\+\_\+array,  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{U $\ast$}]{dst\+\_\+processing,  }\item[{unsigned int}]{checkerboard\+\_\+adjustment,  }\item[{unsigned int}]{offset\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 319 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_ae3cc8d125413e32c293999d93666714a}\label{namespacebeliefprop_ae3cc8d125413e32c293999d93666714a}} 
+\index{beliefprop@{beliefprop}!MsgStereo@{MsgStereo}}
+\index{MsgStereo@{MsgStereo}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{MsgStereo()}{MsgStereo()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Msg\+Stereo (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+1,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+2,  }\item[{const U $\ast$}]{messages\+\_\+neighbor\+\_\+3,  }\item[{const U $\ast$}]{data\+\_\+costs,  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 175 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_ae3cc8d125413e32c293999d93666714a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a719026072592bb9a4c99be94655253ef}\label{namespacebeliefprop_a719026072592bb9a4c99be94655253ef}} 
+\index{beliefprop@{beliefprop}!MsgStereo@{MsgStereo}}
+\index{MsgStereo@{MsgStereo}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{MsgStereo()}{MsgStereo()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Msg\+Stereo (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U}]{messages\+\_\+neighbor\+\_\+1\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{messages\+\_\+neighbor\+\_\+2\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{messages\+\_\+neighbor\+\_\+3\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{data\+\_\+costs\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 117 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a719026072592bb9a4c99be94655253ef_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a5085344408155d487a5c63ad64236eab}\label{namespacebeliefprop_a5085344408155d487a5c63ad64236eab}} 
+\index{beliefprop@{beliefprop}!PrintDataAndMessageValsAtPointKernel@{PrintDataAndMessageValsAtPointKernel}}
+\index{PrintDataAndMessageValsAtPointKernel@{PrintDataAndMessageValsAtPointKernel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{PrintDataAndMessageValsAtPointKernel()}{PrintDataAndMessageValsAtPointKernel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Print\+Data\+And\+Message\+Vals\+At\+Point\+Kernel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1382 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a5085344408155d487a5c63ad64236eab_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a81aace5409ee7378733e21689955b681}\label{namespacebeliefprop_a81aace5409ee7378733e21689955b681}} 
+\index{beliefprop@{beliefprop}!PrintDataAndMessageValsToPointKernel@{PrintDataAndMessageValsToPointKernel}}
+\index{PrintDataAndMessageValsToPointKernel@{PrintDataAndMessageValsToPointKernel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{PrintDataAndMessageValsToPointKernel()}{PrintDataAndMessageValsToPointKernel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Print\+Data\+And\+Message\+Vals\+To\+Point\+Kernel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals = {\ttfamily 0} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1448 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a81aace5409ee7378733e21689955b681_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}\label{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}} 
+\index{beliefprop@{beliefprop}!RetrieveIndexInDataAndMessage@{RetrieveIndexInDataAndMessage}}
+\index{RetrieveIndexInDataAndMessage@{RetrieveIndexInDataAndMessage}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RetrieveIndexInDataAndMessage()}{RetrieveIndexInDataAndMessage()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} unsigned int beliefprop\+::\+Retrieve\+Index\+In\+Data\+And\+Message (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height,  }\item[{unsigned int}]{current\+\_\+disparity,  }\item[{unsigned int}]{total\+\_\+num\+\_\+disp\+\_\+vals,  }\item[{unsigned int}]{offset\+\_\+data = {\ttfamily 0u} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 20 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}\label{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}} 
+\index{beliefprop@{beliefprop}!RetrieveOutputDisparityPixel@{RetrieveOutputDisparityPixel}}
+\index{RetrieveOutputDisparityPixel@{RetrieveOutputDisparityPixel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparityPixel()}{RetrieveOutputDisparityPixel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 1143 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_ac36b5b646e6c8bc15b731b2ec71325eb}\label{namespacebeliefprop_ac36b5b646e6c8bc15b731b2ec71325eb}} 
+\index{beliefprop@{beliefprop}!RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}}
+\index{RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUpdateMsgVals()}{RunBPIterationUpdateMsgVals()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Run\+BPIteration\+Update\+Msg\+Vals (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{prev\+\_\+u\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+d\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+l\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+r\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{data\+\_\+message\+\_\+array,  }\item[{T $\ast$}]{current\+\_\+u\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+d\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+l\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+r\+\_\+message,  }\item[{const U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{U $\ast$}]{dst\+\_\+processing,  }\item[{unsigned int}]{checkerboard\+\_\+adjustment,  }\item[{unsigned int}]{offset\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 739 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a2ffa558874a17f1d28f6587e89be8eec}\label{namespacebeliefprop_a2ffa558874a17f1d28f6587e89be8eec}} 
+\index{beliefprop@{beliefprop}!RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}}
+\index{RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUpdateMsgVals()}{RunBPIterationUpdateMsgVals()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Run\+BPIteration\+Update\+Msg\+Vals (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U $\ast$}]{prev\+\_\+u\+\_\+message,  }\item[{const U $\ast$}]{prev\+\_\+d\+\_\+message,  }\item[{const U $\ast$}]{prev\+\_\+l\+\_\+message,  }\item[{const U $\ast$}]{prev\+\_\+r\+\_\+message,  }\item[{const U $\ast$}]{data\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+u\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+d\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+l\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+r\+\_\+message,  }\item[{const U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 712 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a01e4c1fb7d6c8647a0050e9e5c3213bb}\label{namespacebeliefprop_a01e4c1fb7d6c8647a0050e9e5c3213bb}} 
+\index{beliefprop@{beliefprop}!RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}}
+\index{RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUpdateMsgVals()}{RunBPIterationUpdateMsgVals()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Run\+BPIteration\+Update\+Msg\+Vals (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const U}]{prev\+\_\+u\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{prev\+\_\+d\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{prev\+\_\+l\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{prev\+\_\+r\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{const U}]{data\+\_\+message\mbox{[}\+DISP\+\_\+\+VALS\mbox{]},  }\item[{T $\ast$}]{current\+\_\+u\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+d\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+l\+\_\+message,  }\item[{T $\ast$}]{current\+\_\+r\+\_\+message,  }\item[{const U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 685 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}\label{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}} 
+\index{beliefprop@{beliefprop}!RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}}
+\index{RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesKernel()}{RunBPIterationUsingCheckerboardUpdatesKernel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 776 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a7b7d67f60b6b77a21c95aa186d3d15c0}\label{namespacebeliefprop_a7b7d67f60b6b77a21c95aa186d3d15c0}} 
+\index{beliefprop@{beliefprop}!RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}}
+\index{RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdatesKernel()}{RunBPIterationUsingCheckerboardUpdatesKernel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, unsigned int DISP\+\_\+\+VALS$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{void $\ast$}]{dst\+\_\+processing }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 944 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}\label{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}} 
+\index{beliefprop@{beliefprop}!RunSettings@{RunSettings}}
+\index{RunSettings@{RunSettings}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{RunSettings()}{RunSettings()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_run_data}{Run\+Data}} beliefprop\+::\+Run\+Settings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for output. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Definition at line 46 of file Bp\+Run\+Settings.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a449917ceaa07c2271c379759b2c08400}\label{namespacebeliefprop_a449917ceaa07c2271c379759b2c08400}} 
+\index{beliefprop@{beliefprop}!SetInitDstProcessing@{SetInitDstProcessing}}
+\index{SetInitDstProcessing@{SetInitDstProcessing}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{SetInitDstProcessing()}{SetInitDstProcessing()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U, beliefprop\+::\+Message\+Comp M$>$ \\
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void beliefprop\+::\+Set\+Init\+Dst\+Processing (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const T $\ast$}]{prev\+\_\+u\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+d\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+l\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{prev\+\_\+r\+\_\+message\+\_\+array,  }\item[{const T $\ast$}]{data\+\_\+message\+\_\+array,  }\item[{T $\ast$}]{dst\+\_\+message\+\_\+array,  }\item[{U}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{U $\ast$}]{dst\+\_\+processing,  }\item[{unsigned int}]{checkerboard\+\_\+adjustment,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{unsigned int}]{current\+\_\+disparity,  }\item[{unsigned int}]{proc\+\_\+array\+\_\+idx }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 235 of file Shared\+Bp\+Processing\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a449917ceaa07c2271c379759b2c08400_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}\label{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}} 
+\index{beliefprop@{beliefprop}!kAccelerationDescHeader@{kAccelerationDescHeader}}
+\index{kAccelerationDescHeader@{kAccelerationDescHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kAccelerationDescHeader}{kAccelerationDescHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Acceleration\+Desc\+Header \{\char`\"{}Acceleration\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 54 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}\label{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}} 
+\index{beliefprop@{beliefprop}!kAllocateFreeBpMemoryOutsideRuns@{kAllocateFreeBpMemoryOutsideRuns}}
+\index{kAllocateFreeBpMemoryOutsideRuns@{kAllocateFreeBpMemoryOutsideRuns}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kAllocateFreeBpMemoryOutsideRuns}{kAllocateFreeBpMemoryOutsideRuns}}
+{\footnotesize\ttfamily constexpr bool beliefprop\+::k\+Allocate\+Free\+Bp\+Memory\+Outside\+Runs \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 35 of file Bp\+Run\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}\label{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}} 
+\index{beliefprop@{beliefprop}!kAvgRMSErrorHeader@{kAvgRMSErrorHeader}}
+\index{kAvgRMSErrorHeader@{kAvgRMSErrorHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kAvgRMSErrorHeader}{kAvgRMSErrorHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Avg\+RMSError\+Header \{\char`\"{}Average RMS error\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 18 of file Disparity\+Map\+Evaluation.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}\label{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}} 
+\index{beliefprop@{beliefprop}!kBlurImagesPDimsHeader@{kBlurImagesPDimsHeader}}
+\index{kBlurImagesPDimsHeader@{kBlurImagesPDimsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBlurImagesPDimsHeader}{kBlurImagesPDimsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Blur\+Images\+PDims\+Header \{\char`\"{}Blur Images Parallel Dimensions\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 23 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}\label{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}} 
+\index{beliefprop@{beliefprop}!kBpItersPDimsHeader@{kBpItersPDimsHeader}}
+\index{kBpItersPDimsHeader@{kBpItersPDimsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBpItersPDimsHeader}{kBpItersPDimsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Bp\+Iters\+PDims\+Header \{\char`\"{}BP Thread Parallel Dimensions\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 26 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ab3250ec5e02b035ac6f5290c04068521}\label{namespacebeliefprop_ab3250ec5e02b035ac6f5290c04068521}} 
+\index{beliefprop@{beliefprop}!kBpOptimizeCPUDesc@{kBpOptimizeCPUDesc}}
+\index{kBpOptimizeCPUDesc@{kBpOptimizeCPUDesc}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBpOptimizeCPUDesc}{kBpOptimizeCPUDesc}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Bp\+Optimize\+CPUDesc \{\char`\"{}Optimized CPU\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 22 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_abc3d515f5c6acdf84668ae8445a28dd5}\label{namespacebeliefprop_abc3d515f5c6acdf84668ae8445a28dd5}} 
+\index{beliefprop@{beliefprop}!kBpOptimizeCUDADesc@{kBpOptimizeCUDADesc}}
+\index{kBpOptimizeCUDADesc@{kBpOptimizeCUDADesc}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBpOptimizeCUDADesc}{kBpOptimizeCUDADesc}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Bp\+Optimize\+CUDADesc \{\char`\"{}CUDA\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 35 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a3bd976de25e1c840fa0cc97e6e721da0}\label{namespacebeliefprop_a3bd976de25e1c840fa0cc97e6e721da0}} 
+\index{beliefprop@{beliefprop}!kBpSettingsLambdaHeader@{kBpSettingsLambdaHeader}}
+\index{kBpSettingsLambdaHeader@{kBpSettingsLambdaHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBpSettingsLambdaHeader}{kBpSettingsLambdaHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Bp\+Settings\+Lambda\+Header \{\char`\"{}Lambda\+Bp\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 38 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}\label{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}} 
+\index{beliefprop@{beliefprop}!kBpSettingsSigmaHeader@{kBpSettingsSigmaHeader}}
+\index{kBpSettingsSigmaHeader@{kBpSettingsSigmaHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBpSettingsSigmaHeader}{kBpSettingsSigmaHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Bp\+Settings\+Sigma\+Header \{\char`\"{}Sigma\+Bp\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 39 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}\label{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}} 
+\index{beliefprop@{beliefprop}!kCompOutputDispPDimsHeader@{kCompOutputDispPDimsHeader}}
+\index{kCompOutputDispPDimsHeader@{kCompOutputDispPDimsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kCompOutputDispPDimsHeader}{kCompOutputDispPDimsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Comp\+Output\+Disp\+PDims\+Header \{\char`\"{}Get Output Disparity Parallel Dimensions\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 28 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}\label{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}} 
+\index{beliefprop@{beliefprop}!kCopyToNextLevelPDimsHeader@{kCopyToNextLevelPDimsHeader}}
+\index{kCopyToNextLevelPDimsHeader@{kCopyToNextLevelPDimsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kCopyToNextLevelPDimsHeader}{kCopyToNextLevelPDimsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Copy\+To\+Next\+Level\+PDims\+Header \{\char`\"{}Copy Thread Parallel Dimensions\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 27 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a7525a88a7c61114d68d619797c28b82c}\label{namespacebeliefprop_a7525a88a7c61114d68d619797c28b82c}} 
+\index{beliefprop@{beliefprop}!kCPUVectorizationHeader@{kCPUVectorizationHeader}}
+\index{kCPUVectorizationHeader@{kCPUVectorizationHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kCPUVectorizationHeader}{kCPUVectorizationHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+CPUVectorization\+Header \{\char`\"{}Vectorization\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 24 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a6a6afcc9f7fdd032580bb44c0733124b}\label{namespacebeliefprop_a6a6afcc9f7fdd032580bb44c0733124b}} 
+\index{beliefprop@{beliefprop}!kCUDARuntimeHeader@{kCUDARuntimeHeader}}
+\index{kCUDARuntimeHeader@{kCUDARuntimeHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kCUDARuntimeHeader}{kCUDARuntimeHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+CUDARuntime\+Header \{\char`\"{}Cuda Runtime Version\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 37 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_aa3e2f34ee6b0852564617fdd4a22079c}\label{namespacebeliefprop_aa3e2f34ee6b0852564617fdd4a22079c}} 
+\index{beliefprop@{beliefprop}!kCUDAVersionHeader@{kCUDAVersionHeader}}
+\index{kCUDAVersionHeader@{kCUDAVersionHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kCUDAVersionHeader}{kCUDAVersionHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+CUDAVersion\+Header \{\char`\"{}Cuda version\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 36 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a35a079b98adae166d0f527cf840a8df5}\label{namespacebeliefprop_a35a079b98adae166d0f527cf840a8df5}} 
+\index{beliefprop@{beliefprop}!kDataCostCapHeader@{kDataCostCapHeader}}
+\index{kDataCostCapHeader@{kDataCostCapHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDataCostCapHeader}{kDataCostCapHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Data\+Cost\+Cap\+Header \{\char`\"{}Data\+KBp\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 37 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}\label{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}} 
+\index{beliefprop@{beliefprop}!kDataCostsPDimsHeader@{kDataCostsPDimsHeader}}
+\index{kDataCostsPDimsHeader@{kDataCostsPDimsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDataCostsPDimsHeader}{kDataCostsPDimsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Data\+Costs\+PDims\+Header \{\char`\"{}Data Costs Parallel Dimensions\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 25 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}\label{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}} 
+\index{beliefprop@{beliefprop}!kDefaultDataKBp@{kDefaultDataKBp}}
+\index{kDefaultDataKBp@{kDefaultDataKBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDefaultDataKBp}{kDefaultDataKBp}}
+{\footnotesize\ttfamily constexpr float beliefprop\+::k\+Default\+Data\+KBp \{15.\+0\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 55 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}\label{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}} 
+\index{beliefprop@{beliefprop}!kDefaultItersBp@{kDefaultItersBp}}
+\index{kDefaultItersBp@{kDefaultItersBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDefaultItersBp}{kDefaultItersBp}}
+{\footnotesize\ttfamily constexpr unsigned int beliefprop\+::k\+Default\+Iters\+Bp \{7\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 46 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}\label{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}} 
+\index{beliefprop@{beliefprop}!kDefaultLambdaBp@{kDefaultLambdaBp}}
+\index{kDefaultLambdaBp@{kDefaultLambdaBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDefaultLambdaBp}{kDefaultLambdaBp}}
+{\footnotesize\ttfamily constexpr float beliefprop\+::k\+Default\+Lambda\+Bp \{0.\+1\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 52 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}\label{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}} 
+\index{beliefprop@{beliefprop}!kDefaultLevelsBp@{kDefaultLevelsBp}}
+\index{kDefaultLevelsBp@{kDefaultLevelsBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDefaultLevelsBp}{kDefaultLevelsBp}}
+{\footnotesize\ttfamily constexpr unsigned int beliefprop\+::k\+Default\+Levels\+Bp \{5\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 43 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}\label{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}} 
+\index{beliefprop@{beliefprop}!kDefaultSigmaBp@{kDefaultSigmaBp}}
+\index{kDefaultSigmaBp@{kDefaultSigmaBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDefaultSigmaBp}{kDefaultSigmaBp}}
+{\footnotesize\ttfamily constexpr float beliefprop\+::k\+Default\+Sigma\+Bp \{0.\+0\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 49 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a7db5ca97e804117029e4986b2d46dbf9}\label{namespacebeliefprop_a7db5ca97e804117029e4986b2d46dbf9}} 
+\index{beliefprop@{beliefprop}!kDiscCostCapHeader@{kDiscCostCapHeader}}
+\index{kDiscCostCapHeader@{kDiscCostCapHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDiscCostCapHeader}{kDiscCostCapHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Disc\+Cost\+Cap\+Header \{\char`\"{}DISC\+\_\+\+K\+\_\+\+BP\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 36 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}\label{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}} 
+\index{beliefprop@{beliefprop}!kDisparityDiffThresholds@{kDisparityDiffThresholds}}
+\index{kDisparityDiffThresholds@{kDisparityDiffThresholds}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kDisparityDiffThresholds}{kDisparityDiffThresholds}}
+{\footnotesize\ttfamily constexpr std\+::array$<$float, 4$>$ beliefprop\+::k\+Disparity\+Diff\+Thresholds\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    0.001, 2.01, 5.01, 10.01\}}
+
+\end{DoxyCode}
+
+
+Difference thresholds in output disparity for a computed disparity at a pixel to be considered a \char`\"{}bad pixel\char`\"{} when compared to the ground truth in the evaluation. 
+
+
+
+Definition at line 20 of file Disparity\+Map\+Evaluation\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}\label{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}} 
+\index{beliefprop@{beliefprop}!kEvalDataSubsets@{kEvalDataSubsets}}
+\index{kEvalDataSubsets@{kEvalDataSubsets}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kEvalDataSubsets}{kEvalDataSubsets}}
+{\footnotesize\ttfamily const std\+::vector$<$std\+::pair$<$std\+::string, std\+::vector$<$\mbox{\hyperlink{class_input_signature}{Input\+Signature}}$>$ $>$ $>$ beliefprop\+::k\+Eval\+Data\+Subsets}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \{\textcolor{stringliteral}{"{}smallest 3 stereo sets"{}}, }
+\DoxyCodeLine{      \{\mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, 0, \{\}), \mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, 1, \{\}), \mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, 2, \{\})\}\},}
+\DoxyCodeLine{    \{\textcolor{stringliteral}{"{}largest 3 stereo sets"{}},}
+\DoxyCodeLine{      \{\mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, 4, \{\}), \mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, 5, \{\}), \mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, 6, \{\})\}\},}
+\DoxyCodeLine{    \{\textcolor{stringliteral}{"{}runs w/ disparity count templated"{}},}
+\DoxyCodeLine{      \{\mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, \{\}, \textcolor{keyword}{true})\}\},}
+\DoxyCodeLine{    \{\textcolor{stringliteral}{"{}runs w/ disparity count not templated"{}},}
+\DoxyCodeLine{      \{\mbox{\hyperlink{class_input_signature}{InputSignature}}(\{\}, \{\}, \textcolor{keyword}{false})\}\}\}}
+
+\end{DoxyCode}
+
+
+Define subsets for evaluating run results on specified inputs the first three stereo sets are labeled as \char`\"{}smallest 3 stereo sets\char`\"{} the last three stereo sets (excluding \char`\"{}cones\+Full\+Sized\char`\"{}) are labeled as \char`\"{}largest 3 stereo sets\char`\"{}. 
+
+
+
+Definition at line 78 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}\label{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}} 
+\index{beliefprop@{beliefprop}!kImageHeightHeader@{kImageHeightHeader}}
+\index{kImageHeightHeader@{kImageHeightHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kImageHeightHeader}{kImageHeightHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Image\+Height\+Header \{\char`\"{}Image Height\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 42 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a8778b3e5a5eacd6b90b010227e13f0b5}\label{namespacebeliefprop_a8778b3e5a5eacd6b90b010227e13f0b5}} 
+\index{beliefprop@{beliefprop}!kImageWidthHeader@{kImageWidthHeader}}
+\index{kImageWidthHeader@{kImageWidthHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kImageWidthHeader}{kImageWidthHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Image\+Width\+Header \{\char`\"{}Image Width\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 41 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a83752776983b00dc2b06270e4639ede7}\label{namespacebeliefprop_a83752776983b00dc2b06270e4639ede7}} 
+\index{beliefprop@{beliefprop}!kIndexingOptLevelHeader@{kIndexingOptLevelHeader}}
+\index{kIndexingOptLevelHeader@{kIndexingOptLevelHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kIndexingOptLevelHeader}{kIndexingOptLevelHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Indexing\+Opt\+Level\+Header \{\char`\"{}Indexing Optimization Level\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 39 of file Bp\+Run\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}\label{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}} 
+\index{beliefprop@{beliefprop}!kInfBp@{kInfBp}}
+\index{kInfBp@{kInfBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kInfBp}{kInfBp}}
+{\footnotesize\ttfamily constexpr float beliefprop\+::k\+Inf\+Bp \{65504\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. 
+
+
+
+Definition at line 21 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}\label{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}} 
+\index{beliefprop@{beliefprop}!kInitMValsPDimsHeader@{kInitMValsPDimsHeader}}
+\index{kInitMValsPDimsHeader@{kInitMValsPDimsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kInitMValsPDimsHeader}{kInitMValsPDimsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Init\+MVals\+PDims\+Header \{\char`\"{}Init Message Values Parallel Dimensions\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 24 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_af2ed8e4173e3700fa5a358b3d689b995}\label{namespacebeliefprop_af2ed8e4173e3700fa5a358b3d689b995}} 
+\index{beliefprop@{beliefprop}!kLevelDCostBpTimeCTimeNames@{kLevelDCostBpTimeCTimeNames}}
+\index{kLevelDCostBpTimeCTimeNames@{kLevelDCostBpTimeCTimeNames}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kLevelDCostBpTimeCTimeNames}{kLevelDCostBpTimeCTimeNames}}
+{\footnotesize\ttfamily constexpr std\+::array$<$std\+::array$<$std\+::string\+\_\+view, 3$>$, 10$>$ beliefprop\+::k\+Level\+DCost\+Bp\+Time\+CTime\+Names\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 0 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 0 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 0 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 1 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 1 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 1 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 2 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 2 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 2 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 3 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 3 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 3 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 4 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 4 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 4 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 5 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 5 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 5 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 6 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 6 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 6 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 7 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 7 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 7 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 8 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 8 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 8 Copy Runtime"{}}\},}
+\DoxyCodeLine{  std::array<std::string\_view, 3>\{\textcolor{stringliteral}{"{}Level 9 Data Costs"{}}, \textcolor{stringliteral}{"{}Level 9 BP Runtime"{}}, \textcolor{stringliteral}{"{}Level 9 Copy Runtime"{}}\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Definition at line 17 of file Detailed\+Timing\+Bp\+Consts.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a967ce853e69a6075f1fa1f572efcc999}\label{namespacebeliefprop_a967ce853e69a6075f1fa1f572efcc999}} 
+\index{beliefprop@{beliefprop}!kLevelText@{kLevelText}}
+\index{kLevelText@{kLevelText}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kLevelText}{kLevelText}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Level\+Text \{\char`\"{}Level\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 29 of file Bp\+Parallel\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}\label{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}} 
+\index{beliefprop@{beliefprop}!kMaxDiffCap@{kMaxDiffCap}}
+\index{kMaxDiffCap@{kMaxDiffCap}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kMaxDiffCap}{kMaxDiffCap}}
+{\footnotesize\ttfamily constexpr float beliefprop\+::k\+Max\+Diff\+Cap\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{kDisparityDiffThresholds}}[std::size(\mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{kDisparityDiffThresholds}}) -\/ 1]\}}
+
+\end{DoxyCode}
+
+
+Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers in the average difference across all pixels. 
+
+
+
+Definition at line 28 of file Disparity\+Map\+Evaluation\+Params.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a5afcf811c27dd005009bc134e9a7c4bb}\label{namespacebeliefprop_a5afcf811c27dd005009bc134e9a7c4bb}} 
+\index{beliefprop@{beliefprop}!kMemOptLevelHeader@{kMemOptLevelHeader}}
+\index{kMemOptLevelHeader@{kMemOptLevelHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kMemOptLevelHeader}{kMemOptLevelHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Mem\+Opt\+Level\+Header \{\char`\"{}Memory Optimization Level\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 38 of file Bp\+Run\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}\label{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}} 
+\index{beliefprop@{beliefprop}!kNumBpItersHeader@{kNumBpItersHeader}}
+\index{kNumBpItersHeader@{kNumBpItersHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumBpItersHeader}{kNumBpItersHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Num\+Bp\+Iters\+Header \{\char`\"{}Num BP Iterations\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 35 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a6c32b79a4a0cd6395898595b62e7e022}\label{namespacebeliefprop_a6c32b79a4a0cd6395898595b62e7e022}} 
+\index{beliefprop@{beliefprop}!kNumBpLevelsHeader@{kNumBpLevelsHeader}}
+\index{kNumBpLevelsHeader@{kNumBpLevelsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumBpLevelsHeader}{kNumBpLevelsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Num\+Bp\+Levels\+Header \{\char`\"{}Num BP Levels\char`\"{},\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 34 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a4f9aba3d1636709e30a6781a1aafe151}\label{namespacebeliefprop_a4f9aba3d1636709e30a6781a1aafe151}} 
+\index{beliefprop@{beliefprop}!kNumBpStereoRuns@{kNumBpStereoRuns}}
+\index{kNumBpStereoRuns@{kNumBpStereoRuns}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumBpStereoRuns}{kNumBpStereoRuns}}
+{\footnotesize\ttfamily constexpr unsigned int beliefprop\+::k\+Num\+Bp\+Stereo\+Runs = 15\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 23 of file Bp\+Run\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}\label{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}} 
+\index{beliefprop@{beliefprop}!kNumCheckerboardParts@{kNumCheckerboardParts}}
+\index{kNumCheckerboardParts@{kNumCheckerboardParts}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumCheckerboardParts}{kNumCheckerboardParts}}
+{\footnotesize\ttfamily constexpr unsigned int beliefprop\+::k\+Num\+Checkerboard\+Parts \{2\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Number of checkerboard parts for processing. 
+
+
+
+Definition at line 36 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}\label{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}} 
+\index{beliefprop@{beliefprop}!kNumDispValsHeader@{kNumDispValsHeader}}
+\index{kNumDispValsHeader@{kNumDispValsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumDispValsHeader}{kNumDispValsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Num\+Disp\+Vals\+Header \{\char`\"{}Num Possible Disparity Values\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 33 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a6651cc44f605190082858f8c391e417c}\label{namespacebeliefprop_a6651cc44f605190082858f8c391e417c}} 
+\index{beliefprop@{beliefprop}!kNumKernels@{kNumKernels}}
+\index{kNumKernels@{kNumKernels}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumKernels}{kNumKernels}}
+{\footnotesize\ttfamily constexpr unsigned int beliefprop\+::k\+Num\+Kernels \{6\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Enum corresponding to each kernel in belief propagation that can be run in parallel. 
+
+
+
+Definition at line 67 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}\label{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}} 
+\index{beliefprop@{beliefprop}!kNumMessageArrays@{kNumMessageArrays}}
+\index{kNumMessageArrays@{kNumMessageArrays}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumMessageArrays}{kNumMessageArrays}}
+{\footnotesize\ttfamily constexpr unsigned int beliefprop\+::k\+Num\+Message\+Arrays \{4\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Number of message arrays in each checkerboard part. 
+
+
+
+Definition at line 42 of file Bp\+Consts\+Enums\+Aliases.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a1d0ee3d94819fc462712ab9a45d0808a}\label{namespacebeliefprop_a1d0ee3d94819fc462712ab9a45d0808a}} 
+\index{beliefprop@{beliefprop}!kNumParallelCPUThreadsHeader@{kNumParallelCPUThreadsHeader}}
+\index{kNumParallelCPUThreadsHeader@{kNumParallelCPUThreadsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kNumParallelCPUThreadsHeader}{kNumParallelCPUThreadsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Num\+Parallel\+CPUThreads\+Header \{\char`\"{}Number of parallel CPU threads in run\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 23 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}\label{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}} 
+\index{beliefprop@{beliefprop}!kOptimizedIndexingSetting@{kOptimizedIndexingSetting}}
+\index{kOptimizedIndexingSetting@{kOptimizedIndexingSetting}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kOptimizedIndexingSetting}{kOptimizedIndexingSetting}}
+{\footnotesize\ttfamily constexpr bool beliefprop\+::k\+Optimized\+Indexing\+Setting \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 34 of file Bp\+Run\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a1fac75fef6dd56eb148c38941ce78290}\label{namespacebeliefprop_a1fac75fef6dd56eb148c38941ce78290}} 
+\index{beliefprop@{beliefprop}!kPGMExt@{kPGMExt}}
+\index{kPGMExt@{kPGMExt}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kPGMExt}{kPGMExt}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+PGMExt \{\char`\"{}pgm\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 26 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_adb49c59888b7948f60ef72e5c9b45085}\label{namespacebeliefprop_adb49c59888b7948f60ef72e5c9b45085}} 
+\index{beliefprop@{beliefprop}!kPPMExt@{kPPMExt}}
+\index{kPPMExt@{kPPMExt}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kPPMExt}{kPPMExt}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+PPMExt \{\char`\"{}ppm\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 27 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a0fe14039eac011f72a659873a7ef6e09}\label{namespacebeliefprop_a0fe14039eac011f72a659873a7ef6e09}} 
+\index{beliefprop@{beliefprop}!kStereoSetHeader@{kStereoSetHeader}}
+\index{kStereoSetHeader@{kStereoSetHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kStereoSetHeader}{kStereoSetHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Stereo\+Set\+Header \{\char`\"{}Stereo Set\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 43 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ade9084f410319841c34418be4a556df4}\label{namespacebeliefprop_ade9084f410319841c34418be4a556df4}} 
+\index{beliefprop@{beliefprop}!kStereoSetsToProcess@{kStereoSetsToProcess}}
+\index{kStereoSetsToProcess@{kStereoSetsToProcess}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kStereoSetsToProcess}{kStereoSetsToProcess}}
+{\footnotesize\ttfamily constexpr std\+::array$<$\mbox{\hyperlink{structbeliefprop_1_1_bp_stereo_set}{Bp\+Stereo\+Set}}, 8$>$ beliefprop\+::k\+Stereo\+Sets\+To\+Process\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}tsukubaSetHalfSize"{}}, 8, 32\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}tsukubaSet"{}}, 16, 16\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}venus"{}}, 21, 8\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}barn1"{}}, 32, 8\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}conesQuarterSize"{}}, 64, 4\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}conesHalfSize"{}}, 128, 2\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}conesFullSizeCropped"{}}, 256, 1\},}
+\DoxyCodeLine{    BpStereoSet\{\textcolor{stringliteral}{"{}conesFullSize"{}}, 256, 1\}}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+Declare stereo sets to process with name, num disparity values, and scale factor currently cones\+Full\+Size is not used. 
+
+
+
+Definition at line 61 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a790873cf6727591d5674d7fafa90c497}\label{namespacebeliefprop_a790873cf6727591d5674d7fafa90c497}} 
+\index{beliefprop@{beliefprop}!kTimingNames@{kTimingNames}}
+\index{kTimingNames@{kTimingNames}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kTimingNames}{kTimingNames}}
+{\footnotesize\ttfamily const std\+::unordered\+\_\+map$<$\mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{Runtime\+\_\+\+Type}}, std\+::string\+\_\+view$>$ beliefprop\+::k\+Timing\+Names}
+
+
+
+Definition at line 38 of file Detailed\+Timing\+Bp\+Consts.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}\label{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}} 
+\index{beliefprop@{beliefprop}!kUseOptGPUMemManagement@{kUseOptGPUMemManagement}}
+\index{kUseOptGPUMemManagement@{kUseOptGPUMemManagement}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kUseOptGPUMemManagement}{kUseOptGPUMemManagement}}
+{\footnotesize\ttfamily constexpr bool beliefprop\+::k\+Use\+Opt\+GPUMem\+Management \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 33 of file Bp\+Run\+Settings.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}\label{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}} 
+\index{beliefprop@{beliefprop}!kUseWeightedRGBToGrayscaleConversion@{kUseWeightedRGBToGrayscaleConversion}}
+\index{kUseWeightedRGBToGrayscaleConversion@{kUseWeightedRGBToGrayscaleConversion}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kUseWeightedRGBToGrayscaleConversion}{kUseWeightedRGBToGrayscaleConversion}}
+{\footnotesize\ttfamily constexpr bool beliefprop\+::k\+Use\+Weighted\+RGBTo\+Grayscale\+Conversion \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 25 of file Bp\+Image.\+h.
+

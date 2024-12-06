@@ -1,0 +1,4 @@
+<map id="MemoryManagementCUDA::AllocateMemoryOnDevice" name="MemoryManagementCUDA::AllocateMemoryOnDevice">
+<area shape="rect" id="node1" title="Allocate specified amount of data of type T on CUDA device." alt="" coords="303,5,503,47"/>
+<area shape="rect" id="node2" href="$class_memory_management_c_u_d_a.html#ad2509b638b9e0c99258f678b92391c7f" title="Allocate aligned memory on CUDA device (same as default allocating of memory for CUDA)" alt="" coords="5,5,255,47"/>
+</map>

@@ -1,0 +1,414 @@
+\hypertarget{class_run_data}{}\doxysection{Run\+Data Class Reference}
+\label{class_run_data}\index{RunData@{RunData}}
+
+
+Class to store headers with data corresponding to current program run and evaluation.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Data.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_run_data_ae2642121388bb8f32b95eeeb498c7401}{Add\+Data\+WHeader}} (const std\+::string \&header, const std\+::string \&data)
+\begin{DoxyCompactList}\small\item\em Add string data with header describing added data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_run_data_a895a86194e41ce3ff8ce2212405eb233}{Add\+Data\+WHeader}} (const std\+::string \&header, const char $\ast$data)
+\begin{DoxyCompactList}\small\item\em Add const char$\ast$ data with header describing added data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_run_data_acad41433dc602ca28d38f578fe93d67c}{Add\+Data\+WHeader}} (const std\+::string \&header, double data)
+\begin{DoxyCompactList}\small\item\em Add double data with header describing added data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_run_data_a55f5229496d938165891a33bea3a1bda}{Add\+Data\+WHeader}} (const std\+::string \&header, bool data)
+\begin{DoxyCompactList}\small\item\em Add boolean data with header describing added data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_run_data_a4b8772e460a7cc3b4dd0ebc3569a6832}{Add\+Data\+WHeader}} (const std\+::string \&header, unsigned int data)
+\begin{DoxyCompactList}\small\item\em Add unsigned int data with header describing added data. \end{DoxyCompactList}\item 
+const std\+::vector$<$ std\+::string $>$ \& \mbox{\hyperlink{class_run_data_a4c749ab4c1dd6fd5af50b40591094efe}{Headers\+In\+Order}} () const
+\begin{DoxyCompactList}\small\item\em Return data headers in order. \end{DoxyCompactList}\item 
+const std\+::map$<$ std\+::string, std\+::variant$<$ unsigned int, double, bool, std\+::string $>$ $>$ \& \mbox{\hyperlink{class_run_data_a4725943bb65e991fe7ef3884d36eaa82}{Get\+All\+Data}} () const
+\begin{DoxyCompactList}\small\item\em Return data mapped to corresponding headers. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_run_data_abe8eac347c5ef31f0ad5aa75c112945d}{Is\+Data}} (const std\+::string\+\_\+view header) const
+\begin{DoxyCompactList}\small\item\em Return whether or not there is data corresponding to a specific header. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_run_data_addf651aed946231dfc30634e42b3050c}{Get\+Data\+As\+Str}} (const std\+::string\+\_\+view header) const
+\begin{DoxyCompactList}\small\item\em Get data corresponding to header as a string Returns data as string regardless of underlying data type. \end{DoxyCompactList}\item 
+std\+::optional$<$ double $>$ \mbox{\hyperlink{class_run_data_af19b921e7fc7f0d30f78a3a4bf813197}{Get\+Data\+As\+Double}} (const std\+::string\+\_\+view header) const
+\begin{DoxyCompactList}\small\item\em Get data corresponding to header as double Return null if data corresponds to a different data type. \end{DoxyCompactList}\item 
+std\+::optional$<$ unsigned int $>$ \mbox{\hyperlink{class_run_data_ab33fa60e663c99677c58fea09a0e33a6}{Get\+Data\+As\+UInt}} (const std\+::string\+\_\+view header) const
+\begin{DoxyCompactList}\small\item\em Get data corresponding to header as unsigned int Return null if data corresponds to a different data type. \end{DoxyCompactList}\item 
+std\+::optional$<$ bool $>$ \mbox{\hyperlink{class_run_data_afbe69aa62856cc330c3848b712e32ea7}{Get\+Data\+As\+Bool}} (const std\+::string\+\_\+view header) const
+\begin{DoxyCompactList}\small\item\em Get data corresponding to header as boolean Return null if data corresponds to a different data type. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_run_data_a938dd181b583b343480ad9294efff7fb}{Append\+Data}} (const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&rundata)
+\begin{DoxyCompactList}\small\item\em Append current \mbox{\hyperlink{class_run_data}{Run\+Data}} with input \mbox{\hyperlink{class_run_data}{Run\+Data}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{class_run_data_a212600535e7ac6b017f5ff3d78f3bc37}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&run\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Overloaded $<$$<$ operator for output to stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to store headers with data corresponding to current program run and evaluation. 
+
+Definition at line 25 of file Run\+Data.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_data_a55f5229496d938165891a33bea3a1bda}\label{class_run_data_a55f5229496d938165891a33bea3a1bda}} 
+\index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
+\index{AddDataWHeader@{AddDataWHeader}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{AddDataWHeader()}{AddDataWHeader()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily void Run\+Data\+::\+Add\+Data\+WHeader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{header,  }\item[{bool}]{data }\end{DoxyParamCaption})}
+
+
+
+Add boolean data with header describing added data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 48 of file Run\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_run_data_a895a86194e41ce3ff8ce2212405eb233}\label{class_run_data_a895a86194e41ce3ff8ce2212405eb233}} 
+\index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
+\index{AddDataWHeader@{AddDataWHeader}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{AddDataWHeader()}{AddDataWHeader()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily void Run\+Data\+::\+Add\+Data\+WHeader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{header,  }\item[{const char $\ast$}]{data }\end{DoxyParamCaption})}
+
+
+
+Add const char$\ast$ data with header describing added data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 34 of file Run\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_run_data_ae2642121388bb8f32b95eeeb498c7401}\label{class_run_data_ae2642121388bb8f32b95eeeb498c7401}} 
+\index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
+\index{AddDataWHeader@{AddDataWHeader}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{AddDataWHeader()}{AddDataWHeader()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily void Run\+Data\+::\+Add\+Data\+WHeader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{header,  }\item[{const std\+::string \&}]{data }\end{DoxyParamCaption})}
+
+
+
+Add string data with header describing added data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 27 of file Run\+Data.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_ae2642121388bb8f32b95eeeb498c7401_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_acad41433dc602ca28d38f578fe93d67c}\label{class_run_data_acad41433dc602ca28d38f578fe93d67c}} 
+\index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
+\index{AddDataWHeader@{AddDataWHeader}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{AddDataWHeader()}{AddDataWHeader()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily void Run\+Data\+::\+Add\+Data\+WHeader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{header,  }\item[{double}]{data }\end{DoxyParamCaption})}
+
+
+
+Add double data with header describing added data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 41 of file Run\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_run_data_a4b8772e460a7cc3b4dd0ebc3569a6832}\label{class_run_data_a4b8772e460a7cc3b4dd0ebc3569a6832}} 
+\index{RunData@{RunData}!AddDataWHeader@{AddDataWHeader}}
+\index{AddDataWHeader@{AddDataWHeader}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{AddDataWHeader()}{AddDataWHeader()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily void Run\+Data\+::\+Add\+Data\+WHeader (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{header,  }\item[{unsigned int}]{data }\end{DoxyParamCaption})}
+
+
+
+Add unsigned int data with header describing added data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+{\em data} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 55 of file Run\+Data.\+cpp.
+
+\mbox{\Hypertarget{class_run_data_a938dd181b583b343480ad9294efff7fb}\label{class_run_data_a938dd181b583b343480ad9294efff7fb}} 
+\index{RunData@{RunData}!AppendData@{AppendData}}
+\index{AppendData@{AppendData}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{AppendData()}{AppendData()}}
+{\footnotesize\ttfamily void Run\+Data\+::\+Append\+Data (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&}]{rundata }\end{DoxyParamCaption})}
+
+
+
+Append current \mbox{\hyperlink{class_run_data}{Run\+Data}} with input \mbox{\hyperlink{class_run_data}{Run\+Data}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rundata} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 62 of file Run\+Data.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_a938dd181b583b343480ad9294efff7fb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_a938dd181b583b343480ad9294efff7fb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_a4725943bb65e991fe7ef3884d36eaa82}\label{class_run_data_a4725943bb65e991fe7ef3884d36eaa82}} 
+\index{RunData@{RunData}!GetAllData@{GetAllData}}
+\index{GetAllData@{GetAllData}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{GetAllData()}{GetAllData()}}
+{\footnotesize\ttfamily const std\+::map$<$std\+::string, std\+::variant$<$unsigned int, double, bool, std\+::string$>$ $>$\& Run\+Data\+::\+Get\+All\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return data mapped to corresponding headers. 
+
+\begin{DoxyReturn}{Returns}
+const std\+::map$<$std\+::string, std\+::variant$<$unsigned int, double, bool, std\+::string$>$$>$\& 
+\end{DoxyReturn}
+
+
+Definition at line 79 of file Run\+Data.\+h.
+
+\mbox{\Hypertarget{class_run_data_afbe69aa62856cc330c3848b712e32ea7}\label{class_run_data_afbe69aa62856cc330c3848b712e32ea7}} 
+\index{RunData@{RunData}!GetDataAsBool@{GetDataAsBool}}
+\index{GetDataAsBool@{GetDataAsBool}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{GetDataAsBool()}{GetDataAsBool()}}
+{\footnotesize\ttfamily std\+::optional$<$ bool $>$ Run\+Data\+::\+Get\+Data\+As\+Bool (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view}]{header }\end{DoxyParamCaption}) const}
+
+
+
+Get data corresponding to header as boolean Return null if data corresponds to a different data type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$double$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 122 of file Run\+Data.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_afbe69aa62856cc330c3848b712e32ea7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_af19b921e7fc7f0d30f78a3a4bf813197}\label{class_run_data_af19b921e7fc7f0d30f78a3a4bf813197}} 
+\index{RunData@{RunData}!GetDataAsDouble@{GetDataAsDouble}}
+\index{GetDataAsDouble@{GetDataAsDouble}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{GetDataAsDouble()}{GetDataAsDouble()}}
+{\footnotesize\ttfamily std\+::optional$<$ double $>$ Run\+Data\+::\+Get\+Data\+As\+Double (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view}]{header }\end{DoxyParamCaption}) const}
+
+
+
+Get data corresponding to header as double Return null if data corresponds to a different data type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$double$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 102 of file Run\+Data.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_af19b921e7fc7f0d30f78a3a4bf813197_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_addf651aed946231dfc30634e42b3050c}\label{class_run_data_addf651aed946231dfc30634e42b3050c}} 
+\index{RunData@{RunData}!GetDataAsStr@{GetDataAsStr}}
+\index{GetDataAsStr@{GetDataAsStr}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{GetDataAsStr()}{GetDataAsStr()}}
+{\footnotesize\ttfamily std\+::string Run\+Data\+::\+Get\+Data\+As\+Str (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view}]{header }\end{DoxyParamCaption}) const}
+
+
+
+Get data corresponding to header as a string Returns data as string regardless of underlying data type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string 
+\end{DoxyReturn}
+
+
+Definition at line 81 of file Run\+Data.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_addf651aed946231dfc30634e42b3050c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_ab33fa60e663c99677c58fea09a0e33a6}\label{class_run_data_ab33fa60e663c99677c58fea09a0e33a6}} 
+\index{RunData@{RunData}!GetDataAsUInt@{GetDataAsUInt}}
+\index{GetDataAsUInt@{GetDataAsUInt}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{GetDataAsUInt()}{GetDataAsUInt()}}
+{\footnotesize\ttfamily std\+::optional$<$ unsigned int $>$ Run\+Data\+::\+Get\+Data\+As\+UInt (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view}]{header }\end{DoxyParamCaption}) const}
+
+
+
+Get data corresponding to header as unsigned int Return null if data corresponds to a different data type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$double$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 112 of file Run\+Data.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_ab33fa60e663c99677c58fea09a0e33a6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_a4c749ab4c1dd6fd5af50b40591094efe}\label{class_run_data_a4c749ab4c1dd6fd5af50b40591094efe}} 
+\index{RunData@{RunData}!HeadersInOrder@{HeadersInOrder}}
+\index{HeadersInOrder@{HeadersInOrder}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{HeadersInOrder()}{HeadersInOrder()}}
+{\footnotesize\ttfamily const std\+::vector$<$std\+::string$>$\& Run\+Data\+::\+Headers\+In\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return data headers in order. 
+
+\begin{DoxyReturn}{Returns}
+const std\+::vector$<$std\+::string$>$\& 
+\end{DoxyReturn}
+
+
+Definition at line 72 of file Run\+Data.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_data_a4c749ab4c1dd6fd5af50b40591094efe_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_data_abe8eac347c5ef31f0ad5aa75c112945d}\label{class_run_data_abe8eac347c5ef31f0ad5aa75c112945d}} 
+\index{RunData@{RunData}!IsData@{IsData}}
+\index{IsData@{IsData}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{IsData()}{IsData()}}
+{\footnotesize\ttfamily bool Run\+Data\+::\+Is\+Data (\begin{DoxyParamCaption}\item[{const std\+::string\+\_\+view}]{header }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return whether or not there is data corresponding to a specific header. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em header} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 89 of file Run\+Data.\+h.
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{class_run_data_a212600535e7ac6b017f5ff3d78f3bc37}\label{class_run_data_a212600535e7ac6b017f5ff3d78f3bc37}} 
+\index{RunData@{RunData}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!RunData@{RunData}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&}]{run\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Overloaded $<$$<$ operator for output to stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & \\
+\hline
+{\em run\+\_\+data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::ostream\& 
+\end{DoxyReturn}
+
+
+Definition at line 170 of file Run\+Data.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Eval/\mbox{\hyperlink{_run_data_8h}{Run\+Data.\+h}}\item 
+src/\+Run\+Eval/\mbox{\hyperlink{_run_data_8cpp}{Run\+Data.\+cpp}}\end{DoxyCompactItemize}

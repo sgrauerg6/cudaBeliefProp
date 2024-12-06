@@ -1,0 +1,385 @@
+\hypertarget{class_bp_image}{}\doxysection{Bp\+Image$<$ T $>$ Class Template Reference}
+\label{class_bp_image}\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+
+
+Class to define images that are used in bp processing.  
+
+
+
+
+{\ttfamily \#include $<$Bp\+Image.\+h$>$}
+
+
+
+Inheritance diagram for Bp\+Image$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{class_bp_image__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_bp_image_ac34d4baa79f159ce51561e2216647a07}{Bp\+Image}} ()
+\item 
+\mbox{\hyperlink{class_bp_image_a29f2a9230a53674f1bf74047e38208a7}{Bp\+Image}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height)
+\item 
+\mbox{\hyperlink{class_bp_image_ad83223df9637eee4938672694579af74}{Bp\+Image}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height, const T $\ast$input\+\_\+pixel\+\_\+vals)
+\item 
+\mbox{\hyperlink{class_bp_image_a39baa8bc55abdf3d071ad9d80edddfe6}{Bp\+Image}} (const std\+::string \&file\+\_\+name)
+\item 
+const std\+::unique\+\_\+ptr$<$ T\mbox{[}$\,$\mbox{]}$>$ \& \mbox{\hyperlink{class_bp_image_a5c7d88f3b193a7c33e73d676c80561a7}{Unique\+Ptr\+To\+Pixel\+Data}} () const
+\item 
+T $\ast$ \mbox{\hyperlink{class_bp_image_ae7808967582f083e9351d49bd810aec8}{Pointer\+To\+Pixels\+Start}} () const
+\item 
+T \mbox{\hyperlink{class_bp_image_a7daeb3b9b6338627c9c6d625042fdeed}{Pixel\+At\+Point}} (const std\+::array$<$ unsigned int, 2 $>$ \&point\+\_\+xy) const
+\item 
+T \mbox{\hyperlink{class_bp_image_a59d3794c41b91043b79c04567776a440}{Pixel\+At\+Point}} (unsigned int i) const
+\item 
+void \mbox{\hyperlink{class_bp_image_ad9a69cda357f210ef85b46c6805a6e56}{Set\+Pixel\+At\+Point}} (const std\+::array$<$ unsigned int, 2 $>$ \&point\+\_\+xy, T val)
+\item 
+void \mbox{\hyperlink{class_bp_image_a5c182b6cf5639172b14431431fadf8b0}{Set\+Pixel\+At\+Point}} (unsigned int i, T val)
+\item 
+unsigned int \mbox{\hyperlink{class_bp_image_a7c5baaf04ad48c6ac9c3f0d5423ce4a2}{Width}} () const
+\item 
+unsigned int \mbox{\hyperlink{class_bp_image_a17a1a389e427daa94dc18635fafe2b6a}{Height}} () const
+\item 
+void \mbox{\hyperlink{class_bp_image_a7c6e02f620725e7a3ee35a255bdb791b}{Save\+Image\+As\+Pgm}} (const std\+::string \&filename) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_bp_image_a8b26e98ccc19267855366eae9666871d}{Load\+Image\+As\+Gray\+Scale}} (const std\+::string \&file\+\_\+path\+\_\+image)
+\item 
+void \mbox{\hyperlink{class_bp_image_abe99f58e46f907fc944ad290637662af}{pnm\+\_\+read}} (std\+::ifstream \&file, std\+::string \&buf) const
+\item 
+\mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned char $>$ \mbox{\hyperlink{class_bp_image_ac368b3943dea7609c428beec76e3ac29}{Image\+Read}} (const std\+::string \&file\+\_\+name, \mbox{\hyperlink{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}{beliefprop\+::\+Image\+Type}} image\+\_\+type, bool weighted\+\_\+rgb\+\_\+conversion=true) const
+\item 
+unsigned int \mbox{\hyperlink{class_bp_image_a28cdca4af939d175fdb173cf25d5e794}{Total\+Pixels}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{class_bp_image_a19279f02682649a7ff16213b3d7e7d96}{width\+\_\+height\+\_\+}}
+\item 
+std\+::unique\+\_\+ptr$<$ T\mbox{[}$\,$\mbox{]}$>$ \mbox{\hyperlink{class_bp_image_a1e15d49edba70f9df0f7a0c453ce824f}{pixels\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class T$>$\newline
+class Bp\+Image$<$ T $>$}
+
+Class to define images that are used in bp processing. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 37 of file Bp\+Image.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_bp_image_ac34d4baa79f159ce51561e2216647a07}\label{class_bp_image_ac34d4baa79f159ce51561e2216647a07}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!BpImage@{BpImage}}
+\index{BpImage@{BpImage}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{BpImage()}{BpImage()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::\mbox{\hyperlink{class_bp_image}{Bp\+Image}} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 39 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_a29f2a9230a53674f1bf74047e38208a7}\label{class_bp_image_a29f2a9230a53674f1bf74047e38208a7}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!BpImage@{BpImage}}
+\index{BpImage@{BpImage}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{BpImage()}{BpImage()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::\mbox{\hyperlink{class_bp_image}{Bp\+Image}} (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 41 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_ad83223df9637eee4938672694579af74}\label{class_bp_image_ad83223df9637eee4938672694579af74}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!BpImage@{BpImage}}
+\index{BpImage@{BpImage}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{BpImage()}{BpImage()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::\mbox{\hyperlink{class_bp_image}{Bp\+Image}} (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height,  }\item[{const T $\ast$}]{input\+\_\+pixel\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 44 of file Bp\+Image.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{class_bp_image_ad83223df9637eee4938672694579af74_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_a39baa8bc55abdf3d071ad9d80edddfe6}\label{class_bp_image_a39baa8bc55abdf3d071ad9d80edddfe6}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!BpImage@{BpImage}}
+\index{BpImage@{BpImage}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{BpImage()}{BpImage()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::\mbox{\hyperlink{class_bp_image}{Bp\+Image}} (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 50 of file Bp\+Image.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a39baa8bc55abdf3d071ad9d80edddfe6_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_bp_image_a17a1a389e427daa94dc18635fafe2b6a}\label{class_bp_image_a17a1a389e427daa94dc18635fafe2b6a}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!Height@{Height}}
+\index{Height@{Height}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Height()}{Height()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+unsigned int \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Height (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 79 of file Bp\+Image.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a17a1a389e427daa94dc18635fafe2b6a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_ac368b3943dea7609c428beec76e3ac29}\label{class_bp_image_ac368b3943dea7609c428beec76e3ac29}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!ImageRead@{ImageRead}}
+\index{ImageRead@{ImageRead}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ImageRead()}{ImageRead()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned char $>$ \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Image\+Read (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+\_\+name,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}{beliefprop\+::\+Image\+Type}}}]{image\+\_\+type,  }\item[{bool}]{weighted\+\_\+rgb\+\_\+conversion = {\ttfamily true} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file Bp\+Image.\+cpp.
+
+\mbox{\Hypertarget{class_bp_image_a8b26e98ccc19267855366eae9666871d}\label{class_bp_image_a8b26e98ccc19267855366eae9666871d}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!LoadImageAsGrayScale@{LoadImageAsGrayScale}}
+\index{LoadImageAsGrayScale@{LoadImageAsGrayScale}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{LoadImageAsGrayScale()}{LoadImageAsGrayScale()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Load\+Image\+As\+Gray\+Scale (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{file\+\_\+path\+\_\+image }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 11 of file Bp\+Image.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a8b26e98ccc19267855366eae9666871d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a8b26e98ccc19267855366eae9666871d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_a7daeb3b9b6338627c9c6d625042fdeed}\label{class_bp_image_a7daeb3b9b6338627c9c6d625042fdeed}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!PixelAtPoint@{PixelAtPoint}}
+\index{PixelAtPoint@{PixelAtPoint}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{PixelAtPoint()}{PixelAtPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Pixel\+At\+Point (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{point\+\_\+xy }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 62 of file Bp\+Image.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a7daeb3b9b6338627c9c6d625042fdeed_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_a59d3794c41b91043b79c04567776a440}\label{class_bp_image_a59d3794c41b91043b79c04567776a440}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!PixelAtPoint@{PixelAtPoint}}
+\index{PixelAtPoint@{PixelAtPoint}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{PixelAtPoint()}{PixelAtPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Pixel\+At\+Point (\begin{DoxyParamCaption}\item[{unsigned int}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 66 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_abe99f58e46f907fc944ad290637662af}\label{class_bp_image_abe99f58e46f907fc944ad290637662af}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!pnm\_read@{pnm\_read}}
+\index{pnm\_read@{pnm\_read}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pnm\_read()}{pnm\_read()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::pnm\+\_\+read (\begin{DoxyParamCaption}\item[{std\+::ifstream \&}]{file,  }\item[{std\+::string \&}]{buf }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 47 of file Bp\+Image.\+cpp.
+
+\mbox{\Hypertarget{class_bp_image_ae7808967582f083e9351d49bd810aec8}\label{class_bp_image_ae7808967582f083e9351d49bd810aec8}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!PointerToPixelsStart@{PointerToPixelsStart}}
+\index{PointerToPixelsStart@{PointerToPixelsStart}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{PointerToPixelsStart()}{PointerToPixelsStart()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T$\ast$ \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Pointer\+To\+Pixels\+Start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 58 of file Bp\+Image.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_ae7808967582f083e9351d49bd810aec8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_a7c6e02f620725e7a3ee35a255bdb791b}\label{class_bp_image_a7c6e02f620725e7a3ee35a255bdb791b}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!SaveImageAsPgm@{SaveImageAsPgm}}
+\index{SaveImageAsPgm@{SaveImageAsPgm}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{SaveImageAsPgm()}{SaveImageAsPgm()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Save\+Image\+As\+Pgm (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{filename }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 81 of file Bp\+Image.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a7c6e02f620725e7a3ee35a255bdb791b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a7c6e02f620725e7a3ee35a255bdb791b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_ad9a69cda357f210ef85b46c6805a6e56}\label{class_bp_image_ad9a69cda357f210ef85b46c6805a6e56}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!SetPixelAtPoint@{SetPixelAtPoint}}
+\index{SetPixelAtPoint@{SetPixelAtPoint}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{SetPixelAtPoint()}{SetPixelAtPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Set\+Pixel\+At\+Point (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{point\+\_\+xy,  }\item[{T}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 70 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_a5c182b6cf5639172b14431431fadf8b0}\label{class_bp_image_a5c182b6cf5639172b14431431fadf8b0}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!SetPixelAtPoint@{SetPixelAtPoint}}
+\index{SetPixelAtPoint@{SetPixelAtPoint}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{SetPixelAtPoint()}{SetPixelAtPoint()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Set\+Pixel\+At\+Point (\begin{DoxyParamCaption}\item[{unsigned int}]{i,  }\item[{T}]{val }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 74 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_a28cdca4af939d175fdb173cf25d5e794}\label{class_bp_image_a28cdca4af939d175fdb173cf25d5e794}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!TotalPixels@{TotalPixels}}
+\index{TotalPixels@{TotalPixels}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TotalPixels()}{TotalPixels()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+unsigned int \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Total\+Pixels (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 100 of file Bp\+Image.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a28cdca4af939d175fdb173cf25d5e794_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_image_a5c7d88f3b193a7c33e73d676c80561a7}\label{class_bp_image_a5c7d88f3b193a7c33e73d676c80561a7}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!UniquePtrToPixelData@{UniquePtrToPixelData}}
+\index{UniquePtrToPixelData@{UniquePtrToPixelData}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{UniquePtrToPixelData()}{UniquePtrToPixelData()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+const std\+::unique\+\_\+ptr$<$T\mbox{[}$\,$\mbox{]}$>$\& \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Unique\+Ptr\+To\+Pixel\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 54 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_a7c5baaf04ad48c6ac9c3f0d5423ce4a2}\label{class_bp_image_a7c5baaf04ad48c6ac9c3f0d5423ce4a2}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!Width@{Width}}
+\index{Width@{Width}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{Width()}{Width()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+unsigned int \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 78 of file Bp\+Image.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_image_a7c5baaf04ad48c6ac9c3f0d5423ce4a2_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_bp_image_a1e15d49edba70f9df0f7a0c453ce824f}\label{class_bp_image_a1e15d49edba70f9df0f7a0c453ce824f}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!pixels\_@{pixels\_}}
+\index{pixels\_@{pixels\_}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{pixels\_}{pixels\_}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::unique\+\_\+ptr$<$T\mbox{[}$\,$\mbox{]}$>$ \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::pixels\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 90 of file Bp\+Image.\+h.
+
+\mbox{\Hypertarget{class_bp_image_a19279f02682649a7ff16213b3d7e7d96}\label{class_bp_image_a19279f02682649a7ff16213b3d7e7d96}} 
+\index{BpImage$<$ T $>$@{BpImage$<$ T $>$}!width\_height\_@{width\_height\_}}
+\index{width\_height\_@{width\_height\_}!BpImage$<$ T $>$@{BpImage$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{width\_height\_}{width\_height\_}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::array$<$unsigned int, 2$>$ \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ T $>$\+::width\+\_\+height\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 89 of file Bp\+Image.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Image\+Processing/\mbox{\hyperlink{_bp_image_8h}{Bp\+Image.\+h}}\item 
+src/beliefprop/\+Bp\+Image\+Processing/\mbox{\hyperlink{_bp_image_8cpp}{Bp\+Image.\+cpp}}\end{DoxyCompactItemize}

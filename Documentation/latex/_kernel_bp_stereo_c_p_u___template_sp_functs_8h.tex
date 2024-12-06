@@ -1,0 +1,447 @@
+\hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h}{}\doxysection{src/beliefprop/\+Bp\+Optimize\+CPU/\+Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.h File Reference}
+\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h}\index{src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU\_TemplateSpFuncts.h@{src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU\_TemplateSpFuncts.h}}
+{\ttfamily \#include $<$x86intrin.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Kernel\+Bp\+Stereo\+CPU.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Shared\+Functs/\+Shared\+Bp\+Processing\+Functs.\+h\char`\"{}}\newline
+Include dependency graph for Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ac0749c9c714fc948862d155053d6c710}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a6c25e031fd4319a9de9e4ddfd73e0732}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d6100e3a35b156c2a899665250dc0b}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_af40e6ef436237ebce76bbfe135475eb0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_adeddb3fc7a66fb232e1c33cd5ae513db}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ae22a2aa17ecf034cfc51cca78d56d07b}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a21fa440aae9807e1ee21aa7604b0b3e8}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, unsigned int offset\+\_\+data, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a1af37bd5971d25510198fdac381e24f7}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a101603643a2addf007bceb535f40c69e}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0c18a676c30b63b9bba59fd18dcaad87}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d597cdb8b0c71df435cae8470512b3}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a87616ae9110dd4c7da68c933973dfceb}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0075630a7c756811c206b11a00754457}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a8c506365a496c6a56e8c01e289791816}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&prev\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, short $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a929d129288f26a69dbf2dee0fb4a909d}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}0\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a2aa3475c3aa774c8a240de40fa30735e}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}1\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a3c82e7ddc344955356902d9c3584cd70}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}2\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ab710c67de348ca94da00bf3e5a0a7da0}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}3\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a547f0b792e2028fcc108570394954c27}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}4\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_aeb672a3e158e6b6d977b51778ebb2335}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}5\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\item 
+template$<$$>$ void \mbox{\hyperlink{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a9b96f0dd635f56d73fa9a9760fa49521}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel$<$ short, short, beliefprop\+::k\+Stereo\+Sets\+To\+Process\mbox{[}6\mbox{]}.\+num\+\_\+disp\+\_\+vals $>$}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const short $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const short $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const short $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a1af37bd5971d25510198fdac381e24f7}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a1af37bd5971d25510198fdac381e24f7}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 220 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a1af37bd5971d25510198fdac381e24f7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a101603643a2addf007bceb535f40c69e}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a101603643a2addf007bceb535f40c69e}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 234 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a101603643a2addf007bceb535f40c69e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0c18a676c30b63b9bba59fd18dcaad87}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0c18a676c30b63b9bba59fd18dcaad87}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 248 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0c18a676c30b63b9bba59fd18dcaad87_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d597cdb8b0c71df435cae8470512b3}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d597cdb8b0c71df435cae8470512b3}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 262 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d597cdb8b0c71df435cae8470512b3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a87616ae9110dd4c7da68c933973dfceb}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a87616ae9110dd4c7da68c933973dfceb}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 276 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a87616ae9110dd4c7da68c933973dfceb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0075630a7c756811c206b11a00754457}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0075630a7c756811c206b11a00754457}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 290 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a0075630a7c756811c206b11a00754457_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a8c506365a496c6a56e8c01e289791816}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a8c506365a496c6a56e8c01e289791816}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}}
+\index{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::InitializeCurrentLevelDataPixel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$()}{beliefprop::InitializeCurrentLevelDataPixel< short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c}{beliefprop\+::\+Initialize\+Current\+Level\+Data\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{prev\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 304 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a8c506365a496c6a56e8c01e289791816_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a929d129288f26a69dbf2dee0fb4a909d}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a929d129288f26a69dbf2dee0fb4a909d}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 336 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a929d129288f26a69dbf2dee0fb4a909d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a2aa3475c3aa774c8a240de40fa30735e}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a2aa3475c3aa774c8a240de40fa30735e}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 354 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a2aa3475c3aa774c8a240de40fa30735e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a3c82e7ddc344955356902d9c3584cd70}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a3c82e7ddc344955356902d9c3584cd70}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 372 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a3c82e7ddc344955356902d9c3584cd70_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ab710c67de348ca94da00bf3e5a0a7da0}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ab710c67de348ca94da00bf3e5a0a7da0}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 390 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ab710c67de348ca94da00bf3e5a0a7da0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a547f0b792e2028fcc108570394954c27}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a547f0b792e2028fcc108570394954c27}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 408 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a547f0b792e2028fcc108570394954c27_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_aeb672a3e158e6b6d977b51778ebb2335}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_aeb672a3e158e6b6d977b51778ebb2335}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 426 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_aeb672a3e158e6b6d977b51778ebb2335_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a9b96f0dd635f56d73fa9a9760fa49521}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a9b96f0dd635f56d73fa9a9760fa49521}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}}
+\index{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RetrieveOutputDisparityPixel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$()}{beliefprop::RetrieveOutputDisparityPixel< short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a}{beliefprop\+::\+Retrieve\+Output\+Disparity\+Pixel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{const short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 444 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a9b96f0dd635f56d73fa9a9760fa49521_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ac0749c9c714fc948862d155053d6c710}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ac0749c9c714fc948862d155053d6c710}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}0\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[0].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}0\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 57 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ac0749c9c714fc948862d155053d6c710_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a6c25e031fd4319a9de9e4ddfd73e0732}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a6c25e031fd4319a9de9e4ddfd73e0732}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}1\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[1].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}1\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 78 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a6c25e031fd4319a9de9e4ddfd73e0732_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d6100e3a35b156c2a899665250dc0b}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d6100e3a35b156c2a899665250dc0b}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}2\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[2].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}2\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 99 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ad5d6100e3a35b156c2a899665250dc0b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_af40e6ef436237ebce76bbfe135475eb0}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_af40e6ef436237ebce76bbfe135475eb0}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}3\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[3].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}3\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 120 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_af40e6ef436237ebce76bbfe135475eb0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_adeddb3fc7a66fb232e1c33cd5ae513db}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_adeddb3fc7a66fb232e1c33cd5ae513db}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}4\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[4].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}4\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 141 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_adeddb3fc7a66fb232e1c33cd5ae513db_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ae22a2aa17ecf034cfc51cca78d56d07b}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ae22a2aa17ecf034cfc51cca78d56d07b}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}5\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[5].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}5\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 162 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_ae22a2aa17ecf034cfc51cca78d56d07b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a21fa440aae9807e1ee21aa7604b0b3e8}\label{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a21fa440aae9807e1ee21aa7604b0b3e8}} 
+\index{KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}!beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}}
+\index{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess\mbox{[}6\mbox{]}.num\_disp\_vals $>$@{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$}!KernelBpStereoCPU\_TemplateSpFuncts.h@{KernelBpStereoCPU\_TemplateSpFuncts.h}}
+\doxysubsubsection{\texorpdfstring{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel$<$ short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals $>$()}{beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel< short, short, beliefprop::kStereoSetsToProcess[6].num\_disp\_vals >()}}
+{\footnotesize\ttfamily template$<$$>$ \\
+void \mbox{\hyperlink{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}{beliefprop\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates\+Kernel}}$<$ short, short, \mbox{\hyperlink{namespacebeliefprop_ade9084f410319841c34418be4a556df4}{beliefprop\+::k\+Stereo\+Sets\+To\+Process}}\mbox{[}6\mbox{]}.num\+\_\+disp\+\_\+vals $>$ (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{const short $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{short $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{short $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{offset\+\_\+data,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 183 of file Kernel\+Bp\+Stereo\+CPU\+\_\+\+Template\+Sp\+Functs.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_bp_stereo_c_p_u___template_sp_functs_8h_a21fa440aae9807e1ee21aa7604b0b3e8_cgraph}
+\end{center}
+\end{figure}

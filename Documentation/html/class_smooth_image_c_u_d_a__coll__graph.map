@@ -1,0 +1,5 @@
+<map id="SmoothImageCUDA" name="SmoothImageCUDA">
+<area shape="rect" id="node1" title="Class for smoothing images in the CUDA implementation." alt="" coords="5,171,156,197"/>
+<area shape="rect" id="node2" href="$class_smooth_image.html" title="Class for smoothing the images before running BP. Smoothing image always uses float data type." alt="" coords="24,95,137,121"/>
+<area shape="rect" id="node3" href="$class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="21,5,140,32"/>
+</map>

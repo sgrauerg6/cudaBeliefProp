@@ -1,0 +1,207 @@
+\hypertarget{class_detailed_timings}{}\doxysection{Detailed\+Timings$<$ T $>$ Class Template Reference}
+\label{class_detailed_timings}\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+
+
+Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations. Index for timing segments must be enum type.  
+
+
+
+
+{\ttfamily \#include $<$Detailed\+Timings.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_detailed_timings_a427d44bacb0352fc34b43e36faeee379}{Detailed\+Timings}} (const std\+::unordered\+\_\+map$<$ T, std\+::string\+\_\+view $>$ \&timing\+\_\+segment\+\_\+names)
+\begin{DoxyCompactList}\small\item\em Construct a new \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} object where each timing segment is initialized. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_detailed_timings_a3b7e763ca8c40f5433e70e91267c4017}{Reset\+Timing}} ()
+\begin{DoxyCompactList}\small\item\em Reset all timings. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_detailed_timings_aa7f8267a6ea1504c5c0a4a1d08bab7d9}{Add\+To\+Current\+Timings}} (const \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} \&in\+\_\+detailed\+\_\+timings)
+\begin{DoxyCompactList}\small\item\em Add instance of \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} to current \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8}{Add\+Timing}} (const T timing\+\_\+segment, const std\+::chrono\+::duration$<$ double $>$ \&segment\+\_\+time)
+\begin{DoxyCompactList}\small\item\em Add timing by segment index. \end{DoxyCompactList}\item 
+std\+::chrono\+::duration$<$ double $>$ \mbox{\hyperlink{class_detailed_timings_a158238eb5d20564311ed04423769d542}{Median\+Timing}} (const T run\+\_\+segment\+\_\+index) const
+\begin{DoxyCompactList}\small\item\em Get median timing for a specified segment that may have been run multiple times. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_detailed_timings_ade7af05257684e97b210e2a6bb999c1d}{As\+Run\+Data}} () const
+\begin{DoxyCompactList}\small\item\em Return current timing data as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for evaluation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T$>$\newline
+class Detailed\+Timings$<$ T $>$}
+
+Class to store timings of one or more segments taken during the run(s) of an implementation or across multiple implementations. Index for timing segments must be enum type. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 30 of file Detailed\+Timings.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_detailed_timings_a427d44bacb0352fc34b43e36faeee379}\label{class_detailed_timings_a427d44bacb0352fc34b43e36faeee379}} 
+\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}!DetailedTimings@{DetailedTimings}}
+\index{DetailedTimings@{DetailedTimings}!DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{DetailedTimings()}{DetailedTimings()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+requires std\+::is\+\_\+enum\+\_\+v$<$ T $>$ \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$\+::\mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} (\begin{DoxyParamCaption}\item[{const std\+::unordered\+\_\+map$<$ T, std\+::string\+\_\+view $>$ \&}]{timing\+\_\+segment\+\_\+names }\end{DoxyParamCaption})}
+
+
+
+Construct a new \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} object where each timing segment is initialized. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timing\+\_\+segment\+\_\+names} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 86 of file Detailed\+Timings.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8}\label{class_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8}} 
+\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}!AddTiming@{AddTiming}}
+\index{AddTiming@{AddTiming}!DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AddTiming()}{AddTiming()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$\+::Add\+Timing (\begin{DoxyParamCaption}\item[{const T}]{timing\+\_\+segment,  }\item[{const std\+::chrono\+::duration$<$ double $>$ \&}]{segment\+\_\+time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Add timing by segment index. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em timing\+\_\+segment} & \\
+\hline
+{\em segment\+\_\+time} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 59 of file Detailed\+Timings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_detailed_timings_ade899fc5c569139d6109f5c2bd0727b8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_detailed_timings_aa7f8267a6ea1504c5c0a4a1d08bab7d9}\label{class_detailed_timings_aa7f8267a6ea1504c5c0a4a1d08bab7d9}} 
+\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}!AddToCurrentTimings@{AddToCurrentTimings}}
+\index{AddToCurrentTimings@{AddToCurrentTimings}!DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AddToCurrentTimings()}{AddToCurrentTimings()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+requires std\+::is\+\_\+enum\+\_\+v$<$ T $>$ void \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$\+::Add\+To\+Current\+Timings (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$ \&}]{in\+\_\+detailed\+\_\+timings }\end{DoxyParamCaption})}
+
+
+
+Add instance of \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}} to current \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in\+\_\+detailed\+\_\+timings} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 98 of file Detailed\+Timings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_detailed_timings_aa7f8267a6ea1504c5c0a4a1d08bab7d9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_detailed_timings_ade7af05257684e97b210e2a6bb999c1d}\label{class_detailed_timings_ade7af05257684e97b210e2a6bb999c1d}} 
+\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}!AsRunData@{AsRunData}}
+\index{AsRunData@{AsRunData}!DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AsRunData()}{AsRunData()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+requires std\+::is\+\_\+enum\+\_\+v$<$ T $>$ \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$\+::As\+Run\+Data}
+
+
+
+Return current timing data as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for evaluation. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Definition at line 138 of file Detailed\+Timings.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_detailed_timings_ade7af05257684e97b210e2a6bb999c1d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_detailed_timings_ade7af05257684e97b210e2a6bb999c1d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_detailed_timings_a158238eb5d20564311ed04423769d542}\label{class_detailed_timings_a158238eb5d20564311ed04423769d542}} 
+\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}!MedianTiming@{MedianTiming}}
+\index{MedianTiming@{MedianTiming}!DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{MedianTiming()}{MedianTiming()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+requires std\+::is\+\_\+enum\+\_\+v$<$ T $>$ std\+::chrono\+::duration$<$ double $>$ \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$\+::Median\+Timing (\begin{DoxyParamCaption}\item[{const T}]{run\+\_\+segment\+\_\+index }\end{DoxyParamCaption}) const}
+
+
+
+Get median timing for a specified segment that may have been run multiple times. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+\_\+segment\+\_\+index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::chrono\+::duration$<$double$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 118 of file Detailed\+Timings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_detailed_timings_a158238eb5d20564311ed04423769d542_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_detailed_timings_a3b7e763ca8c40f5433e70e91267c4017}\label{class_detailed_timings_a3b7e763ca8c40f5433e70e91267c4017}} 
+\index{DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}!ResetTiming@{ResetTiming}}
+\index{ResetTiming@{ResetTiming}!DetailedTimings$<$ T $>$@{DetailedTimings$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{ResetTiming()}{ResetTiming()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+void \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ T $>$\+::Reset\+Timing (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Reset all timings. 
+
+
+
+Definition at line 44 of file Detailed\+Timings.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Runtime\+Timing/\mbox{\hyperlink{_detailed_timings_8h}{Detailed\+Timings.\+h}}\end{DoxyCompactItemize}

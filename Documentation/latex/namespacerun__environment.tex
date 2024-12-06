@@ -1,0 +1,383 @@
+\hypertarget{namespacerun__environment}{}\doxysection{run\+\_\+environment Namespace Reference}
+\label{namespacerun__environment}\index{run\_environment@{run\_environment}}
+
+
+Constants and enums related to run environment and settings for run.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{Run\+Imp\+Settings}}
+\begin{DoxyCompactList}\small\item\em Structure that stores settings for current implementation run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} \{ \newline
+\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}{k\+None}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}{k\+AVX256}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}{k\+AVX512}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}{k\+NEON}}
+, \newline
+\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}{k\+CUDA}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum for acceleration setting. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240}{Templated\+Iters\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240ab561bba765f5de06f13b170b1213cae1}{k\+Run\+Only\+Tempated}}
+, \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240a838408cecaedef3003e96ef0e113e6a7}{k\+Run\+Only\+Non\+Templated}}
+, \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240af5a18a48b018dee5a4e711ed66001936}{k\+Run\+Templated\+And\+Not\+Templated}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum that specifies whether or not to use templated counts for the number of iterations in processing loops or to run implementation with and without templated iteration counts Templated counts for number of loop iterations can help with optimization but requires that the number of iterations be known at compile time. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{Parallel\+Params\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8}{k\+Default}}
+, \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc}{k\+Optimized}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum for parallel parameters settings in run. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{Opt\+Parallel\+Params\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0ac9cc7ce7496f19ec2d6ec0848ef87c9d}{k\+Same\+Parallel\+Params\+All\+Kernels}}
+, \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc}{k\+Allow\+Diff\+Kernel\+Parallel\+Params\+In\+Run}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run In initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster on CPU. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}{Get\+Bytes\+Align\+Memory}} (\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} accel\+\_\+setting)
+\item 
+unsigned int \mbox{\hyperlink{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}{Get\+Num\+Data\+Align\+Width}} (\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} accel\+\_\+setting)
+\item 
+{\footnotesize template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ }\\\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}{Run\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Generate \mbox{\hyperlink{class_run_data}{Run\+Data}} object that contains description header with corresponding value for each run setting. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ }\\constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a06320020557d9545768fb333d1276cf8}{Acceleration\+String}} ()
+\begin{DoxyCompactList}\small\item\em Get string corresponding to acceleration method at compile time. \end{DoxyCompactList}\item 
+std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a0a7505311f966a83b332d3fee2921848}{Acceleration\+String}} (\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} acceleration\+\_\+setting)
+\begin{DoxyCompactList}\small\item\em Get string corresponding to acceleration method at run time. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::map$<$ std\+::size\+\_\+t, std\+::string\+\_\+view $>$ \mbox{\hyperlink{namespacerun__environment_ab15f9538874f71da40e07434e820a1d7}{k\+Data\+Size\+To\+Name\+Map}}
+\begin{DoxyCompactList}\small\item\em Mapping from data size to data type string. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a00245c690fb6c14dafd1b1106d028140}{k\+CPUThreads\+Pinned\+Header}} \{\char`\"{}CPU Threads Pinned To Socket\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a2f12e6214db0993b83063ce3ee059789}{k\+Omp\+Places\+Header}} \{\char`\"{}OMP\+\_\+\+PLACES\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a96a0152e29108e93871a640650a65596}{k\+Omp\+Proc\+Bind\+Header}} \{\char`\"{}OMP\+\_\+\+PROC\+\_\+\+BIND\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}{k\+Num\+CPUThreads\+Header}} \{\char`\"{}Total number of CPU threads\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}{k\+Bytes\+Align\+Mem\+Header}} \{\char`\"{}BYTES\+\_\+\+ALIGN\+\_\+\+MEMORY\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a0f90572394f855a71598506533005800}{k\+Num\+Data\+Align\+Width\+Header}} \{\char`\"{}NUM\+\_\+\+DATA\+\_\+\+ALIGN\+\_\+\+WIDTH\char`\"{}\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Constants and enums related to run environment and settings for run. 
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}} 
+\index{run\_environment@{run\_environment}!AccSetting@{AccSetting}}
+\index{AccSetting@{AccSetting}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{AccSetting}{AccSetting}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum for acceleration setting. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kNone@{kNone}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kNone@{kNone}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}} 
+k\+None&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX256@{kAVX256}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX256@{kAVX256}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}} 
+k\+AVX256&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX512@{kAVX512}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX512@{kAVX512}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}} 
+k\+AVX512&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kNEON@{kNEON}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kNEON@{kNEON}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}} 
+k\+NEON&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kCUDA@{kCUDA}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kCUDA@{kCUDA}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}} 
+k\+CUDA&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 39 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}\label{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}} 
+\index{run\_environment@{run\_environment}!OptParallelParamsSetting@{OptParallelParamsSetting}}
+\index{OptParallelParamsSetting@{OptParallelParamsSetting}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{OptParallelParamsSetting}{OptParallelParamsSetting}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{run\+\_\+environment\+::\+Opt\+Parallel\+Params\+Setting}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run In initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster on CPU. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kSameParallelParamsAllKernels@{kSameParallelParamsAllKernels}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kSameParallelParamsAllKernels@{kSameParallelParamsAllKernels}}}\mbox{\Hypertarget{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0ac9cc7ce7496f19ec2d6ec0848ef87c9d}\label{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0ac9cc7ce7496f19ec2d6ec0848ef87c9d}} 
+k\+Same\+Parallel\+Params\+All\+Kernels&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAllowDiffKernelParallelParamsInRun@{kAllowDiffKernelParallelParamsInRun}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAllowDiffKernelParallelParamsInRun@{kAllowDiffKernelParallelParamsInRun}}}\mbox{\Hypertarget{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc}\label{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc}} 
+k\+Allow\+Diff\+Kernel\+Parallel\+Params\+In\+Run&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 107 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}\label{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}} 
+\index{run\_environment@{run\_environment}!ParallelParamsSetting@{ParallelParamsSetting}}
+\index{ParallelParamsSetting@{ParallelParamsSetting}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{ParallelParamsSetting}{ParallelParamsSetting}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{run\+\_\+environment\+::\+Parallel\+Params\+Setting}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum for parallel parameters settings in run. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDefault@{kDefault}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kDefault@{kDefault}}}\mbox{\Hypertarget{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8}\label{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8}} 
+k\+Default&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kOptimized@{kOptimized}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kOptimized@{kOptimized}}}\mbox{\Hypertarget{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc}\label{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc}} 
+k\+Optimized&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 98 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_aef84acc019689ebf7328af250a56c240}\label{namespacerun__environment_aef84acc019689ebf7328af250a56c240}} 
+\index{run\_environment@{run\_environment}!TemplatedItersSetting@{TemplatedItersSetting}}
+\index{TemplatedItersSetting@{TemplatedItersSetting}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{TemplatedItersSetting}{TemplatedItersSetting}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240}{run\+\_\+environment\+::\+Templated\+Iters\+Setting}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum that specifies whether or not to use templated counts for the number of iterations in processing loops or to run implementation with and without templated iteration counts Templated counts for number of loop iterations can help with optimization but requires that the number of iterations be known at compile time. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRunOnlyTempated@{kRunOnlyTempated}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kRunOnlyTempated@{kRunOnlyTempated}}}\mbox{\Hypertarget{namespacerun__environment_aef84acc019689ebf7328af250a56c240ab561bba765f5de06f13b170b1213cae1}\label{namespacerun__environment_aef84acc019689ebf7328af250a56c240ab561bba765f5de06f13b170b1213cae1}} 
+k\+Run\+Only\+Tempated&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRunOnlyNonTemplated@{kRunOnlyNonTemplated}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kRunOnlyNonTemplated@{kRunOnlyNonTemplated}}}\mbox{\Hypertarget{namespacerun__environment_aef84acc019689ebf7328af250a56c240a838408cecaedef3003e96ef0e113e6a7}\label{namespacerun__environment_aef84acc019689ebf7328af250a56c240a838408cecaedef3003e96ef0e113e6a7}} 
+k\+Run\+Only\+Non\+Templated&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kRunTemplatedAndNotTemplated@{kRunTemplatedAndNotTemplated}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kRunTemplatedAndNotTemplated@{kRunTemplatedAndNotTemplated}}}\mbox{\Hypertarget{namespacerun__environment_aef84acc019689ebf7328af250a56c240af5a18a48b018dee5a4e711ed66001936}\label{namespacerun__environment_aef84acc019689ebf7328af250a56c240af5a18a48b018dee5a4e711ed66001936}} 
+k\+Run\+Templated\+And\+Not\+Templated&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 88 of file Run\+Settings\+Consts\+Enums.\+h.
+
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacerun__environment_a06320020557d9545768fb333d1276cf8}\label{namespacerun__environment_a06320020557d9545768fb333d1276cf8}} 
+\index{run\_environment@{run\_environment}!AccelerationString@{AccelerationString}}
+\index{AccelerationString@{AccelerationString}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{AccelerationString()}{AccelerationString()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ \\
+constexpr std\+::string\+\_\+view run\+\_\+environment\+::\+Acceleration\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Get string corresponding to acceleration method at compile time. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em ACCELERATION\+\_\+\+SETTING} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+constexpr std\+::string\+\_\+view 
+\end{DoxyReturn}
+
+
+Definition at line 50 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a0a7505311f966a83b332d3fee2921848}\label{namespacerun__environment_a0a7505311f966a83b332d3fee2921848}} 
+\index{run\_environment@{run\_environment}!AccelerationString@{AccelerationString}}
+\index{AccelerationString@{AccelerationString}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{AccelerationString()}{AccelerationString()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily std\+::string\+\_\+view run\+\_\+environment\+::\+Acceleration\+String (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}}}]{acceleration\+\_\+setting }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get string corresponding to acceleration method at run time. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em acceleration\+\_\+setting} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::string\+\_\+view 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}\label{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}} 
+\index{run\_environment@{run\_environment}!GetBytesAlignMemory@{GetBytesAlignMemory}}
+\index{GetBytesAlignMemory@{GetBytesAlignMemory}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{GetBytesAlignMemory()}{GetBytesAlignMemory()}}
+{\footnotesize\ttfamily unsigned int run\+\_\+environment\+::\+Get\+Bytes\+Align\+Memory (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}}}]{accel\+\_\+setting }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 22 of file Run\+Settings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}\label{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}} 
+\index{run\_environment@{run\_environment}!GetNumDataAlignWidth@{GetNumDataAlignWidth}}
+\index{GetNumDataAlignWidth@{GetNumDataAlignWidth}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{GetNumDataAlignWidth()}{GetNumDataAlignWidth()}}
+{\footnotesize\ttfamily unsigned int run\+\_\+environment\+::\+Get\+Num\+Data\+Align\+Width (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}}}]{accel\+\_\+setting }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 27 of file Run\+Settings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}\label{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}} 
+\index{run\_environment@{run\_environment}!RunSettings@{RunSettings}}
+\index{RunSettings@{RunSettings}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{RunSettings()}{RunSettings()}}
+{\footnotesize\ttfamily template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ \\
+\mbox{\hyperlink{class_run_data}{Run\+Data}} run\+\_\+environment\+::\+Run\+Settings (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Generate \mbox{\hyperlink{class_run_data}{Run\+Data}} object that contains description header with corresponding value for each run setting. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em ACCELERATION\+\_\+\+SETTING} & \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Definition at line 40 of file Run\+Settings.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}\label{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}} 
+\index{run\_environment@{run\_environment}!kBytesAlignMemHeader@{kBytesAlignMemHeader}}
+\index{kBytesAlignMemHeader@{kBytesAlignMemHeader}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kBytesAlignMemHeader}{kBytesAlignMemHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+Bytes\+Align\+Mem\+Header \{\char`\"{}BYTES\+\_\+\+ALIGN\+\_\+\+MEMORY\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 117 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a00245c690fb6c14dafd1b1106d028140}\label{namespacerun__environment_a00245c690fb6c14dafd1b1106d028140}} 
+\index{run\_environment@{run\_environment}!kCPUThreadsPinnedHeader@{kCPUThreadsPinnedHeader}}
+\index{kCPUThreadsPinnedHeader@{kCPUThreadsPinnedHeader}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kCPUThreadsPinnedHeader}{kCPUThreadsPinnedHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+CPUThreads\+Pinned\+Header \{\char`\"{}CPU Threads Pinned To Socket\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 113 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_ab15f9538874f71da40e07434e820a1d7}\label{namespacerun__environment_ab15f9538874f71da40e07434e820a1d7}} 
+\index{run\_environment@{run\_environment}!kDataSizeToNameMap@{kDataSizeToNameMap}}
+\index{kDataSizeToNameMap@{kDataSizeToNameMap}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kDataSizeToNameMap}{kDataSizeToNameMap}}
+{\footnotesize\ttfamily const std\+::map$<$std\+::size\+\_\+t, std\+::string\+\_\+view$>$ run\+\_\+environment\+::k\+Data\+Size\+To\+Name\+Map}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \{\textcolor{keyword}{sizeof}(float), \textcolor{stringliteral}{"{}FLOAT"{}}\},}
+\DoxyCodeLine{  \{\textcolor{keyword}{sizeof}(double), \textcolor{stringliteral}{"{}DOUBLE"{}}\},}
+\DoxyCodeLine{  \{\textcolor{keyword}{sizeof}(short), \textcolor{stringliteral}{"{}HALF"{}}\}}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+Mapping from data size to data type string. 
+
+
+
+Definition at line 74 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}\label{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}} 
+\index{run\_environment@{run\_environment}!kNumCPUThreadsHeader@{kNumCPUThreadsHeader}}
+\index{kNumCPUThreadsHeader@{kNumCPUThreadsHeader}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kNumCPUThreadsHeader}{kNumCPUThreadsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+Num\+CPUThreads\+Header \{\char`\"{}Total number of CPU threads\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 116 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a0f90572394f855a71598506533005800}\label{namespacerun__environment_a0f90572394f855a71598506533005800}} 
+\index{run\_environment@{run\_environment}!kNumDataAlignWidthHeader@{kNumDataAlignWidthHeader}}
+\index{kNumDataAlignWidthHeader@{kNumDataAlignWidthHeader}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kNumDataAlignWidthHeader}{kNumDataAlignWidthHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+Num\+Data\+Align\+Width\+Header \{\char`\"{}NUM\+\_\+\+DATA\+\_\+\+ALIGN\+\_\+\+WIDTH\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 118 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a2f12e6214db0993b83063ce3ee059789}\label{namespacerun__environment_a2f12e6214db0993b83063ce3ee059789}} 
+\index{run\_environment@{run\_environment}!kOmpPlacesHeader@{kOmpPlacesHeader}}
+\index{kOmpPlacesHeader@{kOmpPlacesHeader}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kOmpPlacesHeader}{kOmpPlacesHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+Omp\+Places\+Header \{\char`\"{}OMP\+\_\+\+PLACES\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 114 of file Run\+Settings\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__environment_a96a0152e29108e93871a640650a65596}\label{namespacerun__environment_a96a0152e29108e93871a640650a65596}} 
+\index{run\_environment@{run\_environment}!kOmpProcBindHeader@{kOmpProcBindHeader}}
+\index{kOmpProcBindHeader@{kOmpProcBindHeader}!run\_environment@{run\_environment}}
+\doxysubsubsection{\texorpdfstring{kOmpProcBindHeader}{kOmpProcBindHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+Omp\+Proc\+Bind\+Header \{\char`\"{}OMP\+\_\+\+PROC\+\_\+\+BIND\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 115 of file Run\+Settings\+Consts\+Enums.\+h.
+

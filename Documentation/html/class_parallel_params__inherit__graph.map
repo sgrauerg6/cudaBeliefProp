@@ -1,0 +1,4 @@
+<map id="ParallelParams" name="ParallelParams">
+<area shape="rect" id="node1" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="13,5,132,32"/>
+<area shape="rect" id="node2" href="$class_bp_parallel_params.html" title="Class containing parameters including parallelization parameters to use at each BP level." alt="" coords="5,80,140,107"/>
+</map>

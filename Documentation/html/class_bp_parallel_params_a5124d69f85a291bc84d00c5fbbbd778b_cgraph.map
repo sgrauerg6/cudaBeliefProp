@@ -1,0 +1,4 @@
+<map id="BpParallelParams::SetOptimizedParams" name="BpParallelParams::SetOptimizedParams">
+<area shape="rect" id="node1" title="Retrieve optimized parameters from results across multiple runs with different parallel parameters an..." alt="" coords="5,5,236,47"/>
+<area shape="rect" id="node2" href="$class_bp_parallel_params.html#a4c07664f7bba0931ea36e2858a242313" title="Set parallel parameters for each kernel to the same input dimensions." alt="" coords="284,13,531,39"/>
+</map>

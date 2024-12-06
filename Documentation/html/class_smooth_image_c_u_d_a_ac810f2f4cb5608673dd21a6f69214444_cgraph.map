@@ -1,0 +1,8 @@
+<map id="SmoothImageCUDA::operator()" name="SmoothImageCUDA::operator()">
+<area shape="rect" id="node1" title="For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)" alt="" coords="5,115,229,141"/>
+<area shape="rect" id="node2" href="$class_bp_image.html#a17a1a389e427daa94dc18635fafe2b6a" title=" " alt="" coords="311,5,441,32"/>
+<area shape="rect" id="node3" href="$class_smooth_image.html#ac5320911cc70ee47757dc0cf1c2671cb" title="Create a Gaussian filter from a sigma value." alt="" coords="281,56,471,83"/>
+<area shape="rect" id="node4" href="$class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="277,107,475,149"/>
+<area shape="rect" id="node5" href="$class_bp_image.html#ae7808967582f083e9351d49bd810aec8" title=" " alt="" coords="283,173,469,214"/>
+<area shape="rect" id="node6" href="$class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2" title=" " alt="" coords="313,239,439,265"/>
+</map>

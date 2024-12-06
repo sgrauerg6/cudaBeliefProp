@@ -1,0 +1,100 @@
+\hypertarget{_run_eval_consts_enums_8h}{}\doxysection{src/\+Run\+Eval/\+Run\+Eval\+Consts\+Enums.h File Reference}
+\label{_run_eval_consts_enums_8h}\index{src/RunEval/RunEvalConstsEnums.h@{src/RunEval/RunEvalConstsEnums.h}}
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings\+Consts\+Enums.\+h\char`\"{}}\newline
+Include dependency graph for Run\+Eval\+Consts\+Enums.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_eval_consts_enums_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_eval_consts_enums_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacerun__eval}{run\+\_\+eval}}
+\begin{DoxyCompactList}\small\item\em Namespace for general program run evaluation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{run\+\_\+eval\+::\+Status}} \{ \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cdafcd1af9ec66cb99f2d106d7fdc865c8b}{run\+\_\+eval\+::k\+No\+Error}}
+, \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cdae3587c730cc1aa530fa4ddc9c4204e97}{run\+\_\+eval\+::k\+Error}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum for status to indicate if error or no error. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr std\+::array$<$ size\+\_\+t, 3 $>$ \mbox{\hyperlink{namespacerun__eval_ade2de03079235e85054acc531e3f2350}{run\+\_\+eval\+::k\+Data\+Types\+Eval\+Sizes}} \{sizeof(float), sizeof(double), sizeof(\mbox{\hyperlink{_run_c_u_d_a_settings_8h_ae0ec76c243989a7b368bb78677ff6b30}{halftype}})\}
+\item 
+constexpr std\+::array$<$ std\+::string\+\_\+view, 2 $>$ \mbox{\hyperlink{namespacerun__eval_aaaeaf61451f5f5f94c6cbcf1d550d9e8}{run\+\_\+eval\+::k\+Bool\+Val\+False\+True\+Disp\+Str}} \{\char`\"{}NO\char`\"{}, \char`\"{}YES\char`\"{}\}
+\begin{DoxyCompactList}\small\item\em Define string for display of \char`\"{}true\char`\"{} and \char`\"{}false\char`\"{} values of bool value. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a07d7885ec260b8cfe897bdecf3bc428f}{run\+\_\+eval\+::k\+Input\+Idx\+Header}} \{\char`\"{}Input Index\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a1bb38345922853340e189ff4e073bdf7}{run\+\_\+eval\+::k\+Datatype\+Header}} \{\char`\"{}Data Type\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aef29ac0eb3ad8078a51bc7612ee6863b}{run\+\_\+eval\+::k\+Loop\+Iters\+Templated\+Header}} \{\char`\"{}Loop Iters Templated\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_acbceca007a683b12400a658170453b7a}{run\+\_\+eval\+::k\+Run\+Success\+Header}} \{\char`\"{}Run Success\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a43472d99af1ea4cd938fdae0ff48d0a2}{run\+\_\+eval\+::k\+All\+Runs\+Str}} \{\char`\"{}All Runs\char`\"{}\}
+\begin{DoxyCompactList}\small\item\em Constant for \char`\"{}all runs\char`\"{} string. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}{run\+\_\+eval\+::k\+Run\+Results\+Desc\+File\+Name}} \{\char`\"{}Run\+Results\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a3f3c5731fd12472eb774b21a5c722aaa}{run\+\_\+eval\+::k\+Run\+Results\+Default\+PParams\+Desc\+File\+Name}} \{\char`\"{}Run\+Results\+Default\+PParams\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a2b8f361a2c25b57782ad13ddbae045fc}{run\+\_\+eval\+::k\+Run\+Results\+WSpeedups\+Desc\+File\+Name}} \{\char`\"{}Run\+Results\+WSpeedups\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a739a6278e895cb3e8311abb5431f9cf9}{run\+\_\+eval\+::k\+Run\+Results\+Desc\+Default\+PParams\+File\+Name}} \{\char`\"{}Results\+Default\+Parallel\+Params\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a6f7327cf25d1b917872c8d98f9fd84f3}{run\+\_\+eval\+::k\+Speedups\+Desc\+File\+Name}} \{\char`\"{}Speedups\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a229caf4f6150ca92d66eb06a150b9fa6}{run\+\_\+eval\+::k\+Eval\+Across\+Runs\+File\+Name}} \{\char`\"{}Evaluation\+Across\+Runs\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a5c69e0c09678a48f6bcd5d46ac052096}{run\+\_\+eval\+::k\+Csv\+File\+Extension}} \{\char`\"{}.csv\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aac082d24ce0fe2ac23fb63c994172981}{run\+\_\+eval\+::k\+Optimized\+Runtime\+Header}} \{\char`\"{}Median Optimized Runtime (including transfer time)\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a2fb349e0919edec1beb2ac3e891201f6}{run\+\_\+eval\+::k\+Single\+Thread\+Runtime\+Header}} \{\char`\"{}Average Single-\/Thread CPU run time\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad93c0dd070cda950d788bd5f22c8f237}{run\+\_\+eval\+::k\+Speedup\+Opt\+Par\+Params\+Header}} \{\char`\"{}Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a53e8b6af9661ebb7bc6a99e97cf4f3a2}{run\+\_\+eval\+::k\+Speedup\+Double}} \{\char`\"{}Speedup using double-\/precision relative to float (actually slowdown)\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aacb3f40d5df0b0422fe6173fcd4f7885}{run\+\_\+eval\+::k\+Speedup\+Half}} \{\char`\"{}Speedup using half-\/precision relative to float\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}{run\+\_\+eval\+::k\+Speedup\+Loop\+Iters\+Count\+Template}} \{\char`\"{}Speedup w/ templated disparity count (known at compile-\/time)\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad368b3398ba326c7e939936988061c95}{run\+\_\+eval\+::k\+Speedup\+CPUVectorization}} \{\char`\"{}Speedup using CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}{run\+\_\+eval\+::k\+Speedup\+Vs\+Avx256\+Vectorization}} \{\char`\"{}Speedup over AVX256 CPU vectorization\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aeb9a999d42ab9a972522a36e2e2f9712}{run\+\_\+eval\+::k\+Imp\+Results\+Folder\+Name}} \{\char`\"{}Imp\+Results\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a12f0e50ca7718080a44f95b98512aad0}{run\+\_\+eval\+::k\+Imp\+Results\+Run\+Data\+Folder\+Name}} \{\char`\"{}Run\+Results\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a625a3bd1e0783741632501cd38ef6f46}{run\+\_\+eval\+::k\+Imp\+Results\+Run\+Data\+Default\+PParams\+Folder\+Name}} \{\char`\"{}Run\+Results\+Default\+PParams\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_adc691a7675131728cd71a6fcc9fc3967}{run\+\_\+eval\+::k\+Imp\+Results\+Run\+Data\+WSpeedups\+Folder\+Name}} \{\char`\"{}Run\+Results\+WSpeedups\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ad2e81e462dc5a1a39da8b7bd3d6d533c}{run\+\_\+eval\+::k\+Imp\+Results\+Speedups\+Folder\+Name}} \{\char`\"{}Speedups\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_ac16a5475c8ba2869a579e2c1c2b8e902}{run\+\_\+eval\+::k\+Imp\+Results\+Across\+Archs\+Folder\+Name}} \{\char`\"{}Results\+Across\+Architectures\char`\"{}\}
+\item 
+constexpr std\+::array$<$ std\+::string\+\_\+view, 3 $>$ \mbox{\hyperlink{namespacerun__eval_ad0935c80dfec9802bd4f781abfd97162}{run\+\_\+eval\+::k\+Run\+Input\+Sig\+Headers}}
+\item 
+constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a126425883abbf68f7c49e9634419bf8b}{run\+\_\+eval\+::k\+Run\+Input\+Num\+Input\+Idx}} \{0\}
+\item 
+constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_aa4dcdafffb130d2f183786bd93e23b9a}{run\+\_\+eval\+::k\+Run\+Input\+Datatype\+Idx}} \{1\}
+\item 
+constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a2be272bfc5ce93166901411313480403}{run\+\_\+eval\+::k\+Run\+Input\+Loop\+Iters\+Templated\+Idx}} \{2\}
+\end{DoxyCompactItemize}

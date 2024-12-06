@@ -1,0 +1,153 @@
+\hypertarget{structbeliefprop_1_1_bp_settings}{}\doxysection{beliefprop\+::Bp\+Settings Struct Reference}
+\label{structbeliefprop_1_1_bp_settings}\index{beliefprop::BpSettings@{beliefprop::BpSettings}}
+
+
+Structure to store the settings for the number of levels and iterations.  
+
+
+
+
+{\ttfamily \#include $<$Bp\+Settings.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a44f1607c7eebc42914e5f77c0dc4dbdc}{As\+Run\+Data}} () const
+\begin{DoxyCompactList}\small\item\em Retrieve bp settings as \mbox{\hyperlink{class_run_data}{Run\+Data}} object containing description headers with corresponding values for each setting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a8ad64f0e3691fdf79db0ec60f4ac0643}{num\+\_\+levels}} \{\mbox{\hyperlink{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}{k\+Default\+Levels\+Bp}}\}
+\item 
+unsigned int \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a6224f20a238fdffe36aa1cb3cb14d6b7}{num\+\_\+iterations}} \{\mbox{\hyperlink{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}{k\+Default\+Iters\+Bp}}\}
+\item 
+float \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a10df45dfe6528cacf6fef6667f4df4db}{smoothing\+\_\+sigma}} \{\mbox{\hyperlink{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}{k\+Default\+Sigma\+Bp}}\}
+\item 
+float \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a4e4ec3770256b7f6ff96436bfbce6892}{lambda\+\_\+bp}} \{\mbox{\hyperlink{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}{k\+Default\+Lambda\+Bp}}\}
+\item 
+float \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a5c166b015f4ec4d44dd94d3f3328e323}{data\+\_\+k\+\_\+bp}} \{\mbox{\hyperlink{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}{k\+Default\+Data\+KBp}}\}
+\item 
+float \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_ad1d8c6facc9cc76d78305f14d303e5b2}{disc\+\_\+k\+\_\+bp}} \{\mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{beliefprop\+::k\+Inf\+Bp}}\}
+\begin{DoxyCompactList}\small\item\em Discontinuity cost cap set to infinity by default but is expected to be dependent on number of disparity values and set when number of disparity values is set. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{structbeliefprop_1_1_bp_settings_a8009f4bf04e84f8d3f8b06c621d9519c}{num\+\_\+disp\+\_\+vals}} \{0\}
+\begin{DoxyCompactList}\small\item\em Number of disparity values must be set for each stereo set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure to store the settings for the number of levels and iterations. 
+
+Definition at line 61 of file Bp\+Settings.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a44f1607c7eebc42914e5f77c0dc4dbdc}\label{structbeliefprop_1_1_bp_settings_a44f1607c7eebc42914e5f77c0dc4dbdc}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!AsRunData@{AsRunData}}
+\index{AsRunData@{AsRunData}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{AsRunData()}{AsRunData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_run_data}{Run\+Data}} beliefprop\+::\+Bp\+Settings\+::\+As\+Run\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Retrieve bp settings as \mbox{\hyperlink{class_run_data}{Run\+Data}} object containing description headers with corresponding values for each setting. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Definition at line 89 of file Bp\+Settings.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structbeliefprop_1_1_bp_settings_a44f1607c7eebc42914e5f77c0dc4dbdc_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a5c166b015f4ec4d44dd94d3f3328e323}\label{structbeliefprop_1_1_bp_settings_a5c166b015f4ec4d44dd94d3f3328e323}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!data\_k\_bp@{data\_k\_bp}}
+\index{data\_k\_bp@{data\_k\_bp}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{data\_k\_bp}{data\_k\_bp}}
+{\footnotesize\ttfamily float beliefprop\+::\+Bp\+Settings\+::data\+\_\+k\+\_\+bp \{\mbox{\hyperlink{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}{k\+Default\+Data\+KBp}}\}}
+
+
+
+Definition at line 68 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_ad1d8c6facc9cc76d78305f14d303e5b2}\label{structbeliefprop_1_1_bp_settings_ad1d8c6facc9cc76d78305f14d303e5b2}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!disc\_k\_bp@{disc\_k\_bp}}
+\index{disc\_k\_bp@{disc\_k\_bp}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{disc\_k\_bp}{disc\_k\_bp}}
+{\footnotesize\ttfamily float beliefprop\+::\+Bp\+Settings\+::disc\+\_\+k\+\_\+bp \{\mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{beliefprop\+::k\+Inf\+Bp}}\}}
+
+
+
+Discontinuity cost cap set to infinity by default but is expected to be dependent on number of disparity values and set when number of disparity values is set. 
+
+
+
+Definition at line 75 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a4e4ec3770256b7f6ff96436bfbce6892}\label{structbeliefprop_1_1_bp_settings_a4e4ec3770256b7f6ff96436bfbce6892}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!lambda\_bp@{lambda\_bp}}
+\index{lambda\_bp@{lambda\_bp}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{lambda\_bp}{lambda\_bp}}
+{\footnotesize\ttfamily float beliefprop\+::\+Bp\+Settings\+::lambda\+\_\+bp \{\mbox{\hyperlink{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}{k\+Default\+Lambda\+Bp}}\}}
+
+
+
+Definition at line 67 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a8009f4bf04e84f8d3f8b06c621d9519c}\label{structbeliefprop_1_1_bp_settings_a8009f4bf04e84f8d3f8b06c621d9519c}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!num\_disp\_vals@{num\_disp\_vals}}
+\index{num\_disp\_vals@{num\_disp\_vals}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{num\_disp\_vals}{num\_disp\_vals}}
+{\footnotesize\ttfamily unsigned int beliefprop\+::\+Bp\+Settings\+::num\+\_\+disp\+\_\+vals \{0\}}
+
+
+
+Number of disparity values must be set for each stereo set. 
+
+
+
+Definition at line 81 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a6224f20a238fdffe36aa1cb3cb14d6b7}\label{structbeliefprop_1_1_bp_settings_a6224f20a238fdffe36aa1cb3cb14d6b7}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!num\_iterations@{num\_iterations}}
+\index{num\_iterations@{num\_iterations}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{num\_iterations}{num\_iterations}}
+{\footnotesize\ttfamily unsigned int beliefprop\+::\+Bp\+Settings\+::num\+\_\+iterations \{\mbox{\hyperlink{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}{k\+Default\+Iters\+Bp}}\}}
+
+
+
+Definition at line 65 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a8ad64f0e3691fdf79db0ec60f4ac0643}\label{structbeliefprop_1_1_bp_settings_a8ad64f0e3691fdf79db0ec60f4ac0643}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!num\_levels@{num\_levels}}
+\index{num\_levels@{num\_levels}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{num\_levels}{num\_levels}}
+{\footnotesize\ttfamily unsigned int beliefprop\+::\+Bp\+Settings\+::num\+\_\+levels \{\mbox{\hyperlink{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}{k\+Default\+Levels\+Bp}}\}}
+
+
+
+Definition at line 64 of file Bp\+Settings.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_settings_a10df45dfe6528cacf6fef6667f4df4db}\label{structbeliefprop_1_1_bp_settings_a10df45dfe6528cacf6fef6667f4df4db}} 
+\index{beliefprop::BpSettings@{beliefprop::BpSettings}!smoothing\_sigma@{smoothing\_sigma}}
+\index{smoothing\_sigma@{smoothing\_sigma}!beliefprop::BpSettings@{beliefprop::BpSettings}}
+\doxysubsubsection{\texorpdfstring{smoothing\_sigma}{smoothing\_sigma}}
+{\footnotesize\ttfamily float beliefprop\+::\+Bp\+Settings\+::smoothing\+\_\+sigma \{\mbox{\hyperlink{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}{k\+Default\+Sigma\+Bp}}\}}
+
+
+
+Definition at line 66 of file Bp\+Settings.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_bp_settings_8h}{Bp\+Settings.\+h}}\end{DoxyCompactItemize}

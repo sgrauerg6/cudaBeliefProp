@@ -1,0 +1,72 @@
+\hypertarget{filter_8h}{}\doxysection{src/beliefprop/\+Bp\+Single\+Thread\+CPU/filter.h File Reference}
+\label{filter_8h}\index{src/beliefprop/BpSingleThreadCPU/filter.h@{src/beliefprop/BpSingleThreadCPU/filter.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$cmath$>$}\newline
+{\ttfamily \#include \char`\"{}image.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}misc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}convolve.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}imconv.\+h\char`\"{}}\newline
+Include dependency graph for filter.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{filter_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{filter_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_filter_image}{Filter\+Image}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{filter_8h_a241aeeb764887ae5e3de58b98f04b16d}{WIDTH}}~4.\+0
+\item 
+\#define \mbox{\hyperlink{filter_8h_a6bb6ed31ed16392e2ebd98d2752fc3ec}{MAKE\+\_\+\+FILTER}}(name,  fun)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{filter_8h_a6bb6ed31ed16392e2ebd98d2752fc3ec}\label{filter_8h_a6bb6ed31ed16392e2ebd98d2752fc3ec}} 
+\index{filter.h@{filter.h}!MAKE\_FILTER@{MAKE\_FILTER}}
+\index{MAKE\_FILTER@{MAKE\_FILTER}!filter.h@{filter.h}}
+\doxysubsubsection{\texorpdfstring{MAKE\_FILTER}{MAKE\_FILTER}}
+{\footnotesize\ttfamily \#define MAKE\+\_\+\+FILTER(\begin{DoxyParamCaption}\item[{}]{name,  }\item[{}]{fun }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{  \textcolor{keyword}{static} std::vector<float> make\_ \#\# name (\textcolor{keywordtype}{float} sigma) \{       \(\backslash\)}
+\DoxyCodeLine{    sigma = std::max(sigma, 0.01F);            \(\backslash\)}
+\DoxyCodeLine{    int len = (int)ceil(sigma * \mbox{\hyperlink{filter_8h_a241aeeb764887ae5e3de58b98f04b16d}{WIDTH}}) + 1;                     \(\backslash\)}
+\DoxyCodeLine{    std::vector<float> mask(len);                               \(\backslash\)}
+\DoxyCodeLine{    for (\textcolor{keywordtype}{int} i = 0; i < len; i++) \{                             \(\backslash\)}
+\DoxyCodeLine{    mask[i] = fun;                                            \(\backslash\)}
+\DoxyCodeLine{    \}                                                           \(\backslash\)}
+\DoxyCodeLine{    return mask;                                                \(\backslash\)}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+Definition at line 50 of file filter.\+h.
+
+\mbox{\Hypertarget{filter_8h_a241aeeb764887ae5e3de58b98f04b16d}\label{filter_8h_a241aeeb764887ae5e3de58b98f04b16d}} 
+\index{filter.h@{filter.h}!WIDTH@{WIDTH}}
+\index{WIDTH@{WIDTH}!filter.h@{filter.h}}
+\doxysubsubsection{\texorpdfstring{WIDTH}{WIDTH}}
+{\footnotesize\ttfamily \#define WIDTH~4.\+0}
+
+
+
+Definition at line 31 of file filter.\+h.
+

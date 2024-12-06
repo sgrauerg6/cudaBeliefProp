@@ -1,0 +1,79 @@
+\hypertarget{namespacerun__cpu}{}\doxysection{run\+\_\+cpu Namespace Reference}
+\label{namespacerun__cpu}\index{run\_cpu@{run\_cpu}}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}{k\+Simulate\+Single\+CPU}} \{\char`\"{}Simulate\+Single\+CPU\char`\"{}\}
+\begin{DoxyCompactList}\small\item\em Constant to specify to run simulate single CPU on a dual-\/\+CPU system. \end{DoxyCompactList}\item 
+const unsigned int \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}} \{std\+::thread\+::hardware\+\_\+concurrency()\}
+\item 
+const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}{k\+Parallel\+Parameter\+Options}}
+\item 
+const unsigned int \mbox{\hyperlink{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}{k\+Min\+Num\+Threads\+Run}} \{std\+::min(\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 4u)\}
+\item 
+const std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}{k\+Parallel\+Params\+Default}} \{\{\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 1\}\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}\label{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}} 
+\index{run\_cpu@{run\_cpu}!kMinNumThreadsRun@{kMinNumThreadsRun}}
+\index{kMinNumThreadsRun@{kMinNumThreadsRun}!run\_cpu@{run\_cpu}}
+\doxysubsubsection{\texorpdfstring{kMinNumThreadsRun}{kMinNumThreadsRun}}
+{\footnotesize\ttfamily const unsigned int run\+\_\+cpu\+::k\+Min\+Num\+Threads\+Run \{std\+::min(\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 4u)\}}
+
+
+
+Definition at line 59 of file Run\+CPUSettings.\+h.
+
+\mbox{\Hypertarget{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}\label{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}} 
+\index{run\_cpu@{run\_cpu}!kNumThreadsCPU@{kNumThreadsCPU}}
+\index{kNumThreadsCPU@{kNumThreadsCPU}!run\_cpu@{run\_cpu}}
+\doxysubsubsection{\texorpdfstring{kNumThreadsCPU}{kNumThreadsCPU}}
+{\footnotesize\ttfamily const unsigned int run\+\_\+cpu\+::k\+Num\+Threads\+CPU \{std\+::thread\+::hardware\+\_\+concurrency()\}}
+
+
+
+Definition at line 50 of file Run\+CPUSettings.\+h.
+
+\mbox{\Hypertarget{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}\label{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}} 
+\index{run\_cpu@{run\_cpu}!kParallelParameterOptions@{kParallelParameterOptions}}
+\index{kParallelParameterOptions@{kParallelParameterOptions}!run\_cpu@{run\_cpu}}
+\doxysubsubsection{\texorpdfstring{kParallelParameterOptions}{kParallelParameterOptions}}
+{\footnotesize\ttfamily const std\+::vector$<$std\+::array$<$unsigned int, 2$>$ $>$ run\+\_\+cpu\+::k\+Parallel\+Parameter\+Options}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}, 1\}, \{ (3 * \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}}) / 4 , 1\}, \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 2, 1\},}
+\DoxyCodeLine{  \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 4, 1\}, \{ \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{kNumThreadsCPU}} / 8, 1\}\}}
+
+\end{DoxyCode}
+
+
+Definition at line 55 of file Run\+CPUSettings.\+h.
+
+\mbox{\Hypertarget{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}\label{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}} 
+\index{run\_cpu@{run\_cpu}!kParallelParamsDefault@{kParallelParamsDefault}}
+\index{kParallelParamsDefault@{kParallelParamsDefault}!run\_cpu@{run\_cpu}}
+\doxysubsubsection{\texorpdfstring{kParallelParamsDefault}{kParallelParamsDefault}}
+{\footnotesize\ttfamily const std\+::array$<$unsigned int, 2$>$ run\+\_\+cpu\+::k\+Parallel\+Params\+Default \{\{\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 1\}\}}
+
+
+
+Definition at line 60 of file Run\+CPUSettings.\+h.
+
+\mbox{\Hypertarget{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}\label{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}} 
+\index{run\_cpu@{run\_cpu}!kSimulateSingleCPU@{kSimulateSingleCPU}}
+\index{kSimulateSingleCPU@{kSimulateSingleCPU}!run\_cpu@{run\_cpu}}
+\doxysubsubsection{\texorpdfstring{kSimulateSingleCPU}{kSimulateSingleCPU}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+cpu\+::k\+Simulate\+Single\+CPU \{\char`\"{}Simulate\+Single\+CPU\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Constant to specify to run simulate single CPU on a dual-\/\+CPU system. 
+
+
+
+Definition at line 46 of file Run\+CPUSettings.\+h.
+

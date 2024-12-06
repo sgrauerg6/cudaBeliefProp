@@ -1,0 +1,175 @@
+\hypertarget{structrun__environment_1_1_run_imp_settings}{}\doxysection{run\+\_\+environment\+::Run\+Imp\+Settings Struct Reference}
+\label{structrun__environment_1_1_run_imp_settings}\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+
+
+Structure that stores settings for current implementation run.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Settings.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_aa527f0be3fbf6078cd29b4953a7a7b27}{Remove\+Parallel\+Param\+Below\+Min\+Threads}} (unsigned int min\+\_\+threads)
+\begin{DoxyCompactList}\small\item\em Remove parallel parameters with less than specified number of threads. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_aeaaafda0ce2e63e7045a5cb937be2e27}{Remove\+Parallel\+Param\+Above\+Max\+Threads}} (unsigned int max\+\_\+threads)
+\begin{DoxyCompactList}\small\item\em Remove parallel parameters with greater than specified number of threads. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::vector$<$ unsigned int $>$ \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_a4d7f710f059d13d556bc1d0a0ec31969}{datatypes\+\_\+eval\+\_\+sizes}}
+\item 
+\mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240}{Templated\+Iters\+Setting}} \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_a06cfa4d584d71839067d20bae31f11f1}{templated\+\_\+iters\+\_\+setting}}
+\item 
+std\+::pair$<$ bool, \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{Opt\+Parallel\+Params\+Setting}} $>$ \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_a1040ce93aa97fa38b4df8e687894f351}{opt\+\_\+parallel\+\_\+params\+\_\+setting}}
+\item 
+std\+::pair$<$ std\+::array$<$ unsigned int, 2 $>$, std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ $>$ \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_aee8eb53207a93b657d487f81fba77608}{p\+\_\+params\+\_\+default\+\_\+opt\+\_\+settings}}
+\item 
+std\+::optional$<$ std\+::string $>$ \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_a7af6109466c11f58c020cb12e787407c}{run\+\_\+name}}
+\item 
+std\+::optional$<$ std\+::array$<$ std\+::string\+\_\+view, 2 $>$ $>$ \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_a49d4b6fef24b939e886adc756918a1be}{baseline\+\_\+runtimes\+\_\+path\+\_\+desc}}
+\item 
+std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::vector$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}} $>$ $>$ $>$ \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings_aa1ca50235671f852a22c098f7eebe27c}{subset\+\_\+desc\+\_\+input\+\_\+sig}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Structure that stores settings for current implementation run. 
+
+Definition at line 53 of file Run\+Settings.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_aeaaafda0ce2e63e7045a5cb937be2e27}\label{structrun__environment_1_1_run_imp_settings_aeaaafda0ce2e63e7045a5cb937be2e27}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!RemoveParallelParamAboveMaxThreads@{RemoveParallelParamAboveMaxThreads}}
+\index{RemoveParallelParamAboveMaxThreads@{RemoveParallelParamAboveMaxThreads}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{RemoveParallelParamAboveMaxThreads()}{RemoveParallelParamAboveMaxThreads()}}
+{\footnotesize\ttfamily void run\+\_\+environment\+::\+Run\+Imp\+Settings\+::\+Remove\+Parallel\+Param\+Above\+Max\+Threads (\begin{DoxyParamCaption}\item[{unsigned int}]{max\+\_\+threads }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove parallel parameters with greater than specified number of threads. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+threads} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 79 of file Run\+Settings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structrun__environment_1_1_run_imp_settings_aeaaafda0ce2e63e7045a5cb937be2e27_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_aa527f0be3fbf6078cd29b4953a7a7b27}\label{structrun__environment_1_1_run_imp_settings_aa527f0be3fbf6078cd29b4953a7a7b27}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!RemoveParallelParamBelowMinThreads@{RemoveParallelParamBelowMinThreads}}
+\index{RemoveParallelParamBelowMinThreads@{RemoveParallelParamBelowMinThreads}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{RemoveParallelParamBelowMinThreads()}{RemoveParallelParamBelowMinThreads()}}
+{\footnotesize\ttfamily void run\+\_\+environment\+::\+Run\+Imp\+Settings\+::\+Remove\+Parallel\+Param\+Below\+Min\+Threads (\begin{DoxyParamCaption}\item[{unsigned int}]{min\+\_\+threads }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove parallel parameters with less than specified number of threads. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em min\+\_\+threads} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 68 of file Run\+Settings.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{structrun__environment_1_1_run_imp_settings_aa527f0be3fbf6078cd29b4953a7a7b27_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_a49d4b6fef24b939e886adc756918a1be}\label{structrun__environment_1_1_run_imp_settings_a49d4b6fef24b939e886adc756918a1be}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!baseline\_runtimes\_path\_desc@{baseline\_runtimes\_path\_desc}}
+\index{baseline\_runtimes\_path\_desc@{baseline\_runtimes\_path\_desc}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{baseline\_runtimes\_path\_desc}{baseline\_runtimes\_path\_desc}}
+{\footnotesize\ttfamily std\+::optional$<$std\+::array$<$std\+::string\+\_\+view, 2$>$ $>$ run\+\_\+environment\+::\+Run\+Imp\+Settings\+::baseline\+\_\+runtimes\+\_\+path\+\_\+desc}
+
+
+
+Definition at line 60 of file Run\+Settings.\+h.
+
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_a4d7f710f059d13d556bc1d0a0ec31969}\label{structrun__environment_1_1_run_imp_settings_a4d7f710f059d13d556bc1d0a0ec31969}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!datatypes\_eval\_sizes@{datatypes\_eval\_sizes}}
+\index{datatypes\_eval\_sizes@{datatypes\_eval\_sizes}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{datatypes\_eval\_sizes}{datatypes\_eval\_sizes}}
+{\footnotesize\ttfamily std\+::vector$<$unsigned int$>$ run\+\_\+environment\+::\+Run\+Imp\+Settings\+::datatypes\+\_\+eval\+\_\+sizes}
+
+
+
+Definition at line 54 of file Run\+Settings.\+h.
+
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_a1040ce93aa97fa38b4df8e687894f351}\label{structrun__environment_1_1_run_imp_settings_a1040ce93aa97fa38b4df8e687894f351}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!opt\_parallel\_params\_setting@{opt\_parallel\_params\_setting}}
+\index{opt\_parallel\_params\_setting@{opt\_parallel\_params\_setting}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{opt\_parallel\_params\_setting}{opt\_parallel\_params\_setting}}
+{\footnotesize\ttfamily std\+::pair$<$bool, \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{Opt\+Parallel\+Params\+Setting}}$>$ run\+\_\+environment\+::\+Run\+Imp\+Settings\+::opt\+\_\+parallel\+\_\+params\+\_\+setting}
+
+
+
+Definition at line 56 of file Run\+Settings.\+h.
+
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_aee8eb53207a93b657d487f81fba77608}\label{structrun__environment_1_1_run_imp_settings_aee8eb53207a93b657d487f81fba77608}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!p\_params\_default\_opt\_settings@{p\_params\_default\_opt\_settings}}
+\index{p\_params\_default\_opt\_settings@{p\_params\_default\_opt\_settings}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{p\_params\_default\_opt\_settings}{p\_params\_default\_opt\_settings}}
+{\footnotesize\ttfamily std\+::pair$<$std\+::array$<$unsigned int, 2$>$, std\+::vector$<$std\+::array$<$unsigned int, 2$>$ $>$ $>$ run\+\_\+environment\+::\+Run\+Imp\+Settings\+::p\+\_\+params\+\_\+default\+\_\+opt\+\_\+settings}
+
+
+
+Definition at line 57 of file Run\+Settings.\+h.
+
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_a7af6109466c11f58c020cb12e787407c}\label{structrun__environment_1_1_run_imp_settings_a7af6109466c11f58c020cb12e787407c}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!run\_name@{run\_name}}
+\index{run\_name@{run\_name}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{run\_name}{run\_name}}
+{\footnotesize\ttfamily std\+::optional$<$std\+::string$>$ run\+\_\+environment\+::\+Run\+Imp\+Settings\+::run\+\_\+name}
+
+
+
+Definition at line 58 of file Run\+Settings.\+h.
+
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_aa1ca50235671f852a22c098f7eebe27c}\label{structrun__environment_1_1_run_imp_settings_aa1ca50235671f852a22c098f7eebe27c}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!subset\_desc\_input\_sig@{subset\_desc\_input\_sig}}
+\index{subset\_desc\_input\_sig@{subset\_desc\_input\_sig}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{subset\_desc\_input\_sig}{subset\_desc\_input\_sig}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::pair$<$std\+::string, std\+::vector$<$\mbox{\hyperlink{class_input_signature}{Input\+Signature}}$>$ $>$ $>$ run\+\_\+environment\+::\+Run\+Imp\+Settings\+::subset\+\_\+desc\+\_\+input\+\_\+sig}
+
+
+
+Definition at line 61 of file Run\+Settings.\+h.
+
+\mbox{\Hypertarget{structrun__environment_1_1_run_imp_settings_a06cfa4d584d71839067d20bae31f11f1}\label{structrun__environment_1_1_run_imp_settings_a06cfa4d584d71839067d20bae31f11f1}} 
+\index{run\_environment::RunImpSettings@{run\_environment::RunImpSettings}!templated\_iters\_setting@{templated\_iters\_setting}}
+\index{templated\_iters\_setting@{templated\_iters\_setting}!run\_environment::RunImpSettings@{run\_environment::RunImpSettings}}
+\doxysubsubsection{\texorpdfstring{templated\_iters\_setting}{templated\_iters\_setting}}
+{\footnotesize\ttfamily \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240}{Templated\+Iters\+Setting}} run\+\_\+environment\+::\+Run\+Imp\+Settings\+::templated\+\_\+iters\+\_\+setting}
+
+
+
+Definition at line 55 of file Run\+Settings.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Settings\+Params/\mbox{\hyperlink{_run_settings_8h}{Run\+Settings.\+h}}\end{DoxyCompactItemize}

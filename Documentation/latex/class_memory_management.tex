@@ -1,0 +1,157 @@
+\hypertarget{class_memory_management}{}\doxysection{Memory\+Management$<$ T $>$ Class Template Reference}
+\label{class_memory_management}\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+
+
+Class for memory management with functions defined for standard memory allocation using CPU. Class functions can be overridden to support other computation devices such as GPU.  
+
+
+
+
+{\ttfamily \#include $<$Memory\+Management.\+h$>$}
+
+
+
+Inheritance diagram for Memory\+Management$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{class_memory_management__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual T $\ast$ \mbox{\hyperlink{class_memory_management_a6aa75de1d5a7749a8cce7f4378a98d3c}{Allocate\+Memory\+On\+Device}} (std\+::size\+\_\+t num\+Data) const
+\item 
+virtual void \mbox{\hyperlink{class_memory_management_ae5421bee769043e15b28e339a2589f62}{Free\+Memory\+On\+Device}} (T $\ast$array\+\_\+to\+\_\+free) const
+\item 
+virtual T $\ast$ \mbox{\hyperlink{class_memory_management_a46cf20a44494da312f5872d62c53a2db}{Allocate\+Aligned\+Memory\+On\+Device}} (std\+::size\+\_\+t num\+Data, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} acc\+\_\+setting) const
+\item 
+virtual void \mbox{\hyperlink{class_memory_management_aec50b4bb3048839df9efacb032947036}{Free\+Aligned\+Memory\+On\+Device}} (T $\ast$memory\+\_\+to\+\_\+free) const
+\item 
+virtual void \mbox{\hyperlink{class_memory_management_aab09c0b137fc68646ffe341b383d65fb}{Transfer\+Data\+From\+Device\+To\+Host}} (T $\ast$dest\+\_\+array, const T $\ast$in\+\_\+array, std\+::size\+\_\+t num\+\_\+data\+\_\+transfer) const
+\item 
+virtual void \mbox{\hyperlink{class_memory_management_a826115cf54e69b4727133c9b61584018}{Transfer\+Data\+From\+Host\+To\+Device}} (T $\ast$dest\+\_\+array, const T $\ast$in\+\_\+array, std\+::size\+\_\+t num\+\_\+data\+\_\+transfer) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T$>$\newline
+class Memory\+Management$<$ T $>$}
+
+Class for memory management with functions defined for standard memory allocation using CPU. Class functions can be overridden to support other computation devices such as GPU. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 24 of file Memory\+Management.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_memory_management_a46cf20a44494da312f5872d62c53a2db}\label{class_memory_management_a46cf20a44494da312f5872d62c53a2db}} 
+\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}!AllocateAlignedMemoryOnDevice@{AllocateAlignedMemoryOnDevice}}
+\index{AllocateAlignedMemoryOnDevice@{AllocateAlignedMemoryOnDevice}!MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocateAlignedMemoryOnDevice()}{AllocateAlignedMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+virtual T$\ast$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$\+::Allocate\+Aligned\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{num\+Data,  }\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}}]{acc\+\_\+setting }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_memory_management_c_u_d_a_ad2509b638b9e0c99258f678b92391c7f}{Memory\+Management\+CUDA$<$ T $>$}}.
+
+
+
+Definition at line 35 of file Memory\+Management.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_memory_management_a46cf20a44494da312f5872d62c53a2db_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_memory_management_a6aa75de1d5a7749a8cce7f4378a98d3c}\label{class_memory_management_a6aa75de1d5a7749a8cce7f4378a98d3c}} 
+\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}!AllocateMemoryOnDevice@{AllocateMemoryOnDevice}}
+\index{AllocateMemoryOnDevice@{AllocateMemoryOnDevice}!MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocateMemoryOnDevice()}{AllocateMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+virtual T$\ast$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$\+::Allocate\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{num\+Data }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_memory_management_c_u_d_a_a9d3d64ff492e8246b92e4306b97ab6e0}{Memory\+Management\+CUDA$<$ T $>$}}.
+
+
+
+Definition at line 27 of file Memory\+Management.\+h.
+
+\mbox{\Hypertarget{class_memory_management_aec50b4bb3048839df9efacb032947036}\label{class_memory_management_aec50b4bb3048839df9efacb032947036}} 
+\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}!FreeAlignedMemoryOnDevice@{FreeAlignedMemoryOnDevice}}
+\index{FreeAlignedMemoryOnDevice@{FreeAlignedMemoryOnDevice}!MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{FreeAlignedMemoryOnDevice()}{FreeAlignedMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+virtual void \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$\+::Free\+Aligned\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{memory\+\_\+to\+\_\+free }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_memory_management_c_u_d_a_a5c4f2f4fda7c25cdc1501b04189068b7}{Memory\+Management\+CUDA$<$ T $>$}}.
+
+
+
+Definition at line 50 of file Memory\+Management.\+h.
+
+\mbox{\Hypertarget{class_memory_management_ae5421bee769043e15b28e339a2589f62}\label{class_memory_management_ae5421bee769043e15b28e339a2589f62}} 
+\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}!FreeMemoryOnDevice@{FreeMemoryOnDevice}}
+\index{FreeMemoryOnDevice@{FreeMemoryOnDevice}!MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{FreeMemoryOnDevice()}{FreeMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+virtual void \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$\+::Free\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{array\+\_\+to\+\_\+free }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_memory_management_c_u_d_a_a133ad2071e9e6e7af363311570da853d}{Memory\+Management\+CUDA$<$ T $>$}}.
+
+
+
+Definition at line 31 of file Memory\+Management.\+h.
+
+\mbox{\Hypertarget{class_memory_management_aab09c0b137fc68646ffe341b383d65fb}\label{class_memory_management_aab09c0b137fc68646ffe341b383d65fb}} 
+\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}!TransferDataFromDeviceToHost@{TransferDataFromDeviceToHost}}
+\index{TransferDataFromDeviceToHost@{TransferDataFromDeviceToHost}!MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TransferDataFromDeviceToHost()}{TransferDataFromDeviceToHost()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+virtual void \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$\+::Transfer\+Data\+From\+Device\+To\+Host (\begin{DoxyParamCaption}\item[{T $\ast$}]{dest\+\_\+array,  }\item[{const T $\ast$}]{in\+\_\+array,  }\item[{std\+::size\+\_\+t}]{num\+\_\+data\+\_\+transfer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_memory_management_c_u_d_a_a6ad40a9e553bcc2edf3c7a185b099f0a}{Memory\+Management\+CUDA$<$ T $>$}}.
+
+
+
+Definition at line 59 of file Memory\+Management.\+h.
+
+\mbox{\Hypertarget{class_memory_management_a826115cf54e69b4727133c9b61584018}\label{class_memory_management_a826115cf54e69b4727133c9b61584018}} 
+\index{MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}!TransferDataFromHostToDevice@{TransferDataFromHostToDevice}}
+\index{TransferDataFromHostToDevice@{TransferDataFromHostToDevice}!MemoryManagement$<$ T $>$@{MemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TransferDataFromHostToDevice()}{TransferDataFromHostToDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+virtual void \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$\+::Transfer\+Data\+From\+Host\+To\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{dest\+\_\+array,  }\item[{const T $\ast$}]{in\+\_\+array,  }\item[{std\+::size\+\_\+t}]{num\+\_\+data\+\_\+transfer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented in \mbox{\hyperlink{class_memory_management_c_u_d_a_a1a4702b5132d2ec82f981020dd491f37}{Memory\+Management\+CUDA$<$ T $>$}}.
+
+
+
+Definition at line 67 of file Memory\+Management.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Imp/\mbox{\hyperlink{_memory_management_8h}{Memory\+Management.\+h}}\end{DoxyCompactItemize}

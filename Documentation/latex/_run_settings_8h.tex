@@ -1,0 +1,45 @@
+\hypertarget{_run_settings_8h}{}\doxysection{src/\+Run\+Settings\+Params/\+Run\+Settings.h File Reference}
+\label{_run_settings_8h}\index{src/RunSettingsParams/RunSettings.h@{src/RunSettingsParams/RunSettings.h}}
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include $<$thread$>$}\newline
+{\ttfamily \#include $<$ranges$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Input\+Signature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Consts\+Enums.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}CPUThreads\+Pinned\+To\+Socket.\+h\char`\"{}}\newline
+Include dependency graph for Run\+Settings.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_settings_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_settings_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}}
+\begin{DoxyCompactList}\small\item\em Structure that stores settings for current implementation run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacerun__environment}{run\+\_\+environment}}
+\begin{DoxyCompactList}\small\item\em Constants and enums related to run environment and settings for run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}{run\+\_\+environment\+::\+Get\+Bytes\+Align\+Memory}} (Acc\+Setting accel\+\_\+setting)
+\item 
+unsigned int \mbox{\hyperlink{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}{run\+\_\+environment\+::\+Get\+Num\+Data\+Align\+Width}} (Acc\+Setting accel\+\_\+setting)
+\item 
+{\footnotesize template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ }\\\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}{run\+\_\+environment\+::\+Run\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Generate \mbox{\hyperlink{class_run_data}{Run\+Data}} object that contains description header with corresponding value for each run setting. \end{DoxyCompactList}\end{DoxyCompactItemize}

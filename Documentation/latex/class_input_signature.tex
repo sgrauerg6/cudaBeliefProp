@@ -1,0 +1,281 @@
+\hypertarget{class_input_signature}{}\doxysection{Input\+Signature Class Reference}
+\label{class_input_signature}\index{InputSignature@{InputSignature}}
+
+
+Class defines input signature for evaluation run that contains evaluation set number, data type, and whether or not to use templated loop iteration count.  
+
+
+
+
+{\ttfamily \#include $<$Input\+Signature.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_input_signature_ad43082ee3cadef77d72b62b9b4a3d7b2}{Input\+Signature}} (const std\+::array$<$ std\+::string\+\_\+view, 3 $>$ \&in\+\_\+sig\+\_\+strings)
+\begin{DoxyCompactList}\small\item\em Constructor to generate evaluation input signature from string array with strings corresponding to each part. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_input_signature_aa98ce4cd19ff01ae7820255f167a7dbd}{Input\+Signature}} (std\+::optional$<$ unsigned int $>$ data\+\_\+type\+\_\+size, std\+::optional$<$ unsigned int $>$ eval\+\_\+set\+\_\+num, std\+::optional$<$ bool $>$ use\+\_\+templated\+\_\+loop\+\_\+iters)
+\begin{DoxyCompactList}\small\item\em Constructor to generate evaluation input signature from parameters corresponding to each part. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_signature_ab7068c172488696c06dda2fc629ba663}{operator$<$}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Less than operator for comparing evaluation input signatures so they can be ordered Operator needed to support ordering since input signature is used as std\+::map key and also for evaluation output order If any \mbox{\hyperlink{class_input_signature}{Input\+Signature}} member is \char`\"{}no value\char`\"{} that property is considered \char`\"{}any\char`\"{} and is ignored in the comparison. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_signature_a4be7ab943ae1a76a160fda8b531aabb6}{operator==}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Equality operator for comparing evaluation input signatures. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_input_signature_aed356bb0df9d778d71cb383dab9cd8bf}{Equals\+Using\+Any}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&rhs) const
+\begin{DoxyCompactList}\small\item\em Alternate \char`\"{}equal\char`\"{} operator where an attribute is considered \char`\"{}equal\char`\"{} in cases where one side is \char`\"{}\+ANY\char`\"{} for the attribute as indicated by \char`\"{}no value\char`\"{} for std\+::optional object. \end{DoxyCompactList}\item 
+std\+::string \mbox{\hyperlink{class_input_signature_ac5936d8d8fa37916818caf50100181c1}{Data\+Type\+Str}} () const
+\item 
+std\+::string \mbox{\hyperlink{class_input_signature_a5af9a3c2037dc34e8ae16a0721212740}{Eval\+Set\+Num\+Str}} () const
+\item 
+unsigned int \mbox{\hyperlink{class_input_signature_ae380baa162dbe7347fbaaf1630e475de}{Eval\+Set\+Num}} () const
+\item 
+std\+::string \mbox{\hyperlink{class_input_signature_a4af40056d43ffd5c0bcb4fb03e395856}{Use\+Templated\+Loop\+Iters\+Str}} () const
+\item 
+void \mbox{\hyperlink{class_input_signature_a3a007aac5945d55c4cc95b7a3863032d}{Remove\+Templated\+Loop\+Iter\+Setting}} ()
+\begin{DoxyCompactList}\small\item\em Remove templated loop iter setting and change it to \char`\"{}any\char`\"{}. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_input_signature_ab256f670ed3132a1ce32a4b9f3b1cdc8}{Remove\+Datatype\+Setting}} ()
+\begin{DoxyCompactList}\small\item\em Remove data type setting and change it to \char`\"{}any\char`\"{}. \end{DoxyCompactList}\item 
+std\+::optional$<$ bool $>$ \mbox{\hyperlink{class_input_signature_a76db85485e63fb4d4cf54ecc6d7d1054}{Templated\+Loop\+Iters}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{class_input_signature_aa0f2219d09d758b6b6b0a2e701c4807e}{operator$<$$<$}} (std\+::ostream \&os, const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&eval\+\_\+input\+\_\+sig)
+\begin{DoxyCompactList}\small\item\em Overloaded $<$$<$ operator to write \mbox{\hyperlink{class_input_signature}{Input\+Signature}} object to stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class defines input signature for evaluation run that contains evaluation set number, data type, and whether or not to use templated loop iteration count. 
+
+Definition at line 26 of file Input\+Signature.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_input_signature_ad43082ee3cadef77d72b62b9b4a3d7b2}\label{class_input_signature_ad43082ee3cadef77d72b62b9b4a3d7b2}} 
+\index{InputSignature@{InputSignature}!InputSignature@{InputSignature}}
+\index{InputSignature@{InputSignature}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{InputSignature()}{InputSignature()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Input\+Signature\+::\+Input\+Signature (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string\+\_\+view, 3 $>$ \&}]{in\+\_\+sig\+\_\+strings }\end{DoxyParamCaption})}
+
+
+
+Constructor to generate evaluation input signature from string array with strings corresponding to each part. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in\+\_\+sig\+\_\+strings} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 17 of file Input\+Signature.\+cpp.
+
+\mbox{\Hypertarget{class_input_signature_aa98ce4cd19ff01ae7820255f167a7dbd}\label{class_input_signature_aa98ce4cd19ff01ae7820255f167a7dbd}} 
+\index{InputSignature@{InputSignature}!InputSignature@{InputSignature}}
+\index{InputSignature@{InputSignature}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{InputSignature()}{InputSignature()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Input\+Signature\+::\+Input\+Signature (\begin{DoxyParamCaption}\item[{std\+::optional$<$ unsigned int $>$}]{data\+\_\+type\+\_\+size,  }\item[{std\+::optional$<$ unsigned int $>$}]{eval\+\_\+set\+\_\+num,  }\item[{std\+::optional$<$ bool $>$}]{use\+\_\+templated\+\_\+loop\+\_\+iters }\end{DoxyParamCaption})}
+
+
+
+Constructor to generate evaluation input signature from parameters corresponding to each part. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+type\+\_\+size} & \\
+\hline
+{\em eval\+\_\+set\+\_\+num} & \\
+\hline
+{\em use\+\_\+templated\+\_\+loop\+\_\+iters} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 36 of file Input\+Signature.\+cpp.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_input_signature_ac5936d8d8fa37916818caf50100181c1}\label{class_input_signature_ac5936d8d8fa37916818caf50100181c1}} 
+\index{InputSignature@{InputSignature}!DataTypeStr@{DataTypeStr}}
+\index{DataTypeStr@{DataTypeStr}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{DataTypeStr()}{DataTypeStr()}}
+{\footnotesize\ttfamily std\+::string Input\+Signature\+::\+Data\+Type\+Str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 84 of file Input\+Signature.\+h.
+
+\mbox{\Hypertarget{class_input_signature_aed356bb0df9d778d71cb383dab9cd8bf}\label{class_input_signature_aed356bb0df9d778d71cb383dab9cd8bf}} 
+\index{InputSignature@{InputSignature}!EqualsUsingAny@{EqualsUsingAny}}
+\index{EqualsUsingAny@{EqualsUsingAny}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{EqualsUsingAny()}{EqualsUsingAny()}}
+{\footnotesize\ttfamily bool Input\+Signature\+::\+Equals\+Using\+Any (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&}]{rhs }\end{DoxyParamCaption}) const}
+
+
+
+Alternate \char`\"{}equal\char`\"{} operator where an attribute is considered \char`\"{}equal\char`\"{} in cases where one side is \char`\"{}\+ANY\char`\"{} for the attribute as indicated by \char`\"{}no value\char`\"{} for std\+::optional object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 90 of file Input\+Signature.\+cpp.
+
+\mbox{\Hypertarget{class_input_signature_ae380baa162dbe7347fbaaf1630e475de}\label{class_input_signature_ae380baa162dbe7347fbaaf1630e475de}} 
+\index{InputSignature@{InputSignature}!EvalSetNum@{EvalSetNum}}
+\index{EvalSetNum@{EvalSetNum}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{EvalSetNum()}{EvalSetNum()}}
+{\footnotesize\ttfamily unsigned int Input\+Signature\+::\+Eval\+Set\+Num (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 109 of file Input\+Signature.\+h.
+
+\mbox{\Hypertarget{class_input_signature_a5af9a3c2037dc34e8ae16a0721212740}\label{class_input_signature_a5af9a3c2037dc34e8ae16a0721212740}} 
+\index{InputSignature@{InputSignature}!EvalSetNumStr@{EvalSetNumStr}}
+\index{EvalSetNumStr@{EvalSetNumStr}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{EvalSetNumStr()}{EvalSetNumStr()}}
+{\footnotesize\ttfamily std\+::string Input\+Signature\+::\+Eval\+Set\+Num\+Str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 100 of file Input\+Signature.\+h.
+
+\mbox{\Hypertarget{class_input_signature_ab7068c172488696c06dda2fc629ba663}\label{class_input_signature_ab7068c172488696c06dda2fc629ba663}} 
+\index{InputSignature@{InputSignature}!operator$<$@{operator$<$}}
+\index{operator$<$@{operator$<$}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{operator$<$()}{operator<()}}
+{\footnotesize\ttfamily bool Input\+Signature\+::operator$<$ (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&}]{rhs }\end{DoxyParamCaption}) const}
+
+
+
+Less than operator for comparing evaluation input signatures so they can be ordered Operator needed to support ordering since input signature is used as std\+::map key and also for evaluation output order If any \mbox{\hyperlink{class_input_signature}{Input\+Signature}} member is \char`\"{}no value\char`\"{} that property is considered \char`\"{}any\char`\"{} and is ignored in the comparison. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 50 of file Input\+Signature.\+cpp.
+
+\mbox{\Hypertarget{class_input_signature_a4be7ab943ae1a76a160fda8b531aabb6}\label{class_input_signature_a4be7ab943ae1a76a160fda8b531aabb6}} 
+\index{InputSignature@{InputSignature}!operator==@{operator==}}
+\index{operator==@{operator==}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool Input\+Signature\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&}]{rhs }\end{DoxyParamCaption}) const}
+
+
+
+Equality operator for comparing evaluation input signatures. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em rhs} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file Input\+Signature.\+cpp.
+
+\mbox{\Hypertarget{class_input_signature_ab256f670ed3132a1ce32a4b9f3b1cdc8}\label{class_input_signature_ab256f670ed3132a1ce32a4b9f3b1cdc8}} 
+\index{InputSignature@{InputSignature}!RemoveDatatypeSetting@{RemoveDatatypeSetting}}
+\index{RemoveDatatypeSetting@{RemoveDatatypeSetting}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{RemoveDatatypeSetting()}{RemoveDatatypeSetting()}}
+{\footnotesize\ttfamily void Input\+Signature\+::\+Remove\+Datatype\+Setting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove data type setting and change it to \char`\"{}any\char`\"{}. 
+
+
+
+Definition at line 139 of file Input\+Signature.\+h.
+
+\mbox{\Hypertarget{class_input_signature_a3a007aac5945d55c4cc95b7a3863032d}\label{class_input_signature_a3a007aac5945d55c4cc95b7a3863032d}} 
+\index{InputSignature@{InputSignature}!RemoveTemplatedLoopIterSetting@{RemoveTemplatedLoopIterSetting}}
+\index{RemoveTemplatedLoopIterSetting@{RemoveTemplatedLoopIterSetting}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{RemoveTemplatedLoopIterSetting()}{RemoveTemplatedLoopIterSetting()}}
+{\footnotesize\ttfamily void Input\+Signature\+::\+Remove\+Templated\+Loop\+Iter\+Setting (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Remove templated loop iter setting and change it to \char`\"{}any\char`\"{}. 
+
+
+
+Definition at line 131 of file Input\+Signature.\+h.
+
+\mbox{\Hypertarget{class_input_signature_a76db85485e63fb4d4cf54ecc6d7d1054}\label{class_input_signature_a76db85485e63fb4d4cf54ecc6d7d1054}} 
+\index{InputSignature@{InputSignature}!TemplatedLoopIters@{TemplatedLoopIters}}
+\index{TemplatedLoopIters@{TemplatedLoopIters}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{TemplatedLoopIters()}{TemplatedLoopIters()}}
+{\footnotesize\ttfamily std\+::optional$<$bool$>$ Input\+Signature\+::\+Templated\+Loop\+Iters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 143 of file Input\+Signature.\+h.
+
+\mbox{\Hypertarget{class_input_signature_a4af40056d43ffd5c0bcb4fb03e395856}\label{class_input_signature_a4af40056d43ffd5c0bcb4fb03e395856}} 
+\index{InputSignature@{InputSignature}!UseTemplatedLoopItersStr@{UseTemplatedLoopItersStr}}
+\index{UseTemplatedLoopItersStr@{UseTemplatedLoopItersStr}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{UseTemplatedLoopItersStr()}{UseTemplatedLoopItersStr()}}
+{\footnotesize\ttfamily std\+::string Input\+Signature\+::\+Use\+Templated\+Loop\+Iters\+Str (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 118 of file Input\+Signature.\+h.
+
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{class_input_signature_aa0f2219d09d758b6b6b0a2e701c4807e}\label{class_input_signature_aa0f2219d09d758b6b6b0a2e701c4807e}} 
+\index{InputSignature@{InputSignature}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!InputSignature@{InputSignature}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily std\+::ostream\& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&}]{eval\+\_\+input\+\_\+sig }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Overloaded $<$$<$ operator to write \mbox{\hyperlink{class_input_signature}{Input\+Signature}} object to stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & \\
+\hline
+{\em eval\+\_\+input\+\_\+sig} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::ostream\& 
+\end{DoxyReturn}
+
+
+Definition at line 163 of file Input\+Signature.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Settings\+Params/\mbox{\hyperlink{_input_signature_8h}{Input\+Signature.\+h}}\item 
+src/\+Run\+Settings\+Params/\mbox{\hyperlink{_input_signature_8cpp}{Input\+Signature.\+cpp}}\end{DoxyCompactItemize}

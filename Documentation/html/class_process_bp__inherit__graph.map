@@ -1,0 +1,5 @@
+<map id="ProcessBp&lt; T, DISP_VALS, ACCELERATION &gt;" name="ProcessBp&lt; T, DISP_VALS, ACCELERATION &gt;">
+<area shape="rect" id="node1" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="5,39,188,80"/>
+<area shape="rect" id="node2" href="$class_process_bp_c_u_d_a.html" title="Class that define functions used in processing bp in the CUDA implementation." alt="" coords="264,5,452,47"/>
+<area shape="rect" id="node3" href="$class_process_bp_optimized_c_p_u.html" title="Class that define functions used in processing bp in the optimized CPU implementation." alt="" coords="236,71,480,112"/>
+</map>

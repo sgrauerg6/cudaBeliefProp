@@ -1,0 +1,47 @@
+\hypertarget{_run_bp_on_stereo_set_8h}{}\doxysection{src/beliefprop/\+Bp\+Run\+Processing/\+Run\+Bp\+On\+Stereo\+Set.h File Reference}
+\label{_run_bp_on_stereo_set_8h}\index{src/beliefprop/BpRunProcessing/RunBpOnStereoSet.h@{src/beliefprop/BpRunProcessing/RunBpOnStereoSet.h}}
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$ranges$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp/\+Memory\+Management.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Eval\+Consts\+Enums.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Runtime\+Timing/\+Detailed\+Timings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Image\+Processing/\+Bp\+Image.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Image\+Processing/\+Disparity\+Map.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Image\+Processing/\+Smooth\+Image.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Consts\+Enums\+Aliases.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Stereo\+Sets.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Results\+Evaluation/\+Detailed\+Timing\+Bp\+Consts.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Parallel\+Params.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Process\+Bp.\+h\char`\"{}}\newline
+Include dependency graph for Run\+Bp\+On\+Stereo\+Set.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_bp_on_stereo_set_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_bp_on_stereo_set_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}}
+\begin{DoxyCompactList}\small\item\em Structure with output disparity map, runtime, and other evaluation data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}
+\begin{DoxyCompactList}\small\item\em Structure with pointers to objects containing functions for smoothing images, processing bp, and memory management on target device using specified acceleration. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}
+\begin{DoxyCompactList}\small\item\em Abstract class to set up and run belief propagation on target device using specified acceleration. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$class_bp_image.html" title="Class to define images that are used in bp processing." alt="" coords="5,31,124,57"/>
+<area shape="rect" id="node2" href="$class_disparity_map.html" title=" " alt="" coords="172,5,340,32"/>
+<area shape="rect" id="node3" href="$class_disparity_map.html" title="Class to define disparity map image that is output from bp processing." alt="" coords="183,56,329,83"/>
+</map>

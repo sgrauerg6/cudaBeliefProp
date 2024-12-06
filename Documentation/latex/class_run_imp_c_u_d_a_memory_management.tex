@@ -1,0 +1,175 @@
+\hypertarget{class_run_imp_c_u_d_a_memory_management}{}\doxysection{Run\+Imp\+CUDAMemory\+Management$<$ T $>$ Class Template Reference}
+\label{class_run_imp_c_u_d_a_memory_management}\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+
+
+{\ttfamily \#include $<$Run\+Imp\+CUDAMemory\+Management.\+h$>$}
+
+
+
+Inheritance diagram for Run\+Imp\+CUDAMemory\+Management$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{class_run_imp_c_u_d_a_memory_management__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Run\+Imp\+CUDAMemory\+Management$<$ T $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{class_run_imp_c_u_d_a_memory_management__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+T $\ast$ \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management_a0816077d4b7881af63c4b647aff1c1f4}{Allocate\+Memory\+On\+Device}} (std\+::size\+\_\+t num\+Data) const override
+\item 
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management_a95624f2b4a4394957f7684609e71e260}{Free\+Memory\+On\+Device}} (T $\ast$array\+\_\+to\+\_\+free) const override
+\item 
+T $\ast$ \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management_ab29e9fb833a71e26a991b5af4b8d4c0b}{Allocate\+Aligned\+Memory\+On\+Device}} (std\+::size\+\_\+t num\+Data, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} acc\+\_\+setting) const override
+\item 
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management_a6ef175938e51de91486d4e9886183388}{Free\+Aligned\+Memory\+On\+Device}} (T $\ast$memory\+\_\+to\+\_\+free) const override
+\item 
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management_a6a37040940c16bdec38616db667c86ff}{Transfer\+Data\+From\+Device\+To\+Host}} (T $\ast$dest\+\_\+array, const T $\ast$in\+\_\+array, std\+::size\+\_\+t num\+\_\+data\+\_\+transfer) const override
+\item 
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management_a9145df93608a351decd57b3149dafcc9}{Transfer\+Data\+From\+Host\+To\+Device}} (T $\ast$dest\+\_\+array, const T $\ast$in\+\_\+array, std\+::size\+\_\+t num\+\_\+data\+\_\+transfer) const override
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T$>$\newline
+class Run\+Imp\+CUDAMemory\+Management$<$ T $>$}
+
+
+
+Definition at line 11 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_imp_c_u_d_a_memory_management_ab29e9fb833a71e26a991b5af4b8d4c0b}\label{class_run_imp_c_u_d_a_memory_management_ab29e9fb833a71e26a991b5af4b8d4c0b}} 
+\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}!AllocateAlignedMemoryOnDevice@{AllocateAlignedMemoryOnDevice}}
+\index{AllocateAlignedMemoryOnDevice@{AllocateAlignedMemoryOnDevice}!RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocateAlignedMemoryOnDevice()}{AllocateAlignedMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+T$\ast$ \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management}{Run\+Imp\+CUDAMemory\+Management}}$<$ T $>$\+::Allocate\+Aligned\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{num\+Data,  }\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}}]{acc\+\_\+setting }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_run_imp_memory_management_acfc0013a0bc06950a76e433825c6c694}{Run\+Imp\+Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 29 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_c_u_d_a_memory_management_ab29e9fb833a71e26a991b5af4b8d4c0b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_c_u_d_a_memory_management_a0816077d4b7881af63c4b647aff1c1f4}\label{class_run_imp_c_u_d_a_memory_management_a0816077d4b7881af63c4b647aff1c1f4}} 
+\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}!AllocateMemoryOnDevice@{AllocateMemoryOnDevice}}
+\index{AllocateMemoryOnDevice@{AllocateMemoryOnDevice}!RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{AllocateMemoryOnDevice()}{AllocateMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+T$\ast$ \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management}{Run\+Imp\+CUDAMemory\+Management}}$<$ T $>$\+::Allocate\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{num\+Data }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_run_imp_memory_management_a6f1086dbc6a57eb7c63301cf34f0f08e}{Run\+Imp\+Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 15 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_c_u_d_a_memory_management_a0816077d4b7881af63c4b647aff1c1f4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_c_u_d_a_memory_management_a6ef175938e51de91486d4e9886183388}\label{class_run_imp_c_u_d_a_memory_management_a6ef175938e51de91486d4e9886183388}} 
+\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}!FreeAlignedMemoryOnDevice@{FreeAlignedMemoryOnDevice}}
+\index{FreeAlignedMemoryOnDevice@{FreeAlignedMemoryOnDevice}!RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{FreeAlignedMemoryOnDevice()}{FreeAlignedMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management}{Run\+Imp\+CUDAMemory\+Management}}$<$ T $>$\+::Free\+Aligned\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{memory\+\_\+to\+\_\+free }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_run_imp_memory_management_ad049b076b3c9a8eb4bc93478bc10998b}{Run\+Imp\+Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 37 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_c_u_d_a_memory_management_a6ef175938e51de91486d4e9886183388_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_c_u_d_a_memory_management_a95624f2b4a4394957f7684609e71e260}\label{class_run_imp_c_u_d_a_memory_management_a95624f2b4a4394957f7684609e71e260}} 
+\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}!FreeMemoryOnDevice@{FreeMemoryOnDevice}}
+\index{FreeMemoryOnDevice@{FreeMemoryOnDevice}!RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{FreeMemoryOnDevice()}{FreeMemoryOnDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management}{Run\+Imp\+CUDAMemory\+Management}}$<$ T $>$\+::Free\+Memory\+On\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{array\+\_\+to\+\_\+free }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_run_imp_memory_management_ae4d6438fabd9a3452f476c2a699b6a98}{Run\+Imp\+Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 23 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_c_u_d_a_memory_management_a95624f2b4a4394957f7684609e71e260_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_c_u_d_a_memory_management_a6a37040940c16bdec38616db667c86ff}\label{class_run_imp_c_u_d_a_memory_management_a6a37040940c16bdec38616db667c86ff}} 
+\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}!TransferDataFromDeviceToHost@{TransferDataFromDeviceToHost}}
+\index{TransferDataFromDeviceToHost@{TransferDataFromDeviceToHost}!RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TransferDataFromDeviceToHost()}{TransferDataFromDeviceToHost()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management}{Run\+Imp\+CUDAMemory\+Management}}$<$ T $>$\+::Transfer\+Data\+From\+Device\+To\+Host (\begin{DoxyParamCaption}\item[{T $\ast$}]{dest\+\_\+array,  }\item[{const T $\ast$}]{in\+\_\+array,  }\item[{std\+::size\+\_\+t}]{num\+\_\+data\+\_\+transfer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_run_imp_memory_management_abd26242b7578b0d4a4e27442472527de}{Run\+Imp\+Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 42 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+\mbox{\Hypertarget{class_run_imp_c_u_d_a_memory_management_a9145df93608a351decd57b3149dafcc9}\label{class_run_imp_c_u_d_a_memory_management_a9145df93608a351decd57b3149dafcc9}} 
+\index{RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}!TransferDataFromHostToDevice@{TransferDataFromHostToDevice}}
+\index{TransferDataFromHostToDevice@{TransferDataFromHostToDevice}!RunImpCUDAMemoryManagement$<$ T $>$@{RunImpCUDAMemoryManagement$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{TransferDataFromHostToDevice()}{TransferDataFromHostToDevice()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+void \mbox{\hyperlink{class_run_imp_c_u_d_a_memory_management}{Run\+Imp\+CUDAMemory\+Management}}$<$ T $>$\+::Transfer\+Data\+From\+Host\+To\+Device (\begin{DoxyParamCaption}\item[{T $\ast$}]{dest\+\_\+array,  }\item[{const T $\ast$}]{in\+\_\+array,  }\item[{std\+::size\+\_\+t}]{num\+\_\+data\+\_\+transfer }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_run_imp_memory_management_ac4695a75d0c4d2eccd2388526eb0fa78}{Run\+Imp\+Memory\+Management$<$ T $>$}}.
+
+
+
+Definition at line 51 of file Run\+Imp\+CUDAMemory\+Management.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Run\+Imp\+CUDA/\mbox{\hyperlink{_run_imp_c_u_d_a_memory_management_8h}{Run\+Imp\+CUDAMemory\+Management.\+h}}\end{DoxyCompactItemize}

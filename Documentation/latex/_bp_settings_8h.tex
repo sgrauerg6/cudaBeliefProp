@@ -1,0 +1,94 @@
+\hypertarget{_bp_settings_8h}{}\doxysection{src/beliefprop/\+Bp\+Run\+Processing/\+Bp\+Settings.h File Reference}
+\label{_bp_settings_8h}\index{src/beliefprop/BpRunProcessing/BpSettings.h@{src/beliefprop/BpRunProcessing/BpSettings.h}}
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Consts\+Enums\+Aliases.\+h\char`\"{}}\newline
+Include dependency graph for Bp\+Settings.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_settings_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_settings_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}}
+\begin{DoxyCompactList}\small\item\em Structure to store the settings for the number of levels and iterations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename T $>$ }\\concept \mbox{\hyperlink{_bp_settings_8h_a7dba10da50ded3dc723be45fb18a4d21}{Params\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Parameters type requires As\+Run\+Data() function to return the parameters as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}{beliefprop\+::k\+Num\+Disp\+Vals\+Header}} \{\char`\"{}Num Possible Disparity Values\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a6c32b79a4a0cd6395898595b62e7e022}{beliefprop\+::k\+Num\+Bp\+Levels\+Header}} \{\char`\"{}Num BP Levels\char`\"{},\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}{beliefprop\+::k\+Num\+Bp\+Iters\+Header}} \{\char`\"{}Num BP Iterations\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a7db5ca97e804117029e4986b2d46dbf9}{beliefprop\+::k\+Disc\+Cost\+Cap\+Header}} \{\char`\"{}DISC\+\_\+\+K\+\_\+\+BP\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a35a079b98adae166d0f527cf840a8df5}{beliefprop\+::k\+Data\+Cost\+Cap\+Header}} \{\char`\"{}Data\+KBp\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a3bd976de25e1c840fa0cc97e6e721da0}{beliefprop\+::k\+Bp\+Settings\+Lambda\+Header}} \{\char`\"{}Lambda\+Bp\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}{beliefprop\+::k\+Bp\+Settings\+Sigma\+Header}} \{\char`\"{}Sigma\+Bp\char`\"{}\}
+\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}{beliefprop\+::k\+Default\+Levels\+Bp}} \{5\}
+\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}{beliefprop\+::k\+Default\+Iters\+Bp}} \{7\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}{beliefprop\+::k\+Default\+Sigma\+Bp}} \{0.\+0\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}{beliefprop\+::k\+Default\+Lambda\+Bp}} \{0.\+1\}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}{beliefprop\+::k\+Default\+Data\+KBp}} \{15.\+0\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{_bp_settings_8h_a7dba10da50ded3dc723be45fb18a4d21}\label{_bp_settings_8h_a7dba10da50ded3dc723be45fb18a4d21}} 
+\index{BpSettings.h@{BpSettings.h}!Params\_t@{Params\_t}}
+\index{Params\_t@{Params\_t}!BpSettings.h@{BpSettings.h}}
+\doxysubsubsection{\texorpdfstring{Params\_t}{Params\_t}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+concept Params\+\_\+t}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{  requires(T t) \{}
+\DoxyCodeLine{    \{ t.AsRunData() \} -\/> std::same\_as<RunData>;}
+\DoxyCodeLine{  \}}
+
+\end{DoxyCode}
+
+
+Parameters type requires As\+Run\+Data() function to return the parameters as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 25 of file Bp\+Settings.\+h.
+

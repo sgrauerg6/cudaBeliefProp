@@ -1,0 +1,95 @@
+\hypertarget{struct_bp_on_device}{}\doxysection{Bp\+On\+Device$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ Struct Template Reference}
+\label{struct_bp_on_device}\index{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+
+
+Structure with pointers to objects containing functions for smoothing images, processing bp, and memory management on target device using specified acceleration.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Bp\+On\+Stereo\+Set.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_smooth_image}{Smooth\+Image}} $>$ \& \mbox{\hyperlink{struct_bp_on_device_a3197114eebb2c2abf6c409388a385d38}{smooth\+\_\+image}}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ $>$ \& \mbox{\hyperlink{struct_bp_on_device_a92da849cf328d5a033bbaf0224fddf8a}{run\+\_\+bp\+\_\+stereo}}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$ $>$ \& \mbox{\hyperlink{struct_bp_on_device_a939093af5475a5b89376a0ecb0fcc5f0}{mem\+\_\+management\+\_\+bp\+\_\+run}}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ float $>$ $>$ \& \mbox{\hyperlink{struct_bp_on_device_ac3b794fed7ca1410d78cd9ca29c2d419}{mem\+\_\+management\+\_\+images}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$\newline
+struct Bp\+On\+Device$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}
+
+Structure with pointers to objects containing functions for smoothing images, processing bp, and memory management on target device using specified acceleration. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+{\em ACCELERATION} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 52 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{struct_bp_on_device_a939093af5475a5b89376a0ecb0fcc5f0}\label{struct_bp_on_device_a939093af5475a5b89376a0ecb0fcc5f0}} 
+\index{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!mem\_management\_bp\_run@{mem\_management\_bp\_run}}
+\index{mem\_management\_bp\_run@{mem\_management\_bp\_run}!BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{mem\_management\_bp\_run}{mem\_management\_bp\_run}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$T$>$ $>$\& \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::mem\+\_\+management\+\_\+bp\+\_\+run}
+
+
+
+Definition at line 55 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+\mbox{\Hypertarget{struct_bp_on_device_ac3b794fed7ca1410d78cd9ca29c2d419}\label{struct_bp_on_device_ac3b794fed7ca1410d78cd9ca29c2d419}} 
+\index{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!mem\_management\_images@{mem\_management\_images}}
+\index{mem\_management\_images@{mem\_management\_images}!BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{mem\_management\_images}{mem\_management\_images}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$float$>$ $>$\& \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::mem\+\_\+management\+\_\+images}
+
+
+
+Definition at line 56 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+\mbox{\Hypertarget{struct_bp_on_device_a92da849cf328d5a033bbaf0224fddf8a}\label{struct_bp_on_device_a92da849cf328d5a033bbaf0224fddf8a}} 
+\index{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!run\_bp\_stereo@{run\_bp\_stereo}}
+\index{run\_bp\_stereo@{run\_bp\_stereo}!BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{run\_bp\_stereo}{run\_bp\_stereo}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$T, DISP\+\_\+\+VALS, ACCELERATION$>$ $>$\& \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::run\+\_\+bp\+\_\+stereo}
+
+
+
+Definition at line 54 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+\mbox{\Hypertarget{struct_bp_on_device_a3197114eebb2c2abf6c409388a385d38}\label{struct_bp_on_device_a3197114eebb2c2abf6c409388a385d38}} 
+\index{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!smooth\_image@{smooth\_image}}
+\index{smooth\_image@{smooth\_image}!BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{smooth\_image}{smooth\_image}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_smooth_image}{Smooth\+Image}}$>$\& \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::smooth\+\_\+image}
+
+
+
+Definition at line 53 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_run_bp_on_stereo_set_8h}{Run\+Bp\+On\+Stereo\+Set.\+h}}\end{DoxyCompactItemize}

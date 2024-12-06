@@ -1,0 +1,151 @@
+\hypertarget{class_process_bp}{}\doxysection{Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ Class Template Reference}
+\label{class_process_bp}\index{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}}
+
+
+Abstract class to run belief propagation on target device. Some of the class functions need to be overridden for processing on target device.  
+
+
+
+
+{\ttfamily \#include $<$Process\+Bp.\+h$>$}
+
+
+
+Inheritance diagram for Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_process_bp__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{class_process_bp__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_process_bp_a222abd86e8786a73f62056d9337f2a54}{Process\+Bp}} (const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params)
+\item 
+virtual \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{run\+\_\+eval\+::\+Status}} \mbox{\hyperlink{class_process_bp_a5fb280ae72731bf1b0981d647befb26e}{Error\+Check}} (const char $\ast$file=\char`\"{}\char`\"{}, int line=0, bool abort=false) const
+\item 
+std\+::optional$<$ std\+::pair$<$ float $\ast$, \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{beliefprop\+::\+Runtime\+\_\+\+Type}} $>$ $>$ $>$ \mbox{\hyperlink{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d}{operator()}} (const std\+::array$<$ float $\ast$, 2 $>$ \&images\+\_\+target\+\_\+device, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height\+\_\+images, T $\ast$allocated\+\_\+mem\+\_\+bp\+\_\+processing, T $\ast$allocated\+\_\+memory, const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$$>$ \&mem\+\_\+management\+\_\+bp\+\_\+run) const
+\begin{DoxyCompactList}\small\item\em Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1\+Pixels and image1\+Pixels output is resulting\+Disparity\+Map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \& \mbox{\hyperlink{class_process_bp_a57550bcdcbe3f344308c94ec263cfb37}{parallel\+\_\+params\+\_\+}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$\newline
+class Process\+Bp$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}
+
+Abstract class to run belief propagation on target device. Some of the class functions need to be overridden for processing on target device. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+{\em ACCELERATION} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 48 of file Process\+Bp.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_process_bp_a222abd86e8786a73f62056d9337f2a54}\label{class_process_bp_a222abd86e8786a73f62056d9337f2a54}} 
+\index{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}!ProcessBp@{ProcessBp}}
+\index{ProcessBp@{ProcessBp}!ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{ProcessBp()}{ProcessBp()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+\mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::\mbox{\hyperlink{class_process_bp}{Process\+Bp}} (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 50 of file Process\+Bp.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_process_bp_a5fb280ae72731bf1b0981d647befb26e}\label{class_process_bp_a5fb280ae72731bf1b0981d647befb26e}} 
+\index{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}!ErrorCheck@{ErrorCheck}}
+\index{ErrorCheck@{ErrorCheck}!ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{ErrorCheck()}{ErrorCheck()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+virtual \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{run\+\_\+eval\+::\+Status}} \mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::Error\+Check (\begin{DoxyParamCaption}\item[{const char $\ast$}]{file = {\ttfamily \char`\"{}\char`\"{}},  }\item[{int}]{line = {\ttfamily 0},  }\item[{bool}]{abort = {\ttfamily false} }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 52 of file Process\+Bp.\+h.
+
+\mbox{\Hypertarget{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d}\label{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d}} 
+\index{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+std\+::optional$<$ std\+::pair$<$ float $\ast$, \mbox{\hyperlink{class_detailed_timings}{Detailed\+Timings}}$<$ \mbox{\hyperlink{namespacebeliefprop_aec799311905a37226da8b05f8375d951}{beliefprop\+::\+Runtime\+\_\+\+Type}} $>$ $>$ $>$ \mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::array$<$ float $\ast$, 2 $>$ \&}]{images\+\_\+target\+\_\+device,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height\+\_\+images,  }\item[{T $\ast$}]{allocated\+\_\+mem\+\_\+bp\+\_\+processing,  }\item[{T $\ast$}]{allocated\+\_\+memory,  }\item[{const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$$>$ \&}]{mem\+\_\+management\+\_\+bp\+\_\+run }\end{DoxyParamCaption}) const}
+
+
+
+Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input is images image1\+Pixels and image1\+Pixels output is resulting\+Disparity\+Map. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em images\+\_\+target\+\_\+device} & \\
+\hline
+{\em alg\+\_\+settings} & \\
+\hline
+{\em width\+\_\+height\+\_\+images} & \\
+\hline
+{\em allocated\+\_\+mem\+\_\+bp\+\_\+processing} & \\
+\hline
+{\em allocated\+\_\+memory} & \\
+\hline
+{\em mem\+\_\+management\+\_\+bp\+\_\+run} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$std\+::pair$<$float$\ast$, Detailed\+Timings$<$beliefprop\+::\+Runtime\+\_\+\+Type$>$$>$$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 352 of file Process\+Bp.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_process_bp_a0ccd2a3bcea7ef8b3129ce32667f740d_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{class_process_bp_a57550bcdcbe3f344308c94ec263cfb37}\label{class_process_bp_a57550bcdcbe3f344308c94ec263cfb37}} 
+\index{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}!parallel\_params\_@{parallel\_params\_}}
+\index{parallel\_params\_@{parallel\_params\_}!ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$@{ProcessBp$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{parallel\_params\_}{parallel\_params\_}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}}\& \mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::parallel\+\_\+params\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file Process\+Bp.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_process_bp_8h}{Process\+Bp.\+h}}\end{DoxyCompactItemize}

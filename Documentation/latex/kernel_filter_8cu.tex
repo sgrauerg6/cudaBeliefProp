@@ -1,0 +1,37 @@
+\hypertarget{kernel_filter_8cu}{}\doxysection{src/beliefprop/\+Bp\+Optimize\+CUDA/kernel\+Filter.cu File Reference}
+\label{kernel_filter_8cu}\index{src/beliefprop/BpOptimizeCUDA/kernelFilter.cu@{src/beliefprop/BpOptimizeCUDA/kernelFilter.cu}}
+{\ttfamily \#include \char`\"{}kernel\+Filter\+Header.\+cuh\char`\"{}}\newline
+{\ttfamily \#include $<$cuda\+\_\+runtime.\+h$>$}\newline
+{\ttfamily \#include $<$cuda.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Bp\+Shared\+Functs/\+Shared\+Smooth\+Image\+Functs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp/\+Utility\+Functs.\+h\char`\"{}}\newline
+Include dependency graph for kernel\+Filter.\+cu\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{kernel_filter_8cu__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{kernel_filter_8cu__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop_c_u_d_a}{beliefprop\+CUDA}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a5aac7c88f740699662563cb494a35e9c}{beliefprop\+CUDA\+::convert\+Unsigned\+Int\+Image\+To\+Float}} (unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
+\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906}{beliefprop\+CUDA\+::\+Filter\+Image\+Across}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527}{beliefprop\+CUDA\+::\+Filter\+Image\+Vertical}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\end{DoxyCompactItemize}

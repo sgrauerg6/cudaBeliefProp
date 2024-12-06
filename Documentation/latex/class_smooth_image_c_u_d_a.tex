@@ -1,0 +1,100 @@
+\hypertarget{class_smooth_image_c_u_d_a}{}\doxysection{Smooth\+Image\+CUDA Class Reference}
+\label{class_smooth_image_c_u_d_a}\index{SmoothImageCUDA@{SmoothImageCUDA}}
+
+
+Class for smoothing images in the CUDA implementation.  
+
+
+
+
+{\ttfamily \#include $<$Smooth\+Image\+CUDA.\+h$>$}
+
+
+
+Inheritance diagram for Smooth\+Image\+CUDA\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{class_smooth_image_c_u_d_a__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Smooth\+Image\+CUDA\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{class_smooth_image_c_u_d_a__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_smooth_image_c_u_d_a_a220b858e353e78c6da233dd28703b83f}{Smooth\+Image\+CUDA}} (const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&cuda\+\_\+params)
+\item 
+void \mbox{\hyperlink{class_smooth_image_c_u_d_a_ac810f2f4cb5608673dd21a6f69214444}{operator()}} (const \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned int $>$ \&in\+\_\+image, float sigma, float $\ast$smoothed\+\_\+image) const override
+\begin{DoxyCompactList}\small\item\em For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Class for smoothing images in the CUDA implementation. 
+
+Definition at line 24 of file Smooth\+Image\+CUDA.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_smooth_image_c_u_d_a_a220b858e353e78c6da233dd28703b83f}\label{class_smooth_image_c_u_d_a_a220b858e353e78c6da233dd28703b83f}} 
+\index{SmoothImageCUDA@{SmoothImageCUDA}!SmoothImageCUDA@{SmoothImageCUDA}}
+\index{SmoothImageCUDA@{SmoothImageCUDA}!SmoothImageCUDA@{SmoothImageCUDA}}
+\doxysubsubsection{\texorpdfstring{SmoothImageCUDA()}{SmoothImageCUDA()}}
+{\footnotesize\ttfamily Smooth\+Image\+CUDA\+::\+Smooth\+Image\+CUDA (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{cuda\+\_\+params }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 26 of file Smooth\+Image\+CUDA.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_smooth_image_c_u_d_a_ac810f2f4cb5608673dd21a6f69214444}\label{class_smooth_image_c_u_d_a_ac810f2f4cb5608673dd21a6f69214444}} 
+\index{SmoothImageCUDA@{SmoothImageCUDA}!operator()@{operator()}}
+\index{operator()@{operator()}!SmoothImageCUDA@{SmoothImageCUDA}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily void Smooth\+Image\+CUDA\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_bp_image}{Bp\+Image}}$<$ unsigned int $>$ \&}]{in\+\_\+image,  }\item[{float}]{sigma,  }\item[{float $\ast$}]{smoothed\+\_\+image }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em in\+\_\+image} & \\
+\hline
+{\em sigma} & \\
+\hline
+{\em smoothed\+\_\+image} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_smooth_image_a37eeb6579ddfacbf4d651832f3f3d4be}{Smooth\+Image}}.
+
+
+
+Definition at line 12 of file Smooth\+Image\+CUDA.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_smooth_image_c_u_d_a_ac810f2f4cb5608673dd21a6f69214444_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Optimize\+CUDA/\mbox{\hyperlink{_smooth_image_c_u_d_a_8h}{Smooth\+Image\+CUDA.\+h}}\item 
+src/beliefprop/\+Bp\+Optimize\+CUDA/\mbox{\hyperlink{_smooth_image_c_u_d_a_8cpp}{Smooth\+Image\+CUDA.\+cpp}}\end{DoxyCompactItemize}

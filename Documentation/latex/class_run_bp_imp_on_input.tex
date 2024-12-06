@@ -1,0 +1,198 @@
+\hypertarget{class_run_bp_imp_on_input}{}\doxysection{Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$ Class Template Reference}
+\label{class_run_bp_imp_on_input}\index{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+
+
+Run and evaluate belief propagation implementation on a specified input.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Bp\+Imp\+On\+Input.\+h$>$}
+
+
+
+Inheritance diagram for Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{class_run_bp_imp_on_input__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{class_run_bp_imp_on_input__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_bp_imp_on_input_a66ff1e558fb7b820acac3fbc5dad4dfb}{operator()}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings) override
+\begin{DoxyCompactList}\small\item\em Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM\+\_\+\+INPUT Data type used in implementation specified by T Bp implemenation optimization specified by OPT\+\_\+\+IMP\+\_\+\+ACCEL Evaluation stereo set to run implementation on specified by NUM\+\_\+\+INPUT. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ \mbox{\hyperlink{class_run_bp_imp_on_input_a4d700fe4a0993c7dfaa932e5759bcd45}{Set\+Up\+Parallel\+Params}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings) const override
+\begin{DoxyCompactList}\small\item\em Set up parallel parameters for running belief propagation in parallel on CPU or GPU. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_bp_imp_on_input_a5a4dbb1b3f6f37e13a49553a951f095f}{Input\+And\+Params\+For\+Curr\+Benchmark}} (bool loop\+\_\+iters\+\_\+templated) const override
+\begin{DoxyCompactList}\small\item\em Get input data and parameter info about current benchmark (belief propagation in this case) and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. \end{DoxyCompactList}\item 
+std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}{Run\+Imps\+And\+Compare}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ parallel\+\_\+params, bool run\+\_\+opt\+\_\+imp\+\_\+only, bool run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters) const override
+\begin{DoxyCompactList}\small\item\em Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$\newline
+class Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}
+
+Run and evaluate belief propagation implementation on a specified input. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em OPT\+\_\+\+IMP\+\_\+\+ACCEL} & \\
+\hline
+{\em NUM\+\_\+\+INPUT} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 65 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_bp_imp_on_input_a5a4dbb1b3f6f37e13a49553a951f095f}\label{class_run_bp_imp_on_input_a5a4dbb1b3f6f37e13a49553a951f095f}} 
+\index{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!InputAndParamsForCurrBenchmark@{InputAndParamsForCurrBenchmark}}
+\index{InputAndParamsForCurrBenchmark@{InputAndParamsForCurrBenchmark}!RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{InputAndParamsForCurrBenchmark()}{InputAndParamsForCurrBenchmark()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_bp_imp_on_input}{Run\+Bp\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Input\+And\+Params\+For\+Curr\+Benchmark (\begin{DoxyParamCaption}\item[{bool}]{loop\+\_\+iters\+\_\+templated }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Get input data and parameter info about current benchmark (belief propagation in this case) and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em loop\+\_\+iters\+\_\+templated} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a34a6f5d3387c29607e2249786b725257}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 199 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_bp_imp_on_input_a5a4dbb1b3f6f37e13a49553a951f095f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_bp_imp_on_input_a66ff1e558fb7b820acac3fbc5dad4dfb}\label{class_run_bp_imp_on_input_a66ff1e558fb7b820acac3fbc5dad4dfb}} 
+\index{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_bp_imp_on_input}{Run\+Bp\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM\+\_\+\+INPUT Data type used in implementation specified by T Bp implemenation optimization specified by OPT\+\_\+\+IMP\+\_\+\+ACCEL Evaluation stereo set to run implementation on specified by NUM\+\_\+\+INPUT. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+\_\+imp\+\_\+settings} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Mult\+Run\+Data 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3e9d9}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 148 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+\mbox{\Hypertarget{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}\label{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}} 
+\index{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!RunImpsAndCompare@{RunImpsAndCompare}}
+\index{RunImpsAndCompare@{RunImpsAndCompare}!RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{RunImpsAndCompare()}{RunImpsAndCompare()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_bp_imp_on_input}{Run\+Bp\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Run\+Imps\+And\+Compare (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$}]{parallel\+\_\+params,  }\item[{bool}]{run\+\_\+opt\+\_\+imp\+\_\+only,  }\item[{bool}]{run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parallel\+\_\+params} & \\
+\hline
+{\em run\+\_\+opt\+\_\+imp\+\_\+only} & \\
+\hline
+{\em run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$\+Run\+Data$>$ 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c815ac4}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 213 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_bp_imp_on_input_a4d700fe4a0993c7dfaa932e5759bcd45}\label{class_run_bp_imp_on_input_a4d700fe4a0993c7dfaa932e5759bcd45}} 
+\index{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!SetUpParallelParams@{SetUpParallelParams}}
+\index{SetUpParallelParams@{SetUpParallelParams}!RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{SetUpParallelParams()}{SetUpParallelParams()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ \mbox{\hyperlink{class_run_bp_imp_on_input}{Run\+Bp\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Set\+Up\+Parallel\+Params (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Set up parallel parameters for running belief propagation in parallel on CPU or GPU. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+\_\+imp\+\_\+settings} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::shared\+\_\+ptr$<$\+Parallel\+Params$>$ 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0dca8}{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+
+
+Definition at line 187 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Eval\+Imp/\mbox{\hyperlink{_run_bp_imp_on_input_8h}{Run\+Bp\+Imp\+On\+Input.\+h}}\end{DoxyCompactItemize}

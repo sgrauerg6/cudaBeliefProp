@@ -1,0 +1,4 @@
+<map id="BpParallelParams::BpParallelParams" name="BpParallelParams::BpParallelParams">
+<area shape="rect" id="node1" title="Constructor to set parallel parameters with default dimensions for each kernel." alt="" coords="5,5,213,47"/>
+<area shape="rect" id="node2" href="$class_bp_parallel_params.html#a4c07664f7bba0931ea36e2858a242313" title="Set parallel parameters for each kernel to the same input dimensions." alt="" coords="261,13,508,39"/>
+</map>

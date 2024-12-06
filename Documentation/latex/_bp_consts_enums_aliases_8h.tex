@@ -1,0 +1,72 @@
+\hypertarget{_bp_consts_enums_aliases_8h}{}\doxysection{src/beliefprop/\+Bp\+Run\+Processing/\+Bp\+Consts\+Enums\+Aliases.h File Reference}
+\label{_bp_consts_enums_aliases_8h}\index{src/beliefprop/BpRunProcessing/BpConstsEnumsAliases.h@{src/beliefprop/BpRunProcessing/BpConstsEnumsAliases.h}}
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
+Include dependency graph for Bp\+Consts\+Enums\+Aliases.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{_bp_consts_enums_aliases_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_consts_enums_aliases_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+ptr T$>$ }\\using \mbox{\hyperlink{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}{beliefprop\+::\+Checkerboard\+Messages}} = std\+::array$<$ std\+::array$<$ T, k\+Num\+Message\+Arrays $>$, k\+Num\+Checkerboard\+Parts $>$
+\begin{DoxyCompactList}\small\item\em Each checkerboard messages element corresponds to an array of message values could use a map/unordered map to map Message\+Arrays enum to corresponding message array but using array structure is likely faster. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+ptr T$>$ }\\using \mbox{\hyperlink{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}{beliefprop\+::\+Data\+Costs\+Checkerboards}} = std\+::array$<$ T, k\+Num\+Checkerboard\+Parts $>$
+\begin{DoxyCompactList}\small\item\em Belief propagation checkerboard messages and data costs must be pointers to a bp data type define alias for two-\/element array with data costs for each bp processing checkerboard. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} \+: unsigned int \{ \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5a8bd57edbe16314c8e500cec6778c2fca}{beliefprop\+::k\+Checkerboard\+Part0}}
+, \mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5ab3976af25494bc13a8a62bf61d0b7411}{beliefprop\+::k\+Checkerboard\+Part1}}
+ \}
+\begin{DoxyCompactList}\small\item\em Define the two checkerboard \char`\"{}parts\char`\"{} that the image is divided into. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4d}{beliefprop\+::\+Message\+Arrays}} \+: unsigned int \{ \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da3a58cb5615fc13e055c527e11750e7c3}{beliefprop\+::k\+Messages\+UCheckerboard}}
+, \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da9a179f84d62bbd2cbde01d7dc6fe3ccf}{beliefprop\+::k\+Messages\+DCheckerboard}}
+, \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4daeb9dffa1d9477f915baa1d340166af7b}{beliefprop\+::k\+Messages\+LCheckerboard}}
+, \mbox{\hyperlink{namespacebeliefprop_a4217a55475830195c82b9937ec941b4da01a238d90d63de26ed7e56a2ccf7ca44}{beliefprop\+::k\+Messages\+RCheckerboard}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}{beliefprop\+::\+Message\+Comp}} \{ \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca6adc7ce8ffadd4a76448220f3195c8ae}{beliefprop\+::k\+UMessage}}
+, \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8ca895baeedf73572889edbc96929120edc}{beliefprop\+::k\+DMessage}}
+, \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf35518af99db869d5869510c4bbbd5d1}{beliefprop\+::k\+LMessage}}
+, \mbox{\hyperlink{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8caf7c5e94ac53aff1a29af626d99e2f651}{beliefprop\+::k\+RMessage}}
+ \}
+\item 
+enum class \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906}{beliefprop\+::\+Bp\+Kernel}} \+: unsigned int \{ \newline
+\mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a66cfb84630289cb7250dd31170937f26}{beliefprop\+::k\+Blur\+Images}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a207fb72ea8f46ac7007929122982eebe}{beliefprop\+::k\+Data\+Costs\+At\+Level}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a615e1e41f1c80d611d5822780d239dd7}{beliefprop\+::k\+Init\+Message\+Vals}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a05755e13d36f2bca0e9484a9ac5e5ba1}{beliefprop\+::k\+Bp\+At\+Level}}
+, \newline
+\mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aee780e8bd275dbe845fd72ccbbc57b25}{beliefprop\+::k\+Copy\+At\+Level}}
+, \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aa4d6694818fc8b0338c6516e15a7cb78}{beliefprop\+::k\+Output\+Disp}}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{beliefprop\+::k\+Inf\+Bp}} \{65504\}
+\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{beliefprop\+::k\+Num\+Checkerboard\+Parts}} \{2\}
+\begin{DoxyCompactList}\small\item\em Number of checkerboard parts for processing. \end{DoxyCompactList}\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}{beliefprop\+::k\+Num\+Message\+Arrays}} \{4\}
+\begin{DoxyCompactList}\small\item\em Number of message arrays in each checkerboard part. \end{DoxyCompactList}\item 
+constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a6651cc44f605190082858f8c391e417c}{beliefprop\+::k\+Num\+Kernels}} \{6\}
+\begin{DoxyCompactList}\small\item\em Enum corresponding to each kernel in belief propagation that can be run in parallel. \end{DoxyCompactList}\end{DoxyCompactItemize}

@@ -1,0 +1,6 @@
+<map id="util_functs::MemoryAlignedAtDataStart" name="util_functs::MemoryAlignedAtDataStart">
+<area shape="rect" id="node1" title="Inline function to check if data is aligned at x_val_data_start for SIMD loads/stores that require al..." alt="" coords="363,79,564,120"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop_c_p_u.html#a64141ccc62bed8128e4dc46a019228a2" title=" " alt="" coords="49,5,271,47"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop_c_p_u.html#a955c3398c2d327e758da9a2c40a2a262" title=" " alt="" coords="27,71,293,127"/>
+<area shape="rect" id="node4" href="$namespacebeliefprop_c_p_u.html#a3af66d30eb16713911cc5e8a6a7ef794" title=" " alt="" coords="5,151,315,207"/>
+</map>

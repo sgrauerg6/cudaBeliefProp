@@ -1,0 +1,4 @@
+<map id="beliefpropCUDA::InitializeCurrentLevelData" name="beliefpropCUDA::InitializeCurrentLevelData">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,196,47"/>
+<area shape="rect" id="node2" href="$namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="244,5,425,47"/>
+</map>

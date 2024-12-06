@@ -1,0 +1,266 @@
+\hypertarget{classbeliefprop_1_1_bp_level}{}\doxysection{beliefprop\+::Bp\+Level Class Reference}
+\label{classbeliefprop_1_1_bp_level}\index{beliefprop::BpLevel@{beliefprop::BpLevel}}
+
+
+Class to store and retrieve properties of a bp processing level.  
+
+
+
+
+{\ttfamily \#include $<$Bp\+Level.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbeliefprop_1_1_bp_level_aad0854873c0cca11b36c63dc8d055e37}{Bp\+Level}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height, std\+::size\+\_\+t offset\+\_\+into\+\_\+arrays, unsigned int level\+\_\+num, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} acc\+\_\+setting)
+\item 
+\mbox{\hyperlink{classbeliefprop_1_1_bp_level_a567e51d9287be54e17b3c9fd37f2b343}{Bp\+Level}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height, std\+::size\+\_\+t offset\+\_\+into\+\_\+arrays, unsigned int level\+\_\+num, unsigned int bytes\+\_\+align\+\_\+memory, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+\_\+padded\+\_\+ch\+\_\+board\+\_\+w\+\_\+align)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{classbeliefprop_1_1_bp_level}{beliefprop\+::\+Bp\+Level}} \mbox{\hyperlink{classbeliefprop_1_1_bp_level_aca406d59d12b85b1967a675cc82f4f7c}{Next\+Bp\+Level}} (unsigned int num\+\_\+disparity\+\_\+values) const
+\begin{DoxyCompactList}\small\item\em Get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\std\+::size\+\_\+t \mbox{\hyperlink{classbeliefprop_1_1_bp_level_ac0b437e4d823108a024e37db8124d012}{Num\+Data\+In\+Bp\+Arrays}} (unsigned int num\+\_\+disparity\+\_\+values) const
+\begin{DoxyCompactList}\small\item\em Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level with the specified number of possible disparity values. \end{DoxyCompactList}\item 
+unsigned int \mbox{\hyperlink{classbeliefprop_1_1_bp_level_a96eaa1cce24469ea19cefd88800c45b5}{Checkerboard\+Width\+Target\+Device}} (unsigned int width\+\_\+level) const
+\item 
+unsigned int \mbox{\hyperlink{classbeliefprop_1_1_bp_level_a74d010e665b2e2db52b8f89a8869b214}{Padded\+Checkerboard\+Width}} (unsigned int checkerboard\+\_\+width) const
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\std\+::size\+\_\+t \mbox{\hyperlink{classbeliefprop_1_1_bp_level_aed3abc24f56a976a0b4348e23ee99bc1}{Num\+Data\+For\+Aligned\+Memory\+At\+Level}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height\+\_\+level, unsigned int num\+\_\+possible\+\_\+disparities) const
+\item 
+const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{Bp\+Level\+Properties}} \& \mbox{\hyperlink{classbeliefprop_1_1_bp_level_a8c7b0fdbb4dc2f84c2460562727ae47f}{Level\+Properties}} () const
+\begin{DoxyCompactList}\small\item\em Return level properties as const reference to avoid copying and not allow it to be modified. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ }\\static std\+::size\+\_\+t \mbox{\hyperlink{classbeliefprop_1_1_bp_level_a7e71a2e74376545d27c91f3c258353cc}{Total\+Data\+For\+Aligned\+Memory\+All\+Levels}} (const std\+::array$<$ unsigned int, 2 $>$ \&width\+\_\+height\+\_\+bottom\+\_\+level, unsigned int num\+\_\+possible\+\_\+disparities, unsigned int num\+\_\+levels)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to store and retrieve properties of a bp processing level. 
+
+Definition at line 42 of file Bp\+Level.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_aad0854873c0cca11b36c63dc8d055e37}\label{classbeliefprop_1_1_bp_level_aad0854873c0cca11b36c63dc8d055e37}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!BpLevel@{BpLevel}}
+\index{BpLevel@{BpLevel}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{BpLevel()}{BpLevel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily beliefprop\+::\+Bp\+Level\+::\+Bp\+Level (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height,  }\item[{std\+::size\+\_\+t}]{offset\+\_\+into\+\_\+arrays,  }\item[{unsigned int}]{level\+\_\+num,  }\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}}]{acc\+\_\+setting }\end{DoxyParamCaption})}
+
+
+
+Definition at line 12 of file Bp\+Level.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_aad0854873c0cca11b36c63dc8d055e37_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_aad0854873c0cca11b36c63dc8d055e37_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_a567e51d9287be54e17b3c9fd37f2b343}\label{classbeliefprop_1_1_bp_level_a567e51d9287be54e17b3c9fd37f2b343}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!BpLevel@{BpLevel}}
+\index{BpLevel@{BpLevel}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{BpLevel()}{BpLevel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily beliefprop\+::\+Bp\+Level\+::\+Bp\+Level (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height,  }\item[{std\+::size\+\_\+t}]{offset\+\_\+into\+\_\+arrays,  }\item[{unsigned int}]{level\+\_\+num,  }\item[{unsigned int}]{bytes\+\_\+align\+\_\+memory,  }\item[{unsigned int}]{num\+\_\+data\+\_\+align\+\_\+width,  }\item[{unsigned int}]{div\+\_\+padded\+\_\+ch\+\_\+board\+\_\+w\+\_\+align }\end{DoxyParamCaption})}
+
+
+
+Definition at line 26 of file Bp\+Level.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_a567e51d9287be54e17b3c9fd37f2b343_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_a96eaa1cce24469ea19cefd88800c45b5}\label{classbeliefprop_1_1_bp_level_a96eaa1cce24469ea19cefd88800c45b5}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!CheckerboardWidthTargetDevice@{CheckerboardWidthTargetDevice}}
+\index{CheckerboardWidthTargetDevice@{CheckerboardWidthTargetDevice}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{CheckerboardWidthTargetDevice()}{CheckerboardWidthTargetDevice()}}
+{\footnotesize\ttfamily unsigned int beliefprop\+::\+Bp\+Level\+::\+Checkerboard\+Width\+Target\+Device (\begin{DoxyParamCaption}\item[{unsigned int}]{width\+\_\+level }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 40 of file Bp\+Level.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_a96eaa1cce24469ea19cefd88800c45b5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_a8c7b0fdbb4dc2f84c2460562727ae47f}\label{classbeliefprop_1_1_bp_level_a8c7b0fdbb4dc2f84c2460562727ae47f}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!LevelProperties@{LevelProperties}}
+\index{LevelProperties@{LevelProperties}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{LevelProperties()}{LevelProperties()}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{Bp\+Level\+Properties}}\& beliefprop\+::\+Bp\+Level\+::\+Level\+Properties (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return level properties as const reference to avoid copying and not allow it to be modified. 
+
+\begin{DoxyReturn}{Returns}
+const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{Bp\+Level\+Properties}}\& 
+\end{DoxyReturn}
+
+
+Definition at line 92 of file Bp\+Level.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classbeliefprop_1_1_bp_level_a8c7b0fdbb4dc2f84c2460562727ae47f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_aca406d59d12b85b1967a675cc82f4f7c}\label{classbeliefprop_1_1_bp_level_aca406d59d12b85b1967a675cc82f4f7c}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!NextBpLevel@{NextBpLevel}}
+\index{NextBpLevel@{NextBpLevel}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{NextBpLevel()}{NextBpLevel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+\mbox{\hyperlink{classbeliefprop_1_1_bp_level}{beliefprop\+::\+Bp\+Level}} beliefprop\+::\+Bp\+Level\+::\+Next\+Bp\+Level (\begin{DoxyParamCaption}\item[{unsigned int}]{num\+\_\+disparity\+\_\+values }\end{DoxyParamCaption}) const}
+
+
+
+Get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+disparity\+\_\+values} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classbeliefprop_1_1_bp_level}{beliefprop\+::\+Bp\+Level}} 
+\end{DoxyReturn}
+
+
+Definition at line 100 of file Bp\+Level.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_aca406d59d12b85b1967a675cc82f4f7c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_aca406d59d12b85b1967a675cc82f4f7c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_aed3abc24f56a976a0b4348e23ee99bc1}\label{classbeliefprop_1_1_bp_level_aed3abc24f56a976a0b4348e23ee99bc1}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!NumDataForAlignedMemoryAtLevel@{NumDataForAlignedMemoryAtLevel}}
+\index{NumDataForAlignedMemoryAtLevel@{NumDataForAlignedMemoryAtLevel}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{NumDataForAlignedMemoryAtLevel()}{NumDataForAlignedMemoryAtLevel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+std\+::size\+\_\+t beliefprop\+::\+Bp\+Level\+::\+Num\+Data\+For\+Aligned\+Memory\+At\+Level (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height\+\_\+level,  }\item[{unsigned int}]{num\+\_\+possible\+\_\+disparities }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 116 of file Bp\+Level.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_aed3abc24f56a976a0b4348e23ee99bc1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_ac0b437e4d823108a024e37db8124d012}\label{classbeliefprop_1_1_bp_level_ac0b437e4d823108a024e37db8124d012}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!NumDataInBpArrays@{NumDataInBpArrays}}
+\index{NumDataInBpArrays@{NumDataInBpArrays}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{NumDataInBpArrays()}{NumDataInBpArrays()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+std\+::size\+\_\+t beliefprop\+::\+Bp\+Level\+::\+Num\+Data\+In\+Bp\+Arrays (\begin{DoxyParamCaption}\item[{unsigned int}]{num\+\_\+disparity\+\_\+values }\end{DoxyParamCaption}) const}
+
+
+
+Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level with the specified number of possible disparity values. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em num\+\_\+disparity\+\_\+values} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::size\+\_\+t 
+\end{DoxyReturn}
+
+
+Definition at line 111 of file Bp\+Level.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_ac0b437e4d823108a024e37db8124d012_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_a74d010e665b2e2db52b8f89a8869b214}\label{classbeliefprop_1_1_bp_level_a74d010e665b2e2db52b8f89a8869b214}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!PaddedCheckerboardWidth@{PaddedCheckerboardWidth}}
+\index{PaddedCheckerboardWidth@{PaddedCheckerboardWidth}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{PaddedCheckerboardWidth()}{PaddedCheckerboardWidth()}}
+{\footnotesize\ttfamily unsigned int beliefprop\+::\+Bp\+Level\+::\+Padded\+Checkerboard\+Width (\begin{DoxyParamCaption}\item[{unsigned int}]{checkerboard\+\_\+width }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 44 of file Bp\+Level.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_a74d010e665b2e2db52b8f89a8869b214_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbeliefprop_1_1_bp_level_a7e71a2e74376545d27c91f3c258353cc}\label{classbeliefprop_1_1_bp_level_a7e71a2e74376545d27c91f3c258353cc}} 
+\index{beliefprop::BpLevel@{beliefprop::BpLevel}!TotalDataForAlignedMemoryAllLevels@{TotalDataForAlignedMemoryAllLevels}}
+\index{TotalDataForAlignedMemoryAllLevels@{TotalDataForAlignedMemoryAllLevels}!beliefprop::BpLevel@{beliefprop::BpLevel}}
+\doxysubsubsection{\texorpdfstring{TotalDataForAlignedMemoryAllLevels()}{TotalDataForAlignedMemoryAllLevels()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+std\+::size\+\_\+t beliefprop\+::\+Bp\+Level\+::\+Total\+Data\+For\+Aligned\+Memory\+All\+Levels (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{width\+\_\+height\+\_\+bottom\+\_\+level,  }\item[{unsigned int}]{num\+\_\+possible\+\_\+disparities,  }\item[{unsigned int}]{num\+\_\+levels }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 133 of file Bp\+Level.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbeliefprop_1_1_bp_level_a7e71a2e74376545d27c91f3c258353cc_cgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_bp_level_8h}{Bp\+Level.\+h}}\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_bp_level_8cpp}{Bp\+Level.\+cpp}}\end{DoxyCompactItemize}

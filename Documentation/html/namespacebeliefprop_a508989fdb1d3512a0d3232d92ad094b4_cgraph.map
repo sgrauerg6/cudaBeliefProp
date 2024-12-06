@@ -1,0 +1,4 @@
+<map id="beliefprop::RunSettings" name="beliefprop::RunSettings">
+<area shape="rect" id="node1" title="Retrieve run settings as a RunData object for output." alt="" coords="5,5,180,32"/>
+<area shape="rect" id="node2" href="$class_run_data.html#ae2642121388bb8f32b95eeeb498c7401" title="Add string data with header describing added data." alt="" coords="228,5,431,32"/>
+</map>

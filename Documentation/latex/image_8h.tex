@@ -1,0 +1,54 @@
+\hypertarget{image_8h}{}\doxysection{src/beliefprop/\+Bp\+Single\+Thread\+CPU/image.h File Reference}
+\label{image_8h}\index{src/beliefprop/BpSingleThreadCPU/image.h@{src/beliefprop/BpSingleThreadCPU/image.h}}
+{\ttfamily \#include $<$cstring$>$}\newline
+Include dependency graph for image.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{image_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{image_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classimage}{image$<$ T $>$}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{image_8h_af8a1068eeff9818890793f3b66db818c}{im\+Ref}}(im,  x,  y)~(im-\/$>$access\mbox{[}y\mbox{]}\mbox{[}x\mbox{]})
+\item 
+\#define \mbox{\hyperlink{image_8h_a7eee0691d0d430c8bd7878d72925d68e}{im\+Ptr}}(im,  x,  y)~\&(im-\/$>$access\mbox{[}y\mbox{]}\mbox{[}x\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{image_8h_a7eee0691d0d430c8bd7878d72925d68e}\label{image_8h_a7eee0691d0d430c8bd7878d72925d68e}} 
+\index{image.h@{image.h}!imPtr@{imPtr}}
+\index{imPtr@{imPtr}!image.h@{image.h}}
+\doxysubsubsection{\texorpdfstring{imPtr}{imPtr}}
+{\footnotesize\ttfamily \#define im\+Ptr(\begin{DoxyParamCaption}\item[{}]{im,  }\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})~\&(im-\/$>$access\mbox{[}y\mbox{]}\mbox{[}x\mbox{]})}
+
+
+
+Definition at line 61 of file image.\+h.
+
+\mbox{\Hypertarget{image_8h_af8a1068eeff9818890793f3b66db818c}\label{image_8h_af8a1068eeff9818890793f3b66db818c}} 
+\index{image.h@{image.h}!imRef@{imRef}}
+\index{imRef@{imRef}!image.h@{image.h}}
+\doxysubsubsection{\texorpdfstring{imRef}{imRef}}
+{\footnotesize\ttfamily \#define im\+Ref(\begin{DoxyParamCaption}\item[{}]{im,  }\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})~(im-\/$>$access\mbox{[}y\mbox{]}\mbox{[}x\mbox{]})}
+
+
+
+Definition at line 58 of file image.\+h.
+

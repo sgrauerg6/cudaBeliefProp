@@ -1,0 +1,71 @@
+\hypertarget{_evaluate_imp_results_8h}{}\doxysection{src/\+Run\+Eval/\+Evaluate\+Imp\+Results.h File Reference}
+\label{_evaluate_imp_results_8h}\index{src/RunEval/EvaluateImpResults.h@{src/RunEval/EvaluateImpResults.h}}
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Evaluate\+Imp\+Aliases.\+h\char`\"{}}\newline
+Include dependency graph for Evaluate\+Imp\+Results.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_evaluate_imp_results_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_evaluate_imp_results_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_evaluate_imp_results}{Evaluate\+Imp\+Results}}
+\begin{DoxyCompactList}\small\item\em Class with operator function to evaluate implementations of the same algorithm across different data types and acceleration methods. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212}{Base\+Target\+Diff}} \{ \mbox{\hyperlink{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a5fae0667e15962bfa4e1ee6a70412921}{k\+Diff\+Acceleration}}
+, \mbox{\hyperlink{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a7758a9553463dd6c074384937b6e784b}{k\+Diff\+Datatype}}
+, \mbox{\hyperlink{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a3317f45a1df824b4f4b546e18ce5144d}{k\+Diff\+Templated\+Setting}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum to define difference between \char`\"{}base\char`\"{} and \char`\"{}target\char`\"{} result sets when evaluating speedup. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212}\label{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212}} 
+\index{EvaluateImpResults.h@{EvaluateImpResults.h}!BaseTargetDiff@{BaseTargetDiff}}
+\index{BaseTargetDiff@{BaseTargetDiff}!EvaluateImpResults.h@{EvaluateImpResults.h}}
+\doxysubsubsection{\texorpdfstring{BaseTargetDiff}{BaseTargetDiff}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212}{Base\+Target\+Diff}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum to define difference between \char`\"{}base\char`\"{} and \char`\"{}target\char`\"{} result sets when evaluating speedup. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDiffAcceleration@{kDiffAcceleration}!EvaluateImpResults.h@{EvaluateImpResults.h}}\index{EvaluateImpResults.h@{EvaluateImpResults.h}!kDiffAcceleration@{kDiffAcceleration}}}\mbox{\Hypertarget{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a5fae0667e15962bfa4e1ee6a70412921}\label{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a5fae0667e15962bfa4e1ee6a70412921}} 
+k\+Diff\+Acceleration&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDiffDatatype@{kDiffDatatype}!EvaluateImpResults.h@{EvaluateImpResults.h}}\index{EvaluateImpResults.h@{EvaluateImpResults.h}!kDiffDatatype@{kDiffDatatype}}}\mbox{\Hypertarget{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a7758a9553463dd6c074384937b6e784b}\label{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a7758a9553463dd6c074384937b6e784b}} 
+k\+Diff\+Datatype&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kDiffTemplatedSetting@{kDiffTemplatedSetting}!EvaluateImpResults.h@{EvaluateImpResults.h}}\index{EvaluateImpResults.h@{EvaluateImpResults.h}!kDiffTemplatedSetting@{kDiffTemplatedSetting}}}\mbox{\Hypertarget{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a3317f45a1df824b4f4b546e18ce5144d}\label{_evaluate_imp_results_8h_ac3fb2da6c2390d9005417bf01e0fa212a3317f45a1df824b4f4b546e18ce5144d}} 
+k\+Diff\+Templated\+Setting&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 32 of file Evaluate\+Imp\+Results.\+h.
+

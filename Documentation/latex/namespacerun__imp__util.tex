@@ -1,0 +1,112 @@
+\hypertarget{namespacerun__imp__util}{}\doxysection{run\+\_\+imp\+\_\+util Namespace Reference}
+\label{namespacerun__imp__util}\index{run\_imp\_util@{run\_imp\_util}}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ }\\\mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} U \mbox{\hyperlink{namespacerun__imp__util_acbb9cb084ca863c440000c1ef328834a}{Convert\+Val\+To\+Different\+Data\+Type\+If\+Needed}} (T data)
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespacerun__imp__util_a1f6c720a6cdcaf44416f2511f1068e0c}{Zero\+Val}} ()
+\item 
+{\footnotesize template$<$typename T $>$ }\\requires std\+::is\+\_\+arithmetic\+\_\+v$<$ T $>$ \mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespacerun__imp__util_a8be4c6506898fe71792a21905171e9ce}{Get\+Min}} (T val1, T val2)
+\item 
+{\footnotesize template$<$typename T $>$ }\\requires std\+::is\+\_\+arithmetic\+\_\+v$<$ T $>$ \mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespacerun__imp__util_a7d07aef0f96ef4a6117a09961cfc4eb8}{Get\+Max}} (T val1, T val2)
+\item 
+\mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool \mbox{\hyperlink{namespacerun__imp__util_ad0d73e7489b5b73afd475a7d79f913b3}{Within\+Image\+Bounds}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height)
+\item 
+bool \mbox{\hyperlink{namespacerun__imp__util_a1179d03d3c3c8b2183f524ac6de65934}{Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacerun__imp__util_acbb9cb084ca863c440000c1ef328834a}\label{namespacerun__imp__util_acbb9cb084ca863c440000c1ef328834a}} 
+\index{run\_imp\_util@{run\_imp\_util}!ConvertValToDifferentDataTypeIfNeeded@{ConvertValToDifferentDataTypeIfNeeded}}
+\index{ConvertValToDifferentDataTypeIfNeeded@{ConvertValToDifferentDataTypeIfNeeded}!run\_imp\_util@{run\_imp\_util}}
+\doxysubsubsection{\texorpdfstring{ConvertValToDifferentDataTypeIfNeeded()}{ConvertValToDifferentDataTypeIfNeeded()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+\_\+t U$>$ \\
+\mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} U run\+\_\+imp\+\_\+util\+::\+Convert\+Val\+To\+Different\+Data\+Type\+If\+Needed (\begin{DoxyParamCaption}\item[{T}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 24 of file Run\+Imp\+Gen\+Functs.\+h.
+
+\mbox{\Hypertarget{namespacerun__imp__util_a7d07aef0f96ef4a6117a09961cfc4eb8}\label{namespacerun__imp__util_a7d07aef0f96ef4a6117a09961cfc4eb8}} 
+\index{run\_imp\_util@{run\_imp\_util}!GetMax@{GetMax}}
+\index{GetMax@{GetMax}!run\_imp\_util@{run\_imp\_util}}
+\doxysubsubsection{\texorpdfstring{GetMax()}{GetMax()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+requires std\+::is\+\_\+arithmetic\+\_\+v$<$T$>$ \mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T run\+\_\+imp\+\_\+util\+::\+Get\+Max (\begin{DoxyParamCaption}\item[{T}]{val1,  }\item[{T}]{val2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 41 of file Run\+Imp\+Gen\+Functs.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__imp__util_a7d07aef0f96ef4a6117a09961cfc4eb8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacerun__imp__util_a8be4c6506898fe71792a21905171e9ce}\label{namespacerun__imp__util_a8be4c6506898fe71792a21905171e9ce}} 
+\index{run\_imp\_util@{run\_imp\_util}!GetMin@{GetMin}}
+\index{GetMin@{GetMin}!run\_imp\_util@{run\_imp\_util}}
+\doxysubsubsection{\texorpdfstring{GetMin()}{GetMin()}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+requires std\+::is\+\_\+arithmetic\+\_\+v$<$T$>$ \mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T run\+\_\+imp\+\_\+util\+::\+Get\+Min (\begin{DoxyParamCaption}\item[{T}]{val1,  }\item[{T}]{val2 }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 35 of file Run\+Imp\+Gen\+Functs.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__imp__util_a8be4c6506898fe71792a21905171e9ce_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacerun__imp__util_a1179d03d3c3c8b2183f524ac6de65934}\label{namespacerun__imp__util_a1179d03d3c3c8b2183f524ac6de65934}} 
+\index{run\_imp\_util@{run\_imp\_util}!MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}}
+\index{MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}!run\_imp\_util@{run\_imp\_util}}
+\doxysubsubsection{\texorpdfstring{MemoryAlignedAtDataStart()}{MemoryAlignedAtDataStart()}}
+{\footnotesize\ttfamily bool run\+\_\+imp\+\_\+util\+::\+Memory\+Aligned\+At\+Data\+Start (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+data\+\_\+start,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{unsigned int}]{num\+\_\+data\+\_\+align\+\_\+width,  }\item[{unsigned int}]{div\+Padded\+Ch\+Board\+Width\+For\+Align }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 55 of file Run\+Imp\+Gen\+Functs.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__imp__util_a1179d03d3c3c8b2183f524ac6de65934_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacerun__imp__util_ad0d73e7489b5b73afd475a7d79f913b3}\label{namespacerun__imp__util_ad0d73e7489b5b73afd475a7d79f913b3}} 
+\index{run\_imp\_util@{run\_imp\_util}!WithinImageBounds@{WithinImageBounds}}
+\index{WithinImageBounds@{WithinImageBounds}!run\_imp\_util@{run\_imp\_util}}
+\doxysubsubsection{\texorpdfstring{WithinImageBounds()}{WithinImageBounds()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool run\+\_\+imp\+\_\+util\+::\+Within\+Image\+Bounds (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 47 of file Run\+Imp\+Gen\+Functs.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{namespacerun__imp__util_ad0d73e7489b5b73afd475a7d79f913b3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacerun__imp__util_a1f6c720a6cdcaf44416f2511f1068e0c}\label{namespacerun__imp__util_a1f6c720a6cdcaf44416f2511f1068e0c}} 
+\index{run\_imp\_util@{run\_imp\_util}!ZeroVal@{ZeroVal}}
+\index{ZeroVal@{ZeroVal}!run\_imp\_util@{run\_imp\_util}}
+\doxysubsubsection{\texorpdfstring{ZeroVal()}{ZeroVal()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+\mbox{\hyperlink{_run_imp_gen_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T run\+\_\+imp\+\_\+util\+::\+Zero\+Val (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 29 of file Run\+Imp\+Gen\+Functs.\+h.
+

@@ -1,0 +1,12 @@
+<map id="RunData::GetDataAsBool" name="RunData::GetDataAsBool">
+<area shape="rect" id="node1" title="Get data corresponding to header as boolean Return null if data corresponds to a different data type." alt="" coords="757,231,943,258"/>
+<area shape="rect" id="node2" href="$class_run_data.html#a938dd181b583b343480ad9294efff7fb" title="Append current RunData with input RunData." alt="" coords="543,231,709,258"/>
+<area shape="rect" id="node3" href="$class_run_bp_imp_on_input.html#a5a4dbb1b3f6f37e13a49553a951f095f" title="Get input data and parameter info about current benchmark (belief propagation in this case) and retur..." alt="" coords="262,5,469,47"/>
+<area shape="rect" id="node4" href="$class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e" title="Get current run inputs and parameters in RunData structure." alt="" coords="247,71,484,112"/>
+<area shape="rect" id="node5" href="$class_run_bp_on_stereo_set_optimized_c_p_u.html#aaf001fae4f5a536ad1ab07057d6b7fe0" title="Pure virtual operator() overload that must be defined in child class." alt="" coords="259,136,471,177"/>
+<area shape="rect" id="node6" href="$class_run_bp_on_stereo_set_c_u_d_a.html#ae8e0dd1cd0c36fa75769a2dc8f49dd42" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,224,188,265"/>
+<area shape="rect" id="node7" href="$class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="264,253,467,295"/>
+<area shape="rect" id="node8" href="$class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef" title="Run optimized and single threaded implementations using multiple sets of parallel parameters in optim..." alt="" coords="236,319,495,346"/>
+<area shape="rect" id="node9" href="$class_run_bp_imp_on_input.html#a7b1982434fcf152f7791e1f2efd3d2cf" title="Run and compare output disparity maps using the given optimized and single&#45;threaded stereo implementa..." alt="" coords="263,371,468,412"/>
+<area shape="rect" id="node10" href="$namespacerun__environment.html#a9639034960aa9cbd5836e5320f1a2a35" title="Generate RunData object that contains description header with corresponding value for each run settin..." alt="" coords="256,437,475,463"/>
+</map>

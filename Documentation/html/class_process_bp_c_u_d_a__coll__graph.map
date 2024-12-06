@@ -1,0 +1,5 @@
+<map id="ProcessBpCUDA&lt; T, DISP_VALS, ACCELERATION &gt;" name="ProcessBpCUDA&lt; T, DISP_VALS, ACCELERATION &gt;">
+<area shape="rect" id="node1" title="Class that define functions used in processing bp in the CUDA implementation." alt="" coords="5,185,193,227"/>
+<area shape="rect" id="node2" href="$class_process_bp.html" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="8,95,191,136"/>
+<area shape="rect" id="node3" href="$class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="40,5,159,32"/>
+</map>

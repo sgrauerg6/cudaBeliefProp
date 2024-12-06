@@ -1,0 +1,74 @@
+\hypertarget{_run_settings_consts_enums_8h}{}\doxysection{src/\+Run\+Settings\+Params/\+Run\+Settings\+Consts\+Enums.h File Reference}
+\label{_run_settings_consts_enums_8h}\index{src/RunSettingsParams/RunSettingsConstsEnums.h@{src/RunSettingsParams/RunSettingsConstsEnums.h}}
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+Include dependency graph for Run\+Settings\+Consts\+Enums.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{_run_settings_consts_enums_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_settings_consts_enums_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacerun__environment}{run\+\_\+environment}}
+\begin{DoxyCompactList}\small\item\em Constants and enums related to run environment and settings for run. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} \{ \newline
+\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}{run\+\_\+environment\+::k\+None}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}{run\+\_\+environment\+::k\+AVX256}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}{run\+\_\+environment\+::k\+AVX512}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}{run\+\_\+environment\+::k\+NEON}}
+, \newline
+\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}{run\+\_\+environment\+::k\+CUDA}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum for acceleration setting. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240}{run\+\_\+environment\+::\+Templated\+Iters\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240ab561bba765f5de06f13b170b1213cae1}{run\+\_\+environment\+::k\+Run\+Only\+Tempated}}
+, \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240a838408cecaedef3003e96ef0e113e6a7}{run\+\_\+environment\+::k\+Run\+Only\+Non\+Templated}}
+, \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240af5a18a48b018dee5a4e711ed66001936}{run\+\_\+environment\+::k\+Run\+Templated\+And\+Not\+Templated}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum that specifies whether or not to use templated counts for the number of iterations in processing loops or to run implementation with and without templated iteration counts Templated counts for number of loop iterations can help with optimization but requires that the number of iterations be known at compile time. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{run\+\_\+environment\+::\+Parallel\+Params\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8}{run\+\_\+environment\+::k\+Default}}
+, \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc}{run\+\_\+environment\+::k\+Optimized}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum for parallel parameters settings in run. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{run\+\_\+environment\+::\+Opt\+Parallel\+Params\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0ac9cc7ce7496f19ec2d6ec0848ef87c9d}{run\+\_\+environment\+::k\+Same\+Parallel\+Params\+All\+Kernels}}
+, \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc}{run\+\_\+environment\+::k\+Allow\+Diff\+Kernel\+Parallel\+Params\+In\+Run}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run In initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster on CPU. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ }\\constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a06320020557d9545768fb333d1276cf8}{run\+\_\+environment\+::\+Acceleration\+String}} ()
+\begin{DoxyCompactList}\small\item\em Get string corresponding to acceleration method at compile time. \end{DoxyCompactList}\item 
+std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a0a7505311f966a83b332d3fee2921848}{run\+\_\+environment\+::\+Acceleration\+String}} (Acc\+Setting acceleration\+\_\+setting)
+\begin{DoxyCompactList}\small\item\em Get string corresponding to acceleration method at run time. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::map$<$ std\+::size\+\_\+t, std\+::string\+\_\+view $>$ \mbox{\hyperlink{namespacerun__environment_ab15f9538874f71da40e07434e820a1d7}{run\+\_\+environment\+::k\+Data\+Size\+To\+Name\+Map}}
+\begin{DoxyCompactList}\small\item\em Mapping from data size to data type string. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a00245c690fb6c14dafd1b1106d028140}{run\+\_\+environment\+::k\+CPUThreads\+Pinned\+Header}} \{\char`\"{}CPU Threads Pinned To Socket\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a2f12e6214db0993b83063ce3ee059789}{run\+\_\+environment\+::k\+Omp\+Places\+Header}} \{\char`\"{}OMP\+\_\+\+PLACES\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a96a0152e29108e93871a640650a65596}{run\+\_\+environment\+::k\+Omp\+Proc\+Bind\+Header}} \{\char`\"{}OMP\+\_\+\+PROC\+\_\+\+BIND\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}{run\+\_\+environment\+::k\+Num\+CPUThreads\+Header}} \{\char`\"{}Total number of CPU threads\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}{run\+\_\+environment\+::k\+Bytes\+Align\+Mem\+Header}} \{\char`\"{}BYTES\+\_\+\+ALIGN\+\_\+\+MEMORY\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a0f90572394f855a71598506533005800}{run\+\_\+environment\+::k\+Num\+Data\+Align\+Width\+Header}} \{\char`\"{}NUM\+\_\+\+DATA\+\_\+\+ALIGN\+\_\+\+WIDTH\char`\"{}\}
+\end{DoxyCompactItemize}

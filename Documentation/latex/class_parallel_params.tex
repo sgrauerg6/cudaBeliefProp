@@ -1,0 +1,148 @@
+\hypertarget{class_parallel_params}{}\doxysection{Parallel\+Params Class Reference}
+\label{class_parallel_params}\index{ParallelParams@{ParallelParams}}
+
+
+Abstract class for holding and processing parallelization parameters. Child class(es) specific to implementation(s) must be defined.  
+
+
+
+
+{\ttfamily \#include $<$Parallel\+Params.\+h$>$}
+
+
+
+Inheritance diagram for Parallel\+Params\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{class_parallel_params__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_parallel_params_abba11482dc47ab3bfec2f0e1200ed7b1}{Set\+Parallel\+Dims}} (const std\+::array$<$ unsigned int, 2 $>$ \&parallel\+Dims)=0
+\begin{DoxyCompactList}\small\item\em Set parallel parameters for each kernel to the same input dimensions. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_parallel_params_a6bc7e67cfcb4a5c6290c65d8c9718af8}{As\+Run\+Data}} () const =0
+\begin{DoxyCompactList}\small\item\em Retrieve current parallel parameters as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_parallel_params_a511d0e529facedc797d37422ce38a2dd}{Add\+Test\+Results\+For\+Parallel\+Params}} (const std\+::array$<$ unsigned int, 2 $>$ \&p\+\_\+params\+\_\+curr\+\_\+run, const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&curr\+\_\+run\+\_\+data)=0
+\begin{DoxyCompactList}\small\item\em Add results from run with same specified parallel parameters used every parallel component. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_parallel_params_aa37adf58582750f9c012bcb1213ef4b4}{Set\+Optimized\+Params}} ()=0
+\begin{DoxyCompactList}\small\item\em Retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters to retrieved optimized parameters. \end{DoxyCompactList}\item 
+virtual std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{class_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d}{Opt\+Params\+For\+Kernel}} (const std\+::array$<$ unsigned int, 2 $>$ \&kernel\+\_\+location) const =0
+\begin{DoxyCompactList}\small\item\em Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstract class for holding and processing parallelization parameters. Child class(es) specific to implementation(s) must be defined. 
+
+Definition at line 19 of file Parallel\+Params.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_parallel_params_a511d0e529facedc797d37422ce38a2dd}\label{class_parallel_params_a511d0e529facedc797d37422ce38a2dd}} 
+\index{ParallelParams@{ParallelParams}!AddTestResultsForParallelParams@{AddTestResultsForParallelParams}}
+\index{AddTestResultsForParallelParams@{AddTestResultsForParallelParams}!ParallelParams@{ParallelParams}}
+\doxysubsubsection{\texorpdfstring{AddTestResultsForParallelParams()}{AddTestResultsForParallelParams()}}
+{\footnotesize\ttfamily virtual void Parallel\+Params\+::\+Add\+Test\+Results\+For\+Parallel\+Params (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{p\+\_\+params\+\_\+curr\+\_\+run,  }\item[{const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&}]{curr\+\_\+run\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Add results from run with same specified parallel parameters used every parallel component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+params\+\_\+curr\+\_\+run} & \\
+\hline
+{\em curr\+\_\+run\+\_\+data} & \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_bp_parallel_params_ac5b668aa24cfd323fa95939e944977f1}{Bp\+Parallel\+Params}}.
+
+\mbox{\Hypertarget{class_parallel_params_a6bc7e67cfcb4a5c6290c65d8c9718af8}\label{class_parallel_params_a6bc7e67cfcb4a5c6290c65d8c9718af8}} 
+\index{ParallelParams@{ParallelParams}!AsRunData@{AsRunData}}
+\index{AsRunData@{AsRunData}!ParallelParams@{ParallelParams}}
+\doxysubsubsection{\texorpdfstring{AsRunData()}{AsRunData()}}
+{\footnotesize\ttfamily virtual \mbox{\hyperlink{class_run_data}{Run\+Data}} Parallel\+Params\+::\+As\+Run\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Retrieve current parallel parameters as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_bp_parallel_params_a879c11cf3c7f5cac4e65245e92ca2a0d}{Bp\+Parallel\+Params}}.
+
+\mbox{\Hypertarget{class_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d}\label{class_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d}} 
+\index{ParallelParams@{ParallelParams}!OptParamsForKernel@{OptParamsForKernel}}
+\index{OptParamsForKernel@{OptParamsForKernel}!ParallelParams@{ParallelParams}}
+\doxysubsubsection{\texorpdfstring{OptParamsForKernel()}{OptParamsForKernel()}}
+{\footnotesize\ttfamily virtual std\+::array$<$unsigned int, 2$>$ Parallel\+Params\+::\+Opt\+Params\+For\+Kernel (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{kernel\+\_\+location }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em kernel\+\_\+location} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::array$<$unsigned int, 2$>$ 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_bp_parallel_params_a122456794ada5661077f6a81b66726df}{Bp\+Parallel\+Params}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_parallel_params_aa37adf58582750f9c012bcb1213ef4b4}\label{class_parallel_params_aa37adf58582750f9c012bcb1213ef4b4}} 
+\index{ParallelParams@{ParallelParams}!SetOptimizedParams@{SetOptimizedParams}}
+\index{SetOptimizedParams@{SetOptimizedParams}!ParallelParams@{ParallelParams}}
+\doxysubsubsection{\texorpdfstring{SetOptimizedParams()}{SetOptimizedParams()}}
+{\footnotesize\ttfamily virtual void Parallel\+Params\+::\+Set\+Optimized\+Params (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters to retrieved optimized parameters. 
+
+
+
+Implemented in \mbox{\hyperlink{class_bp_parallel_params_a5124d69f85a291bc84d00c5fbbbd778b}{Bp\+Parallel\+Params}}.
+
+\mbox{\Hypertarget{class_parallel_params_abba11482dc47ab3bfec2f0e1200ed7b1}\label{class_parallel_params_abba11482dc47ab3bfec2f0e1200ed7b1}} 
+\index{ParallelParams@{ParallelParams}!SetParallelDims@{SetParallelDims}}
+\index{SetParallelDims@{SetParallelDims}!ParallelParams@{ParallelParams}}
+\doxysubsubsection{\texorpdfstring{SetParallelDims()}{SetParallelDims()}}
+{\footnotesize\ttfamily virtual void Parallel\+Params\+::\+Set\+Parallel\+Dims (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{parallel\+Dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Set parallel parameters for each kernel to the same input dimensions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parallel\+Dims} & \\
+\hline
+\end{DoxyParams}
+
+
+Implemented in \mbox{\hyperlink{class_bp_parallel_params_a4c07664f7bba0931ea36e2858a242313}{Bp\+Parallel\+Params}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Settings\+Params/\mbox{\hyperlink{_parallel_params_8h}{Parallel\+Params.\+h}}\end{DoxyCompactItemize}

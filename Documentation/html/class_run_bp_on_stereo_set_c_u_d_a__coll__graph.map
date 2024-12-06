@@ -1,0 +1,4 @@
+<map id="RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;" name="RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;">
+<area shape="rect" id="node1" title="Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference ..." alt="" coords="5,95,249,136"/>
+<area shape="rect" id="node2" href="$class_run_bp_on_stereo_set.html" title="Abstract class to set up and run belief propagation on target device using specified acceleration." alt="" coords="19,5,236,47"/>
+</map>

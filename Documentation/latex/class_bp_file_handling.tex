@@ -1,0 +1,158 @@
+\hypertarget{class_bp_file_handling}{}\doxysection{Bp\+File\+Handling Class Reference}
+\label{class_bp_file_handling}\index{BpFileHandling@{BpFileHandling}}
+
+
+Class to retrieve path of stereo set files for reading and for output.  
+
+
+
+
+{\ttfamily \#include $<$Bp\+File\+Handling.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_bp_file_handling_a3d7bfc6aeab85bac117a639a640280dd}{Bp\+File\+Handling}} (const std\+::string \&stereo\+\_\+set\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Constructor takes stereo set name as input, which must match the directory name of the stereo set. \end{DoxyCompactList}\item 
+std\+::filesystem\+::path \mbox{\hyperlink{class_bp_file_handling_a308ff5bbbd80493a7babaa63260483c9}{Ref\+Image\+Path}} () const
+\begin{DoxyCompactList}\small\item\em Return path to reference image with valid extension if found, otherwise throw filesystem error. \end{DoxyCompactList}\item 
+std\+::filesystem\+::path \mbox{\hyperlink{class_bp_file_handling_ae005a6eb4397b7a17440bcd9d9c47713}{Test\+Image\+Path}} () const
+\begin{DoxyCompactList}\small\item\em Return path to test image with valid extension if found, otherwise throw filesystem error. \end{DoxyCompactList}\item 
+const std\+::filesystem\+::path \mbox{\hyperlink{class_bp_file_handling_ada8952d9e4fb33bc83ae2f763ab6bfb2}{Get\+Current\+Output\+Disparity\+File\+Path\+And\+Increment}} ()
+\begin{DoxyCompactList}\small\item\em Return path to use for current output disparity and then increment (to support multiple computed output disparity maps) \end{DoxyCompactList}\item 
+const std\+::filesystem\+::path \mbox{\hyperlink{class_bp_file_handling_a503e49378d793ced33e62a0ad40750aa}{Ground\+Truth\+Disparity\+File\+Path}} () const
+\begin{DoxyCompactList}\small\item\em Get file path to ground truth disparity map. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to retrieve path of stereo set files for reading and for output. 
+
+Definition at line 19 of file Bp\+File\+Handling.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_bp_file_handling_a3d7bfc6aeab85bac117a639a640280dd}\label{class_bp_file_handling_a3d7bfc6aeab85bac117a639a640280dd}} 
+\index{BpFileHandling@{BpFileHandling}!BpFileHandling@{BpFileHandling}}
+\index{BpFileHandling@{BpFileHandling}!BpFileHandling@{BpFileHandling}}
+\doxysubsubsection{\texorpdfstring{BpFileHandling()}{BpFileHandling()}}
+{\footnotesize\ttfamily Bp\+File\+Handling\+::\+Bp\+File\+Handling (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{stereo\+\_\+set\+\_\+name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor takes stereo set name as input, which must match the directory name of the stereo set. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em stereo\+\_\+set\+\_\+name} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 26 of file Bp\+File\+Handling.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_bp_file_handling_ada8952d9e4fb33bc83ae2f763ab6bfb2}\label{class_bp_file_handling_ada8952d9e4fb33bc83ae2f763ab6bfb2}} 
+\index{BpFileHandling@{BpFileHandling}!GetCurrentOutputDisparityFilePathAndIncrement@{GetCurrentOutputDisparityFilePathAndIncrement}}
+\index{GetCurrentOutputDisparityFilePathAndIncrement@{GetCurrentOutputDisparityFilePathAndIncrement}!BpFileHandling@{BpFileHandling}}
+\doxysubsubsection{\texorpdfstring{GetCurrentOutputDisparityFilePathAndIncrement()}{GetCurrentOutputDisparityFilePathAndIncrement()}}
+{\footnotesize\ttfamily const std\+::filesystem\+::path Bp\+File\+Handling\+::\+Get\+Current\+Output\+Disparity\+File\+Path\+And\+Increment (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return path to use for current output disparity and then increment (to support multiple computed output disparity maps) 
+
+\begin{DoxyReturn}{Returns}
+const std\+::filesystem\+::path 
+\end{DoxyReturn}
+
+
+Definition at line 48 of file Bp\+File\+Handling.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_file_handling_ada8952d9e4fb33bc83ae2f763ab6bfb2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_file_handling_a503e49378d793ced33e62a0ad40750aa}\label{class_bp_file_handling_a503e49378d793ced33e62a0ad40750aa}} 
+\index{BpFileHandling@{BpFileHandling}!GroundTruthDisparityFilePath@{GroundTruthDisparityFilePath}}
+\index{GroundTruthDisparityFilePath@{GroundTruthDisparityFilePath}!BpFileHandling@{BpFileHandling}}
+\doxysubsubsection{\texorpdfstring{GroundTruthDisparityFilePath()}{GroundTruthDisparityFilePath()}}
+{\footnotesize\ttfamily const std\+::filesystem\+::path Bp\+File\+Handling\+::\+Ground\+Truth\+Disparity\+File\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Get file path to ground truth disparity map. 
+
+\begin{DoxyReturn}{Returns}
+const std\+::filesystem\+::path 
+\end{DoxyReturn}
+
+
+Definition at line 58 of file Bp\+File\+Handling.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_file_handling_a503e49378d793ced33e62a0ad40750aa_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_file_handling_a308ff5bbbd80493a7babaa63260483c9}\label{class_bp_file_handling_a308ff5bbbd80493a7babaa63260483c9}} 
+\index{BpFileHandling@{BpFileHandling}!RefImagePath@{RefImagePath}}
+\index{RefImagePath@{RefImagePath}!BpFileHandling@{BpFileHandling}}
+\doxysubsubsection{\texorpdfstring{RefImagePath()}{RefImagePath()}}
+{\footnotesize\ttfamily std\+::filesystem\+::path Bp\+File\+Handling\+::\+Ref\+Image\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Return path to reference image with valid extension if found, otherwise throw filesystem error. 
+
+\begin{DoxyReturn}{Returns}
+std\+::filesystem\+::path 
+\end{DoxyReturn}
+
+
+Definition at line 60 of file Bp\+File\+Handling.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_file_handling_a308ff5bbbd80493a7babaa63260483c9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_bp_file_handling_ae005a6eb4397b7a17440bcd9d9c47713}\label{class_bp_file_handling_ae005a6eb4397b7a17440bcd9d9c47713}} 
+\index{BpFileHandling@{BpFileHandling}!TestImagePath@{TestImagePath}}
+\index{TestImagePath@{TestImagePath}!BpFileHandling@{BpFileHandling}}
+\doxysubsubsection{\texorpdfstring{TestImagePath()}{TestImagePath()}}
+{\footnotesize\ttfamily std\+::filesystem\+::path Bp\+File\+Handling\+::\+Test\+Image\+Path (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Return path to test image with valid extension if found, otherwise throw filesystem error. 
+
+\begin{DoxyReturn}{Returns}
+std\+::filesystem\+::path 
+\end{DoxyReturn}
+
+
+Definition at line 78 of file Bp\+File\+Handling.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_bp_file_handling_ae005a6eb4397b7a17440bcd9d9c47713_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+File\+Processing/\mbox{\hyperlink{_bp_file_handling_8h}{Bp\+File\+Handling.\+h}}\item 
+src/beliefprop/\+Bp\+File\+Processing/\mbox{\hyperlink{_bp_file_handling_8cpp}{Bp\+File\+Handling.\+cpp}}\end{DoxyCompactItemize}

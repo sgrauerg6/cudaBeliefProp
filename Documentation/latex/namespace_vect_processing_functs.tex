@@ -1,0 +1,368 @@
+\hypertarget{namespace_vect_processing_functs}{}\doxysection{Vect\+Processing\+Functs Namespace Reference}
+\label{namespace_vect_processing_functs}\index{VectProcessingFuncts@{VectProcessingFuncts}}
+
+
+General functions for processing using SIMD vector data types on CPU template specializations must be defined to support specific SIMD vector data types.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ }\\U \mbox{\hyperlink{namespace_vect_processing_functs_a8a75bf196354334c7e9dc9de94e3a0e7}{Load\+Packed\+Data\+Aligned}} (unsigned int x, unsigned int y, unsigned int current\+\_\+disparity, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, unsigned int num\+Disp\+Vals, const T $\ast$in\+Data)
+\begin{DoxyCompactList}\small\item\em Load multiple values of primitive type data from in\+Data array to SIMD vector data type in\+Data array must be aligned according to the rules of the specified SIMD type to use this operation. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ }\\U \mbox{\hyperlink{namespace_vect_processing_functs_a7bc1a5eaef3dcecb2b499fd3dce2d455}{Load\+Packed\+Data\+Unaligned}} (unsigned int x, unsigned int y, unsigned int current\+\_\+disparity, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, unsigned int num\+Disp\+Vals, const T $\ast$in\+Data)
+\begin{DoxyCompactList}\small\item\em Load multiple values of primitive type data from in\+Data array to SIMD vector data type in\+Data array does not need to be aligned to use this operation. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+Vect\+\_\+t T$>$ }\\T \mbox{\hyperlink{namespace_vect_processing_functs_afa33481a1d195e9f9d85b0e886e9af6e}{create\+SIMDVector\+Same\+Data}} (float data)
+\begin{DoxyCompactList}\small\item\em Create a SIMD vector of the specified type with all elements containing the same data. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\V \mbox{\hyperlink{namespace_vect_processing_functs_a1fe4b66daca77c46e24a0c3f03a0b794}{Add\+Vals}} (const T \&val1, const U \&val2)
+\begin{DoxyCompactList}\small\item\em Add values of specified types and return sum as specified type Define template specialization to support addition of specific SIMD vector types. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\V \mbox{\hyperlink{namespace_vect_processing_functs_aad16f5149c9c5782da569ae590b5bec8}{Subtract\+Vals}} (const T \&val1, const U \&val2)
+\begin{DoxyCompactList}\small\item\em Subtract values of specified types and return difference as specified type Define template specialization to support subtraction of specific SIMD vector types. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\V \mbox{\hyperlink{namespace_vect_processing_functs_a95096009e977088cd9938c1096cd0c99}{divide\+Vals}} (const T \&val1, const U \&val2)
+\begin{DoxyCompactList}\small\item\em Divide values of specified types and return quotient as specified type Define template specialization to support division of specific SIMD vector types. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ }\\T \mbox{\hyperlink{namespace_vect_processing_functs_a8919548c363a60e1055d5982d0977312}{Convert\+Val\+To\+Datatype}} (V val)
+\begin{DoxyCompactList}\small\item\em Convert value of specified type to value of another specified type Define template specialization to support conversion between specific types for SIMD vector processing. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T$>$ }\\T \mbox{\hyperlink{namespace_vect_processing_functs_acf3733cc6b62a1f6823f2b54204d4c6c}{Get\+Min\+By\+Element}} (const T \&val1, const T \&val2)
+\begin{DoxyCompactList}\small\item\em Get element-\/wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared Define template specialization to support function for specific vector type. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespace_vect_processing_functs_aac7a1b6b758bfa9b6cd2ae557582de32}{Store\+Packed\+Data\+Aligned}} (unsigned int index\+Data\+Store, T $\ast$location\+Data\+Store, const U \&data\+To\+Store)
+\begin{DoxyCompactList}\small\item\em Write data in SIMD vector (or single element) to specified location in array Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ }\\void \mbox{\hyperlink{namespace_vect_processing_functs_ac557f2e76fcdeb292102dffb6005bc0a}{Store\+Packed\+Data\+Unaligned}} (unsigned int index\+Data\+Store, T $\ast$location\+Data\+Store, const U \&data\+To\+Store)
+\begin{DoxyCompactList}\small\item\em Write data in SIMD vector (or single element) to specified location in array Array that data is written does not need to be aligned to use this operation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+General functions for processing using SIMD vector data types on CPU template specializations must be defined to support specific SIMD vector data types. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespace_vect_processing_functs_a1fe4b66daca77c46e24a0c3f03a0b794}\label{namespace_vect_processing_functs_a1fe4b66daca77c46e24a0c3f03a0b794}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!AddVals@{AddVals}}
+\index{AddVals@{AddVals}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{AddVals()}{AddVals()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ \\
+V Vect\+Processing\+Functs\+::\+Add\+Vals (\begin{DoxyParamCaption}\item[{const T \&}]{val1,  }\item[{const U \&}]{val2 }\end{DoxyParamCaption})}
+
+
+
+Add values of specified types and return sum as specified type Define template specialization to support addition of specific SIMD vector types. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+{\em V} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em val1} & \\
+\hline
+{\em val2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+V 
+\end{DoxyReturn}
+
+
+Definition at line 93 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_a8919548c363a60e1055d5982d0977312}\label{namespace_vect_processing_functs_a8919548c363a60e1055d5982d0977312}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!ConvertValToDatatype@{ConvertValToDatatype}}
+\index{ConvertValToDatatype@{ConvertValToDatatype}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{ConvertValToDatatype()}{ConvertValToDatatype()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ \\
+T Vect\+Processing\+Functs\+::\+Convert\+Val\+To\+Datatype (\begin{DoxyParamCaption}\item[{V}]{val }\end{DoxyParamCaption})}
+
+
+
+Convert value of specified type to value of another specified type Define template specialization to support conversion between specific types for SIMD vector processing. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em V} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em val} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T 
+\end{DoxyReturn}
+
+
+Definition at line 134 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_afa33481a1d195e9f9d85b0e886e9af6e}\label{namespace_vect_processing_functs_afa33481a1d195e9f9d85b0e886e9af6e}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!createSIMDVectorSameData@{createSIMDVectorSameData}}
+\index{createSIMDVectorSameData@{createSIMDVectorSameData}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{createSIMDVectorSameData()}{createSIMDVectorSameData()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Vect\+\_\+t T$>$ \\
+T Vect\+Processing\+Functs\+::create\+SIMDVector\+Same\+Data (\begin{DoxyParamCaption}\item[{float}]{data }\end{DoxyParamCaption})}
+
+
+
+Create a SIMD vector of the specified type with all elements containing the same data. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T 
+\end{DoxyReturn}
+
+
+Definition at line 76 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_a95096009e977088cd9938c1096cd0c99}\label{namespace_vect_processing_functs_a95096009e977088cd9938c1096cd0c99}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!divideVals@{divideVals}}
+\index{divideVals@{divideVals}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{divideVals()}{divideVals()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ \\
+V Vect\+Processing\+Functs\+::divide\+Vals (\begin{DoxyParamCaption}\item[{const T \&}]{val1,  }\item[{const U \&}]{val2 }\end{DoxyParamCaption})}
+
+
+
+Divide values of specified types and return quotient as specified type Define template specialization to support division of specific SIMD vector types. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+{\em V} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em val1} & \\
+\hline
+{\em val2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+V 
+\end{DoxyReturn}
+
+
+Definition at line 121 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_acf3733cc6b62a1f6823f2b54204d4c6c}\label{namespace_vect_processing_functs_acf3733cc6b62a1f6823f2b54204d4c6c}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!GetMinByElement@{GetMinByElement}}
+\index{GetMinByElement@{GetMinByElement}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{GetMinByElement()}{GetMinByElement()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T$>$ \\
+T Vect\+Processing\+Functs\+::\+Get\+Min\+By\+Element (\begin{DoxyParamCaption}\item[{const T \&}]{val1,  }\item[{const T \&}]{val2 }\end{DoxyParamCaption})}
+
+
+
+Get element-\/wise minimum of two inputs which may be of a SIMD vector type where corresponding values within the SIMD vector are compared Define template specialization to support function for specific vector type. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em val1} & \\
+\hline
+{\em val2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+T 
+\end{DoxyReturn}
+
+
+Definition at line 147 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_a8a75bf196354334c7e9dc9de94e3a0e7}\label{namespace_vect_processing_functs_a8a75bf196354334c7e9dc9de94e3a0e7}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!LoadPackedDataAligned@{LoadPackedDataAligned}}
+\index{LoadPackedDataAligned@{LoadPackedDataAligned}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{LoadPackedDataAligned()}{LoadPackedDataAligned()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ \\
+U Vect\+Processing\+Functs\+::\+Load\+Packed\+Data\+Aligned (\begin{DoxyParamCaption}\item[{unsigned int}]{x,  }\item[{unsigned int}]{y,  }\item[{unsigned int}]{current\+\_\+disparity,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{unsigned int}]{num\+Disp\+Vals,  }\item[{const T $\ast$}]{in\+Data }\end{DoxyParamCaption})}
+
+
+
+Load multiple values of primitive type data from in\+Data array to SIMD vector data type in\+Data array must be aligned according to the rules of the specified SIMD type to use this operation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em current\+\_\+disparity} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em num\+Disp\+Vals} & \\
+\hline
+{\em in\+Data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+U 
+\end{DoxyReturn}
+
+
+Definition at line 41 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_a7bc1a5eaef3dcecb2b499fd3dce2d455}\label{namespace_vect_processing_functs_a7bc1a5eaef3dcecb2b499fd3dce2d455}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!LoadPackedDataUnaligned@{LoadPackedDataUnaligned}}
+\index{LoadPackedDataUnaligned@{LoadPackedDataUnaligned}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{LoadPackedDataUnaligned()}{LoadPackedDataUnaligned()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+\_\+t U$>$ \\
+U Vect\+Processing\+Functs\+::\+Load\+Packed\+Data\+Unaligned (\begin{DoxyParamCaption}\item[{unsigned int}]{x,  }\item[{unsigned int}]{y,  }\item[{unsigned int}]{current\+\_\+disparity,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&}]{current\+\_\+bp\+\_\+level,  }\item[{unsigned int}]{num\+Disp\+Vals,  }\item[{const T $\ast$}]{in\+Data }\end{DoxyParamCaption})}
+
+
+
+Load multiple values of primitive type data from in\+Data array to SIMD vector data type in\+Data array does not need to be aligned to use this operation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em x} & \\
+\hline
+{\em y} & \\
+\hline
+{\em current\+\_\+disparity} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em num\+Disp\+Vals} & \\
+\hline
+{\em in\+Data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+U 
+\end{DoxyReturn}
+
+
+Definition at line 62 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_aac7a1b6b758bfa9b6cd2ae557582de32}\label{namespace_vect_processing_functs_aac7a1b6b758bfa9b6cd2ae557582de32}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!StorePackedDataAligned@{StorePackedDataAligned}}
+\index{StorePackedDataAligned@{StorePackedDataAligned}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{StorePackedDataAligned()}{StorePackedDataAligned()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ \\
+void Vect\+Processing\+Functs\+::\+Store\+Packed\+Data\+Aligned (\begin{DoxyParamCaption}\item[{unsigned int}]{index\+Data\+Store,  }\item[{T $\ast$}]{location\+Data\+Store,  }\item[{const U \&}]{data\+To\+Store }\end{DoxyParamCaption})}
+
+
+
+Write data in SIMD vector (or single element) to specified location in array Array that data is written to must be aligned according to the rules of the specified SIMD type to use this operation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em index\+Data\+Store} & \\
+\hline
+{\em location\+Data\+Store} & \\
+\hline
+{\em data\+To\+Store} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 161 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_ac557f2e76fcdeb292102dffb6005bc0a}\label{namespace_vect_processing_functs_ac557f2e76fcdeb292102dffb6005bc0a}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!StorePackedDataUnaligned@{StorePackedDataUnaligned}}
+\index{StorePackedDataUnaligned@{StorePackedDataUnaligned}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{StorePackedDataUnaligned()}{StorePackedDataUnaligned()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, Run\+Data\+Vect\+Process\+\_\+t U$>$ \\
+void Vect\+Processing\+Functs\+::\+Store\+Packed\+Data\+Unaligned (\begin{DoxyParamCaption}\item[{unsigned int}]{index\+Data\+Store,  }\item[{T $\ast$}]{location\+Data\+Store,  }\item[{const U \&}]{data\+To\+Store }\end{DoxyParamCaption})}
+
+
+
+Write data in SIMD vector (or single element) to specified location in array Array that data is written does not need to be aligned to use this operation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em index\+Data\+Store} & \\
+\hline
+{\em location\+Data\+Store} & \\
+\hline
+{\em data\+To\+Store} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 176 of file Vect\+Processing\+Functs.\+h.
+
+\mbox{\Hypertarget{namespace_vect_processing_functs_aad16f5149c9c5782da569ae590b5bec8}\label{namespace_vect_processing_functs_aad16f5149c9c5782da569ae590b5bec8}} 
+\index{VectProcessingFuncts@{VectProcessingFuncts}!SubtractVals@{SubtractVals}}
+\index{SubtractVals@{SubtractVals}!VectProcessingFuncts@{VectProcessingFuncts}}
+\doxysubsubsection{\texorpdfstring{SubtractVals()}{SubtractVals()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+Sing\+Or\+Vect\+\_\+t T, Run\+Data\+Sing\+Or\+Vect\+\_\+t U, Run\+Data\+Sing\+Or\+Vect\+\_\+t V$>$ \\
+V Vect\+Processing\+Functs\+::\+Subtract\+Vals (\begin{DoxyParamCaption}\item[{const T \&}]{val1,  }\item[{const U \&}]{val2 }\end{DoxyParamCaption})}
+
+
+
+Subtract values of specified types and return difference as specified type Define template specialization to support subtraction of specific SIMD vector types. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em U} & \\
+\hline
+{\em V} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em val1} & \\
+\hline
+{\em val2} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+V 
+\end{DoxyReturn}
+
+
+Definition at line 107 of file Vect\+Processing\+Functs.\+h.
+

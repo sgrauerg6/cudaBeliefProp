@@ -1,0 +1,4 @@
+<map id="SmoothImage" name="SmoothImage">
+<area shape="rect" id="node1" title="Class for smoothing the images before running BP. Smoothing image always uses float data type." alt="" coords="8,95,121,121"/>
+<area shape="rect" id="node2" href="$class_parallel_params.html" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="5,5,124,32"/>
+</map>

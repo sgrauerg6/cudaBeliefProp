@@ -1,0 +1,144 @@
+\hypertarget{class_run_results_speedups}{}\doxysection{Run\+Results\+Speedups Class Reference}
+\label{class_run_results_speedups}\index{RunResultsSpeedups@{RunResultsSpeedups}}
+
+
+Class to load and store run results data including speedups from evaluation.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Results\+Speedups.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_run_results_speedups_abfaa82cd1582d3eed0c866c832cbae78}{Run\+Results\+Speedups}} (const std\+::filesystem\+::path \&imp\+\_\+results\+\_\+file\+\_\+path, const std\+::string \&run\+\_\+name)
+\begin{DoxyCompactList}\small\item\em Constructor that takes in implementation file path and run name and retrieves run results and speedup evaluation for the run if available. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_results_speedups_a52486d67f4880ceff3c8b86944e2df04}{Run\+Results\+Speedups}} (const std\+::filesystem\+::path \&run\+\_\+results\+\_\+file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em Constructor that takes in run results path and processes run results speedups not available when using this constructor. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, std\+::vector$<$ std\+::string $>$ $>$ \mbox{\hyperlink{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}{Speedups}} () const
+\begin{DoxyCompactList}\small\item\em Return speedups from evaluation across all runs on an architecture. \end{DoxyCompactList}\item 
+std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_ac55adfc7e6626debcd61ba5b626ddeb0}{Inputs\+To\+Key\+Val}} (std\+::string\+\_\+view key)
+\begin{DoxyCompactList}\small\item\em Get mapping of run input signature to value corresponding to input key for each run result. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_a99a61c4f92c0dc0a81b4ef997c5ca883}{Data\+For\+Input}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&input\+\_\+sig) const
+\begin{DoxyCompactList}\small\item\em Return data for specified input signature. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class to load and store run results data including speedups from evaluation. 
+
+Definition at line 22 of file Run\+Results\+Speedups.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_run_results_speedups_abfaa82cd1582d3eed0c866c832cbae78}\label{class_run_results_speedups_abfaa82cd1582d3eed0c866c832cbae78}} 
+\index{RunResultsSpeedups@{RunResultsSpeedups}!RunResultsSpeedups@{RunResultsSpeedups}}
+\index{RunResultsSpeedups@{RunResultsSpeedups}!RunResultsSpeedups@{RunResultsSpeedups}}
+\doxysubsubsection{\texorpdfstring{RunResultsSpeedups()}{RunResultsSpeedups()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Run\+Results\+Speedups\+::\+Run\+Results\+Speedups (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{imp\+\_\+results\+\_\+file\+\_\+path,  }\item[{const std\+::string \&}]{run\+\_\+name }\end{DoxyParamCaption})}
+
+
+
+Constructor that takes in implementation file path and run name and retrieves run results and speedup evaluation for the run if available. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em imp\+\_\+results\+\_\+file\+\_\+path} & \\
+\hline
+{\em run\+\_\+name} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 15 of file Run\+Results\+Speedups.\+cpp.
+
+\mbox{\Hypertarget{class_run_results_speedups_a52486d67f4880ceff3c8b86944e2df04}\label{class_run_results_speedups_a52486d67f4880ceff3c8b86944e2df04}} 
+\index{RunResultsSpeedups@{RunResultsSpeedups}!RunResultsSpeedups@{RunResultsSpeedups}}
+\index{RunResultsSpeedups@{RunResultsSpeedups}!RunResultsSpeedups@{RunResultsSpeedups}}
+\doxysubsubsection{\texorpdfstring{RunResultsSpeedups()}{RunResultsSpeedups()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Run\+Results\+Speedups\+::\+Run\+Results\+Speedups (\begin{DoxyParamCaption}\item[{const std\+::filesystem\+::path \&}]{run\+\_\+results\+\_\+file\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+Constructor that takes in run results path and processes run results speedups not available when using this constructor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+\_\+results\+\_\+file\+\_\+path} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 44 of file Run\+Results\+Speedups.\+cpp.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_results_speedups_a99a61c4f92c0dc0a81b4ef997c5ca883}\label{class_run_results_speedups_a99a61c4f92c0dc0a81b4ef997c5ca883}} 
+\index{RunResultsSpeedups@{RunResultsSpeedups}!DataForInput@{DataForInput}}
+\index{DataForInput@{DataForInput}!RunResultsSpeedups@{RunResultsSpeedups}}
+\doxysubsubsection{\texorpdfstring{DataForInput()}{DataForInput()}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, std\+::string$>$ Run\+Results\+Speedups\+::\+Data\+For\+Input (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&}]{input\+\_\+sig }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return data for specified input signature. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em input\+\_\+sig} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::map$<$std\+::string, std\+::string$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 67 of file Run\+Results\+Speedups.\+h.
+
+\mbox{\Hypertarget{class_run_results_speedups_ac55adfc7e6626debcd61ba5b626ddeb0}\label{class_run_results_speedups_ac55adfc7e6626debcd61ba5b626ddeb0}} 
+\index{RunResultsSpeedups@{RunResultsSpeedups}!InputsToKeyVal@{InputsToKeyVal}}
+\index{InputsToKeyVal@{InputsToKeyVal}!RunResultsSpeedups@{RunResultsSpeedups}}
+\doxysubsubsection{\texorpdfstring{InputsToKeyVal()}{InputsToKeyVal()}}
+{\footnotesize\ttfamily std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ Run\+Results\+Speedups\+::\+Inputs\+To\+Key\+Val (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{key }\end{DoxyParamCaption})}
+
+
+
+Get mapping of run input signature to value corresponding to input key for each run result. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em key} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::map$<$\+Input\+Signature, std\+::string$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 91 of file Run\+Results\+Speedups.\+cpp.
+
+\mbox{\Hypertarget{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}\label{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}} 
+\index{RunResultsSpeedups@{RunResultsSpeedups}!Speedups@{Speedups}}
+\index{Speedups@{Speedups}!RunResultsSpeedups@{RunResultsSpeedups}}
+\doxysubsubsection{\texorpdfstring{Speedups()}{Speedups()}}
+{\footnotesize\ttfamily std\+::map$<$std\+::string, std\+::vector$<$std\+::string$>$ $>$ Run\+Results\+Speedups\+::\+Speedups (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return speedups from evaluation across all runs on an architecture. 
+
+\begin{DoxyReturn}{Returns}
+std\+::map$<$std\+::string, std\+::vector$<$std\+::string$>$$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 48 of file Run\+Results\+Speedups.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Eval/\mbox{\hyperlink{_run_results_speedups_8h}{Run\+Results\+Speedups.\+h}}\item 
+src/\+Run\+Eval/\mbox{\hyperlink{_run_results_speedups_8cpp}{Run\+Results\+Speedups.\+cpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,234 @@
+\hypertarget{class_run_imp_on_input}{}\doxysection{Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$ Class Template Reference}
+\label{class_run_imp_on_input}\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+
+
+Virtual class to run and evaluate implementation on a input specified by index number.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Imp\+On\+Input.\+h$>$}
+
+
+
+Inheritance diagram for Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{class_run_imp_on_input__inherit__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3e9d9}{operator()}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings)=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ \mbox{\hyperlink{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0dca8}{Set\+Up\+Parallel\+Params}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings) const =0
+\begin{DoxyCompactList}\small\item\em Set up parallel parameters for benchmark. \end{DoxyCompactList}\item 
+virtual \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input_a34a6f5d3387c29607e2249786b725257}{Input\+And\+Params\+For\+Curr\+Benchmark}} (bool loop\+\_\+iters\+\_\+templated) const =0
+\begin{DoxyCompactList}\small\item\em Retrieve input and parameters for run of current benchmark. \end{DoxyCompactList}\item 
+virtual std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c815ac4}{Run\+Imps\+And\+Compare}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ parallel\+\_\+params, bool run\+\_\+opt\+\_\+imp\+\_\+only, bool run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters) const =0
+\begin{DoxyCompactList}\small\item\em Run one or two implementations of benchmark and compare results if running multiple implementations. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input_a90b1b66d576a10fc4f5c4099e703a44e}{Input\+And\+Params\+Run\+Data}} (bool loop\+\_\+iters\+\_\+templated) const
+\begin{DoxyCompactList}\small\item\em Get current run inputs and parameters in \mbox{\hyperlink{class_run_data}{Run\+Data}} structure. \end{DoxyCompactList}\item 
+Mult\+Run\+Data\+::mapped\+\_\+type \mbox{\hyperlink{class_run_imp_on_input_ac81fc1fb17b7c4127972746d232b87ef}{Run\+Eval\+Benchmark}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings, bool run\+\_\+w\+\_\+loop\+\_\+iters\+\_\+templated) const
+\begin{DoxyCompactList}\small\item\em Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters Returns data from runs using default and optimized parallel parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$\newline
+class Run\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}
+
+Virtual class to run and evaluate implementation on a input specified by index number. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em OPT\+\_\+\+IMP\+\_\+\+ACCEL} & \\
+\hline
+{\em NUM\+\_\+\+INPUT} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 31 of file Run\+Imp\+On\+Input.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_run_imp_on_input_a34a6f5d3387c29607e2249786b725257}\label{class_run_imp_on_input_a34a6f5d3387c29607e2249786b725257}} 
+\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!InputAndParamsForCurrBenchmark@{InputAndParamsForCurrBenchmark}}
+\index{InputAndParamsForCurrBenchmark@{InputAndParamsForCurrBenchmark}!RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{InputAndParamsForCurrBenchmark()}{InputAndParamsForCurrBenchmark()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+virtual \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Input\+And\+Params\+For\+Curr\+Benchmark (\begin{DoxyParamCaption}\item[{bool}]{loop\+\_\+iters\+\_\+templated }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Retrieve input and parameters for run of current benchmark. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em loop\+\_\+iters\+\_\+templated} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_run_bp_imp_on_input_a5a4dbb1b3f6f37e13a49553a951f095f}{Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_on_input_a34a6f5d3387c29607e2249786b725257_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_on_input_a90b1b66d576a10fc4f5c4099e703a44e}\label{class_run_imp_on_input_a90b1b66d576a10fc4f5c4099e703a44e}} 
+\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!InputAndParamsRunData@{InputAndParamsRunData}}
+\index{InputAndParamsRunData@{InputAndParamsRunData}!RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{InputAndParamsRunData()}{InputAndParamsRunData()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Input\+And\+Params\+Run\+Data (\begin{DoxyParamCaption}\item[{bool}]{loop\+\_\+iters\+\_\+templated }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Get current run inputs and parameters in \mbox{\hyperlink{class_run_data}{Run\+Data}} structure. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em loop\+\_\+iters\+\_\+templated} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Definition at line 73 of file Run\+Imp\+On\+Input.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_on_input_a90b1b66d576a10fc4f5c4099e703a44e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3e9d9}\label{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3e9d9}} 
+\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!operator()@{operator()}}
+\index{operator()@{operator()}!RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+virtual \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::operator() (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{class_run_bp_imp_on_input_a66ff1e558fb7b820acac3fbc5dad4dfb}{Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+\mbox{\Hypertarget{class_run_imp_on_input_ac81fc1fb17b7c4127972746d232b87ef}\label{class_run_imp_on_input_ac81fc1fb17b7c4127972746d232b87ef}} 
+\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!RunEvalBenchmark@{RunEvalBenchmark}}
+\index{RunEvalBenchmark@{RunEvalBenchmark}!RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{RunEvalBenchmark()}{RunEvalBenchmark()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+Mult\+Run\+Data\+::mapped\+\_\+type \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Run\+Eval\+Benchmark (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings,  }\item[{bool}]{run\+\_\+w\+\_\+loop\+\_\+iters\+\_\+templated }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Run optimized and single threaded implementations using multiple sets of parallel parameters in optimized implementation if set to optimize parallel parameters Returns data from runs using default and optimized parallel parameters. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+\_\+imp\+\_\+settings} & \\
+\hline
+{\em run\+\_\+w\+\_\+loop\+\_\+iters\+\_\+templated} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Mult\+Run\+Data\+::mapped\+\_\+type 
+\end{DoxyReturn}
+
+
+Definition at line 94 of file Run\+Imp\+On\+Input.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_on_input_ac81fc1fb17b7c4127972746d232b87ef_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c815ac4}\label{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c815ac4}} 
+\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!RunImpsAndCompare@{RunImpsAndCompare}}
+\index{RunImpsAndCompare@{RunImpsAndCompare}!RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{RunImpsAndCompare()}{RunImpsAndCompare()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+virtual std\+::optional$<$\mbox{\hyperlink{class_run_data}{Run\+Data}}$>$ \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Run\+Imps\+And\+Compare (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$}]{parallel\+\_\+params,  }\item[{bool}]{run\+\_\+opt\+\_\+imp\+\_\+only,  }\item[{bool}]{run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Run one or two implementations of benchmark and compare results if running multiple implementations. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parallel\+\_\+params} & \\
+\hline
+{\em run\+\_\+opt\+\_\+imp\+\_\+only} & \\
+\hline
+{\em run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::optional$<$\+Run\+Data$>$ 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}{Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c815ac4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0dca8}\label{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0dca8}} 
+\index{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!SetUpParallelParams@{SetUpParallelParams}}
+\index{SetUpParallelParams@{SetUpParallelParams}!RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}}
+\doxysubsubsection{\texorpdfstring{SetUpParallelParams()}{SetUpParallelParams()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, run\+\_\+environment\+::\+Acc\+Setting OPT\+\_\+\+IMP\+\_\+\+ACCEL, unsigned int NUM\+\_\+\+INPUT$>$ \\
+virtual std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{class_parallel_params}{Parallel\+Params}}$>$ \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}}$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$\+::Set\+Up\+Parallel\+Params (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [pure virtual]}}
+
+
+
+Set up parallel parameters for benchmark. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em run\+\_\+imp\+\_\+settings} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::shared\+\_\+ptr$<$\+Parallel\+Params$>$ 
+\end{DoxyReturn}
+
+
+Implemented in \mbox{\hyperlink{class_run_bp_imp_on_input_a4d700fe4a0993c7dfaa932e5759bcd45}{Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0dca8_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Run\+Imp/\mbox{\hyperlink{_run_imp_on_input_8h}{Run\+Imp\+On\+Input.\+h}}\end{DoxyCompactItemize}

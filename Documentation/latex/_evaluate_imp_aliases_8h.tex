@@ -1,0 +1,69 @@
+\hypertarget{_evaluate_imp_aliases_8h}{}\doxysection{src/\+Run\+Eval/\+Evaluate\+Imp\+Aliases.h File Reference}
+\label{_evaluate_imp_aliases_8h}\index{src/RunEval/EvaluateImpAliases.h@{src/RunEval/EvaluateImpAliases.h}}
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$utility$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Data.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
+Include dependency graph for Evaluate\+Imp\+Aliases.\+h\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_evaluate_imp_aliases_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_evaluate_imp_aliases_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} = std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::optional$<$ std\+::map$<$ \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{run\+\_\+environment\+::\+Parallel\+Params\+Setting}}, \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ $>$$>$
+\item 
+using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} = std\+::pair$<$ std\+::string, std\+::array$<$ double, 2 $>$ $>$
+\item 
+using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} $>$ $>$$>$
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}\label{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}} 
+\index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!MultRunData@{MultRunData}}
+\index{MultRunData@{MultRunData}!EvaluateImpAliases.h@{EvaluateImpAliases.h}}
+\doxysubsubsection{\texorpdfstring{MultRunData}{MultRunData}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} =  std\+::map$<$\mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::optional$<$std\+::map$<$\mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{run\+\_\+environment\+::\+Parallel\+Params\+Setting}}, \mbox{\hyperlink{class_run_data}{Run\+Data}}$>$ $>$$>$}
+
+
+
+Definition at line 23 of file Evaluate\+Imp\+Aliases.\+h.
+
+\mbox{\Hypertarget{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}\label{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}} 
+\index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!MultRunDataWSpeedupByAcc@{MultRunDataWSpeedupByAcc}}
+\index{MultRunDataWSpeedupByAcc@{MultRunDataWSpeedupByAcc}!EvaluateImpAliases.h@{EvaluateImpAliases.h}}
+\doxysubsubsection{\texorpdfstring{MultRunDataWSpeedupByAcc}{MultRunDataWSpeedupByAcc}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} =  std\+::unordered\+\_\+map$<$\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$\mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}}$>$ $>$$>$}
+
+
+
+Definition at line 25 of file Evaluate\+Imp\+Aliases.\+h.
+
+\mbox{\Hypertarget{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}\label{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}} 
+\index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!RunSpeedupAvgMedian@{RunSpeedupAvgMedian}}
+\index{RunSpeedupAvgMedian@{RunSpeedupAvgMedian}!EvaluateImpAliases.h@{EvaluateImpAliases.h}}
+\doxysubsubsection{\texorpdfstring{RunSpeedupAvgMedian}{RunSpeedupAvgMedian}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} =  std\+::pair$<$std\+::string, std\+::array$<$double, 2$>$ $>$}
+
+
+
+Definition at line 24 of file Evaluate\+Imp\+Aliases.\+h.
+

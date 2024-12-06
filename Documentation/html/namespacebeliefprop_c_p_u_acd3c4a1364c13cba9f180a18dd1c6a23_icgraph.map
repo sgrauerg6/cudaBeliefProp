@@ -1,0 +1,4 @@
+<map id="beliefpropCPU::RetrieveOutputDisparity" name="beliefpropCPU::RetrieveOutputDisparity">
+<area shape="rect" id="node1" title=" " alt="" coords="216,5,439,47"/>
+<area shape="rect" id="node2" href="$class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="5,13,168,39"/>
+</map>
