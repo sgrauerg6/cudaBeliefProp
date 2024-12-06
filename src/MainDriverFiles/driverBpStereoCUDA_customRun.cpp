@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunEvalImp/RunEvalBpImp.h"
 #include "BpRunEvalImp/RunEvalBPImpOnInput.h"
 #include "RunImpCPU/RunCPUSettings.h"
-#include "RunImp/RunEvalImpMultSettings.h"
+#include "RunImp/RunImpMultTypesAccels.h"
 #include "BpRunProcessing/RunBpStereoSet.h"
 #include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
 #include "BpSingleThreadCPU/stereo.h"

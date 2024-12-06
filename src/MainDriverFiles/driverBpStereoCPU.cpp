@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <iostream>
 #include <array>
-#include "RunImp/RunEvalImpMultSettings.h"
+#include "RunImp/RunImpMultTypesAccels.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunProcessing/BpSettings.h"
@@ -123,7 +123,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
 
   //run belief propagation with AVX512, AVX256, and no vectorization implementations,
   //with the AVX512 implementation given first as the expected fastest implementation
-  RunEvalImpMultSettings().operator()({
+  RunImpMultTypesAccels().operator()({
     {run_environment::AccSetting::kAVX512,
      std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
     {run_environment::AccSetting::kAVX256,

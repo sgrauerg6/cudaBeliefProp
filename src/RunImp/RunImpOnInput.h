@@ -1,12 +1,12 @@
 /*
- * RunEvalImpOnInput.h
+ * RunImpOnInput.h
  *
  *  Created on: Feb 6, 2024
  *      Author: scott
  */
 
-#ifndef RUN_EVAL_BENCHMARK_IMP_SINGLE_SET_H_
-#define RUN_EVAL_BENCHMARK_IMP_SINGLE_SET_H_
+#ifndef RUN_IMP_ON_INPUT_H_
+#define RUN_IMP_ON_INPUT_H_
 
 #include <utility>
 #include <memory>
@@ -22,7 +22,7 @@
 
 //virtual class to run and evaluate benchmark on a input specified by index number
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-class RunEvalImpOnInput {
+class RunImpOnInput {
 public:
   virtual MultRunData operator()(const run_environment::RunImpSettings& run_imp_settings) = 0;
 
@@ -190,4 +190,4 @@ protected:
   }
 };
 
-#endif //RUN_BENCHMARK_IMP_SINGLE_SET_H_
+#endif //RUN_IMP_ON_INPUT_H_

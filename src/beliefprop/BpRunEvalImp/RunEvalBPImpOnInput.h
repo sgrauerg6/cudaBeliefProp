@@ -1,5 +1,5 @@
 /*
- * RunEvalImpOnInput.h
+ * RunImpOnInput.h
  *
  *  Created on: Feb 6, 2024
  *      Author: scott
@@ -15,7 +15,7 @@
 #include "RunSettingsParams/InputSignature.h"
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunImp/RunEvalImpOnInput.h"
+#include "RunImp/RunImpOnInput.h"
 #include "BpFileProcessing/BpFileHandling.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
@@ -56,7 +56,7 @@ namespace beliefprop {
 
 //run and evaluate belief propagation implementation on a specified input
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-class RunEvalBPImpOnInput final : public RunEvalImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
+class RunEvalBPImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   //run and evaluate optimized belief propagation implementation on evaluation stereo set
   //specified by NUM_INPUT

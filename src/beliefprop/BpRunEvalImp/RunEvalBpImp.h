@@ -9,15 +9,15 @@
 #define RUNEVALBPIMP_H_
 
 #include "RunSettingsParams/RunSettings.h"
-#include "RunImp/RunBenchmarkImp.h"
+#include "RunImp/RunImpMultInputs.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/EvaluateImpAliases.h"
 
 //run and evaluate optimized belief propagation implementation on a number of inputs
 //acceleration method of optimized belief propagation implementation is specified in template parameter
-class RunEvalBpImp final : public RunBenchmarkImp {
+class RunEvalBpImp final : public RunImpMultInputs {
 public:
-  RunEvalBpImp(run_environment::AccSetting opt_imp_accel) : RunBenchmarkImp(opt_imp_accel) {}
+  RunEvalBpImp(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
 
 private:
   //run and evaluate implementation on multiple data sets

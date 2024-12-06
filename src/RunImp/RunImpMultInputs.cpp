@@ -1,15 +1,15 @@
 /*
- * RunBenchmarkImp.cpp
+ * RunImpMultInputs.cpp
  *
  *  Created on: Feb 3, 2024
  *      Author: scott
  */
 
-#include "RunBenchmarkImp.h"
+#include "RunImpMultInputs.h"
 
 //run and evaluate runs on one or more input of benchmark implementation
 //using multiple settings
-std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunBenchmarkImp::operator()(
+std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunImpMultInputs::operator()(
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size,
   std::unique_ptr<EvaluateImpResults>& evalResults) const
