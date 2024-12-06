@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunProcessing/BpSettings.h"
 #include "BpRunEvalImp/RunBpImpMultInputs.h"
-#include "BpResultsEvaluation/EvaluateBPImpResults.h"
+#include "BpResultsEvaluation/EvaluateBpImpResults.h"
 
 //enum to define setting to run implementation
 enum class RunImpSetting {
@@ -131,7 +131,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     {run_environment::AccSetting::kNone,
      std::make_shared<RunBpImpMultInputs>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
-    std::make_unique<EvaluateBPImpResults>());
+    std::make_unique<EvaluateBpImpResults>());
 }
 
 int main(int argc, char** argv)

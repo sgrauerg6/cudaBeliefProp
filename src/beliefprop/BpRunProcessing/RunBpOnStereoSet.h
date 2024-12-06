@@ -25,7 +25,7 @@
 #include "BpImageProcessing/SmoothImage.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
-#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
+#include "BpResultsEvaluation/DetailedTimingBpConsts.h"
 #include "BpParallelParams.h"
 #include "ProcessBp.h"
 

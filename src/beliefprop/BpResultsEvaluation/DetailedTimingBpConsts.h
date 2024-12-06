@@ -1,12 +1,12 @@
 /*
- * DetailedTimingBPConsts.h
+ * DetailedTimingBpConsts.h
  *
  *  Created on: Sep 20, 2019
  *      Author: scott
  */
 
-#ifndef DETAILEDTIMINGBPCONSTS_H_
-#define DETAILEDTIMINGBPCONSTS_H_
+#ifndef DETAILED_TIMING_BP_CONSTS_H_
+#define DETAILED_TIMING_BP_CONSTS_H_
 
 #include <array>
 #include <string>
@@ -83,4 +83,4 @@ const std::unordered_map<Runtime_Type, std::string_view> kTimingNames{
   {Runtime_Type::kTotalWithTransfer, "Total runtime including data transfer time"}};
 };
 
-#endif /* DETAILEDTIMINGBPCONSTS_H_ */
+#endif /* DETAILED_TIMING_BP_CONSTS_H_ */

@@ -56,7 +56,7 @@ namespace beliefprop {
 
 //run and evaluate belief propagation implementation on a specified input
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-class RunBPImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
+class RunBpImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   //run and evaluate optimized belief propagation implementation on evaluation stereo set
   //specified by NUM_INPUT
@@ -97,7 +97,7 @@ private:
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-MultRunData RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
+MultRunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
   //set up BP settings for current run
@@ -136,7 +136,7 @@ MultRunData RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
 //set up parallel parameters for running belief propagation in parallel on CPU or GPU
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::shared_ptr<ParallelParams> RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
+std::shared_ptr<ParallelParams> RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //parallel parameters initialized with default thread count dimensions at every level
@@ -148,7 +148,7 @@ std::shared_ptr<ParallelParams> RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::Se
 
 //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-RunData RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(bool loop_iters_templated) const {
+RunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(bool loop_iters_templated) const {
   RunData curr_run_data;
   curr_run_data.AddDataWHeader(
     std::string(beliefprop::kStereoSetHeader), std::string(beliefprop::kStereoSetsToProcess[NUM_INPUT].name));
@@ -162,7 +162,7 @@ RunData RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBench
 //on the reference and test images specified by numStereoSet
 //run only optimized implementation if run_opt_imp_only is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::optional<RunData> RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
+std::optional<RunData> RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
   std::shared_ptr<ParallelParams> parallel_params, bool run_opt_imp_only, bool run_imp_templated_loop_iters) const
 {
   //get properties of input stereo set from stereo set number

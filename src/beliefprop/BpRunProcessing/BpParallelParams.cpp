@@ -6,7 +6,7 @@
  */
 
 #include <ranges>
-#include "BpResultsEvaluation/DetailedTimingBPConsts.h"
+#include "BpResultsEvaluation/DetailedTimingBpConsts.h"
 #include "BpRunProcessing/BpRunSettings.h"
 #include "BpParallelParams.h"
 

@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunProcessing/BpSettings.h"
 #include "BpRunEvalImp/RunBpImpMultInputs.h"
-#include "BpResultsEvaluation/EvaluateBPImpResults.h"
+#include "BpResultsEvaluation/EvaluateBpImpResults.h"
 
 int main(int argc, char** argv)
 {
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
     {{run_environment::AccSetting::kCUDA,
       std::make_shared<RunBpImpMultInputs>(run_environment::AccSetting::kCUDA)}},
     run_imp_settings,
-    std::make_unique<EvaluateBPImpResults>());
+    std::make_unique<EvaluateBpImpResults>());
 
   return 0;
 }

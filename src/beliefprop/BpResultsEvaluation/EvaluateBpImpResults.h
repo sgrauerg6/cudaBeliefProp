@@ -1,5 +1,5 @@
 /*
- * EvaluateBPImpResults.h
+ * EvaluateBpImpResults.h
  *
  *  Created on: March 2, 2024
  *      Author: scott
@@ -18,7 +18,7 @@
 #include <string>
 
 //class with operator function to evaluate implementation runs
-class EvaluateBPImpResults final : public EvaluateImpResults {
+class EvaluateBpImpResults final : public EvaluateImpResults {
 private:
   //retrieve path of belief propagation implementation results
   std::filesystem::path GetImpResultsPath() const override;

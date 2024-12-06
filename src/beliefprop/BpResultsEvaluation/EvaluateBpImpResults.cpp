@@ -1,5 +1,5 @@
 /*
- * EvaluateBPImpResults.cpp
+ * EvaluateBpImpResults.cpp
  *
  *  Created on: March 2, 2024
  *      Author: scott
@@ -7,12 +7,12 @@
  *  Function definition for class to evaluate belief propagation implementation results.
  */
 
-#include "EvaluateBPImpResults.h"
+#include "EvaluateBpImpResults.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include <filesystem>
 
 //retrieve path of belief propagation implementation results
-std::filesystem::path EvaluateBPImpResults::GetImpResultsPath() const
+std::filesystem::path EvaluateBpImpResults::GetImpResultsPath() const
 {
   std::filesystem::path current_path = std::filesystem::current_path();
   while (true) {

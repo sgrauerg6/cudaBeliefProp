@@ -5,7 +5,7 @@
  *      Author: scott
  */
 
-#include "RunBPImpOnInput.h"
+#include "RunBpImpOnInput.h"
 #include "RunBpImpMultInputs.h"
 
 MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(
@@ -47,14 +47,14 @@ template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
 MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const {
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(run_imp_settings));
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(run_imp_settings));
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(run_imp_settings));
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(run_imp_settings));
 #ifndef SMALLER_SETS_ONLY
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(run_imp_settings));
-  run_results.push_back(RunBPImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(run_imp_settings));
+  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
 #endif //SMALLER_SETS_ONLY
 
   //merge results for each input to overall results
