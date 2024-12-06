@@ -14,9 +14,8 @@
 #include "RunEval/EvaluateImpAliases.h"
 
 /**
- * @brief Run and evaluate optimized belief propagation implementation on a
- * number of inputs acceleration method of optimized belief propagation
- * implementation is specified in template parameter
+ * @brief Class to run specified belief propagation implementation on a
+ * number of inputs.
  * 
  */
 class RunBpImpMultInputs final : public RunImpMultInputs {

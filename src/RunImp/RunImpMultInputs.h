@@ -16,7 +16,8 @@
 #include "RunEval/EvaluateImpAliases.h"
 
 /**
- * @brief Base class for running and evaluating multiple runs of benchmark that may be optimized on CPU or GPU
+ * @brief Base class for running and evaluating multiple runs of an implementation
+ * that may be optimized on CPU or GPU
  * 
  */
 class RunImpMultInputs {

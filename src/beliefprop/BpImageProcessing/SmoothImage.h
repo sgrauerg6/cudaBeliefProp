@@ -37,7 +37,7 @@ constexpr float kWidthSigma1{4.0f};
 
 /**
  * @brief Class for smoothing the images before running BP.
- * Smoothing image always uses float data type
+ * Smoothing image always uses float data type.
  * 
  */
 class SmoothImage

@@ -6,8 +6,9 @@
 #include "RunImp/MemoryManagement.h"
 
 /**
- * @brief Functions to manage memory on CUDA device including transferring data between host and CUDA device
- * Functions defined in class override functions in parent class MemoryManagement which is used for CPU only processing
+ * @brief Functions to manage memory on CUDA device including transferring data between host and CUDA device.
+ * Functions defined in class override functions in parent class MemoryManagement
+ * which is used for CPU only processing.
  * 
  * @tparam T 
  */

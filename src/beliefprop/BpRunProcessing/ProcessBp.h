@@ -36,9 +36,9 @@
 using timingType = std::chrono::time_point<std::chrono::system_clock>;
 
 /**
- * @brief Abstract class to process belief propagation on target device
- * Some of the class functions need to be overridden to for processing on
- * target device
+ * @brief Abstract class to run belief propagation on target device.
+ * Some of the class functions need to be overridden for processing on
+ * target device.
  * 
  * @tparam T 
  * @tparam DISP_VALS 

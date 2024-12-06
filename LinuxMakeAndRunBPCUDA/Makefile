@@ -57,7 +57,7 @@ OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}
 ${OBJ_DIR}/EvaluateBpImpResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/BpParallelParams.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
 ${OBJ_DIR}/RunBpImpMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
-${OBJ_DIR}/BpEvaluationResults.o ${OBJ_DIR}/BpEvaluationParameters.o ${OBJ_DIR}/stereo.o \
+${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/DisparityMapEvaluationParams.o ${OBJ_DIR}/stereo.o \
 ${OBJ_DIR}/RunBpOnStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImageCUDA.o ${OBJ_DIR}/SmoothImage.o \
 ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBp.o ${OBJ_DIR}/ProcessBpCUDA.o
 DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/driverCudaBp.o

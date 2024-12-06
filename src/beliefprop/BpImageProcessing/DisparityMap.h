@@ -12,8 +12,8 @@
 #include <string>
 #include <ranges>
 #include "BpImage.h"
-#include "BpResultsEvaluation/BpEvaluationResults.h"
-#include "BpResultsEvaluation/BpEvaluationParameters.h"
+#include "BpResultsEvaluation/DisparityMapEvaluation.h"
+#include "BpResultsEvaluation/DisparityMapEvaluationParams.h"
 
 /**
  * @brief Class to define disparity map image that is output from bp processing
@@ -48,8 +48,8 @@ public:
     }
   }
 
-  BpEvaluationResults OutputComparison(const DisparityMap& disparity_map_to_compare,
-    const BpEvaluationParameters& evaluation_parameters) const;
+  DisparityMapEvaluation OutputComparison(const DisparityMap& disparity_map_to_compare,
+    const DisparityMapEvaluationParams& evaluation_parameters) const;
 
   void SaveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor = 1) const;
 

@@ -1,35 +1,38 @@
 /*
- * BpEvaluationResults.h
+ * DisparityMapEvaluation.h
  *
  *  Created on: Sep 13, 2019
  *      Author: scott
  */
 
-#ifndef BPEVALUATIONRESULTS_H_
-#define BPEVALUATIONRESULTS_H_
+#ifndef DISPARITY_MAP_EVALUATION_H_
+#define DISPARITY_MAP_EVALUATION_H_
 
 #include <map>
 #include <iostream>
 #include <numeric>
 #include "RunEval/RunData.h"
-#include "BpEvaluationParameters.h"
+#include "DisparityMapEvaluationParams.h"
 
 namespace beliefprop {
   constexpr std::string_view kAvgRMSErrorHeader{"Average RMS error"};
 };
 
 /**
- * @brief Class to store stereo processing evaluation results
+ * @brief Class to store disparity map evaluation results.
+ * Specifically comparison between two disparity maps such as
+ * output disparity map from bp processing and ground truth
+ * disparity map.
  * 
  */
-class BpEvaluationResults {
+class DisparityMapEvaluation {
 public:
   /**
    * @brief Initialize evaluation results with evaluation parameters
    * 
    * @param eval_params 
    */
-  void InitializeWithEvalParams(const BpEvaluationParameters& eval_params);
+  void InitializeWithEvalParams(const DisparityMapEvaluationParams& eval_params);
 
   /**
    * @brief Retrieve evaluation results as RunData
@@ -64,4 +67,4 @@ public:
   std::map<float, unsigned int> num_sig_diff_pixels_at_thresholds_;
 };
 
-#endif /* BPEVALUATIONRESULTS_H_ */
+#endif /* DISPARITY_MAP_EVALUATION_H_ */

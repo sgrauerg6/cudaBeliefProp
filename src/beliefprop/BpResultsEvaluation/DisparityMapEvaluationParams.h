@@ -1,12 +1,12 @@
 /*
- * BpEvaluationParameters.h
+ * DisparityMapEvaluationParams.h
  *
  *  Created on: Sep 13, 2019
  *      Author: scott
  */
 
-#ifndef BPEVALUATIONPARAMETERS_H_
-#define BPEVALUATIONPARAMETERS_H_
+#ifndef DISPARITY_MAP_EVALUATION_PARAMS_H_
+#define DISPARITY_MAP_EVALUATION_PARAMS_H_
 
 #include <vector>
 #include <array>
@@ -30,10 +30,10 @@ namespace beliefprop {
 }
 
 /**
- * @brief Structs to store parameters for evaluation of disparity map from stereo processing
+ * @brief Struct to store parameters for evaluation of disparity map from stereo processing
  * 
  */
-struct BpEvaluationParameters {
+struct DisparityMapEvaluationParams {
   /**
    * @brief Evaluation done at multiple difference thresholds
    * 
@@ -44,4 +44,4 @@ struct BpEvaluationParameters {
   const float max_diff_cap{beliefprop::kMaxDiffCap};
 };
 
-#endif /* BPEVALUATIONPARAMETERS_H_ */
+#endif /* DISPARITY_MAP_EVALUATION_PARAMS_H_ */

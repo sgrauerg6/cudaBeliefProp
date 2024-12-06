@@ -18,7 +18,9 @@
 #include <string>
 
 /**
- * @brief Class with operator function to evaluate implementation runs
+ * @brief Child class of EvaluateImpResults that defines member functions for
+ * belief propagation evaluation which override pure virtual functions in parent
+ * class
  * 
  */
 class EvaluateBpImpResults final : public EvaluateImpResults {

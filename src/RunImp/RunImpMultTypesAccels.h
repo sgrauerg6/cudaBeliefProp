@@ -17,9 +17,9 @@
 #include "RunEval/EvaluateImpResults.h"
 
 /**
- * @brief Class to run and evaluate a optimized benchmark implementation using
- * multiple settings
- * Optimization may be on the CPU using vectorization or on the GPU using CUDA
+ * @brief Class to run and evaluate implementation(s) of an algorithm using
+ * multiple settings including different datatype, inputs, and acceleration
+ * methods.
  * 
  */
 class RunImpMultTypesAccels {

@@ -311,15 +311,15 @@ std::optional<RunData> RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
     ground_truth_disp.string(), beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);
   run_data.AddDataWHeader(opt_imp_run_description + " output vs. Ground Truth result", std::string());
   run_data.AppendData(run_output[OPT_IMP_ACCEL]->out_disparity_map.OutputComparison(
-    ground_truth_disparity_map, BpEvaluationParameters()).AsRunData());
+    ground_truth_disparity_map, DisparityMapEvaluationParams()).AsRunData());
   if (!run_opt_imp_only) {
     run_data.AddDataWHeader(run_bp_stereo_single_thread_->BpRunDescription() + " output vs. Ground Truth result", std::string());
     run_data.AppendData(run_output[run_environment::AccSetting::kNone]->out_disparity_map.OutputComparison(
-      ground_truth_disparity_map, BpEvaluationParameters()).AsRunData());
+      ground_truth_disparity_map, DisparityMapEvaluationParams()).AsRunData());
     run_data.AddDataWHeader(
       opt_imp_run_description + " output vs. " + run_bp_stereo_single_thread_->BpRunDescription() + " result", std::string());
     run_data.AppendData(run_output[OPT_IMP_ACCEL]->out_disparity_map.OutputComparison(
-      run_output[run_environment::AccSetting::kNone]->out_disparity_map, BpEvaluationParameters()).AsRunData());
+      run_output[run_environment::AccSetting::kNone]->out_disparity_map, DisparityMapEvaluationParams()).AsRunData());
   }
 
   //return structure indicating that run succeeded along with data from run

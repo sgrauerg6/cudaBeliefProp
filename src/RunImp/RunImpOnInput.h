@@ -21,7 +21,7 @@
 #include "RunEval/EvaluateImpAliases.h"
 
 /**
- * @brief Virtual class to run and evaluate benchmark on a input specified by index number
+ * @brief Virtual class to run and evaluate implementation on a input specified by index number
  * 
  * @tparam T 
  * @tparam OPT_IMP_ACCEL 

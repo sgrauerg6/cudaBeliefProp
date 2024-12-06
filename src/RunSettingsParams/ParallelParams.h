@@ -12,8 +12,8 @@
 #include "RunEval/RunData.h"
 
 /**
- * @brief Abstract class for holding and processing parallelization parameters
- * child class(es) specific to processing implementation(s) must be defined
+ * @brief Abstract class for holding and processing parallelization parameters.
+ * Child class(es) specific to implementation(s) must be defined.
  * 
  */
 class ParallelParams {

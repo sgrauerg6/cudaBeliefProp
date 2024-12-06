@@ -25,12 +25,12 @@ void DisparityMap<T>::SaveDisparityMap(const std::string& disparity_map_file_pat
 
 //TODO: look into case where no known disparity in ground truth disparity map
 template<class T>
-BpEvaluationResults DisparityMap<T>::OutputComparison(
+DisparityMapEvaluation DisparityMap<T>::OutputComparison(
   const DisparityMap& disparity_map_to_compare,
-  const BpEvaluationParameters& evaluation_parameters) const
+  const DisparityMapEvaluationParams& evaluation_parameters) const
 {
   //initialize output evaluation with evaluation parameters
-  BpEvaluationResults output_evaluation;
+  DisparityMapEvaluation output_evaluation;
   output_evaluation.InitializeWithEvalParams(evaluation_parameters);
 
   //initialize total disparity difference across all pixels with and without max for disparity difference to 0

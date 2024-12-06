@@ -1,14 +1,14 @@
 /*
- * BpEvaluationResults.cpp
+ * DisparityMapEvaluation.cpp
  *
  *  Created on: Sep 13, 2019
  *      Author: scott
  */
 
-#include "BpEvaluationResults.h"
+#include "DisparityMapEvaluation.h"
 
 //initialize evaluation results with evaluation parameters
-void BpEvaluationResults::InitializeWithEvalParams(const BpEvaluationParameters& eval_params) {
+void DisparityMapEvaluation::InitializeWithEvalParams(const DisparityMapEvaluationParams& eval_params) {
   disparity_error_max_ = eval_params.max_diff_cap;
   for (const auto& output_diff_threshold : eval_params.output_diff_thresholds) {
     num_sig_diff_pixels_at_thresholds_[output_diff_threshold] = 0;
@@ -16,7 +16,7 @@ void BpEvaluationResults::InitializeWithEvalParams(const BpEvaluationParameters&
 }
 
 //retrieve evaluation results as RunData for output
-RunData BpEvaluationResults::AsRunData() const {
+RunData DisparityMapEvaluation::AsRunData() const {
   RunData evalRunData;
   evalRunData.AddDataWHeader(std::string(beliefprop::kAvgRMSErrorHeader),
     (double)average_disp_abs_diff_no_max_w_max_[0]);

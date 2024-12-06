@@ -16,7 +16,7 @@
 #include "RunSettingsParams/InputSignature.h"
 
 /**
- * @brief Class to save, load, and store run results data include speedups from evaluation
+ * @brief Class to load and store run results data including speedups from evaluation
  * 
  */
 class RunResultsSpeedups {
