@@ -66,7 +66,7 @@ namespace beliefpropCPU
 
   //run the current iteration of belief propagation using the checkerboard update method where half the pixels in the "checkerboard"
   //scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RunBPIterationUsingCheckerboardUpdates(beliefprop::CheckerboardPart checkerboard_to_update,
     const beliefprop::BpLevelProperties& current_bp_level,
     const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
@@ -106,7 +106,7 @@ namespace beliefpropCPU
     const ParallelParams& opt_cpu_params);
 
   //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
-  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparity(const beliefprop::BpLevelProperties& current_bp_level,
     const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
     const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
@@ -956,7 +956,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 //the checkerboard update method where half the pixels in the "checkerboard" scheme
 //retrieve messages from each 4-connected neighbor and then update their message based
 //on the retrieved messages and the data cost
-template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefpropCPU::RunBPIterationUsingCheckerboardUpdates(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
@@ -968,7 +968,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdates(
   const ParallelParams& opt_cpu_params)
 {
 #ifdef COMPILING_FOR_ARM
-if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
+if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
   {
     if (current_bp_level.width_checkerboard_level_ > 5)
     {
@@ -1003,7 +1003,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
   }
 #else
 #if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE))
-  if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX256)
+  if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256)
   {
     //only use AVX-256 if width of processing checkerboard is over 10
     if (current_bp_level.width_checkerboard_level_ > 10)
@@ -1029,7 +1029,7 @@ if constexpr (VECTORIZATION == run_environment::AccSetting::kNEON)
   }
 #endif //CPU_VECTORIZATION_DEFINE
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-  else if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX512)
+  else if constexpr (ACCELERATION == run_environment::AccSetting::kAVX512)
   {
     //only use AVX-512 if width of processing checkerboard is over 20
     if (current_bp_level.width_checkerboard_level_ > 20)
@@ -1113,7 +1113,7 @@ void beliefpropCPU::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerb
   }
 }
 
-template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefpropCPU::RetrieveOutputDisparity(
   const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
@@ -1124,7 +1124,7 @@ void beliefpropCPU::RetrieveOutputDisparity(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  if constexpr (VECTORIZATION == run_environment::AccSetting::kNone) {
+  if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
@@ -1154,7 +1154,7 @@ void beliefpropCPU::RetrieveOutputDisparity(
   else {
 #ifndef COMPILING_FOR_ARM
     //SIMD vectorization of output disparity
-    if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX512) {
+    if constexpr (ACCELERATION == run_environment::AccSetting::kAVX512) {
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
       RetrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS>(current_bp_level,
         data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -1165,7 +1165,7 @@ void beliefpropCPU::RetrieveOutputDisparity(
         disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     }
-    else if constexpr (VECTORIZATION == run_environment::AccSetting::kAVX256) {
+    else if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256) {
       RetrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(current_bp_level,
         data_cost_checkerboard_0, data_cost_checkerboard_1,
         message_u_checkerboard_0, message_d_checkerboard_0,

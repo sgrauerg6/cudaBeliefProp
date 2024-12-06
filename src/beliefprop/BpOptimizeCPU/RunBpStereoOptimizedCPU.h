@@ -24,8 +24,8 @@ namespace beliefprop {
   constexpr std::string_view kCPUVectorizationHeader{"Vectorization"};
 };
 
-template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-class RunBpStereoOptimizedCPU final : public RunBpStereoSet<T, DISP_VALS, VECTORIZATION> {
+template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+class RunBpStereoOptimizedCPU final : public RunBpStereoSet<T, DISP_VALS, ACCELERATION> {
 public:
   std::string BpRunDescription() const override { return std::string(beliefprop::kBpOptimizeCPUDesc); }
 
@@ -35,8 +35,8 @@ public:
     const ParallelParams& parallel_params) const override;
 };
 
-template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting VECTORIZATION>
-inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, VECTORIZATION>::operator()(
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
@@ -50,14 +50,14 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
   RunData run_data;
   run_data.AddDataWHeader(std::string(beliefprop::kNumParallelCPUThreadsHeader), nthreads);
   run_data.AddDataWHeader(std::string(beliefprop::kCPUVectorizationHeader),
-    std::string(run_environment::AccelerationString<VECTORIZATION>()));
+    std::string(run_environment::AccelerationString<ACCELERATION>()));
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
   auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings, 
-    BpOnDevice<T, DISP_VALS, VECTORIZATION>{
+    BpOnDevice<T, DISP_VALS, ACCELERATION>{
       std::make_unique<SmoothImageCPU>(parallel_params),
-      std::make_unique<ProcessOptimizedCPUBP<T, DISP_VALS, VECTORIZATION>>(parallel_params),
+      std::make_unique<ProcessOptimizedCPUBP<T, DISP_VALS, ACCELERATION>>(parallel_params),
       std::make_unique<RunImpMemoryManagement<T>>(),
       std::make_unique<RunImpMemoryManagement<float>>()});
   if (process_set_output) {
