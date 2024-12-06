@@ -52,7 +52,7 @@ int main(int argc, char** argv)
   std::cout << "BP processing runtime (GPU): " << run_output->run_time.count() << std::endl;
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
     std::unique_ptr<RunBpStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
-      std::make_unique<RunBpStereoCPUSingleThread<float, 64>>();
+      std::make_unique<RunBpStereoCPUSingleThread<float, 64, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
     const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, BpEvaluationParameters());

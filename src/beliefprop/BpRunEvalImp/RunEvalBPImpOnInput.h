@@ -109,7 +109,7 @@ MultRunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded bp stereo implementation
   run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpStereoCPUSingleThread<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals>>();
+    std::make_unique<RunBpStereoCPUSingleThread<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>();
 
   //set up and run bp stereo using optimized implementation (optimized CPU and CUDA implementations supported)
   //as well as unoptimized implementation for comparison

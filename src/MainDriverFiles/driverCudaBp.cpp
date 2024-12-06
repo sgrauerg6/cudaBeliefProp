@@ -46,7 +46,7 @@ int main(int argc, char** argv)
   //set default parallel parameters and parallel parameters to benchmark when searching for optimal
   //parallel parameters
   run_imp_settings.p_params_default_opt_settings =
-    {run_cuda::kParallelParamsDefault
+    {run_cuda::kParallelParamsDefault,
      run_cuda::kParallelParameterOptions};
 
   //set setting of whether or not to use templated loop iterations in implementation 
