@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunEval/RunTypeConstraints.h"
-#include "RunImp/RunImpGenFuncts.h"
+#include "RunImp/UtilityFuncts.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImpCPU/VectProcessingFuncts.h"
 
@@ -580,7 +580,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 
   //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool data_aligned = run_imp_util::MemoryAlignedAtDataStart(
+  const bool data_aligned = util_functs::MemoryAlignedAtDataStart(
     0, 1, current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_);
 
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
@@ -717,7 +717,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         x_val_process = std::max(start_x, x_val_process);
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(
+        const bool data_aligned_x_val = util_functs::MemoryAlignedAtDataStart(
           x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
           current_bp_level.div_padded_checkerboard_w_align_);
 
@@ -857,7 +857,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
         x_val_process = std::max(start_x, x_val_process);
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
+        const bool data_aligned_x_val = util_functs::MemoryAlignedAtDataStart(x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
           current_bp_level.div_padded_checkerboard_w_align_);
 
         //initialize arrays for data and message values
@@ -1260,7 +1260,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
         const unsigned int index_output = (y_val * width_disp_checkerboard) + x_val_process;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = run_imp_util::MemoryAlignedAtDataStart(x_val_process, simd_data_size,
+        const bool data_aligned_x_val = util_functs::MemoryAlignedAtDataStart(x_val_process, simd_data_size,
           current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_);
 
         //declare SIMD vectors for data and message values at each disparity

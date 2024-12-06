@@ -15,12 +15,12 @@
 #include <x86intrin.h>
 #endif
 
-#include "RunImp/RunImpGenFuncts.h"
+#include "RunImp/UtilityFuncts.h"
 
 //used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
 //for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio
 template<> inline
-short run_imp_util::ZeroVal<short>()
+short util_functs::ZeroVal<short>()
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(0.0);
@@ -32,7 +32,7 @@ short run_imp_util::ZeroVal<short>()
 }
 
 template<> inline
-float run_imp_util::ConvertValToDifferentDataTypeIfNeeded<short, float>(short data)
+float util_functs::ConvertValToDifferentDataTypeIfNeeded<short, float>(short data)
 {
 #ifdef _WIN32
   __m128i dataInAvxReg = _mm_cvtsi32_si128(static_cast<int>(data));
@@ -44,7 +44,7 @@ float run_imp_util::ConvertValToDifferentDataTypeIfNeeded<short, float>(short da
 }
 
 template<> inline
-short run_imp_util::ConvertValToDifferentDataTypeIfNeeded<float, short>(float data)
+short util_functs::ConvertValToDifferentDataTypeIfNeeded<float, short>(float data)
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(data);

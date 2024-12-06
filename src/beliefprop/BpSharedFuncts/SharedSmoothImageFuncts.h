@@ -8,7 +8,7 @@
 #ifndef SHAREDSMOOTHIMAGEFUNCTS_H_
 #define SHAREDSMOOTHIMAGEFUNCTS_H_
 
-#include "RunImp/RunImpGenFuncts.h"
+#include "RunImp/UtilityFuncts.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "BpImageProcessing/BpImageConstraints.h"
 
@@ -27,8 +27,8 @@ ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_v
   for (unsigned int i = 1; i < size_filter; i++) {
     filtered_pixel_val +=
       image_filter[i] *
-      (((float)image_to_filter[y_val*width_images + (unsigned int)run_imp_util::GetMax((int)x_val - (int)i, 0)]) +
-      ((float)image_to_filter[y_val*width_images + run_imp_util::GetMin(x_val + i, width_images - 1)]));
+      (((float)image_to_filter[y_val*width_images + (unsigned int)util_functs::GetMax((int)x_val - (int)i, 0)]) +
+      ((float)image_to_filter[y_val*width_images + util_functs::GetMin(x_val + i, width_images - 1)]));
   }
 
   filtered_image[y_val*width_images + x_val] = filtered_pixel_val;
@@ -47,8 +47,8 @@ ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(unsigned int x
   for (unsigned int i = 1; i < size_filter; i++) {
     filtered_pixel_val +=
       image_filter[i] *
-      ((float)(image_to_filter[(unsigned int)run_imp_util::GetMax((int)y_val - (int)i, 0) * width_images + x_val]) +
-      ((float)image_to_filter[run_imp_util::GetMin(y_val + i, height_images - 1) * width_images + x_val]));
+      ((float)(image_to_filter[(unsigned int)util_functs::GetMax((int)y_val - (int)i, 0) * width_images + x_val]) +
+      ((float)image_to_filter[util_functs::GetMin(y_val + i, height_images - 1) * width_images + x_val]));
   }
 
   filtered_image[y_val * width_images + x_val] = filtered_pixel_val;

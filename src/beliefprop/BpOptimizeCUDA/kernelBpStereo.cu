@@ -51,7 +51,7 @@ __global__ void InitializeBottomLevelData(
   //get the x value within the current "checkerboard"
   const unsigned int x_checkerboard = x_val / 2;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_checkerboard, y_val, current_bp_level.width_level_, current_bp_level.height_level_))
   {
     beliefprop::InitializeBottomLevelDataPixel<T, DISP_VALS>(x_val, y_val,
@@ -75,7 +75,7 @@ __global__ void InitializeCurrentLevelData(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
@@ -99,7 +99,7 @@ __global__ void InitializeMessageValsToDefaultKernel(
   const unsigned int x_val_in_checkerboard = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_val_in_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     //initialize message values in both checkerboards
@@ -131,7 +131,7 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
   {
     beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
@@ -160,7 +160,7 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_val, y_val, current_bp_level.width_level_/2, current_bp_level.height_level_))
   {
     beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
@@ -195,7 +195,7 @@ __global__ void CopyMsgDataToNextLevel(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     beliefprop::CopyMsgDataToNextLevelPixel<T, DISP_VALS>(x_val, y_val,
@@ -227,7 +227,7 @@ __global__ void RetrieveOutputDisparity(
   const unsigned int x_val = blockIdx.x * blockDim.x + threadIdx.x;
   const unsigned int y_val = blockIdx.y * blockDim.y + threadIdx.y;
 
-  if (run_imp_util::WithinImageBounds(
+  if (util_functs::WithinImageBounds(
     x_val, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_))
   {
     beliefprop::RetrieveOutputDisparityPixel<T, T, DISP_VALS>(

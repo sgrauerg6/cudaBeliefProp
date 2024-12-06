@@ -1,12 +1,12 @@
 /*
- * RunImpGenFuncts.h
+ * UtilityFuncts.h
  *
  *  Created on: Jan 26, 2024
  *      Author: scott
  */
 
-#ifndef RUNIMPGENFUNCTS_H_
-#define RUNIMPGENFUNCTS_H_
+#ifndef UTILITY_FUNCTS_H_
+#define UTILITY_FUNCTS_H_
 
 #include "RunEval/RunTypeConstraints.h"
 
@@ -17,7 +17,7 @@
 #define ARCHITECTURE_ADDITION
 #endif //OPTIMIZED_CUDA_RUN
 
-namespace run_imp_util {
+namespace util_functs {
 
 //T is input type, U is output type
 template<RunData_t T, RunData_t U>
@@ -64,4 +64,4 @@ inline bool MemoryAlignedAtDataStart(
 
 };
 
-#endif //RUNIMPGENFUNCTS_H_
+#endif //UTILITY_FUNCTS_H_
