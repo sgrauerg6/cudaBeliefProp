@@ -19,8 +19,9 @@
 #include "RunEval/RunData.h"
 
 /**
- * @brief Class to store timings
- * Index for timing segments must be enum type (either scoped via "enum class" or not scoped)
+ * @brief Class to store timings taken during the run(s) of an implementation
+ * or across multiple implementations.
+ * Index for timing segments must be enum type.
  * 
  * @tparam T 
  */
