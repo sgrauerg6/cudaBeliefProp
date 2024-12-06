@@ -19,7 +19,14 @@
 
 namespace util_functs {
 
-//T is input type, U is output type
+/**
+ * @brief T is input type, U is output type
+ * 
+ * @tparam T 
+ * @tparam U 
+ * @param data 
+ * @return ARCHITECTURE_ADDITION 
+ */
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline U ConvertValToDifferentDataTypeIfNeeded(T data) {
   return data; //by default assume same data type and just return data
@@ -42,8 +49,16 @@ ARCHITECTURE_ADDITION inline T GetMax(T val1, T val2) {
   return ((val1 > val2) ? val1 : val2);
 }
 
-//checks if the current point is within the image bounds
-//assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
+/**
+ * @brief Checks if the current point is within the image bounds
+ * Assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
+ * 
+ * @param x_val 
+ * @param y_val 
+ * @param width 
+ * @param height 
+ * @return ARCHITECTURE_ADDITION 
+ */
 ARCHITECTURE_ADDITION inline bool WithinImageBounds(
   unsigned int x_val, unsigned int y_val,
   unsigned int width, unsigned int height)
@@ -51,7 +66,17 @@ ARCHITECTURE_ADDITION inline bool WithinImageBounds(
   return ((x_val < width) && (y_val < height));
 }
 
-//inline function to check if data is aligned at x_val_data_start for SIMD loads/stores that require alignment
+/**
+ * @brief Inline function to check if data is aligned at x_val_data_start for
+ * SIMD loads/stores that require alignment
+ * 
+ * @param x_val_data_start 
+ * @param simd_data_size 
+ * @param num_data_align_width 
+ * @param divPaddedChBoardWidthForAlign 
+ * @return true 
+ * @return false 
+ */
 inline bool MemoryAlignedAtDataStart(
   unsigned int x_val_data_start,
   unsigned int simd_data_size,

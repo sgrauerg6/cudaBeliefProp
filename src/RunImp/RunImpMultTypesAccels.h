@@ -16,13 +16,22 @@
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RunEval/EvaluateImpResults.h"
 
-//class to run and evaluate a optimized benchmark implementation using
-//multiple settings
-//optimization may be on the CPU using vectorization or on the GPU using CUDA
+/**
+ * @brief Class to run and evaluate a optimized benchmark implementation using
+ * multiple settings
+ * Optimization may be on the CPU using vectorization or on the GPU using CUDA
+ * 
+ */
 class RunImpMultTypesAccels {
 public:
-  //run and evaluate benchmark using multiple datatypes,
-  //inputs, and implementations if available
+  /**
+   * @brief Run and evaluate benchmark using multiple datatypes,
+   * inputs, and implementations if available
+   * 
+   * @param run_benchmark_imps_by_acc_setting 
+   * @param run_imp_settings 
+   * @param evalResultsPtr 
+   */
   void operator()(
     const std::map<run_environment::AccSetting,
     std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_by_acc_setting,
@@ -30,7 +39,12 @@ public:
     std::unique_ptr<EvaluateImpResults> evalResultsPtr) const;
 
 private:
-  //get fastest available implementation
+  /**
+   * @brief Get fastest available implementation
+   * 
+   * @param run_benchmark_imps_by_acc_setting 
+   * @return run_environment::AccSetting 
+   */
   run_environment::AccSetting FastestAvailableAcc(
     const std::map<run_environment::AccSetting,
     std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_by_acc_setting) const;

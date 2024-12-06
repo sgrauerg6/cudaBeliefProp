@@ -20,28 +20,56 @@
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/EvaluateImpAliases.h"
 
-//virtual class to run and evaluate benchmark on a input specified by index number
+/**
+ * @brief Virtual class to run and evaluate benchmark on a input specified by index number
+ * 
+ * @tparam T 
+ * @tparam OPT_IMP_ACCEL 
+ * @tparam NUM_INPUT 
+ */
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 class RunImpOnInput {
 public:
   virtual MultRunData operator()(const run_environment::RunImpSettings& run_imp_settings) = 0;
 
 protected:
-  //set up parallel parameters for benchmark
+  /**
+   * @brief Set up parallel parameters for benchmark
+   * 
+   * @param run_imp_settings 
+   * @return std::shared_ptr<ParallelParams> 
+   */
   virtual std::shared_ptr<ParallelParams> SetUpParallelParams(
     const run_environment::RunImpSettings& run_imp_settings) const = 0;
 
-  //retrieve input and parameters for run of current benchmark
+  /**
+   * @brief Retrieve input and parameters for run of current benchmark
+   * 
+   * @param loop_iters_templated 
+   * @return RunData 
+   */
   virtual RunData InputAndParamsForCurrBenchmark(bool loop_iters_templated) const = 0;
 
-  //run one or two implementations of benchmark and compare results if
-  //running multiple implementations
+  /**
+   * @brief Run one or two implementations of benchmark and compare results if
+   * running multiple implementations
+   * 
+   * @param parallel_params 
+   * @param run_opt_imp_only 
+   * @param run_imp_templated_loop_iters 
+   * @return std::optional<RunData> 
+   */
   virtual std::optional<RunData> RunImpsAndCompare(
     std::shared_ptr<ParallelParams> parallel_params,
     bool run_opt_imp_only,
     bool run_imp_templated_loop_iters) const = 0;
 
-  //get current run inputs and parameters in RunData structure
+  /**
+   * @brief Get current run inputs and parameters in RunData structure
+   * 
+   * @param loop_iters_templated 
+   * @return RunData 
+   */
   RunData InputAndParamsRunData(bool loop_iters_templated) const {
     RunData curr_run_data;
     curr_run_data.AddDataWHeader(
@@ -53,10 +81,16 @@ protected:
     return curr_run_data;
   }
 
-  //run optimized and single threaded implementations using multiple sets of
-  //parallel parameters in optimized implementation if set to optimize parallel
-  //parameters
-  //returns data from runs using default and optimized parallel parameters
+  /**
+   * @brief Run optimized and single threaded implementations using multiple sets of
+   * parallel parameters in optimized implementation if set to optimize parallel
+   * parameters
+   * Returns data from runs using default and optimized parallel parameters
+   * 
+   * @param run_imp_settings 
+   * @param run_w_loop_iters_templated 
+   * @return MultRunData::mapped_type 
+   */
   MultRunData::mapped_type RunEvalBenchmark(
     const run_environment::RunImpSettings& run_imp_settings,
     bool run_w_loop_iters_templated) const

@@ -12,10 +12,16 @@
 #include <string_view>
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
 
-//namespace for general program run evaluation
+/**
+ * @brief Namespace for general program run evaluation
+ * 
+ */
 namespace run_eval {
 
-//enum for status to indicate if error or no error
+/**
+ * @brief Enum for status to indicate if error or no error
+ * 
+ */
 enum class Status { kNoError, kError };
 
 //set data types to use in evaluation
@@ -27,7 +33,10 @@ enum class Status { kNoError, kError };
   constexpr std::array<size_t, 3> kDataTypesEvalSizes{sizeof(float), sizeof(double), sizeof(halftype)};
 #endif //EVAL_FLOAT_DATATYPE_ONLY
 
-  //define string for display of "true" and "false" values of bool value
+  /**
+   * @brief Define string for display of "true" and "false" values of bool value
+   * 
+   */
   constexpr std::array<std::string_view, 2> kBoolValFalseTrueDispStr{"NO", "YES"};
 
   //constants for headers corresponding to input, input settings, results, and run success
@@ -36,7 +45,10 @@ enum class Status { kNoError, kError };
   constexpr std::string_view kLoopItersTemplatedHeader{"Loop Iters Templated"};
   constexpr std::string_view kRunSuccessHeader{"Run Success"};
 
-  //constant for "all runs" string
+  /**
+   * @brief Constant for "all runs" string
+   * 
+   */
   constexpr std::string_view kAllRunsStr{"All Runs"};
 
   //constants for output results for individual and sets of runs

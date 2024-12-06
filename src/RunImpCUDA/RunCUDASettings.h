@@ -22,8 +22,11 @@ using halftype = half;
 
 namespace run_cuda {
 
-//parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation
-//parallel parameter corresponds to thread block dimensions in CUDA implementation
+/**
+ * @brief Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation
+ * Parallel parameter corresponds to thread block dimensions in CUDA implementation
+ * 
+ */
 #ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
 const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   {16, 1}, {32, 4}, {64, 4}};
@@ -34,6 +37,12 @@ const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   {128, 1}, {128, 2}, {256, 1}, {32, 10}, {32, 12}, {32, 14}, {32, 16},
   {64, 5}, {64, 6}, {64, 7}, {64, 8}, {128, 3}, {128, 4}, {256, 2}};
 #endif //LIMITED_TEST_PARAMS_FEWER_RUNS
+
+/**
+ * @brief Default thread block dimensions (which is what parallel parameters
+ * corresponds to) in CUDA implementation
+ * 
+ */
 constexpr std::array<unsigned int, 2> kParallelParamsDefault{{32, 4}};
 
 };

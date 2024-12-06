@@ -39,7 +39,10 @@
 
 namespace run_cpu {
 
-//constant to specify to run simulate single CPU on a dual-CPU system
+/**
+ * @brief Constant to specify to run simulate single CPU on a dual-CPU system
+ * 
+ */
 constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 
 //parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation

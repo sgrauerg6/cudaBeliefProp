@@ -14,8 +14,12 @@
 #include "RunSettingsParams/RunSettings.h"
 #include "RunEval/RunTypeConstraints.h"
 
-//Class for memory management with functions defined for standard memory allocation using CPU
-//Class functions can be overridden to support other computation devices such as GPU
+/**
+ * @brief Class for memory management with functions defined for standard memory allocation using CPU
+ * Class functions can be overridden to support other computation devices such as GPU
+ * 
+ * @tparam T 
+ */
 template <RunData_t T>
 class MemoryManagement
 {

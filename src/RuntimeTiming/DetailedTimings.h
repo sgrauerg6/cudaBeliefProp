@@ -18,30 +18,60 @@
 #include <ranges>
 #include "RunEval/RunData.h"
 
-//Class to store timings
-//Index for timing segments must be enum type (either scoped via "enum class" or not scoped)
+/**
+ * @brief Class to store timings
+ * Index for timing segments must be enum type (either scoped via "enum class" or not scoped)
+ * 
+ * @tparam T 
+ */
 template <typename T>
 requires std::is_enum_v<T>
 class DetailedTimings {
 public:
-  //initialize each timing segment
+  /**
+   * @brief Construct a new DetailedTimings object where
+   * each timing segment is initialized
+   * 
+   * @param timing_segment_names 
+   */
   DetailedTimings(const std::unordered_map<T, std::string_view>& timing_segment_names);
 
-  //reset all timings
+  /**
+   * @brief Reset all timings
+   * 
+   */
   void ResetTiming() { segment_timings_.clear(); }
 
-  //add instance of DetailedTimings to current DetailedTimings
+  /**
+   * @brief Add instance of DetailedTimings to current DetailedTimings
+   * 
+   * @param in_detailed_timings 
+   */
   void AddToCurrentTimings(const DetailedTimings& in_detailed_timings);
 
-  //add timing by segment index
+  /**
+   * @brief Add timing by segment index
+   * 
+   * @param timing_segment 
+   * @param segment_time 
+   */
   void AddTiming(const T timing_segment, const std::chrono::duration<double>& segment_time) {
     segment_timings_[timing_segment].push_back(segment_time);
   }
 
-  //get median timing for a specified segment that may have been run multiple times
+  /**
+   * @brief Get median timing for a specified segment that may have been run multiple times
+   * 
+   * @param run_segment_index 
+   * @return std::chrono::duration<double> 
+   */
   std::chrono::duration<double> MedianTiming(const T run_segment_index) const;
 
-  //return current timing data as a RunData object for evaluation
+  /**
+   * @brief Return current timing data as a RunData object for evaluation
+   * 
+   * @return RunData 
+   */
   RunData AsRunData() const;
 
 private:

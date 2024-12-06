@@ -25,16 +25,27 @@ using halftype = short;
 #endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 
-//constants and enums related to run environment
-//and settings for run
+/**
+ * @brief Constants and enums related to run environment
+ * and settings for run
+ * 
+ */
 namespace run_environment {
 
-//enum for acceleration setting
+/**
+ * @brief Enum for acceleration setting
+ * 
+ */
 enum class AccSetting {
   kNone, kAVX256, kAVX512, kNEON, kCUDA
 };
 
-//get string corresponding to acceleration method at compile time
+/**
+ * @brief Get string corresponding to acceleration method at compile time
+ * 
+ * @tparam ACCELERATION_SETTING 
+ * @return constexpr std::string_view 
+ */
 template <AccSetting ACCELERATION_SETTING>
 constexpr std::string_view AccelerationString() {
   if constexpr (ACCELERATION_SETTING == AccSetting::kNEON) { return "NEON"; }
@@ -43,7 +54,12 @@ constexpr std::string_view AccelerationString() {
   else { return "DEFAULT"; }
 }
 
-//get string corresponding to acceleration method at run time
+/**
+ * @brief Get string corresponding to acceleration method at run time
+ * 
+ * @param acceleration_setting 
+ * @return std::string_view 
+ */
 inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   if (acceleration_setting == AccSetting::kNEON) { return AccelerationString<AccSetting::kNEON>(); }
   else if (acceleration_setting == AccSetting::kAVX256) { return AccelerationString<AccSetting::kAVX256>(); }
@@ -51,29 +67,43 @@ inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   else { return "DEFAULT"; }
 }
 
-//mapping from data size to data type string
+/**
+ * @brief Mapping from data size to data type string
+ * 
+ */
 const std::map<std::size_t, std::string_view> kDataSizeToNameMap{
   {sizeof(float), "FLOAT"},
   {sizeof(double), "DOUBLE"},
   {sizeof(short), "HALF"}
 };
 
-//enum that specifies whether or not to use templated counts for the number of iterations in processing
-//loops or to run implementation with and without templated iteration counts
-//templated counts for number of loop iterations can help with optimization but requires that the number of
-//iterations be known at compile time
+/**
+ * @brief Enum that specifies whether or not to use templated counts for the
+ * number of iterations in processing loops or to run implementation with and
+ * without templated iteration counts
+ * Templated counts for number of loop iterations can help with optimization
+ * but requires that the number of iterations be known at compile time
+ * 
+ */
 enum class TemplatedItersSetting {
   kRunOnlyTempated,
   kRunOnlyNonTemplated,
   kRunTemplatedAndNotTemplated
 };
 
-//enum for parallel parameters settings in run
+/**
+ * @brief Enum for parallel parameters settings in run
+ * 
+ */
 enum class ParallelParamsSetting { kDefault, kOptimized };
 
-//enum to specify if optimizing parallel parameters per kernel or using same parallel parameters across all kernels in run
-//in initial testing optimizing per kernel is faster on GPU and using same parallel parameters across all kernels is faster
-//on CPU
+/**
+ * @brief Enum to specify if optimizing parallel parameters per kernel or
+ * using same parallel parameters across all kernels in run
+ * In initial testing optimizing per kernel is faster on GPU and using same
+ * parallel parameters across all kernels is faster on CPU
+ * 
+ */
 enum class OptParallelParamsSetting {
   kSameParallelParamsAllKernels,
   kAllowDiffKernelParallelParamsInRun

@@ -18,37 +18,67 @@
 #include <optional>
 #include "RunEval/RunEvalConstsEnums.h"
 
-//class defines input signature for evaluation run that contains evaluation set
-//number, data type, and whether or not to use templated loop iteration count
+/**
+ * @brief Class defines input signature for evaluation run that contains evaluation set
+ * number, data type, and whether or not to use templated loop iteration count
+ * 
+ */
 class InputSignature {
 public:
-  //constructor to generate evaluation input signature from string array with
-  //strings corresponding to each part
+  /**
+   * @brief Constructor to generate evaluation input signature from string array with
+   * strings corresponding to each part
+   * 
+   * @param in_sig_strings 
+   */
   InputSignature(const std::array<std::string_view, 3>& in_sig_strings);
 
-  //constructor to generate evaluation input signature from parameters
-  //corresponding to each part
+  /**
+   * @brief Constructor to generate evaluation input signature from parameters
+   * corresponding to each part
+   * 
+   * @param data_type_size 
+   * @param eval_set_num 
+   * @param use_templated_loop_iters 
+   */
   InputSignature(
     std::optional<unsigned int> data_type_size,
     std::optional<unsigned int> eval_set_num,
     std::optional<bool> use_templated_loop_iters);
 
-  //less than operator for comparing evaluation input signatures
-  //so they can be ordered
-  //operator needed to support ordering since input signature
-  //is used as std::map key and also for evaluation output order
-  //if any InputSignature member is "no value" that property is considered
-  //"any" and is ignored in the comparison
+  /**
+   * @brief Less than operator for comparing evaluation input signatures
+   * so they can be ordered
+   * Operator needed to support ordering since input signature
+   * is used as std::map key and also for evaluation output order
+   * If any InputSignature member is "no value" that property is considered
+   * "any" and is ignored in the comparison
+   * 
+   * @param rhs 
+   * @return true 
+   * @return false 
+   */
   bool operator<(const InputSignature& rhs) const;
 
-  //equality operator for comparing evaluation input signatures
-  //if any InputSignature member is "no value" that property is considered
-  //"any" and is ignored in the comparison
+  /**
+   * @brief Equality operator for comparing evaluation input signatures
+   *
+   * 
+   * @param rhs 
+   * @return true 
+   * @return false 
+   */
   bool operator==(const InputSignature& rhs) const;
 
-  //alternate "equal" operator where an attribute is considered "equal"
-  //in cases where one side is "ANY" for the attribute as indicated
-  //by "no value" for std::optional object
+  /**
+   * @brief Alternate "equal" operator where an attribute is considered "equal"
+   * in cases where one side is "ANY" for the attribute as indicated
+   * by "no value" for std::optional object
+   * 
+   * @param rhs 
+   * @return true 
+   * @return false 
+   */
   bool EqualsUsingAny(const InputSignature& rhs) const;
 
   std::string DataTypeStr() const {
@@ -94,11 +124,18 @@ public:
       std::string(run_eval::kBoolValFalseTrueDispStr[1]));
   }
   
-  //remove templated loop iter setting and change it to "any"
+  /**
+   * @brief Remove templated loop iter setting and change it to "any"
+   * 
+   */
   void RemoveTemplatedLoopIterSetting() {
     use_templated_loop_iters_.reset();
   }
 
+  /**
+   * @brief Remove data type setting and change it to "any"
+   * 
+   */
   void RemoveDatatypeSetting() {
     data_type_size_.reset();
   }
@@ -107,7 +144,13 @@ public:
     return use_templated_loop_iters_;
   }
 
-  //overloaded << operator to write InputSignature object to stream
+  /**
+   * @brief Overloaded << operator to write InputSignature object to stream
+   * 
+   * @param os 
+   * @param eval_input_sig 
+   * @return std::ostream& 
+   */
   friend std::ostream& operator<<(std::ostream& os, const InputSignature& eval_input_sig);
 
 private:

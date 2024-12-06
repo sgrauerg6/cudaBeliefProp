@@ -5,13 +5,22 @@
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/MemoryManagement.h"
 
-//functions to manage memory on CUDA device including transferring data between host and CUDA device
-//functions defined in class override functions in parent class MemoryManagement which is used for CPU only processing
+/**
+ * @brief Functions to manage memory on CUDA device including transferring data between host and CUDA device
+ * Functions defined in class override functions in parent class MemoryManagement which is used for CPU only processing
+ * 
+ * @tparam T 
+ */
 template <RunData_t T>
 class MemoryManagementCUDA final : public MemoryManagement<T>
 {
 public:
-  //allocate specified amount of data of type T on CUDA device
+  /**
+   * @brief Allocate specified amount of data of type T on CUDA device
+   * 
+   * @param numData 
+   * @return T* 
+   */
   T* AllocateMemoryOnDevice(std::size_t numData) const override
   {
     T* array_to_allocate;
@@ -19,13 +28,23 @@ public:
     return array_to_allocate;
   }
 
-  //free memory on CUDA device
+  /**
+   * @brief Free memory on CUDA device
+   * 
+   * @param array_to_free 
+   */
   void FreeMemoryOnDevice(T* array_to_free) const override
   {
     cudaFree(array_to_free);
   }
 
-  //allocate aligned memory on CUDA device (same as default allocating of memory for CUDA)
+  /**
+   * @brief Allocate aligned memory on CUDA device (same as default allocating of memory for CUDA)
+   * 
+   * @param numData 
+   * @param acc_setting 
+   * @return T* 
+   */
   T* AllocateAlignedMemoryOnDevice(
     std::size_t numData,
     run_environment::AccSetting acc_setting) const override
@@ -33,7 +52,11 @@ public:
     return AllocateMemoryOnDevice(numData);
   }
 
-  //free aligned memory on CUDA device (same as default free memory for CUDA)
+  /**
+   * @brief Free aligned memory on CUDA device (same as default free memory for CUDA)
+   * 
+   * @param memory_to_free 
+   */
   void FreeAlignedMemoryOnDevice(T* memory_to_free) const override
   {
     FreeMemoryOnDevice(memory_to_free);

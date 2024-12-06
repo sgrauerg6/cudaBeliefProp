@@ -18,66 +18,151 @@
 #include <optional>
 #include <variant>
 
-//class to store headers with data corresponding to current program run and evaluation
+/**
+ * @brief Class to store headers with data corresponding to current program run and evaluation
+ * 
+ */
 class RunData {
 public:
-  //add data with header describing added data
+  /**
+   * @brief Add string data with header describing added data
+   * 
+   * @param header 
+   * @param data 
+   */
   void AddDataWHeader(const std::string& header, const std::string& data);
 
-  //add data with header describing added data
+  /**
+   * @brief Add const char* data with header describing added data
+   * 
+   * @param header 
+   * @param data 
+   */
   void AddDataWHeader(const std::string& header, const char* data);
 
-  //add data with header describing added data
+  /**
+   * @brief Add double data with header describing added data
+   * 
+   * @param header 
+   * @param data 
+   */
   void AddDataWHeader(const std::string& header, double data);
 
-  //add data with header describing added data
+ /**
+   * @brief Add boolean data with header describing added data
+   * 
+   * @param header 
+   * @param data 
+   */
   void AddDataWHeader(const std::string& header, bool data);
 
-  //add data with header describing added data
+  /**
+   * @brief Add unsigned int data with header describing added data
+   * 
+   * @param header 
+   * @param data 
+   */
   void AddDataWHeader(const std::string& header, unsigned int data);
 
-  //return data headers in order
+  /**
+   * @brief Return data headers in order
+   * 
+   * @return const std::vector<std::string>& 
+   */
   const std::vector<std::string>& HeadersInOrder() const { return headers_in_order_; }
 
-  //return data mapped to corresponding headers
+  /**
+   * @brief Return data mapped to corresponding headers
+   * 
+   * @return const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& 
+   */
   const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& GetAllData() const {
     return headers_w_data_; }
 
-  //return whether or not there is data corresponding to a specific header
+  /**
+   * @brief Return whether or not there is data corresponding to a specific header
+   * 
+   * @param header 
+   * @return true 
+   * @return false 
+   */
   bool IsData(const std::string_view header) const { 
     return (std::find(headers_in_order_.cbegin(), headers_in_order_.cend(),
                       std::string(header)) != headers_in_order_.cend()); }
 
-  //get data corresponding to header as a string
-  //returns data as string regardless of underlying data type
+  /**
+   * @brief Get data corresponding to header as a string
+   * Returns data as string regardless of underlying data type
+   * 
+   * @param header 
+   * @return std::string 
+   */
   std::string GetDataAsStr(const std::string_view header) const;
-
-  //get data as specified type if variant corresponding to header is specified type
-  //return null if data corresponds to a different data type
+  
+  /**
+   * @brief Get data corresponding to header as double
+   * Return null if data corresponds to a different data type
+   * 
+   * @param header 
+   * @return std::optional<double> 
+   */
   std::optional<double> GetDataAsDouble(const std::string_view header) const;
+
+  /**
+   * @brief Get data corresponding to header as unsigned int
+   * Return null if data corresponds to a different data type
+   * 
+   * @param header 
+   * @return std::optional<double> 
+   */
   std::optional<unsigned int> GetDataAsUInt(const std::string_view header) const;
+
+  /**
+   * @brief Get data corresponding to header as boolean
+   * Return null if data corresponds to a different data type
+   * 
+   * @param header 
+   * @return std::optional<double> 
+   */
   std::optional<bool> GetDataAsBool(const std::string_view header) const;
 
-  //append current RunData with input RunData
+  /**
+   * @brief Append current RunData with input RunData
+   * 
+   * @param rundata 
+   */
   void AppendData(const RunData& rundata);
-
-  //retrieve pair between a set of parameters and a single parameter
-  std::optional<std::pair<std::vector<std::string>, double>> GetParamsToRuntime(
-    const std::vector<std::string_view>& key_params, std::string_view val_param) const;
   
-  //overloaded << operator for output to stream
+  /**
+   * @brief Overloaded << operator for output to stream
+   * 
+   * @param os 
+   * @param run_data 
+   * @return std::ostream& 
+   */
   friend std::ostream& operator<<(std::ostream& os, const RunData& run_data);
 
 private:
-  //get header to add...returns input header if not yet used
-  //generates and returns input header with number appended if header already used
+  /**
+   * @brief Get header to add...returns input header if not yet used
+   * Generates and returns input header with number appended if header already used
+   * 
+   * @param in_header 
+   * @return std::string 
+   */
   std::string GetHeaderToAdd(const std::string& in_header) const;
 
-  //data stored as map between header and value corresponding to header that can
-  //be of type unsigned int, double, bool, or string
+  /**
+   * @brief Data stored as map between header and value corresponding to header that can
+   * be of type unsigned int, double, bool, or string
+   * 
+   */
   std::map<std::string, std::variant<unsigned int, double, bool, std::string>> headers_w_data_;
   
-  //headers in order
+  /**
+   * @brief Headers corresponding to run data in order
+   * 
+   */
   std::vector<std::string> headers_in_order_;
 };
 

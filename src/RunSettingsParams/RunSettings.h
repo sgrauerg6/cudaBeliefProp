@@ -29,7 +29,13 @@ inline unsigned int GetNumDataAlignWidth(AccSetting accel_setting) {
   return (accel_setting == AccSetting::kAVX512) ? 16 : 8;
 }
 
-//generate RunData object that contains description header with corresponding value for each run setting
+/**
+ * @brief Generate RunData object that contains description header with
+ * corresponding value for each run setting
+ * 
+ * @tparam ACCELERATION_SETTING 
+ * @return RunData 
+ */
 template <AccSetting ACCELERATION_SETTING>
 inline RunData RunSettings()  {
   RunData curr_run_data;
@@ -40,7 +46,10 @@ inline RunData RunSettings()  {
   return curr_run_data;
 }
 
-//structure that stores settings for current implementation run
+/**
+ * @brief Structure that stores settings for current implementation run
+ * 
+ */
 struct RunImpSettings {
   std::vector<unsigned int> datatypes_eval_sizes;
   TemplatedItersSetting templated_iters_setting;
@@ -51,14 +60,22 @@ struct RunImpSettings {
   std::optional<std::array<std::string_view, 2>> baseline_runtimes_path_desc;
   std::vector<std::pair<std::string, std::vector<InputSignature>>> subset_desc_input_sig;
 
-  //remove parallel parameters with less than specified number of threads
+  /**
+   * @brief Remove parallel parameters with less than specified number of threads
+   * 
+   * @param min_threads 
+   */
   void RemoveParallelParamBelowMinThreads(unsigned int min_threads) {
     const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
       [min_threads](const auto& p_params) { return p_params[0] < min_threads; });
     p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 
-  //remove parallel parameters with greater than specified number of threads
+  /**
+   * @brief Remove parallel parameters with greater than specified number of threads
+   * 
+   * @param max_threads 
+   */
   void RemoveParallelParamAboveMaxThreads(unsigned int max_threads) {
     const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
       [max_threads](const auto& p_params) { return p_params[0] > max_threads; });
