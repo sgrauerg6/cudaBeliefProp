@@ -1,12 +1,12 @@
 /*
- * ProcessBPOnTargetDevice.h
+ * ProcessBp.h
  *
  *  Created on: Jun 20, 2019
  *      Author: scott
  */
 
-#ifndef PROCESSBPONTARGETDEVICE_H_
-#define PROCESSBPONTARGETDEVICE_H_
+#ifndef PROCESS_BP_H_
+#define PROCESS_BP_H_
 
 #include <math.h>
 #include <chrono>
@@ -36,9 +36,9 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
 //Some of the class functions need to be overridden to for processing on
 //target device
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class ProcessBPOnTargetDevice {
+class ProcessBp {
 public:
-  ProcessBPOnTargetDevice(const ParallelParams& parallel_params) : parallel_params_{parallel_params} { }
+  ProcessBp(const ParallelParams& parallel_params) : parallel_params_{parallel_params} { }
 
   virtual run_eval::Status ErrorCheck(const char *file = "", int line = 0, bool abort = false) const {
     return run_eval::Status::kNoError;
@@ -229,7 +229,7 @@ private:
 //output is disparity map and processing runtimes
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
-  ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>::operator()(
+  ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
     const std::array<float*, 2> & images_target_device, const beliefprop::BpSettings& alg_settings,
     const std::array<unsigned int, 2>& width_height_images, T* allocated_mem_bp_processing, T* allocated_memory,
     const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run) const
@@ -541,4 +541,4 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   return std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>{result_disp_map_device, segment_timings};
 }
 
-#endif /* PROCESSBPONTARGETDEVICE_H_ */
+#endif /* PROCESS_BP_H_ */

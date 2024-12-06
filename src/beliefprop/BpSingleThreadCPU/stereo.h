@@ -23,13 +23,13 @@
 #include "filter.h"
 #include "imconv.h"
 #include "BpRunProcessing/BpParallelParams.h"
-#include "BpRunProcessing/RunBpStereoSet.h"
+#include "BpRunProcessing/RunBpOnStereoSet.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunSettingsParams/RunSettings.h"
 
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpStereoCPUSingleThread final : public RunBpStereoSet<T, DISP_VALS, ACCELERATION>
+class RunBpStereoCPUSingleThread final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
   std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,

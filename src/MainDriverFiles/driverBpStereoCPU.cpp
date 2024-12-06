@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunProcessing/BpSettings.h"
-#include "BpRunEvalImp/RunEvalBpImp.h"
+#include "BpRunEvalImp/RunBpImpMultInputs.h"
 #include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 //enum to define setting to run implementation
@@ -125,11 +125,11 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
   //with the AVX512 implementation given first as the expected fastest implementation
   RunImpMultTypesAccels().operator()({
     {run_environment::AccSetting::kAVX512,
-     std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX512)},
+     std::make_shared<RunBpImpMultInputs>(run_environment::AccSetting::kAVX512)},
     {run_environment::AccSetting::kAVX256,
-     std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kAVX256)},
+     std::make_shared<RunBpImpMultInputs>(run_environment::AccSetting::kAVX256)},
     {run_environment::AccSetting::kNone,
-     std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kNone)}},
+     std::make_shared<RunBpImpMultInputs>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateBPImpResults>());
 }

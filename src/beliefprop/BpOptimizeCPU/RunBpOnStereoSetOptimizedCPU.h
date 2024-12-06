@@ -1,22 +1,22 @@
 /*
- * RunBpStereoOptimizedCPU.h
+ * RunBpOnStereoSetOptimizedCPU.h
  *
  *  Created on: Jun 17, 2019
  *      Author: scott
  */
 
-#ifndef RUNBPSTEREOOPTIMIZEDCPU_H_
-#define RUNBPSTEREOOPTIMIZEDCPU_H_
+#ifndef RUN_BP_ON_STEREO_SET_OPTIMIZED_CPU_H_
+#define RUN_BP_ON_STEREO_SET_OPTIMIZED_CPU_H_
 
 #include <string>
 #include <memory>
 #include <array>
-#include "BpRunProcessing/RunBpStereoSet.h"
-#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpRunProcessing/RunBpOnStereoSet.h"
+#include "BpRunProcessing/ProcessBp.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "SmoothImageCPU.h"
-#include "ProcessOptimizedCPUBP.h"
+#include "ProcessBpOptimizedCPU.h"
 
 namespace beliefprop {
   constexpr std::string_view kBpOptimizeCPUDesc{"Optimized CPU"};
@@ -25,7 +25,7 @@ namespace beliefprop {
 };
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpStereoOptimizedCPU final : public RunBpStereoSet<T, DISP_VALS, ACCELERATION> {
+class RunBpOnStereoSetOptimizedCPU final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION> {
 public:
   std::string BpRunDescription() const override { return std::string(beliefprop::kBpOptimizeCPUDesc); }
 
@@ -36,7 +36,7 @@ public:
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<ProcessStereoSetOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
@@ -57,7 +57,7 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
   auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings, 
     BpOnDevice<T, DISP_VALS, ACCELERATION>{
       std::make_unique<SmoothImageCPU>(parallel_params),
-      std::make_unique<ProcessOptimizedCPUBP<T, DISP_VALS, ACCELERATION>>(parallel_params),
+      std::make_unique<ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
       std::make_unique<RunImpMemoryManagement<T>>(),
       std::make_unique<RunImpMemoryManagement<float>>()});
   if (process_set_output) {
@@ -68,4 +68,4 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoOptimizedCPU<T, DISP_VAL
   return process_set_output;
 }
 
-#endif /* RUNBPSTEREOOPTIMIZEDCPU_H_ */
+#endif /* RUN_BP_ON_STEREO_SET_OPTIMIZED_CPU_H_ */

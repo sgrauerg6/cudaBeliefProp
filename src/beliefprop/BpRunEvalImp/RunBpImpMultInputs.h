@@ -1,12 +1,12 @@
 /*
- * RunEvalBpImp.h
+ * RunBpImpMultInputs.h
  *
  *  Created on: Sep 23, 2019
  *      Author: scott
  */
 
-#ifndef RUNEVALBPIMP_H_
-#define RUNEVALBPIMP_H_
+#ifndef RUN_BP_IMP_MULT_INPUTS_H_
+#define RUN_BP_IMP_MULT_INPUTS_H_
 
 #include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunImpMultInputs.h"
@@ -15,9 +15,9 @@
 
 //run and evaluate optimized belief propagation implementation on a number of inputs
 //acceleration method of optimized belief propagation implementation is specified in template parameter
-class RunEvalBpImp final : public RunImpMultInputs {
+class RunBpImpMultInputs final : public RunImpMultInputs {
 public:
-  RunEvalBpImp(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
+  RunBpImpMultInputs(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
 
 private:
   //run and evaluate implementation on multiple data sets
@@ -30,4 +30,4 @@ private:
   MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const;
 };
 
-#endif /* RUNEVALBPIMP_H_ */
+#endif /* RUN_BP_IMP_MULT_INPUTS_H_ */

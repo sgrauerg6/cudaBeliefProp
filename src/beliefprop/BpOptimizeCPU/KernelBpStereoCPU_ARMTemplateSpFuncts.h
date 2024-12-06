@@ -8,7 +8,7 @@
 #ifndef KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_ARMTEMPLATESPFUNCTS_H_
 
-#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "RunImpCPU/ARMTemplateSpFuncts.h"
 #include "KernelBpStereoCPU.h"
 

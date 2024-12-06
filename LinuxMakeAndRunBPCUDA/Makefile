@@ -56,10 +56,10 @@ OBJ_DIR = obj
 OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
 ${OBJ_DIR}/EvaluateBPImpResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/BpParallelParams.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
-${OBJ_DIR}/RunEvalBpImp.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
+${OBJ_DIR}/RunBpImpMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
 ${OBJ_DIR}/BpEvaluationResults.o ${OBJ_DIR}/BpEvaluationParameters.o ${OBJ_DIR}/stereo.o \
-${OBJ_DIR}/RunBpStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImageCUDA.o ${OBJ_DIR}/SmoothImage.o \
-${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBPOnTargetDevice.o ${OBJ_DIR}/ProcessCUDABP.o
+${OBJ_DIR}/RunBpOnStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImageCUDA.o ${OBJ_DIR}/SmoothImage.o \
+${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBp.o ${OBJ_DIR}/ProcessBpCUDA.o
 DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/driverCudaBp.o
 DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/driverBpStereoCUDA_customRun.o
 
@@ -76,8 +76,8 @@ ${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
 # specify compile commands using NVCC compiler for objects with CUDA for processing on GPU
-${OBJ_DIR}/ProcessCUDABP.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/ProcessCUDABP.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o $@ $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
+${OBJ_DIR}/ProcessBpCUDA.o:
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/ProcessBpCUDA.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o $@ $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
 
 ${OBJ_DIR}/SmoothImageCUDA.o:
 	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o $@ $(CUDA_COMPILE_FLAGS)

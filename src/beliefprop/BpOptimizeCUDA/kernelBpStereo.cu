@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //This file defines the methods to perform belief propagation for disparity map estimation from stereo images on CUDA
 
-#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 
 //uncomment to set CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF (disabled by default) since that could
 //get overflow in message values during processing in some bp settings (only happened on largest stereo set in testing)

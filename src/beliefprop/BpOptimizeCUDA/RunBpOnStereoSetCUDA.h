@@ -18,17 +18,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //Declares the methods to run Stereo BP on a series of images
 
-#ifndef RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
-#define RUN_BP_STEREO_STEREO_SET_ON_GPU_WITH_CUDA_H
+#ifndef RUN_BP_ON_STEREO_STEREO_CUDA_H
+#define RUN_BP_ON_STEREO_STEREO_CUDA_H
 
 #include <array>
 #include <cuda_runtime.h>
-#include "BpRunProcessing/RunBpStereoSet.h"
-#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpRunProcessing/RunBpOnStereoSet.h"
+#include "BpRunProcessing/ProcessBp.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImpCUDA/RunImpCUDAMemoryManagement.h"
-#include "ProcessCUDABP.h"
+#include "ProcessBpCUDA.h"
 #include "SmoothImageCUDA.h"
 
 namespace beliefprop {
@@ -60,7 +60,7 @@ namespace bp_cuda_device
 };
 
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpStereoSetOnGPUWithCUDA final : public RunBpStereoSet<T, DISP_VALS, ACCELERATION>
+class RunBpOnStereoSetCUDA final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
   std::string BpRunDescription() const override { 
@@ -83,7 +83,7 @@ public:
     auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings,
       BpOnDevice<T, DISP_VALS, ACCELERATION>{
         std::make_unique<SmoothImageCUDA>(parallel_params),
-        std::make_unique<ProcessCUDABP<T, DISP_VALS, ACCELERATION>>(parallel_params),
+        std::make_unique<ProcessBpCUDA<T, DISP_VALS, ACCELERATION>>(parallel_params),
         std::make_unique<RunImpCUDAMemoryManagement<T>>(),
         std::make_unique<RunImpCUDAMemoryManagement<float>>()});
     if (process_set_output) {
@@ -95,4 +95,4 @@ public:
   }
 };
 
-#endif //RUN_BP_STEREO_IMAGE_SERIES_HEADER_CUH
+#endif //RUN_BP_ON_STEREO_STEREO_CUDA_H

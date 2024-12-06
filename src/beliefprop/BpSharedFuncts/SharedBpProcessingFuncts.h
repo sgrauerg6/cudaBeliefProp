@@ -1,12 +1,12 @@
 /*
- * SharedBPProcessingFuncts.h
+ * SharedBpProcessingFuncts.h
  *
  *  Created on: Jun 24, 2019
  *      Author: scott
  */
 
-#ifndef SHAREDBPPROCESSINGFUNCTS_H_
-#define SHAREDBPPROCESSINGFUNCTS_H_
+#ifndef SHARED_BP_PROCESSING_FUNCTS_H_
+#define SHARED_BP_PROCESSING_FUNCTS_H_
 
 #include "RunSettingsParams/RunSettings.h"
 #include "RunEval/RunTypeConstraints.h"
@@ -1512,4 +1512,4 @@ ARCHITECTURE_ADDITION inline void PrintDataAndMessageValsToPointKernel(
 
 }
 
-#endif /* SHAREDBPPROCESSINGFUNCTS_H_ */
+#endif /* SHARED_BP_PROCESSING_FUNCTS_H_ */

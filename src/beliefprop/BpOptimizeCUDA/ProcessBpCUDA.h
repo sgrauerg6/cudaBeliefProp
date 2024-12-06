@@ -23,17 +23,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
-#include "BpRunProcessing/ProcessBPOnTargetDevice.h"
+#include "BpRunProcessing/ProcessBp.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class ProcessCUDABP final : public ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>
+class ProcessBpCUDA final : public ProcessBp<T, DISP_VALS, ACCELERATION>
 {
 public:
-  ProcessCUDABP(const ParallelParams& cuda_params) : 
-    ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>(cuda_params) {}
+  ProcessBpCUDA(const ParallelParams& cuda_params) : 
+    ProcessBp<T, DISP_VALS, ACCELERATION>(cuda_params) {}
 
 private:
   //initialize the data cost at each pixel for each disparity value

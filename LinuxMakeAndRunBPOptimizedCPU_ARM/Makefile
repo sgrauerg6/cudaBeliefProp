@@ -38,11 +38,11 @@ OBJ_DIR = obj
 OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
 ${OBJ_DIR}/EvaluateBPImpResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
 ${OBJ_DIR}/RunData.o ${OBJ_DIR}/BpParallelParams.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
-${OBJ_DIR}/RunEvalBpImp.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
+${OBJ_DIR}/RunBpImpMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
 ${OBJ_DIR}/BpEvaluationResults.o ${OBJ_DIR}/BpEvaluationParameters.o ${OBJ_DIR}/stereo.o \
-${OBJ_DIR}/RunBpStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o \
-${OBJ_DIR}/ProcessBPOnTargetDevice.o ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBpStereoOptimizedCPU.o \
-${OBJ_DIR}/ProcessOptimizedCPUBP.o
+${OBJ_DIR}/RunBpOnStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o \
+${OBJ_DIR}/ProcessBp.o ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBpOnStereoSetOptimizedCPU.o \
+${OBJ_DIR}/ProcessBpOptimizedCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/driverBpStereoCPU.o
 DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/driverBpStereoCPU_customRun.o
 

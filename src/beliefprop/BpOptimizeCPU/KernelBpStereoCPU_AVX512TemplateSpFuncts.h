@@ -12,7 +12,7 @@
 #else
 #include <x86intrin.h>
 #endif
-#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "RunImpCPU/AVX512TemplateSpFuncts.h"
 
 template<unsigned int DISP_VALS>

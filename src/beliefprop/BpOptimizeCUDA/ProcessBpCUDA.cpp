@@ -21,12 +21,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RunImp/RunImpGenFuncts.h"
-#include "ProcessCUDABP.h"
+#include "ProcessBpCUDA.h"
 #include "kernelBpStereo.cu"
 
 //return whether or not there was an error in CUDA processing
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::ErrorCheck(const char *file, int line, bool abort) const {
+inline run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::ErrorCheck(const char *file, int line, bool abort) const {
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
     std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
@@ -46,7 +46,7 @@ inline run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::ErrorCheck(co
 
 //run the given number of iterations of BP at the current level using the given message values in global device memory
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
+run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
@@ -119,7 +119,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
 //in the next level down
 //need two different "sets" of message values to avoid read-write conflicts
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToNextLevelDown(
+run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToNextLevelDown(
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::BpLevel& next_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
@@ -173,7 +173,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
 
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
+run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpLevel& current_bp_level,
   const std::array<float*, 2>& images_target_device,
@@ -212,7 +212,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
 
 //initialize the message values with no previous message values...all message values are set to 0
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
+run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const
@@ -246,7 +246,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
+run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
   const beliefprop::BpLevel& current_bp_level, const beliefprop::BpLevel& prev_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
@@ -286,7 +286,7 @@ run_eval::Status ProcessCUDABP<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
+float* ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
   const beliefprop::BpLevel& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
@@ -324,27 +324,27 @@ float* ProcessCUDABP<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
   return result_disp_map_device;
 }
 
-template class ProcessCUDABP<float, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<float, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<double, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, 0, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
-template class ProcessCUDABP<halftype, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, 0, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<float, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, 0, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<double, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, 0, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[0].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[1].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[2].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[3].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[4].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[5].num_disp_vals, run_environment::AccSetting::kCUDA>;
+template class ProcessBpCUDA<halftype, beliefprop::kStereoSetsToProcess[6].num_disp_vals, run_environment::AccSetting::kCUDA>;

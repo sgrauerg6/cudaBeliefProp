@@ -21,27 +21,27 @@
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpSingleThreadCPU/stereo.h"
 
-#ifndef RUN_EVAL_BP_IMP_SINGLE_SET_H_
-#define RUN_EVAL_BP_IMP_SINGLE_SET_H_
+#ifndef RUN_BP_IMP_ON_INPUT_H_
+#define RUN_BP_IMP_ON_INPUT_H_
 
 using filepathtype = std::filesystem::path;
 
 //check if optimized CPU run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CPU_RUN
 //needed to run the optimized implementation a stereo set using CPU
-#include "BpOptimizeCPU/RunBpStereoOptimizedCPU.h"
+#include "BpOptimizeCPU/RunBpOnStereoSetOptimizedCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBpOptimized = RunBpStereoOptimizedCPU<T, DISP_VALS, ACCELERATION>;
+using RunBpOptimized = RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
 #ifdef OPTIMIZED_CUDA_RUN
 //needed to run the implementation a stereo set using CUDA
-#include "BpOptimizeCUDA/RunBpStereoSetOnGPUWithCUDA.h"
+#include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-using RunBpOptimized = RunBpStereoSetOnGPUWithCUDA<T, DISP_VALS, ACCELERATION>;
+using RunBpOptimized = RunBpOnStereoSetCUDA<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CUDA_RUN
 
 namespace bpSingleThread {
@@ -56,7 +56,7 @@ namespace beliefprop {
 
 //run and evaluate belief propagation implementation on a specified input
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-class RunEvalBPImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
+class RunBPImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   //run and evaluate optimized belief propagation implementation on evaluation stereo set
   //specified by NUM_INPUT
@@ -81,11 +81,11 @@ protected:
 
 private:
   //bp implementation objects for single thread and optimized implementations with and without disparity count templated
-  std::unique_ptr<RunBpStereoSet<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>
+  std::unique_ptr<RunBpOnStereoSet<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>
     run_bp_stereo_single_thread_;
-  std::unique_ptr<RunBpStereoSet<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, OPT_IMP_ACCEL>>
+  std::unique_ptr<RunBpOnStereoSet<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, OPT_IMP_ACCEL>>
     run_opt_bp_num_iters_templated_;
-  std::unique_ptr<RunBpStereoSet<T, 0, OPT_IMP_ACCEL>> run_opt_bp_num_iters_no_template_;
+  std::unique_ptr<RunBpOnStereoSet<T, 0, OPT_IMP_ACCEL>> run_opt_bp_num_iters_no_template_;
 
   //bp parameter settings
   beliefprop::BpSettings alg_settings_;
@@ -97,7 +97,7 @@ private:
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-MultRunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
+MultRunData RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
   //set up BP settings for current run
@@ -136,7 +136,7 @@ MultRunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
 //set up parallel parameters for running belief propagation in parallel on CPU or GPU
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
+std::shared_ptr<ParallelParams> RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //parallel parameters initialized with default thread count dimensions at every level
@@ -148,7 +148,7 @@ std::shared_ptr<ParallelParams> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>
 
 //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(bool loop_iters_templated) const {
+RunData RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(bool loop_iters_templated) const {
   RunData curr_run_data;
   curr_run_data.AddDataWHeader(
     std::string(beliefprop::kStereoSetHeader), std::string(beliefprop::kStereoSetsToProcess[NUM_INPUT].name));
@@ -162,7 +162,7 @@ RunData RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrB
 //on the reference and test images specified by numStereoSet
 //run only optimized implementation if run_opt_imp_only is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
+std::optional<RunData> RunBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
   std::shared_ptr<ParallelParams> parallel_params, bool run_opt_imp_only, bool run_imp_templated_loop_iters) const
 {
   //get properties of input stereo set from stereo set number
@@ -278,4 +278,4 @@ std::optional<RunData> RunEvalBPImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImps
   return run_data;
 }
 
-#endif //RUN_EVAL_BP_IMP_SINGLE_SET_H_
+#endif //RUN_BP_IMP_ON_INPUT_H_

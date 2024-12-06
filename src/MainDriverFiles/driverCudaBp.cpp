@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCUDA/RunCUDASettings.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include "BpRunProcessing/BpSettings.h"
-#include "BpRunEvalImp/RunEvalBpImp.h"
+#include "BpRunEvalImp/RunBpImpMultInputs.h"
 #include "BpResultsEvaluation/EvaluateBPImpResults.h"
 
 int main(int argc, char** argv)
@@ -68,7 +68,7 @@ int main(int argc, char** argv)
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
   RunImpMultTypesAccels().operator()(
     {{run_environment::AccSetting::kCUDA,
-      std::make_shared<RunEvalBpImp>(run_environment::AccSetting::kCUDA)}},
+      std::make_shared<RunBpImpMultInputs>(run_environment::AccSetting::kCUDA)}},
     run_imp_settings,
     std::make_unique<EvaluateBPImpResults>());
 

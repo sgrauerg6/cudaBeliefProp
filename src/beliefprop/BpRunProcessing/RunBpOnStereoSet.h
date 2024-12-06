@@ -1,5 +1,5 @@
 /*
- * RunBpStereoSet.h
+ * RunBpOnStereoSet.h
  *
  *  Created on: Jun 16, 2019
  *      Author: scott
@@ -27,7 +27,7 @@
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpResultsEvaluation/DetailedTimingBPConsts.h"
 #include "BpParallelParams.h"
-#include "ProcessBPOnTargetDevice.h"
+#include "ProcessBp.h"
 
 //structure with output disparity map, runtime, and other evaluation data
 struct ProcessStereoSetOutput
@@ -42,14 +42,14 @@ struct ProcessStereoSetOutput
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smooth_image;
-  const std::unique_ptr<ProcessBPOnTargetDevice<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
+  const std::unique_ptr<ProcessBp<T, DISP_VALS, ACCELERATION>>& run_bp_stereo;
   const std::unique_ptr<RunImpMemoryManagement<T>>& mem_management_bp_run;
   const std::unique_ptr<RunImpMemoryManagement<float>>& mem_management_images;
 };
 
 //abstract class to set up and run belief propagation on target device using specified acceleration
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpStereoSet {
+class RunBpOnStereoSet {
 public:
   //pure virtual function to return run description corresponding to target acceleration
   virtual std::string BpRunDescription() const = 0;
@@ -72,7 +72,7 @@ protected:
 //protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>::ProcessStereoSet(
+std::optional<ProcessStereoSetOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>::ProcessStereoSet(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings,
   const BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const
@@ -143,7 +143,7 @@ std::optional<ProcessStereoSetOutput> RunBpStereoSet<T, DISP_VALS, ACCELERATION>
     //get and store time point at start of bp processing
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalBp][0] = std::chrono::system_clock::now();
 
-    //run belief propagation on device as specified by input pointer to ProcessBPOnTargetDevice object run_bp_stereo
+    //run belief propagation on device as specified by input pointer to ProcessBp object run_bp_stereo
     //returns detailed timings for bp run
     auto bp_stereo_output = (*(run_bp_on_device.run_bp_stereo))(
       smoothed_images, alg_settings, width_height_images,

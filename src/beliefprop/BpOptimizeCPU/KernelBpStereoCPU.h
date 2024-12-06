@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //#include <format>
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "BpRunProcessing/BpParallelParams.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/RunImpGenFuncts.h"

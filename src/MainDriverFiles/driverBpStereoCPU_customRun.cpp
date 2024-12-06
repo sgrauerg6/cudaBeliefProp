@@ -20,12 +20,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <iostream>
 #include "BpFileProcessing/BpFileHandlingConsts.h"
-#include "BpRunEvalImp/RunEvalBpImp.h"
-#include "BpRunEvalImp/RunEvalBPImpOnInput.h"
+#include "BpRunEvalImp/RunBpImpMultInputs.h"
+#include "BpRunEvalImp/RunBPImpOnInput.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
-#include "BpRunProcessing/RunBpStereoSet.h"
-#include "BpOptimizeCPU/RunBpStereoOptimizedCPU.h"
+#include "BpRunProcessing/RunBpOnStereoSet.h"
+#include "BpOptimizeCPU/RunBpOnStereoSetOptimizedCPU.h"
 #include "BpSingleThreadCPU/stereo.h"
 
 int main(int argc, char** argv)
@@ -42,14 +42,14 @@ int main(int argc, char** argv)
     alg_settings.num_levels,
     {numThreads, 1}};
 
-  std::unique_ptr<RunBpStereoSet<float, 0, run_environment::AccSetting::kAVX512>> runOptBpNumItersNoTemplate =
-    std::make_unique<RunBpStereoOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512>>();
+  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX512>> runOptBpNumItersNoTemplate =
+    std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512>>();
   const auto run_output = runOptBpNumItersNoTemplate->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
   std::cout << "BP processing runtime (optimized w/ OpenMP + SIMD on CPU): " << run_output->run_time.count() << std::endl;
   std::cout << "Output disparity map saved to " << argv[4] << std::endl;
   run_output->out_disparity_map.SaveDisparityMap(argv[4], dispMapScale);
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
-    std::unique_ptr<RunBpStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
+    std::unique_ptr<RunBpOnStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
       std::make_unique<RunBpStereoCPUSingleThread<float, 64, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;

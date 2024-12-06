@@ -18,5 +18,5 @@
 
 //Defines the methods to run BP Stereo implementation on a series of images using various options
 
-#include "RunBpStereoSetOnGPUWithCUDA.h"
+#include "RunBpOnStereoSetCUDA.h"
 

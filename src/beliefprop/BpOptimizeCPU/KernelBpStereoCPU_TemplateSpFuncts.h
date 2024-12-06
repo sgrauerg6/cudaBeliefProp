@@ -8,7 +8,7 @@
 #include <x86intrin.h>
 #endif
 #include "KernelBpStereoCPU.h"
-#include "BpSharedFuncts/SharedBPProcessingFuncts.h"
+#include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
