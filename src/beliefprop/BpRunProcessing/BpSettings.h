@@ -15,8 +15,12 @@
 #include "RunEval/RunData.h"
 #include "BpConstsEnumsAliases.h"
 
-//parameters type requires AsRunData() function to return the parameters as a
-//RunData object
+/**
+ * @brief Parameters type requires AsRunData() function to return the parameters
+ * as a RunData object
+ * 
+ * @tparam T 
+ */
 template <typename T>
 concept Params_t =
   requires(T t) {
@@ -50,7 +54,10 @@ constexpr float kDefaultLambdaBp{0.1};
 //truncation of data cost
 constexpr float kDefaultDataKBp{15.0};
 
-//structure to store the settings for the number of levels and iterations
+/**
+ * @brief Structure to store the settings for the number of levels and iterations
+ * 
+ */
 struct BpSettings
 {
   //initally set to default values
@@ -59,15 +66,26 @@ struct BpSettings
   float smoothing_sigma{kDefaultSigmaBp};
   float lambda_bp{kDefaultLambdaBp};
   float data_k_bp{kDefaultDataKBp};
-  //discontinuity cost cap set to infinity by default but is
-  //expected to be dependent on number of disparity values and set when
-  //number of disparity values is set
+  /**
+   * @brief Discontinuity cost cap set to infinity by default but is
+   * expected to be dependent on number of disparity values and set when
+   * number of disparity values is set
+   * 
+   */
   float disc_k_bp{beliefprop::kInfBp};
-  //number of disparity values must be set for each stereo set
+  
+  /**
+   * @brief Number of disparity values must be set for each stereo set
+   * 
+   */
   unsigned int num_disp_vals{0};
 
-  //retrieve bp settings as RunData object containing description headers with corresponding values
-  //for each setting
+  /**
+   * @brief Retrieve bp settings as RunData object containing description headers
+   * with corresponding values for each setting
+   * 
+   * @return RunData 
+   */
   RunData AsRunData() const {
     RunData curr_run_data;
     curr_run_data.AddDataWHeader(std::string(kNumDispValsHeader), num_disp_vals);

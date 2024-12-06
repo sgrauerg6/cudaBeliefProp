@@ -35,28 +35,51 @@ constexpr float kMinSigmaValSmooth{0.1f};
 //parameter for smoothing
 constexpr float kWidthSigma1{4.0f};
 
-//functions relating to smoothing the images before running BP
-//Smoothing image always uses float data type
+/**
+ * @brief Class for smoothing the images before running BP
+ * Smoothing image always uses float data type
+ * 
+ */
 class SmoothImage
 {
 public:
   SmoothImage(const ParallelParams& parallel_params) : parallel_params_{parallel_params} {}
 
-  //function to use the image filter to apply a guassian filter to the a single images
-  //input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
-  //output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma
-  //normalize mask so it integrates to one
+  /**
+   * @brief Function to use the image filter to apply a guassian filter to the a single images
+   * input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
+   * output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma
+   * normalize mask so it integrates to one
+   * 
+   * @param in_image 
+   * @param sigma 
+   * @param smoothed_image 
+   */
   virtual void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const = 0;
 
 protected:
-  //create a Gaussian filter from a sigma value
+  /**
+   * @brief Create a Gaussian filter from a sigma value
+   * 
+   * @param sigma 
+   * @return std::pair<std::vector<float>, unsigned int> 
+   */
   std::pair<std::vector<float>, unsigned int> MakeFilter(float sigma) const;
 
-  //parallel parameters to use parallel operations (number of threads on CPU / thread block config in CUDA)
+  /**
+   * @brief Parallel parameters to use parallel operations
+   * (number of threads on CPU / thread block config in CUDA)
+   * 
+   */
   const ParallelParams& parallel_params_;
 
 private:
-  //normalize filter mask so it integrates to one
+  /**
+   * @brief Normalize filter mask so it integrates to one
+   * 
+   * @param filter 
+   * @param size_filter 
+   */
   void NormalizeFilter(std::vector<float>& filter, unsigned int size_filter) const;
 };
 

@@ -15,9 +15,12 @@
 
 namespace beliefprop {
 
-//POD struct to store bp level data
-//struct can be passed to __global__ CUDAs kernel so needs to take restrictions of what's allowed for
-//passing data from the host to a CUDA kernel into account
+/**
+ * @brief POD struct to store bp level data
+ * struct can be passed to __global__ CUDAs kernel so needs to take restrictions of what's allowed for
+ * passing data from the host to a CUDA kernel into account
+ * 
+ */
 struct BpLevelProperties {
   unsigned int width_level_;
   unsigned int height_level_;
@@ -32,7 +35,10 @@ struct BpLevelProperties {
   std::size_t offset_into_arrays_;
 };
 
-//class to store and retrieve properties of a bp processing level
+/**
+ * @brief Class to store and retrieve properties of a bp processing level
+ * 
+ */
 class BpLevel
 {
 public:
@@ -42,12 +48,26 @@ public:
   BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
     unsigned int bytes_align_memory, unsigned int num_data_align_width, unsigned int div_padded_ch_board_w_align);
 
-  //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
+  /**
+   * @brief Get bp level properties for next (higher) level in hierarchy that
+   * processes data with half width/height of current level
+   * 
+   * @tparam T 
+   * @param num_disparity_values 
+   * @return beliefprop::BpLevel 
+   */
   template <RunData_t T>
   beliefprop::BpLevel NextBpLevel(unsigned int num_disparity_values) const;
 
-  //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
-  //with the specified number of possible disparity values
+  /**
+   * @brief Get the amount of data in each BP array (data cost/messages for
+   * each checkerboard) at the current level with the specified number of
+   * possible disparity values
+   * 
+   * @tparam T 
+   * @param num_disparity_values 
+   * @return std::size_t 
+   */
   template <RunData_t T>
   std::size_t NumDataInBpArrays(unsigned int num_disparity_values) const;
 
@@ -63,7 +83,12 @@ public:
   static std::size_t TotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& width_height_bottom_level,
     unsigned int num_possible_disparities, unsigned int num_levels);
   
-  //return level properties as const reference to avoid copying and not allow it to be modified
+  /**
+   * @brief Return level properties as const reference to avoid copying
+   * and not allow it to be modified
+   * 
+   * @return const BpLevelProperties& 
+   */
   const BpLevelProperties& LevelProperties() const { return level_properties_; }
 
 private:

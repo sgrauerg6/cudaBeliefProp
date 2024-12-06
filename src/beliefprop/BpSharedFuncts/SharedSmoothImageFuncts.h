@@ -14,9 +14,22 @@
 
 namespace beliefprop {
 
-//kernel to apply a horizontal filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture
-//the output filtered image is returned as an array of floats
+/**
+ * @brief kernel to apply a horizontal filter on each pixel of the image in parallel
+ * the input image is stored as unsigned ints in the texture
+ * the output filtered image is returned as an array of floats
+ * 
+ * @tparam T 
+ * @param x_val 
+ * @param y_val 
+ * @param image_to_filter 
+ * @param filtered_image 
+ * @param width_images 
+ * @param height_images 
+ * @param image_filter 
+ * @param size_filter 
+ * @return ARCHITECTURE_ADDITION 
+ */
 template <BpImData_t T>
 ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_val, unsigned int y_val,
   const T* image_to_filter, float* filtered_image, unsigned int width_images, unsigned int height_images,
@@ -34,9 +47,22 @@ ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_v
   filtered_image[y_val*width_images + x_val] = filtered_pixel_val;
 }
 
-//kernel to apply a vertical filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints in the texture uint_image_pixelsTexture
-//the output filtered image is returned as an array of floats
+/**
+ * @brief kernel to apply a vertical filter on each pixel of the image in parallel
+ * the input image is stored as unsigned ints in the texture uint_image_pixelsTexture
+ * the output filtered image is returned as an array of floats
+ * 
+ * @tparam T 
+ * @param x_val 
+ * @param y_val 
+ * @param image_to_filter 
+ * @param filtered_image 
+ * @param width_images 
+ * @param height_images 
+ * @param image_filter 
+ * @param size_filter 
+ * @return ARCHITECTURE_ADDITION 
+ */
 template <BpImData_t T>
 ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(unsigned int x_val, unsigned int y_val,
   const T* image_to_filter, float* filtered_image, unsigned int width_images, unsigned int height_images,

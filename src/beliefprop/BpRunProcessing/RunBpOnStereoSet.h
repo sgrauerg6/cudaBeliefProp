@@ -29,7 +29,10 @@
 #include "BpParallelParams.h"
 #include "ProcessBp.h"
 
-//structure with output disparity map, runtime, and other evaluation data
+/**
+ * @brief Structure with output disparity map, runtime, and other evaluation data
+ * 
+ */
 struct ProcessStereoSetOutput
 {
   std::chrono::duration<double> run_time;
@@ -37,8 +40,14 @@ struct ProcessStereoSetOutput
   RunData run_data;
 };
 
-//structure with pointers to objects containing functions for smoothing images,
-//processing bp, and memory management on target device using specified acceleration
+/**
+ * @brief Structure with pointers to objects containing functions for smoothing images,
+ * processing bp, and memory management on target device using specified acceleration
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 struct BpOnDevice {
   const std::unique_ptr<SmoothImage>& smooth_image;
@@ -47,22 +56,47 @@ struct BpOnDevice {
   const std::unique_ptr<MemoryManagement<float>>& mem_management_images;
 };
 
-//abstract class to set up and run belief propagation on target device using specified acceleration
+/**
+ * @brief Abstract class to set up and run belief propagation on target device using specified acceleration
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @tparam ACCELERATION 
+ */
 template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class RunBpOnStereoSet {
 public:
-  //pure virtual function to return run description corresponding to target acceleration
+  /**
+   * @brief Pure virtual function to return run description corresponding to target acceleration
+   * 
+   * @return std::string 
+   */
   virtual std::string BpRunDescription() const = 0;
 
-  //pure virtual operator() overload that must be defined in child class
+  /**
+   * @brief Pure virtual operator() overload that must be defined in child class
+   * 
+   * @param ref_test_image_path 
+   * @param alg_settings 
+   * @param parallel_params 
+   * @return std::optional<ProcessStereoSetOutput> 
+   */
   virtual std::optional<ProcessStereoSetOutput> operator()(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
     const ParallelParams& parallel_params) const = 0;
 
 protected:
-  //protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image,
-  //process BP, and memory management child class objects
+  /**
+   * @brief Protected function to set up, run, and evaluate bp processing on
+   * target device using pointers to acceleration-specific smooth image,
+   * process BP, and memory management child class objects
+   * 
+   * @param ref_test_image_path 
+   * @param alg_settings 
+   * @param run_bp_on_device 
+   * @return std::optional<ProcessStereoSetOutput> 
+   */
   std::optional<ProcessStereoSetOutput> ProcessStereoSet(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,

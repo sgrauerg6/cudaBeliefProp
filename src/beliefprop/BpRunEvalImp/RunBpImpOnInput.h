@@ -54,40 +54,88 @@ namespace beliefprop {
   constexpr std::string_view kAccelerationDescHeader{"Acceleration"};
 }
 
-//run and evaluate belief propagation implementation on a specified input
+/**
+ * @brief Run and evaluate belief propagation implementation on a specified input
+ * 
+ * @tparam T 
+ * @tparam OPT_IMP_ACCEL 
+ * @tparam NUM_INPUT 
+ */
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 class RunBpImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
-  //run and evaluate optimized belief propagation implementation on evaluation stereo set
-  //specified by NUM_INPUT
-  //data type used in implementation specified by T
-  //bp implemenation optimization specified by OPT_IMP_ACCEL
-  //evaluation stereo set to run implementation on specified by NUM_INPUT
+  /**
+   * @brief Run and evaluate optimized belief propagation implementation on
+   * evaluation stereo set specified by NUM_INPUT
+   * Data type used in implementation specified by T
+   * Bp implemenation optimization specified by OPT_IMP_ACCEL
+   * Evaluation stereo set to run implementation on specified by NUM_INPUT
+   * 
+   * @param run_imp_settings 
+   * @return MultRunData 
+   */
   MultRunData operator()(const run_environment::RunImpSettings& run_imp_settings) override;
   
 protected:
-  //set up parallel parameters for running belief propagation in parallel on CPU or GPU
+  /**
+   * @brief Set up parallel parameters for running belief propagation in
+   * parallel on CPU or GPU
+   * 
+   * @param run_imp_settings 
+   * @return std::shared_ptr<ParallelParams> 
+   */
   std::shared_ptr<ParallelParams> SetUpParallelParams(
     const run_environment::RunImpSettings& run_imp_settings) const override;
 
-  //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
+  /**
+   * @brief Get input data and parameter info about current benchmark (belief
+   * propagation in this case) and return as RunData type
+   * 
+   * @param loop_iters_templated 
+   * @return RunData 
+   */
   RunData InputAndParamsForCurrBenchmark(bool loop_iters_templated) const override;
 
-  //run and compare output disparity maps using the given optimized and single-threaded stereo implementations
-  //on the reference and test images specified by NUM_INPUT
-  //run only optimized implementation if run_opt_imp_only is true
+  /**
+   * @brief Run and compare output disparity maps using the given optimized and single-threaded stereo implementations
+   * on the reference and test images specified by NUM_INPUT
+   * run only optimized implementation if run_opt_imp_only is true
+   * 
+   * @param parallel_params 
+   * @param run_opt_imp_only 
+   * @param run_imp_templated_loop_iters 
+   * @return std::optional<RunData> 
+   */
   std::optional<RunData> RunImpsAndCompare(std::shared_ptr<ParallelParams> parallel_params, bool run_opt_imp_only,
     bool run_imp_templated_loop_iters) const override;
 
 private:
-  //bp implementation objects for single thread and optimized implementations with and without disparity count templated
+  /**
+   * @brief Bp implementation object for single thread implementation
+   * 
+   */
   std::unique_ptr<RunBpOnStereoSet<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>
     run_bp_stereo_single_thread_;
+  
+  /**
+   * @brief Bp implementation object for optimized implementation with loop
+   * iters templated
+   * 
+   */
   std::unique_ptr<RunBpOnStereoSet<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, OPT_IMP_ACCEL>>
     run_opt_bp_num_iters_templated_;
+
+  /**
+   * @brief Bp implementation object for optimized implementation with loop
+   * iters not templated
+   * 
+   */
   std::unique_ptr<RunBpOnStereoSet<T, 0, OPT_IMP_ACCEL>> run_opt_bp_num_iters_no_template_;
 
-  //bp parameter settings
+  /**
+   * @brief Bp parameter settings
+   * 
+   */
   beliefprop::BpSettings alg_settings_;
 };
 

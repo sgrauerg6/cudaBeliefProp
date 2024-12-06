@@ -7,8 +7,12 @@
 
 #include "BpFileHandling.h"
 
-//retrieve path of stereo images to process using kBeliefPropDirectoryName and kStereoSetsDirectoryName
-//constants
+/**
+ * @brief Retrieve path of stereo images to process using kBeliefPropDirectoryName
+ * and kStereoSetsDirectoryName constants
+ * 
+ * @return std::filesystem::path 
+ */
 std::filesystem::path BpFileHandling::StereoSetsPath() const
 {
   std::filesystem::path current_path = std::filesystem::current_path();
@@ -47,7 +51,12 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
   return std::filesystem::path();
 }
 
-//return path to reference image with valid extension if found, otherwise throw filesystem error
+/**
+ * @brief Return path to reference image with valid extension if found,
+ * otherwise throw filesystem error
+ * 
+ * @return std::filesystem::path 
+ */
 std::filesystem::path BpFileHandling::RefImagePath() const
 {
   //check if ref image exists for each possible extension (currently pgm and ppm) and return path if so
@@ -60,7 +69,12 @@ std::filesystem::path BpFileHandling::RefImagePath() const
   throw std::filesystem::filesystem_error("Reference image not found", std::error_code());
 }
 
-//return path to test image with valid extension if found, otherwise throw filesystem error
+/**
+ * @brief Return path to test image with valid extension if found,
+ * otherwise throw filesystem error
+ * 
+ * @return std::filesystem::path 
+ */
 std::filesystem::path BpFileHandling::TestImagePath() const
 {
   //check if test image exists for each possible extension (currently pgm and ppm) and return path if so

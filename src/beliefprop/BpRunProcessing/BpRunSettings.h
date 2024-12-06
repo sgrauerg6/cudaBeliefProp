@@ -38,7 +38,11 @@ namespace beliefprop {
   constexpr std::string_view kMemOptLevelHeader{"Memory Optimization Level"};
   constexpr std::string_view kIndexingOptLevelHeader{"Indexing Optimization Level"};
 
-  //retrieve run settings as a RunData object for output
+  /**
+   * @brief Retrieve run settings as a RunData object for output
+   * 
+   * @return RunData 
+   */
   inline RunData RunSettings()  {
     RunData curr_run_data;
     curr_run_data.AddDataWHeader(std::string(kMemOptLevelHeader),

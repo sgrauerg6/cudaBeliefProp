@@ -36,7 +36,15 @@ public:
     ProcessBp<T, DISP_VALS, ACCELERATION>(cuda_params) {}
 
 private:
-  //initialize the data cost at each pixel for each disparity value
+  /**
+   * @brief Initialize the data cost at each pixel for each disparity value
+   * 
+   * @param alg_settings 
+   * @param current_bp_level 
+   * @param images_target_device 
+   * @param data_costs_device 
+   * @return run_eval::Status 
+   */
   run_eval::Status InitializeDataCosts(
     const beliefprop::BpSettings& alg_settings,
     const beliefprop::BpLevel& current_bp_level,
@@ -50,13 +58,30 @@ private:
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
     unsigned int bp_settings_num_disp_vals) const override;
 
-  //initialize the message values for every pixel at every disparity to 0
+  /**
+   * @brief Initialize the message values for every pixel at every disparity to 0
+   * 
+   * @param current_bp_level 
+   * @param messages_device 
+   * @param bp_settings_num_disp_vals 
+   * @return run_eval::Status 
+   */
   run_eval::Status InitializeMessageValsToDefault(
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const override;
 
-  //run the given number of iterations of BP at the current level using the given message values in global device memory
+  /**
+   * @brief Run the given number of iterations of BP at the current level
+   * using the given message values in global device memory
+   * 
+   * @param alg_settings 
+   * @param current_bp_level 
+   * @param data_costs_device 
+   * @param messages_device 
+   * @param allocated_memory 
+   * @return run_eval::Status 
+   */
   run_eval::Status RunBPAtCurrentLevel(
     const beliefprop::BpSettings& alg_settings,
     const beliefprop::BpLevel& current_bp_level,
@@ -64,10 +89,22 @@ private:
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     T* allocated_memory) const override;
 
-  //copy the computed BP message values from the current now-completed level to the corresponding slots in the next level "down" in the computation
-  //pyramid; the next level down is double the width and height of the current level so each message in the current level is copied into four "slots"
-  //in the next level down
-  //need two different "sets" of message values to avoid read-write conflicts
+  
+  /**
+   * @brief Copy the computed BP message values from the current now-completed level
+   * to the corresponding slots in the next level "down" in the computation
+   * pyramid; the next level down is double the width and height of the current level
+   * so each message in the current level is copied into four "slots"
+   * in the next level down
+   * Need two different "sets" of message values to avoid read-write conflicts
+   * 
+   * @param current_bp_level 
+   * @param next_bp_level 
+   * @param messages_device_copy_from 
+   * @param messages_device_copy_to 
+   * @param bp_settings_num_disp_vals 
+   * @return run_eval::Status 
+   */
   run_eval::Status CopyMessageValuesToNextLevelDown(
     const beliefprop::BpLevel& current_bp_level,
     const beliefprop::BpLevel& next_bp_level,

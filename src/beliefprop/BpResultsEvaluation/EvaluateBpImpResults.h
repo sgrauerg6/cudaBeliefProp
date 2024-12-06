@@ -17,13 +17,25 @@
 #include <vector>
 #include <string>
 
-//class with operator function to evaluate implementation runs
+/**
+ * @brief Class with operator function to evaluate implementation runs
+ * 
+ */
 class EvaluateBpImpResults final : public EvaluateImpResults {
 private:
-  //retrieve path of belief propagation implementation results
+  /**
+   * @brief Retrieve path of belief propagation implementation results
+   * 
+   * @return std::filesystem::path 
+   */
   std::filesystem::path GetImpResultsPath() const override;
 
-  //get text at top of results summary file with each string_view in the vector corresponding to a separate line
+  /**
+   * @brief Get text at top of results summary file with each string_view
+   * in the vector corresponding to a separate line
+   * 
+   * @return std::vector<std::string> 
+   */
   std::vector<std::string> GetCombResultsTopText() const override {
     return {{"Stereo Processing using optimized CUDA and optimized CPU belief propagation implementations"},
             {"Code available at https://github.com/sgrauerg6/cudaBeliefProp"},
@@ -33,7 +45,11 @@ private:
             {"Results shown in this comparison for each run are for total runtime including any time for data transfer between device and host"}};
   }
 
-  //input parameters that are showed in results summary with runtimes
+  /**
+   * @brief Input parameters that are showed in results summary with runtimes
+   * 
+   * @return std::vector<std::string> 
+   */
   std::vector<std::string> GetInputParamsShow() const override {
     return {std::string(beliefprop::kStereoSetHeader), std::string(run_eval::kDatatypeHeader), std::string(beliefprop::kImageWidthHeader),
             std::string(beliefprop::kImageHeightHeader), std::string(beliefprop::kNumDispValsHeader),
