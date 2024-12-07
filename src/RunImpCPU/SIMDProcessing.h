@@ -1,12 +1,12 @@
 /*
- * VectProcessingFuncts.h
+ * SIMDProcessing.h
  *
  *  Created on: Jun 26, 2024
  *      Author: scott
  */
 
-#ifndef VECT_PROCESSING_FUNCTS_H_
-#define VECT_PROCESSING_FUNCTS_H_
+#ifndef SIMD_PROCESSING_H_
+#define SIMD_PROCESSING_H_
 
 #include <math.h>
 #include <omp.h>
@@ -20,7 +20,7 @@
  * Template specializations must be defined to support specific SIMD vector data types.
  * 
  */
-namespace VectProcessingFuncts
+namespace simd_processing
 {
   /**
    * @brief Load multiple values of primitive type data from inData array to SIMD vector data type
