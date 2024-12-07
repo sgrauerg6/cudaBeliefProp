@@ -37,26 +37,53 @@
 #endif //defined(AVX_512_VECTORIZATION)
 #endif //COMPILING_FOR_ARM
 
+/**
+ * @brief Namespace with CPU run defaults and constants.
+ * 
+ */
 namespace run_cpu {
 
 /**
- * @brief Constant to specify to run simulate single CPU on a dual-CPU system
+ * @brief Constant that specifies that run is simulating single CPU on a dual-CPU system
  * 
  */
 constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 
-//parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation
-//parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation
+/**
+ * @brief Constant corresponding to number of threads on CPU.
+ * 
+ */
 const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
 #ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
+/**
+ * @brief Parallel parameters options that are tested in order to find optimized
+ * configuration in run
+ * 
+ */
 const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   { kNumThreadsCPU, 1},{ kNumThreadsCPU / 2, 1}};
 #else
+/**
+ * @brief Parallel parameters options that are tested in order to find optimized
+ * configuration in run.
+ * 
+ */
 const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
   { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
 #endif //LIMITED_TEST_PARAMS_FEWER_RUNS
+
+/**
+ * @brief Minimum number of threads to allow for any parallel parameters
+ * setting on CPU.
+ * 
+ */
 const unsigned int kMinNumThreadsRun{std::min(kNumThreadsCPU, 4u)};
+
+/**
+ * @brief Default parallel parameters setting on CPU.
+ * 
+ */
 const std::array<unsigned int, 2> kParallelParamsDefault{{kNumThreadsCPU, 1}};
 
 };

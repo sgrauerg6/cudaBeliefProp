@@ -20,6 +20,11 @@ using halftype = __nv_bfloat16;
 using halftype = half;
 #endif //USE_BFLOAT16_FOR_HALF_PRECISION
 
+/**
+ * @brief Namespace with constants for parallel parameters default and options
+ * to use in run optimization
+ * 
+ */
 namespace run_cuda {
 
 /**

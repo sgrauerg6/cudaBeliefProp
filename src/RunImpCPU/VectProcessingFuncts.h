@@ -16,8 +16,8 @@
 #include "RunImpCPU/RunCPUSettings.h"
 
 /**
- * @brief General functions for processing using SIMD vector data types on CPU
- * template specializations must be defined to support specific SIMD vector data types
+ * @brief General functions for processing using SIMD vector data types on CPU.
+ * Template specializations must be defined to support specific SIMD vector data types.
  * 
  */
 namespace VectProcessingFuncts

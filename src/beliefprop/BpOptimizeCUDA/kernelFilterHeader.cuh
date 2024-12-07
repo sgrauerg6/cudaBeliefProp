@@ -24,28 +24,63 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include <type_traits>
 
+/**
+ * @brief Namespace to define global kernel functions for parallel belief propagation
+ * processing using CUDA.
+ * 
+ */
 namespace beliefpropCUDA {
 
-//kernel to convert the unsigned int pixels to float pixels in an image when
-//smoothing is not desired but the pixels need to be converted to floats
-//the input image is stored as unsigned ints
-//output filtered image stored in float_image_pixels
+/**
+ * @brief Kernel to convert the unsigned int pixels to float pixels in an image when
+ * smoothing is not desired but the pixels need to be converted to floats
+ * the input image is stored as unsigned ints
+ * output filtered image stored in float_image_pixels
+ * 
+ * @param uint_image_pixels 
+ * @param float_image_pixels 
+ * @param width_images 
+ * @param height_images 
+ * @return __global__ 
+ */
 __global__ void convertUnsignedIntImageToFloat(
   const unsigned int* uint_image_pixels, float* float_image_pixels,
   unsigned int width_images, unsigned int height_images);
 
-//kernel to apply a horizontal filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints
-//the output filtered image is returned as an array of floats
+/**
+ * @brief Kernel to apply a horizontal filter on each pixel of the image in parallel
+ * the input image is stored as unsigned ints
+ * the output filtered image is returned as an array of floats
+ * 
+ * @tparam T 
+ * @param image_to_filter 
+ * @param filtered_image 
+ * @param width_images 
+ * @param height_images 
+ * @param image_filter 
+ * @param size_filter 
+ * @return __global__ 
+ */
 template<BpImData_t T>
 __global__ void FilterImageAcross(
   const T* image_to_filter, float* filtered_image,
   unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter);
 
-//kernel to apply a vertical filter on each pixel of the image in parallel
-//the input image is stored as unsigned ints
-//the output filtered image is returned as an array of floats
+/**
+ * @brief Kernel to apply a vertical filter on each pixel of the image in parallel
+ * the input image is stored as unsigned ints
+ * the output filtered image is returned as an array of floats
+ * 
+ * @tparam T 
+ * @param image_to_filter 
+ * @param filtered_image 
+ * @param width_images 
+ * @param height_images 
+ * @param image_filter 
+ * @param size_filter 
+ * @return __global__ 
+ */
 template<BpImData_t T>
 __global__ void FilterImageVertical(
   const T* image_to_filter, float* filtered_image,

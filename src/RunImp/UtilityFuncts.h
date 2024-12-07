@@ -17,6 +17,10 @@
 #define ARCHITECTURE_ADDITION
 #endif //OPTIMIZED_CUDA_RUN
 
+/**
+ * @brief Namespace with utility functions for bp implementation. 
+ * 
+ */
 namespace util_functs {
 
 /**

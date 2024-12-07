@@ -16,7 +16,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This file defines the methods to perform belief propagation for disparity map estimation from stereo images on CUDA
+//This file defines the methods to perform belief propagation
+//for disparity map estimation from stereo images on CUDA
 
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 
@@ -33,10 +34,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //uncomment for CUDA kernel debug functions for belief propagation processing
 //#include "kernelBpStereoDebug.h"
 
+/**
+ * @brief Namespace to define global kernel functions for parallel belief propagation
+ * processing using CUDA.
+ * 
+ */
 namespace beliefpropCUDA {
 
-//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
-//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
+/**
+ * @brief Initialize the "data cost" for each possible disparity between the
+ * two full-sized input images ("bottom" of the image pyramid).
+ * The image data is stored in the image_1_pixels_device and
+ * image_2_pixels_device arrays.
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param current_bp_level 
+ * @param image_1_pixels_device 
+ * @param image_2_pixels_device 
+ * @param data_cost_stereo_checkerboard_0 
+ * @param data_cost_stereo_checkerboard_1 
+ * @param lambda_bp 
+ * @param data_k_bp 
+ * @param bp_settings_disp_vals 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeBottomLevelData(
   beliefprop::BpLevelProperties current_bp_level,
@@ -62,7 +84,22 @@ __global__ void InitializeBottomLevelData(
   }
 }
 
-//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
+/**
+ * @brief Initialize the data costs at the "next" level up in the pyramid given
+ * that the data at the lower has been set
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param checkerboard_part 
+ * @param current_bp_level 
+ * @param prev_bp_level 
+ * @param data_cost_checkerboard_0 
+ * @param data_cost_checkerboard_1 
+ * @param data_cost_current_level 
+ * @param offset_num 
+ * @param bp_settings_disp_vals 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeCurrentLevelData(
   beliefprop::CheckerboardPart checkerboard_part,
@@ -85,7 +122,23 @@ __global__ void InitializeCurrentLevelData(
   }
 }
 
-//initialize the message values at each pixel of the current level to the default value
+/**
+ * @brief Initialize the message values at each pixel of the current level to the default value
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param current_bp_level 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param bp_settings_disp_vals 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeMessageValsToDefaultKernel(
   beliefprop::BpLevelProperties current_bp_level,
@@ -113,10 +166,31 @@ __global__ void InitializeMessageValsToDefaultKernel(
   }
 }
 
-//kernel function to run the current iteration of belief propagation in parallel using the
-//checkerboard update method where half the pixels in the "checkerboard"
-//scheme retrieve messages from each 4-connected neighbor and then update
-//their message based on the retrieved messages and the data cost
+/**
+ * @brief Kernel function to run the current iteration of belief propagation
+ * in parallel using the checkerboard update method where half the pixels in
+ * the "checkerboard" scheme retrieve messages from each 4-connected neighbor
+ * and then update their message based on the retrieved messages and the data cost
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param checkerboard_to_update 
+ * @param current_bp_level 
+ * @param data_cost_checkerboard_0 
+ * @param data_cost_checkerboard_1 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param disc_k_bp 
+ * @param data_aligned 
+ * @param bp_settings_disp_vals 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
   beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
@@ -145,6 +219,34 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   }
 }
 
+/**
+ * @brief Kernel function to run the current iteration of belief propagation
+ * in parallel using the checkerboard update method where half the pixels in
+ * the "checkerboard" scheme retrieve messages from each 4-connected neighbor
+ * and then update their message based on the retrieved messages and the data cost.
+ * Function differs from counterpart overloaded function with same name in that
+ * it takes in allocated memory to use in processing.
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param checkerboard_to_update 
+ * @param current_bp_level 
+ * @param data_cost_checkerboard_0 
+ * @param data_cost_checkerboard_1 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param disc_k_bp 
+ * @param data_aligned 
+ * @param bp_settings_disp_vals 
+ * @param dst_processing 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
   beliefprop::CheckerboardPart checkerboard_to_update, beliefprop::BpLevelProperties current_bp_level,
@@ -174,8 +276,36 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
   }
 }
 
-//kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
-//the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
+/**
+ * @brief Kernel to copy the computed BP message values at the current level to the
+ * corresponding locations at the "next" level down. The kernel works from the point
+ * of view of the pixel at the current level that is being copied to four corresponding
+ * pixels in the next level.
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param checkerboard_part 
+ * @param current_bp_level 
+ * @param next_bp_level 
+ * @param message_u_prev_checkerboard_0 
+ * @param message_d_prev_checkerboard_0 
+ * @param message_l_prev_checkerboard_0 
+ * @param message_r_prev_checkerboard_0 
+ * @param message_u_prev_checkerboard_1 
+ * @param message_d_prev_checkerboard_1 
+ * @param message_l_prev_checkerboard_1 
+ * @param message_r_prev_checkerboard_1 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param bp_settings_disp_vals 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void CopyMsgDataToNextLevel(
   beliefprop::CheckerboardPart checkerboard_part,
@@ -212,7 +342,26 @@ __global__ void CopyMsgDataToNextLevel(
   }
 }
 
-//retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
+/**
+ * @brief Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param current_bp_level 
+ * @param data_cost_checkerboard_0 
+ * @param data_cost_checkerboard_1 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param disparity_between_images_device 
+ * @param bp_settings_disp_vals 
+ * @return __global__ 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RetrieveOutputDisparity(
   beliefprop::BpLevelProperties current_bp_level,
