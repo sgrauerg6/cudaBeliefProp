@@ -292,9 +292,14 @@ void EvaluateImpResults::WriteRunOutput(
       "Speedup Results,Average Speedup,Median Speedup" << std::endl;
     for (const auto& speedup : run_output.second) {
       speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << speedup.first;
-      if (speedup.second[0] > 0) {
+      if ((speedup.second.contains(run_eval::MiddleValData::kAverage)) &&
+          (speedup.second.at(run_eval::MiddleValData::kAverage) > 0)) {
         speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << ',' <<
-          speedup.second[0] << ',' << speedup.second[1];
+          speedup.second.at(run_eval::MiddleValData::kAverage) << ',' <<
+          speedup.second.at(run_eval::MiddleValData::kMedian);
+      }
+      else {
+        speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << ",,";
       }
       speedups_w_headers_sstr[SpeedupHeaderPlacement::kLeft] << std::endl;
     }
@@ -304,11 +309,18 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& speedup : run_output.second) {
       speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << speedup.first << ',';
     }
-    for (const auto& speedup_desc_w_index : {std::pair<std::string_view, size_t>{"Average Speedup", 0},
-                                             std::pair<std::string_view, size_t>{"Median Speedup", 1}}) {
-      speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << std::endl << speedup_desc_w_index.first << ',';
+    for (const auto& speedup_desc_w_enum : 
+      {std::pair<std::string_view, run_eval::MiddleValData>{"Average Speedup", run_eval::MiddleValData::kAverage},
+       std::pair<std::string_view, run_eval::MiddleValData>{"Median Speedup", run_eval::MiddleValData::kMedian}})
+    {
+      speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << std::endl << speedup_desc_w_enum.first << ',';
       for (const auto& speedup : run_output.second) {
-        speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << speedup.second[speedup_desc_w_index.second] << ',';
+        if (speedup.second.contains(speedup_desc_w_enum.second)) {
+          speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << speedup.second.at(speedup_desc_w_enum.second) << ',';
+        }
+        else {
+          speedups_w_headers_sstr[SpeedupHeaderPlacement::kTop] << ',';
+        }
       }
     }
 
@@ -387,8 +399,10 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
 
   if (run_imp_results_by_acc_setting.size() == 1) {
     //no alternate run results
-    return {{acc_to_speedup_str.at(run_environment::AccSetting::kNone), {0.0, 0.0}},
-            {acc_to_speedup_str.at(run_environment::AccSetting::kAVX256), {0.0, 0.0}}};
+    return {{acc_to_speedup_str.at(run_environment::AccSetting::kNone),
+              {}},
+            {acc_to_speedup_str.at(run_environment::AccSetting::kAVX256),
+              {}}};
   }
   else {
     //initialize speedup/slowdown using alternate acceleration
@@ -484,7 +498,7 @@ std::optional<std::pair<std::string, std::map<InputSignature, std::string>>> Eva
 }
 
 //get average and median speedup from vector of speedup values
-std::array<double, 2> EvaluateImpResults::GetAvgMedSpeedup(
+std::map<run_eval::MiddleValData, double> EvaluateImpResults::GetAvgMedSpeedup(
   const std::vector<double>& speedups_vect) const
 {
   const double average_speedup =
@@ -494,7 +508,8 @@ std::array<double, 2> EvaluateImpResults::GetAvgMedSpeedup(
   const double median_speedup = ((speedups_vect_sorted.size() % 2) == 0) ? 
     (speedups_vect_sorted[(speedups_vect_sorted.size() / 2) - 1] + speedups_vect_sorted[(speedups_vect_sorted.size() / 2)]) / 2.0 : 
     speedups_vect_sorted[(speedups_vect_sorted.size() / 2)];
-  return {average_speedup, median_speedup};
+  return {{run_eval::MiddleValData::kAverage, average_speedup},
+          {run_eval::MiddleValData::kMedian, median_speedup}};
 }
 
 //get average and median speedup of specified subset(s) of runs compared to baseline data from file
@@ -644,7 +659,7 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupOptPParams(
     //across runs from vector containing speedups of every run
     return {std::string(speedup_header), GetAvgMedSpeedup(speedups_vect)};
   }
-  return {std::string(speedup_header), {0.0, 0.0}};
+  return {std::string(speedup_header), {}};
 }
 
 //get average and median speedup between base and target runtime data and also add
@@ -711,7 +726,7 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
     //data and return as pair with header describing speedup
     return {std::string(speedup_header), GetAvgMedSpeedup(speedups_vect)};
   }
-  return {std::string(speedup_header), {0.0, 0.0}};
+  return {std::string(speedup_header), {}};
 }
 
 //get average and median speedup when loop iterations are given at compile time as template value

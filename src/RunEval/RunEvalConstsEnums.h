@@ -24,6 +24,12 @@ namespace run_eval {
  */
 enum class Status { kNoError, kError };
 
+/**
+ * @brief Enum to specify average or median for "middle" value
+ * in data
+ */
+enum class MiddleValData { kAverage, kMedian };
+
 //set data types to use in evaluation
 //by default evaluate using float, double, and half data types
 //but can set to only evaluate using float datatype

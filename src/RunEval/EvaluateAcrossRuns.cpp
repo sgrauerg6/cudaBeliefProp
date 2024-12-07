@@ -81,12 +81,14 @@ void EvaluateAcrossRuns::operator()(
   //write each evaluation run name and save order of runs with speedup corresponding to first
   //speedup header
   //order of run names is in speedup from largest to smallest
-  std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>> run_names_in_order_w_speedup;
+  std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>>
+    run_names_in_order_w_speedup;
 
   //add first speedup with run name to order runs from fastest to slowest based on first speedup
   for (const auto& arch_w_speedup_data : speedup_results_name_to_data) {
     if (arch_w_speedup_data.second.contains(speedup_ordering)) {
-      const float avgSpeedupVsBase = std::stof(std::string(arch_w_speedup_data.second.at(speedup_ordering).at(0)));
+      const float avgSpeedupVsBase = 
+        std::stof(std::string(arch_w_speedup_data.second.at(speedup_ordering).at(0)));
       run_names_in_order_w_speedup.insert({avgSpeedupVsBase, arch_w_speedup_data.first});
     }
     else {
@@ -106,13 +108,14 @@ void EvaluateAcrossRuns::operator()(
     for (const auto& run_input_val : curr_run_input.second) {
       result_across_archs_sstream << run_input_val << ',';
     }
-    for (const auto& run_name : run_names_in_order_w_speedup) {
-      if (input_to_runtime_across_archs.at(run_name.second).contains(curr_run_input.first)) {
-        result_across_archs_sstream << input_to_runtime_across_archs.at(run_name.second).at(curr_run_input.first) << ',';
+    for (const auto& run_name : run_names_in_order_w_speedup)
+    {
+      if (input_to_runtime_across_archs.at(run_name.second).contains(curr_run_input.first))
+      {
+        result_across_archs_sstream << 
+          input_to_runtime_across_archs.at(run_name.second).at(curr_run_input.first);
       }
-      else {
-        result_across_archs_sstream << "NO RESULT" << ',';
-      }
+      result_across_archs_sstream << ',';
     }
     result_across_archs_sstream << std::endl;
   }
@@ -135,10 +138,11 @@ void EvaluateAcrossRuns::operator()(
       //where each column corresponds to a different evaluation run
       for (const auto& run_name : run_names_in_order_w_speedup) {
         if (speedup_results_name_to_data.at(run_name.second).contains(speedup_header)) {
-          result_across_archs_sstream << speedup_results_name_to_data.at(run_name.second).at(speedup_header).at(0) << ',';
+          result_across_archs_sstream <<
+            speedup_results_name_to_data.at(run_name.second).at(speedup_header).at(0) << ',';
         }
         else {
-          result_across_archs_sstream << "NO DATA" << ',';
+          result_across_archs_sstream << ',';
         }
       }
       //continue to next row of table to write data for next speedup result
@@ -165,21 +169,30 @@ std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
   std::filesystem::directory_iterator speedups_files_iter =
     std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName);
   std::vector<std::string> run_names;
-  for (const auto& results_fp : results_files_iter) {
+  for (const auto& results_fp : results_files_iter)
+  {
     std::string file_name_no_ext = results_fp.path().stem();
-    if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName))) {
-      const std::string run_name = file_name_no_ext.substr(0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
+    if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName)))
+    {
+      const std::string run_name =
+        file_name_no_ext.substr(
+          0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
       run_names.push_back(run_name);
     }
   }
 
   //remove run name from runs to evaluate across runs if no speedup data
   //example where this could be the case is baseline data that is used for comparison with other runs
-  for (auto run_names_iter = run_names.begin(); run_names_iter != run_names.end();) {
-    std::filesystem::path run_speedup_fp = imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
-      (std::string(*run_names_iter) + '_' + std::string(run_eval::kSpeedupsDescFileName) + std::string(run_eval::kCsvFileExtension));
+  for (auto run_names_iter = run_names.begin(); run_names_iter != run_names.end();)
+  {
+    std::filesystem::path run_speedup_fp = 
+      imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
+      (std::string(*run_names_iter) + '_' + std::string(run_eval::kSpeedupsDescFileName) +
+        std::string(run_eval::kCsvFileExtension));
     //remove run from evaluation if no valid speedup data file that corresponds to run results data file
-    if ((!(std::filesystem::exists(run_speedup_fp))) || (!(std::filesystem::is_regular_file(run_speedup_fp)))) {
+    if ((!(std::filesystem::exists(run_speedup_fp))) ||
+        (!(std::filesystem::is_regular_file(run_speedup_fp))))
+    {
       run_names_iter = run_names.erase(std::ranges::find(run_names, *run_names_iter));
     }
     else {

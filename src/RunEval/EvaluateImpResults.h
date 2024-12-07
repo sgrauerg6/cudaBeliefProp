@@ -167,9 +167,9 @@ private:
    * @brief Get average and median speedup from vector of speedup values
    * 
    * @param speedups_vect 
-   * @return std::array<double, 2> 
+   * @return std::map<run_eval::MiddleValData, double>
    */
-  std::array<double, 2> GetAvgMedSpeedup(const std::vector<double>& speedups_vect) const;
+  std::map<run_eval::MiddleValData, double> GetAvgMedSpeedup(const std::vector<double>& speedups_vect) const;
 
   /**
    * @brief Get average and median speedup of specified subset(s) of runs
