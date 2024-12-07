@@ -23,9 +23,10 @@ LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart -l
 NVCC := $(CUDA_DIR)/bin/nvcc
 CC    = g++
 
-# uncomment to use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
-BFLOAT_DATA_TYPE_SETTING =
-#-DUSE_BFLOAT16_FOR_HALF_PRECISION
+# use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
+# remove if compute capability of CUDA device is under 8.0 since bfloat16 not supported until
+# compute capability 8.0
+BFLOAT_DATA_TYPE_SETTING = -DUSE_BFLOAT16_FOR_HALF_PRECISION
 
 # set to use only smaller data sets
 USE_ONLY_SMALLER_DATA_SETTING =
