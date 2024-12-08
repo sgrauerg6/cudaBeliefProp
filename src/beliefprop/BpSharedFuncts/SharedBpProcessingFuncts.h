@@ -16,7 +16,19 @@
 
 namespace beliefprop {
 
-//retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data
+/**
+ * @brief Retrieve the current 1-D index value of the given point at the given
+ * disparity in the data cost and message data
+ * 
+ * @param x_val 
+ * @param y_val 
+ * @param width 
+ * @param height 
+ * @param current_disparity 
+ * @param total_num_disp_vals 
+ * @param offset_data 
+ * @return ARCHITECTURE_ADDITION 
+ */
 ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned int x_val, unsigned int y_val,
   unsigned int width, unsigned int height, unsigned int current_disparity, unsigned int total_num_disp_vals,
   unsigned int offset_data = 0u)
@@ -30,8 +42,15 @@ ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned
   }
 }
 
-//function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
-//(see "Efficient Belief Propagation for Early Vision")
+/**
+ * @brief function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
+ * (see "Efficient Belief Propagation for Early Vision")
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param f 
+ * @return ARCHITECTURE_ADDITION 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void DtStereo(T f[DISP_VALS])
 {
@@ -314,7 +333,6 @@ ARCHITECTURE_ADDITION void inline SetInitDstProcessing(
   }
 }
 
-//TODO: may need to specialize for half-precision to account for possible NaN/inf vals
 template<RunData_t T, RunData_t U, beliefprop::MessageComp M>
 ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
@@ -396,8 +414,23 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
   }
 }
 
-//initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
-//the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
+/**
+ * @brief Initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid).
+ * Image data is stored in the image_1_pixels_device and image_2_pixels_device arrays.
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param x_val 
+ * @param y_val 
+ * @param current_bp_level 
+ * @param image_1_pixels_device 
+ * @param image_2_pixels_device 
+ * @param data_cost_stereo_checkerboard_0 
+ * @param data_cost_stereo_checkerboard_1 
+ * @param lambda_bp 
+ * @param data_k_bp 
+ * @param bp_settings_disp_vals 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
   unsigned int x_val, unsigned int y_val,
@@ -511,7 +544,24 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
   }
 }
 
-//initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
+/**
+ * @brief Initialize the data costs at the "next" level up in the pyramid given
+ * that the data at the lower has been set
+ * 
+ * @tparam T 
+ * @tparam U 
+ * @tparam DISP_VALS 
+ * @param x_val 
+ * @param y_val 
+ * @param checkerboard_part 
+ * @param current_bp_level 
+ * @param prev_bp_level 
+ * @param data_cost_checkerboard_0 
+ * @param data_cost_checkerboard_1 
+ * @param data_cost_current_level 
+ * @param offset_num 
+ * @param bp_settings_disp_vals 
+ */
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
   unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
@@ -581,7 +631,24 @@ ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
   }
 }
 
-//initialize the message values at each pixel of the current level to the default value
+/**
+ * @brief Initialize the message values at each pixel of the current level to the default value
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param x_val_in_checkerboard 
+ * @param y_val 
+ * @param current_bp_level 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param bp_settings_disp_vals 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void InitializeMessageValsToDefaultKernelPixel(
   unsigned int x_val_in_checkerboard, unsigned int y_val,
@@ -678,9 +745,29 @@ ARCHITECTURE_ADDITION inline void InitializeMessageValsToDefaultKernelPixel(
   }
 }
 
-//device portion of the kernel function to run the current iteration of belief propagation
-//where the input messages and data costs come in as array in local memory
-//and the output message values are stored in local memory
+/**
+ * @brief Kernel function to run the current iteration of belief propagation
+ * where the input messages and data costs come in as array
+ * and the output message values are stored in array
+ * 
+ * @tparam T 
+ * @tparam U 
+ * @tparam DISP_VALS 
+ * @param x_val 
+ * @param y_val 
+ * @param current_bp_level 
+ * @param prev_u_message 
+ * @param prev_d_message 
+ * @param prev_l_message 
+ * @param prev_r_message 
+ * @param data_message 
+ * @param current_u_message 
+ * @param current_d_message 
+ * @param current_l_message 
+ * @param current_r_message 
+ * @param disc_k_bp 
+ * @param data_aligned 
+ */
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
   unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties& current_bp_level,
@@ -768,10 +855,34 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
     dst_processing, checkerboard_adjustment, offset_data);
 }
 
-//device portion of the kernel function to run the current iteration of belief propagation in parallel
-//using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages
-//from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
-//uses local memory to store the message and data values at each disparity in the intermediate step of current message computation
+/**
+ * @brief Kernel function to run the current iteration of belief propagation in parallel
+ * using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages
+ * from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost
+ * 
+ * @tparam T 
+ * @tparam U 
+ * @tparam DISP_VALS 
+ * @param x_val 
+ * @param y_val 
+ * @param checkerboard_to_update 
+ * @param current_bp_level 
+ * @param data_cost_checkerboard_0 
+ * @param data_cost_checkerboard_1 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param disc_k_bp 
+ * @param offset_data 
+ * @param data_aligned 
+ * @param bp_settings_disp_vals 
+ * @return ARCHITECTURE_ADDITION 
+ */
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   unsigned int x_val, unsigned int y_val,
@@ -986,8 +1097,35 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   }
 }
 
-//kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
-//the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
+/**
+ * @brief Kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
+ * the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
+ * 
+ * @tparam T 
+ * @tparam DISP_VALS 
+ * @param x_val 
+ * @param y_val 
+ * @param checkerboard_part 
+ * @param current_bp_level 
+ * @param next_bp_level 
+ * @param message_u_prev_checkerboard_0 
+ * @param message_d_prev_checkerboard_0 
+ * @param message_l_prev_checkerboard_0 
+ * @param message_r_prev_checkerboard_0 
+ * @param message_u_prev_checkerboard_1 
+ * @param message_d_prev_checkerboard_1 
+ * @param message_l_prev_checkerboard_1 
+ * @param message_r_prev_checkerboard_1 
+ * @param message_u_checkerboard_0 
+ * @param message_d_checkerboard_0 
+ * @param message_l_checkerboard_0 
+ * @param message_r_checkerboard_0 
+ * @param message_u_checkerboard_1 
+ * @param message_d_checkerboard_1 
+ * @param message_l_checkerboard_1 
+ * @param message_r_checkerboard_1 
+ * @param bp_settings_disp_vals 
+ */
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
   unsigned int x_val, unsigned int y_val,

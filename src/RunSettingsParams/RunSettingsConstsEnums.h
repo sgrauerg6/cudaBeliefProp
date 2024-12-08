@@ -28,14 +28,10 @@ using halftype = short;
 /**
  * @brief Constants and enums related to run environment
  * and settings for run
- * 
  */
 namespace run_environment {
 
-/**
- * @brief Enum for acceleration setting
- * 
- */
+/** @brief Enum for acceleration setting */
 enum class AccSetting {
   kNone, kAVX256, kAVX512, kNEON, kCUDA
 };
@@ -67,10 +63,7 @@ inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   else { return "DEFAULT"; }
 }
 
-/**
- * @brief Mapping from data size to data type string
- * 
- */
+/** @brief Mapping from data size to data type string */
 const std::map<std::size_t, std::string_view> kDataSizeToNameMap{
   {sizeof(float), "FLOAT"},
   {sizeof(double), "DOUBLE"},
@@ -83,7 +76,6 @@ const std::map<std::size_t, std::string_view> kDataSizeToNameMap{
  * without templated iteration counts
  * Templated counts for number of loop iterations can help with optimization
  * but requires that the number of iterations be known at compile time
- * 
  */
 enum class TemplatedItersSetting {
   kRunOnlyTempated,
@@ -91,10 +83,7 @@ enum class TemplatedItersSetting {
   kRunTemplatedAndNotTemplated
 };
 
-/**
- * @brief Enum for parallel parameters settings in run
- * 
- */
+/** @brief Enum for parallel parameters settings in run */
 enum class ParallelParamsSetting { kDefault, kOptimized };
 
 /**
@@ -102,7 +91,6 @@ enum class ParallelParamsSetting { kDefault, kOptimized };
  * using same parallel parameters across all kernels in run
  * In initial testing optimizing per kernel is faster on GPU and using same
  * parallel parameters across all kernels is faster on CPU
- * 
  */
 enum class OptParallelParamsSetting {
   kSameParallelParamsAllKernels,

@@ -18,7 +18,8 @@
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
-//define and set CPU vectorization options using preprocessor (since needed to determine what code gets compiled to support vectorization)
+//define and set CPU vectorization options using preprocessor
+//needed to determine what code gets compiled to support vectorization
 #define AVX_256_DEFINE 0
 #define AVX_512_DEFINE 1
 #define NEON_DEFINE 2
@@ -39,51 +40,36 @@
 
 /**
  * @brief Namespace with CPU run defaults and constants.
- * 
  */
 namespace run_cpu {
 
-/**
- * @brief Constant that specifies that run is simulating single CPU on a dual-CPU system
- * 
- */
+/** @brief Constant that specifies that run is simulating single CPU on a dual-CPU system */
 constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 
-/**
- * @brief Constant corresponding to number of threads on CPU.
- * 
- */
+/** @brief Constant corresponding to number of threads on CPU. */
 const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
 #ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
-/**
- * @brief Parallel parameters options that are tested in order to find optimized
- * configuration in run
- * 
- */
+
+/** @brief Parallel parameters options that are tested in order to find optimized
+ *  configuration in run. */
 const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   { kNumThreadsCPU, 1},{ kNumThreadsCPU / 2, 1}};
+
 #else
-/**
- * @brief Parallel parameters options that are tested in order to find optimized
- * configuration in run.
- * 
- */
+
+/** @brief Parallel parameters options that are tested in order to find optimized
+ *  configuration in run. */
 const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
   { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
+
 #endif //LIMITED_TEST_PARAMS_FEWER_RUNS
 
-/**
- * @brief Minimum number of threads to allow for any parallel parameters
- * setting on CPU.
- * 
- */
+/** @brief Minimum number of threads to allow for any parallel parameters
+ *  setting on CPU. */
 const unsigned int kMinNumThreadsRun{std::min(kNumThreadsCPU, 4u)};
 
-/**
- * @brief Default parallel parameters setting on CPU.
- * 
- */
+/** @brief Default parallel parameters setting on CPU. */
 const std::array<unsigned int, 2> kParallelParamsDefault{{kNumThreadsCPU, 1}};
 
 };

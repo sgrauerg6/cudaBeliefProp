@@ -18,7 +18,6 @@
 /**
  * @brief General functions for processing using SIMD vector data types on CPU.
  * Template specializations must be defined to support specific SIMD vector data types.
- * 
  */
 namespace simd_processing
 {

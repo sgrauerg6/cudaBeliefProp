@@ -39,7 +39,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @brief Namespace to define global kernel functions for optimized belief propagation
  * processing on the CPU using OpenMP and SIMD vectorization.
- * 
  */
 namespace beliefpropCPU
 {

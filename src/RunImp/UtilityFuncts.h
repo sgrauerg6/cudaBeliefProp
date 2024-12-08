@@ -19,7 +19,6 @@
 
 /**
  * @brief Namespace with utility functions for bp implementation. 
- * 
  */
 namespace util_functs {
 

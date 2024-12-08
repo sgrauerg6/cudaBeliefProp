@@ -48,7 +48,6 @@ inline RunData RunSettings()  {
 
 /**
  * @brief Structure that stores settings for current implementation run
- * 
  */
 struct RunImpSettings {
   std::vector<unsigned int> datatypes_eval_sizes;
