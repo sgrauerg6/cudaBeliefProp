@@ -144,7 +144,10 @@ std::optional<ProcessStereoSetOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATIO
   }
 
   //run bp processing for specified number of runs
-  for (unsigned int num_run = 0; num_run < beliefprop::kNumBpStereoRuns; num_run++)
+  const unsigned int num_evaluation_runs{beliefprop::NumBpStereoRuns(alg_settings.num_disp_vals)};
+  for (unsigned int num_run = 0; 
+       num_run < num_evaluation_runs;
+       num_run++)
   {
     //allocate the device memory to store and x and y smoothed images
     std::array<float*, 2> smoothed_images{
@@ -229,6 +232,7 @@ std::optional<ProcessStereoSetOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATIO
   RunData run_data;
   run_data.AddDataWHeader(std::string(beliefprop::kImageWidthHeader), width_height_images[0]);
   run_data.AddDataWHeader(std::string(beliefprop::kImageHeightHeader), width_height_images[1]);
+  run_data.AddDataWHeader(std::string(beliefprop::kNumEvalRuns), num_evaluation_runs);
   run_data.AppendData(detailed_bp_timings.AsRunData());
 
   //construct and return ProcessStereoSetOutput object inside of std::optional object

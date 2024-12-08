@@ -17,6 +17,7 @@
 #include <chrono>
 #include <ranges>
 #include "RunEval/RunData.h"
+#include "RunEval/RunEvalConstsEnums.h"
 
 /**
  * @brief Class to store timings of one or more segments taken during the run(s)
@@ -139,20 +140,21 @@ RunData DetailedTimings<T>::AsRunData() const {
   RunData timings_run_data;
   std::ranges::for_each(segment_timings_,
     [this, &timings_run_data](auto current_timing) {
+      //generate header for timing data
+      const std::string header = 
+        std::string(timing_seg_to_str_.at(current_timing.first)) + " " +
+        std::string(run_eval::kMedianOfTestRunsDesc);
       //get median timing across runs
       std::ranges::nth_element(
         current_timing.second,
         current_timing.second.begin() + current_timing.second.size() / 2);
-      std::string_view header_start = timing_seg_to_str_.at(current_timing.first);
       if (current_timing.second.size() > 0) {
         timings_run_data.AddDataWHeader(
-          std::string(header_start) + " (" + std::to_string(current_timing.second.size()) + " timings)",
+          header,
           current_timing.second[current_timing.second.size() / 2].count());
       }
       else {
-        timings_run_data.AddDataWHeader(
-          std::string(header_start) + " (No timings) ",
-          "No timings"); 
+        timings_run_data.AddDataWHeader(header, "No timings"); 
       }
     });
   return timings_run_data;

@@ -212,8 +212,8 @@ protected:
 
         //set optimized parallel parameters if next run is final run
         //that uses optimized parallel parameters
-        //optimized parallel parameters are determined from previous test runs
-        //using multiple test parallel parameters
+        //optimized parallel parameters are determined from previous evaluation runs
+        //using multiple evaluation parallel parameters
         if (run_num == (parallel_params_vect.size() - 1)) {
           parallel_params->SetOptimizedParams();
         }
