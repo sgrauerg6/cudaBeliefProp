@@ -26,6 +26,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cmath>
 #include "image.h"
 
+/**
+ * @brief Class and structs in single-thread CPU bp implementation by Pedro
+ * Felzenwalb available at https://cs.brown.edu/people/pfelzens/bp/index.html
+ */
+namespace bp_single_thread_imp {
+
 class Convolve
 {
 public:
@@ -68,6 +74,8 @@ public:
     }
     }
   }
+};
+
 };
 
 #endif

@@ -30,6 +30,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #define WIDTH 4.0
 
+/**
+ * @brief Class and structs in single-thread CPU bp implementation by Pedro
+ * Felzenwalb available at https://cs.brown.edu/people/pfelzens/bp/index.html
+ */
+namespace bp_single_thread_imp {
+
 class FilterImage
 {
 public:
@@ -67,8 +73,8 @@ public:
 
     image<float> *tmp = new image<float>(src->height(), src->width(), false);
     image<float> *dst = new image<float>(src->width(), src->height(), false);
-    Convolve::convolve_even(src, tmp, mask);
-    Convolve::convolve_even(tmp, dst, mask);
+    bp_single_thread_imp::Convolve::convolve_even(src, tmp, mask);
+    bp_single_thread_imp::Convolve::convolve_even(tmp, dst, mask);
 
     delete tmp;
     return dst;
@@ -99,6 +105,8 @@ public:
     }
     return dst;
   }
+};
+
 };
 
 #endif

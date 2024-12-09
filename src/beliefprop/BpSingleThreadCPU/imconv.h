@@ -26,10 +26,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "imutil.h"
 #include "misc.h"
 
-static image<float> *imageUCHARtoFLOAT(image<uchar> *input) {
+static bp_single_thread_imp::image<float> *imageUCHARtoFLOAT(bp_single_thread_imp::image<uchar> *input) {
   int width = input->width();
   int height = input->height();
-  image<float> *output = new image<float>(width, height, false);
+  bp_single_thread_imp::image<float> *output = new bp_single_thread_imp::image<float>(width, height, false);
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {
@@ -43,7 +43,7 @@ static image<float> *imageUCHARtoFLOAT(image<uchar> *input) {
 #define GREEN_WEIGHT  0.587
 #define BLUE_WEIGHT  0.114
 
-static image<uchar> *imageRGBtoGRAY(image<rgb> *input) {
+static image<uchar> *imageRGBtoGRAY(image<bp_single_thread_imp::rgb> *input) {
   int width = input->width();
   int height = input->height();
   image<uchar> *output = new image<uchar>(width, height, false);
@@ -59,10 +59,10 @@ static image<uchar> *imageRGBtoGRAY(image<rgb> *input) {
   return output;
 }
 
-static image<rgb> *imageGRAYtoRGB(image<uchar> *input) {
+static image<bp_single_thread_imp::rgb> *imageGRAYtoRGB(image<uchar> *input) {
   int width = input->width();
   int height = input->height();
-  image<rgb> *output = new image<rgb>(width, height, false);
+  image<bp_single_thread_imp::rgb> *output = new image<bp_single_thread_imp::rgb>(width, height, false);
 
   for (int y = 0; y < height; y++) {
     for (int x = 0; x < width; x++) {

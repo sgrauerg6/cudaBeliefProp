@@ -29,6 +29,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 typedef unsigned char uchar;
 
+/**
+ * @brief Class and structs in single-thread CPU bp implementation by Pedro
+ * Felzenwalb available at https://cs.brown.edu/people/pfelzens/bp/index.html
+ */
+namespace bp_single_thread_imp {
+
 struct rgb { uchar r, g, b; };
 
 inline bool operator==(const rgb &a, const rgb &b) {
@@ -61,5 +67,7 @@ inline int vlib_round(double x) { return (int)(x + 0.5); }
 inline double gaussian(double val, double sigma) {
   return exp(-square(val/sigma)/2)/(sqrt(2*M_PI)*sigma);
 }
+
+};
 
 #endif

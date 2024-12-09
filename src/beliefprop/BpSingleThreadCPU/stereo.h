@@ -72,17 +72,17 @@ public:
 
 private:
   // compute message
-  image<float[DISP_VALS]> *comp_data(image<uchar> *img1, image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const;
+  bp_single_thread_imp::image<float[DISP_VALS]> *comp_data(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const;
   void msg(float s1[DISP_VALS], float s2[DISP_VALS], float s3[DISP_VALS], float s4[DISP_VALS],
       float dst[DISP_VALS], float disc_k_bp) const;
   void dt(float f[DISP_VALS]) const;
-  image<uchar> *output(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
-      image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
-      image<float[DISP_VALS]> *data) const;
-  void bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
-      image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
-      image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) const;
-  std::pair<image<uchar>*, RunData> stereo_ms(image<uchar> *img1, image<uchar> *img2,
+  bp_single_thread_imp::image<uchar> *output(bp_single_thread_imp::image<float[DISP_VALS]> *u, bp_single_thread_imp::image<float[DISP_VALS]> *d,
+      bp_single_thread_imp::image<float[DISP_VALS]> *l, bp_single_thread_imp::image<float[DISP_VALS]> *r,
+      bp_single_thread_imp::image<float[DISP_VALS]> *data) const;
+  void bp_cb(bp_single_thread_imp::image<float[DISP_VALS]> *u, bp_single_thread_imp::image<float[DISP_VALS]> *d,
+      bp_single_thread_imp::image<float[DISP_VALS]> *l, bp_single_thread_imp::image<float[DISP_VALS]> *r,
+      bp_single_thread_imp::image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) const;
+  std::pair<bp_single_thread_imp::image<uchar>*, RunData> stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
     const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const;
 };
 
@@ -138,16 +138,16 @@ inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::msg(flo
 
 // computation of data costs
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline image<float[DISP_VALS]> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::comp_data(
-    image<uchar> *img1, image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const {
+inline bp_single_thread_imp::image<float[DISP_VALS]> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::comp_data(
+    bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const {
   unsigned int width{(unsigned int)img1->width()};
   unsigned int height{(unsigned int)img1->height()};
-  image<float[DISP_VALS]> *data = new image<float[DISP_VALS]>(width, height);
+  bp_single_thread_imp::image<float[DISP_VALS]> *data = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height);
 
-  image<float> *sm1, *sm2;
+  bp_single_thread_imp::image<float> *sm1, *sm2;
   if (alg_settings.smoothing_sigma >= 0.1) {
-    sm1 = FilterImage::smooth(img1, alg_settings.smoothing_sigma);
-    sm2 = FilterImage::smooth(img2, alg_settings.smoothing_sigma);
+    sm1 = bp_single_thread_imp::FilterImage::smooth(img1, alg_settings.smoothing_sigma);
+    sm2 = bp_single_thread_imp::FilterImage::smooth(img2, alg_settings.smoothing_sigma);
   } else {
     sm1 = imageUCHARtoFLOAT(img1);
     sm2 = imageUCHARtoFLOAT(img2);
@@ -169,12 +169,12 @@ inline image<float[DISP_VALS]> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, A
 
 // generate output from current messages
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::output(image<float[DISP_VALS]> *u,
-    image<float[DISP_VALS]> *d, image<float[DISP_VALS]> *l,
-    image<float[DISP_VALS]> *r, image<float[DISP_VALS]> *data) const {
+inline bp_single_thread_imp::image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::output(bp_single_thread_imp::image<float[DISP_VALS]> *u,
+    bp_single_thread_imp::image<float[DISP_VALS]> *d, bp_single_thread_imp::image<float[DISP_VALS]> *l,
+    bp_single_thread_imp::image<float[DISP_VALS]> *r, bp_single_thread_imp::image<float[DISP_VALS]> *data) const {
   unsigned int width{(unsigned int)data->width()};
   unsigned int height{(unsigned int)data->height()};
-  image<uchar> *out = new image<uchar>(width, height);
+  bp_single_thread_imp::image<uchar> *out = new bp_single_thread_imp::image<uchar>(width, height);
 
   for (unsigned int y = 1; y < height - 1; y++) {
     for (unsigned int x = 1; x < width - 1; x++) {
@@ -203,9 +203,9 @@ inline image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION
 
 // belief propagation using checkerboard update scheme
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
-    image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
-    image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) const {
+inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(bp_single_thread_imp::image<float[DISP_VALS]> *u, bp_single_thread_imp::image<float[DISP_VALS]> *d,
+    bp_single_thread_imp::image<float[DISP_VALS]> *l, bp_single_thread_imp::image<float[DISP_VALS]> *r,
+    bp_single_thread_imp::image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) const {
   unsigned int width{(unsigned int)data->width()};
   unsigned int height{(unsigned int)data->height()};
 
@@ -234,13 +234,13 @@ inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(i
 
 // multiscale belief propagation for image restoration
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::pair<image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
+inline std::pair<bp_single_thread_imp::image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::stereo_ms(bp_single_thread_imp::image<uchar> *img1, bp_single_thread_imp::image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
-  image<float[DISP_VALS]> *u[alg_settings.num_levels];
-  image<float[DISP_VALS]> *d[alg_settings.num_levels];
-  image<float[DISP_VALS]> *l[alg_settings.num_levels];
-  image<float[DISP_VALS]> *r[alg_settings.num_levels];
-  image<float[DISP_VALS]> *data[alg_settings.num_levels];
+  bp_single_thread_imp::image<float[DISP_VALS]> *u[alg_settings.num_levels];
+  bp_single_thread_imp::image<float[DISP_VALS]> *d[alg_settings.num_levels];
+  bp_single_thread_imp::image<float[DISP_VALS]> *l[alg_settings.num_levels];
+  bp_single_thread_imp::image<float[DISP_VALS]> *r[alg_settings.num_levels];
+  bp_single_thread_imp::image<float[DISP_VALS]> *data[alg_settings.num_levels];
 
   auto timeStart = std::chrono::system_clock::now();
 
@@ -257,7 +257,7 @@ inline std::pair<image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP
     assert(new_width >= 1);
     assert(new_height >= 1);
 
-    data[i] = new image<float[DISP_VALS]>(new_width, new_height);
+    data[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(new_width, new_height);
     for (unsigned int y = 0; y < old_height; y++) {
       for (unsigned int x = 0; x < old_width; x++) {
         for (unsigned int value = 0; value < DISP_VALS; value++) {
@@ -276,16 +276,16 @@ inline std::pair<image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP
     // allocate & init memory for messages
     if ((unsigned int)i == (alg_settings.num_levels - 1)) {
       // in the coarsest level messages are initialized to zero
-      u[i] = new image<float[DISP_VALS]>(width, height);
-      d[i] = new image<float[DISP_VALS]>(width, height);
-      l[i] = new image<float[DISP_VALS]>(width, height);
-      r[i] = new image<float[DISP_VALS]>(width, height);
+      u[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height);
+      d[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height);
+      l[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height);
+      r[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height);
     } else {
       // initialize messages from values of previous level
-      u[i] = new image<float[DISP_VALS]>(width, height, false);
-      d[i] = new image<float[DISP_VALS]>(width, height, false);
-      l[i] = new image<float[DISP_VALS]>(width, height, false);
-      r[i] = new image<float[DISP_VALS]>(width, height, false);
+      u[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height, false);
+      d[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height, false);
+      l[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height, false);
+      r[i] = new bp_single_thread_imp::image<float[DISP_VALS]>(width, height, false);
 
       for (unsigned int y = 0; y < height; y++) {
         for (unsigned int x = 0; x < width; x++) {
@@ -313,7 +313,7 @@ inline std::pair<image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP
     bp_cb(u[i], d[i], l[i], r[i], data[i], alg_settings.num_iterations, alg_settings.disc_k_bp);
   }
 
-  image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
+  bp_single_thread_imp::image<uchar> *out = output(u[0], d[0], l[0], r[0], data[0]);
 
   auto timeEnd = std::chrono::system_clock::now();
   runtime = timeEnd-timeStart;
@@ -339,7 +339,7 @@ inline std::optional<beliefprop::ProcessStereoSetOutput> RunBpOnStereoSetSingleT
     return {};
   }
 
-  image<uchar> *img1, *img2, *out;// *edges;
+  bp_single_thread_imp::image<uchar> *img1, *img2, *out;// *edges;
 
   // load input
   img1 = loadPGMOrPPMImage(ref_test_image_path[0].c_str());

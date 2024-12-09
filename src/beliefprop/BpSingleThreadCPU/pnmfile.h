@@ -31,8 +31,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define BUF_SIZE 256
 const bool kUseWeightedRGBToGrayscaleConversion_PNMFILE = true;
 
+/**
+ * @brief Class and structs in single-thread CPU bp implementation by Pedro
+ * Felzenwalb available at https://cs.brown.edu/people/pfelzens/bp/index.html
+ */
+namespace bp_single_thread_imp {
 class pnm_error { };
-
+}
 /*static void read_packed(unsigned char *data, int size, std::ifstream &f) {
   unsigned char c = 0;
   
@@ -86,7 +91,7 @@ static void pnm_read(std::ifstream &file, std::string& buf) {
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "P4", 2))
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
     
   pnm_read(file, buf);
   int width = std::stoi(buf);
@@ -111,14 +116,14 @@ static void pnm_read(std::ifstream &file, std::string& buf) {
     write_packed(imPtr(im, 0, i), width, file);
 }*/
 
-static image<uchar> *loadPGM(const char *name) {
+static bp_single_thread_imp::image<uchar> *loadPGM(const char *name) {
   std::string buf;
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "P5", 2))
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   pnm_read(file, buf);
   int width = std::stoi(buf);
@@ -127,10 +132,10 @@ static image<uchar> *loadPGM(const char *name) {
 
   pnm_read(file, buf);
   if (std::stoi(buf) > UCHAR_MAX)
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   /* read data */
-  image<uchar> *im = new image<uchar>(width, height);
+  bp_single_thread_imp::image<uchar> *im = new bp_single_thread_imp::image<uchar>(width, height);
   file.read((char *)imPtr(im, 0, 0), width * height * sizeof(uchar));
 
   return im;
@@ -145,14 +150,14 @@ static image<uchar> *loadPGM(const char *name) {
   file.write((char *)imPtr(im, 0, 0), width * height * sizeof(uchar));
 }*/
 
-/*static image<rgb> *loadPPM(const char *name) {
+/*static image<bp_single_thread_imp::rgb> *loadPPM(const char *name) {
   std::string buf;
   
   //read header
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "P6", 2))
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   pnm_read(file, buf);
   int width = std::stoi(buf);
@@ -161,23 +166,23 @@ static image<uchar> *loadPGM(const char *name) {
 
   pnm_read(file, buf);
   if (std::stoi(buf) > UCHAR_MAX)
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   //read data
-  image<rgb> *im = new image<rgb>(width, height);
-  file.read((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
+  image<bp_single_thread_imp::rgb> *im = new image<bp_single_thread_imp::rgb>(width, height);
+  file.read((char *)imPtr(im, 0, 0), width * height * sizeof(bp_single_thread_imp::rgb));
 
   return im;
 }*/
 
-static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
+static bp_single_thread_imp::image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
   std::string buf;
 
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "P6", 2))
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   pnm_read(file, buf);
   int width = std::stoi(buf);
@@ -186,12 +191,12 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
 
   pnm_read(file, buf);
   if (std::stoi(buf) > UCHAR_MAX)
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   /* read data */
-  image<rgb> *im = new image<rgb>(width, height);
-  image<uchar> *imGrayScale = new image<uchar>(width, height);
-  file.read((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
+  bp_single_thread_imp::image<bp_single_thread_imp::rgb> *im = new bp_single_thread_imp::image<bp_single_thread_imp::rgb>(width, height);
+  bp_single_thread_imp::image<uchar> *imGrayScale = new bp_single_thread_imp::image<uchar>(width, height);
+  file.read((char *)imPtr(im, 0, 0), width * height * sizeof(bp_single_thread_imp::rgb));
 
   float r_channel_weight = 1.0f / 3.0f;
   float g_channel_weight = 1.0f / 3.0f;
@@ -216,16 +221,16 @@ static image<uchar> *loadPPMAndConvertToGrayScale(const char *name) {
 }
 
 
-/*static void savePPM(image<rgb> *im, const char *name) {
+/*static void savePPM(image<bp_single_thread_imp::rgb> *im, const char *name) {
   int width = im->width();
   int height = im->height();
   std::ofstream file(name, std::ios::out | std::ios::binary);
 
   file << "P6\n" << width << " " << height << "\n" << UCHAR_MAX << "\n";
-  file.write((char *)imPtr(im, 0, 0), width * height * sizeof(rgb));
+  file.write((char *)imPtr(im, 0, 0), width * height * sizeof(bp_single_thread_imp::rgb));
 }*/
 
-static image<uchar> *loadPGMOrPPMImage(const char *name) {
+static bp_single_thread_imp::image<uchar> *loadPGMOrPPMImage(const char *name) {
   char pgmExtension[] = "pgm";
   char ppmExtension[] = "ppm";
   char* file_path_image_copy = new char[strlen(name) + 1]{};
@@ -277,14 +282,14 @@ static image<uchar> *loadPGMOrPPMImage(const char *name) {
 }
 
 template <class T>
-void load_image(image<T> **im, const char *name) {
+void load_image(bp_single_thread_imp::image<T> **im, const char *name) {
   std::string buf;
   
   /* read header */
   std::ifstream file(name, std::ios::in | std::ios::binary);
   pnm_read(file, buf);
   if (strncmp(buf.c_str(), "VLIB", 9))
-    throw pnm_error();
+    throw bp_single_thread_imp::pnm_error();
 
   pnm_read(file, buf);
   int width = std::stoi(buf);
@@ -292,12 +297,12 @@ void load_image(image<T> **im, const char *name) {
   int height = std::stoi(buf);
 
   /* read data */
-  *im = new image<T>(width, height);
+  *im = new bp_single_thread_imp::image<T>(width, height);
   file.read((char *)imPtr((*im), 0, 0), width * height * sizeof(T));
 }
 
 template <class T>
-void save_image(image<T> *im, const char *name) {
+void save_image(bp_single_thread_imp::image<T> *im, const char *name) {
   int width = im->width();
   int height = im->height();
   std::ofstream file(name, std::ios::out | std::ios::binary);
