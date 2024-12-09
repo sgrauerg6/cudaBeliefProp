@@ -79,7 +79,8 @@ constexpr float kDefaultLambdaBp{0.1};
 constexpr float kDefaultDataKBp{15.0};
 
 /**
- * @brief Structure to store the settings for the number of levels and iterations
+ * @brief Structure to store the belief propagation settings including the
+ * number of levels and iterations
  */
 struct BpSettings
 {
