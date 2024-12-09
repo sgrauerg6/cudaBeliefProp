@@ -31,7 +31,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string_view>
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
 
-/** @brief Namespace for general program run evaluation */
+/** 
+ * @brief Namespace with enums and constants for implementation run evaluation
+ */
 namespace run_eval {
 
 /** @brief Enum for status to indicate if error or no error */
