@@ -17,15 +17,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpImpMultInputs.h
+ * @file RunImpMultInputsBp.h
  * @author Scott Grauer-Gray
  * @brief 
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef RUN_BP_IMP_MULT_INPUTS_H_
-#define RUN_BP_IMP_MULT_INPUTS_H_
+#ifndef RUN_IMP_MULT_INPUTS_BP_H_
+#define RUN_IMP_MULT_INPUTS_BP_H_
 
 #include "RunSettingsParams/RunSettings.h"
 #include "RunImp/RunImpMultInputs.h"
@@ -33,13 +33,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/EvaluateImpAliases.h"
 
 /**
- * @brief Class to run specified belief propagation implementation on a
+ * @brief Child class of RunImpMultInputs to run specified belief propagation implementation on a
  * number of inputs.
  * 
  */
-class RunBpImpMultInputs final : public RunImpMultInputs {
+class RunImpMultInputsBp final : public RunImpMultInputs {
 public:
-  RunBpImpMultInputs(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
+  RunImpMultInputsBp(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
 
 private:
   /**
@@ -74,4 +74,4 @@ private:
   MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const;
 };
 
-#endif /* RUN_BP_IMP_MULT_INPUTS_H_ */
+#endif /* RUN_IMP_MULT_INPUTS_BP_H_ */

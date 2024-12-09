@@ -36,9 +36,9 @@ COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM $
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
 OBJECTS = ${OBJ_DIR}/EvaluateAcrossRuns.o ${OBJ_DIR}/InputSignature.o ${OBJ_DIR}/RunResultsSpeedups.o \
-${OBJ_DIR}/EvaluateBpImpResults.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
-${OBJ_DIR}/RunData.o ${OBJ_DIR}/BpParallelParams.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
-${OBJ_DIR}/RunBpImpMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
+${OBJ_DIR}/EvaluateImpResultsBp.o ${OBJ_DIR}/EvaluateImpResults.o ${OBJ_DIR}/RunImpMultTypesAccels.o \
+${OBJ_DIR}/RunData.o ${OBJ_DIR}/ParallelParamsBp.o ${OBJ_DIR}/BpLevel.o ${OBJ_DIR}/ParallelParams.o \
+${OBJ_DIR}/RunImpMultInputsBp.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileHandling.o ${OBJ_DIR}/DisparityMap.o \
 ${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/stereo.o ${OBJ_DIR}/RunBpOnStereoSet.o ${OBJ_DIR}/BpImage.o \
 ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o ${OBJ_DIR}/ProcessBp.o ${OBJ_DIR}/DetailedTimings.o \
 ${OBJ_DIR}/RunBpOnStereoSetOptimizedCPU.o ${OBJ_DIR}/ProcessBpOptimizedCPU.o

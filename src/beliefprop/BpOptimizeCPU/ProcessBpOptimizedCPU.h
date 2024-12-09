@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/ProcessBp.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "BpRunProcessing/ParallelParamsBp.h"
 #include "RunSettingsParams/RunSettings.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.h"
 
 /**
- * @brief Class that define functions used in processing bp in the
+ * @brief Child class of ProcessBp that define functions used in processing bp in the
  * optimized CPU implementation
  * 
  * @tparam T 

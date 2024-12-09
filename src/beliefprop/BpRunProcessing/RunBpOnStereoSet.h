@@ -45,7 +45,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpResultsEvaluation/DetailedTimingBpConsts.h"
-#include "BpParallelParams.h"
+#include "ParallelParamsBp.h"
 #include "ProcessBp.h"
 
 namespace beliefprop {

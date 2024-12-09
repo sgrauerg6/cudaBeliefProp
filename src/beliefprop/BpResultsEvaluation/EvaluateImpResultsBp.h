@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateBpImpResults.h
+ * @file EvaluateImpResultsBp.h
  * @author Scott Grauer-Gray
  * @brief Class to evaluate belief propagation implementation results.
  * 
@@ -38,9 +38,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Child class of EvaluateImpResults that defines member functions for
  * belief propagation evaluation which override pure virtual functions in parent
  * class
- * 
  */
-class EvaluateBpImpResults final : public EvaluateImpResults {
+class EvaluateImpResultsBp final : public EvaluateImpResults {
 private:
   /**
    * @brief Retrieve path of belief propagation implementation results

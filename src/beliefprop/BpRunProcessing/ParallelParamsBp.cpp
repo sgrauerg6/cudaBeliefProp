@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file BpParallelParams.cpp
+ * @file ParallelParamsBp.cpp
  * @author Scott Grauer-Gray
  * @brief 
  * 
@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <ranges>
 #include "BpResultsEvaluation/DetailedTimingBpConsts.h"
 #include "BpRunProcessing/BpRunUtils.h"
-#include "BpParallelParams.h"
+#include "ParallelParamsBp.h"
 
 //constructor to set parallel parameters with default dimensions for each kernel
-BpParallelParams::BpParallelParams(
+ParallelParamsBp::ParallelParamsBp(
     run_environment::OptParallelParamsSetting opt_parallel_params_setting,
     unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims) : 
     opt_parallel_params_setting_{opt_parallel_params_setting_},
@@ -46,7 +46,7 @@ BpParallelParams::BpParallelParams(
 }
 
 //set parallel parameters for each kernel to the same input dimensions
-void BpParallelParams::SetParallelDims(const std::array<unsigned int, 2>& parallel_dims) {
+void ParallelParamsBp::SetParallelDims(const std::array<unsigned int, 2>& parallel_dims) {
   parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)] =
     {parallel_dims};
   parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)] =
@@ -62,7 +62,7 @@ void BpParallelParams::SetParallelDims(const std::array<unsigned int, 2>& parall
 }
 
 //get current parallel parameters to data as RunData object
-RunData BpParallelParams::AsRunData() const
+RunData ParallelParamsBp::AsRunData() const
 {
   //initialize RunData object
   RunData curr_run_data;
@@ -100,7 +100,7 @@ RunData BpParallelParams::AsRunData() const
 }
 
 //add results from run with same specified parallel parameters used every parallel component
-void BpParallelParams::AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data)
+void ParallelParamsBp::AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data)
 {
   if (opt_parallel_params_setting_ == run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun) {
     for (unsigned int level=0; level < num_levels_; level++) {
@@ -131,7 +131,7 @@ void BpParallelParams::AddTestResultsForParallelParams(const std::array<unsigned
 
 //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
 //to retrieved optimized parameters
-void BpParallelParams::SetOptimizedParams() {
+void ParallelParamsBp::SetOptimizedParams() {
   if (opt_parallel_params_setting_ == run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun) {
     for (unsigned int num_kernel_set = 0; num_kernel_set < parallel_dims_each_kernel_.size(); num_kernel_set++) {
       //retrieve and set optimized parallel parameters for final run

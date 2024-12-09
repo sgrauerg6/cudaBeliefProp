@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/ParallelParams.h"
 
 /**
- * @brief Class for smoothing images in the optimized CPU implementation
+ * @brief Child class of SmoothImage for smoothing images in the optimized CPU implementation
  * 
  */
 class SmoothImageCPU final : public SmoothImage {

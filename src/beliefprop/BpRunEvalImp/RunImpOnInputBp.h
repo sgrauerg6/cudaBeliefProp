@@ -90,14 +90,15 @@ namespace beliefprop {
 }
 
 /**
- * @brief Run and evaluate belief propagation implementation on a specified input
+ * @brief Child class of RunImpOnInput to run and evaluate belief propagation
+ * implementation on a specified input
  * 
  * @tparam T 
  * @tparam OPT_IMP_ACCEL 
  * @tparam NUM_INPUT 
  */
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-class RunBpImpOnInput final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
+class RunImpOnInputBp final : public RunImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT> {
 public:
   /**
    * @brief Run and evaluate optimized belief propagation implementation on
@@ -185,7 +186,7 @@ private:
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-MultRunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
+MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   const run_environment::RunImpSettings& run_imp_settings)
 {
   //set up BP settings for current run
@@ -197,7 +198,7 @@ MultRunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded bp stereo implementation
   run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpStereoCPUSingleThread<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>();
+    std::make_unique<RunBpOnStereoSetSingleThreadCPU<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>();
 
   //set up and run bp stereo using optimized implementation (optimized CPU and CUDA implementations supported)
   //as well as unoptimized implementation for comparison
@@ -224,11 +225,11 @@ MultRunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
 //set up parallel parameters for running belief propagation in parallel on CPU or GPU
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::shared_ptr<ParallelParams> RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
+std::shared_ptr<ParallelParams> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //parallel parameters initialized with default thread count dimensions at every level
-  return std::make_shared<BpParallelParams>(
+  return std::make_shared<ParallelParamsBp>(
     run_imp_settings.opt_parallel_params_setting.second,
     alg_settings_.num_levels,
     run_imp_settings.p_params_default_opt_settings.first);
@@ -236,7 +237,7 @@ std::shared_ptr<ParallelParams> RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::Se
 
 //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-RunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
+RunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
   bool loop_iters_templated) const
 {
   RunData curr_run_data;
@@ -252,7 +253,7 @@ RunData RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBench
 //on the reference and test images specified by numStereoSet
 //run only optimized implementation if run_opt_imp_only is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
-std::optional<RunData> RunBpImpOnInput<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
+std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(
   std::shared_ptr<ParallelParams> parallel_params,
   bool run_opt_imp_only,
   bool run_imp_templated_loop_iters) const

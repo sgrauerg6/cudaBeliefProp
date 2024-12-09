@@ -28,8 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <iostream>
 #include "BpFileProcessing/BpFileHandlingConsts.h"
-#include "BpRunEvalImp/RunBpImpMultInputs.h"
-#include "BpRunEvalImp/RunBpImpOnInput.h"
+#include "BpRunEvalImp/RunImpMultInputsBp.h"
+#include "BpRunEvalImp/RunImpOnInputBp.h"
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
 #include "BpRunProcessing/RunBpOnStereoSet.h"
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
   const unsigned int dispMapScale = 256 / alg_settings.num_disp_vals;
 
   const auto cudaTBDims = std::array<unsigned int, 2>{32, 4};
-  BpParallelParams parallel_params{
+  ParallelParamsBp parallel_params{
     run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels,
     alg_settings.num_levels,
     cudaTBDims};
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
   std::cout << "BP processing runtime (GPU): " << run_output->run_time.count() << std::endl;
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
     std::unique_ptr<RunBpOnStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
-      std::make_unique<RunBpStereoCPUSingleThread<float, 64, run_environment::AccSetting::kNone>>();
+      std::make_unique<RunBpOnStereoSetSingleThreadCPU<float, 64, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
     const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, beliefprop::DisparityMapEvaluationParams());

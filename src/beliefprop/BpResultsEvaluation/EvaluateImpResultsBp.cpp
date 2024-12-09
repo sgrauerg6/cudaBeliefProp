@@ -17,19 +17,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file EvaluateBpImpResults.cpp
+ * @file EvaluateImpResultsBp.cpp
  * @author Scott Grauer-Gray
  * @brief Function definition for class to evaluate belief propagation implementation results.
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "EvaluateBpImpResults.h"
+#include "EvaluateImpResultsBp.h"
 #include "BpFileProcessing/BpFileHandlingConsts.h"
 #include <filesystem>
 
 //retrieve path of belief propagation implementation results
-std::filesystem::path EvaluateBpImpResults::GetImpResultsPath() const
+std::filesystem::path EvaluateImpResultsBp::GetImpResultsPath() const
 {
   std::filesystem::path current_path = std::filesystem::current_path();
   while (true) {

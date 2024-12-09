@@ -31,13 +31,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "BpImageProcessing/BpImageConstraints.h"
 #include "BpImageProcessing/SmoothImage.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "BpRunProcessing/ParallelParamsBp.h"
 
 //include for the kernel functions to be run on the GPU
 #include "KernelFilterHeader.cuh"
 
 /**
- * @brief Class for smoothing images in the CUDA implementation
+ * @brief Child class of SmoothImage for smoothing images in the CUDA implementation
  * 
  */
 class SmoothImageCUDA final : public SmoothImage {

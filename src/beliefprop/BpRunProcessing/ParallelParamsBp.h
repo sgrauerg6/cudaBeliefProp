@@ -17,7 +17,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file BpParallelParams.h
+ * @file ParallelParamsBp.h
  * @author Scott Grauer-Gray
  * @brief 
  * 
@@ -50,10 +50,10 @@ namespace beliefprop {
 };
 
 /**
- * @brief Class containing parameters including parallelization parameters
- * to use at each BP level
+ * @brief Child class of ParallelParams to store and process parallelization parameters
+ * to use in each BP kernel at each level
  */
-class BpParallelParams final : public ParallelParams {
+class ParallelParamsBp final : public ParallelParams {
 public:
   /**
    * @brief Constructor to set parallel parameters with default dimensions for
@@ -63,7 +63,7 @@ public:
    * @param num_levels 
    * @param default_parallel_dims 
    */
-  BpParallelParams(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
+  ParallelParamsBp(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
     unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims);
 
   /**

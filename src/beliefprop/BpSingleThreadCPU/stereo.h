@@ -47,14 +47,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "pnmfile.h"
 #include "filter.h"
 #include "imconv.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "BpRunProcessing/ParallelParamsBp.h"
 #include "BpRunProcessing/RunBpOnStereoSet.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "RunSettingsParams/RunSettings.h"
 
 /**
- * @brief Class to run single-threaded CPU implementation of belief propagation on a
+ * @brief Child class of RunBpOnStereoSet to run single-threaded CPU implementation of belief propagation on a
  * given stereo set as defined by reference and test image file paths
  * 
  * @tparam T 
@@ -62,7 +62,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @tparam ACCELERATION 
  */
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-class RunBpStereoCPUSingleThread final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
+class RunBpOnStereoSetSingleThreadCPU final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
   std::optional<beliefprop::ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
@@ -88,7 +88,7 @@ private:
 
 // dt of 1d function
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::dt(float f[DISP_VALS]) const {
+inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::dt(float f[DISP_VALS]) const {
   for (unsigned int q = 1; q < DISP_VALS; q++) {
     float prev = f[q - 1] + 1.0F;
     if (prev < f[q])
@@ -103,7 +103,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::dt(float f[D
 
 // compute message
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::msg(float s1[DISP_VALS],
+inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::msg(float s1[DISP_VALS],
     float s2[DISP_VALS], float s3[DISP_VALS],
     float s4[DISP_VALS], float dst[DISP_VALS],
     float disc_k_bp) const {
@@ -138,7 +138,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::msg(float s1
 
 // computation of data costs
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline image<float[DISP_VALS]> * RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::comp_data(
+inline image<float[DISP_VALS]> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::comp_data(
     image<uchar> *img1, image<uchar> *img2, const beliefprop::BpSettings& alg_settings) const {
   unsigned int width{(unsigned int)img1->width()};
   unsigned int height{(unsigned int)img1->height()};
@@ -169,7 +169,7 @@ inline image<float[DISP_VALS]> * RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELE
 
 // generate output from current messages
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::output(image<float[DISP_VALS]> *u,
+inline image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::output(image<float[DISP_VALS]> *u,
     image<float[DISP_VALS]> *d, image<float[DISP_VALS]> *l,
     image<float[DISP_VALS]> *r, image<float[DISP_VALS]> *data) const {
   unsigned int width{(unsigned int)data->width()};
@@ -203,7 +203,7 @@ inline image<uchar> * RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::ou
 
 // belief propagation using checkerboard update scheme
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline void RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
+inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(image<float[DISP_VALS]> *u, image<float[DISP_VALS]> *d,
     image<float[DISP_VALS]> *l, image<float[DISP_VALS]> *r,
     image<float[DISP_VALS]> *data, unsigned int iter, float disc_k_bp) const {
   unsigned int width{(unsigned int)data->width()};
@@ -234,7 +234,7 @@ inline void RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::bp_cb(image<
 
 // multiscale belief propagation for image restoration
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
+inline std::pair<image<uchar>*, RunData> RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::stereo_ms(image<uchar> *img1, image<uchar> *img2,
   const beliefprop::BpSettings& alg_settings, std::chrono::duration<double>& runtime) const {
   image<float[DISP_VALS]> *u[alg_settings.num_levels];
   image<float[DISP_VALS]> *d[alg_settings.num_levels];
@@ -331,7 +331,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
 }
 
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+inline std::optional<beliefprop::ProcessStereoSetOutput> RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
   //return no value if acceleration setting is not NONE

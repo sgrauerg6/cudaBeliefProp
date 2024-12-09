@@ -30,12 +30,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include <cuda_fp16.h>
 #include "BpRunProcessing/ProcessBp.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "BpRunProcessing/ParallelParamsBp.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunEvalConstsEnums.h"
 
 /**
- * @brief Class that define functions used in processing bp in the
+ * @brief Child class of ProcessBp that define functions used in processing bp in the
  * CUDA implementation
  * 
  * @tparam T 

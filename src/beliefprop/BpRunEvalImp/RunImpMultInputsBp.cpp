@@ -17,17 +17,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file RunBpImpMultInputs.cpp
+ * @file RunImpMultInputsBp.cpp
  * @author Scott Grauer-Gray
  * @brief 
  * 
  * @copyright Copyright (c) 2024
  */
 
-#include "RunBpImpOnInput.h"
-#include "RunBpImpMultInputs.h"
+#include "RunImpOnInputBp.h"
+#include "RunImpMultInputsBp.h"
 
-MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(
+MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const 
 {
   if (this->opt_imp_accel_ == run_environment::AccSetting::kCUDA) {
@@ -47,7 +47,7 @@ MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(
 }
 
 template <run_environment::AccSetting OPT_IMP_ACCEL>
-MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(
+MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
   const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const
 {
   if (data_type_size == sizeof(float)) {
@@ -63,17 +63,17 @@ MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(
 
 //run and evaluate optimized bp implementation on evaluation stereo sets
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
-MultRunData RunBpImpMultInputs::RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const {
+MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const {
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 1>().operator()(run_imp_settings));
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 2>().operator()(run_imp_settings));
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 3>().operator()(run_imp_settings));
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 4>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 1>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 2>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 3>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 4>().operator()(run_imp_settings));
 #ifndef SMALLER_SETS_ONLY
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 5>().operator()(run_imp_settings));
-  run_results.push_back(RunBpImpOnInput<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 5>().operator()(run_imp_settings));
+  run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 6>().operator()(run_imp_settings));
 #endif //SMALLER_SETS_ONLY
 
   //merge results for each input to overall results

@@ -31,14 +31,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <cuda_runtime.h>
 #include "BpRunProcessing/RunBpOnStereoSet.h"
 #include "BpRunProcessing/ProcessBp.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "BpRunProcessing/ParallelParamsBp.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImpCUDA/MemoryManagementCUDA.h"
 #include "ProcessBpCUDA.h"
 #include "SmoothImageCUDA.h"
 
 /**
- * @brief Class to run CUDA implementation of belief propagation on a
+ * @brief Child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a
  * given stereo set as defined by reference and test image file paths
  * 
  * @tparam T 

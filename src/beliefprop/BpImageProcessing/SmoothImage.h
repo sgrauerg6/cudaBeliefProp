@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <utility>
 #include <algorithm>
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpRunProcessing/BpParallelParams.h"
+#include "BpRunProcessing/ParallelParamsBp.h"
 #include "BpImage.h"
 
 //don't smooth input images if kSigmaBp below this

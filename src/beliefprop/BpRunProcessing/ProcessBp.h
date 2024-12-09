@@ -45,7 +45,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpResultsEvaluation/DetailedTimingBpConsts.h"
 #include "BpSettings.h"
 #include "BpRunUtils.h"
-#include "BpParallelParams.h"
+#include "ParallelParamsBp.h"
 #include "BpLevel.h"
 
 /**
