@@ -271,7 +271,7 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   std::cout << std::endl;
       
   //run optimized implementation and retrieve structure with runtime and output disparity map
-  std::map<run_environment::AccSetting, std::optional<beliefprop::ProcessStereoSetOutput>> run_output;
+  std::map<run_environment::AccSetting, std::optional<beliefprop::BpRunOutput>> run_output;
   if (run_imp_templated_loop_iters) {
     run_output[OPT_IMP_ACCEL] = run_opt_bp_num_iters_templated_->operator()(
       {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
@@ -331,7 +331,7 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
       }
     }
     else {
-      run_output[run_environment::AccSetting::kNone] = beliefprop::ProcessStereoSetOutput();
+      run_output[run_environment::AccSetting::kNone] = beliefprop::BpRunOutput();
       //retrieve stored results from previous run on single threaded implementation
       run_output[run_environment::AccSetting::kNone]->run_time =
         std::get<0>(bp_single_thread::single_thread_run_output[ref_test_image_path]);

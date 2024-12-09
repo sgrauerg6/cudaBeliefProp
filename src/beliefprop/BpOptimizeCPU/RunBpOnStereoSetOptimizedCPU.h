@@ -57,13 +57,13 @@ public:
   std::string BpRunDescription() const override { return std::string(beliefprop::kBpOptimizeCPUDesc); }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-  std::optional<beliefprop::ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,
     const ParallelParams& parallel_params) const override;
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<beliefprop::ProcessStereoSetOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {

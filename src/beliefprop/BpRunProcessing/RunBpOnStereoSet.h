@@ -53,7 +53,7 @@ namespace beliefprop {
 /**
  * @brief Structure with output disparity map, runtime, and other evaluation data
  */
-struct ProcessStereoSetOutput
+struct BpRunOutput
 {
   std::chrono::duration<double> run_time;
   DisparityMap<float> out_disparity_map;
@@ -101,9 +101,9 @@ public:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param parallel_params 
-   * @return std::optional<beliefprop::ProcessStereoSetOutput> 
+   * @return std::optional<beliefprop::BpRunOutput> 
    */
-  virtual std::optional<beliefprop::ProcessStereoSetOutput> operator()(
+  virtual std::optional<beliefprop::BpRunOutput> operator()(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
     const ParallelParams& parallel_params) const = 0;
@@ -117,9 +117,9 @@ protected:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param run_bp_on_device 
-   * @return std::optional<beliefprop::ProcessStereoSetOutput> 
+   * @return std::optional<beliefprop::BpRunOutput> 
    */
-  std::optional<beliefprop::ProcessStereoSetOutput> ProcessStereoSet(
+  std::optional<beliefprop::BpRunOutput> ProcessStereoSet(
     const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,
     const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const;
@@ -128,7 +128,7 @@ protected:
 //protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image,
 //process BP, and memory management child class objects
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-std::optional<beliefprop::ProcessStereoSetOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>::ProcessStereoSet(
+std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>::ProcessStereoSet(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const
@@ -257,8 +257,8 @@ std::optional<beliefprop::ProcessStereoSetOutput> RunBpOnStereoSet<T, DISP_VALS,
   run_data.AddDataWHeader(std::string(beliefprop::kNumEvalRuns), num_evaluation_runs);
   run_data.AppendData(detailed_bp_timings.AsRunData());
 
-  //construct and return beliefprop::ProcessStereoSetOutput object inside of std::optional object
-  return {beliefprop::ProcessStereoSetOutput{
+  //construct and return beliefprop::BpRunOutput object inside of std::optional object
+  return {beliefprop::BpRunOutput{
     detailed_bp_timings.MedianTiming(
       beliefprop::Runtime_Type::kTotalWithTransfer), std::move(output_disparity_map), run_data}};
 }

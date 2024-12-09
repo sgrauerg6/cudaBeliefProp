@@ -59,9 +59,9 @@ public:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param parallel_params 
-   * @return std::optional<beliefprop::ProcessStereoSetOutput> 
+   * @return std::optional<beliefprop::BpRunOutput> 
    */
-  std::optional<beliefprop::ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
     const ParallelParams& parallel_params) const override
   {
