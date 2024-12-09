@@ -82,6 +82,27 @@ enum class BpKernel : unsigned int {
   kOutputDisp
 };
 
+/**
+ * @brief Inline function to check if data is aligned at x_val_data_start for
+ * SIMD loads/stores that require alignment
+ * 
+ * @param x_val_data_start 
+ * @param simd_data_size 
+ * @param num_data_align_width 
+ * @param divPaddedChBoardWidthForAlign 
+ * @return true 
+ * @return false 
+ */
+inline bool MemoryAlignedAtDataStart(
+  unsigned int x_val_data_start,
+  unsigned int simd_data_size,
+  unsigned int num_data_align_width,
+  unsigned int divPaddedChBoardWidthForAlign)
+{
+  //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
+  return (((x_val_data_start % simd_data_size) == 0) && ((num_data_align_width % divPaddedChBoardWidthForAlign) == 0));
+}
+
 };
 
 #endif /* BP_CONSTS_ENUMS_ALIASES_H_ */

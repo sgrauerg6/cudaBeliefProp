@@ -37,34 +37,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ProcessBpCUDA.h"
 #include "SmoothImageCUDA.h"
 
-namespace beliefprop {
-  constexpr std::string_view kBpOptimizeCUDADesc{"CUDA"};
-  constexpr std::string_view kCUDAVersionHeader{"Cuda version"};
-  constexpr std::string_view kCUDARuntimeHeader{"Cuda Runtime Version"};
-};
-
-namespace bp_cuda_device
-{
-  inline RunData retrieveDeviceProperties(int num_device)
-  {
-    cudaDeviceProp prop;
-    std::array<int, 2> cuda_version_driver_runtime;
-    cudaGetDeviceProperties(&prop, num_device);
-    cudaDriverGetVersion(&(cuda_version_driver_runtime[0]));
-    cudaRuntimeGetVersion(&(cuda_version_driver_runtime[1]));
-
-    RunData run_data;
-    run_data.AddDataWHeader("Device " + std::to_string(num_device),
-      std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) +
-      " multiprocessors");
-    run_data.AddDataWHeader(std::string(beliefprop::kCUDAVersionHeader),
-      std::to_string(cuda_version_driver_runtime[0]));
-    run_data.AddDataWHeader(std::string(beliefprop::kCUDARuntimeHeader),
-      std::to_string(cuda_version_driver_runtime[1]));
-    return run_data;
-  }
-};
-
 /**
  * @brief Class to run CUDA implementation of belief propagation on a
  * given stereo set as defined by reference and test image file paths
@@ -78,7 +50,7 @@ class RunBpOnStereoSetCUDA final : public RunBpOnStereoSet<T, DISP_VALS, ACCELER
 {
 public:
   std::string BpRunDescription() const override { 
-    return std::string(beliefprop::kBpOptimizeCUDADesc); }
+    return std::string(run_cuda::kOptimizeCUDADesc); }
 
   /**
    * @brief Run the disparity map estimation BP on a set of stereo images
@@ -101,7 +73,7 @@ public:
     //generate struct with pointers to objects for running CUDA implementation and call
     //function to run CUDA implementation
     RunData run_data;
-    run_data.AppendData(bp_cuda_device::retrieveDeviceProperties(0));
+    run_data.AppendData(run_cuda::retrieveDeviceProperties(0));
     auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings,
       BpOnDevice<T, DISP_VALS, ACCELERATION>{
         std::make_unique<SmoothImageCUDA>(parallel_params),

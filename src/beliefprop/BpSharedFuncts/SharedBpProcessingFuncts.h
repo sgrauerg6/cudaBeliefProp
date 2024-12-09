@@ -31,9 +31,28 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/UtilityFuncts.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
+#include "BpRunProcessing/BpRunSettings.h"
+#include "BpRunProcessing/BpLevel.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 
 namespace beliefprop {
+
+/**
+ * @brief Checks if the current point is within the image bounds
+ * Assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
+ * 
+ * @param x_val 
+ * @param y_val 
+ * @param width 
+ * @param height 
+ * @return ARCHITECTURE_ADDITION 
+ */
+ARCHITECTURE_ADDITION inline bool WithinImageBounds(
+  unsigned int x_val, unsigned int y_val,
+  unsigned int width, unsigned int height)
+{
+  return ((x_val < width) && (y_val < height));
+}
 
 /**
  * @brief Retrieve the current 1-D index value of the given point at the given
@@ -463,7 +482,7 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
     unsigned int index_val;
     const unsigned int x_checkerboard = x_val / 2;
 
-    if (util_functs::WithinImageBounds(
+    if (beliefprop::WithinImageBounds(
       x_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_)) {
       //make sure that it is possible to check every disparity value
       //need to cast DISP_VALS from unsigned int to int
@@ -472,7 +491,7 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
         for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
           float current_pixel_image_1{0}, current_pixel_image_2{0};
 
-          if (util_functs::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
+          if (beliefprop::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
             current_pixel_image_1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
             current_pixel_image_2 = image_2_pixels_device[y_val * current_bp_level.width_level_ + (x_val - current_disparity)];
           }
@@ -514,7 +533,7 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
     unsigned int index_val;
     const unsigned int x_checkerboard = x_val / 2;
 
-    if (util_functs::WithinImageBounds(
+    if (beliefprop::WithinImageBounds(
       x_checkerboard, y_val, current_bp_level.width_checkerboard_level_, current_bp_level.height_level_)) {
       //make sure that it is possible to check every disparity value
       //need to cast bp_settings_disp_vals from unsigned int to int
@@ -523,7 +542,7 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
         for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
           float current_pixel_image_1{0}, current_pixel_image_2{0};
 
-          if (util_functs::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
+          if (beliefprop::WithinImageBounds(x_val, y_val, current_bp_level.width_level_, current_bp_level.height_level_)) {
             current_pixel_image_1 = image_1_pixels_device[y_val * current_bp_level.width_level_ + x_val];
             current_pixel_image_2 = image_2_pixels_device[y_val * current_bp_level.width_level_ + (x_val - current_disparity)];
           }
@@ -598,7 +617,7 @@ ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
   //the corresponding x-values at the "lower" level depends on which checkerboard the pixel is in
   const unsigned int x_val_prev = x_val*2 + checkerboard_part_adjustment;
 
-  if (util_functs::WithinImageBounds(
+  if (beliefprop::WithinImageBounds(
     x_val_prev, (y_val * 2 + 1), prev_bp_level.width_checkerboard_level_, prev_bp_level.height_level_))
   {
     if constexpr (DISP_VALS > 0) {
@@ -1189,7 +1208,7 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         prev_val_r = message_r_prev_checkerboard_1[index_copy_from];
       }
 
-      if (util_functs::WithinImageBounds(
+      if (beliefprop::WithinImageBounds(
         x_val*2 + checkerboard_part_adjustment, y_val*2,
         next_bp_level.width_checkerboard_level_,
         next_bp_level.height_level_))
@@ -1211,7 +1230,7 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         }
       }
 
-      if (util_functs::WithinImageBounds(
+      if (beliefprop::WithinImageBounds(
         x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
         next_bp_level.width_checkerboard_level_, next_bp_level.height_level_))
       {
@@ -1251,7 +1270,7 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         prev_val_r = message_r_prev_checkerboard_1[index_copy_from];
       }
 
-      if (util_functs::WithinImageBounds(
+      if (beliefprop::WithinImageBounds(
         x_val*2 + checkerboard_part_adjustment, y_val*2,
         next_bp_level.width_checkerboard_level_, next_bp_level.height_level_))
       {
@@ -1272,7 +1291,7 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
         }
       }
 
-      if (util_functs::WithinImageBounds(
+      if (beliefprop::WithinImageBounds(
         x_val*2 + checkerboard_part_adjustment, y_val*2 + 1,
         next_bp_level.width_checkerboard_level_, next_bp_level.height_level_))
       {
@@ -1314,7 +1333,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
   //for final index mapping into disparity images for checkerboard 1
   unsigned int checkerboard_part_adjustment = (y_val % 2);
 
-  if (util_functs::WithinImageBounds(
+  if (beliefprop::WithinImageBounds(
     x_val_checkerboard*2 + checkerboard_part_adjustment, y_val,
     current_bp_level.width_level_, current_bp_level.height_level_))
   {
@@ -1426,7 +1445,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
   //adjustment based on checkerboard; need to add 1 to x for even-numbered rows for final index mapping into disparity images for checkerboard 2
   checkerboard_part_adjustment = ((y_val + 1u) % 2);
 
-  if (util_functs::WithinImageBounds(
+  if (beliefprop::WithinImageBounds(
     x_val_checkerboard*2 + checkerboard_part_adjustment, y_val,
     current_bp_level.width_level_, current_bp_level.height_level_))
   {

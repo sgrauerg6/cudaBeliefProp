@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <vector>
 #include <array>
+#include "RunEval/RunData.h"
 
 //set data type used for half-precision with CUDA
 #ifdef USE_BFLOAT16_FOR_HALF_PRECISION
@@ -44,6 +45,29 @@ using halftype = half;
  * to use in run optimization
  */
 namespace run_cuda {
+
+constexpr std::string_view kOptimizeCUDADesc{"CUDA"};
+constexpr std::string_view kCUDAVersionHeader{"Cuda version"};
+constexpr std::string_view kCUDARuntimeHeader{"Cuda Runtime Version"};
+
+inline RunData retrieveDeviceProperties(int num_device)
+{
+  cudaDeviceProp prop;
+  std::array<int, 2> cuda_version_driver_runtime;
+  cudaGetDeviceProperties(&prop, num_device);
+  cudaDriverGetVersion(&(cuda_version_driver_runtime[0]));
+  cudaRuntimeGetVersion(&(cuda_version_driver_runtime[1]));
+
+  RunData run_data;
+  run_data.AddDataWHeader("Device " + std::to_string(num_device),
+    std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) +
+    " multiprocessors");
+  run_data.AddDataWHeader(std::string(kCUDAVersionHeader),
+    std::to_string(cuda_version_driver_runtime[0]));
+  run_data.AddDataWHeader(std::string(kCUDARuntimeHeader),
+    std::to_string(cuda_version_driver_runtime[1]));
+  return run_data;
+}
 
 /** @brief Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation
  *  Parallel parameter corresponds to thread block dimensions in CUDA implementation */

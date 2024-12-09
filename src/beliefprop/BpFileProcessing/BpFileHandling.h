@@ -66,7 +66,7 @@ public:
    */
   const std::filesystem::path GetCurrentOutputDisparityFilePathAndIncrement() {
     return stereo_set_path_ / 
-      (std::string(bp_file_handling::kOutDispImageNameBase) + std::to_string(num_out_disp_map_++) + ".pgm");
+      (std::string(beliefprop::kOutDispImageNameBase) + std::to_string(num_out_disp_map_++) + ".pgm");
   }
 
   /**
@@ -75,7 +75,7 @@ public:
    * @return const std::filesystem::path 
    */
   const std::filesystem::path GroundTruthDisparityFilePath() const {
-    return stereo_set_path_ / (std::string(bp_file_handling::kGroundTruthDispFile));
+    return stereo_set_path_ / (std::string(beliefprop::kGroundTruthDispFile));
   }
 
 private:

@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RunImp/UtilityFuncts.h"
+#include "BpRunProcessing/BpConstsEnumsAliases.h"
 #include "ProcessBpCUDA.h"
 #include "KernelBpStereo.cu"
 
@@ -70,7 +71,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
 
   //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool data_aligned{util_functs::MemoryAlignedAtDataStart(0, 1, current_bp_level.LevelProperties().num_data_align_width_,
+  const bool data_aligned{beliefprop::MemoryAlignedAtDataStart(0, 1, current_bp_level.LevelProperties().num_data_align_width_,
     current_bp_level.LevelProperties().div_padded_checkerboard_w_align_)};
 
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"

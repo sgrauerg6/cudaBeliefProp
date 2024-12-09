@@ -44,7 +44,7 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
     //if so return iterator to directory; otherwise return iterator to end indicating that directory not
     //found in current path
     std::filesystem::directory_iterator it = std::find_if(std::filesystem::begin(dir_iter), std::filesystem::end(dir_iter), 
-      [](const auto& p) { return p.path().stem() == bp_file_handling::kBeliefPropDirectoryName; });
+      [](const auto& p) { return p.path().stem() == beliefprop::kBeliefPropDirectoryName; });
 
     //check if return from find_if at iterator end and therefore didn't find stereo sets directory;
     //if that's the case continue to outer directory
@@ -58,7 +58,7 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
       current_path = current_path.parent_path();
     }
     else {
-      std::filesystem::path stereo_set_path = it->path() / bp_file_handling::kStereoSetsDirectoryName;
+      std::filesystem::path stereo_set_path = it->path() / beliefprop::kStereoSetsDirectoryName;
       if (std::filesystem::is_directory(stereo_set_path)) {
         return stereo_set_path;
       }
@@ -79,9 +79,9 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
 std::filesystem::path BpFileHandling::RefImagePath() const
 {
   //check if ref image exists for each possible extension (currently pgm and ppm) and return path if so
-  for (const auto& extension : bp_file_handling::kInImagePossExtensions) {
-    if (std::filesystem::exists((stereo_set_path_ / (std::string(bp_file_handling::kRefImageName) + "." + std::string(extension))))) {
-      return stereo_set_path_ / (std::string(bp_file_handling::kRefImageName) + "." + std::string(extension));
+  for (const auto& extension : beliefprop::kInImagePossExtensions) {
+    if (std::filesystem::exists((stereo_set_path_ / (std::string(beliefprop::kRefImageName) + "." + std::string(extension))))) {
+      return stereo_set_path_ / (std::string(beliefprop::kRefImageName) + "." + std::string(extension));
     }
   }
 
@@ -97,9 +97,9 @@ std::filesystem::path BpFileHandling::RefImagePath() const
 std::filesystem::path BpFileHandling::TestImagePath() const
 {
   //check if test image exists for each possible extension (currently pgm and ppm) and return path if so
-  for (const auto& extension : bp_file_handling::kInImagePossExtensions) {
-    if (std::filesystem::exists((stereo_set_path_ / (std::string(bp_file_handling::kTestImageName) + "." + std::string(extension))))) {
-      return stereo_set_path_ / (std::string(bp_file_handling::kTestImageName) + "." + std::string(extension));
+  for (const auto& extension : beliefprop::kInImagePossExtensions) {
+    if (std::filesystem::exists((stereo_set_path_ / (std::string(beliefprop::kTestImageName) + "." + std::string(extension))))) {
+      return stereo_set_path_ / (std::string(beliefprop::kTestImageName) + "." + std::string(extension));
     }
   }
 

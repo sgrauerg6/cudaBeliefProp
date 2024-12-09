@@ -61,8 +61,8 @@ int main(int argc, char** argv)
 
   //set path of baseline runtimes and baseline description
   run_imp_settings.baseline_runtimes_path_desc =
-    {bp_file_handling::kBaselineRunDataPath,
-     bp_file_handling::kBaselineRunDesc};
+    {beliefprop::kBaselineRunDataPath,
+     beliefprop::kBaselineRunDesc};
 
   //set data subsets to evaluate separate from all data
   run_imp_settings.subset_desc_input_sig = beliefprop::kEvalDataSubsets;
