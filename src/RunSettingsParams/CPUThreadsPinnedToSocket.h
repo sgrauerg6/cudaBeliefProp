@@ -29,13 +29,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunData.h"
 #include "RunSettingsConstsEnums.h"
 
-//class to adjust and retrieve settings corresponding to CPU threads pinned to socket
+/**
+ * @brief Class to adjust and retrieve settings corresponding to CPU threads pinned to socket
+ */
 class CPUThreadsPinnedToSocket {
 public:
-  //adjust setting to specify that CPU threads to be pinned to socket or not
-  //if true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings
-  //if false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank
-  //TODO: currently commented out since it doesn't seem to have any effect
+  /**
+   * @brief Adjust setting to specify that CPU threads to be pinned to socket or not.
+   * If true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings.
+   * If false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank.
+   * @todo Currently commented out since it doesn't seem to have any effect
+   * 
+   * @param cpu_threads_pinned 
+   */
   void operator()(bool cpu_threads_pinned) const {
     /*if (cpu_threads_pinned) {
       int success = system("export OMP_PLACES=\"sockets\"");
@@ -59,8 +65,12 @@ public:
     }*/
   }
 
-  //retrieve environment variable values corresponding to CPU threads being pinned to socket and return
-  //as RunData structure
+  /**
+   * @brief Retrieve environment variable values corresponding to CPU threads being pinned to socket and return
+   * as RunData structure
+   * 
+   * @return RunData 
+   */
   RunData SettingsAsRunData() const {
     RunData pinned_threads_settings;
     const std::string omp_places_setting = (std::getenv("OMP_PLACES") == nullptr) ? "" : std::getenv("OMP_PLACES");

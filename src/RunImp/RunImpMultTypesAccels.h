@@ -39,7 +39,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Class to run and evaluate implementation(s) of an algorithm using
  * multiple settings including different datatype, inputs, and acceleration
  * methods.
- * 
  */
 class RunImpMultTypesAccels {
 public:

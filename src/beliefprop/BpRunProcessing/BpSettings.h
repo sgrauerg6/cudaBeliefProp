@@ -46,6 +46,10 @@ concept Params_t =
     { t.AsRunData() } -> std::same_as<RunData>;
   };
 
+/**
+ * @brief Namespace for enums, constants, structures, and
+ * functions specific to belief propagation processing
+ */
 namespace beliefprop {
 
 //constants for headers corresponding to belief propagation settings in evaluation
@@ -57,25 +61,24 @@ constexpr std::string_view kDataCostCapHeader{"DataKBp"};
 constexpr std::string_view kBpSettingsLambdaHeader{"LambdaBp"};
 constexpr std::string_view kBpSettingsSigmaHeader{"SigmaBp"};
 
-//default values for BP settings
-//number of scales/levels in the pyramid to run BP
+/** @brief Default values for BP settings.
+ *  Number of scales/levels in the pyramid to run BP. */
 constexpr unsigned int kDefaultLevelsBp{5};
 
-//number of BP iterations at each scale/level
+/** @brief Default number of BP iterations at each scale/level */
 constexpr unsigned int kDefaultItersBp{7};
 
-//amount to smooth the input images
+/** @brief Default sigma value for smoothing input images */
 constexpr float kDefaultSigmaBp{0.0};
 
-//weighing of data cost
+/** @brief Default weighing of data cost */
 constexpr float kDefaultLambdaBp{0.1};
 
-//truncation of data cost
+/** @brief Default truncation of data cost */
 constexpr float kDefaultDataKBp{15.0};
 
 /**
  * @brief Structure to store the settings for the number of levels and iterations
- * 
  */
 struct BpSettings
 {
@@ -85,18 +88,13 @@ struct BpSettings
   float smoothing_sigma{kDefaultSigmaBp};
   float lambda_bp{kDefaultLambdaBp};
   float data_k_bp{kDefaultDataKBp};
-  /**
-   * @brief Discontinuity cost cap set to infinity by default but is
-   * expected to be dependent on number of disparity values and set when
-   * number of disparity values is set
-   * 
-   */
+
+  /** @brief Discontinuity cost cap set to infinity by default but is
+   *  expected to be dependent on number of disparity values and set when
+   *  number of disparity values is set */
   float disc_k_bp{beliefprop::kInfBp};
 
-  /**
-   * @brief Number of disparity values must be set for each stereo set
-   * 
-   */
+  /** @brief Number of disparity values must be set for each stereo set */
   unsigned int num_disp_vals{0};
 
   /**

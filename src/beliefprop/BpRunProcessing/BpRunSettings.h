@@ -32,6 +32,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include "RunEval/RunData.h"
 
+/**
+ * @brief Namespace for enums, constants, structures, and
+ * functions specific to belief propagation processing
+ */
 namespace beliefprop {
 
 /**

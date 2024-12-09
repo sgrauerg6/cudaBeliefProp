@@ -37,8 +37,7 @@ namespace beliefprop {
 /**
  * @brief POD struct to store bp level data.
  * Struct can be passed to global CUDAs kernel so needs to take restrictions of what's allowed for
- * passing data from the host to a CUDA kernel into account
- * 
+ * passing data from the host to a CUDA kernel into account.
  */
 struct BpLevelProperties {
   unsigned int width_level_;
@@ -54,18 +53,20 @@ struct BpLevelProperties {
   std::size_t offset_into_arrays_;
 };
 
+};
+
 /**
  * @brief Class to store and retrieve properties of a bp processing level
- * 
  */
 class BpLevel
 {
 public:
-  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
-    run_environment::AccSetting acc_setting);
+  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
+    unsigned int level_num, run_environment::AccSetting acc_setting);
   
-  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
-    unsigned int bytes_align_memory, unsigned int num_data_align_width, unsigned int div_padded_ch_board_w_align);
+  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
+    unsigned int level_num, unsigned int bytes_align_memory, unsigned int num_data_align_width,
+    unsigned int div_padded_ch_board_w_align);
 
   /**
    * @brief Get bp level properties for next (higher) level in hierarchy that
@@ -73,10 +74,10 @@ public:
    * 
    * @tparam T 
    * @param num_disparity_values 
-   * @return beliefprop::BpLevel 
+   * @return BpLevel 
    */
   template <RunData_t T>
-  beliefprop::BpLevel NextBpLevel(unsigned int num_disparity_values) const;
+  BpLevel NextBpLevel(unsigned int num_disparity_values) const;
 
   /**
    * @brief Get the amount of data in each BP array (data cost/messages for
@@ -108,15 +109,15 @@ public:
    * 
    * @return const BpLevelProperties& 
    */
-  const BpLevelProperties& LevelProperties() const { return level_properties_; }
+  const beliefprop::BpLevelProperties& LevelProperties() const { return level_properties_; }
 
 private:
-  BpLevelProperties level_properties_;
+  beliefprop::BpLevelProperties level_properties_;
 };
 
 //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
 template <RunData_t T>
-beliefprop::BpLevel BpLevel::NextBpLevel(unsigned int num_disparity_values) const {
+BpLevel BpLevel::NextBpLevel(unsigned int num_disparity_values) const {
   const std::size_t offset_next_level = level_properties_.offset_into_arrays_ + NumDataInBpArrays<T>(num_disparity_values);
   return BpLevel({(unsigned int)std::ceil((float)level_properties_.width_level_ / 2.0f),
     (unsigned int)std::ceil((float)level_properties_.height_level_ / 2.0f)},
@@ -152,7 +153,7 @@ template <RunData_t T, run_environment::AccSetting ACCELERATION>
 std::size_t BpLevel::TotalDataForAlignedMemoryAllLevels(const std::array<unsigned int, 2>& width_height_bottom_level,
   unsigned int num_possible_disparities, unsigned int num_levels)
 {
-  beliefprop::BpLevel curr_level_properties(width_height_bottom_level, 0, 0, ACCELERATION);
+  BpLevel curr_level_properties(width_height_bottom_level, 0, 0, ACCELERATION);
   std::size_t total_data = curr_level_properties.NumDataInBpArrays<T>(num_possible_disparities);
   for (unsigned int curr_level = 1; curr_level < num_levels; curr_level++) {
     curr_level_properties = curr_level_properties.NextBpLevel<T>(num_possible_disparities);
@@ -160,8 +161,6 @@ std::size_t BpLevel::TotalDataForAlignedMemoryAllLevels(const std::array<unsigne
   }
 
   return total_data;
-}
-
 }
 
 #endif //BP_LEVEL_H_

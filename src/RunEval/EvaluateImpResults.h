@@ -44,14 +44,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @brief Enum to define difference between "base" and "target" result sets
  * when evaluating speedup
- * 
  */
 enum class BaseTargetDiff { kDiffAcceleration, kDiffDatatype, kDiffTemplatedSetting };
 
 /**
  * @brief Class with operator function to evaluate implementations of the same algorithm across
  * different data types and acceleration methods
- * 
  */
 class EvaluateImpResults {
 public:

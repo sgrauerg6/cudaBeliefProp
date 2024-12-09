@@ -38,7 +38,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @brief Class defines input signature for evaluation run that contains evaluation set
  * number, data type, and whether or not to use templated loop iteration count
- * 
  */
 class InputSignature {
 public:
@@ -79,7 +78,6 @@ public:
 
   /**
    * @brief Equality operator for comparing evaluation input signatures
-   *
    * 
    * @param rhs 
    * @return true 
@@ -143,7 +141,6 @@ public:
   
   /**
    * @brief Remove templated loop iter setting and change it to "any"
-   * 
    */
   void RemoveTemplatedLoopIterSetting() {
     use_templated_loop_iters_.reset();
@@ -151,7 +148,6 @@ public:
 
   /**
    * @brief Remove data type setting and change it to "any"
-   * 
    */
   void RemoveDatatypeSetting() {
     data_type_size_.reset();

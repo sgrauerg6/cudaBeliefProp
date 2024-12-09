@@ -33,7 +33,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @brief Abstract class for holding and processing parallelization parameters.
  * Child class(es) specific to implementation(s) must be defined.
- * 
  */
 class ParallelParams {
 public:
@@ -65,7 +64,6 @@ public:
   /**
    * @brief Retrieve optimized parameters from results across multiple runs with different
    * parallel parameters and set current parameters to retrieved optimized parameters
-   * 
    */
   virtual void SetOptimizedParams() = 0;
 

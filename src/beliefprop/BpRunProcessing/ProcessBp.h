@@ -50,7 +50,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 /**
  * @brief Alias for time point for start and end time for each timing segment
- * 
  */
 using timingType = std::chrono::time_point<std::chrono::system_clock>;
 
@@ -106,7 +105,7 @@ private:
    */
   virtual run_eval::Status InitializeDataCosts(
     const beliefprop::BpSettings& alg_settings,
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const std::array<float*, 2>& images_target_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const = 0;
 
@@ -121,8 +120,8 @@ private:
    * @return run_eval::Status 
    */
   virtual run_eval::Status InitializeDataCurrentLevel(
-    const beliefprop::BpLevel& current_bp_level,
-    const beliefprop::BpLevel& prev_bp_level,
+    const BpLevel& current_bp_level,
+    const BpLevel& prev_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
     unsigned int bp_settings_num_disp_vals) const = 0;
@@ -136,7 +135,7 @@ private:
    * @return run_eval::Status 
    */
   virtual run_eval::Status InitializeMessageValsToDefault(
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const = 0;
 
@@ -152,7 +151,7 @@ private:
    */
   virtual run_eval::Status RunBPAtCurrentLevel(
     const beliefprop::BpSettings& alg_settings,
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     T* allocated_memory) const = 0;
@@ -168,8 +167,8 @@ private:
    * @return run_eval::Status 
    */
   virtual run_eval::Status CopyMessageValuesToNextLevelDown(
-    const beliefprop::BpLevel& current_bp_level,
-    const beliefprop::BpLevel& next_bp_level,
+    const BpLevel& current_bp_level,
+    const BpLevel& next_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
     unsigned int bp_settings_num_disp_vals) const = 0;
@@ -184,7 +183,7 @@ private:
    * @return float* 
    */
   virtual float* RetrieveOutputDisparity(
-    const beliefprop::BpLevel& BpLevel,
+    const BpLevel& BpLevel,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const = 0;
@@ -382,11 +381,11 @@ std::optional<std::pair<float*, DetailedTimings<beliefprop::Runtime_Type>>>
   std::chrono::duration<double> total_time_bp_iters{0}, total_time_copy_data{0}, total_time_copy_data_kernel{0};
 
   //start at the "bottom level" and work way up to determine amount of space needed to store data costs
-  std::vector<beliefprop::BpLevel> bp_levels;
+  std::vector<BpLevel> bp_levels;
   bp_levels.reserve(alg_settings.num_levels);
 
   //set level properties for bottom level that include processing of full image width/height
-  bp_levels.push_back(beliefprop::BpLevel(width_height_images, 0, 0, ACCELERATION));
+  bp_levels.push_back(BpLevel(width_height_images, 0, 0, ACCELERATION));
 
   //compute level properties which includes offset for each data/message array for each level after the bottom level
   for (unsigned int level_num = 1; level_num < alg_settings.num_levels; level_num++) {

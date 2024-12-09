@@ -37,7 +37,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 /**
  * @brief Class to store headers with data corresponding to current program run and evaluation
- * 
  */
 class RunData {
 public:
@@ -169,17 +168,11 @@ private:
    */
   std::string GetHeaderToAdd(const std::string& in_header) const;
 
-  /**
-   * @brief Data stored as map between header and value corresponding to header that can
-   * be of type unsigned int, double, bool, or string
-   * 
-   */
+  /** @brief Data stored as map between header and value corresponding to header that can
+   *  be of type unsigned int, double, bool, or string */
   std::map<std::string, std::variant<unsigned int, double, bool, std::string>> headers_w_data_;
   
-  /**
-   * @brief Headers corresponding to run data in order
-   * 
-   */
+  /** @brief Headers corresponding to run data in order */
   std::vector<std::string> headers_in_order_;
 };
 

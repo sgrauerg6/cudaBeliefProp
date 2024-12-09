@@ -39,6 +39,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
 
 namespace beliefprop {
+  //constant strings for headers and text related to parallel processing
   constexpr std::string_view kBlurImagesPDimsHeader{"Blur Images Parallel Dimensions"};
   constexpr std::string_view kInitMValsPDimsHeader{"Init Message Values Parallel Dimensions"};
   constexpr std::string_view kDataCostsPDimsHeader{"Data Costs Parallel Dimensions"};
@@ -51,7 +52,6 @@ namespace beliefprop {
 /**
  * @brief Class containing parameters including parallelization parameters
  * to use at each BP level
- * 
  */
 class BpParallelParams final : public ParallelParams {
 public:
@@ -85,7 +85,6 @@ public:
    * @brief Retrieve optimized parameters from results across multiple runs
    * with different parallel parameters and set current parameters to
    * retrieved optimized parameters
-   * 
    */
   void SetOptimizedParams() override;
 
@@ -109,30 +108,18 @@ public:
   RunData AsRunData() const override;
 
 private:
-  /**
-   * @brief Setting to determine whether or not to use same parallel
-   * parameters for all kernels in run or to allow for different
-   * parallel parameters for each kernel
-   * 
-   */
+  /** @brief Setting to determine whether or not to use same parallel
+   *  parameters for all kernels in run or to allow for different
+   *  parallel parameters for each kernel */
   const run_environment::OptParallelParamsSetting opt_parallel_params_setting_;
   
-  /**
-   * @brief Number of levels in bp processing hierarchy
-   * 
-   */
+  /** @brief Number of levels in bp processing hierarchy */
   const unsigned int num_levels_;
 
-  /**
-   * @brief Stores the current parallel parameters for each processing kernel
-   * 
-   */
+  /** @brief Stores the current parallel parameters for each processing kernel */
   std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels> parallel_dims_each_kernel_;
   
-  /**
-   * @brief Mapping of parallel parameters to runtime for each kernel at each level and total runtime
-   * 
-   */
+  /** @brief Mapping of parallel parameters to runtime for each kernel at each level and total runtime */
   std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::kNumKernels + 1)> p_params_to_run_time_each_kernel_;
 };
 

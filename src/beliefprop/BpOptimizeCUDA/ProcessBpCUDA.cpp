@@ -54,7 +54,7 @@ inline run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::ErrorCheck(co
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const beliefprop::BpSettings& alg_settings,
-  const beliefprop::BpLevel& current_bp_level,
+  const BpLevel& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   T* allocated_memory) const
@@ -126,8 +126,8 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
 //need two different "sets" of message values to avoid read-write conflicts
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToNextLevelDown(
-  const beliefprop::BpLevel& current_bp_level,
-  const beliefprop::BpLevel& next_bp_level,
+  const BpLevel& current_bp_level,
+  const BpLevel& next_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
   unsigned int bp_settings_num_disp_vals) const
@@ -181,7 +181,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
   const beliefprop::BpSettings& alg_settings,
-  const beliefprop::BpLevel& current_bp_level,
+  const BpLevel& current_bp_level,
   const std::array<float*, 2>& images_target_device,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const
 {
@@ -219,7 +219,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
 //initialize the message values with no previous message values...all message values are set to 0
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
-  const beliefprop::BpLevel& current_bp_level,
+  const BpLevel& current_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const
 {
@@ -253,7 +253,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
-  const beliefprop::BpLevel& current_bp_level, const beliefprop::BpLevel& prev_bp_level,
+  const BpLevel& current_bp_level, const BpLevel& prev_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
   unsigned int bp_settings_num_disp_vals) const
@@ -293,7 +293,7 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 float* ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
-  const beliefprop::BpLevel& current_bp_level,
+  const BpLevel& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const

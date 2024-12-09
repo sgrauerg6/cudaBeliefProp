@@ -26,8 +26,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "BpLevel.h"
 
-namespace beliefprop {
-
 BpLevel::BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
   run_environment::AccSetting acc_setting)
 {
@@ -68,4 +66,3 @@ unsigned int BpLevel::PaddedCheckerboardWidth(unsigned int checkerboard_width) c
          (checkerboard_width + (level_properties_.num_data_align_width_ - (checkerboard_width % level_properties_.num_data_align_width_)));
 }
 
-}

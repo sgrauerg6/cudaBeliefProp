@@ -37,7 +37,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @brief Base class for running and evaluating multiple runs of an implementation
  * that may be optimized on CPU or GPU
- * 
  */
 class RunImpMultInputs {
 public:

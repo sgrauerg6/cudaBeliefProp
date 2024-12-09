@@ -50,7 +50,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 /**
  * @brief Structure with output disparity map, runtime, and other evaluation data
- * 
  */
 struct ProcessStereoSetOutput
 {
@@ -151,12 +150,12 @@ std::optional<ProcessStereoSetOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATIO
   T* bp_proc_store{nullptr};
   if constexpr (beliefprop::kAllocateFreeBpMemoryOutsideRuns) {
     //allocate memory on device for bp processing
-    const std::size_t num_data = beliefprop::BpLevel::TotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
+    const std::size_t num_data = BpLevel::TotalDataForAlignedMemoryAllLevels<T, ACCELERATION>(
       width_height_images, alg_settings.num_disp_vals, alg_settings.num_levels);
     bp_data = run_bp_on_device.mem_management_bp_run->AllocateAlignedMemoryOnDevice(10*num_data, ACCELERATION);
     if (run_bp_on_device.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }
 
-    beliefprop::BpLevel bottom_bp_level(width_height_images, 0, 0, ACCELERATION);
+    BpLevel bottom_bp_level(width_height_images, 0, 0, ACCELERATION);
     const std::size_t total_data_bottom_level = bottom_bp_level.NumDataInBpArrays<T>(alg_settings.num_disp_vals);
     bp_proc_store = run_bp_on_device.mem_management_bp_run->AllocateAlignedMemoryOnDevice(total_data_bottom_level, ACCELERATION);
     if (run_bp_on_device.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }

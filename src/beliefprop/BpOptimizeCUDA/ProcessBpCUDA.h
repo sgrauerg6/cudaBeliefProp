@@ -61,13 +61,13 @@ private:
    */
   run_eval::Status InitializeDataCosts(
     const beliefprop::BpSettings& alg_settings,
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const std::array<float*, 2>& images_target_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const override;
 
   run_eval::Status InitializeDataCurrentLevel(
-    const beliefprop::BpLevel& current_bp_level,
-    const beliefprop::BpLevel& prev_bp_level,
+    const BpLevel& current_bp_level,
+    const BpLevel& prev_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
     unsigned int bp_settings_num_disp_vals) const override;
@@ -81,7 +81,7 @@ private:
    * @return run_eval::Status 
    */
   run_eval::Status InitializeMessageValsToDefault(
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const override;
 
@@ -98,7 +98,7 @@ private:
    */
   run_eval::Status RunBPAtCurrentLevel(
     const beliefprop::BpSettings& alg_settings,
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     T* allocated_memory) const override;
@@ -120,14 +120,14 @@ private:
    * @return run_eval::Status 
    */
   run_eval::Status CopyMessageValuesToNextLevelDown(
-    const beliefprop::BpLevel& current_bp_level,
-    const beliefprop::BpLevel& next_bp_level,
+    const BpLevel& current_bp_level,
+    const BpLevel& next_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
     unsigned int bp_settings_num_disp_vals) const override;
 
   float* RetrieveOutputDisparity(
-    const beliefprop::BpLevel& current_bp_level,
+    const BpLevel& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const override;

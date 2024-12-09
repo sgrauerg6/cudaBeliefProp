@@ -30,34 +30,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include "RunEval/RunTypeConstraints.h"
 
+/**
+ * @brief Namespace for enums, constants, structures, and
+ * functions specific to belief propagation processing
+ */
 namespace beliefprop {
 
-
-/**
- * @brief Float value of "infinity" that works with half-precision
- * 
- */
+/** @brief Float value of "infinity" that works with half-precision */
 constexpr float kInfBp{65504};
 
-/**
- * @brief Define the two checkerboard "parts" that the image is divided into
- * 
- */
+/** @brief Define the two checkerboard "parts" that the image is divided into */
 enum class CheckerboardPart : unsigned int { kCheckerboardPart0, kCheckerboardPart1 };
 enum class MessageArrays : unsigned int { 
   kMessagesUCheckerboard, kMessagesDCheckerboard, kMessagesLCheckerboard, kMessagesRCheckerboard };
 enum class MessageComp { kUMessage, kDMessage, kLMessage, kRMessage };
 
-/**
- * @brief Number of checkerboard parts for processing
- * 
- */
+/** @brief Number of checkerboard parts for processing */
 constexpr unsigned int kNumCheckerboardParts{2};
 
-/**
- * @brief Number of message arrays in each checkerboard part
- * 
- */
+/** @brief Number of message arrays in each checkerboard part */
 constexpr unsigned int kNumMessageArrays{4};
 
 /**
@@ -79,11 +70,9 @@ using CheckerboardMessages = std::array<std::array<T, kNumMessageArrays>, kNumCh
 template <RunData_ptr T>
 using DataCostsCheckerboards = std::array<T, kNumCheckerboardParts>;
 
-/**
- * @brief Enum corresponding to each kernel in belief propagation that can be run in parallel
- * 
- */
 constexpr unsigned int kNumKernels{6};
+
+/** @brief Enum corresponding to each kernel in belief propagation that can be run in parallel */
 enum class BpKernel : unsigned int { 
   kBlurImages,
   kDataCostsAtLevel,

@@ -59,7 +59,6 @@ public:
 
   /**
    * @brief Reset all timings
-   * 
    */
   void ResetTiming() { segment_timings_.clear(); }
 
