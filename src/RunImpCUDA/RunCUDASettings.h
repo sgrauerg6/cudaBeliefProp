@@ -41,8 +41,9 @@ using halftype = half;
 #endif //USE_BFLOAT16_FOR_HALF_PRECISION
 
 /**
- * @brief Namespace with constants for parallel parameters default and options
- * to use in run optimization
+ * @brief Namespace with constants and functions to get CUDA device properties as
+ * well as default and test parallel parameters to use in CUDA implementation run
+ * optimization
  */
 namespace run_cuda {
 
