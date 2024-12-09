@@ -38,7 +38,7 @@ public:
    * @brief Adjust setting to specify that CPU threads to be pinned to socket or not.
    * If true, set CPU threads to be pinned to socket via OMP_PLACES and OMP_PROC_BIND envionmental variable settings.
    * If false, set OMP_PLACES and OMP_PROC_BIND environment variables to be blank.
-   * @todo Currently commented out since it doesn't seem to have any effect
+   * Currently commented out since it doesn't seem to have any effect.
    * 
    * @param cpu_threads_pinned 
    */
