@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/InputSignature.h"
 #include "RunEval/RunData.h"
 #include "BpConstsEnumsAliases.h"
+#include "BpRunUtils.h"
 
 /**
  * @brief Parameters type requires AsRunData() function to return the parameters

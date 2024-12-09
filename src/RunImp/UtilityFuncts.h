@@ -47,7 +47,7 @@ namespace util_functs {
  * @tparam T 
  * @tparam U 
  * @param data 
- * @return ARCHITECTURE_ADDITION 
+ *  
  */
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline U ConvertValToDifferentDataTypeIfNeeded(T data) {

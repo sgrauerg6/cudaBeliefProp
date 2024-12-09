@@ -17,15 +17,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file BpRunSettings.h
+ * @file BpRunUtils.h
  * @author Scott Grauer-Gray
  * @brief 
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef BP_RUN_SETTINGS_H
-#define BP_RUN_SETTINGS_H
+#ifndef BP_RUN_UTILS_H
+#define BP_RUN_UTILS_H
 
 #include <string>
 #include <string_view>
@@ -37,6 +37,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * functions specific to belief propagation processing
  */
 namespace beliefprop {
+
+/** @brief Float value of "infinity" that works with half-precision */
+constexpr float kInfBp{65504};
 
 /**
  * @brief Get number of stereo runs when evaluating implementation
@@ -91,6 +94,27 @@ inline RunData RunSettings()  {
   return curr_run_data;
 }
 
+/**
+ * @brief Inline function to check if data is aligned at x_val_data_start for
+ * SIMD loads/stores that require alignment
+ * 
+ * @param x_val_data_start 
+ * @param simd_data_size 
+ * @param num_data_align_width 
+ * @param divPaddedChBoardWidthForAlign 
+ * @return true 
+ * @return false 
+ */
+inline bool MemoryAlignedAtDataStart(
+  unsigned int x_val_data_start,
+  unsigned int simd_data_size,
+  unsigned int num_data_align_width,
+  unsigned int divPaddedChBoardWidthForAlign)
+{
+  //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
+  return (((x_val_data_start % simd_data_size) == 0) && ((num_data_align_width % divPaddedChBoardWidthForAlign) == 0));
+}
+
 };
 
-#endif //BP_RUN_SETTINGS_H
+#endif //BP_RUN_UTILS_H

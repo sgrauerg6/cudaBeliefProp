@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImp/UtilityFuncts.h"
 #include "RunEval/RunTypeConstraints.h"
 #include "BpImageProcessing/BpImageConstraints.h"
+#include "SharedBpUtilFuncts.h"
 
 namespace beliefprop {
 
@@ -47,7 +48,7 @@ namespace beliefprop {
  * @param height_images 
  * @param image_filter 
  * @param size_filter 
- * @return ARCHITECTURE_ADDITION 
+ *  
  */
 template <BpImData_t T>
 ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_val, unsigned int y_val,
@@ -80,7 +81,7 @@ ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_v
  * @param height_images 
  * @param image_filter 
  * @param size_filter 
- * @return ARCHITECTURE_ADDITION 
+ *  
  */
 template <BpImData_t T>
 ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(unsigned int x_val, unsigned int y_val,

@@ -31,54 +31,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 #include "RunImp/UtilityFuncts.h"
 #include "BpRunProcessing/BpConstsEnumsAliases.h"
-#include "BpRunProcessing/BpRunSettings.h"
+#include "BpRunProcessing/BpRunUtils.h"
 #include "BpRunProcessing/BpLevel.h"
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
+#include "SharedBpUtilFuncts.h"
 
 namespace beliefprop {
-
-/**
- * @brief Checks if the current point is within the image bounds
- * Assumed that input x/y vals are above zero since their unsigned int so no need for >= 0 check
- * 
- * @param x_val 
- * @param y_val 
- * @param width 
- * @param height 
- * @return ARCHITECTURE_ADDITION 
- */
-ARCHITECTURE_ADDITION inline bool WithinImageBounds(
-  unsigned int x_val, unsigned int y_val,
-  unsigned int width, unsigned int height)
-{
-  return ((x_val < width) && (y_val < height));
-}
-
-/**
- * @brief Retrieve the current 1-D index value of the given point at the given
- * disparity in the data cost and message data
- * 
- * @param x_val 
- * @param y_val 
- * @param width 
- * @param height 
- * @param current_disparity 
- * @param total_num_disp_vals 
- * @param offset_data 
- * @return ARCHITECTURE_ADDITION 
- */
-ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned int x_val, unsigned int y_val,
-  unsigned int width, unsigned int height, unsigned int current_disparity, unsigned int total_num_disp_vals,
-  unsigned int offset_data = 0u)
-{
-  if constexpr (beliefprop::kOptimizedIndexingSetting) {
-    //indexing is performed in such a way so that the memory accesses as coalesced as much as possible
-    return (y_val * width * total_num_disp_vals + width * current_disparity + x_val) + offset_data;
-  }
-  else {
-    return ((y_val * width + x_val) * total_num_disp_vals + current_disparity);
-  }
-}
 
 /**
  * @brief function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
@@ -87,7 +45,7 @@ ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned
  * @tparam T 
  * @tparam DISP_VALS 
  * @param f 
- * @return ARCHITECTURE_ADDITION 
+ *  
  */
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void DtStereo(T f[DISP_VALS])
@@ -919,7 +877,7 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
  * @param offset_data 
  * @param data_aligned 
  * @param bp_settings_disp_vals 
- * @return ARCHITECTURE_ADDITION 
+ *  
  */
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
