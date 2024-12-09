@@ -32,7 +32,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <ranges>
 #include "BpImage.h"
 #include "BpResultsEvaluation/DisparityMapEvaluation.h"
-#include "BpResultsEvaluation/DisparityMapEvaluationParams.h"
 
 /**
  * @brief Class to define disparity map image that is output from bp processing
@@ -68,7 +67,7 @@ public:
   }
 
   DisparityMapEvaluation OutputComparison(const DisparityMap& disparity_map_to_compare,
-    const DisparityMapEvaluationParams& evaluation_parameters) const;
+    const beliefprop::DisparityMapEvaluationParams& evaluation_parameters) const;
 
   void SaveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor = 1) const;
 

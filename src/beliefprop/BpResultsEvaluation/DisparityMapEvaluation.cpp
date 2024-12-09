@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "DisparityMapEvaluation.h"
 
 //initialize evaluation results with evaluation parameters
-void DisparityMapEvaluation::InitializeWithEvalParams(const DisparityMapEvaluationParams& eval_params) {
+void DisparityMapEvaluation::InitializeWithEvalParams(const beliefprop::DisparityMapEvaluationParams& eval_params) {
   disparity_error_max_ = eval_params.max_diff_cap;
   for (const auto& output_diff_threshold : eval_params.output_diff_thresholds) {
     num_sig_diff_pixels_at_thresholds_[output_diff_threshold] = 0;

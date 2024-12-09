@@ -31,10 +31,32 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <iostream>
 #include <numeric>
 #include "RunEval/RunData.h"
-#include "DisparityMapEvaluationParams.h"
 
 namespace beliefprop {
-  constexpr std::string_view kAvgRMSErrorHeader{"Average RMS error"};
+ 
+constexpr std::string_view kAvgRMSErrorHeader{"Average RMS error"};
+
+/** @brief Difference thresholds in output disparity for a computed disparity at a pixel
+ *  to be considered a "bad pixel" when compared to the ground truth in the evaluation */
+constexpr std::array<float, 4> kDisparityDiffThresholds{
+  0.001, 2.01, 5.01, 10.01};
+
+/** @brief Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers
+ *  in the average difference across all pixels */
+constexpr float kMaxDiffCap{
+  kDisparityDiffThresholds[std::size(kDisparityDiffThresholds) - 1]};
+
+/**
+ * @brief Struct to store parameters for evaluation of disparity map from stereo processing
+ */
+struct DisparityMapEvaluationParams {
+  /** @brief Difference thresholds for comparing disparity maps */
+  const std::vector<float> output_diff_thresholds{
+    beliefprop::kDisparityDiffThresholds.cbegin(),
+    beliefprop::kDisparityDiffThresholds.cend()};
+  const float max_diff_cap{beliefprop::kMaxDiffCap};
+};
+
 };
 
 /**
@@ -42,7 +64,6 @@ namespace beliefprop {
  * Specifically comparison between two disparity maps such as
  * output disparity map from bp processing and ground truth
  * disparity map.
- * 
  */
 class DisparityMapEvaluation {
 public:
@@ -51,7 +72,7 @@ public:
    * 
    * @param eval_params 
    */
-  void InitializeWithEvalParams(const DisparityMapEvaluationParams& eval_params);
+  void InitializeWithEvalParams(const beliefprop::DisparityMapEvaluationParams& eval_params);
 
   /**
    * @brief Retrieve evaluation results as RunData
@@ -60,29 +81,20 @@ public:
    */
   RunData AsRunData() const;
 
-  /**
-   * @brief Total and average value of the absolute difference between 
-   * the disparity values for all pixels in disparity images 1 and 2
-   * with and without maximum disparity difference at each pixel
-   * 
-   */
+  /** @brief Total and average value of the absolute difference between 
+   *  the disparity values for all pixels in disparity images 1 and 2
+   *  with and without maximum disparity difference at each pixel */
   std::array<float, 2> average_disp_abs_diff_no_max_w_max_{0, 0};
   float disparity_error_max_{std::numeric_limits<float>::max()};
 
-  /**
-   * @brief Proportion of pixels where the difference between the disparity
-   * values in disparity images 1 and 2 is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
-   * (not including border regions)
-   * 
-   */
+  /** @brief Proportion of pixels where the difference between the disparity
+   *  values in disparity images 1 and 2 is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
+   *  (not including border regions) */
   std::map<float, float> prop_sig_diff_pixels_at_thresholds_;
 
-  /**
-   * @brief Stores the number of pixels where the difference between the
-   * disparity values in disparity images 1 and 2 is greater than
-   * SIG_DIFF_THRESHOLD_STEREO_EVAL
-   * 
-   */
+  /** @brief Stores the number of pixels where the difference between the
+   *  disparity values in disparity images 1 and 2 is greater than
+   *  SIG_DIFF_THRESHOLD_STEREO_EVAL */
   std::map<float, unsigned int> num_sig_diff_pixels_at_thresholds_;
 };
 

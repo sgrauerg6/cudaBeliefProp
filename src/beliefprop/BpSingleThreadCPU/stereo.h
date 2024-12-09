@@ -65,7 +65,7 @@ template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELER
 class RunBpStereoCPUSingleThread final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
-  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
       const beliefprop::BpSettings& alg_settings,
       const ParallelParams& parallel_params) const override;
   std::string BpRunDescription() const override { return "Single-Thread CPU"; }
@@ -331,7 +331,7 @@ inline std::pair<image<uchar>*, RunData> RunBpStereoCPUSingleThread<T, DISP_VALS
 }
 
 template<typename T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
+inline std::optional<beliefprop::ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_VALS, ACCELERATION>::operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
   //return no value if acceleration setting is not NONE
@@ -359,7 +359,7 @@ inline std::optional<ProcessStereoSetOutput> RunBpStereoCPUSingleThread<T, DISP_
     }
   }
 
-  std::optional<ProcessStereoSetOutput> output{ProcessStereoSetOutput{}};
+  std::optional<beliefprop::ProcessStereoSetOutput> output{beliefprop::ProcessStereoSetOutput{}};
   output->run_time = runtime;
   output->out_disparity_map = std::move(outDispMap);
   output->run_data = outStereo.second;

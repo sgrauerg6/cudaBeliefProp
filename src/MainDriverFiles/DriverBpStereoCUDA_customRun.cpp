@@ -63,7 +63,7 @@ int main(int argc, char** argv)
       std::make_unique<RunBpStereoCPUSingleThread<float, 64, run_environment::AccSetting::kNone>>();
     auto run_output_single_thread = runBpStereoSingleThread->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
     std::cout << "BP processing runtime (single threaded imp): " << run_output_single_thread->run_time.count() << std::endl;
-    const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, DisparityMapEvaluationParams());
+    const auto outComp = run_output_single_thread->out_disparity_map.OutputComparison(run_output->out_disparity_map, beliefprop::DisparityMapEvaluationParams());
     std::cout << "Difference between resulting disparity maps (no difference expected)" << std::endl;
     std::cout << outComp.AsRunData();
   }

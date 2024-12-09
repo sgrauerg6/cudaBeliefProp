@@ -46,7 +46,7 @@ void DisparityMap<T>::SaveDisparityMap(const std::string& disparity_map_file_pat
 template<class T>
 DisparityMapEvaluation DisparityMap<T>::OutputComparison(
   const DisparityMap& disparity_map_to_compare,
-  const DisparityMapEvaluationParams& evaluation_parameters) const
+  const beliefprop::DisparityMapEvaluationParams& evaluation_parameters) const
 {
   //initialize output evaluation with evaluation parameters
   DisparityMapEvaluation output_evaluation;

@@ -59,9 +59,9 @@ public:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param parallel_params 
-   * @return std::optional<ProcessStereoSetOutput> 
+   * @return std::optional<beliefprop::ProcessStereoSetOutput> 
    */
-  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
     const ParallelParams& parallel_params) const override
   {
@@ -75,7 +75,7 @@ public:
     RunData run_data;
     run_data.AppendData(run_cuda::retrieveDeviceProperties(0));
     auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings,
-      BpOnDevice<T, DISP_VALS, ACCELERATION>{
+      beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
         std::make_unique<SmoothImageCUDA>(parallel_params),
         std::make_unique<ProcessBpCUDA<T, DISP_VALS, ACCELERATION>>(parallel_params),
         std::make_unique<MemoryManagementCUDA<T>>(),

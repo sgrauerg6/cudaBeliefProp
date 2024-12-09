@@ -57,13 +57,13 @@ public:
   std::string BpRunDescription() const override { return std::string(beliefprop::kBpOptimizeCPUDesc); }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-  std::optional<ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::ProcessStereoSetOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,
     const ParallelParams& parallel_params) const override;
 };
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline std::optional<ProcessStereoSetOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
+inline std::optional<beliefprop::ProcessStereoSetOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<std::string, 2>& ref_test_image_path,
   const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
 {
@@ -82,7 +82,7 @@ inline std::optional<ProcessStereoSetOutput> RunBpOnStereoSetOptimizedCPU<T, DIS
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
   auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings, 
-    BpOnDevice<T, DISP_VALS, ACCELERATION>{
+    beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
       std::make_unique<SmoothImageCPU>(parallel_params),
       std::make_unique<ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),
       std::make_unique<MemoryManagement<T>>(),
