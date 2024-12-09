@@ -40,8 +40,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpResultsEvaluation/BpEvaluationStereoSets.h"
 #include "BpSingleThreadCPU/stereo.h"
 
-#ifndef RUN_BP_IMP_ON_INPUT_H_
-#define RUN_BP_IMP_ON_INPUT_H_
+#ifndef RUN_IMP_ON_INPUT_BP_H_
+#define RUN_IMP_ON_INPUT_BP_H_
 
 using filepathtype = std::filesystem::path;
 
@@ -68,26 +68,19 @@ using RunBpOptimized = RunBpOnStereoSetCUDA<T, DISP_VALS, ACCELERATION>;
  * a single time for each input stereo set when running evaluation and storage of 
  * single thread implementation output so it can be re-used so that single thread
  * implementation only needs to be run once for each evaluation stereo set.
- * 
  */
 namespace bp_single_thread {
-  /**
-   * @brief Setting of whether or not to run single thread implementation once for
-   * each stereo set in evaluation
-   */
-  constexpr bool kRunSingleThreadOnceForSet{true};
 
-  /**
-   * @brief Map to store output and run results for single thread implementation for
-   * each stereo set
-   */
-  inline std::map<std::array<filepathtype, 2>, std::tuple<std::chrono::duration<double>, RunData, filepathtype>>
-    single_thread_run_output;
+/** @brief Setting of whether or not to run single thread implementation once for
+ *  each stereo set in evaluation */
+constexpr bool kRunSingleThreadOnceForSet{true};
+
+/** @brief Map to store output and run results for single thread implementation for
+ *  each stereo set */
+inline std::map<std::array<filepathtype, 2>, std::tuple<std::chrono::duration<double>, RunData, filepathtype>>
+  single_thread_run_output;
+
 };
-
-namespace beliefprop {
-  constexpr std::string_view kAccelerationDescHeader{"Acceleration"};
-}
 
 /**
  * @brief Child class of RunImpOnInput to run and evaluate belief propagation
@@ -149,34 +142,26 @@ protected:
     bool run_imp_templated_loop_iters) const override;
 
 private:
-  /**
-   * @brief Unique pointer to run bp implementation object for single thread implementation
-   */
+  /** @brief Unique pointer to run bp implementation object for single thread implementation */
   std::unique_ptr<RunBpOnStereoSet<
     T,
     beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
     run_environment::AccSetting::kNone>>
   run_bp_stereo_single_thread_;
   
-  /**
-   * @brief Unique pointer to run bp implementation object for optimized 
-   * implementation with loop iters templated
-   */
+  /** @brief Unique pointer to run bp implementation object for optimized 
+   *  implementation with loop iters templated */
   std::unique_ptr<RunBpOnStereoSet<
     T,
     beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
     OPT_IMP_ACCEL>>
   run_opt_bp_num_iters_templated_;
 
-  /**
-   * @brief Unique pointer to run bp implementation object for optimized
-   * implementation with loop iters not templated
-   */
+  /** @brief Unique pointer to run bp implementation object for optimized
+   *  implementation with loop iters not templated */
   std::unique_ptr<RunBpOnStereoSet<T, 0, OPT_IMP_ACCEL>> run_opt_bp_num_iters_no_template_;
 
-  /**
-   * @brief Bp parameter settings
-   */
+  /** @brief Bp parameter settings */
   beliefprop::BpSettings alg_settings_;
 };
 
@@ -303,7 +288,7 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   //check if error in run
   RunData run_data;
   run_data.AddDataWHeader(
-    std::string(beliefprop::kAccelerationDescHeader), opt_imp_run_description);
+    std::string(run_environment::kAccelerationDescHeader), opt_imp_run_description);
   if (!(run_output[OPT_IMP_ACCEL])) {
     return {};
   }
@@ -397,4 +382,4 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   return run_data;
 }
 
-#endif //RUN_BP_IMP_ON_INPUT_H_
+#endif //RUN_IMP_ON_INPUT_BP_H_

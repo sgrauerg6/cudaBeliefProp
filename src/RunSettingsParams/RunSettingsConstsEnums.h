@@ -50,6 +50,9 @@ using halftype = short;
  */
 namespace run_environment {
 
+/** @brief Constant string for acceleration */
+constexpr std::string_view kAccelerationDescHeader{"Acceleration"};
+
 /** @brief Enum for acceleration setting */
 enum class AccSetting {
   kNone, kAVX256, kAVX512, kNEON, kCUDA
