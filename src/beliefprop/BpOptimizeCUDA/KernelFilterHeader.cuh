@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * processing using CUDA.
  * 
  */
-namespace beliefpropCUDA {
+namespace beliefprop_cuda {
 
 /**
  * @brief Kernel to convert the unsigned int pixels to float pixels in an image when

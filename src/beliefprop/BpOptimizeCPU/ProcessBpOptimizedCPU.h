@@ -118,7 +118,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RunBP
       beliefprop::CheckerboardPart::kCheckerboardPart0;
 
     using namespace beliefprop;
-    beliefpropCPU::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS, ACCELERATION>(
+    beliefprop_cpu::RunBPIterationUsingCheckerboardUpdates<T, DISP_VALS, ACCELERATION>(
       checkerboard_part_update, current_bp_level.LevelProperties(),
       data_costs_device[0], data_costs_device[1],
       messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
@@ -152,7 +152,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::CopyM
     //call the kernel to copy the computed BP message data to the next level down in parallel in each of the two "checkerboards"
     //storing the current message values
     using namespace beliefprop;
-    beliefpropCPU::CopyMsgDataToNextLevel<T, DISP_VALS>(
+    beliefprop_cpu::CopyMsgDataToNextLevel<T, DISP_VALS>(
       checkerboard_part, current_bp_level.LevelProperties(), next_bp_level.LevelProperties(),
       messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
       messages_device_copy_from[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
@@ -182,7 +182,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
   const std::array<float*, 2>& images_target_device, const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const
 {
   //initialize the data the the "bottom" of the image pyramid
-  beliefpropCPU::InitializeBottomLevelData<T, DISP_VALS>(
+  beliefprop_cpu::InitializeBottomLevelData<T, DISP_VALS>(
     current_bp_level.LevelProperties(), 
     images_target_device[0],images_target_device[1],
     data_costs_device[0], data_costs_device[1],
@@ -200,7 +200,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 {
   using namespace beliefprop;
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
-  beliefpropCPU::InitializeMessageValsToDefaultKernel<T, DISP_VALS>(
+  beliefprop_cpu::InitializeMessageValsToDefaultKernel<T, DISP_VALS>(
     current_bp_level.LevelProperties(),
     messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesUCheckerboard)],
     messages_device[static_cast<unsigned int>(CheckerboardPart::kCheckerboardPart0)][static_cast<unsigned int>(MessageArrays::kMessagesDCheckerboard)],
@@ -233,7 +233,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
       beliefprop::CheckerboardPart::kCheckerboardPart1,
       data_costs_device_write[1])})
   {
-    beliefpropCPU::InitializeCurrentLevelData<T, DISP_VALS>(
+    beliefprop_cpu::InitializeCurrentLevelData<T, DISP_VALS>(
       checkerboard_data_cost.first,
       current_bp_level.LevelProperties(), prev_bp_level.LevelProperties(),
       data_costs_device[0], data_costs_device[1],
@@ -255,7 +255,7 @@ inline float* ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RetrieveOutputD
     new float[current_bp_level.LevelProperties().width_level_ * current_bp_level.LevelProperties().height_level_];
 
   using namespace beliefprop;
-  beliefpropCPU::RetrieveOutputDisparity<T, DISP_VALS, ACCELERATION>(
+  beliefprop_cpu::RetrieveOutputDisparity<T, DISP_VALS, ACCELERATION>(
     current_bp_level.LevelProperties(),
     data_costs_device[0],
     data_costs_device[1],

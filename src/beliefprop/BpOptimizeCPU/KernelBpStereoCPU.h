@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Namespace to define global kernel functions for optimized belief propagation
  * processing on the CPU using OpenMP and SIMD vectorization.
  */
-namespace beliefpropCPU
+namespace beliefprop_cpu
 {
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
   template<RunData_t T, unsigned int DISP_VALS>
@@ -475,7 +475,7 @@ namespace beliefpropCPU
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::InitializeBottomLevelData(
+void beliefprop_cpu::InitializeBottomLevelData(
   const beliefprop::BpLevelProperties& current_bp_level,
   const float* image_1_pixels_device, const float* image_2_pixels_device,
   T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,
@@ -506,7 +506,7 @@ void beliefpropCPU::InitializeBottomLevelData(
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::InitializeCurrentLevelData(
+void beliefprop_cpu::InitializeCurrentLevelData(
   beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level,
   const beliefprop::BpLevelProperties& prev_bp_level,
@@ -540,7 +540,7 @@ void beliefpropCPU::InitializeCurrentLevelData(
 
 //initialize the message values at each pixel of the current level to the default value
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::InitializeMessageValsToDefaultKernel(
+void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
   const beliefprop::BpLevelProperties& current_bp_level,
   T* message_u_checkerboard_0, T* message_d_checkerboard_0,
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
@@ -576,7 +576,7 @@ void beliefpropCPU::InitializeMessageValsToDefaultKernel(
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
+void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   beliefprop::CheckerboardPart checkerboard_part_update,
   const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
@@ -622,7 +622,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 }
 
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
+void beliefprop_cpu::RunBPIterationUpdateMsgValsUseSIMDVectors(
   unsigned int x_val_start_processing, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS],
@@ -650,7 +650,7 @@ void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
 }
 
 template<RunData_t T, RunDataVect_t U>
-void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
+void beliefprop_cpu::RunBPIterationUpdateMsgValsUseSIMDVectors(
   unsigned int x_val_start_processing, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const U* prev_u_message, const U* prev_d_message,
@@ -678,7 +678,7 @@ void beliefpropCPU::RunBPIterationUpdateMsgValsUseSIMDVectors(
 }
 
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
+void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   T* message_u_checkerboard_0, T* message_d_checkerboard_0,
@@ -968,7 +968,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess(
 //retrieve messages from each 4-connected neighbor and then update their message based
 //on the retrieved messages and the data cost
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdates(
+void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdates(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   T* message_u_checkerboard_0, T* message_d_checkerboard_0,
@@ -1081,7 +1081,7 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part,
+void beliefprop_cpu::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& next_bp_level,
   const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
   const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
@@ -1125,7 +1125,7 @@ void beliefpropCPU::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerb
 }
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-void beliefpropCPU::RetrieveOutputDisparity(
+void beliefprop_cpu::RetrieveOutputDisparity(
   const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
@@ -1199,7 +1199,7 @@ void beliefpropCPU::RetrieveOutputDisparity(
 
 //retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel using SIMD vectors
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
+void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
@@ -1574,7 +1574,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectors(
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
 //(see "Efficient Belief Propagation for Early Vision")
 template<RunDataProcess_t T, RunDataVectProcess_t U, unsigned int DISP_VALS>
-void beliefpropCPU::DtStereoSIMD(U f[DISP_VALS])
+void beliefprop_cpu::DtStereoSIMD(U f[DISP_VALS])
 {
   U prev;
   const U vector_all_one_val = simd_processing::ConvertValToDatatype<U, T>(1.0f);
@@ -1601,7 +1601,7 @@ void beliefpropCPU::DtStereoSIMD(U f[DISP_VALS])
 
 //compute current message
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS>
-void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
+void beliefprop_cpu::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
   const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
@@ -1682,7 +1682,7 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
 //function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method
 //(see "Efficient Belief Propagation for Early Vision")
 template<RunDataProcess_t T, RunDataVectProcess_t U>
-void beliefpropCPU::DtStereoSIMD(U* f, unsigned int bp_settings_disp_vals)
+void beliefprop_cpu::DtStereoSIMD(U* f, unsigned int bp_settings_disp_vals)
 {
   U prev;
   const U vector_all_one_val = simd_processing::ConvertValToDatatype<U, T>(1.0f);
@@ -1709,7 +1709,7 @@ void beliefpropCPU::DtStereoSIMD(U* f, unsigned int bp_settings_disp_vals)
 
 // compute current message
 template<RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W>
-void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
+void beliefprop_cpu::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const U* messages_neighbor_1, const U* messages_neighbor_2,
   const U* messages_neighbor_3, const U* data_costs,
@@ -1793,7 +1793,7 @@ void beliefpropCPU::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_v
 
 // compute current message
 template<RunData_t T, RunDataVect_t U, unsigned int DISP_VALS>
-void beliefpropCPU::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
+void beliefprop_cpu::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS],
   const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS],
@@ -1807,7 +1807,7 @@ void beliefpropCPU::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
 
 // compute current message
 template<RunData_t T, RunDataVect_t U>
-void beliefpropCPU::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
+void beliefprop_cpu::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const U* messages_neighbor_1, const U* messages_neighbor_2,
   const U* messages_neighbor_3, const U* data_costs,
@@ -1823,7 +1823,7 @@ void beliefpropCPU::MsgStereoSIMD(unsigned int x_val, unsigned int y_val,
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::PrintDataAndMessageValsAtPointKernel(
+void beliefprop_cpu::PrintDataAndMessageValsAtPointKernel(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
@@ -1888,7 +1888,7 @@ void beliefpropCPU::PrintDataAndMessageValsAtPointKernel(
 }
 
 template<RunData_t T, unsigned int DISP_VALS>
-void beliefpropCPU::PrintDataAndMessageValsToPointKernel(
+void beliefprop_cpu::PrintDataAndMessageValsToPointKernel(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,

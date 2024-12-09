@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/AVX256TemplateSpFuncts.h"
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
   float* message_u_checkerboard_0, float* message_d_checkerboard_0,
@@ -57,7 +57,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
   short* message_u_checkerboard_0, short* message_d_checkerboard_0,
@@ -79,7 +79,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
   const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
   double* message_u_checkerboard_0, double* message_d_checkerboard_0,
@@ -101,7 +101,7 @@ void beliefpropCPU::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX256(
+void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   const beliefprop::BpLevelProperties& current_bp_level,
   const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
   const float* message_u_prev_checkerboard_0, const float* message_d_prev_checkerboard_0,
@@ -123,7 +123,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX256(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX256(
+void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   const beliefprop::BpLevelProperties& current_bp_level,
   const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
   const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
@@ -145,7 +145,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX256(
 }
 
 template<unsigned int DISP_VALS>
-void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX256(
+void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   const beliefprop::BpLevelProperties& current_bp_level,
   const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
   const double* message_u_prev_checkerboard_0, const double* message_d_prev_checkerboard_0,
@@ -166,7 +166,7 @@ void beliefpropCPU::RetrieveOutputDisparityUseSIMDVectorsAVX256(
     simd_data_size, opt_cpu_params);
 }
 
-template<> inline void beliefpropCPU::UpdateBestDispBestVals<__m256>(__m256& best_disparities, __m256& best_vals,
+template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256>(__m256& best_disparities, __m256& best_vals,
   const __m256& current_disparity, const __m256& val_at_disp)
 {
   __m256 maskNeedUpdate = _mm256_cmp_ps(val_at_disp, best_vals, _CMP_LT_OS);
@@ -177,7 +177,7 @@ template<> inline void beliefpropCPU::UpdateBestDispBestVals<__m256>(__m256& bes
   best_disparities = _mm256_mask_blend_ps(maskNeedUpdate, best_disparities, current_disparity);*/
 }
 
-template<> inline void beliefpropCPU::UpdateBestDispBestVals<__m256d>(__m256d& best_disparities, __m256d& best_vals,
+template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256d>(__m256d& best_disparities, __m256d& best_vals,
   const __m256d& current_disparity, const __m256d& val_at_disp)
 {
   __m256d maskNeedUpdate = _mm256_cmp_pd(val_at_disp, best_vals, _CMP_LT_OS);
@@ -189,7 +189,7 @@ template<> inline void beliefpropCPU::UpdateBestDispBestVals<__m256d>(__m256d& b
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
@@ -204,7 +204,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
@@ -219,7 +219,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
@@ -234,7 +234,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
@@ -249,7 +249,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
@@ -264,7 +264,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
@@ -279,7 +279,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
 }
 
 // compute current message
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i messages_neighbor_1[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
@@ -293,7 +293,7 @@ template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i, beliefprop::
     messages_neighbor_3, data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
-template<> inline void beliefpropCPU::MsgStereoSIMD<short, __m128i>(unsigned int x_val, unsigned int y_val,
+template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i>(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const __m128i* messages_neighbor_1, const __m128i* messages_neighbor_2,
   const __m128i* messages_neighbor_3, const __m128i* data_costs,
