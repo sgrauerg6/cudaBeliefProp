@@ -31,7 +31,7 @@ Collaboration diagram for Run\+Bp\+Imp\+On\+Input$<$ T, OPT\+\_\+\+IMP\+\_\+\+AC
 \begin{DoxyCompactItemize}
 \item 
 \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \mbox{\hyperlink{class_run_bp_imp_on_input_a66ff1e558fb7b820acac3fbc5dad4dfb}{operator()}} (const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings) override
-\begin{DoxyCompactList}\small\item\em Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM\+\_\+\+INPUT Data type used in implementation specified by T Bp implemenation optimization specified by OPT\+\_\+\+IMP\+\_\+\+ACCEL Evaluation stereo set to run implementation on specified by NUM\+\_\+\+INPUT. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM\+\_\+\+INPUT. Data type used in implementation specified by class template parameter T. Bp implemenation optimization specified by class template constant OPT\+\_\+\+IMP\+\_\+\+ACCEL. Evaluation stereo set to run implementation on specified by class template integral constant NUM\+\_\+\+INPUT. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -40,7 +40,7 @@ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Para
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_run_bp_imp_on_input_a5a4dbb1b3f6f37e13a49553a951f095f}{Input\+And\+Params\+For\+Curr\+Benchmark}} (bool loop\+\_\+iters\+\_\+templated) const override
 \begin{DoxyCompactList}\small\item\em Get input data and parameter info about current benchmark (belief propagation in this case) and return as \mbox{\hyperlink{class_run_data}{Run\+Data}} type. \end{DoxyCompactList}\item 
 std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyperlink{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}{Run\+Imps\+And\+Compare}} (std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} $>$ parallel\+\_\+params, bool run\+\_\+opt\+\_\+imp\+\_\+only, bool run\+\_\+imp\+\_\+templated\+\_\+loop\+\_\+iters) const override
-\begin{DoxyCompactList}\small\item\em Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT given as class template integral constant parameter. Run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -60,7 +60,7 @@ Run and evaluate belief propagation implementation on a specified input.
 \end{DoxyTemplParams}
 
 
-Definition at line 65 of file Run\+Bp\+Imp\+On\+Input.\+h.
+Definition at line 100 of file Run\+Bp\+Imp\+On\+Input.\+h.
 
 
 
@@ -90,7 +90,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a34a6f5d3387c29607e2249786b72
 
 
 
-Definition at line 199 of file Run\+Bp\+Imp\+On\+Input.\+h.
+Definition at line 239 of file Run\+Bp\+Imp\+On\+Input.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -108,7 +108,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM\+\_\+\+INPUT Data type used in implementation specified by T Bp implemenation optimization specified by OPT\+\_\+\+IMP\+\_\+\+ACCEL Evaluation stereo set to run implementation on specified by NUM\+\_\+\+INPUT. 
+Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM\+\_\+\+INPUT. Data type used in implementation specified by class template parameter T. Bp implemenation optimization specified by class template constant OPT\+\_\+\+IMP\+\_\+\+ACCEL. Evaluation stereo set to run implementation on specified by class template integral constant NUM\+\_\+\+INPUT. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -124,7 +124,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a8170bbd7503d68c37125350df0b3
 
 
 
-Definition at line 148 of file Run\+Bp\+Imp\+On\+Input.\+h.
+Definition at line 188 of file Run\+Bp\+Imp\+On\+Input.\+h.
 
 \mbox{\Hypertarget{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}\label{class_run_bp_imp_on_input_a7b1982434fcf152f7791e1f2efd3d2cf}} 
 \index{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$@{RunBpImpOnInput$<$ T, OPT\_IMP\_ACCEL, NUM\_INPUT $>$}!RunImpsAndCompare@{RunImpsAndCompare}}
@@ -135,7 +135,7 @@ std\+::optional$<$ \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ \mbox{\hyper
 
 
 
-Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. 
+Run and compare output disparity maps using the given optimized and single-\/threaded stereo implementations on the reference and test images specified by NUM\+\_\+\+INPUT given as class template integral constant parameter. Run only optimized implementation if run\+\_\+opt\+\_\+imp\+\_\+only is true. 
 
 
 \begin{DoxyParams}{Parameters}
@@ -155,7 +155,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a2bb42e69ca28f0ddfab281739c81
 
 
 
-Definition at line 213 of file Run\+Bp\+Imp\+On\+Input.\+h.
+Definition at line 255 of file Run\+Bp\+Imp\+On\+Input.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -189,7 +189,7 @@ Implements \mbox{\hyperlink{class_run_imp_on_input_a302212627bed8c6dd60d59fad0b0
 
 
 
-Definition at line 187 of file Run\+Bp\+Imp\+On\+Input.\+h.
+Definition at line 227 of file Run\+Bp\+Imp\+On\+Input.\+h.
 
 
 

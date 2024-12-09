@@ -3,7 +3,7 @@
 <area shape="rect" id="node2" title=" " alt="" coords="5,169,56,196"/>
 <area shape="rect" id="node3" title=" " alt="" coords="80,169,160,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="147,95,221,121"/>
-<area shape="rect" id="node5" href="$_run_data_8h.html" title=" " alt="" coords="245,95,392,121"/>
+<area shape="rect" id="node5" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="245,95,392,121"/>
 <area shape="rect" id="node11" href="$_disparity_map_evaluation_params_8h.html" title=" " alt="" coords="479,95,718,121"/>
 <area shape="rect" id="node6" title=" " alt="" coords="567,169,630,196"/>
 <area shape="rect" id="node7" title=" " alt="" coords="184,169,243,196"/>

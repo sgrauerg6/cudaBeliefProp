@@ -1,0 +1,48 @@
+\hypertarget{namespacebp__single__thread}{}\doxysection{bp\+\_\+single\+\_\+thread Namespace Reference}
+\label{namespacebp__single__thread}\index{bp\_single\_thread@{bp\_single\_thread}}
+
+
+Namespace with setting of whether or not to run single thread implementation a single time for each input stereo set when running evaluation and storage of single thread implementation output so it can be re-\/used so that single thread implementation only needs to be run once for each evaluation stereo set.  
+
+
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebp__single__thread_a2ec5e511ba4290d2451484dcacc4f9bf}{k\+Run\+Single\+Thread\+Once\+For\+Set}} \{true\}
+\begin{DoxyCompactList}\small\item\em Setting of whether or not to run single thread implementation once for each stereo set in evaluation. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::array$<$ \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}}, 2 $>$, std\+::tuple$<$ std\+::chrono\+::duration$<$ double $>$, \mbox{\hyperlink{class_run_data}{Run\+Data}}, \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}} $>$ $>$ \mbox{\hyperlink{namespacebp__single__thread_aedcfceb5c175f20137e3031a9dd0f2f3}{single\+\_\+thread\+\_\+run\+\_\+output}}
+\begin{DoxyCompactList}\small\item\em Map to store output and run results for single thread implementation for each stereo set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace with setting of whether or not to run single thread implementation a single time for each input stereo set when running evaluation and storage of single thread implementation output so it can be re-\/used so that single thread implementation only needs to be run once for each evaluation stereo set. 
+
+\doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacebp__single__thread_a2ec5e511ba4290d2451484dcacc4f9bf}\label{namespacebp__single__thread_a2ec5e511ba4290d2451484dcacc4f9bf}} 
+\index{bp\_single\_thread@{bp\_single\_thread}!kRunSingleThreadOnceForSet@{kRunSingleThreadOnceForSet}}
+\index{kRunSingleThreadOnceForSet@{kRunSingleThreadOnceForSet}!bp\_single\_thread@{bp\_single\_thread}}
+\doxysubsubsection{\texorpdfstring{kRunSingleThreadOnceForSet}{kRunSingleThreadOnceForSet}}
+{\footnotesize\ttfamily constexpr bool bp\+\_\+single\+\_\+thread\+::k\+Run\+Single\+Thread\+Once\+For\+Set \{true\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Setting of whether or not to run single thread implementation once for each stereo set in evaluation. 
+
+
+
+Definition at line 78 of file Run\+Bp\+Imp\+On\+Input.\+h.
+
+\mbox{\Hypertarget{namespacebp__single__thread_aedcfceb5c175f20137e3031a9dd0f2f3}\label{namespacebp__single__thread_aedcfceb5c175f20137e3031a9dd0f2f3}} 
+\index{bp\_single\_thread@{bp\_single\_thread}!single\_thread\_run\_output@{single\_thread\_run\_output}}
+\index{single\_thread\_run\_output@{single\_thread\_run\_output}!bp\_single\_thread@{bp\_single\_thread}}
+\doxysubsubsection{\texorpdfstring{single\_thread\_run\_output}{single\_thread\_run\_output}}
+{\footnotesize\ttfamily std\+::map$<$std\+::array$<$\mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}}, 2$>$, std\+::tuple$<$std\+::chrono\+::duration$<$double$>$, \mbox{\hyperlink{class_run_data}{Run\+Data}}, \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}}$>$ $>$ bp\+\_\+single\+\_\+thread\+::single\+\_\+thread\+\_\+run\+\_\+output\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Map to store output and run results for single thread implementation for each stereo set. 
+
+
+
+Definition at line 85 of file Run\+Bp\+Imp\+On\+Input.\+h.
+

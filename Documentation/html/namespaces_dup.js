@@ -66,9 +66,9 @@ var namespaces_dup =
       [ "kStereoSetsDirectoryName", "namespacebp__file__handling.html#a54636521d6a9e862358c0a6e1dc1644c", null ],
       [ "kTestImageName", "namespacebp__file__handling.html#a2524c8446bfd0c95ed2ea7199a9e5048", null ]
     ] ],
-    [ "bpSingleThread", "namespacebp_single_thread.html", [
-      [ "kRunSingleThreadOnceForSet", "namespacebp_single_thread.html#a3da2b7cb6de6aa48ec8f7f32f6859f63", null ],
-      [ "single_thread_run_output", "namespacebp_single_thread.html#a3dcfa88937d6fd94e3840e5b73339d85", null ]
+    [ "bp_single_thread", "namespacebp__single__thread.html", [
+      [ "kRunSingleThreadOnceForSet", "namespacebp__single__thread.html#a2ec5e511ba4290d2451484dcacc4f9bf", null ],
+      [ "single_thread_run_output", "namespacebp__single__thread.html#aedcfceb5c175f20137e3031a9dd0f2f3", null ]
     ] ],
     [ "run_cpu", "namespacerun__cpu.html", [
       [ "kMinNumThreadsRun", "namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca", null ],
@@ -83,6 +83,10 @@ var namespaces_dup =
     ] ],
     [ "run_environment", "namespacerun__environment.html", "namespacerun__environment" ],
     [ "run_eval", "namespacerun__eval.html", [
+      [ "MiddleValData", "namespacerun__eval.html#afde1aa77e63e966b5728eae080febcf2", [
+        [ "kAverage", "namespacerun__eval.html#afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5", null ],
+        [ "kMedian", "namespacerun__eval.html#afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477", null ]
+      ] ],
       [ "Status", "namespacerun__eval.html#aa8f06e41fdf48a118ecb84632df4b3cd", [
         [ "kNoError", "namespacerun__eval.html#aa8f06e41fdf48a118ecb84632df4b3cdafcd1af9ec66cb99f2d106d7fdc865c8b", null ],
         [ "kError", "namespacerun__eval.html#aa8f06e41fdf48a118ecb84632df4b3cdae3587c730cc1aa530fa4ddc9c4204e97", null ]
@@ -101,6 +105,7 @@ var namespaces_dup =
       [ "kImpResultsSpeedupsFolderName", "namespacerun__eval.html#ad2e81e462dc5a1a39da8b7bd3d6d533c", null ],
       [ "kInputIdxHeader", "namespacerun__eval.html#a07d7885ec260b8cfe897bdecf3bc428f", null ],
       [ "kLoopItersTemplatedHeader", "namespacerun__eval.html#aef29ac0eb3ad8078a51bc7612ee6863b", null ],
+      [ "kMedianOfTestRunsDesc", "namespacerun__eval.html#a68b6e7c080212e75c52102099564ec23", null ],
       [ "kOptimizedRuntimeHeader", "namespacerun__eval.html#aac082d24ce0fe2ac23fb63c994172981", null ],
       [ "kRunInputDatatypeIdx", "namespacerun__eval.html#aa4dcdafffb130d2f183786bd93e23b9a", null ],
       [ "kRunInputLoopItersTemplatedIdx", "namespacerun__eval.html#a2be272bfc5ce93166901411313480403", null ],
@@ -120,6 +125,18 @@ var namespaces_dup =
       [ "kSpeedupsDescFileName", "namespacerun__eval.html#a6f7327cf25d1b917872c8d98f9fd84f3", null ],
       [ "kSpeedupVsAvx256Vectorization", "namespacerun__eval.html#aca67196adcd344aa6f31a7a7521fd385", null ]
     ] ],
+    [ "simd_processing", "namespacesimd__processing.html", [
+      [ "AddVals", "namespacesimd__processing.html#aaadbdc6359524dd0a41eb8864dfde8d0", null ],
+      [ "ConvertValToDatatype", "namespacesimd__processing.html#a1ca0c29fac8564f0cfa8f53360c8d7a8", null ],
+      [ "createSIMDVectorSameData", "namespacesimd__processing.html#aaeec19fe6218fdfb2678e2d59533c30f", null ],
+      [ "divideVals", "namespacesimd__processing.html#ad2142f4d30db099e1744b7a1ed37169e", null ],
+      [ "GetMinByElement", "namespacesimd__processing.html#a835d8005e2daedbff1af05b4f07c165f", null ],
+      [ "LoadPackedDataAligned", "namespacesimd__processing.html#a2a7614fa42374dccf3f0e815115f8fcb", null ],
+      [ "LoadPackedDataUnaligned", "namespacesimd__processing.html#af79c7bdf81e24885bf49ab31e02006b2", null ],
+      [ "StorePackedDataAligned", "namespacesimd__processing.html#a0a16d366a1b61fee56c90f376633e995", null ],
+      [ "StorePackedDataUnaligned", "namespacesimd__processing.html#a0811351baf30e0e88704b3cc8ef6df1a", null ],
+      [ "SubtractVals", "namespacesimd__processing.html#a2be0ec2bf47c15b1307a1aab891bb445", null ]
+    ] ],
     [ "util_functs", "namespaceutil__functs.html", [
       [ "ConvertValToDifferentDataTypeIfNeeded", "namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00", null ],
       [ "GetMax", "namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb", null ],
@@ -127,17 +144,5 @@ var namespaces_dup =
       [ "MemoryAlignedAtDataStart", "namespaceutil__functs.html#a9d24a6a516382fc3d84c9a2076d244f2", null ],
       [ "WithinImageBounds", "namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af", null ],
       [ "ZeroVal", "namespaceutil__functs.html#af509aad8fbf0c563f8880ac1f1572b99", null ]
-    ] ],
-    [ "VectProcessingFuncts", "namespace_vect_processing_functs.html", [
-      [ "AddVals", "namespace_vect_processing_functs.html#a1fe4b66daca77c46e24a0c3f03a0b794", null ],
-      [ "ConvertValToDatatype", "namespace_vect_processing_functs.html#a8919548c363a60e1055d5982d0977312", null ],
-      [ "createSIMDVectorSameData", "namespace_vect_processing_functs.html#afa33481a1d195e9f9d85b0e886e9af6e", null ],
-      [ "divideVals", "namespace_vect_processing_functs.html#a95096009e977088cd9938c1096cd0c99", null ],
-      [ "GetMinByElement", "namespace_vect_processing_functs.html#acf3733cc6b62a1f6823f2b54204d4c6c", null ],
-      [ "LoadPackedDataAligned", "namespace_vect_processing_functs.html#a8a75bf196354334c7e9dc9de94e3a0e7", null ],
-      [ "LoadPackedDataUnaligned", "namespace_vect_processing_functs.html#a7bc1a5eaef3dcecb2b499fd3dce2d455", null ],
-      [ "StorePackedDataAligned", "namespace_vect_processing_functs.html#aac7a1b6b758bfa9b6cd2ae557582de32", null ],
-      [ "StorePackedDataUnaligned", "namespace_vect_processing_functs.html#ac557f2e76fcdeb292102dffb6005bc0a", null ],
-      [ "SubtractVals", "namespace_vect_processing_functs.html#aad16f5149c9c5782da569ae590b5bec8", null ]
     ] ]
 ];

@@ -4,10 +4,10 @@
 <area shape="rect" id="node3" title=" " alt="" coords="45,333,142,360"/>
 <area shape="rect" id="node4" title=" " alt="" coords="331,95,395,121"/>
 <area shape="rect" id="node5" title=" " alt="" coords="419,95,485,121"/>
-<area shape="rect" id="node6" href="$_run_data_8h.html" title=" " alt="" coords="716,169,863,196"/>
-<area shape="rect" id="node13" href="$_input_signature_8h.html" title=" " alt="" coords="177,95,306,121"/>
+<area shape="rect" id="node6" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="716,169,863,196"/>
+<area shape="rect" id="node13" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="177,95,306,121"/>
 <area shape="rect" id="node18" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="223,244,454,285"/>
-<area shape="rect" id="node19" href="$_c_p_u_threads_pinned_to_socket_8h.html" title=" " alt="" coords="690,95,905,121"/>
+<area shape="rect" id="node19" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="690,95,905,121"/>
 <area shape="rect" id="node7" title=" " alt="" coords="578,251,641,278"/>
 <area shape="rect" id="node8" title=" " alt="" coords="636,333,687,360"/>
 <area shape="rect" id="node9" title=" " alt="" coords="1023,251,1081,278"/>

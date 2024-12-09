@@ -1,0 +1,68 @@
+\hypertarget{_kernel_filter_header_8cuh}{}\doxysection{src/beliefprop/\+Bp\+Optimize\+CUDA/\+Kernel\+Filter\+Header.cuh File Reference}
+\label{_kernel_filter_header_8cuh}\index{src/beliefprop/BpOptimizeCUDA/KernelFilterHeader.cuh@{src/beliefprop/BpOptimizeCUDA/KernelFilterHeader.cuh}}
+
+
+Header for the kernel to apply a horizontal/vertical filter to image data.  
+
+
+{\ttfamily \#include $<$cuda\+\_\+runtime.\+h$>$}\newline
+{\ttfamily \#include $<$type\+\_\+traits$>$}\newline
+Include dependency graph for Kernel\+Filter\+Header.\+cuh\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{_kernel_filter_header_8cuh__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_kernel_filter_header_8cuh__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop_c_u_d_a}{beliefprop\+CUDA}}
+\begin{DoxyCompactList}\small\item\em Namespace to define global kernel functions for parallel belief propagation processing using CUDA. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_kernel_filter_header_8cuh_aca091c34549b34198a5d3d69e6c28d54}{KERNEL\+\_\+\+FILTER\+\_\+\+HEADER\+\_\+\+CUH}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a731547a4187dbb13a5232f4c1f5cf847}{beliefprop\+CUDA\+::convert\+Unsigned\+Int\+Image\+To\+Float}} (const unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
+\begin{DoxyCompactList}\small\item\em Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float\+\_\+image\+\_\+pixels. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906}{beliefprop\+CUDA\+::\+Filter\+Image\+Across}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527}{beliefprop\+CUDA\+::\+Filter\+Image\+Vertical}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header for the kernel to apply a horizontal/vertical filter to image data. 
+
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Macro Definition Documentation}
+\mbox{\Hypertarget{_kernel_filter_header_8cuh_aca091c34549b34198a5d3d69e6c28d54}\label{_kernel_filter_header_8cuh_aca091c34549b34198a5d3d69e6c28d54}} 
+\index{KernelFilterHeader.cuh@{KernelFilterHeader.cuh}!KERNEL\_FILTER\_HEADER\_CUH@{KERNEL\_FILTER\_HEADER\_CUH}}
+\index{KERNEL\_FILTER\_HEADER\_CUH@{KERNEL\_FILTER\_HEADER\_CUH}!KernelFilterHeader.cuh@{KernelFilterHeader.cuh}}
+\doxysubsubsection{\texorpdfstring{KERNEL\_FILTER\_HEADER\_CUH}{KERNEL\_FILTER\_HEADER\_CUH}}
+{\footnotesize\ttfamily \#define KERNEL\+\_\+\+FILTER\+\_\+\+HEADER\+\_\+\+CUH}
+
+
+
+Definition at line 28 of file Kernel\+Filter\+Header.\+cuh.
+

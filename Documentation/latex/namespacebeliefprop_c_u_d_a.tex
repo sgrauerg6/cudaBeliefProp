@@ -1,31 +1,39 @@
 \hypertarget{namespacebeliefprop_c_u_d_a}{}\doxysection{beliefprop\+CUDA Namespace Reference}
 \label{namespacebeliefprop_c_u_d_a}\index{beliefpropCUDA@{beliefpropCUDA}}
+
+
+Namespace to define global kernel functions for parallel belief propagation processing using CUDA.  
+
+
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_ab306a6710aed26a0653c06fd7c5cc08f}{Initialize\+Bottom\+Level\+Data}} (\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, float $\ast$image\+\_\+1\+\_\+pixels\+\_\+device, float $\ast$image\+\_\+2\+\_\+pixels\+\_\+device, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1, float lambda\+\_\+bp, float data\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
-\item 
+\begin{DoxyCompactList}\small\item\em Initialize the \char`\"{}data cost\char`\"{} for each possible disparity between the two full-\/sized input images (\char`\"{}bottom\char`\"{} of the image pyramid). The image data is stored in the image\+\_\+1\+\_\+pixels\+\_\+device and image\+\_\+2\+\_\+pixels\+\_\+device arrays. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a7712a4a5a1af239b994e2460b879817c}{Initialize\+Current\+Level\+Data}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} prev\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
-\item 
+\begin{DoxyCompactList}\small\item\em Initialize the data costs at the \char`\"{}next\char`\"{} level up in the pyramid given that the data at the lower has been set. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a7f82847fdb5f3e30d525055d6ec92d73}{Initialize\+Message\+Vals\+To\+Default\+Kernel}} (\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
-\item 
+\begin{DoxyCompactList}\small\item\em Initialize the message values at each pixel of the current level to the default value. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a899657bb3e3e1b444c4a5530cce29046}{Run\+BPIteration\+Using\+Checkerboard\+Updates}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
-\item 
+\begin{DoxyCompactList}\small\item\em Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_ae9f52d0c29a7961fd17857f51bdace00}{Run\+BPIteration\+Using\+Checkerboard\+Updates}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, void $\ast$dst\+\_\+processing)
-\item 
+\begin{DoxyCompactList}\small\item\em Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. Function differs from counterpart overloaded function with same name in that it takes in allocated memory to use in processing. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a10ccb426c45302cc412ff2d996034718}{Copy\+Msg\+Data\+To\+Next\+Level}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} next\+\_\+bp\+\_\+level, T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
-\item 
+\begin{DoxyCompactList}\small\item\em Kernel to copy the computed BP message values at the current level to the corresponding locations at the \char`\"{}next\char`\"{} level down. The kernel works from the point of view of the pixel at the current level that is being copied to four corresponding pixels in the next level. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_abdc1bf71faed3396ca433b6ac8f8a472}{Retrieve\+Output\+Disparity}} (\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
-\item 
+\begin{DoxyCompactList}\small\item\em Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel. \end{DoxyCompactList}\item 
 \+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a5aac7c88f740699662563cb494a35e9c}{convert\+Unsigned\+Int\+Image\+To\+Float}} (unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
 \item 
 {\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906}{Filter\+Image\+Across}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
-\item 
+\begin{DoxyCompactList}\small\item\em Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527}{Filter\+Image\+Vertical}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
-\item 
+\begin{DoxyCompactList}\small\item\em Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\item 
 \+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a731547a4187dbb13a5232f4c1f5cf847}{convert\+Unsigned\+Int\+Image\+To\+Float}} (const unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float\+\_\+image\+\_\+pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Namespace to define global kernel functions for parallel belief propagation processing using CUDA. 
 
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{namespacebeliefprop_c_u_d_a_a731547a4187dbb13a5232f4c1f5cf847}\label{namespacebeliefprop_c_u_d_a_a731547a4187dbb13a5232f4c1f5cf847}} 
@@ -34,6 +42,24 @@
 \doxysubsubsection{\texorpdfstring{convertUnsignedIntImageToFloat()}{convertUnsignedIntImageToFloat()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
 {\footnotesize\ttfamily \+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+CUDA\+::convert\+Unsigned\+Int\+Image\+To\+Float (\begin{DoxyParamCaption}\item[{const unsigned int $\ast$}]{uint\+\_\+image\+\_\+pixels,  }\item[{float $\ast$}]{float\+\_\+image\+\_\+pixels,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images }\end{DoxyParamCaption})}
 
+
+
+Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float\+\_\+image\+\_\+pixels. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint\+\_\+image\+\_\+pixels} & \\
+\hline
+{\em float\+\_\+image\+\_\+pixels} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
 \mbox{\Hypertarget{namespacebeliefprop_c_u_d_a_a5aac7c88f740699662563cb494a35e9c}\label{namespacebeliefprop_c_u_d_a_a5aac7c88f740699662563cb494a35e9c}} 
 \index{beliefpropCUDA@{beliefpropCUDA}!convertUnsignedIntImageToFloat@{convertUnsignedIntImageToFloat}}
 \index{convertUnsignedIntImageToFloat@{convertUnsignedIntImageToFloat}!beliefpropCUDA@{beliefpropCUDA}}
@@ -42,7 +68,7 @@
 
 
 
-Definition at line 33 of file kernel\+Filter.\+cu.
+Definition at line 43 of file Kernel\+Filter.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -60,7 +86,64 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 180 of file kernel\+Bp\+Stereo.\+cu.
+Kernel to copy the computed BP message values at the current level to the corresponding locations at the \char`\"{}next\char`\"{} level down. The kernel works from the point of view of the pixel at the current level that is being copied to four corresponding pixels in the next level. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+part} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em next\+\_\+bp\+\_\+level} & \\
+\hline
+{\em message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 316 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -78,7 +161,34 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 52 of file kernel\+Filter.\+cu.
+Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em image\+\_\+to\+\_\+filter} & \\
+\hline
+{\em filtered\+\_\+image} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+{\em image\+\_\+filter} & \\
+\hline
+{\em size\+\_\+filter} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 62 of file Kernel\+Filter.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -96,7 +206,34 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 72 of file kernel\+Filter.\+cu.
+Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em image\+\_\+to\+\_\+filter} & \\
+\hline
+{\em filtered\+\_\+image} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+{\em image\+\_\+filter} & \\
+\hline
+{\em size\+\_\+filter} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file Kernel\+Filter.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -114,7 +251,40 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 41 of file kernel\+Bp\+Stereo.\+cu.
+Initialize the \char`\"{}data cost\char`\"{} for each possible disparity between the two full-\/sized input images (\char`\"{}bottom\char`\"{} of the image pyramid). The image data is stored in the image\+\_\+1\+\_\+pixels\+\_\+device and image\+\_\+2\+\_\+pixels\+\_\+device arrays. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em image\+\_\+1\+\_\+pixels\+\_\+device} & \\
+\hline
+{\em image\+\_\+2\+\_\+pixels\+\_\+device} & \\
+\hline
+{\em data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em lambda\+\_\+bp} & \\
+\hline
+{\em data\+\_\+k\+\_\+bp} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 69 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -132,7 +302,40 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 67 of file kernel\+Bp\+Stereo.\+cu.
+Initialize the data costs at the \char`\"{}next\char`\"{} level up in the pyramid given that the data at the lower has been set. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+part} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em prev\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em data\+\_\+cost\+\_\+current\+\_\+level} & \\
+\hline
+{\em offset\+\_\+num} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 110 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -150,7 +353,44 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 90 of file kernel\+Bp\+Stereo.\+cu.
+Initialize the message values at each pixel of the current level to the default value. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 149 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -168,7 +408,50 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 217 of file kernel\+Bp\+Stereo.\+cu.
+Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em disparity\+\_\+between\+\_\+images\+\_\+device} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 372 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -186,7 +469,54 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 121 of file kernel\+Bp\+Stereo.\+cu.
+Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+to\+\_\+update} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em disc\+\_\+k\+\_\+bp} & \\
+\hline
+{\em data\+\_\+aligned} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 201 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -204,7 +534,56 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 149 of file kernel\+Bp\+Stereo.\+cu.
+Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. Function differs from counterpart overloaded function with same name in that it takes in allocated memory to use in processing. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+to\+\_\+update} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em disc\+\_\+k\+\_\+bp} & \\
+\hline
+{\em data\+\_\+aligned} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+{\em dst\+\_\+processing} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 257 of file Kernel\+Bp\+Stereo.\+cu.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]

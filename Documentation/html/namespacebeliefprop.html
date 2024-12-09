@@ -215,13 +215,18 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ab39f3c4ff5ad8ea07d7b25ca0281ea26"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#ab39f3c4ff5ad8ea07d7b25ca0281ea26">NumBpStereoRuns</a> (unsigned int disparity_vals)</td></tr>
+<tr class="memdesc:ab39f3c4ff5ad8ea07d7b25ca0281ea26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number of disparity values since implementation takes longer in those case, so there is likely less variance between runs and therefore less need to have as many runs.  <a href="namespacebeliefprop.html#ab39f3c4ff5ad8ea07d7b25ca0281ea26">More...</a><br /></td></tr>
+<tr class="separator:ab39f3c4ff5ad8ea07d7b25ca0281ea26"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a508989fdb1d3512a0d3232d92ad094b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_run_data.html">RunData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a508989fdb1d3512a0d3232d92ad094b4">RunSettings</a> ()</td></tr>
 <tr class="memdesc:a508989fdb1d3512a0d3232d92ad094b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve run settings as a <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> object for output.  <a href="namespacebeliefprop.html#a508989fdb1d3512a0d3232d92ad094b4">More...</a><br /></td></tr>
 <tr class="separator:a508989fdb1d3512a0d3232d92ad094b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6a5d9752a11f9ee11a7792ce1538a2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a">RetrieveIndexInDataAndMessage</a> (unsigned int x_val, unsigned int y_val, unsigned int width, unsigned int height, unsigned int current_disparity, unsigned int total_num_disp_vals, unsigned int offset_data=0u)</td></tr>
+<tr class="memdesc:ab6a5d9752a11f9ee11a7792ce1538a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data.  <a href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a">More...</a><br /></td></tr>
 <tr class="separator:ab6a5d9752a11f9ee11a7792ce1538a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae68eab6f8bff8879cdf5eef4d4fe6fa8"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:ae68eab6f8bff8879cdf5eef4d4fe6fa8"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#ae68eab6f8bff8879cdf5eef4d4fe6fa8">DtStereo</a> (T f[DISP_VALS])</td></tr>
+<tr class="memdesc:ae68eab6f8bff8879cdf5eef4d4fe6fa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision")  <a href="namespacebeliefprop.html#ae68eab6f8bff8879cdf5eef4d4fe6fa8">More...</a><br /></td></tr>
 <tr class="separator:ae68eab6f8bff8879cdf5eef4d4fe6fa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa78f83157a3b8ea34135bd45d86e75f5"><td class="memTemplParams" colspan="2">template&lt;RunData_t T&gt; </td></tr>
 <tr class="memitem:aa78f83157a3b8ea34135bd45d86e75f5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#aa78f83157a3b8ea34135bd45d86e75f5">DtStereo</a> (T *f, unsigned int bp_settings_disp_vals)</td></tr>
@@ -243,15 +248,19 @@ Functions</h2></td></tr>
 <tr class="separator:aba6e83ae8b9a208b34c4323f8c78f301"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac627a17eca812709ebdcde3f44013238"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:ac627a17eca812709ebdcde3f44013238"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#ac627a17eca812709ebdcde3f44013238">InitializeBottomLevelDataPixel</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *image_1_pixels_device, const float *image_2_pixels_device, T *data_cost_stereo_checkerboard_0, T *data_cost_stereo_checkerboard_1, float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:ac627a17eca812709ebdcde3f44013238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid). Image data is stored in the image_1_pixels_device and image_2_pixels_device arrays.  <a href="namespacebeliefprop.html#ac627a17eca812709ebdcde3f44013238">More...</a><br /></td></tr>
 <tr class="separator:ac627a17eca812709ebdcde3f44013238"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2c2c16cad2efdda7495ac8334ef7b4c"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:aa2c2c16cad2efdda7495ac8334ef7b4c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c">InitializeCurrentLevelDataPixel</a> (unsigned int x_val, unsigned int y_val, <a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;prev_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:aa2c2c16cad2efdda7495ac8334ef7b4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set.  <a href="namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c">More...</a><br /></td></tr>
 <tr class="separator:aa2c2c16cad2efdda7495ac8334ef7b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69d6c06ed54958dc8377f79d65fb0d18"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a69d6c06ed54958dc8377f79d65fb0d18"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a69d6c06ed54958dc8377f79d65fb0d18">InitializeMessageValsToDefaultKernelPixel</a> (unsigned int x_val_in_checkerboard, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:a69d6c06ed54958dc8377f79d65fb0d18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the message values at each pixel of the current level to the default value.  <a href="namespacebeliefprop.html#a69d6c06ed54958dc8377f79d65fb0d18">More...</a><br /></td></tr>
 <tr class="separator:a69d6c06ed54958dc8377f79d65fb0d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01e4c1fb7d6c8647a0050e9e5c3213bb"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a01e4c1fb7d6c8647a0050e9e5c3213bb"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a01e4c1fb7d6c8647a0050e9e5c3213bb">RunBPIterationUpdateMsgVals</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS], const U prev_l_message[DISP_VALS], const U prev_r_message[DISP_VALS], const U data_message[DISP_VALS], T *current_u_message, T *current_d_message, T *current_l_message, T *current_r_message, const U disc_k_bp, bool data_aligned)</td></tr>
+<tr class="memdesc:a01e4c1fb7d6c8647a0050e9e5c3213bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array and the output message values are stored in array.  <a href="namespacebeliefprop.html#a01e4c1fb7d6c8647a0050e9e5c3213bb">More...</a><br /></td></tr>
 <tr class="separator:a01e4c1fb7d6c8647a0050e9e5c3213bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ffa558874a17f1d28f6587e89be8eec"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunData_t U&gt; </td></tr>
 <tr class="memitem:a2ffa558874a17f1d28f6587e89be8eec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a2ffa558874a17f1d28f6587e89be8eec">RunBPIterationUpdateMsgVals</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const U *prev_u_message, const U *prev_d_message, const U *prev_l_message, const U *prev_r_message, const U *data_message, T *current_u_message, T *current_d_message, T *current_l_message, T *current_r_message, const U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)</td></tr>
@@ -261,12 +270,14 @@ Functions</h2></td></tr>
 <tr class="separator:ac36b5b646e6c8bc15b731b2ec71325eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62cc29e7b1d8257b0d3f4e85ad7cd9e0"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a62cc29e7b1d8257b0d3f4e85ad7cd9e0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0">RunBPIterationUsingCheckerboardUpdatesKernel</a> (unsigned int x_val, unsigned int y_val, <a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:a62cc29e7b1d8257b0d3f4e85ad7cd9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost.  <a href="namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0">More...</a><br /></td></tr>
 <tr class="separator:a62cc29e7b1d8257b0d3f4e85ad7cd9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b7d67f60b6b77a21c95aa186d3d15c0"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a7b7d67f60b6b77a21c95aa186d3d15c0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a7b7d67f60b6b77a21c95aa186d3d15c0">RunBPIterationUsingCheckerboardUpdatesKernel</a> (unsigned int x_val, unsigned int y_val, <a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int offset_data, bool data_aligned, unsigned int bp_settings_disp_vals, void *dst_processing)</td></tr>
 <tr class="separator:a7b7d67f60b6b77a21c95aa186d3d15c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecabdea7725f13ae860736d9073df825"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:aecabdea7725f13ae860736d9073df825"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#aecabdea7725f13ae860736d9073df825">CopyMsgDataToNextLevelPixel</a> (unsigned int x_val, unsigned int y_val, <a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;next_bp_level, const T *message_u_prev_checkerboard_0, const T *message_d_prev_checkerboard_0, const T *message_l_prev_checkerboard_0, const T *message_r_prev_checkerboard_0, const T *message_u_prev_checkerboard_1, const T *message_d_prev_checkerboard_1, const T *message_l_prev_checkerboard_1, const T *message_r_prev_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:aecabdea7725f13ae860736d9073df825"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down the kernel works from the point of view of the pixel at the prev level that is being copied to four different places.  <a href="namespacebeliefprop.html#aecabdea7725f13ae860736d9073df825">More...</a><br /></td></tr>
 <tr class="separator:aecabdea7725f13ae860736d9073df825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d76573309b4b64236efc8c471b7831a"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a0d76573309b4b64236efc8c471b7831a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="_utility_functs_8h.html#a27d46e82335417157a0940d32a3fabfc">ARCHITECTURE_ADDITION</a> void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a0d76573309b4b64236efc8c471b7831a">RetrieveOutputDisparityPixel</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, const T *message_u_checkerboard_0, const T *message_d_checkerboard_0, const T *message_l_checkerboard_0, const T *message_r_checkerboard_0, const T *message_u_checkerboard_1, const T *message_d_checkerboard_1, const T *message_l_checkerboard_1, const T *message_r_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals)</td></tr>
@@ -312,6 +323,8 @@ Variables</h2></td></tr>
 <tr class="separator:af74582b75acb290b833eb6158956cbd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0fe14039eac011f72a659873a7ef6e09"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a0fe14039eac011f72a659873a7ef6e09">kStereoSetHeader</a> {&quot;Stereo Set&quot;}</td></tr>
 <tr class="separator:a0fe14039eac011f72a659873a7ef6e09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70964fd46ccbdd02ee846c7fbcb8eee9"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a70964fd46ccbdd02ee846c7fbcb8eee9">kNumEvalRuns</a> {&quot;Number of evaluation runs&quot;}</td></tr>
+<tr class="separator:a70964fd46ccbdd02ee846c7fbcb8eee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade9084f410319841c34418be4a556df4"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; <a class="el" href="structbeliefprop_1_1_bp_stereo_set.html">BpStereoSet</a>, 8 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#ade9084f410319841c34418be4a556df4">kStereoSetsToProcess</a></td></tr>
 <tr class="memdesc:ade9084f410319841c34418be4a556df4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Declare stereo sets to process with name, num disparity values, and scale factor currently conesFullSize is not used.  <a href="namespacebeliefprop.html#ade9084f410319841c34418be4a556df4">More...</a><br /></td></tr>
 <tr class="separator:ade9084f410319841c34418be4a556df4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -358,8 +371,6 @@ Variables</h2></td></tr>
 <tr class="separator:a2d16582de076c59b2c04e91d8dc815f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a967ce853e69a6075f1fa1f572efcc999"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a967ce853e69a6075f1fa1f572efcc999">kLevelText</a> {&quot;Level&quot;}</td></tr>
 <tr class="separator:a967ce853e69a6075f1fa1f572efcc999"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f9aba3d1636709e30a6781a1aafe151"><td class="memItemLeft" align="right" valign="top">constexpr unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a4f9aba3d1636709e30a6781a1aafe151">kNumBpStereoRuns</a> = 15</td></tr>
-<tr class="separator:a4f9aba3d1636709e30a6781a1aafe151"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a242b1649163c9f2d3c26b4dad2b84c08"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a242b1649163c9f2d3c26b4dad2b84c08">kUseOptGPUMemManagement</a> {true}</td></tr>
 <tr class="separator:a242b1649163c9f2d3c26b4dad2b84c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04b1a93f3c2a19cd5d2ca8f8e36a0384"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop.html#a04b1a93f3c2a19cd5d2ca8f8e36a0384">kOptimizedIndexingSetting</a> {true}</td></tr>
@@ -418,7 +429,7 @@ template&lt;RunData_ptr T&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00052">52</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00071">71</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -444,7 +455,7 @@ template&lt;RunData_ptr T&gt; </div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00061">61</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00080">80</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -477,7 +488,7 @@ template&lt;RunData_ptr T&gt; </div>
 <tr><td class="fieldname"><a id="a02c0faefb0868b58b9bfc8f3bb8b2906aa4d6694818fc8b0338c6516e15a7cb78"></a>kOutputDisp&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00068">68</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00087">87</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -507,7 +518,7 @@ template&lt;RunData_ptr T&gt; </div>
 <tr><td class="fieldname"><a id="a85dcfe709b354b19752ea8ae432f5af5ab3976af25494bc13a8a62bf61d0b7411"></a>kCheckerboardPart1&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00027">27</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00046">46</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -535,7 +546,7 @@ template&lt;RunData_ptr T&gt; </div>
 <tr><td class="fieldname"><a id="a8ccdee0ce862f5a5c1130ed1c23dd59faae638412381b935cbb0314e0c4e5f5d5"></a>kPpmImage&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00024">24</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00043">43</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
 
 </div>
 </div>
@@ -565,7 +576,7 @@ template&lt;RunData_ptr T&gt; </div>
 <tr><td class="fieldname"><a id="a4217a55475830195c82b9937ec941b4da01a238d90d63de26ed7e56a2ccf7ca44"></a>kMessagesRCheckerboard&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00028">28</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00047">47</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -595,7 +606,7 @@ template&lt;RunData_ptr T&gt; </div>
 <tr><td class="fieldname"><a id="a89a58fd265a9f79972785260b1735e8caf7c5e94ac53aff1a29af626d99e2f651"></a>kRMessage&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00030">30</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00049">49</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -666,7 +677,7 @@ template&lt;RunData_ptr T&gt; </div>
 <tr><td class="fieldname"><a id="aec799311905a37226da8b05f8375d951afd5ada7824d5f5f2fde3f68552685b46"></a>kTotalWithTransfer&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="_detailed_timing_bp_consts_8h_source.html#l00030">30</a> of file <a class="el" href="_detailed_timing_bp_consts_8h_source.html">DetailedTimingBpConsts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timing_bp_consts_8h_source.html#l00049">49</a> of file <a class="el" href="_detailed_timing_bp_consts_8h_source.html">DetailedTimingBpConsts.h</a>.</p>
 
 </div>
 </div>
@@ -827,14 +838,50 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00992">992</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down the kernel works from the point of view of the pixel at the prev level that is being copied to four different places. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">checkerboard_part</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">next_bp_level</td><td></td></tr>
+    <tr><td class="paramname">message_u_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01149">1149</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_aecabdea7725f13ae860736d9073df825_cgraph.png" border="0" usemap="#anamespacebeliefprop_aecabdea7725f13ae860736d9073df825_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_aecabdea7725f13ae860736d9073df825_cgraph" id="anamespacebeliefprop_aecabdea7725f13ae860736d9073df825_cgraph">
-<area shape="rect" title=" " alt="" coords="5,39,207,80"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="255,5,441,47"/>
+<area shape="rect" title="Kernel to copy the computed BP message values at the current level to the corresponding locations at ..." alt="" coords="5,39,207,80"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="255,5,441,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="257,71,439,112"/>
 </map>
 </div>
@@ -877,7 +924,7 @@ template&lt;RunData_t T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00055">55</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00093">93</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 
 </div>
 </div>
@@ -935,14 +982,14 @@ template&lt;RunData_t T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00074">74</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00112">112</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8_cgraph.png" border="0" usemap="#anamespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8_cgraph" id="anamespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8_cgraph">
 <area shape="rect" title=" " alt="" coords="5,13,159,39"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="207,5,393,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="207,5,393,47"/>
 </map>
 </div>
 
@@ -974,7 +1021,23 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00036">36</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>function retrieve the minimum value at each 1-d disparity value in O(n) time using Felzenszwalb's method (see "Efficient Belief Propagation for Early Vision") </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">f</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ARCHITECTURE_ADDITION </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00074">74</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 
 </div>
 </div>
@@ -1072,7 +1135,7 @@ template&lt;BpImData_t T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ARCHITECTURE_ADDITION </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shared_smooth_image_functs_8h_source.html#l00034">34</a> of file <a class="el" href="_shared_smooth_image_functs_8h_source.html">SharedSmoothImageFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_smooth_image_functs_8h_source.html#l00053">53</a> of file <a class="el" href="_shared_smooth_image_functs_8h_source.html">SharedSmoothImageFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1180,7 +1243,7 @@ template&lt;BpImData_t T&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>ARCHITECTURE_ADDITION </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_shared_smooth_image_functs_8h_source.html#l00067">67</a> of file <a class="el" href="_shared_smooth_image_functs_8h_source.html">SharedSmoothImageFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_smooth_image_functs_8h_source.html#l00086">86</a> of file <a class="el" href="_shared_smooth_image_functs_8h_source.html">SharedSmoothImageFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1278,14 +1341,38 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00402">402</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid). Image data is stored in the image_1_pixels_device and image_2_pixels_device arrays. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">image_1_pixels_device</td><td></td></tr>
+    <tr><td class="paramname">image_2_pixels_device</td><td></td></tr>
+    <tr><td class="paramname">data_cost_stereo_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_stereo_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">lambda_bp</td><td></td></tr>
+    <tr><td class="paramname">data_k_bp</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00454">454</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_ac627a17eca812709ebdcde3f44013238_cgraph.png" border="0" usemap="#anamespacebeliefprop_ac627a17eca812709ebdcde3f44013238_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_ac627a17eca812709ebdcde3f44013238_cgraph" id="anamespacebeliefprop_ac627a17eca812709ebdcde3f44013238_cgraph">
-<area shape="rect" title=" " alt="" coords="5,39,205,80"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="253,5,440,47"/>
+<area shape="rect" title="Initialize the &quot;data cost&quot; for each possible disparity between the two full&#45;sized input images (&quot;bott..." alt="" coords="5,39,205,80"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="253,5,440,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="256,71,437,112"/>
 </map>
 </div>
@@ -1376,14 +1463,39 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00516">516</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">U</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">checkerboard_part</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">prev_bp_level</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">data_cost_current_level</td><td></td></tr>
+    <tr><td class="paramname">offset_num</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00585">585</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_cgraph.png" border="0" usemap="#anamespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_cgraph" id="anamespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_cgraph">
-<area shape="rect" title=" " alt="" coords="5,39,205,80"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="253,5,440,47"/>
+<area shape="rect" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="5,39,205,80"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="253,5,440,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="256,71,437,112"/>
 </map>
 </div>
@@ -1392,7 +1504,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_icgraph.png" border="0" usemap="#anamespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_icgraph" alt=""/></div>
 <map name="anamespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_icgraph" id="anamespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_icgraph">
-<area shape="rect" title=" " alt="" coords="276,304,476,345"/>
+<area shape="rect" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="276,304,476,345"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a1af37bd5971d25510198fdac381e24f7" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a101603643a2addf007bceb535f40c69e" title=" " alt="" coords="5,100,228,171"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a0c18a676c30b63b9bba59fd18dcaad87" title=" " alt="" coords="5,195,228,265"/>
@@ -1501,14 +1613,40 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00586">586</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Initialize the message values at each pixel of the current level to the default value. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val_in_checkerboard</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00672">672</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph.png" border="0" usemap="#anamespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph" id="anamespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,216,47"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="264,5,451,47"/>
+<area shape="rect" title="Initialize the message values at each pixel of the current level to the default value." alt="" coords="5,5,216,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="264,5,451,47"/>
 </map>
 </div>
 
@@ -1628,14 +1766,14 @@ template&lt;RunData_t T, RunData_t U, beliefprop::MessageComp M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00319">319</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00356">356</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301_cgraph.png" border="0" usemap="#anamespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301_cgraph" id="anamespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301_cgraph">
 <area shape="rect" title=" " alt="" coords="5,13,171,39"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="219,5,405,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="219,5,405,47"/>
 </map>
 </div>
 
@@ -1731,14 +1869,14 @@ template&lt;RunData_t T, RunData_t U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00175">175</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00213">213</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_ae3cc8d125413e32c293999d93666714a_cgraph.png" border="0" usemap="#anamespacebeliefprop_ae3cc8d125413e32c293999d93666714a_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_ae3cc8d125413e32c293999d93666714a_cgraph" id="anamespacebeliefprop_ae3cc8d125413e32c293999d93666714a_cgraph">
 <area shape="rect" title=" " alt="" coords="5,13,171,39"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="219,5,405,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="219,5,405,47"/>
 </map>
 </div>
 
@@ -1828,14 +1966,61 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00117">117</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00155">155</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a719026072592bb9a4c99be94655253ef_cgraph.png" border="0" usemap="#anamespacebeliefprop_a719026072592bb9a4c99be94655253ef_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a719026072592bb9a4c99be94655253ef_cgraph" id="anamespacebeliefprop_a719026072592bb9a4c99be94655253ef_cgraph">
 <area shape="rect" title=" " alt="" coords="5,13,171,39"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="219,5,405,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="219,5,405,47"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ab39f3c4ff5ad8ea07d7b25ca0281ea26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab39f3c4ff5ad8ea07d7b25ca0281ea26">&#9670;&nbsp;</a></span>NumBpStereoRuns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int beliefprop::NumBpStereoRuns </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>disparity_vals</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number of disparity values since implementation takes longer in those case, so there is likely less variance between runs and therefore less need to have as many runs. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">disparity_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>unsigned int </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00046">46</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="namespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281ea26_icgraph.png" border="0" usemap="#anamespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281ea26_icgraph" alt=""/></div>
+<map name="anamespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281ea26_icgraph" id="anamespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281ea26_icgraph">
+<area shape="rect" title="Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number o..." alt="" coords="487,13,705,39"/>
+<area shape="rect" href="class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,5,439,47"/>
+<area shape="rect" href="class_run_bp_on_stereo_set_c_u_d_a.html#ae8e0dd1cd0c36fa75769a2dc8f49dd42" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,5,188,47"/>
 </map>
 </div>
 
@@ -1949,14 +2134,14 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01382">1382</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01539">1539</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a5085344408155d487a5c63ad64236eab_cgraph.png" border="0" usemap="#anamespacebeliefprop_a5085344408155d487a5c63ad64236eab_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a5085344408155d487a5c63ad64236eab_cgraph" id="anamespacebeliefprop_a5085344408155d487a5c63ad64236eab_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,200,47"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="248,5,435,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="248,5,435,47"/>
 </map>
 </div>
 
@@ -2070,14 +2255,14 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01448">1448</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01605">1605</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a81aace5409ee7378733e21689955b681_cgraph.png" border="0" usemap="#anamespacebeliefprop_a81aace5409ee7378733e21689955b681_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a81aace5409ee7378733e21689955b681_cgraph" id="anamespacebeliefprop_a81aace5409ee7378733e21689955b681_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,200,47"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="248,5,435,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="248,5,435,47"/>
 </map>
 </div>
 
@@ -2147,29 +2332,44 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00020">20</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Retrieve the current 1-D index value of the given point at the given disparity in the data cost and message data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">width</td><td></td></tr>
+    <tr><td class="paramname">height</td><td></td></tr>
+    <tr><td class="paramname">current_disparity</td><td></td></tr>
+    <tr><td class="paramname">total_num_disp_vals</td><td></td></tr>
+    <tr><td class="paramname">offset_data</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ARCHITECTURE_ADDITION </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00051">51</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a_icgraph.png" border="0" usemap="#anamespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a_icgraph" alt=""/></div>
 <map name="anamespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a_icgraph" id="anamespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a_icgraph">
-<area shape="rect" title=" " alt="" coords="589,636,776,677"/>
-<area shape="rect" href="namespacebeliefprop.html#aecabdea7725f13ae860736d9073df825" title=" " alt="" coords="319,155,521,196"/>
+<area shape="rect" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="589,636,776,677"/>
+<area shape="rect" href="namespacebeliefprop.html#aecabdea7725f13ae860736d9073df825" title="Kernel to copy the computed BP message values at the current level to the corresponding locations at ..." alt="" coords="319,155,521,196"/>
 <area shape="rect" href="namespacebeliefprop.html#a482a4e6f83ad07ea3b4484cca463e6e8" title=" " alt="" coords="343,221,497,247"/>
-<area shape="rect" href="namespacebeliefprop.html#ac627a17eca812709ebdcde3f44013238" title=" " alt="" coords="320,272,520,313"/>
-<area shape="rect" href="namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c" title=" " alt="" coords="320,337,520,379"/>
-<area shape="rect" href="namespacebeliefprop.html#a69d6c06ed54958dc8377f79d65fb0d18" title=" " alt="" coords="315,403,525,444"/>
+<area shape="rect" href="namespacebeliefprop.html#ac627a17eca812709ebdcde3f44013238" title="Initialize the &quot;data cost&quot; for each possible disparity between the two full&#45;sized input images (&quot;bott..." alt="" coords="320,272,520,313"/>
+<area shape="rect" href="namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="320,337,520,379"/>
+<area shape="rect" href="namespacebeliefprop.html#a69d6c06ed54958dc8377f79d65fb0d18" title="Initialize the message values at each pixel of the current level to the default value." alt="" coords="315,403,525,444"/>
 <area shape="rect" href="namespacebeliefprop.html#a719026072592bb9a4c99be94655253ef" title=" " alt="" coords="337,469,503,495"/>
-<area shape="rect" href="kernel_bp_stereo_half_8cu.html#a2c6a4d28409a96c3996ba2d2bf4249df" title=" " alt="" coords="361,519,479,546"/>
+<area shape="rect" href="_kernel_bp_stereo_half_8cu.html#a2c6a4d28409a96c3996ba2d2bf4249df" title=" " alt="" coords="361,519,479,546"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#ae4241f07ead9d7e35ce97fda430d163a" title=" " alt="" coords="324,571,516,612"/>
-<area shape="rect" href="kernel_bp_stereo_debug_8cu.html#ae0891794806910b92158b98ddef37fb8" title=" " alt="" coords="317,636,523,677"/>
+<area shape="rect" href="_kernel_bp_stereo_debug_8cu.html#ae0891794806910b92158b98ddef37fb8" title=" " alt="" coords="317,636,523,677"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#ae0f2240415020ec80d3b79ad3cd35afd" title=" " alt="" coords="310,701,530,743"/>
 <area shape="rect" href="namespacebeliefprop.html#a5085344408155d487a5c63ad64236eab" title=" " alt="" coords="323,767,517,808"/>
-<area shape="rect" href="kernel_bp_stereo_debug_8cu.html#a3e866b02eed4e07788dc0eafce35239a" title=" " alt="" coords="317,832,523,873"/>
+<area shape="rect" href="_kernel_bp_stereo_debug_8cu.html#a3e866b02eed4e07788dc0eafce35239a" title=" " alt="" coords="317,832,523,873"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#a8ae046dfc3fc8d99f38a353906a7bf10" title=" " alt="" coords="310,897,530,939"/>
 <area shape="rect" href="namespacebeliefprop.html#a81aace5409ee7378733e21689955b681" title=" " alt="" coords="323,963,517,1004"/>
 <area shape="rect" href="namespacebeliefprop.html#a0d76573309b4b64236efc8c471b7831a" title=" " alt="" coords="323,1028,517,1069"/>
-<area shape="rect" href="namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0" title=" " alt="" coords="299,1535,541,1576"/>
+<area shape="rect" href="namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="299,1535,541,1576"/>
 <area shape="rect" href="namespacebeliefprop.html#a449917ceaa07c2271c379759b2c08400" title=" " alt="" coords="305,1601,535,1627"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a1af37bd5971d25510198fdac381e24f7" title=" " alt="" coords="17,5,239,76"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a101603643a2addf007bceb535f40c69e" title=" " alt="" coords="17,100,239,171"/>
@@ -2311,14 +2511,14 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01143">1143</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01300">1300</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_cgraph.png" border="0" usemap="#anamespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_cgraph" id="anamespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_cgraph">
 <area shape="rect" title=" " alt="" coords="5,39,200,80"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="248,5,435,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="248,5,435,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="251,71,432,112"/>
 </map>
 </div>
@@ -2472,7 +2672,7 @@ template&lt;RunData_t T, RunData_t U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00739">739</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00845">845</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 
 </div>
 </div>
@@ -2590,7 +2790,7 @@ template&lt;RunData_t T, RunData_t U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00712">712</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00818">818</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 
 </div>
 </div>
@@ -2702,7 +2902,36 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00685">685</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Kernel function to run the current iteration of belief propagation where the input messages and data costs come in as array and the output message values are stored in array. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">U</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">prev_u_message</td><td></td></tr>
+    <tr><td class="paramname">prev_d_message</td><td></td></tr>
+    <tr><td class="paramname">prev_l_message</td><td></td></tr>
+    <tr><td class="paramname">prev_r_message</td><td></td></tr>
+    <tr><td class="paramname">data_message</td><td></td></tr>
+    <tr><td class="paramname">current_u_message</td><td></td></tr>
+    <tr><td class="paramname">current_d_message</td><td></td></tr>
+    <tr><td class="paramname">current_l_message</td><td></td></tr>
+    <tr><td class="paramname">current_r_message</td><td></td></tr>
+    <tr><td class="paramname">disc_k_bp</td><td></td></tr>
+    <tr><td class="paramname">data_aligned</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00791">791</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 
 </div>
 </div>
@@ -2838,14 +3067,48 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00776">776</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p>Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">U</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x_val</td><td></td></tr>
+    <tr><td class="paramname">y_val</td><td></td></tr>
+    <tr><td class="paramname">checkerboard_to_update</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">disc_k_bp</td><td></td></tr>
+    <tr><td class="paramname">offset_data</td><td></td></tr>
+    <tr><td class="paramname">data_aligned</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ARCHITECTURE_ADDITION </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00906">906</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_cgraph.png" border="0" usemap="#anamespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_cgraph" id="anamespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,248,47"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="296,5,483,47"/>
+<area shape="rect" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="5,5,248,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="296,5,483,47"/>
 </map>
 </div>
 <div class="dynheader">
@@ -2853,7 +3116,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_icgraph.png" border="0" usemap="#anamespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_icgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_icgraph" id="anamespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_icgraph">
-<area shape="rect" title=" " alt="" coords="299,304,541,345"/>
+<area shape="rect" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="299,304,541,345"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#ac0749c9c714fc948862d155053d6c710" title=" " alt="" coords="5,5,251,76"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a6c25e031fd4319a9de9e4ddfd73e0732" title=" " alt="" coords="5,100,251,171"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#ad5d6100e3a35b156c2a899665250dc0b" title=" " alt="" coords="5,195,251,265"/>
@@ -3004,7 +3267,7 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00944">944</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l01074">1074</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 
 </div>
 </div>
@@ -3034,7 +3297,7 @@ template&lt;RunData_t T, RunData_t U, unsigned int DISP_VALS&gt; </div>
 <p>Retrieve run settings as a <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> object for output. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00046">46</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00081">81</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -3182,14 +3445,14 @@ template&lt;RunData_t T, RunData_t U, beliefprop::MessageComp M&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00235">235</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_shared_bp_processing_functs_8h_source.html#l00273">273</a> of file <a class="el" href="_shared_bp_processing_functs_8h_source.html">SharedBpProcessingFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_a449917ceaa07c2271c379759b2c08400_cgraph.png" border="0" usemap="#anamespacebeliefprop_a449917ceaa07c2271c379759b2c08400_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_a449917ceaa07c2271c379759b2c08400_cgraph" id="anamespacebeliefprop_a449917ceaa07c2271c379759b2c08400_cgraph">
 <area shape="rect" title=" " alt="" coords="5,13,236,39"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="284,5,471,47"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="284,5,471,47"/>
 </map>
 </div>
 
@@ -3216,7 +3479,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00054">54</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00089">89</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
 
 </div>
 </div>
@@ -3240,7 +3503,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00035">35</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00070">70</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3264,7 +3527,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_disparity_map_evaluation_8h_source.html#l00018">18</a> of file <a class="el" href="_disparity_map_evaluation_8h_source.html">DisparityMapEvaluation.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_disparity_map_evaluation_8h_source.html#l00037">37</a> of file <a class="el" href="_disparity_map_evaluation_8h_source.html">DisparityMapEvaluation.h</a>.</p>
 
 </div>
 </div>
@@ -3288,7 +3551,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00023">23</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00042">42</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3312,7 +3575,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00026">26</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00045">45</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3336,7 +3599,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html#l00022">22</a> of file <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html">RunBpOnStereoSetOptimizedCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html#l00041">41</a> of file <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html">RunBpOnStereoSetOptimizedCPU.h</a>.</p>
 
 </div>
 </div>
@@ -3360,7 +3623,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00035">35</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00041">41</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 
 </div>
 </div>
@@ -3384,7 +3647,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00038">38</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00057">57</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3408,7 +3671,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00039">39</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00058">58</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3432,7 +3695,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00028">28</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00047">47</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3456,7 +3719,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00027">27</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00046">46</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3480,7 +3743,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html#l00024">24</a> of file <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html">RunBpOnStereoSetOptimizedCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html#l00043">43</a> of file <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html">RunBpOnStereoSetOptimizedCPU.h</a>.</p>
 
 </div>
 </div>
@@ -3504,7 +3767,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00037">37</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00043">43</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 
 </div>
 </div>
@@ -3528,7 +3791,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00036">36</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00042">42</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 
 </div>
 </div>
@@ -3552,7 +3815,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00037">37</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00056">56</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3576,7 +3839,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00025">25</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00044">44</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3600,7 +3863,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00055">55</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00074">74</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3624,7 +3887,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00046">46</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00065">65</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3648,7 +3911,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00052">52</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00071">71</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3672,7 +3935,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00043">43</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00062">62</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3696,7 +3959,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00049">49</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00068">68</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3720,7 +3983,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00036">36</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00055">55</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3748,7 +4011,7 @@ Here is the call graph for this function:</div>
 </div><!-- fragment -->
 <p>Difference thresholds in output disparity for a computed disparity at a pixel to be considered a "bad pixel" when compared to the ground truth in the evaluation. </p>
 
-<p class="definition">Definition at line <a class="el" href="_disparity_map_evaluation_params_8h_source.html#l00020">20</a> of file <a class="el" href="_disparity_map_evaluation_params_8h_source.html">DisparityMapEvaluationParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_disparity_map_evaluation_params_8h_source.html#l00039">39</a> of file <a class="el" href="_disparity_map_evaluation_params_8h_source.html">DisparityMapEvaluationParams.h</a>.</p>
 
 </div>
 </div>
@@ -3772,11 +4035,11 @@ Here is the call graph for this function:</div>
 <div class="line">      {<a class="code" href="class_input_signature.html">InputSignature</a>({}, {}, <span class="keyword">true</span>)}},</div>
 <div class="line">    {<span class="stringliteral">&quot;runs w/ disparity count not templated&quot;</span>,</div>
 <div class="line">      {<a class="code" href="class_input_signature.html">InputSignature</a>({}, {}, <span class="keyword">false</span>)}}}</div>
-<div class="ttc" id="aclass_input_signature_html"><div class="ttname"><a href="class_input_signature.html">InputSignature</a></div><div class="ttdoc">Class defines input signature for evaluation run that contains evaluation set number,...</div><div class="ttdef"><b>Definition:</b> <a href="_input_signature_8h_source.html#l00026">InputSignature.h:26</a></div></div>
+<div class="ttc" id="aclass_input_signature_html"><div class="ttname"><a href="class_input_signature.html">InputSignature</a></div><div class="ttdoc">Class defines input signature for evaluation run that contains evaluation set number,...</div><div class="ttdef"><b>Definition:</b> <a href="_input_signature_8h_source.html#l00043">InputSignature.h:43</a></div></div>
 </div><!-- fragment -->
 <p>Define subsets for evaluating run results on specified inputs the first three stereo sets are labeled as "smallest 3 stereo sets" the last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets". </p>
 
-<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00078">78</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00080">80</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
 
 </div>
 </div>
@@ -3800,7 +4063,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00042">42</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00041">41</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
 
 </div>
 </div>
@@ -3824,7 +4087,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00041">41</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00040">40</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
 
 </div>
 </div>
@@ -3848,7 +4111,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00039">39</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00074">74</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
 
 </div>
 </div>
@@ -3874,7 +4137,7 @@ Here is the call graph for this function:</div>
 
 <p>Float value of "infinity" that works with half-precision. </p>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00021">21</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00040">40</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -3898,7 +4161,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00024">24</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00043">43</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3934,7 +4197,7 @@ Here is the call graph for this function:</div>
 <div class="line">  std::array&lt;std::string_view, 3&gt;{<span class="stringliteral">&quot;Level 9 Data Costs&quot;</span>, <span class="stringliteral">&quot;Level 9 BP Runtime&quot;</span>, <span class="stringliteral">&quot;Level 9 Copy Runtime&quot;</span>}</div>
 <div class="line">}</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="_detailed_timing_bp_consts_8h_source.html#l00017">17</a> of file <a class="el" href="_detailed_timing_bp_consts_8h_source.html">DetailedTimingBpConsts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timing_bp_consts_8h_source.html#l00036">36</a> of file <a class="el" href="_detailed_timing_bp_consts_8h_source.html">DetailedTimingBpConsts.h</a>.</p>
 
 </div>
 </div>
@@ -3958,7 +4221,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00029">29</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_parallel_params_8h_source.html#l00048">48</a> of file <a class="el" href="_bp_parallel_params_8h_source.html">BpParallelParams.h</a>.</p>
 
 </div>
 </div>
@@ -3983,11 +4246,11 @@ Here is the call graph for this function:</div>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">{</div>
 <div class="line">    <a class="code" href="namespacebeliefprop.html#ae8d98ea7ba0ebd3d0242a40a36d3ab75">kDisparityDiffThresholds</a>[std::size(<a class="code" href="namespacebeliefprop.html#ae8d98ea7ba0ebd3d0242a40a36d3ab75">kDisparityDiffThresholds</a>) - 1]}</div>
-<div class="ttc" id="anamespacebeliefprop_html_ae8d98ea7ba0ebd3d0242a40a36d3ab75"><div class="ttname"><a href="namespacebeliefprop.html#ae8d98ea7ba0ebd3d0242a40a36d3ab75">beliefprop::kDisparityDiffThresholds</a></div><div class="ttdeci">constexpr std::array&lt; float, 4 &gt; kDisparityDiffThresholds</div><div class="ttdoc">Difference thresholds in output disparity for a computed disparity at a pixel to be considered a &quot;bad...</div><div class="ttdef"><b>Definition:</b> <a href="_disparity_map_evaluation_params_8h_source.html#l00020">DisparityMapEvaluationParams.h:20</a></div></div>
+<div class="ttc" id="anamespacebeliefprop_html_ae8d98ea7ba0ebd3d0242a40a36d3ab75"><div class="ttname"><a href="namespacebeliefprop.html#ae8d98ea7ba0ebd3d0242a40a36d3ab75">beliefprop::kDisparityDiffThresholds</a></div><div class="ttdeci">constexpr std::array&lt; float, 4 &gt; kDisparityDiffThresholds</div><div class="ttdoc">Difference thresholds in output disparity for a computed disparity at a pixel to be considered a &quot;bad...</div><div class="ttdef"><b>Definition:</b> <a href="_disparity_map_evaluation_params_8h_source.html#l00039">DisparityMapEvaluationParams.h:39</a></div></div>
 </div><!-- fragment -->
 <p>Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers in the average difference across all pixels. </p>
 
-<p class="definition">Definition at line <a class="el" href="_disparity_map_evaluation_params_8h_source.html#l00028">28</a> of file <a class="el" href="_disparity_map_evaluation_params_8h_source.html">DisparityMapEvaluationParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_disparity_map_evaluation_params_8h_source.html#l00047">47</a> of file <a class="el" href="_disparity_map_evaluation_params_8h_source.html">DisparityMapEvaluationParams.h</a>.</p>
 
 </div>
 </div>
@@ -4011,7 +4274,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00038">38</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00073">73</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
 
 </div>
 </div>
@@ -4035,7 +4298,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00035">35</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00054">54</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -4059,31 +4322,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00034">34</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
-
-</div>
-</div>
-<a id="a4f9aba3d1636709e30a6781a1aafe151"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f9aba3d1636709e30a6781a1aafe151">&#9670;&nbsp;</a></span>kNumBpStereoRuns</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr unsigned int beliefprop::kNumBpStereoRuns = 15</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00023">23</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00053">53</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
 
 </div>
 </div>
@@ -4109,7 +4348,7 @@ Here is the call graph for this function:</div>
 
 <p>Number of checkerboard parts for processing. </p>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00036">36</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00055">55</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -4133,7 +4372,31 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00033">33</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_settings_8h_source.html#l00052">52</a> of file <a class="el" href="_bp_settings_8h_source.html">BpSettings.h</a>.</p>
+
+</div>
+</div>
+<a id="a70964fd46ccbdd02ee846c7fbcb8eee9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70964fd46ccbdd02ee846c7fbcb8eee9">&#9670;&nbsp;</a></span>kNumEvalRuns</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::string_view beliefprop::kNumEvalRuns {&quot;Number of evaluation runs&quot;}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00045">45</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
 
 </div>
 </div>
@@ -4159,7 +4422,7 @@ Here is the call graph for this function:</div>
 
 <p>Enum corresponding to each kernel in belief propagation that can be run in parallel. </p>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00067">67</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00086">86</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -4185,7 +4448,7 @@ Here is the call graph for this function:</div>
 
 <p>Number of message arrays in each checkerboard part. </p>
 
-<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00042">42</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_consts_enums_aliases_8h_source.html#l00061">61</a> of file <a class="el" href="_bp_consts_enums_aliases_8h_source.html">BpConstsEnumsAliases.h</a>.</p>
 
 </div>
 </div>
@@ -4209,7 +4472,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html#l00023">23</a> of file <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html">RunBpOnStereoSetOptimizedCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html#l00042">42</a> of file <a class="el" href="_run_bp_on_stereo_set_optimized_c_p_u_8h_source.html">RunBpOnStereoSetOptimizedCPU.h</a>.</p>
 
 </div>
 </div>
@@ -4233,7 +4496,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00034">34</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00069">69</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
 
 </div>
 </div>
@@ -4257,7 +4520,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00026">26</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00045">45</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
 
 </div>
 </div>
@@ -4281,7 +4544,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00027">27</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00046">46</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
 
 </div>
 </div>
@@ -4305,7 +4568,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00043">43</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00042">42</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
 
 </div>
 </div>
@@ -4341,7 +4604,7 @@ Here is the call graph for this function:</div>
 </div><!-- fragment -->
 <p>Declare stereo sets to process with name, num disparity values, and scale factor currently conesFullSize is not used. </p>
 
-<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00061">61</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html#l00063">63</a> of file <a class="el" href="_bp_evaluation_stereo_sets_8h_source.html">BpEvaluationStereoSets.h</a>.</p>
 
 </div>
 </div>
@@ -4357,7 +4620,7 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_detailed_timing_bp_consts_8h_source.html#l00038">38</a> of file <a class="el" href="_detailed_timing_bp_consts_8h_source.html">DetailedTimingBpConsts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_detailed_timing_bp_consts_8h_source.html#l00057">57</a> of file <a class="el" href="_detailed_timing_bp_consts_8h_source.html">DetailedTimingBpConsts.h</a>.</p>
 
 </div>
 </div>
@@ -4381,7 +4644,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00033">33</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_run_settings_8h_source.html#l00068">68</a> of file <a class="el" href="_bp_run_settings_8h_source.html">BpRunSettings.h</a>.</p>
 
 </div>
 </div>
@@ -4405,7 +4668,7 @@ Here is the call graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00025">25</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_bp_image_8h_source.html#l00044">44</a> of file <a class="el" href="_bp_image_8h_source.html">BpImage.h</a>.</p>
 
 </div>
 </div>

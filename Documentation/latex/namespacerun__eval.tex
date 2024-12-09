@@ -11,7 +11,11 @@ Namespace for general program run evaluation.
 enum class \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{Status}} \{ \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cdafcd1af9ec66cb99f2d106d7fdc865c8b}{k\+No\+Error}}
 , \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cdae3587c730cc1aa530fa4ddc9c4204e97}{k\+Error}}
  \}
-\begin{DoxyCompactList}\small\item\em Enum for status to indicate if error or no error. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Enum for status to indicate if error or no error. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{Middle\+Val\+Data}} \{ \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5}{k\+Average}}
+, \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477}{k\+Median}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum to specify average or median for \char`\"{}middle\char`\"{} value in data. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -27,6 +31,8 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aef29ac0eb
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_acbceca007a683b12400a658170453b7a}{k\+Run\+Success\+Header}} \{\char`\"{}Run Success\char`\"{}\}
 \item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a68b6e7c080212e75c52102099564ec23}{k\+Median\+Of\+Test\+Runs\+Desc}} \{\char`\"{}(median timing across evaluation runs)\char`\"{}\}
+\begin{DoxyCompactList}\small\item\em Constant to describing timing as median across evaluation runs. \end{DoxyCompactList}\item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a43472d99af1ea4cd938fdae0ff48d0a2}{k\+All\+Runs\+Str}} \{\char`\"{}All Runs\char`\"{}\}
 \begin{DoxyCompactList}\small\item\em Constant for \char`\"{}all runs\char`\"{} string. \end{DoxyCompactList}\item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}{k\+Run\+Results\+Desc\+File\+Name}} \{\char`\"{}Run\+Results\char`\"{}\}
@@ -85,6 +91,30 @@ constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a2be272bfc5ce93
 Namespace for general program run evaluation. 
 
 \doxysubsection{Enumeration Type Documentation}
+\mbox{\Hypertarget{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}\label{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}} 
+\index{run\_eval@{run\_eval}!MiddleValData@{MiddleValData}}
+\index{MiddleValData@{MiddleValData}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{MiddleValData}{MiddleValData}}
+{\footnotesize\ttfamily enum \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{run\+\_\+eval\+::\+Middle\+Val\+Data}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum to specify average or median for \char`\"{}middle\char`\"{} value in data. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAverage@{kAverage}!run\_eval@{run\_eval}}\index{run\_eval@{run\_eval}!kAverage@{kAverage}}}\mbox{\Hypertarget{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5}\label{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5}} 
+k\+Average&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kMedian@{kMedian}!run\_eval@{run\_eval}}\index{run\_eval@{run\_eval}!kMedian@{kMedian}}}\mbox{\Hypertarget{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477}\label{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477}} 
+k\+Median&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 42 of file Run\+Eval\+Consts\+Enums.\+h.
+
 \mbox{\Hypertarget{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}\label{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}} 
 \index{run\_eval@{run\_eval}!Status@{Status}}
 \index{Status@{Status}!run\_eval@{run\_eval}}
@@ -107,7 +137,7 @@ k\+Error&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 25 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 38 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
@@ -124,7 +154,7 @@ Constant for \char`\"{}all runs\char`\"{} string.
 
 
 
-Definition at line 52 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 66 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aaaeaf61451f5f5f94c6cbcf1d550d9e8}\label{namespacerun__eval_aaaeaf61451f5f5f94c6cbcf1d550d9e8}} 
 \index{run\_eval@{run\_eval}!kBoolValFalseTrueDispStr@{kBoolValFalseTrueDispStr}}
@@ -138,7 +168,7 @@ Define string for display of \char`\"{}true\char`\"{} and \char`\"{}false\char`\
 
 
 
-Definition at line 40 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 54 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a5c69e0c09678a48f6bcd5d46ac052096}\label{namespacerun__eval_a5c69e0c09678a48f6bcd5d46ac052096}} 
 \index{run\_eval@{run\_eval}!kCsvFileExtension@{kCsvFileExtension}}
@@ -148,7 +178,7 @@ Definition at line 40 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 61 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 75 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a1bb38345922853340e189ff4e073bdf7}\label{namespacerun__eval_a1bb38345922853340e189ff4e073bdf7}} 
 \index{run\_eval@{run\_eval}!kDatatypeHeader@{kDatatypeHeader}}
@@ -158,7 +188,7 @@ Definition at line 61 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 44 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 58 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ade2de03079235e85054acc531e3f2350}\label{namespacerun__eval_ade2de03079235e85054acc531e3f2350}} 
 \index{run\_eval@{run\_eval}!kDataTypesEvalSizes@{kDataTypesEvalSizes}}
@@ -168,7 +198,7 @@ Definition at line 44 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 33 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 50 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a229caf4f6150ca92d66eb06a150b9fa6}\label{namespacerun__eval_a229caf4f6150ca92d66eb06a150b9fa6}} 
 \index{run\_eval@{run\_eval}!kEvalAcrossRunsFileName@{kEvalAcrossRunsFileName}}
@@ -178,7 +208,7 @@ Definition at line 33 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 60 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 74 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ac16a5475c8ba2869a579e2c1c2b8e902}\label{namespacerun__eval_ac16a5475c8ba2869a579e2c1c2b8e902}} 
 \index{run\_eval@{run\_eval}!kImpResultsAcrossArchsFolderName@{kImpResultsAcrossArchsFolderName}}
@@ -188,7 +218,7 @@ Definition at line 60 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 77 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 91 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aeb9a999d42ab9a972522a36e2e2f9712}\label{namespacerun__eval_aeb9a999d42ab9a972522a36e2e2f9712}} 
 \index{run\_eval@{run\_eval}!kImpResultsFolderName@{kImpResultsFolderName}}
@@ -198,7 +228,7 @@ Definition at line 77 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 72 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 86 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a625a3bd1e0783741632501cd38ef6f46}\label{namespacerun__eval_a625a3bd1e0783741632501cd38ef6f46}} 
 \index{run\_eval@{run\_eval}!kImpResultsRunDataDefaultPParamsFolderName@{kImpResultsRunDataDefaultPParamsFolderName}}
@@ -208,7 +238,7 @@ Definition at line 72 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 74 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 88 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a12f0e50ca7718080a44f95b98512aad0}\label{namespacerun__eval_a12f0e50ca7718080a44f95b98512aad0}} 
 \index{run\_eval@{run\_eval}!kImpResultsRunDataFolderName@{kImpResultsRunDataFolderName}}
@@ -218,7 +248,7 @@ Definition at line 74 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 73 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 87 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_adc691a7675131728cd71a6fcc9fc3967}\label{namespacerun__eval_adc691a7675131728cd71a6fcc9fc3967}} 
 \index{run\_eval@{run\_eval}!kImpResultsRunDataWSpeedupsFolderName@{kImpResultsRunDataWSpeedupsFolderName}}
@@ -228,7 +258,7 @@ Definition at line 73 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 75 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 89 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad2e81e462dc5a1a39da8b7bd3d6d533c}\label{namespacerun__eval_ad2e81e462dc5a1a39da8b7bd3d6d533c}} 
 \index{run\_eval@{run\_eval}!kImpResultsSpeedupsFolderName@{kImpResultsSpeedupsFolderName}}
@@ -238,7 +268,7 @@ Definition at line 75 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 76 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 90 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a07d7885ec260b8cfe897bdecf3bc428f}\label{namespacerun__eval_a07d7885ec260b8cfe897bdecf3bc428f}} 
 \index{run\_eval@{run\_eval}!kInputIdxHeader@{kInputIdxHeader}}
@@ -248,7 +278,7 @@ Definition at line 76 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 43 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 57 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aef29ac0eb3ad8078a51bc7612ee6863b}\label{namespacerun__eval_aef29ac0eb3ad8078a51bc7612ee6863b}} 
 \index{run\_eval@{run\_eval}!kLoopItersTemplatedHeader@{kLoopItersTemplatedHeader}}
@@ -258,7 +288,21 @@ Definition at line 43 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 45 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 59 of file Run\+Eval\+Consts\+Enums.\+h.
+
+\mbox{\Hypertarget{namespacerun__eval_a68b6e7c080212e75c52102099564ec23}\label{namespacerun__eval_a68b6e7c080212e75c52102099564ec23}} 
+\index{run\_eval@{run\_eval}!kMedianOfTestRunsDesc@{kMedianOfTestRunsDesc}}
+\index{kMedianOfTestRunsDesc@{kMedianOfTestRunsDesc}!run\_eval@{run\_eval}}
+\doxysubsubsection{\texorpdfstring{kMedianOfTestRunsDesc}{kMedianOfTestRunsDesc}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+eval\+::k\+Median\+Of\+Test\+Runs\+Desc \{\char`\"{}(median timing across evaluation runs)\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Constant to describing timing as median across evaluation runs. 
+
+
+
+Definition at line 63 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aac082d24ce0fe2ac23fb63c994172981}\label{namespacerun__eval_aac082d24ce0fe2ac23fb63c994172981}} 
 \index{run\_eval@{run\_eval}!kOptimizedRuntimeHeader@{kOptimizedRuntimeHeader}}
@@ -268,7 +312,7 @@ Definition at line 45 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 62 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 76 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aa4dcdafffb130d2f183786bd93e23b9a}\label{namespacerun__eval_aa4dcdafffb130d2f183786bd93e23b9a}} 
 \index{run\_eval@{run\_eval}!kRunInputDatatypeIdx@{kRunInputDatatypeIdx}}
@@ -278,7 +322,7 @@ Definition at line 62 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 83 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 97 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a2be272bfc5ce93166901411313480403}\label{namespacerun__eval_a2be272bfc5ce93166901411313480403}} 
 \index{run\_eval@{run\_eval}!kRunInputLoopItersTemplatedIdx@{kRunInputLoopItersTemplatedIdx}}
@@ -288,7 +332,7 @@ Definition at line 83 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 84 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 98 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a126425883abbf68f7c49e9634419bf8b}\label{namespacerun__eval_a126425883abbf68f7c49e9634419bf8b}} 
 \index{run\_eval@{run\_eval}!kRunInputNumInputIdx@{kRunInputNumInputIdx}}
@@ -298,7 +342,7 @@ Definition at line 84 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 82 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 96 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad0935c80dfec9802bd4f781abfd97162}\label{namespacerun__eval_ad0935c80dfec9802bd4f781abfd97162}} 
 \index{run\_eval@{run\_eval}!kRunInputSigHeaders@{kRunInputSigHeaders}}
@@ -314,7 +358,7 @@ Definition at line 82 of file Run\+Eval\+Consts\+Enums.\+h.
 \end{DoxyCode}
 
 
-Definition at line 80 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 94 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a3f3c5731fd12472eb774b21a5c722aaa}\label{namespacerun__eval_a3f3c5731fd12472eb774b21a5c722aaa}} 
 \index{run\_eval@{run\_eval}!kRunResultsDefaultPParamsDescFileName@{kRunResultsDefaultPParamsDescFileName}}
@@ -324,7 +368,7 @@ Definition at line 80 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 56 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 70 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a739a6278e895cb3e8311abb5431f9cf9}\label{namespacerun__eval_a739a6278e895cb3e8311abb5431f9cf9}} 
 \index{run\_eval@{run\_eval}!kRunResultsDescDefaultPParamsFileName@{kRunResultsDescDefaultPParamsFileName}}
@@ -334,7 +378,7 @@ Definition at line 56 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 58 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 72 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}\label{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}} 
 \index{run\_eval@{run\_eval}!kRunResultsDescFileName@{kRunResultsDescFileName}}
@@ -344,7 +388,7 @@ Definition at line 58 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 55 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 69 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a2b8f361a2c25b57782ad13ddbae045fc}\label{namespacerun__eval_a2b8f361a2c25b57782ad13ddbae045fc}} 
 \index{run\_eval@{run\_eval}!kRunResultsWSpeedupsDescFileName@{kRunResultsWSpeedupsDescFileName}}
@@ -354,7 +398,7 @@ Definition at line 55 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 57 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 71 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_acbceca007a683b12400a658170453b7a}\label{namespacerun__eval_acbceca007a683b12400a658170453b7a}} 
 \index{run\_eval@{run\_eval}!kRunSuccessHeader@{kRunSuccessHeader}}
@@ -364,7 +408,7 @@ Definition at line 57 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 46 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 60 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a2fb349e0919edec1beb2ac3e891201f6}\label{namespacerun__eval_a2fb349e0919edec1beb2ac3e891201f6}} 
 \index{run\_eval@{run\_eval}!kSingleThreadRuntimeHeader@{kSingleThreadRuntimeHeader}}
@@ -374,7 +418,7 @@ Definition at line 46 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 63 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 77 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad368b3398ba326c7e939936988061c95}\label{namespacerun__eval_ad368b3398ba326c7e939936988061c95}} 
 \index{run\_eval@{run\_eval}!kSpeedupCPUVectorization@{kSpeedupCPUVectorization}}
@@ -384,7 +428,7 @@ Definition at line 63 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 68 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 82 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a53e8b6af9661ebb7bc6a99e97cf4f3a2}\label{namespacerun__eval_a53e8b6af9661ebb7bc6a99e97cf4f3a2}} 
 \index{run\_eval@{run\_eval}!kSpeedupDouble@{kSpeedupDouble}}
@@ -394,7 +438,7 @@ Definition at line 68 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 65 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 79 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aacb3f40d5df0b0422fe6173fcd4f7885}\label{namespacerun__eval_aacb3f40d5df0b0422fe6173fcd4f7885}} 
 \index{run\_eval@{run\_eval}!kSpeedupHalf@{kSpeedupHalf}}
@@ -404,7 +448,7 @@ Definition at line 65 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 66 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 80 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}\label{namespacerun__eval_af964fa30f21da7faca4e5b2d56ac7bb3}} 
 \index{run\_eval@{run\_eval}!kSpeedupLoopItersCountTemplate@{kSpeedupLoopItersCountTemplate}}
@@ -414,7 +458,7 @@ Definition at line 66 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 67 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 81 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_ad93c0dd070cda950d788bd5f22c8f237}\label{namespacerun__eval_ad93c0dd070cda950d788bd5f22c8f237}} 
 \index{run\_eval@{run\_eval}!kSpeedupOptParParamsHeader@{kSpeedupOptParParamsHeader}}
@@ -424,7 +468,7 @@ Definition at line 67 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 64 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 78 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_a6f7327cf25d1b917872c8d98f9fd84f3}\label{namespacerun__eval_a6f7327cf25d1b917872c8d98f9fd84f3}} 
 \index{run\_eval@{run\_eval}!kSpeedupsDescFileName@{kSpeedupsDescFileName}}
@@ -434,7 +478,7 @@ Definition at line 64 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 59 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 73 of file Run\+Eval\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}\label{namespacerun__eval_aca67196adcd344aa6f31a7a7521fd385}} 
 \index{run\_eval@{run\_eval}!kSpeedupVsAvx256Vectorization@{kSpeedupVsAvx256Vectorization}}
@@ -444,5 +488,5 @@ Definition at line 59 of file Run\+Eval\+Consts\+Enums.\+h.
 
 
 
-Definition at line 69 of file Run\+Eval\+Consts\+Enums.\+h.
+Definition at line 83 of file Run\+Eval\+Consts\+Enums.\+h.
 

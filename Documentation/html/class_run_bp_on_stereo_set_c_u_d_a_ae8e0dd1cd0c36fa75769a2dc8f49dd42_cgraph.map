@@ -1,8 +1,8 @@
 <map id="RunBpOnStereoSetCUDA::operator()" name="RunBpOnStereoSetCUDA::operator()">
-<area shape="rect" id="node1" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,318,188,359"/>
+<area shape="rect" id="node1" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,343,188,385"/>
 <area shape="rect" id="node2" href="$class_run_data.html#a938dd181b583b343480ad9294efff7fb" title="Append current RunData with input RunData." alt="" coords="519,107,685,133"/>
-<area shape="rect" id="node9" href="$class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,318,439,359"/>
-<area shape="rect" id="node17" href="$namespacebp__cuda__device.html#ac3cf9c027bafbab0576b2b21fc0d1caf" title=" " alt="" coords="245,493,430,534"/>
+<area shape="rect" id="node9" href="$class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,343,439,385"/>
+<area shape="rect" id="node18" href="$namespacebp__cuda__device.html#ac3cf9c027bafbab0576b2b21fc0d1caf" title=" " alt="" coords="245,518,430,559"/>
 <area shape="rect" id="node3" href="$class_run_data.html#ae2642121388bb8f32b95eeeb498c7401" title="Add string data with header describing added data." alt="" coords="765,292,968,319"/>
 <area shape="rect" id="node4" href="$class_run_data.html#afbe69aa62856cc330c3848b712e32ea7" title="Get data corresponding to header as boolean Return null if data corresponds to a different data type." alt="" coords="774,5,959,32"/>
 <area shape="rect" id="node5" href="$class_run_data.html#af19b921e7fc7f0d30f78a3a4bf813197" title="Get data corresponding to header as double Return null if data corresponds to a different data type." alt="" coords="765,56,968,83"/>
@@ -13,7 +13,8 @@
 <area shape="rect" id="node11" href="$class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9" title="Add instance of DetailedTimings to current DetailedTimings." alt="" coords="490,259,714,301"/>
 <area shape="rect" id="node12" href="$class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d" title="Return current timing data as a RunData object for evaluation." alt="" coords="497,325,707,352"/>
 <area shape="rect" id="node13" href="$class_detailed_timings.html#a158238eb5d20564311ed04423769d542" title="Get median timing for a specified segment that may have been run multiple times." alt="" coords="487,376,717,403"/>
-<area shape="rect" id="node14" href="$classbeliefprop_1_1_bp_level.html#ac0b437e4d823108a024e37db8124d012" title="Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev..." alt="" coords="521,427,683,469"/>
-<area shape="rect" id="node15" href="$class_bp_image.html#ae7808967582f083e9351d49bd810aec8" title=" " alt="" coords="509,493,695,534"/>
-<area shape="rect" id="node16" href="$class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2" title=" " alt="" coords="539,559,665,585"/>
+<area shape="rect" id="node14" href="$namespacebeliefprop.html#ab39f3c4ff5ad8ea07d7b25ca0281ea26" title="Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number o..." alt="" coords="493,427,711,453"/>
+<area shape="rect" id="node15" href="$classbeliefprop_1_1_bp_level.html#ac0b437e4d823108a024e37db8124d012" title="Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev..." alt="" coords="521,478,683,519"/>
+<area shape="rect" id="node16" href="$class_bp_image.html#ae7808967582f083e9351d49bd810aec8" title=" " alt="" coords="509,543,695,585"/>
+<area shape="rect" id="node17" href="$class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2" title=" " alt="" coords="539,609,665,636"/>
 </map>

@@ -1,5 +1,5 @@
 <map id="MsgStereoHalf" name="MsgStereoHalf">
 <area shape="rect" id="node1" title=" " alt="" coords="5,46,124,73"/>
 <area shape="rect" id="node2" href="$classbeliefprop_1_1_bp_level.html#a8c7b0fdbb4dc2f84c2460562727ae47f" title="Return level properties as const reference to avoid copying and not allow it to be modified." alt="" coords="191,5,339,47"/>
-<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="172,71,359,112"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="172,71,359,112"/>
 </map>

@@ -3,8 +3,7 @@
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include $<$string\+\_\+view$>$}\newline
 {\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings\+Consts\+Enums.\+h\char`\"{}}\newline
-Include dependency graph for Run\+Eval\+Consts\+Enums.\+h\+:
-\nopagebreak
+Include dependency graph for Run\+Eval\+Consts\+Enums.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -30,7 +29,11 @@ This graph shows which files directly or indirectly include this file\+:
 enum class \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cd}{run\+\_\+eval\+::\+Status}} \{ \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cdafcd1af9ec66cb99f2d106d7fdc865c8b}{run\+\_\+eval\+::k\+No\+Error}}
 , \mbox{\hyperlink{namespacerun__eval_aa8f06e41fdf48a118ecb84632df4b3cdae3587c730cc1aa530fa4ddc9c4204e97}{run\+\_\+eval\+::k\+Error}}
  \}
-\begin{DoxyCompactList}\small\item\em Enum for status to indicate if error or no error. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Enum for status to indicate if error or no error. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{run\+\_\+eval\+::\+Middle\+Val\+Data}} \{ \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5}{run\+\_\+eval\+::k\+Average}}
+, \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477}{run\+\_\+eval\+::k\+Median}}
+ \}
+\begin{DoxyCompactList}\small\item\em Enum to specify average or median for \char`\"{}middle\char`\"{} value in data. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -46,6 +49,8 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_aef29ac0eb
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_acbceca007a683b12400a658170453b7a}{run\+\_\+eval\+::k\+Run\+Success\+Header}} \{\char`\"{}Run Success\char`\"{}\}
 \item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a68b6e7c080212e75c52102099564ec23}{run\+\_\+eval\+::k\+Median\+Of\+Test\+Runs\+Desc}} \{\char`\"{}(median timing across evaluation runs)\char`\"{}\}
+\begin{DoxyCompactList}\small\item\em Constant to describing timing as median across evaluation runs. \end{DoxyCompactList}\item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a43472d99af1ea4cd938fdae0ff48d0a2}{run\+\_\+eval\+::k\+All\+Runs\+Str}} \{\char`\"{}All Runs\char`\"{}\}
 \begin{DoxyCompactList}\small\item\em Constant for \char`\"{}all runs\char`\"{} string. \end{DoxyCompactList}\item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__eval_a8532e4526c0af3cc9f9856bcd6eb2744}{run\+\_\+eval\+::k\+Run\+Results\+Desc\+File\+Name}} \{\char`\"{}Run\+Results\char`\"{}\}
@@ -98,3 +103,12 @@ constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_aa4dcdafffb130d
 \item 
 constexpr std\+::size\+\_\+t \mbox{\hyperlink{namespacerun__eval_a2be272bfc5ce93166901411313480403}{run\+\_\+eval\+::k\+Run\+Input\+Loop\+Iters\+Templated\+Idx}} \{2\}
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}

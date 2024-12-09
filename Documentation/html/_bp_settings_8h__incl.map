@@ -3,8 +3,8 @@
 <area shape="rect" id="node2" title=" " alt="" coords="677,169,740,196"/>
 <area shape="rect" id="node3" title=" " alt="" coords="495,169,554,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="16,333,113,360"/>
-<area shape="rect" id="node5" href="$_input_signature_8h.html" title=" " alt="" coords="226,95,484,121"/>
-<area shape="rect" id="node13" href="$_run_data_8h.html" title=" " alt="" coords="683,95,830,121"/>
+<area shape="rect" id="node5" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="226,95,484,121"/>
+<area shape="rect" id="node13" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="683,95,830,121"/>
 <area shape="rect" id="node17" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="991,95,1178,121"/>
 <area shape="rect" id="node6" title=" " alt="" coords="56,169,132,196"/>
 <area shape="rect" id="node7" title=" " alt="" coords="156,169,215,196"/>
@@ -16,6 +16,6 @@
 <area shape="rect" id="node14" title=" " alt="" coords="962,169,1047,196"/>
 <area shape="rect" id="node15" title=" " alt="" coords="764,169,844,196"/>
 <area shape="rect" id="node16" title=" " alt="" coords="869,169,937,196"/>
-<area shape="rect" id="node18" href="$_run_type_constraints_8h.html" title=" " alt="" coords="1173,169,1393,196"/>
+<area shape="rect" id="node18" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="1173,169,1393,196"/>
 <area shape="rect" id="node19" title=" " alt="" coords="1237,251,1329,278"/>
 </map>

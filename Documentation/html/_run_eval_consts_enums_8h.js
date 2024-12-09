@@ -1,5 +1,9 @@
 var _run_eval_consts_enums_8h =
 [
+    [ "MiddleValData", "_run_eval_consts_enums_8h.html#afde1aa77e63e966b5728eae080febcf2", [
+      [ "kAverage", "_run_eval_consts_enums_8h.html#afde1aa77e63e966b5728eae080febcf2af87dddcff4e57dc718478e6ad9432ec5", null ],
+      [ "kMedian", "_run_eval_consts_enums_8h.html#afde1aa77e63e966b5728eae080febcf2afc0c69ca269010f09ab0218150315477", null ]
+    ] ],
     [ "Status", "_run_eval_consts_enums_8h.html#aa8f06e41fdf48a118ecb84632df4b3cd", [
       [ "kNoError", "_run_eval_consts_enums_8h.html#aa8f06e41fdf48a118ecb84632df4b3cdafcd1af9ec66cb99f2d106d7fdc865c8b", null ],
       [ "kError", "_run_eval_consts_enums_8h.html#aa8f06e41fdf48a118ecb84632df4b3cdae3587c730cc1aa530fa4ddc9c4204e97", null ]
@@ -18,6 +22,7 @@ var _run_eval_consts_enums_8h =
     [ "kImpResultsSpeedupsFolderName", "_run_eval_consts_enums_8h.html#ad2e81e462dc5a1a39da8b7bd3d6d533c", null ],
     [ "kInputIdxHeader", "_run_eval_consts_enums_8h.html#a07d7885ec260b8cfe897bdecf3bc428f", null ],
     [ "kLoopItersTemplatedHeader", "_run_eval_consts_enums_8h.html#aef29ac0eb3ad8078a51bc7612ee6863b", null ],
+    [ "kMedianOfTestRunsDesc", "_run_eval_consts_enums_8h.html#a68b6e7c080212e75c52102099564ec23", null ],
     [ "kOptimizedRuntimeHeader", "_run_eval_consts_enums_8h.html#aac082d24ce0fe2ac23fb63c994172981", null ],
     [ "kRunInputDatatypeIdx", "_run_eval_consts_enums_8h.html#aa4dcdafffb130d2f183786bd93e23b9a", null ],
     [ "kRunInputLoopItersTemplatedIdx", "_run_eval_consts_enums_8h.html#a2be272bfc5ce93166901411313480403", null ],

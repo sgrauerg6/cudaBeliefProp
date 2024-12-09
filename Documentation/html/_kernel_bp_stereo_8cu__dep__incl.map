@@ -1,0 +1,4 @@
+<map id="src/beliefprop/BpOptimizeCUDA/KernelBpStereo.cu" name="src/beliefprop/BpOptimizeCUDA/KernelBpStereo.cu">
+<area shape="rect" id="node1" title="This file defines the methods to perform belief propagation for disparity map estimation from stereo ..." alt="" coords="8,5,199,47"/>
+<area shape="rect" id="node2" href="$_process_bp_c_u_d_a_8cpp.html" title="Defines the functions to run the CUDA implementation of 2D Stereo estimation using BP." alt="" coords="5,95,201,136"/>
+</map>

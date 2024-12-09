@@ -1,13 +1,13 @@
 <map id="src/beliefprop/BpOptimizeCUDA/SmoothImageCUDA.h" name="src/beliefprop/BpOptimizeCUDA/SmoothImageCUDA.h">
-<area shape="rect" id="node1" title=" " alt="" coords="339,5,544,47"/>
+<area shape="rect" id="node1" title=" " alt="" coords="340,5,545,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,191,128,218"/>
 <area shape="rect" id="node3" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="438,273,637,315"/>
-<area shape="rect" id="node7" href="$_bp_image_constraints_8h.html" title=" " alt="" coords="202,273,414,315"/>
-<area shape="rect" id="node8" href="$_smooth_image_8h.html" title=" " alt="" coords="597,95,801,136"/>
+<area shape="rect" id="node7" href="$_bp_image_constraints_8h.html" title="Define constraints for data type in belief propagation processing related to image processing." alt="" coords="202,273,414,315"/>
+<area shape="rect" id="node8" href="$_smooth_image_8h.html" title="Declares the functions used to smooth the input images with a gaussian filter of kSigmaBp (see bpCuda..." alt="" coords="597,95,801,136"/>
 <area shape="rect" id="node13" href="$_bp_parallel_params_8h.html" title=" " alt="" coords="1957,184,2160,225"/>
-<area shape="rect" id="node36" href="$kernel_filter_header_8cuh.html" title=" " alt="" coords="104,102,272,129"/>
+<area shape="rect" id="node36" href="$_kernel_filter_header_8cuh.html" title="Header for the kernel to apply a horizontal/vertical filter to image data." alt="" coords="105,102,274,129"/>
 <area shape="rect" id="node4" title=" " alt="" coords="1297,534,1353,561"/>
-<area shape="rect" id="node5" href="$_run_type_constraints_8h.html" title=" " alt="" coords="301,370,521,397"/>
+<area shape="rect" id="node5" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="301,370,521,397"/>
 <area shape="rect" id="node6" title=" " alt="" coords="291,452,383,479"/>
 <area shape="rect" id="node9" title=" " alt="" coords="1149,452,1211,479"/>
 <area shape="rect" id="node10" title=" " alt="" coords="596,452,673,479"/>
@@ -19,16 +19,16 @@
 <area shape="rect" id="node16" title=" " alt="" coords="2496,534,2576,561"/>
 <area shape="rect" id="node17" title=" " alt="" coords="2269,534,2328,561"/>
 <area shape="rect" id="node18" href="$_parallel_params_8h.html" title=" " alt="" coords="2345,363,2545,404"/>
-<area shape="rect" id="node19" href="$_run_data_8h.html" title=" " alt="" coords="2364,452,2511,479"/>
+<area shape="rect" id="node19" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="2364,452,2511,479"/>
 <area shape="rect" id="node23" href="$_run_settings_8h.html" title=" " alt="" coords="1808,281,2051,307"/>
 <area shape="rect" id="node20" title=" " alt="" coords="2153,616,2204,643"/>
 <area shape="rect" id="node21" title=" " alt="" coords="2133,534,2208,561"/>
 <area shape="rect" id="node22" title=" " alt="" coords="2403,534,2471,561"/>
 <area shape="rect" id="node24" title=" " alt="" coords="1393,616,1490,643"/>
 <area shape="rect" id="node25" title=" " alt="" coords="1236,452,1303,479"/>
-<area shape="rect" id="node26" href="$_input_signature_8h.html" title=" " alt="" coords="1711,370,1841,397"/>
+<area shape="rect" id="node26" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="1711,370,1841,397"/>
 <area shape="rect" id="node30" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="1878,527,2109,568"/>
-<area shape="rect" id="node31" href="$_c_p_u_threads_pinned_to_socket_8h.html" title=" " alt="" coords="1967,370,2182,397"/>
+<area shape="rect" id="node31" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="1967,370,2182,397"/>
 <area shape="rect" id="node27" title=" " alt="" coords="1786,452,1862,479"/>
 <area shape="rect" id="node28" title=" " alt="" coords="1887,452,1945,479"/>
 <area shape="rect" id="node29" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="1479,452,1711,479"/>

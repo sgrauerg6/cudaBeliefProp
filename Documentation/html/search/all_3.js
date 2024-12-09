@@ -23,11 +23,11 @@ var searchData=
   ['disparitymapevaluationparams_2ecpp_139',['DisparityMapEvaluationParams.cpp',['../_disparity_map_evaluation_params_8cpp.html',1,'']]],
   ['disparitymapevaluationparams_2eh_140',['DisparityMapEvaluationParams.h',['../_disparity_map_evaluation_params_8h.html',1,'']]],
   ['div_5fpadded_5fcheckerboard_5fw_5falign_5f_141',['div_padded_checkerboard_w_align_',['../structbeliefprop_1_1_bp_level_properties.html#a7eaa434b40d8a7d89d171ef3691cb836',1,'beliefprop::BpLevelProperties']]],
-  ['dividevals_142',['divideVals',['../namespace_vect_processing_functs.html#a95096009e977088cd9938c1096cd0c99',1,'VectProcessingFuncts']]],
-  ['driverbpstereocpu_2ecpp_143',['driverBpStereoCPU.cpp',['../driver_bp_stereo_c_p_u_8cpp.html',1,'']]],
-  ['driverbpstereocpu_5fcustomrun_2ecpp_144',['driverBpStereoCPU_customRun.cpp',['../driver_bp_stereo_c_p_u__custom_run_8cpp.html',1,'']]],
-  ['driverbpstereocuda_5fcustomrun_2ecpp_145',['driverBpStereoCUDA_customRun.cpp',['../driver_bp_stereo_c_u_d_a__custom_run_8cpp.html',1,'']]],
-  ['drivercudabp_2ecpp_146',['driverCudaBp.cpp',['../driver_cuda_bp_8cpp.html',1,'']]],
+  ['dividevals_142',['divideVals',['../namespacesimd__processing.html#ad2142f4d30db099e1744b7a1ed37169e',1,'simd_processing']]],
+  ['driverbpstereocpu_2ecpp_143',['DriverBpStereoCPU.cpp',['../_driver_bp_stereo_c_p_u_8cpp.html',1,'']]],
+  ['driverbpstereocpu_5fcustomrun_2ecpp_144',['DriverBpStereoCPU_customRun.cpp',['../_driver_bp_stereo_c_p_u__custom_run_8cpp.html',1,'']]],
+  ['driverbpstereocuda_5fcustomrun_2ecpp_145',['DriverBpStereoCUDA_customRun.cpp',['../_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html',1,'']]],
+  ['drivercudabp_2ecpp_146',['DriverCudaBp.cpp',['../_driver_cuda_bp_8cpp.html',1,'']]],
   ['dtstereo_147',['DtStereo',['../namespacebeliefprop.html#ae68eab6f8bff8879cdf5eef4d4fe6fa8',1,'beliefprop::DtStereo(T f[DISP_VALS])'],['../namespacebeliefprop.html#aa78f83157a3b8ea34135bd45d86e75f5',1,'beliefprop::DtStereo(T *f, unsigned int bp_settings_disp_vals)'],['../namespacebeliefprop.html#a482a4e6f83ad07ea3b4484cca463e6e8',1,'beliefprop::DtStereo(T *f, unsigned int bp_settings_disp_vals, unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties &amp;current_bp_level)']]],
   ['dtstereosimd_148',['DtStereoSIMD',['../namespacebeliefprop_c_p_u.html#a2185dd205490e4d78be9aa8af3c12788',1,'beliefpropCPU::DtStereoSIMD(U f[DISP_VALS])'],['../namespacebeliefprop_c_p_u.html#a155cd4b8cd654314fe5973c4b886647a',1,'beliefpropCPU::DtStereoSIMD(U *f, unsigned int bp_settings_disp_vals)']]]
 ];

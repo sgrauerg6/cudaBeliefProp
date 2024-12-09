@@ -5,16 +5,14 @@
 {\ttfamily \#include $<$cuda.\+h$>$}\newline
 {\ttfamily \#include \char`\"{}Bp\+Shared\+Functs/\+Shared\+Smooth\+Image\+Functs.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Imp/\+Utility\+Functs.\+h\char`\"{}}\newline
-Include dependency graph for kernel\+Filter.\+cu\+:
-\nopagebreak
+Include dependency graph for kernel\+Filter.\+cu\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{kernel_filter_8cu__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:
-\nopagebreak
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -25,13 +23,13 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacebeliefprop_c_u_d_a}{beliefprop\+CUDA}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace to define global kernel functions for parallel belief propagation processing using CUDA. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
 \+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a5aac7c88f740699662563cb494a35e9c}{beliefprop\+CUDA\+::convert\+Unsigned\+Int\+Image\+To\+Float}} (unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
 \item 
 {\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906}{beliefprop\+CUDA\+::\+Filter\+Image\+Across}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
-\item 
+\begin{DoxyCompactList}\small\item\em Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527}{beliefprop\+CUDA\+::\+Filter\+Image\+Vertical}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\end{DoxyCompactItemize}

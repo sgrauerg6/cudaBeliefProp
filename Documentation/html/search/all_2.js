@@ -5,7 +5,7 @@ var searchData=
   ['checkerboardpart_103',['CheckerboardPart',['../namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5',1,'beliefprop']]],
   ['checkerboardwidthtargetdevice_104',['CheckerboardWidthTargetDevice',['../classbeliefprop_1_1_bp_level.html#a96eaa1cce24469ea19cefd88800c45b5',1,'beliefprop::BpLevel']]],
   ['convertunsignedintimagetofloat_105',['convertUnsignedIntImageToFloat',['../namespacebeliefprop_c_u_d_a.html#a731547a4187dbb13a5232f4c1f5cf847',1,'beliefpropCUDA::convertUnsignedIntImageToFloat(const unsigned int *uint_image_pixels, float *float_image_pixels, unsigned int width_images, unsigned int height_images)'],['../namespacebeliefprop_c_u_d_a.html#a5aac7c88f740699662563cb494a35e9c',1,'beliefpropCUDA::convertUnsignedIntImageToFloat(unsigned int *uint_image_pixels, float *float_image_pixels, unsigned int width_images, unsigned int height_images)']]],
-  ['convertvaltodatatype_106',['ConvertValToDatatype',['../namespace_vect_processing_functs.html#a8919548c363a60e1055d5982d0977312',1,'VectProcessingFuncts']]],
+  ['convertvaltodatatype_106',['ConvertValToDatatype',['../namespacesimd__processing.html#a1ca0c29fac8564f0cfa8f53360c8d7a8',1,'simd_processing']]],
   ['convertvaltodifferentdatatypeifneeded_107',['ConvertValToDifferentDataTypeIfNeeded',['../namespaceutil__functs.html#a6a1aba89f14c521198e0f8a0640f7e00',1,'util_functs']]],
   ['convolve_108',['Convolve',['../class_convolve.html',1,'']]],
   ['convolve_2eh_109',['convolve.h',['../convolve_8h.html',1,'']]],
@@ -17,5 +17,5 @@ var searchData=
   ['cpu_5fvectorization_5fdefine_115',['CPU_VECTORIZATION_DEFINE',['../_run_c_p_u_settings_8h.html#ab9bfdbf36e88c3985abe40fcd00bbe5c',1,'RunCPUSettings.h']]],
   ['cputhreadspinnedtosocket_116',['CPUThreadsPinnedToSocket',['../class_c_p_u_threads_pinned_to_socket.html',1,'']]],
   ['cputhreadspinnedtosocket_2eh_117',['CPUThreadsPinnedToSocket.h',['../_c_p_u_threads_pinned_to_socket_8h.html',1,'']]],
-  ['createsimdvectorsamedata_118',['createSIMDVectorSameData',['../namespace_vect_processing_functs.html#afa33481a1d195e9f9d85b0e886e9af6e',1,'VectProcessingFuncts']]]
+  ['createsimdvectorsamedata_118',['createSIMDVectorSameData',['../namespacesimd__processing.html#aaeec19fe6218fdfb2678e2d59533c30f',1,'simd_processing']]]
 ];

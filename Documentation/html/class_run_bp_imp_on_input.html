@@ -116,7 +116,7 @@ Collaboration diagram for RunBpImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;:<
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a66ff1e558fb7b820acac3fbc5dad4dfb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="_evaluate_imp_aliases_8h.html#aae59d45d00750e48757e5a168e9ec6dc">MultRunData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_imp_on_input.html#a66ff1e558fb7b820acac3fbc5dad4dfb">operator()</a> (const <a class="el" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a> &amp;run_imp_settings) override</td></tr>
-<tr class="memdesc:a66ff1e558fb7b820acac3fbc5dad4dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM_INPUT Data type used in implementation specified by T Bp implemenation optimization specified by OPT_IMP_ACCEL Evaluation stereo set to run implementation on specified by NUM_INPUT.  <a href="class_run_bp_imp_on_input.html#a66ff1e558fb7b820acac3fbc5dad4dfb">More...</a><br /></td></tr>
+<tr class="memdesc:a66ff1e558fb7b820acac3fbc5dad4dfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM_INPUT. Data type used in implementation specified by class template parameter T. Bp implemenation optimization specified by class template constant OPT_IMP_ACCEL. Evaluation stereo set to run implementation on specified by class template integral constant NUM_INPUT.  <a href="class_run_bp_imp_on_input.html#a66ff1e558fb7b820acac3fbc5dad4dfb">More...</a><br /></td></tr>
 <tr class="separator:a66ff1e558fb7b820acac3fbc5dad4dfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
@@ -128,7 +128,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memdesc:a5a4dbb1b3f6f37e13a49553a951f095f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get input data and parameter info about current benchmark (belief propagation in this case) and return as <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> type.  <a href="class_run_bp_imp_on_input.html#a5a4dbb1b3f6f37e13a49553a951f095f">More...</a><br /></td></tr>
 <tr class="separator:a5a4dbb1b3f6f37e13a49553a951f095f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b1982434fcf152f7791e1f2efd3d2cf"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="class_run_data.html">RunData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_imp_on_input.html#a7b1982434fcf152f7791e1f2efd3d2cf">RunImpsAndCompare</a> (std::shared_ptr&lt; <a class="el" href="class_parallel_params.html">ParallelParams</a> &gt; parallel_params, bool run_opt_imp_only, bool run_imp_templated_loop_iters) const override</td></tr>
-<tr class="memdesc:a7b1982434fcf152f7791e1f2efd3d2cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run and compare output disparity maps using the given optimized and single-threaded stereo implementations on the reference and test images specified by NUM_INPUT run only optimized implementation if run_opt_imp_only is true.  <a href="class_run_bp_imp_on_input.html#a7b1982434fcf152f7791e1f2efd3d2cf">More...</a><br /></td></tr>
+<tr class="memdesc:a7b1982434fcf152f7791e1f2efd3d2cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run and compare output disparity maps using the given optimized and single-threaded stereo implementations on the reference and test images specified by NUM_INPUT given as class template integral constant parameter. Run only optimized implementation if run_opt_imp_only is true.  <a href="class_run_bp_imp_on_input.html#a7b1982434fcf152f7791e1f2efd3d2cf">More...</a><br /></td></tr>
 <tr class="separator:a7b1982434fcf152f7791e1f2efd3d2cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_run_imp_on_input"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_run_imp_on_input')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_run_imp_on_input.html">RunImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a></td></tr>
 <tr class="memitem:a90b1b66d576a10fc4f5c4099e703a44e inherit pro_methods_class_run_imp_on_input"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_run_data.html">RunData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">InputAndParamsRunData</a> (bool loop_iters_templated) const</td></tr>
@@ -152,7 +152,7 @@ class RunBpImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00065">65</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00100">100</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5a4dbb1b3f6f37e13a49553a951f095f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5a4dbb1b3f6f37e13a49553a951f095f">&#9670;&nbsp;</a></span>InputAndParamsForCurrBenchmark()</h2>
@@ -191,7 +191,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 
 <p>Implements <a class="el" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">RunImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00199">199</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00239">239</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -237,7 +237,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 </table>
 </div><div class="memdoc">
 
-<p>Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM_INPUT Data type used in implementation specified by T Bp implemenation optimization specified by OPT_IMP_ACCEL Evaluation stereo set to run implementation on specified by NUM_INPUT. </p>
+<p>Run and evaluate optimized belief propagation implementation on evaluation stereo set specified by NUM_INPUT. Data type used in implementation specified by class template parameter T. Bp implemenation optimization specified by class template constant OPT_IMP_ACCEL. Evaluation stereo set to run implementation on specified by class template integral constant NUM_INPUT. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">run_imp_settings</td><td></td></tr>
@@ -248,7 +248,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 
 <p>Implements <a class="el" href="class_run_imp_on_input.html#a8170bbd7503d68c37125350df0b3e9d9">RunImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00148">148</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00188">188</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
 
 </div>
 </div>
@@ -294,7 +294,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 </table>
 </div><div class="memdoc">
 
-<p>Run and compare output disparity maps using the given optimized and single-threaded stereo implementations on the reference and test images specified by NUM_INPUT run only optimized implementation if run_opt_imp_only is true. </p>
+<p>Run and compare output disparity maps using the given optimized and single-threaded stereo implementations on the reference and test images specified by NUM_INPUT given as class template integral constant parameter. Run only optimized implementation if run_opt_imp_only is true. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">parallel_params</td><td></td></tr>
@@ -307,7 +307,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 
 <p>Implements <a class="el" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">RunImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00213">213</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00255">255</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -367,7 +367,7 @@ template&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int
 
 <p>Implements <a class="el" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">RunImpOnInput&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00187">187</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_imp_on_input_8h_source.html#l00227">227</a> of file <a class="el" href="_run_bp_imp_on_input_8h_source.html">RunBpImpOnInput.h</a>.</p>
 
 </div>
 </div>

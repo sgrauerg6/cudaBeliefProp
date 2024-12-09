@@ -9,7 +9,7 @@ var searchData=
   ['addtestresultsforparallelparams_6',['AddTestResultsForParallelParams',['../class_bp_parallel_params.html#ac5b668aa24cfd323fa95939e944977f1',1,'BpParallelParams::AddTestResultsForParallelParams()'],['../class_parallel_params.html#a511d0e529facedc797d37422ce38a2dd',1,'ParallelParams::AddTestResultsForParallelParams()']]],
   ['addtiming_7',['AddTiming',['../class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8',1,'DetailedTimings']]],
   ['addtocurrenttimings_8',['AddToCurrentTimings',['../class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9',1,'DetailedTimings']]],
-  ['addvals_9',['AddVals',['../namespace_vect_processing_functs.html#a1fe4b66daca77c46e24a0c3f03a0b794',1,'VectProcessingFuncts']]],
+  ['addvals_9',['AddVals',['../namespacesimd__processing.html#aaadbdc6359524dd0a41eb8864dfde8d0',1,'simd_processing']]],
   ['allocatealignedmemoryondevice_10',['AllocateAlignedMemoryOnDevice',['../class_memory_management.html#a46cf20a44494da312f5872d62c53a2db',1,'MemoryManagement::AllocateAlignedMemoryOnDevice()'],['../class_memory_management_c_u_d_a.html#ad2509b638b9e0c99258f678b92391c7f',1,'MemoryManagementCUDA::AllocateAlignedMemoryOnDevice()']]],
   ['allocatememoryondevice_11',['AllocateMemoryOnDevice',['../class_memory_management.html#a6aa75de1d5a7749a8cce7f4378a98d3c',1,'MemoryManagement::AllocateMemoryOnDevice()'],['../class_memory_management_c_u_d_a.html#a9d3d64ff492e8246b92e4306b97ab6e0',1,'MemoryManagementCUDA::AllocateMemoryOnDevice()']]],
   ['appenddata_12',['AppendData',['../class_run_data.html#a938dd181b583b343480ad9294efff7fb',1,'RunData']]],

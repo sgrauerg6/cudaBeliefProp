@@ -1,7 +1,7 @@
 <map id="src/RunSettingsParams/ParallelParams.h" name="src/RunSettingsParams/ParallelParams.h">
 <area shape="rect" id="node1" title=" " alt="" coords="145,5,315,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="139,95,195,121"/>
-<area shape="rect" id="node3" href="$_run_data_8h.html" title=" " alt="" coords="219,95,366,121"/>
+<area shape="rect" id="node3" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="219,95,366,121"/>
 <area shape="rect" id="node4" title=" " alt="" coords="5,169,68,196"/>
 <area shape="rect" id="node5" title=" " alt="" coords="93,169,143,196"/>
 <area shape="rect" id="node6" title=" " alt="" coords="167,169,226,196"/>

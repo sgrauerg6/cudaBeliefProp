@@ -1,5 +1,5 @@
 <map id="RunBPIterationUsingCheckerboardUpdatesKernel&lt; short, short, beliefprop::kStereoSetsToProcess[0].num_disp_vals &gt;" name="RunBPIterationUsingCheckerboardUpdatesKernel&lt; short, short, beliefprop::kStereoSetsToProcess[0].num_disp_vals &gt;">
 <area shape="rect" id="node1" title=" " alt="" coords="5,5,251,76"/>
-<area shape="rect" id="node2" href="$namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0" title=" " alt="" coords="299,20,541,61"/>
-<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="589,20,776,61"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="299,20,541,61"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="589,20,776,61"/>
 </map>

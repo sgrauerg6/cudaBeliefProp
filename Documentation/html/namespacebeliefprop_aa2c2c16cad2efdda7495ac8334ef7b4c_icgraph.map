@@ -1,5 +1,5 @@
 <map id="beliefprop::InitializeCurrentLevelDataPixel" name="beliefprop::InitializeCurrentLevelDataPixel">
-<area shape="rect" id="node1" title=" " alt="" coords="276,304,476,345"/>
+<area shape="rect" id="node1" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="276,304,476,345"/>
 <area shape="rect" id="node2" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a1af37bd5971d25510198fdac381e24f7" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" id="node3" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a101603643a2addf007bceb535f40c69e" title=" " alt="" coords="5,100,228,171"/>
 <area shape="rect" id="node4" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a0c18a676c30b63b9bba59fd18dcaad87" title=" " alt="" coords="5,195,228,265"/>

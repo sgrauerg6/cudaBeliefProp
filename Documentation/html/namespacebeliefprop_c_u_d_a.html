@@ -87,42 +87,57 @@ $(document).ready(function(){initNavTree('namespacebeliefprop_c_u_d_a.html','');
 <div class="title">beliefpropCUDA Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Namespace to define global kernel functions for parallel belief propagation processing using CUDA.  
+<a href="namespacebeliefprop_c_u_d_a.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ab306a6710aed26a0653c06fd7c5cc08f"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:ab306a6710aed26a0653c06fd7c5cc08f"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#ab306a6710aed26a0653c06fd7c5cc08f">InitializeBottomLevelData</a> (<a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, float *image_1_pixels_device, float *image_2_pixels_device, T *data_cost_stereo_checkerboard_0, T *data_cost_stereo_checkerboard_1, float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:ab306a6710aed26a0653c06fd7c5cc08f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid). The image data is stored in the image_1_pixels_device and image_2_pixels_device arrays.  <a href="namespacebeliefprop_c_u_d_a.html#ab306a6710aed26a0653c06fd7c5cc08f">More...</a><br /></td></tr>
 <tr class="separator:ab306a6710aed26a0653c06fd7c5cc08f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7712a4a5a1af239b994e2460b879817c"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a7712a4a5a1af239b994e2460b879817c"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a7712a4a5a1af239b994e2460b879817c">InitializeCurrentLevelData</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> prev_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:a7712a4a5a1af239b994e2460b879817c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set.  <a href="namespacebeliefprop_c_u_d_a.html#a7712a4a5a1af239b994e2460b879817c">More...</a><br /></td></tr>
 <tr class="separator:a7712a4a5a1af239b994e2460b879817c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f82847fdb5f3e30d525055d6ec92d73"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a7f82847fdb5f3e30d525055d6ec92d73"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a7f82847fdb5f3e30d525055d6ec92d73">InitializeMessageValsToDefaultKernel</a> (<a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:a7f82847fdb5f3e30d525055d6ec92d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the message values at each pixel of the current level to the default value.  <a href="namespacebeliefprop_c_u_d_a.html#a7f82847fdb5f3e30d525055d6ec92d73">More...</a><br /></td></tr>
 <tr class="separator:a7f82847fdb5f3e30d525055d6ec92d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a899657bb3e3e1b444c4a5530cce29046"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a899657bb3e3e1b444c4a5530cce29046"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a899657bb3e3e1b444c4a5530cce29046">RunBPIterationUsingCheckerboardUpdates</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:a899657bb3e3e1b444c4a5530cce29046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost.  <a href="namespacebeliefprop_c_u_d_a.html#a899657bb3e3e1b444c4a5530cce29046">More...</a><br /></td></tr>
 <tr class="separator:a899657bb3e3e1b444c4a5530cce29046"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9f52d0c29a7961fd17857f51bdace00"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:ae9f52d0c29a7961fd17857f51bdace00"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#ae9f52d0c29a7961fd17857f51bdace00">RunBPIterationUsingCheckerboardUpdates</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, void *dst_processing)</td></tr>
+<tr class="memdesc:ae9f52d0c29a7961fd17857f51bdace00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost. Function differs from counterpart overloaded function with same name in that it takes in allocated memory to use in processing.  <a href="namespacebeliefprop_c_u_d_a.html#ae9f52d0c29a7961fd17857f51bdace00">More...</a><br /></td></tr>
 <tr class="separator:ae9f52d0c29a7961fd17857f51bdace00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10ccb426c45302cc412ff2d996034718"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a10ccb426c45302cc412ff2d996034718"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a10ccb426c45302cc412ff2d996034718">CopyMsgDataToNextLevel</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> next_bp_level, T *message_u_prev_checkerboard_0, T *message_d_prev_checkerboard_0, T *message_l_prev_checkerboard_0, T *message_r_prev_checkerboard_0, T *message_u_prev_checkerboard_1, T *message_d_prev_checkerboard_1, T *message_l_prev_checkerboard_1, T *message_r_prev_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:a10ccb426c45302cc412ff2d996034718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down. The kernel works from the point of view of the pixel at the current level that is being copied to four corresponding pixels in the next level.  <a href="namespacebeliefprop_c_u_d_a.html#a10ccb426c45302cc412ff2d996034718">More...</a><br /></td></tr>
 <tr class="separator:a10ccb426c45302cc412ff2d996034718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdc1bf71faed3396ca433b6ac8f8a472"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:abdc1bf71faed3396ca433b6ac8f8a472"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#abdc1bf71faed3396ca433b6ac8f8a472">RetrieveOutputDisparity</a> (<a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> current_bp_level, T *data_cost_checkerboard_0, T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals)</td></tr>
+<tr class="memdesc:abdc1bf71faed3396ca433b6ac8f8a472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel.  <a href="namespacebeliefprop_c_u_d_a.html#abdc1bf71faed3396ca433b6ac8f8a472">More...</a><br /></td></tr>
 <tr class="separator:abdc1bf71faed3396ca433b6ac8f8a472"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5aac7c88f740699662563cb494a35e9c"><td class="memItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a5aac7c88f740699662563cb494a35e9c">convertUnsignedIntImageToFloat</a> (unsigned int *uint_image_pixels, float *float_image_pixels, unsigned int width_images, unsigned int height_images)</td></tr>
 <tr class="separator:a5aac7c88f740699662563cb494a35e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a472ac9da81557e7e04a3ab58259fb906"><td class="memTemplParams" colspan="2">template&lt;BpImData_t T&gt; </td></tr>
 <tr class="memitem:a472ac9da81557e7e04a3ab58259fb906"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a472ac9da81557e7e04a3ab58259fb906">FilterImageAcross</a> (const T *image_to_filter, float *filtered_image, unsigned int width_images, unsigned int height_images, const float *image_filter, unsigned int size_filter)</td></tr>
+<tr class="memdesc:a472ac9da81557e7e04a3ab58259fb906"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats.  <a href="namespacebeliefprop_c_u_d_a.html#a472ac9da81557e7e04a3ab58259fb906">More...</a><br /></td></tr>
 <tr class="separator:a472ac9da81557e7e04a3ab58259fb906"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafe9884bdccc4d985c69dc6e423d7527"><td class="memTemplParams" colspan="2">template&lt;BpImData_t T&gt; </td></tr>
 <tr class="memitem:aafe9884bdccc4d985c69dc6e423d7527"><td class="memTemplItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#aafe9884bdccc4d985c69dc6e423d7527">FilterImageVertical</a> (const T *image_to_filter, float *filtered_image, unsigned int width_images, unsigned int height_images, const float *image_filter, unsigned int size_filter)</td></tr>
+<tr class="memdesc:aafe9884bdccc4d985c69dc6e423d7527"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats.  <a href="namespacebeliefprop_c_u_d_a.html#aafe9884bdccc4d985c69dc6e423d7527">More...</a><br /></td></tr>
 <tr class="separator:aafe9884bdccc4d985c69dc6e423d7527"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a731547a4187dbb13a5232f4c1f5cf847"><td class="memItemLeft" align="right" valign="top">__global__ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacebeliefprop_c_u_d_a.html#a731547a4187dbb13a5232f4c1f5cf847">convertUnsignedIntImageToFloat</a> (const unsigned int *uint_image_pixels, float *float_image_pixels, unsigned int width_images, unsigned int height_images)</td></tr>
+<tr class="memdesc:a731547a4187dbb13a5232f4c1f5cf847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float_image_pixels.  <a href="namespacebeliefprop_c_u_d_a.html#a731547a4187dbb13a5232f4c1f5cf847">More...</a><br /></td></tr>
 <tr class="separator:a731547a4187dbb13a5232f4c1f5cf847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Namespace to define global kernel functions for parallel belief propagation processing using CUDA. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="a731547a4187dbb13a5232f4c1f5cf847"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a731547a4187dbb13a5232f4c1f5cf847">&#9670;&nbsp;</a></span>convertUnsignedIntImageToFloat() <span class="overload">[1/2]</span></h2>
 
@@ -160,6 +175,18 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float_image_pixels. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">uint_image_pixels</td><td></td></tr>
+    <tr><td class="paramname">float_image_pixels</td><td></td></tr>
+    <tr><td class="paramname">width_images</td><td></td></tr>
+    <tr><td class="paramname">height_images</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
 
 </div>
 </div>
@@ -201,7 +228,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_filter_8cu_source.html#l00033">33</a> of file <a class="el" href="kernel_filter_8cu_source.html">kernelFilter.cu</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_filter_8cu_source.html#l00043">43</a> of file <a class="el" href="_kernel_filter_8cu_source.html">KernelFilter.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -350,13 +377,48 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00180">180</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down. The kernel works from the point of view of the pixel at the current level that is being copied to four corresponding pixels in the next level. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">checkerboard_part</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">next_bp_level</td><td></td></tr>
+    <tr><td class="paramname">message_u_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_prev_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_prev_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00316">316</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_a10ccb426c45302cc412ff2d996034718_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_a10ccb426c45302cc412ff2d996034718_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_a10ccb426c45302cc412ff2d996034718_cgraph" id="anamespacebeliefprop_c_u_d_a_a10ccb426c45302cc412ff2d996034718_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,231,47"/>
+<area shape="rect" title="Kernel to copy the computed BP message values at the current level to the corresponding locations at ..." alt="" coords="5,5,231,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="279,5,460,47"/>
 </map>
 </div>
@@ -415,13 +477,33 @@ template&lt;BpImData_t T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_filter_8cu_source.html#l00052">52</a> of file <a class="el" href="kernel_filter_8cu_source.html">kernelFilter.cu</a>.</p>
+<p>Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image_to_filter</td><td></td></tr>
+    <tr><td class="paramname">filtered_image</td><td></td></tr>
+    <tr><td class="paramname">width_images</td><td></td></tr>
+    <tr><td class="paramname">height_images</td><td></td></tr>
+    <tr><td class="paramname">image_filter</td><td></td></tr>
+    <tr><td class="paramname">size_filter</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_filter_8cu_source.html#l00062">62</a> of file <a class="el" href="_kernel_filter_8cu_source.html">KernelFilter.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906_cgraph" id="anamespacebeliefprop_c_u_d_a_a472ac9da81557e7e04a3ab58259fb906_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,213,47"/>
+<area shape="rect" title="Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored ..." alt="" coords="5,5,213,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="261,5,443,47"/>
 </map>
 </div>
@@ -480,13 +562,33 @@ template&lt;BpImData_t T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_filter_8cu_source.html#l00072">72</a> of file <a class="el" href="kernel_filter_8cu_source.html">kernelFilter.cu</a>.</p>
+<p>Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image_to_filter</td><td></td></tr>
+    <tr><td class="paramname">filtered_image</td><td></td></tr>
+    <tr><td class="paramname">width_images</td><td></td></tr>
+    <tr><td class="paramname">height_images</td><td></td></tr>
+    <tr><td class="paramname">image_filter</td><td></td></tr>
+    <tr><td class="paramname">size_filter</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_filter_8cu_source.html#l00082">82</a> of file <a class="el" href="_kernel_filter_8cu_source.html">KernelFilter.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527_cgraph" id="anamespacebeliefprop_c_u_d_a_aafe9884bdccc4d985c69dc6e423d7527_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,213,47"/>
+<area shape="rect" title="Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as..." alt="" coords="5,5,213,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="261,5,443,47"/>
 </map>
 </div>
@@ -557,13 +659,36 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00041">41</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid). The image data is stored in the image_1_pixels_device and image_2_pixels_device arrays. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">image_1_pixels_device</td><td></td></tr>
+    <tr><td class="paramname">image_2_pixels_device</td><td></td></tr>
+    <tr><td class="paramname">data_cost_stereo_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_stereo_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">lambda_bp</td><td></td></tr>
+    <tr><td class="paramname">data_k_bp</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00069">69</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_ab306a6710aed26a0653c06fd7c5cc08f_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_ab306a6710aed26a0653c06fd7c5cc08f_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_ab306a6710aed26a0653c06fd7c5cc08f_cgraph" id="anamespacebeliefprop_c_u_d_a_ab306a6710aed26a0653c06fd7c5cc08f_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,196,47"/>
+<area shape="rect" title="Initialize the &quot;data cost&quot; for each possible disparity between the two full&#45;sized input images (&quot;bott..." alt="" coords="5,5,196,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="244,5,425,47"/>
 </map>
 </div>
@@ -634,13 +759,36 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00067">67</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">checkerboard_part</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">prev_bp_level</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">data_cost_current_level</td><td></td></tr>
+    <tr><td class="paramname">offset_num</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00110">110</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_a7712a4a5a1af239b994e2460b879817c_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_a7712a4a5a1af239b994e2460b879817c_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_a7712a4a5a1af239b994e2460b879817c_cgraph" id="anamespacebeliefprop_c_u_d_a_a7712a4a5a1af239b994e2460b879817c_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,196,47"/>
+<area shape="rect" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="5,5,196,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="244,5,425,47"/>
 </map>
 </div>
@@ -723,13 +871,38 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00090">90</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Initialize the message values at each pixel of the current level to the default value. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00149">149</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_a7f82847fdb5f3e30d525055d6ec92d73_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_a7f82847fdb5f3e30d525055d6ec92d73_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_a7f82847fdb5f3e30d525055d6ec92d73_cgraph" id="anamespacebeliefprop_c_u_d_a_a7f82847fdb5f3e30d525055d6ec92d73_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,216,47"/>
+<area shape="rect" title="Initialize the message values at each pixel of the current level to the default value." alt="" coords="5,5,216,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="264,5,445,47"/>
 </map>
 </div>
@@ -830,13 +1003,41 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00217">217</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">disparity_between_images_device</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00372">372</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_abdc1bf71faed3396ca433b6ac8f8a472_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_abdc1bf71faed3396ca433b6ac8f8a472_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_abdc1bf71faed3396ca433b6ac8f8a472_cgraph" id="anamespacebeliefprop_c_u_d_a_abdc1bf71faed3396ca433b6ac8f8a472_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,195,47"/>
+<area shape="rect" title="Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel." alt="" coords="5,5,195,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="243,5,424,47"/>
 </map>
 </div>
@@ -949,13 +1150,43 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00121">121</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">checkerboard_to_update</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">disc_k_bp</td><td></td></tr>
+    <tr><td class="paramname">data_aligned</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00201">201</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_a899657bb3e3e1b444c4a5530cce29046_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_a899657bb3e3e1b444c4a5530cce29046_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_a899657bb3e3e1b444c4a5530cce29046_cgraph" id="anamespacebeliefprop_c_u_d_a_a899657bb3e3e1b444c4a5530cce29046_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,236,47"/>
+<area shape="rect" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="5,5,236,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="284,5,465,47"/>
 </map>
 </div>
@@ -1074,13 +1305,44 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="kernel_bp_stereo_8cu_source.html#l00149">149</a> of file <a class="el" href="kernel_bp_stereo_8cu_source.html">kernelBpStereo.cu</a>.</p>
+<p>Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the "checkerboard" scheme retrieve messages from each 4-connected neighbor and then update their message based on the retrieved messages and the data cost. Function differs from counterpart overloaded function with same name in that it takes in allocated memory to use in processing. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td></td></tr>
+    <tr><td class="paramname">DISP_VALS</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">checkerboard_to_update</td><td></td></tr>
+    <tr><td class="paramname">current_bp_level</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">data_cost_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_0</td><td></td></tr>
+    <tr><td class="paramname">message_u_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_d_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_l_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">message_r_checkerboard_1</td><td></td></tr>
+    <tr><td class="paramname">disc_k_bp</td><td></td></tr>
+    <tr><td class="paramname">data_aligned</td><td></td></tr>
+    <tr><td class="paramname">bp_settings_disp_vals</td><td></td></tr>
+    <tr><td class="paramname">dst_processing</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><b>global</b> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_8cu_source.html#l00257">257</a> of file <a class="el" href="_kernel_bp_stereo_8cu_source.html">KernelBpStereo.cu</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop_c_u_d_a_ae9f52d0c29a7961fd17857f51bdace00_cgraph.png" border="0" usemap="#anamespacebeliefprop_c_u_d_a_ae9f52d0c29a7961fd17857f51bdace00_cgraph" alt=""/></div>
 <map name="anamespacebeliefprop_c_u_d_a_ae9f52d0c29a7961fd17857f51bdace00_cgraph" id="anamespacebeliefprop_c_u_d_a_ae9f52d0c29a7961fd17857f51bdace00_cgraph">
-<area shape="rect" title=" " alt="" coords="5,5,236,47"/>
+<area shape="rect" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="5,5,236,47"/>
 <area shape="rect" href="namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="284,5,465,47"/>
 </map>
 </div>

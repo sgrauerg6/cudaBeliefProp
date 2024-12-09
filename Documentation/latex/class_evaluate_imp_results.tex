@@ -21,7 +21,7 @@ Inheritance diagram for Evaluate\+Imp\+Results\+:\nopagebreak
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} $>$ $>$ \mbox{\hyperlink{class_evaluate_imp_results_a7ff24d748d8a06db46691fb403472397}{Eval\+Results\+Sing\+Data\+Type\+Acc}} (const \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \&run\+\_\+results, const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} run\+\_\+imp\+\_\+settings, size\+\_\+t data\+\_\+size) const
+std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} $>$ $>$ \mbox{\hyperlink{class_evaluate_imp_results_a7ff24d748d8a06db46691fb403472397}{Eval\+Results\+Sing\+Data\+Type\+Acc}} (const \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \&run\+\_\+results, const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} run\+\_\+imp\+\_\+settings, size\+\_\+t data\+\_\+size) const
 \begin{DoxyCompactList}\small\item\em Evaluate results for implementation runs on multiple inputs with all the runs having the same data type and acceleration method return run data results with run speedups added as well as average and median speedups with headers describing speedups. \end{DoxyCompactList}\item 
 void \mbox{\hyperlink{class_evaluate_imp_results_a7497b11e1b05b64cf1941653114e6762}{Eval\+All\+Results\+Write\+Output}} (const std\+::unordered\+\_\+map$<$ size\+\_\+t, \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} $>$ \&run\+\_\+results\+\_\+mult\+\_\+runs, const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} run\+\_\+imp\+\_\+settings, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}} opt\+\_\+imp\+\_\+acc) const
 \begin{DoxyCompactList}\small\item\em Evaluate results for all implementation runs on multiple inputs with the runs potentially having different data types and acceleration methods and write run result and speedup outputs to files. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -30,7 +30,7 @@ void \mbox{\hyperlink{class_evaluate_imp_results_a7497b11e1b05b64cf1941653114e67
 \doxysubsection{Detailed Description}
 Class with operator function to evaluate implementations of the same algorithm across different data types and acceleration methods. 
 
-Definition at line 39 of file Evaluate\+Imp\+Results.\+h.
+Definition at line 56 of file Evaluate\+Imp\+Results.\+h.
 
 
 
@@ -56,13 +56,13 @@ Evaluate results for all implementation runs on multiple inputs with the runs po
 \end{DoxyParams}
 
 
-Definition at line 70 of file Evaluate\+Imp\+Results.\+cpp.
+Definition at line 87 of file Evaluate\+Imp\+Results.\+cpp.
 
 \mbox{\Hypertarget{class_evaluate_imp_results_a7ff24d748d8a06db46691fb403472397}\label{class_evaluate_imp_results_a7ff24d748d8a06db46691fb403472397}} 
 \index{EvaluateImpResults@{EvaluateImpResults}!EvalResultsSingDataTypeAcc@{EvalResultsSingDataTypeAcc}}
 \index{EvalResultsSingDataTypeAcc@{EvalResultsSingDataTypeAcc}!EvaluateImpResults@{EvaluateImpResults}}
 \doxysubsubsection{\texorpdfstring{EvalResultsSingDataTypeAcc()}{EvalResultsSingDataTypeAcc()}}
-{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} $>$ $>$ Evaluate\+Imp\+Results\+::\+Eval\+Results\+Sing\+Data\+Type\+Acc (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \&}]{run\+\_\+results,  }\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}}}]{run\+\_\+imp\+\_\+settings,  }\item[{size\+\_\+t}]{data\+\_\+size }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} $>$ $>$ Evaluate\+Imp\+Results\+::\+Eval\+Results\+Sing\+Data\+Type\+Acc (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} \&}]{run\+\_\+results,  }\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}}}]{run\+\_\+imp\+\_\+settings,  }\item[{size\+\_\+t}]{data\+\_\+size }\end{DoxyParamCaption}) const}
 
 
 
@@ -82,7 +82,7 @@ std\+::pair$<$Mult\+Run\+Data, std\+::vector$<$\+Run\+Speedup\+Avg\+Median$>$$>$
 \end{DoxyReturn}
 
 
-Definition at line 21 of file Evaluate\+Imp\+Results.\+cpp.
+Definition at line 38 of file Evaluate\+Imp\+Results.\+cpp.
 
 
 

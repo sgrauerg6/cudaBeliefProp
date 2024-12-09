@@ -3,8 +3,7 @@
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include $<$cuda\+\_\+fp16.\+h$>$}\newline
-Include dependency graph for Run\+CUDASettings.\+h\+:
-\nopagebreak
+Include dependency graph for Run\+CUDASettings.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -23,7 +22,7 @@ This graph shows which files directly or indirectly include this file\+:
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacerun__cuda}{run\+\_\+cuda}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace with constants for parallel parameters default and options to use in run optimization. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -35,7 +34,16 @@ using \mbox{\hyperlink{_run_c_u_d_a_settings_8h_ae0ec76c243989a7b368bb78677ff6b3
 const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}{run\+\_\+cuda\+::k\+Parallel\+Parameter\+Options}}
 \begin{DoxyCompactList}\small\item\em Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation. \end{DoxyCompactList}\item 
 constexpr std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}{run\+\_\+cuda\+::k\+Parallel\+Params\+Default}} \{\{32, 4\}\}
-\begin{DoxyCompactList}\small\item\em Default thread block dimensions (which is what parallel parameters corresponds to) in CUDA implementation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation) \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}
 
 
 \doxysubsection{Typedef Documentation}
@@ -47,5 +55,5 @@ constexpr std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cud
 
 
 
-Definition at line 20 of file Run\+CUDASettings.\+h.
+Definition at line 39 of file Run\+CUDASettings.\+h.
 

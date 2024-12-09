@@ -1,0 +1,5 @@
+<map id="src/beliefprop/BpOptimizeCUDA/KernelFilterHeader.cuh" name="src/beliefprop/BpOptimizeCUDA/KernelFilterHeader.cuh">
+<area shape="rect" id="node1" title="Header for the kernel to apply a horizontal/vertical filter to image data." alt="" coords="27,5,237,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,128,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="153,95,245,121"/>
+</map>

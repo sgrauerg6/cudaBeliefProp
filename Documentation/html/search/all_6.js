@@ -11,7 +11,7 @@ var searchData=
   ['getdataasuint_182',['GetDataAsUInt',['../class_run_data.html#ab33fa60e663c99677c58fea09a0e33a6',1,'RunData']]],
   ['getmax_183',['GetMax',['../namespaceutil__functs.html#aca34e7c44469367a700c4e23d2637cbb',1,'util_functs']]],
   ['getmin_184',['GetMin',['../namespaceutil__functs.html#a152949893a393787be955df9fb4a638d',1,'util_functs']]],
-  ['getminbyelement_185',['GetMinByElement',['../namespace_vect_processing_functs.html#acf3733cc6b62a1f6823f2b54204d4c6c',1,'VectProcessingFuncts']]],
+  ['getminbyelement_185',['GetMinByElement',['../namespacesimd__processing.html#a835d8005e2daedbff1af05b4f07c165f',1,'simd_processing']]],
   ['getnumdataalignwidth_186',['GetNumDataAlignWidth',['../namespacerun__environment.html#a1531965e4d9740a8446833f2fa7e3163',1,'run_environment']]],
   ['groundtruthdisparityfilepath_187',['GroundTruthDisparityFilePath',['../class_bp_file_handling.html#a503e49378d793ced33e62a0ad40750aa',1,'BpFileHandling']]]
 ];

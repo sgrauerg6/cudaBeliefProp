@@ -87,6 +87,9 @@ $(document).ready(function(){initNavTree('_memory_management_8h.html',''); initR
 <div class="title">MemoryManagement.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class for memory management with functions defined for standard memory allocation using CPU and can be overridden to support other computation devices.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;new&gt;</code><br />
 <code>#include &lt;ranges&gt;</code><br />
 <code>#include &quot;<a class="el" href="_run_settings_8h_source.html">RunSettingsParams/RunSettings.h</a>&quot;</code><br />
@@ -96,18 +99,18 @@ Include dependency graph for MemoryManagement.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_memory_management_8h__incl.png" border="0" usemap="#asrc_2_run_imp_2_memory_management_8h" alt=""/></div>
 <map name="asrc_2_run_imp_2_memory_management_8h" id="asrc_2_run_imp_2_memory_management_8h">
-<area shape="rect" title=" " alt="" coords="349,5,600,32"/>
+<area shape="rect" title="Class for memory management with functions defined for standard memory allocation using CPU and can b..." alt="" coords="349,5,600,32"/>
 <area shape="rect" title=" " alt="" coords="309,80,358,107"/>
 <area shape="rect" title=" " alt="" coords="5,155,72,181"/>
 <area shape="rect" href="_run_settings_8h.html" title=" " alt="" coords="433,80,676,107"/>
-<area shape="rect" href="_run_type_constraints_8h.html" title=" " alt="" coords="919,80,1139,107"/>
+<area shape="rect" href="_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="919,80,1139,107"/>
 <area shape="rect" title=" " alt="" coords="780,311,855,338"/>
 <area shape="rect" title=" " alt="" coords="317,393,414,420"/>
 <area shape="rect" title=" " alt="" coords="463,155,527,181"/>
-<area shape="rect" href="_run_data_8h.html" title=" " alt="" coords="1032,229,1179,256"/>
-<area shape="rect" href="_input_signature_8h.html" title=" " alt="" coords="551,155,681,181"/>
+<area shape="rect" href="_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="1032,229,1179,256"/>
+<area shape="rect" href="_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="551,155,681,181"/>
 <area shape="rect" href="_run_settings_consts_enums_8h.html" title=" " alt="" coords="505,304,735,345"/>
-<area shape="rect" href="_c_p_u_threads_pinned_to_socket_8h.html" title=" " alt="" coords="853,155,1067,181"/>
+<area shape="rect" href="_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="853,155,1067,181"/>
 <area shape="rect" title=" " alt="" coords="1054,311,1117,338"/>
 <area shape="rect" title=" " alt="" coords="968,393,1019,420"/>
 <area shape="rect" title=" " alt="" coords="879,311,937,338"/>
@@ -127,28 +130,28 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_memory_management_8h__dep__incl.png" border="0" usemap="#asrc_2_run_imp_2_memory_management_8hdep" alt=""/></div>
 <map name="asrc_2_run_imp_2_memory_management_8hdep" id="asrc_2_run_imp_2_memory_management_8hdep">
-<area shape="rect" title=" " alt="" coords="1041,5,1291,32"/>
-<area shape="rect" href="_process_bp_8h.html" title=" " alt="" coords="915,80,1142,121"/>
-<area shape="rect" href="_run_bp_on_stereo_set_8h.html" title=" " alt="" coords="765,169,991,211"/>
-<area shape="rect" href="_memory_management_8cpp.html" title=" " alt="" coords="1467,87,1734,114"/>
-<area shape="rect" href="_memory_management_c_u_d_a_8h.html" title=" " alt="" coords="1166,80,1443,121"/>
-<area shape="rect" href="_process_bp_optimized_c_p_u_8h.html" title=" " alt="" coords="299,169,526,211"/>
+<area shape="rect" title="Class for memory management with functions defined for standard memory allocation using CPU and can b..." alt="" coords="1042,5,1293,32"/>
+<area shape="rect" href="_process_bp_8h.html" title=" " alt="" coords="917,80,1143,121"/>
+<area shape="rect" href="_run_bp_on_stereo_set_8h.html" title=" " alt="" coords="766,169,993,211"/>
+<area shape="rect" href="_memory_management_8cpp.html" title=" " alt="" coords="1469,87,1735,114"/>
+<area shape="rect" href="_memory_management_c_u_d_a_8h.html" title=" " alt="" coords="1167,80,1445,121"/>
+<area shape="rect" href="_process_bp_optimized_c_p_u_8h.html" title="Declares the host functions to run the CUDA implementation of Stereo estimation using BP." alt="" coords="299,169,526,211"/>
 <area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title=" " alt="" coords="271,259,554,300"/>
-<area shape="rect" href="_process_bp_c_u_d_a_8h.html" title=" " alt="" coords="1067,169,1257,211"/>
-<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8h.html" title=" " alt="" coords="1239,259,1477,300"/>
-<area shape="rect" href="_process_bp_8cpp.html" title=" " alt="" coords="1282,169,1509,211"/>
-<area shape="rect" href="_process_bp_optimized_c_p_u_8cpp.html" title=" " alt="" coords="5,259,247,300"/>
+<area shape="rect" href="_process_bp_c_u_d_a_8h.html" title=" " alt="" coords="1068,169,1259,211"/>
+<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8h.html" title="Declares the methods to run Stereo BP on a series of images." alt="" coords="1241,259,1478,300"/>
+<area shape="rect" href="_process_bp_8cpp.html" title=" " alt="" coords="1283,169,1510,211"/>
+<area shape="rect" href="_process_bp_optimized_c_p_u_8cpp.html" title="Defines the functions to run the CUDA implementation of 2&#45;D Stereo estimation using BP." alt="" coords="5,259,247,300"/>
 <area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8cpp.html" title=" " alt="" coords="127,348,424,389"/>
-<area shape="rect" href="driver_bp_stereo_c_p_u__custom_run_8cpp.html" title=" " alt="" coords="333,445,591,486"/>
-<area shape="rect" href="_process_bp_c_u_d_a_8cpp.html" title=" " alt="" coords="1501,259,1697,300"/>
-<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8cpp.html" title=" " alt="" coords="1184,348,1436,389"/>
-<area shape="rect" href="driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title=" " alt="" coords="1073,437,1235,493"/>
-<area shape="rect" href="_run_bp_on_stereo_set_8cpp.html" title=" " alt="" coords="989,259,1215,300"/>
-<area shape="rect" href="stereo_8h.html" title=" " alt="" coords="696,259,913,300"/>
-<area shape="rect" href="_run_bp_imp_on_input_8h.html" title=" " alt="" coords="629,348,815,389"/>
-<area shape="rect" href="stereo_8cpp.html" title=" " alt="" coords="891,348,1108,389"/>
-<area shape="rect" href="_run_bp_imp_mult_inputs_8cpp.html" title=" " alt="" coords="615,445,829,486"/>
-<area shape="rect" href="_run_bp_imp_on_input_8cpp.html" title=" " alt="" coords="853,445,1049,486"/>
+<area shape="rect" href="_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title=" " alt="" coords="333,445,591,486"/>
+<area shape="rect" href="_process_bp_c_u_d_a_8cpp.html" title="Defines the functions to run the CUDA implementation of 2D Stereo estimation using BP." alt="" coords="1503,259,1699,300"/>
+<area shape="rect" href="_run_bp_on_stereo_set_c_u_d_a_8cpp.html" title="Defines the methods to run BP Stereo implementation on a series of images using various options." alt="" coords="1185,348,1437,389"/>
+<area shape="rect" href="_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title=" " alt="" coords="1075,437,1238,493"/>
+<area shape="rect" href="_run_bp_on_stereo_set_8cpp.html" title=" " alt="" coords="990,259,1217,300"/>
+<area shape="rect" href="stereo_8h.html" title=" " alt="" coords="697,259,915,300"/>
+<area shape="rect" href="_run_bp_imp_on_input_8h.html" title=" " alt="" coords="631,348,816,389"/>
+<area shape="rect" href="stereo_8cpp.html" title=" " alt="" coords="892,348,1109,389"/>
+<area shape="rect" href="_run_bp_imp_mult_inputs_8cpp.html" title=" " alt="" coords="616,445,831,486"/>
+<area shape="rect" href="_run_bp_imp_on_input_8cpp.html" title=" " alt="" coords="855,445,1051,486"/>
 </map>
 </div>
 </div>
@@ -160,7 +163,13 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class for memory management with functions defined for standard memory allocation using CPU. Class functions can be overridden to support other computation devices such as GPU.  <a href="class_memory_management.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class for memory management with functions defined for standard memory allocation using CPU and can be overridden to support other computation devices. </p>
+<dl class="section author"><dt>Author</dt><dd>Scott Grauer-Gray</dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2024 </dd></dl>
+
+<p class="definition">Definition in file <a class="el" href="_memory_management_8h_source.html">MemoryManagement.h</a>.</p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

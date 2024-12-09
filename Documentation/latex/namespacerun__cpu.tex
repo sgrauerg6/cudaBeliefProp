@@ -1,19 +1,27 @@
 \hypertarget{namespacerun__cpu}{}\doxysection{run\+\_\+cpu Namespace Reference}
 \label{namespacerun__cpu}\index{run\_cpu@{run\_cpu}}
+
+
+Namespace with CPU run defaults and constants.  
+
+
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}{k\+Simulate\+Single\+CPU}} \{\char`\"{}Simulate\+Single\+CPU\char`\"{}\}
-\begin{DoxyCompactList}\small\item\em Constant to specify to run simulate single CPU on a dual-\/\+CPU system. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em Constant that specifies that run is simulating single CPU on a dual-\/\+CPU system. \end{DoxyCompactList}\item 
 const unsigned int \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}} \{std\+::thread\+::hardware\+\_\+concurrency()\}
-\item 
+\begin{DoxyCompactList}\small\item\em Constant corresponding to number of threads on CPU. \end{DoxyCompactList}\item 
 const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}{k\+Parallel\+Parameter\+Options}}
-\item 
+\begin{DoxyCompactList}\small\item\em Parallel parameters options that are tested in order to find optimized configuration in run. \end{DoxyCompactList}\item 
 const unsigned int \mbox{\hyperlink{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}{k\+Min\+Num\+Threads\+Run}} \{std\+::min(\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 4u)\}
-\item 
+\begin{DoxyCompactList}\small\item\em Minimum number of threads to allow for any parallel parameters setting on CPU. \end{DoxyCompactList}\item 
 const std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}{k\+Parallel\+Params\+Default}} \{\{\mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{k\+Num\+Threads\+CPU}}, 1\}\}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default parallel parameters setting on CPU. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Namespace with CPU run defaults and constants. 
 
 \doxysubsection{Variable Documentation}
 \mbox{\Hypertarget{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}\label{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}} 
@@ -24,7 +32,11 @@ const std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cpu_a36
 
 
 
-Definition at line 59 of file Run\+CPUSettings.\+h.
+Minimum number of threads to allow for any parallel parameters setting on CPU. 
+
+
+
+Definition at line 89 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}\label{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}} 
 \index{run\_cpu@{run\_cpu}!kNumThreadsCPU@{kNumThreadsCPU}}
@@ -34,7 +46,11 @@ Definition at line 59 of file Run\+CPUSettings.\+h.
 
 
 
-Definition at line 50 of file Run\+CPUSettings.\+h.
+Constant corresponding to number of threads on CPU. 
+
+
+
+Definition at line 69 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}\label{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}} 
 \index{run\_cpu@{run\_cpu}!kParallelParameterOptions@{kParallelParameterOptions}}
@@ -51,7 +67,11 @@ Definition at line 50 of file Run\+CPUSettings.\+h.
 \end{DoxyCode}
 
 
-Definition at line 55 of file Run\+CPUSettings.\+h.
+Parallel parameters options that are tested in order to find optimized configuration in run. 
+
+
+
+Definition at line 81 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}\label{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}} 
 \index{run\_cpu@{run\_cpu}!kParallelParamsDefault@{kParallelParamsDefault}}
@@ -61,7 +81,11 @@ Definition at line 55 of file Run\+CPUSettings.\+h.
 
 
 
-Definition at line 60 of file Run\+CPUSettings.\+h.
+Default parallel parameters setting on CPU. 
+
+
+
+Definition at line 92 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}\label{namespacerun__cpu_a24d7f23c61507a9913b16cbac984f031}} 
 \index{run\_cpu@{run\_cpu}!kSimulateSingleCPU@{kSimulateSingleCPU}}
@@ -71,9 +95,9 @@ Definition at line 60 of file Run\+CPUSettings.\+h.
 
 
 
-Constant to specify to run simulate single CPU on a dual-\/\+CPU system. 
+Constant that specifies that run is simulating single CPU on a dual-\/\+CPU system. 
 
 
 
-Definition at line 46 of file Run\+CPUSettings.\+h.
+Definition at line 66 of file Run\+CPUSettings.\+h.
 

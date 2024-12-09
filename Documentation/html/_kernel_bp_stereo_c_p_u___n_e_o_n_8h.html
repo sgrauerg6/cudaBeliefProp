@@ -96,7 +96,7 @@ Include dependency graph for KernelBpStereoCPU_NEON.h:</div>
 <map name="asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___n_e_o_n_8h" id="asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___n_e_o_n_8h">
 <area shape="rect" title=" " alt="" coords="5,5,243,47"/>
 <area shape="rect" title=" " alt="" coords="75,184,173,211"/>
-<area shape="rect" href="_n_e_o_n_template_sp_functs_8h.html" title=" " alt="" coords="89,95,306,136"/>
+<area shape="rect" href="_n_e_o_n_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by NEON on ARM CPUs." alt="" coords="89,95,306,136"/>
 </map>
 </div>
 </div>
@@ -126,7 +126,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a9c4aec4e3fd53bb046f7f02682b3516d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h.html#a9c4aec4e3fd53bb046f7f02682b3516d">beliefpropCPU::MsgStereoSIMD&lt; float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[6].num_disp_vals &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, float16x4_t messages_neighbor_1[<a class="el" href="namespacebeliefprop.html#ade9084f410319841c34418be4a556df4">beliefprop::kStereoSetsToProcess</a>[6].num_disp_vals], float16x4_t messages_neighbor_2[<a class="el" href="namespacebeliefprop.html#ade9084f410319841c34418be4a556df4">beliefprop::kStereoSetsToProcess</a>[6].num_disp_vals], float16x4_t messages_neighbor_3[<a class="el" href="namespacebeliefprop.html#ade9084f410319841c34418be4a556df4">beliefprop::kStereoSetsToProcess</a>[6].num_disp_vals], float16x4_t data_costs[<a class="el" href="namespacebeliefprop.html#ade9084f410319841c34418be4a556df4">beliefprop::kStereoSetsToProcess</a>[6].num_disp_vals], float16_t *dst_message_array, const float16x4_t &amp;disc_k_bp, bool data_aligned)</td></tr>
 <tr class="separator:a9c4aec4e3fd53bb046f7f02682b3516d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Scott Grauer-Gray </dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2024 </dd></dl>
+
+<p class="definition">Definition in file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+</div><h2 class="groupheader">Function Documentation</h2>
 <a id="aefdd867ce49225da609c688b02609895"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aefdd867ce49225da609c688b02609895">&#9670;&nbsp;</a></span>beliefpropCPU::MsgStereoSIMD&lt; float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[0].num_disp_vals &gt;()</h2>
 
@@ -211,7 +216,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00167">167</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00186">186</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -219,7 +224,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aefdd867ce49225da609c688b02609895_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aefdd867ce49225da609c688b02609895_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 
@@ -309,7 +314,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00182">182</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00201">201</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -317,7 +322,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a16812692b8204aaad9ab6f1acd8db28a_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a16812692b8204aaad9ab6f1acd8db28a_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 
@@ -407,7 +412,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00197">197</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00216">216</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -415,7 +420,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_af6abcc78555232fb684c7579db3e4a83_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_af6abcc78555232fb684c7579db3e4a83_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 
@@ -505,7 +510,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00212">212</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00231">231</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -513,7 +518,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a46676b910fc2872e0a0278e353c8535c_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a46676b910fc2872e0a0278e353c8535c_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 
@@ -603,7 +608,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00227">227</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00246">246</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -611,7 +616,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a0fe38ed90945b9f90179db110d32ed46_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a0fe38ed90945b9f90179db110d32ed46_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 
@@ -701,7 +706,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00242">242</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00261">261</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -709,7 +714,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aeb55c8bc28f216a57abc4da38bbbe7a3_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_aeb55c8bc28f216a57abc4da38bbbe7a3_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 
@@ -799,7 +804,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00257">257</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00276">276</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -807,7 +812,7 @@ Here is the call graph for this function:</div>
 <map name="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a9c4aec4e3fd53bb046f7f02682b3516d_cgraph" id="a_kernel_bp_stereo_c_p_u___n_e_o_n_8h_a9c4aec4e3fd53bb046f7f02682b3516d_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,228,76"/>
 <area shape="rect" href="namespacebeliefprop_c_p_u.html#adb8b086a2bd4634084003584c63c341b" title=" " alt="" coords="276,20,468,61"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="516,20,703,61"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="516,20,703,61"/>
 </map>
 </div>
 

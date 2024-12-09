@@ -1,4 +1,4 @@
 <map id="src/RunImpCPU/AVX512TemplateSpFuncts.h" name="src/RunImpCPU/AVX512TemplateSpFuncts.h">
-<area shape="rect" id="node1" title=" " alt="" coords="36,5,272,47"/>
+<area shape="rect" id="node1" title="Template specializations for processing on SIMD vector data types supported by AVX512." alt="" coords="36,5,272,47"/>
 <area shape="rect" id="node2" href="$_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html" title=" " alt="" coords="5,95,303,151"/>
 </map>

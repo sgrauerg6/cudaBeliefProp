@@ -39,8 +39,8 @@ class \mbox{\hyperlink{class_run_bp_imp_on_input}{Run\+Bp\+Imp\+On\+Input$<$ T, 
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
- \mbox{\hyperlink{namespacebp_single_thread}{bp\+Single\+Thread}}
-\item 
+ \mbox{\hyperlink{namespacebp__single__thread}{bp\+\_\+single\+\_\+thread}}
+\begin{DoxyCompactList}\small\item\em Namespace with setting of whether or not to run single thread implementation a single time for each input stereo set when running evaluation and storage of single thread implementation output so it can be re-\/used so that single thread implementation only needs to be run once for each evaluation stereo set. \end{DoxyCompactList}\item 
  \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
@@ -51,10 +51,10 @@ using \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-constexpr bool \mbox{\hyperlink{namespacebp_single_thread_a3da2b7cb6de6aa48ec8f7f32f6859f63}{bp\+Single\+Thread\+::k\+Run\+Single\+Thread\+Once\+For\+Set}} \{true\}
-\item 
-std\+::map$<$ std\+::array$<$ \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}}, 2 $>$, std\+::tuple$<$ std\+::chrono\+::duration$<$ double $>$, \mbox{\hyperlink{class_run_data}{Run\+Data}}, \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}} $>$ $>$ \mbox{\hyperlink{namespacebp_single_thread_a3dcfa88937d6fd94e3840e5b73339d85}{bp\+Single\+Thread\+::single\+\_\+thread\+\_\+run\+\_\+output}}
-\item 
+constexpr bool \mbox{\hyperlink{namespacebp__single__thread_a2ec5e511ba4290d2451484dcacc4f9bf}{bp\+\_\+single\+\_\+thread\+::k\+Run\+Single\+Thread\+Once\+For\+Set}} \{true\}
+\begin{DoxyCompactList}\small\item\em Setting of whether or not to run single thread implementation once for each stereo set in evaluation. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::array$<$ \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}}, 2 $>$, std\+::tuple$<$ std\+::chrono\+::duration$<$ double $>$, \mbox{\hyperlink{class_run_data}{Run\+Data}}, \mbox{\hyperlink{_run_bp_imp_on_input_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}} $>$ $>$ \mbox{\hyperlink{namespacebp__single__thread_aedcfceb5c175f20137e3031a9dd0f2f3}{bp\+\_\+single\+\_\+thread\+::single\+\_\+thread\+\_\+run\+\_\+output}}
+\begin{DoxyCompactList}\small\item\em Map to store output and run results for single thread implementation for each stereo set. \end{DoxyCompactList}\item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}{beliefprop\+::k\+Acceleration\+Desc\+Header}} \{\char`\"{}Acceleration\char`\"{}\}
 \end{DoxyCompactItemize}
 
@@ -68,5 +68,5 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_abe583ef1
 
 
 
-Definition at line 27 of file Run\+Bp\+Imp\+On\+Input.\+h.
+Definition at line 46 of file Run\+Bp\+Imp\+On\+Input.\+h.
 

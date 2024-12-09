@@ -86,137 +86,152 @@ $(document).ready(function(){initNavTree('_detailed_timings_8h_source.html','');
 </div><!--header-->
 <div class="contents">
 <a href="_detailed_timings_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * DetailedTimings.h</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *  Created on: Jun 19, 2019</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *      Author: scott</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef DETAILEDTIMINGS_H_</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define DETAILEDTIMINGS_H_</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &lt;iterator&gt;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;ranges&gt;</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_data_8h.html">RunEval/RunData.h</a>&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
-<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="class_detailed_timings.html">   30</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_detailed_timings.html">DetailedTimings</a> {</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <a class="code" href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">DetailedTimings</a>(<span class="keyword">const</span> std::unordered_map&lt;T, std::string_view&gt;&amp; timing_segment_names);</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#a3b7e763ca8c40f5433e70e91267c4017">   44</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#a3b7e763ca8c40f5433e70e91267c4017">ResetTiming</a>() { segment_timings_.clear(); }</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">AddToCurrentTimings</a>(<span class="keyword">const</span> <a class="code" href="class_detailed_timings.html">DetailedTimings</a>&amp; in_detailed_timings);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8">   59</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8">AddTiming</a>(<span class="keyword">const</span> T timing_segment, <span class="keyword">const</span> std::chrono::duration&lt;double&gt;&amp; segment_time) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    segment_timings_[timing_segment].push_back(segment_time);</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  }</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  std::chrono::duration&lt;double&gt; <a class="code" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">MedianTiming</a>(<span class="keyword">const</span> T run_segment_index) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">AsRunData</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  std::map&lt;T, std::vector&lt;std::chrono::duration&lt;double&gt;&gt;&gt; segment_timings_;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">const</span> std::unordered_map&lt;T, std::string_view&gt; timing_seg_to_str_;</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;};</div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">Copyright (C) 2024 Scott Grauer-Gray</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">This program is free software; you can redistribute it and/or modify</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">it under the terms of the GNU General Public License as published by</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">the Free Software Foundation; either version 2 of the License, or</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">(at your option) any later version.</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">GNU General Public License for more details.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program; if not, write to the Free Software</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef DETAILEDTIMINGS_H_</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define DETAILEDTIMINGS_H_</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;algorithm&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;iterator&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;chrono&gt;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;ranges&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_data_8h.html">RunEval/RunData.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_eval_consts_enums_8h.html">RunEval/RunEvalConstsEnums.h</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
+<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="class_detailed_timings.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_detailed_timings.html">DetailedTimings</a> {</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <a class="code" href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">DetailedTimings</a>(<span class="keyword">const</span> std::unordered_map&lt;T, std::string_view&gt;&amp; timing_segment_names);</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#a3b7e763ca8c40f5433e70e91267c4017">   64</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#a3b7e763ca8c40f5433e70e91267c4017">ResetTiming</a>() { segment_timings_.clear(); }</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">AddToCurrentTimings</a>(<span class="keyword">const</span> <a class="code" href="class_detailed_timings.html">DetailedTimings</a>&amp; in_detailed_timings);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8">   79</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8">AddTiming</a>(<span class="keyword">const</span> T timing_segment, <span class="keyword">const</span> std::chrono::duration&lt;double&gt;&amp; segment_time) {</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    segment_timings_[timing_segment].push_back(segment_time);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  }</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;<span class="comment">//initialize each timing segment</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">   86</a></span>&#160;<a class="code" href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">DetailedTimings&lt;T&gt;::DetailedTimings</a>(</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">const</span> std::unordered_map&lt;T, std::string_view&gt;&amp; timing_segment_names) :</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  timing_seg_to_str_{timing_segment_names}</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;{</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  std::ranges::transform(timing_seg_to_str_, std::inserter(segment_timings_, segment_timings_.end()),</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; segment) -&gt; std::pair&lt;T, std::vector&lt;std::chrono::duration&lt;double&gt;&gt;&gt; {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;      return {segment.first, std::vector&lt;std::chrono::duration&lt;double&gt;&gt;()}; });</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;}</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="comment">//add instance of DetailedTimings to current DetailedTimings</span></div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">   98</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">DetailedTimings&lt;T&gt;::AddToCurrentTimings</a>(</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">const</span> <a class="code" href="class_detailed_timings.html">DetailedTimings</a>&amp; in_detailed_timings)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;{</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  std::ranges::for_each(in_detailed_timings.segment_timings_,</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    [<span class="keyword">this</span>](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; current_timing) {</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;      auto iter = this-&gt;segment_timings_.find(current_timing.first);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;      if (iter != this-&gt;segment_timings_.cend()) {</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        iter-&gt;second.insert(iter-&gt;second.cend(), </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;                            current_timing.second.cbegin(),</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;                            current_timing.second.cend());</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;      }</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        this-&gt;segment_timings_[current_timing.first] = current_timing.second;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    });</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;  std::chrono::duration&lt;double&gt; <a class="code" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">MedianTiming</a>(<span class="keyword">const</span> T run_segment_index) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  <a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">AsRunData</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  std::map&lt;T, std::vector&lt;std::chrono::duration&lt;double&gt;&gt;&gt; segment_timings_;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keyword">const</span> std::unordered_map&lt;T, std::string_view&gt; timing_seg_to_str_;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="comment">//initialize each timing segment</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
+<div class="line"><a name="l00106"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">  106</a></span>&#160;<a class="code" href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">DetailedTimings&lt;T&gt;::DetailedTimings</a>(</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;  <span class="keyword">const</span> std::unordered_map&lt;T, std::string_view&gt;&amp; timing_segment_names) :</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  timing_seg_to_str_{timing_segment_names}</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;{</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  std::ranges::transform(timing_seg_to_str_, std::inserter(segment_timings_, segment_timings_.end()),</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    [](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; segment) -&gt; std::pair&lt;T, std::vector&lt;std::chrono::duration&lt;double&gt;&gt;&gt; {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;      return {segment.first, std::vector&lt;std::chrono::duration&lt;double&gt;&gt;()}; });</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;}</div>
 <div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">//get median timing for a specified segment that may have been run multiple times</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment">//add instance of DetailedTimings to current DetailedTimings</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
-<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">  118</a></span>&#160;std::chrono::duration&lt;double&gt; <a class="code" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">DetailedTimings&lt;T&gt;::MedianTiming</a>(</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">const</span> T run_segment_index)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="keyword"></span>{</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keywordflow">if</span> (segment_timings_.at(run_segment_index).size() &gt; 0) {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    std::vector&lt;std::chrono::duration&lt;double&gt;&gt; segment_timing_vect_copy(</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      segment_timings_.at(run_segment_index));</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">//get median timing across runs</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    std::ranges::nth_element(</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;      segment_timing_vect_copy,</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      segment_timing_vect_copy.begin() + segment_timing_vect_copy.size() / 2);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordflow">return</span> (segment_timing_vect_copy[segment_timing_vect_copy.size() / 2]);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;  <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordflow">return</span> std::chrono::duration&lt;double&gt;();</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  }</div>
+<div class="line"><a name="l00118"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">  118</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">DetailedTimings&lt;T&gt;::AddToCurrentTimings</a>(</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;  <span class="keyword">const</span> <a class="code" href="class_detailed_timings.html">DetailedTimings</a>&amp; in_detailed_timings)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;{</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  std::ranges::for_each(in_detailed_timings.segment_timings_,</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    [<span class="keyword">this</span>](<span class="keyword">const</span> <span class="keyword">auto</span>&amp; current_timing) {</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      auto iter = this-&gt;segment_timings_.find(current_timing.first);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      if (iter != this-&gt;segment_timings_.cend()) {</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;        iter-&gt;second.insert(iter-&gt;second.cend(), </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                            current_timing.second.cbegin(),</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                            current_timing.second.cend());</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      }</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        this-&gt;segment_timings_[current_timing.first] = current_timing.second;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    });</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">//return current timing data as a RunData object for output</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment">//get median timing for a specified segment that may have been run multiple times</span></div>
 <div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
-<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">  138</a></span>&#160;<a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">DetailedTimings&lt;T&gt;::AsRunData</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <a class="code" href="class_run_data.html">RunData</a> timings_run_data;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;  std::ranges::for_each(segment_timings_,</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    [<span class="keyword">this</span>, &amp;timings_run_data](<span class="keyword">auto</span> current_timing) {</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="comment">//get median timing across runs</span></div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      std::ranges::nth_element(</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;        current_timing.second,</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;        current_timing.second.begin() + current_timing.second.size() / 2);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      std::string_view header_start = timing_seg_to_str_.at(current_timing.first);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="keywordflow">if</span> (current_timing.second.size() &gt; 0) {</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        timings_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;          std::string(header_start) + <span class="stringliteral">&quot; (&quot;</span> + std::to_string(current_timing.second.size()) + <span class="stringliteral">&quot; timings)&quot;</span>,</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;          current_timing.second[current_timing.second.size() / 2].count());</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      }</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        timings_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;          std::string(header_start) + <span class="stringliteral">&quot; (No timings) &quot;</span>,</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;          <span class="stringliteral">&quot;No timings&quot;</span>); </div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      }</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    });</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  <span class="keywordflow">return</span> timings_run_data;</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;}</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DETAILEDTIMINGS_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="a_run_data_8h_html"><div class="ttname"><a href="_run_data_8h.html">RunData.h</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html"><div class="ttname"><a href="class_detailed_timings.html">DetailedTimings</a></div><div class="ttdoc">Class to store timings of one or more segments taken during the run(s) of an implementation or across...</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00030">DetailedTimings.h:30</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html_a158238eb5d20564311ed04423769d542"><div class="ttname"><a href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">DetailedTimings::MedianTiming</a></div><div class="ttdeci">std::chrono::duration&lt; double &gt; MedianTiming(const T run_segment_index) const</div><div class="ttdoc">Get median timing for a specified segment that may have been run multiple times.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00118">DetailedTimings.h:118</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html_a3b7e763ca8c40f5433e70e91267c4017"><div class="ttname"><a href="class_detailed_timings.html#a3b7e763ca8c40f5433e70e91267c4017">DetailedTimings::ResetTiming</a></div><div class="ttdeci">void ResetTiming()</div><div class="ttdoc">Reset all timings.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00044">DetailedTimings.h:44</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html_a427d44bacb0352fc34b43e36faeee379"><div class="ttname"><a href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">DetailedTimings::DetailedTimings</a></div><div class="ttdeci">DetailedTimings(const std::unordered_map&lt; T, std::string_view &gt; &amp;timing_segment_names)</div><div class="ttdoc">Construct a new DetailedTimings object where each timing segment is initialized.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00086">DetailedTimings.h:86</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html_aa7f8267a6ea1504c5c0a4a1d08bab7d9"><div class="ttname"><a href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">DetailedTimings::AddToCurrentTimings</a></div><div class="ttdeci">void AddToCurrentTimings(const DetailedTimings &amp;in_detailed_timings)</div><div class="ttdoc">Add instance of DetailedTimings to current DetailedTimings.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00098">DetailedTimings.h:98</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html_ade7af05257684e97b210e2a6bb999c1d"><div class="ttname"><a href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">DetailedTimings::AsRunData</a></div><div class="ttdeci">RunData AsRunData() const</div><div class="ttdoc">Return current timing data as a RunData object for evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00138">DetailedTimings.h:138</a></div></div>
-<div class="ttc" id="aclass_detailed_timings_html_ade899fc5c569139d6109f5c2bd0727b8"><div class="ttname"><a href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8">DetailedTimings::AddTiming</a></div><div class="ttdeci">void AddTiming(const T timing_segment, const std::chrono::duration&lt; double &gt; &amp;segment_time)</div><div class="ttdoc">Add timing by segment index.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00059">DetailedTimings.h:59</a></div></div>
-<div class="ttc" id="aclass_run_data_html"><div class="ttname"><a href="class_run_data.html">RunData</a></div><div class="ttdoc">Class to store headers with data corresponding to current program run and evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8h_source.html#l00025">RunData.h:25</a></div></div>
-<div class="ttc" id="aclass_run_data_html_ae2642121388bb8f32b95eeeb498c7401"><div class="ttname"><a href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">RunData::AddDataWHeader</a></div><div class="ttdeci">void AddDataWHeader(const std::string &amp;header, const std::string &amp;data)</div><div class="ttdoc">Add string data with header describing added data.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8cpp_source.html#l00027">RunData.cpp:27</a></div></div>
+<div class="line"><a name="l00138"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">  138</a></span>&#160;std::chrono::duration&lt;double&gt; <a class="code" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">DetailedTimings&lt;T&gt;::MedianTiming</a>(</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;  <span class="keyword">const</span> T run_segment_index)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;<span class="keyword"></span>{</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;  <span class="keywordflow">if</span> (segment_timings_.at(run_segment_index).size() &gt; 0) {</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    std::vector&lt;std::chrono::duration&lt;double&gt;&gt; segment_timing_vect_copy(</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;      segment_timings_.at(run_segment_index));</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="comment">//get median timing across runs</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    std::ranges::nth_element(</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      segment_timing_vect_copy,</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      segment_timing_vect_copy.begin() + segment_timing_vect_copy.size() / 2);</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">return</span> (segment_timing_vect_copy[segment_timing_vect_copy.size() / 2]);</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordflow">return</span> std::chrono::duration&lt;double&gt;();</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;  }</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;}</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="comment">//return current timing data as a RunData object for output</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;requires std::is_enum_v&lt;T&gt;</div>
+<div class="line"><a name="l00158"></a><span class="lineno"><a class="line" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">  158</a></span>&#160;<a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">DetailedTimings&lt;T&gt;::AsRunData</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;  <a class="code" href="class_run_data.html">RunData</a> timings_run_data;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  std::ranges::for_each(segment_timings_,</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    [<span class="keyword">this</span>, &amp;timings_run_data](<span class="keyword">auto</span> current_timing) {</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      <span class="comment">//generate header for timing data</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="keyword">const</span> std::string header = </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        std::string(timing_seg_to_str_.at(current_timing.first)) + <span class="stringliteral">&quot; &quot;</span> +</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        std::string(<a class="code" href="namespacerun__eval.html#a68b6e7c080212e75c52102099564ec23">run_eval::kMedianOfTestRunsDesc</a>);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;      <span class="comment">//get median timing across runs</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;      std::ranges::nth_element(</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        current_timing.second,</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        current_timing.second.begin() + current_timing.second.size() / 2);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      <span class="keywordflow">if</span> (current_timing.second.size() &gt; 0) {</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        timings_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;          header,</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;          current_timing.second[current_timing.second.size() / 2].count());</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        timings_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(header, <span class="stringliteral">&quot;No timings&quot;</span>); </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;      }</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    });</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;  <span class="keywordflow">return</span> timings_run_data;</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;}</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* DETAILEDTIMINGS_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="a_run_data_8h_html"><div class="ttname"><a href="_run_data_8h.html">RunData.h</a></div><div class="ttdoc">Class to store headers with data corresponding to current program run and evaluation.</div></div>
+<div class="ttc" id="a_run_eval_consts_enums_8h_html"><div class="ttname"><a href="_run_eval_consts_enums_8h.html">RunEvalConstsEnums.h</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html"><div class="ttname"><a href="class_detailed_timings.html">DetailedTimings</a></div><div class="ttdoc">Class to store timings of one or more segments taken during the run(s) of an implementation or across...</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00050">DetailedTimings.h:50</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html_a158238eb5d20564311ed04423769d542"><div class="ttname"><a href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542">DetailedTimings::MedianTiming</a></div><div class="ttdeci">std::chrono::duration&lt; double &gt; MedianTiming(const T run_segment_index) const</div><div class="ttdoc">Get median timing for a specified segment that may have been run multiple times.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00138">DetailedTimings.h:138</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html_a3b7e763ca8c40f5433e70e91267c4017"><div class="ttname"><a href="class_detailed_timings.html#a3b7e763ca8c40f5433e70e91267c4017">DetailedTimings::ResetTiming</a></div><div class="ttdeci">void ResetTiming()</div><div class="ttdoc">Reset all timings.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00064">DetailedTimings.h:64</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html_a427d44bacb0352fc34b43e36faeee379"><div class="ttname"><a href="class_detailed_timings.html#a427d44bacb0352fc34b43e36faeee379">DetailedTimings::DetailedTimings</a></div><div class="ttdeci">DetailedTimings(const std::unordered_map&lt; T, std::string_view &gt; &amp;timing_segment_names)</div><div class="ttdoc">Construct a new DetailedTimings object where each timing segment is initialized.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00106">DetailedTimings.h:106</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html_aa7f8267a6ea1504c5c0a4a1d08bab7d9"><div class="ttname"><a href="class_detailed_timings.html#aa7f8267a6ea1504c5c0a4a1d08bab7d9">DetailedTimings::AddToCurrentTimings</a></div><div class="ttdeci">void AddToCurrentTimings(const DetailedTimings &amp;in_detailed_timings)</div><div class="ttdoc">Add instance of DetailedTimings to current DetailedTimings.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00118">DetailedTimings.h:118</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html_ade7af05257684e97b210e2a6bb999c1d"><div class="ttname"><a href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d">DetailedTimings::AsRunData</a></div><div class="ttdeci">RunData AsRunData() const</div><div class="ttdoc">Return current timing data as a RunData object for evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00158">DetailedTimings.h:158</a></div></div>
+<div class="ttc" id="aclass_detailed_timings_html_ade899fc5c569139d6109f5c2bd0727b8"><div class="ttname"><a href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8">DetailedTimings::AddTiming</a></div><div class="ttdeci">void AddTiming(const T timing_segment, const std::chrono::duration&lt; double &gt; &amp;segment_time)</div><div class="ttdoc">Add timing by segment index.</div><div class="ttdef"><b>Definition:</b> <a href="_detailed_timings_8h_source.html#l00079">DetailedTimings.h:79</a></div></div>
+<div class="ttc" id="aclass_run_data_html"><div class="ttname"><a href="class_run_data.html">RunData</a></div><div class="ttdoc">Class to store headers with data corresponding to current program run and evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8h_source.html#l00042">RunData.h:42</a></div></div>
+<div class="ttc" id="aclass_run_data_html_ae2642121388bb8f32b95eeeb498c7401"><div class="ttname"><a href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">RunData::AddDataWHeader</a></div><div class="ttdeci">void AddDataWHeader(const std::string &amp;header, const std::string &amp;data)</div><div class="ttdoc">Add string data with header describing added data.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8cpp_source.html#l00044">RunData.cpp:44</a></div></div>
+<div class="ttc" id="anamespacerun__eval_html_a68b6e7c080212e75c52102099564ec23"><div class="ttname"><a href="namespacerun__eval.html#a68b6e7c080212e75c52102099564ec23">run_eval::kMedianOfTestRunsDesc</a></div><div class="ttdeci">constexpr std::string_view kMedianOfTestRunsDesc</div><div class="ttdoc">Constant to describing timing as median across evaluation runs.</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00063">RunEvalConstsEnums.h:63</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

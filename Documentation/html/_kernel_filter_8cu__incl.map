@@ -1,0 +1,11 @@
+<map id="src/beliefprop/BpOptimizeCUDA/KernelFilter.cu" name="src/beliefprop/BpOptimizeCUDA/KernelFilter.cu">
+<area shape="rect" id="node1" title="This kernel is used to filter the image with the given filter in the vertical and horizontal directio..." alt="" coords="221,5,411,47"/>
+<area shape="rect" id="node2" href="$_kernel_filter_header_8cuh.html" title="Header for the kernel to apply a horizontal/vertical filter to image data." alt="" coords="90,102,259,129"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,184,128,211"/>
+<area shape="rect" id="node5" title=" " alt="" coords="283,102,349,129"/>
+<area shape="rect" id="node6" href="$_shared_smooth_image_functs_8h.html" title=" " alt="" coords="423,95,649,136"/>
+<area shape="rect" id="node7" href="$_utility_functs_8h.html" title=" " alt="" coords="301,184,472,211"/>
+<area shape="rect" id="node4" title=" " alt="" coords="327,348,419,375"/>
+<area shape="rect" id="node8" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="263,266,483,293"/>
+<area shape="rect" id="node9" href="$_bp_image_constraints_8h.html" title="Define constraints for data type in belief propagation processing related to image processing." alt="" coords="507,259,719,300"/>
+</map>

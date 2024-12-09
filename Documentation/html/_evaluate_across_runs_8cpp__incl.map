@@ -1,11 +1,11 @@
 <map id="src/RunEval/EvaluateAcrossRuns.cpp" name="src/RunEval/EvaluateAcrossRuns.cpp">
-<area shape="rect" id="node1" title=" " alt="" coords="255,5,458,47"/>
+<area shape="rect" id="node1" title="Definition of functions in class for evaluating results across multiple runs, potentially on differen..." alt="" coords="255,5,458,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,95,79,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="103,95,189,121"/>
 <area shape="rect" id="node4" title=" " alt="" coords="213,95,255,121"/>
 <area shape="rect" id="node5" title=" " alt="" coords="280,95,340,121"/>
 <area shape="rect" id="node6" title=" " alt="" coords="365,95,445,121"/>
-<area shape="rect" id="node7" href="$_input_signature_8h.html" title=" " alt="" coords="774,169,1033,196"/>
+<area shape="rect" id="node7" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="774,169,1033,196"/>
 <area shape="rect" id="node17" href="$_evaluate_across_runs_8h.html" title=" " alt="" coords="469,95,636,121"/>
 <area shape="rect" id="node20" href="$_run_results_speedups_8h.html" title=" " alt="" coords="661,95,831,121"/>
 <area shape="rect" id="node8" title=" " alt="" coords="837,408,935,435"/>

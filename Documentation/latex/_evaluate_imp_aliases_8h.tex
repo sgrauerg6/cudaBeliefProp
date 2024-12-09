@@ -1,5 +1,10 @@
 \hypertarget{_evaluate_imp_aliases_8h}{}\doxysection{src/\+Run\+Eval/\+Evaluate\+Imp\+Aliases.h File Reference}
 \label{_evaluate_imp_aliases_8h}\index{src/RunEval/EvaluateImpAliases.h@{src/RunEval/EvaluateImpAliases.h}}
+
+
+Header for defining aliases for storing run results and evaluating implementations.  
+
+
 {\ttfamily \#include $<$map$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
@@ -9,6 +14,7 @@
 {\ttfamily \#include $<$optional$>$}\newline
 {\ttfamily \#include \char`\"{}Run\+Data.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Eval\+Consts\+Enums.\+h\char`\"{}}\newline
 Include dependency graph for Evaluate\+Imp\+Aliases.\+h\+:
 \nopagebreak
 \begin{figure}[H]
@@ -30,10 +36,21 @@ This graph shows which files directly or indirectly include this file\+:
 \item 
 using \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}} = std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::optional$<$ std\+::map$<$ \mbox{\hyperlink{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}{run\+\_\+environment\+::\+Parallel\+Params\+Setting}}, \mbox{\hyperlink{class_run_data}{Run\+Data}} $>$ $>$$>$
 \item 
-using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} = std\+::pair$<$ std\+::string, std\+::array$<$ double, 2 $>$ $>$
+using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} = std\+::pair$<$ std\+::string, std\+::map$<$ \mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{run\+\_\+eval\+::\+Middle\+Val\+Data}}, double $>$ $>$
 \item 
-using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} $>$ $>$$>$
+using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} = std\+::unordered\+\_\+map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$ \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} $>$ $>$$>$
 \end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header for defining aliases for storing run results and evaluating implementations. 
+
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}
 
 
 \doxysubsection{Typedef Documentation}
@@ -45,25 +62,25 @@ using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd
 
 
 
-Definition at line 23 of file Evaluate\+Imp\+Aliases.\+h.
+Definition at line 41 of file Evaluate\+Imp\+Aliases.\+h.
 
 \mbox{\Hypertarget{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}\label{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}} 
 \index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!MultRunDataWSpeedupByAcc@{MultRunDataWSpeedupByAcc}}
 \index{MultRunDataWSpeedupByAcc@{MultRunDataWSpeedupByAcc}!EvaluateImpAliases.h@{EvaluateImpAliases.h}}
 \doxysubsubsection{\texorpdfstring{MultRunDataWSpeedupByAcc}{MultRunDataWSpeedupByAcc}}
-{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} =  std\+::unordered\+\_\+map$<$\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$\mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}}$>$ $>$$>$}
+{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_a3a6aff8d2606369119da478289a3cdd0}{Mult\+Run\+Data\+WSpeedup\+By\+Acc}} =  std\+::unordered\+\_\+map$<$\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::pair$<$\mbox{\hyperlink{_evaluate_imp_aliases_8h_aae59d45d00750e48757e5a168e9ec6dc}{Mult\+Run\+Data}}, std\+::vector$<$\mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}}$>$ $>$$>$}
 
 
 
-Definition at line 25 of file Evaluate\+Imp\+Aliases.\+h.
+Definition at line 43 of file Evaluate\+Imp\+Aliases.\+h.
 
-\mbox{\Hypertarget{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}\label{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}} 
+\mbox{\Hypertarget{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}\label{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}} 
 \index{EvaluateImpAliases.h@{EvaluateImpAliases.h}!RunSpeedupAvgMedian@{RunSpeedupAvgMedian}}
 \index{RunSpeedupAvgMedian@{RunSpeedupAvgMedian}!EvaluateImpAliases.h@{EvaluateImpAliases.h}}
 \doxysubsubsection{\texorpdfstring{RunSpeedupAvgMedian}{RunSpeedupAvgMedian}}
-{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ad1f16967429f5299bf01b6efe5e8370a}{Run\+Speedup\+Avg\+Median}} =  std\+::pair$<$std\+::string, std\+::array$<$double, 2$>$ $>$}
+{\footnotesize\ttfamily using \mbox{\hyperlink{_evaluate_imp_aliases_8h_ac65698ddba39b029bfc1e625d39c410a}{Run\+Speedup\+Avg\+Median}} =  std\+::pair$<$std\+::string, std\+::map$<$\mbox{\hyperlink{namespacerun__eval_afde1aa77e63e966b5728eae080febcf2}{run\+\_\+eval\+::\+Middle\+Val\+Data}}, double$>$ $>$}
 
 
 
-Definition at line 24 of file Evaluate\+Imp\+Aliases.\+h.
+Definition at line 42 of file Evaluate\+Imp\+Aliases.\+h.
 

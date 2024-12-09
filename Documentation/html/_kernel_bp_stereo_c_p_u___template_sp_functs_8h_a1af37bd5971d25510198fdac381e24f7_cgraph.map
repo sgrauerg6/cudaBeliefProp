@@ -1,6 +1,6 @@
 <map id="InitializeCurrentLevelDataPixel&lt; short, short, beliefprop::kStereoSetsToProcess[0].num_disp_vals &gt;" name="InitializeCurrentLevelDataPixel&lt; short, short, beliefprop::kStereoSetsToProcess[0].num_disp_vals &gt;">
 <area shape="rect" id="node1" title=" " alt="" coords="5,24,228,95"/>
-<area shape="rect" id="node2" href="$namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c" title=" " alt="" coords="276,39,476,80"/>
-<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title=" " alt="" coords="524,5,711,47"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="276,39,476,80"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="524,5,711,47"/>
 <area shape="rect" id="node4" href="$namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="527,71,708,112"/>
 </map>

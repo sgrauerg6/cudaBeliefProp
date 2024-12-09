@@ -86,72 +86,88 @@ $(document).ready(function(){initNavTree('_run_c_p_u_settings_8h_source.html',''
 </div><!--header-->
 <div class="contents">
 <a href="_run_c_p_u_settings_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * RunCPUSettings.h</span></div>
-<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *  Created on: Jan 27, 2024</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *      Author: scott</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef RUNCPUSETTINGS_H_</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define RUNCPUSETTINGS_H_</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_settings_8h.html">RunSettingsParams/RunSettings.h</a>&quot;</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//check if running on ARM architecture</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifdef COMPILING_FOR_ARM</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;arm_neon.h&gt;</span> <span class="comment">//needed for float16_t type</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//define and set CPU vectorization options using preprocessor (since needed to determine what code gets compiled to support vectorization)</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#aa69e9a59b1abae0590236507ccd1dc4b">   22</a></span>&#160;<span class="preprocessor">#define AVX_256_DEFINE 0</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#aa79bf1a48a98e108cfb7f16b5fe4f6c2">   23</a></span>&#160;<span class="preprocessor">#define AVX_512_DEFINE 1</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#abfa9a0caa652efcd52f87b995ba225e2">   24</a></span>&#160;<span class="preprocessor">#define NEON_DEFINE 2</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#a8a23f4491215194a44e7a91eec95c06c">   25</a></span>&#160;<span class="preprocessor">#define NO_VECTORIZATION 3</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#ifdef COMPILING_FOR_ARM </span><span class="comment">//NEON supported on ARM but AVX is not</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE NEON_DEFINE</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="comment">//by default CPU vectorization during compilation via Makefile</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">//use AVX 512 if not set during compilation</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#if defined(AVX_512_VECTORIZATION)</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE AVX_512_DEFINE</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#elif defined(AVX_256_VECTORIZATION)</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE AVX_256_DEFINE</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#ab9bfdbf36e88c3985abe40fcd00bbe5c">   36</a></span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE AVX_512_DEFINE</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//defined(AVX_512_VECTORIZATION)</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//COMPILING_FOR_ARM</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment">Copyright (C) 2024 Scott Grauer-Gray</span></div>
+<div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment">This program is free software; you can redistribute it and/or modify</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment">it under the terms of the GNU General Public License as published by</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment">the Free Software Foundation; either version 2 of the License, or</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">(at your option) any later version.</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">This program is distributed in the hope that it will be useful,</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">but WITHOUT ANY WARRANTY; without even the implied warranty of</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">GNU General Public License for more details.</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">You should have received a copy of the GNU General Public License</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">along with this program; if not, write to the Free Software</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">*/</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef RUNCPUSETTINGS_H_</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define RUNCPUSETTINGS_H_</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_settings_8h.html">RunSettingsParams/RunSettings.h</a>&quot;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">//check if running on ARM architecture</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#ifdef COMPILING_FOR_ARM</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;arm_neon.h&gt;</span> <span class="comment">//needed for float16_t type</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html">   40</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerun__cpu.html">run_cpu</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a24d7f23c61507a9913b16cbac984f031">   46</a></span>&#160;constexpr std::string_view <a class="code" href="namespacerun__cpu.html#a24d7f23c61507a9913b16cbac984f031">kSimulateSingleCPU</a>{<span class="stringliteral">&quot;SimulateSingleCPU&quot;</span>};</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">//parallel parameter options to run to retrieve optimized parallel parameters in optimized CPU implementation</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//parallel parameter corresponds to number of OpenMP threads in optimized CPU implementation</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">   50</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>{std::thread::hardware_concurrency()};</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#ifdef LIMITED_TEST_PARAMS_FEWER_RUNS</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">const</span> std::vector&lt;std::array&lt;unsigned int, 2&gt;&gt; <a class="code" href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">kParallelParameterOptions</a>{</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 1},{ <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 2, 1}};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">   55</a></span>&#160;<span class="keyword">const</span> std::vector&lt;std::array&lt;unsigned int, 2&gt;&gt; <a class="code" href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">kParallelParameterOptions</a>{</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 1}, { (3 * <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>) / 4 , 1}, { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 2, 1},</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 4, 1}, { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 8, 1}};</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//LIMITED_TEST_PARAMS_FEWER_RUNS</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca">   59</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca">kMinNumThreadsRun</a>{std::min(<a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 4u)};</div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a3698d5e3de4cfbfc919051e75813686b">   60</a></span>&#160;<span class="keyword">const</span> std::array&lt;unsigned int, 2&gt; <a class="code" href="namespacerun__cpu.html#a3698d5e3de4cfbfc919051e75813686b">kParallelParamsDefault</a>{{<a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 1}};</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;};</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RUNCPUSETTINGS_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="comment">//define and set CPU vectorization options using preprocessor</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="comment">//needed to determine what code gets compiled to support vectorization</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#aa69e9a59b1abae0590236507ccd1dc4b">   42</a></span>&#160;<span class="preprocessor">#define AVX_256_DEFINE 0</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#aa79bf1a48a98e108cfb7f16b5fe4f6c2">   43</a></span>&#160;<span class="preprocessor">#define AVX_512_DEFINE 1</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#abfa9a0caa652efcd52f87b995ba225e2">   44</a></span>&#160;<span class="preprocessor">#define NEON_DEFINE 2</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#a8a23f4491215194a44e7a91eec95c06c">   45</a></span>&#160;<span class="preprocessor">#define NO_VECTORIZATION 3</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#ifdef COMPILING_FOR_ARM </span><span class="comment">//NEON supported on ARM but AVX is not</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE NEON_DEFINE</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">//by default CPU vectorization during compilation via Makefile</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">//use AVX 512 if not set during compilation</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#if defined(AVX_512_VECTORIZATION)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE AVX_512_DEFINE</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#elif defined(AVX_256_VECTORIZATION)</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE AVX_256_DEFINE</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="_run_c_p_u_settings_8h.html#ab9bfdbf36e88c3985abe40fcd00bbe5c">   56</a></span>&#160;<span class="preprocessor">#define CPU_VECTORIZATION_DEFINE AVX_512_DEFINE</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//defined(AVX_512_VECTORIZATION)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//COMPILING_FOR_ARM</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html">   63</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacerun__cpu.html">run_cpu</a> {</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a24d7f23c61507a9913b16cbac984f031">   66</a></span>&#160;constexpr std::string_view <a class="code" href="namespacerun__cpu.html#a24d7f23c61507a9913b16cbac984f031">kSimulateSingleCPU</a>{<span class="stringliteral">&quot;SimulateSingleCPU&quot;</span>};</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">   69</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>{std::thread::hardware_concurrency()};</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#ifdef LIMITED_TEST_PARAMS_FEWER_RUNS</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">const</span> std::vector&lt;std::array&lt;unsigned int, 2&gt;&gt; <a class="code" href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">kParallelParameterOptions</a>{</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 1},{ <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 2, 1}};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">   81</a></span>&#160;<span class="keyword">const</span> std::vector&lt;std::array&lt;unsigned int, 2&gt;&gt; <a class="code" href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">kParallelParameterOptions</a>{</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;  { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 1}, { (3 * <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>) / 4 , 1}, { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 2, 1},</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 4, 1}, { <a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a> / 8, 1}};</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//LIMITED_TEST_PARAMS_FEWER_RUNS</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca">   89</a></span>&#160;<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca">kMinNumThreadsRun</a>{std::min(<a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 4u)};</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="namespacerun__cpu.html#a3698d5e3de4cfbfc919051e75813686b">   92</a></span>&#160;<span class="keyword">const</span> std::array&lt;unsigned int, 2&gt; <a class="code" href="namespacerun__cpu.html#a3698d5e3de4cfbfc919051e75813686b">kParallelParamsDefault</a>{{<a class="code" href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">kNumThreadsCPU</a>, 1}};</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* RUNCPUSETTINGS_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="a_run_settings_8h_html"><div class="ttname"><a href="_run_settings_8h.html">RunSettings.h</a></div></div>
-<div class="ttc" id="anamespacerun__cpu_html"><div class="ttname"><a href="namespacerun__cpu.html">run_cpu</a></div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00040">RunCPUSettings.h:40</a></div></div>
-<div class="ttc" id="anamespacerun__cpu_html_a10dbbcf772622f816bc1c68952b761e4"><div class="ttname"><a href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">run_cpu::kParallelParameterOptions</a></div><div class="ttdeci">const std::vector&lt; std::array&lt; unsigned int, 2 &gt; &gt; kParallelParameterOptions</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00055">RunCPUSettings.h:55</a></div></div>
-<div class="ttc" id="anamespacerun__cpu_html_a24d7f23c61507a9913b16cbac984f031"><div class="ttname"><a href="namespacerun__cpu.html#a24d7f23c61507a9913b16cbac984f031">run_cpu::kSimulateSingleCPU</a></div><div class="ttdeci">constexpr std::string_view kSimulateSingleCPU</div><div class="ttdoc">Constant to specify to run simulate single CPU on a dual-CPU system.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00046">RunCPUSettings.h:46</a></div></div>
-<div class="ttc" id="anamespacerun__cpu_html_a364fc4a944fba970d5f4342ef1efaf40"><div class="ttname"><a href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">run_cpu::kNumThreadsCPU</a></div><div class="ttdeci">const unsigned int kNumThreadsCPU</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00050">RunCPUSettings.h:50</a></div></div>
-<div class="ttc" id="anamespacerun__cpu_html_a3698d5e3de4cfbfc919051e75813686b"><div class="ttname"><a href="namespacerun__cpu.html#a3698d5e3de4cfbfc919051e75813686b">run_cpu::kParallelParamsDefault</a></div><div class="ttdeci">const std::array&lt; unsigned int, 2 &gt; kParallelParamsDefault</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00060">RunCPUSettings.h:60</a></div></div>
-<div class="ttc" id="anamespacerun__cpu_html_a3d0449e82d8c4c3e48aee42f8bbea0ca"><div class="ttname"><a href="namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca">run_cpu::kMinNumThreadsRun</a></div><div class="ttdeci">const unsigned int kMinNumThreadsRun</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00059">RunCPUSettings.h:59</a></div></div>
+<div class="ttc" id="anamespacerun__cpu_html"><div class="ttname"><a href="namespacerun__cpu.html">run_cpu</a></div><div class="ttdoc">Namespace with CPU run defaults and constants.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00063">RunCPUSettings.h:63</a></div></div>
+<div class="ttc" id="anamespacerun__cpu_html_a10dbbcf772622f816bc1c68952b761e4"><div class="ttname"><a href="namespacerun__cpu.html#a10dbbcf772622f816bc1c68952b761e4">run_cpu::kParallelParameterOptions</a></div><div class="ttdeci">const std::vector&lt; std::array&lt; unsigned int, 2 &gt; &gt; kParallelParameterOptions</div><div class="ttdoc">Parallel parameters options that are tested in order to find optimized configuration in run.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00081">RunCPUSettings.h:81</a></div></div>
+<div class="ttc" id="anamespacerun__cpu_html_a24d7f23c61507a9913b16cbac984f031"><div class="ttname"><a href="namespacerun__cpu.html#a24d7f23c61507a9913b16cbac984f031">run_cpu::kSimulateSingleCPU</a></div><div class="ttdeci">constexpr std::string_view kSimulateSingleCPU</div><div class="ttdoc">Constant that specifies that run is simulating single CPU on a dual-CPU system.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00066">RunCPUSettings.h:66</a></div></div>
+<div class="ttc" id="anamespacerun__cpu_html_a364fc4a944fba970d5f4342ef1efaf40"><div class="ttname"><a href="namespacerun__cpu.html#a364fc4a944fba970d5f4342ef1efaf40">run_cpu::kNumThreadsCPU</a></div><div class="ttdeci">const unsigned int kNumThreadsCPU</div><div class="ttdoc">Constant corresponding to number of threads on CPU.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00069">RunCPUSettings.h:69</a></div></div>
+<div class="ttc" id="anamespacerun__cpu_html_a3698d5e3de4cfbfc919051e75813686b"><div class="ttname"><a href="namespacerun__cpu.html#a3698d5e3de4cfbfc919051e75813686b">run_cpu::kParallelParamsDefault</a></div><div class="ttdeci">const std::array&lt; unsigned int, 2 &gt; kParallelParamsDefault</div><div class="ttdoc">Default parallel parameters setting on CPU.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00092">RunCPUSettings.h:92</a></div></div>
+<div class="ttc" id="anamespacerun__cpu_html_a3d0449e82d8c4c3e48aee42f8bbea0ca"><div class="ttname"><a href="namespacerun__cpu.html#a3d0449e82d8c4c3e48aee42f8bbea0ca">run_cpu::kMinNumThreadsRun</a></div><div class="ttdeci">const unsigned int kMinNumThreadsRun</div><div class="ttdoc">Minimum number of threads to allow for any parallel parameters setting on CPU.</div><div class="ttdef"><b>Definition:</b> <a href="_run_c_p_u_settings_8h_source.html#l00089">RunCPUSettings.h:89</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

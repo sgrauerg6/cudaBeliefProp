@@ -1,16 +1,16 @@
 <map id="src/RunImp/MemoryManagement.h" name="src/RunImp/MemoryManagement.h">
-<area shape="rect" id="node1" title=" " alt="" coords="349,5,600,32"/>
+<area shape="rect" id="node1" title="Class for memory management with functions defined for standard memory allocation using CPU and can b..." alt="" coords="349,5,600,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="309,80,358,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,155,72,181"/>
 <area shape="rect" id="node4" href="$_run_settings_8h.html" title=" " alt="" coords="433,80,676,107"/>
-<area shape="rect" id="node23" href="$_run_type_constraints_8h.html" title=" " alt="" coords="919,80,1139,107"/>
+<area shape="rect" id="node23" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="919,80,1139,107"/>
 <area shape="rect" id="node5" title=" " alt="" coords="780,311,855,338"/>
 <area shape="rect" id="node6" title=" " alt="" coords="317,393,414,420"/>
 <area shape="rect" id="node7" title=" " alt="" coords="463,155,527,181"/>
-<area shape="rect" id="node8" href="$_run_data_8h.html" title=" " alt="" coords="1032,229,1179,256"/>
-<area shape="rect" id="node15" href="$_input_signature_8h.html" title=" " alt="" coords="551,155,681,181"/>
+<area shape="rect" id="node8" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="1032,229,1179,256"/>
+<area shape="rect" id="node15" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="551,155,681,181"/>
 <area shape="rect" id="node20" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="505,304,735,345"/>
-<area shape="rect" id="node21" href="$_c_p_u_threads_pinned_to_socket_8h.html" title=" " alt="" coords="853,155,1067,181"/>
+<area shape="rect" id="node21" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="853,155,1067,181"/>
 <area shape="rect" id="node9" title=" " alt="" coords="1054,311,1117,338"/>
 <area shape="rect" id="node10" title=" " alt="" coords="968,393,1019,420"/>
 <area shape="rect" id="node11" title=" " alt="" coords="879,311,937,338"/>

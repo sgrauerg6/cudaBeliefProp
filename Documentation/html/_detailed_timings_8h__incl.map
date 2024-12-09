@@ -1,15 +1,19 @@
 <map id="src/RuntimeTiming/DetailedTimings.h" name="src/RuntimeTiming/DetailedTimings.h">
-<area shape="rect" id="node1" title=" " alt="" coords="315,5,519,47"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,169,68,196"/>
-<area shape="rect" id="node3" title=" " alt="" coords="93,169,178,196"/>
-<area shape="rect" id="node4" title=" " alt="" coords="455,95,579,121"/>
-<area shape="rect" id="node5" title=" " alt="" coords="603,95,673,121"/>
-<area shape="rect" id="node6" title=" " alt="" coords="202,169,253,196"/>
-<area shape="rect" id="node7" title=" " alt="" coords="551,169,631,196"/>
-<area shape="rect" id="node8" title=" " alt="" coords="698,95,765,121"/>
-<area shape="rect" id="node9" title=" " alt="" coords="789,95,855,121"/>
-<area shape="rect" id="node10" href="$_run_data_8h.html" title=" " alt="" coords="233,95,379,121"/>
-<area shape="rect" id="node11" title=" " alt="" coords="277,169,335,196"/>
-<area shape="rect" id="node12" title=" " alt="" coords="359,169,434,196"/>
-<area shape="rect" id="node13" title=" " alt="" coords="459,169,527,196"/>
+<area shape="rect" id="node1" title=" " alt="" coords="251,5,455,47"/>
+<area shape="rect" id="node2" title=" " alt="" coords="58,177,121,203"/>
+<area shape="rect" id="node3" title=" " alt="" coords="188,177,273,203"/>
+<area shape="rect" id="node4" title=" " alt="" coords="42,95,166,121"/>
+<area shape="rect" id="node5" title=" " alt="" coords="190,95,261,121"/>
+<area shape="rect" id="node6" title=" " alt="" coords="285,259,336,285"/>
+<area shape="rect" id="node7" title=" " alt="" coords="623,177,703,203"/>
+<area shape="rect" id="node8" title=" " alt="" coords="507,95,573,121"/>
+<area shape="rect" id="node9" title=" " alt="" coords="597,95,664,121"/>
+<area shape="rect" id="node10" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="336,95,483,121"/>
+<area shape="rect" id="node14" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="784,95,1016,121"/>
+<area shape="rect" id="node11" title=" " alt="" coords="540,177,599,203"/>
+<area shape="rect" id="node12" title=" " alt="" coords="348,177,423,203"/>
+<area shape="rect" id="node13" title=" " alt="" coords="447,177,515,203"/>
+<area shape="rect" id="node15" title=" " alt="" coords="727,177,783,203"/>
+<area shape="rect" id="node16" title=" " alt="" coords="950,259,1047,285"/>
+<area shape="rect" id="node17" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="807,169,1038,211"/>
 </map>

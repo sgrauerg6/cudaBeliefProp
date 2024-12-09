@@ -1,5 +1,5 @@
 <map id="beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel" name="beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel">
-<area shape="rect" id="node1" title=" " alt="" coords="299,304,541,345"/>
+<area shape="rect" id="node1" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="299,304,541,345"/>
 <area shape="rect" id="node2" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#ac0749c9c714fc948862d155053d6c710" title=" " alt="" coords="5,5,251,76"/>
 <area shape="rect" id="node3" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#a6c25e031fd4319a9de9e4ddfd73e0732" title=" " alt="" coords="5,100,251,171"/>
 <area shape="rect" id="node4" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html#ad5d6100e3a35b156c2a899665250dc0b" title=" " alt="" coords="5,195,251,265"/>
