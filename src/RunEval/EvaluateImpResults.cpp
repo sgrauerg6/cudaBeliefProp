@@ -293,11 +293,9 @@ void EvaluateImpResults::WriteRunOutput(
             if (run_sig_data_iter->second->at(p_param_setting).IsData(curr_header))
             {
               run_data_sstr[p_param_setting] <<
-                run_sig_data_iter->second->at(p_param_setting).GetDataAsStr(curr_header) << ',';
+                run_sig_data_iter->second->at(p_param_setting).GetDataAsStr(curr_header);
             }
-            else {
-              run_data_sstr[p_param_setting] << "No Data" << ',';            
-            }
+            run_data_sstr[p_param_setting] << ',';            
           }
           run_data_sstr[p_param_setting] << std::endl;
         }

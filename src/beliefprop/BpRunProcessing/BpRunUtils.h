@@ -77,8 +77,9 @@ constexpr bool kOptimizedIndexingSetting{true};
 constexpr bool kAllocateFreeBpMemoryOutsideRuns{true};
 
 //constants for headers for run settings in evaluation
-constexpr std::string_view kMemOptLevelHeader{"Memory Optimization Level"};
-constexpr std::string_view kIndexingOptLevelHeader{"Indexing Optimization Level"};
+constexpr std::string_view kMemAllocOptHeader{"Memory allocation of all BP data run at or before start of run"};
+constexpr std::string_view kMemoryCoalescedBpDataHeader{"BP data arranged for memory coalescence"};
+constexpr std::string_view kAllocateFreeMemOutsideRunsHeader{"Memory for BP allocated/freed outside of runs"};
 
 /**
  * @brief Retrieve run settings as a RunData object for output
@@ -87,10 +88,15 @@ constexpr std::string_view kIndexingOptLevelHeader{"Indexing Optimization Level"
  */
 inline RunData RunSettings()  {
   RunData curr_run_data;
-  curr_run_data.AddDataWHeader(std::string(kMemOptLevelHeader),
-    std::to_string(kUseOptGPUMemManagement));
-  curr_run_data.AddDataWHeader(std::string(kIndexingOptLevelHeader),
-    std::to_string(kOptimizedIndexingSetting));
+  curr_run_data.AddDataWHeader(
+    std::string(kMemAllocOptHeader),
+    kUseOptGPUMemManagement);
+  curr_run_data.AddDataWHeader(
+    std::string(kMemoryCoalescedBpDataHeader),
+    kOptimizedIndexingSetting);
+  curr_run_data.AddDataWHeader(
+    std::string(kAllocateFreeMemOutsideRunsHeader),
+    kAllocateFreeBpMemoryOutsideRuns);
   return curr_run_data;
 }
 

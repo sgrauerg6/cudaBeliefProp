@@ -171,9 +171,6 @@ RunData DetailedTimings<T>::AsRunData() const {
           header,
           current_timing.second[current_timing.second.size() / 2].count());
       }
-      else {
-        timings_run_data.AddDataWHeader(header, "No timings"); 
-      }
     });
   return timings_run_data;
 }
