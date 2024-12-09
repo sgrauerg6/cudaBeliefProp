@@ -81,6 +81,6 @@ ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned
   }
 }
 
-}
+};
 
 #endif //SHARED_BP_UTIL_FUNCTS_H_
