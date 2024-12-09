@@ -1,12 +1,5 @@
 /*
- * BpStereoParameters.h
- *
- *  Created on: Jun 18, 2019
- *      Author: scott
- */
-
-/*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,9 +16,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This header file contains information about the stereo sets used for evaluation of
-//the bp implementation.
-//Stereo sets are in BpStereoSets folder
+/**
+ * @file BpEvaluationStereoSets.cpp
+ * @author Scott Grauer-Gray
+ * @brief This header file contains information about the stereo sets used for evaluation of
+ * the bp implementation.
+ * Stereo sets are in BpStereoSets folder
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
 #ifndef BP_EVALUATION_STEREO_SETS_H_
 #define BP_EVALUATION_STEREO_SETS_H_

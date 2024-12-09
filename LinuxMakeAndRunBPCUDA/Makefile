@@ -61,8 +61,8 @@ ${OBJ_DIR}/RunBpImpMultInputs.o ${OBJ_DIR}/RunImpMultInputs.o ${OBJ_DIR}/BpFileH
 ${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/DisparityMapEvaluationParams.o ${OBJ_DIR}/stereo.o \
 ${OBJ_DIR}/RunBpOnStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImageCUDA.o ${OBJ_DIR}/SmoothImage.o \
 ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/ProcessBp.o ${OBJ_DIR}/ProcessBpCUDA.o
-DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/driverCudaBp.o
-DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/driverBpStereoCUDA_customRun.o
+DRIVER_BENCHMARK_CUDA_OBJECT = ${OBJ_DIR}/DriverCudaBp.o
+DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCUDA_customRun.o
 
 # executables for belief propagation CUDA implementations
 DRIVER_BENCHMARK_CUDA = driverCudaBp

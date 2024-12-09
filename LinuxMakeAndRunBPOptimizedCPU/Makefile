@@ -43,8 +43,8 @@ ${OBJ_DIR}/DisparityMapEvaluation.o ${OBJ_DIR}/DisparityMapEvaluationParams.o ${
 ${OBJ_DIR}/RunBpOnStereoSet.o ${OBJ_DIR}/BpImage.o ${OBJ_DIR}/SmoothImage.o ${OBJ_DIR}/SmoothImageCPU.o \
 ${OBJ_DIR}/ProcessBp.o ${OBJ_DIR}/DetailedTimings.o ${OBJ_DIR}/RunBpOnStereoSetOptimizedCPU.o \
 ${OBJ_DIR}/ProcessBpOptimizedCPU.o
-DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/driverBpStereoCPU.o
-DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/driverBpStereoCPU_customRun.o
+DRIVER_BENCHMARK_CPU_OBJECT = ${OBJ_DIR}/DriverBpStereoCPU.o
+DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM = ${OBJ_DIR}/DriverBpStereoCPU_customRun.o
 
 # executables for belief propagation CPU implementations
 DRIVER_BENCHMARK_CPU = driverCPUBp

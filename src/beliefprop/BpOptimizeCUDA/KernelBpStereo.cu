@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,8 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This file defines the methods to perform belief propagation
-//for disparity map estimation from stereo images on CUDA
+/**
+ * @file KernelBpStereo.cu
+ * @author Scott Grauer-Gray
+ * @brief This file defines the methods to perform belief propagation
+ * for disparity map estimation from stereo images on CUDA
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 
@@ -28,11 +34,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //#define CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 #ifdef CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
-#include "kernelBpStereoHalf.cu"
+#include "KernelBpStereoHalf.cu"
 #endif //CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
 //uncomment for CUDA kernel debug functions for belief propagation processing
-//#include "kernelBpStereoDebug.h"
+//#include "KernelBpStereoDebug.h"
 
 /**
  * @brief Namespace to define global kernel functions for parallel belief propagation

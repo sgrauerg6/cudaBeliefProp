@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,13 +16,19 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//Defines the functions to run the CUDA implementation of 2-D Stereo estimation using BP
+/**
+ * @file ProcessBpCUDA.cpp
+ * @author Scott Grauer-Gray
+ * @brief Defines the functions to run the CUDA implementation of 2D Stereo estimation using BP
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
 #include <iostream>
 #include "RunEval/RunEvalConstsEnums.h"
 #include "RunImp/UtilityFuncts.h"
 #include "ProcessBpCUDA.h"
-#include "kernelBpStereo.cu"
+#include "KernelBpStereo.cu"
 
 //return whether or not there was an error in CUDA processing
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>

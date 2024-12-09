@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,7 +16,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This file defines CUDA kernel functions for debugging belief propagation processing
+/**
+ * @file KernelBpStereoDebug.cu
+ * @author Scott Grauer-Gray
+ * @brief This file defines CUDA kernel functions for debugging belief propagation processing
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void beliefprop::PrintDataAndMessageValsAtPointKernel(

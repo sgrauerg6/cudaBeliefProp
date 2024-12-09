@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,9 +16,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This kernel is used to filter the image with the given filter in the vertical and horizontal directions
+/**
+ * @file KernelFilter.cu
+ * @author Scott Grauer-Gray
+ * @brief This kernel is used to filter the image with the given filter in the vertical and horizontal directions
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
-#include "kernelFilterHeader.cuh"
+#include "KernelFilterHeader.cuh"
 #include <cuda_runtime.h>
 #include <cuda.h>
 #include "BpSharedFuncts/SharedSmoothImageFuncts.h"

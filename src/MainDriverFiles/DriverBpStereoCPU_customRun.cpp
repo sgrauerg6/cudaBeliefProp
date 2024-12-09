@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,6 +16,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
+/**
+ * @file DriverBpStereoCPU_customRun.cpp
+ * @author Scott Grauer-Gray
+ * @brief 
+ * 
+ * @copyright Copyright (c) 2024
+ */
+
 //This file contains the "main" function that drives the optimized CPU BP implementation
 
 #include <iostream>
@@ -25,10 +33,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 #include "RunImp/RunImpMultTypesAccels.h"
 #include "BpRunProcessing/RunBpOnStereoSet.h"
-#include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
+#include "BpOptimizeCPU/RunBpOnStereoSetOptimizedCPU.h"
 #include "BpSingleThreadCPU/stereo.h"
-//needed to run the implementation a stereo set using CUDA
-#include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
 
 int main(int argc, char** argv)
 {
@@ -38,18 +44,18 @@ int main(int argc, char** argv)
   alg_settings.disc_k_bp = (float)alg_settings.num_disp_vals / 7.5f;
   const unsigned int dispMapScale = 256 / alg_settings.num_disp_vals;
 
-  const auto cudaTBDims = std::array<unsigned int, 2>{32, 4};
+  const auto numThreads = std::thread::hardware_concurrency();
   BpParallelParams parallel_params{
     run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels,
     alg_settings.num_levels,
-    cudaTBDims};
+    {numThreads, 1}};
 
-  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kCUDA>> runOptBpNumItersNoTemplate =
-    std::make_unique<RunBpOnStereoSetCUDA<float, 0, run_environment::AccSetting::kCUDA>>();
+  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX512>> runOptBpNumItersNoTemplate =
+    std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512>>();
   const auto run_output = runOptBpNumItersNoTemplate->operator()({refTestImPath[0], refTestImPath[1]}, alg_settings, parallel_params);
+  std::cout << "BP processing runtime (optimized w/ OpenMP + SIMD on CPU): " << run_output->run_time.count() << std::endl;
   std::cout << "Output disparity map saved to " << argv[4] << std::endl;
   run_output->out_disparity_map.SaveDisparityMap(argv[4], dispMapScale);
-  std::cout << "BP processing runtime (GPU): " << run_output->run_time.count() << std::endl;
   if ((argc > 5) && (std::string(argv[5]) == "comp")) {
     std::unique_ptr<RunBpOnStereoSet<float, 64, run_environment::AccSetting::kNone>> runBpStereoSingleThread = 
       std::make_unique<RunBpStereoCPUSingleThread<float, 64, run_environment::AccSetting::kNone>>();

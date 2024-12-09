@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,7 +16,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//Declares the functions used to smooth the input images with a gaussian filter of kSigmaBp (see bpCudaParameters.cuh) implemented in CUDA
+/**
+ * @file SmoothImage.h
+ * @author Scott Grauer-Gray
+ * @brief Declares the functions used to smooth the input images with a gaussian filter of kSigmaBp (see bpCudaParameters.cuh) implemented in CUDA
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
 #ifndef SMOOTH_IMAGE_HOST_HEADER_CUH
 #define SMOOTH_IMAGE_HOST_HEADER_CUH

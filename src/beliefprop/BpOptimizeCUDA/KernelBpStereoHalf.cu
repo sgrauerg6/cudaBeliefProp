@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009 Scott Grauer-Gray, Chandra Kambhamettu, and Kannappan Palaniappan
+Copyright (C) 2024 Scott Grauer-Gray
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,11 +16,17 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
-//This file defines the template specialization to perform belief propagation using half precision for
-//disparity map estimation from stereo images on CUDA to prevent overflow in val_to_normalize
-//message value computation
-//shouldn't be an issue if using bfloat instead of half so recommend using that instead of using
-//these template specialization functions
+/**
+ * @file KernelBpStereoHalf.cu
+ * @author Scott Grauer-Gray
+ * @brief This file defines the template specialization to perform belief propagation using half precision for
+ * disparity map estimation from stereo images on CUDA to prevent overflow in val_to_normalize
+ * message value computation
+ * shouldn't be an issue if using bfloat instead of half so recommend using that instead of using
+ * these template specialization functions
+ * 
+ * @copyright Copyright (c) 2024
+ */
 
 //set constexpr unsigned int values for number of disparity values for each stereo set used
 constexpr unsigned int kDispVals0{beliefprop::kStereoSetsToProcess[0].num_disp_vals};
