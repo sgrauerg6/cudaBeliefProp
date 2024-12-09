@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpResultsEvaluation/DisparityMapEvaluation.h"
 
 /**
- * @brief Class to define disparity map image that is output from bp processing
+ * @brief Child class of BpImage to define disparity map image that is output from bp processing
  * 
  * @tparam T 
  */
