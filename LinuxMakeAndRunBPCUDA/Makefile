@@ -1,56 +1,33 @@
-CUDA_DIR = /usr/local/cuda/
-CUDA_SDK_ROOT := 
+include ../common.mk
 
-L_FLAGS = -L $(CUDA_DIR)/bin -L $(CUDA_DIR)/lib64 -lcudart
-INCLUDES_CUDA = -I$(CUDA_DIR)/include
-
-LIBDIR     := $(CUDA_SDK_ROOT)/C/lib
-COMMONDIR  := $(CUDA_SDK_ROOT)/C/common
-SHAREDDIR  := $(CUDA_SDK_ROOT)/shared
-OSLOWER := $(shell uname -s 2>/dev/null | tr [:upper:] [:lower:])
-
-SRC_DIR = ../src
-SRC_DIR_BP = ${SRC_DIR}/beliefprop
-
-# contains the directories to include...
-INCLUDE_DIRS := -I. -I./ -I${SRC_DIR} -I${SRC_DIR_BP} -I$(CUDA_DIR)/include -I$(COMMONDIR)/inc -I$(SHAREDDIR)/inc
-
-# contains the library files needed for linking
-# need -lstdc++fs for c++17 filesystem library to work
-LIB := -L$(CUDA_DIR)/lib64 -L$(LIBDIR) -L$(COMMONDIR)/lib/$(OSLOWER) -lcudart -lstdc++fs
+# define the path to CUDA on target compile device
+CUDA_DIR = /usr/local/cuda
 
 # define the path for the nvcc cuda compiler
 NVCC := $(CUDA_DIR)/bin/nvcc
-CC    = g++
+
+# define path to belief propatation source code
+SRC_DIR_BP := ../${SRC_DIR}/beliefprop
+
+# define the directories to include when compiling CUDA implementation
+CUDA_IMP_INCLUDES := -I../${SRC_DIR} -I${SRC_DIR_BP} -I${CUDA_DIR}/include
+
+# contains the library files needed for linking
+# need -lstdc++fs for c++17 filesystem library to work
+CUDA_IMP_LIBS := -L$(CUDA_DIR)/lib64 -lcudart -lstdc++fs
 
 # use bfloat16 data type rather than default half data type for CUDA 16-bit float processing
 # remove if compute capability of CUDA device is under 8.0 since bfloat16 not supported until
 # compute capability 8.0
 BFLOAT_DATA_TYPE_SETTING = -DUSE_BFLOAT16_FOR_HALF_PRECISION
 
-# set to use only smaller data sets
-USE_ONLY_SMALLER_DATA_SETTING =
-#-DSMALLER_SETS_ONLY
-
-# set to use limited set of test parameters and fewer runs for faster results for testing
-USE_LIMITED_TEST_PARAMS_FEWER_RUNS = -DLIMITED_TEST_PARAMS_FEWER_RUNS
-
 # defines to add for CUDA processing
-CUDA_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${USE_ONLY_SMALLER_DATA_SETTING} ${USE_LIMITED_TEST_PARAMS_FEWER_RUNS}
+CUDA_IMP_RUN_DEFINES = -DOPTIMIZED_CUDA_RUN ${BFLOAT_DATA_TYPE_SETTING} ${COMMON_IMP_DEFINES}
 
-# have include directory as flag
-COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX ${CUDA_RUN_DEFINES}
-
-# add optimization level and C++ version to compile flags
-COMPILE_FLAGS += -O3 -std=c++20 -Wall
-
-# set compile flags for CUDA compiling using NVCC
-CUDA_COMPILE_FLAGS = $(INCLUDE_DIRS) -DUNIX ${CUDA_RUN_DEFINES} -O3 -std=c++20
-ARCHITECTURE_COMPILE_FLAG = -O3 -march=native -std=c++20
-
-# may need to adjust to allow support for target GPU
-# use native GPU by default (native flag requires CUDA 11.6 or later)
-ARCHITECTURES_GENCODE = -arch=native
+# set compile flags for CUDA implementation for gcc and nvcc
+CUDA_IMP_COMPILE_FLAGS_GCC = -DUNIX -O3 -std=c++20 -march=native -Wall ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} 
+CUDA_IMP_COMPILE_FLAGS_NVCC = -DUNIX -O3 -std=c++20 -arch=native ${COMPILE_FLAGS} ${CUDA_IMP_RUN_DEFINES} 
+CUDA_LINK_FLAGS = -O3 -march=native -std=c++20
 
 # define directory for compiled objects and object files to generate during compilation
 OBJ_DIR = obj
@@ -70,24 +47,24 @@ DRIVER_BENCHMARK_CUDA_CUSTOM = driverCudaBpCustom
 
 all: impDriverCUDA impDriverCUDACustom
 
-${OBJ_DIR}/%.o: ${SRC_DIR}/*/%.cpp
-	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
+${OBJ_DIR}/%.o: ../${SRC_DIR}/*/%.cpp
+	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
 
 ${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
-	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
+	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
 
 # specify compile commands using NVCC compiler for objects with CUDA for processing on GPU
 ${OBJ_DIR}/ProcessBpCUDA.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/ProcessBpCUDA.cpp $(ARCHITECTURES_GENCODE) -Xptxas -v -o $@ $(INCLUDE_DIRS) $(CUDA_COMPILE_FLAGS)
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/ProcessBpCUDA.cpp -Xptxas -v -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
 
 ${OBJ_DIR}/SmoothImageCUDA.o:
-	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/SmoothImageCUDA.cpp $(ARCHITECTURES_GENCODE) -o $@ $(CUDA_COMPILE_FLAGS)
+	$(NVCC) -x cu -c ${SRC_DIR_BP}/BpOptimizeCUDA/SmoothImageCUDA.cpp -o $@ $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_NVCC)
 
 impDriverCUDA: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT}
-	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT} ${OBJECTS} $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o ${DRIVER_BENCHMARK_CUDA} -O
+	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA} -O
 
 impDriverCUDACustom: ${OBJECTS} ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM}
-	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM} ${OBJECTS} $(LIB) -fopenmp $(ARCHITECTURE_COMPILE_FLAG) -o ${DRIVER_BENCHMARK_CUDA_CUSTOM} -O
+	$(CC) ${DRIVER_BENCHMARK_CUDA_OBJECT_CUSTOM} ${OBJECTS} $(CUDA_IMP_LIBS) -fopenmp $(CUDA_LINK_FLAGS) -o ${DRIVER_BENCHMARK_CUDA_CUSTOM} -O
 
 make clean:
 	rm *.o ${OBJ_DIR}/*.o driverCudaBp driverCPUBp driverCudaBpCustom
