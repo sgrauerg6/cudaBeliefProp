@@ -1,4 +1,4 @@
-include ../common.mk
+include ../../common.mk
 
 # define the path to CUDA on target compile device
 CUDA_DIR = /usr/local/cuda
@@ -7,10 +7,10 @@ CUDA_DIR = /usr/local/cuda
 NVCC := $(CUDA_DIR)/bin/nvcc
 
 # define path to belief propatation source code
-SRC_DIR_BP := ../${SRC_DIR}/beliefprop
+SRC_DIR_BP := ../../${SRC_DIR}/beliefprop
 
 # define the directories to include when compiling CUDA implementation
-CUDA_IMP_INCLUDES := -I../${SRC_DIR} -I${SRC_DIR_BP} -I${CUDA_DIR}/include
+CUDA_IMP_INCLUDES := -I../../${SRC_DIR} -I${SRC_DIR_BP} -I${CUDA_DIR}/include
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work
@@ -47,7 +47,7 @@ DRIVER_BENCHMARK_CUDA_CUSTOM = driverCudaBpCustom
 
 all: impDriverCUDA impDriverCUDACustom
 
-${OBJ_DIR}/%.o: ../${SRC_DIR}/*/%.cpp
+${OBJ_DIR}/%.o: ../../${SRC_DIR}/*/%.cpp
 	$(CC) $< -c $(CUDA_IMP_INCLUDES) $(CUDA_IMP_COMPILE_FLAGS_GCC) -o $@
 
 ${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp

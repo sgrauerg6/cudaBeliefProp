@@ -1,8 +1,8 @@
-include ../common.mk
+include ../../common.mk
 
-SRC_DIR_BP = ../${SRC_DIR}/beliefprop
+SRC_DIR_BP = ../../${SRC_DIR}/beliefprop
 
-INCLUDE_DIRS = -I../${SRC_DIR} -I${SRC_DIR_BP}
+INCLUDE_DIRS = -I../../${SRC_DIR} -I${SRC_DIR_BP}
 
 # contains the library files needed for linking
 # need -lstdc++fs for c++17 filesystem library to work
@@ -12,13 +12,12 @@ LIB_CPU := -lstdc++fs -lpthread
 OPENMP_LIB := -fopenmp
 
 # setting for CPU vectorization
-# no CPU vectorization define needed for ARM since NEON is
-# only option so that is used
-CPU_VECTORIZATION_DEFINE =
+# switch to -DAVX_256_VECTORIZATION if AVX 512 not supported on target CPU
+CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 
 # set compile flags and debug setting
 DBG_SETTING    =
-COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN -DCOMPILING_FOR_ARM ${CPU_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
+COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
 				${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native
 
 # define directory for compiled objects and object files to generate during compilation
@@ -39,7 +38,7 @@ DRIVER_BENCHMARK_CPU_CUSTOM = driverCPUBpCustom
 
 all: impDriverCPU impDriverCPUCustom
 
-${OBJ_DIR}/%.o: ../${SRC_DIR}/*/%.cpp
+${OBJ_DIR}/%.o: ../../${SRC_DIR}/*/%.cpp
 	$(CC) $< -c $(INCLUDE_DIRS) $(COMPILE_FLAGS) -o $@
 
 ${OBJ_DIR}/%.o: ${SRC_DIR_BP}/*/%.cpp
