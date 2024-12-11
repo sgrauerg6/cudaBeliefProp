@@ -51,7 +51,7 @@ constexpr float kInfBp{65504};
  * @return unsigned int 
  */
 inline unsigned int NumBpStereoRuns(unsigned int disparity_vals) {
-#ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
+#ifdef FEWER_RUNS_PER_CONFIG
   //fewer runs if set to use limited parameters/fewer runs
   //for faster processing
   return 3;
@@ -62,7 +62,7 @@ inline unsigned int NumBpStereoRuns(unsigned int disparity_vals) {
   else {
     return 15;
   }
-#endif //LIMITED_TEST_PARAMS_FEWER_RUNS
+#endif //FEWER_RUNS_PER_CONFIG
 }
 
 //by default, optimized GPU memory management and optimized indexing used

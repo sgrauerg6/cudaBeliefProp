@@ -67,7 +67,8 @@ constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 
 /** @brief Constant corresponding to number of threads on CPU. */
 const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
-#ifdef LIMITED_TEST_PARAMS_FEWER_RUNS
+
+#ifdef LIMITED_TEST_PARAMS
 
 /** @brief Parallel parameters options that are tested in order to find optimized
  *  configuration in run. */
@@ -82,7 +83,7 @@ const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
   { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
 
-#endif //LIMITED_TEST_PARAMS_FEWER_RUNS
+#endif //LIMITED_TEST_PARAMS
 
 /** @brief Minimum number of threads to allow for any parallel parameters
  *  setting on CPU. */
