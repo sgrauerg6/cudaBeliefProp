@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 GPU and optimized CPU Implementations of Belief Propagation for Stereo
 
 This README describes an implementation of the CUDA belief propagation algorithm
-originally described in  "GPU implementation of belief propagation using CUDA
+originally described in "GPU implementation of belief propagation using CUDA
 for cloud tracking and reconstruction" which was published at the 2008 IAPR
 Workshop on Pattern Recognition in Remote Sensing (PRRS 2008) and can be 
 found at the following address: https://sgrauerg6.github.io/cudaBeliefProp.pdf.
@@ -36,6 +36,9 @@ https://sgrauerg6.github.io/OptimizingGlobalStereoMatchingOnNVIDIAGPUsAndCPUs.pd
 
 The original code is available at
 https://sgrauerg6.github.io/beliefPropCodePost.zip.
+
+Doxygen documentation for current code:
+https://sgrauerg6.github.io/Documentation/cudaBeliefProp/html/index.html
 
 See "RUNTIME RESULTS" section at end of README for runtime
 info across various processors including the NVIDIA A100 and H100 GPUs,
