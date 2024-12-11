@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 ParallelParamsBp::ParallelParamsBp(
     run_environment::OptParallelParamsSetting opt_parallel_params_setting,
     unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims) : 
-    opt_parallel_params_setting_{opt_parallel_params_setting_},
+    opt_parallel_params_setting_{opt_parallel_params_setting},
     num_levels_{num_levels}
 {
   SetParallelDims(default_parallel_dims);

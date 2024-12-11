@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpImage.h"
 
 template<class T>
+requires std::is_arithmetic_v<T>
 void BpImage<T>::LoadImageAsGrayScale(const std::string& file_path_image) {
   //check if PGM or PPM image (types currently supported)
   std::istringstream iss(file_path_image);
@@ -63,6 +64,7 @@ void BpImage<T>::LoadImageAsGrayScale(const std::string& file_path_image) {
 }
 
 template<class T>
+requires std::is_arithmetic_v<T>
 void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
   std::string doc;
   char c;
@@ -79,6 +81,7 @@ void BpImage<T>::pnm_read(std::ifstream &file, std::string& buf) const {
 }
 
 template<class T>
+requires std::is_arithmetic_v<T>
 BpImage<unsigned char> BpImage<T>::ImageRead(const std::string& file_name,
   beliefprop::ImageType image_type, bool weighted_rgb_conversion) const
 {

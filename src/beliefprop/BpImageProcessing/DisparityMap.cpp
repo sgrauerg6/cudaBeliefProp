@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "DisparityMap.h"
 
 template<class T>
+requires std::is_arithmetic_v<T>
 void DisparityMap<T>::SaveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor) const {
   //declare and allocate the space for the disparity map image to save
   BpImage<char> disparity_image(this->width_height_);
@@ -44,6 +45,7 @@ void DisparityMap<T>::SaveDisparityMap(const std::string& disparity_map_file_pat
 
 //TODO: look into case where no known disparity in ground truth disparity map
 template<class T>
+requires std::is_arithmetic_v<T>
 DisparityMapEvaluation DisparityMap<T>::OutputComparison(
   const DisparityMap& disparity_map_to_compare,
   const beliefprop::DisparityMapEvaluationParams& evaluation_parameters) const
