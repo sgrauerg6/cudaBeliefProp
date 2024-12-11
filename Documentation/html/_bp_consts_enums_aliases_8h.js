@@ -26,7 +26,6 @@ var _bp_consts_enums_aliases_8h =
       [ "kLMessage", "_bp_consts_enums_aliases_8h.html#a89a58fd265a9f79972785260b1735e8caf35518af99db869d5869510c4bbbd5d1", null ],
       [ "kRMessage", "_bp_consts_enums_aliases_8h.html#a89a58fd265a9f79972785260b1735e8caf7c5e94ac53aff1a29af626d99e2f651", null ]
     ] ],
-    [ "kInfBp", "_bp_consts_enums_aliases_8h.html#ad5f37d5f7bdc89b098a8f0589f631001", null ],
     [ "kNumCheckerboardParts", "_bp_consts_enums_aliases_8h.html#a59f855b4108004c78cfbdc194c5f0dbe", null ],
     [ "kNumKernels", "_bp_consts_enums_aliases_8h.html#a6651cc44f605190082858f8c391e417c", null ],
     [ "kNumMessageArrays", "_bp_consts_enums_aliases_8h.html#a78e00715ab8b6953e5e0719d81c0de83", null ]

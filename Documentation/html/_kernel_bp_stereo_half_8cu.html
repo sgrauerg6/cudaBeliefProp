@@ -96,45 +96,45 @@ $(document).ready(function(){initNavTree('_kernel_bp_stereo_half_8cu.html',''); 
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2c6a4d28409a96c3996ba2d2bf4249df"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a2c6a4d28409a96c3996ba2d2bf4249df"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a2c6a4d28409a96c3996ba2d2bf4249df">MsgStereoHalf</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[DISP_VALS], half messages_neighbor_2[DISP_VALS], half messages_neighbor_3[DISP_VALS], half data_costs[DISP_VALS], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:a2c6a4d28409a96c3996ba2d2bf4249df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a557ee92210f8a05c6bfb851913bf4d58"><td class="memTemplParams" colspan="2">template&lt;beliefprop::MessageComp M&gt; </td></tr>
-<tr class="memitem:a557ee92210f8a05c6bfb851913bf4d58"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a557ee92210f8a05c6bfb851913bf4d58">MsgStereoHalf</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
-<tr class="separator:a557ee92210f8a05c6bfb851913bf4d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5e9c81953c11dfd60caf55d93ba6c31"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ae5e9c81953c11dfd60caf55d93ba6c31"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ae5e9c81953c11dfd60caf55d93ba6c31">MsgStereo&lt; half, half, beliefprop::MessageComp::kUMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
-<tr class="separator:ae5e9c81953c11dfd60caf55d93ba6c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa28c4c283c4b74a18b33440f5e5cba27"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:aa28c4c283c4b74a18b33440f5e5cba27"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aa28c4c283c4b74a18b33440f5e5cba27">MsgStereo&lt; half, half, beliefprop::MessageComp::kDMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
-<tr class="separator:aa28c4c283c4b74a18b33440f5e5cba27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a48914dbd05a1af021a4c6219837f37"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a4a48914dbd05a1af021a4c6219837f37"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a4a48914dbd05a1af021a4c6219837f37">MsgStereo&lt; half, half, beliefprop::MessageComp::kLMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
-<tr class="separator:a4a48914dbd05a1af021a4c6219837f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab0abd5e359e24f0c0049fb727deffbf"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:aab0abd5e359e24f0c0049fb727deffbf"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aab0abd5e359e24f0c0049fb727deffbf">MsgStereo&lt; half, half, beliefprop::MessageComp::kRMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
-<tr class="separator:aab0abd5e359e24f0c0049fb727deffbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a278b54b9ee7ae5435e0afebc73fe5036"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a278b54b9ee7ae5435e0afebc73fe5036"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a278b54b9ee7ae5435e0afebc73fe5036">MsgStereo&lt; half, half, kDispVals0 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:a278b54b9ee7ae5435e0afebc73fe5036"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae65f83bfc538f3a850ea9b9ce7bffc5f"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ae65f83bfc538f3a850ea9b9ce7bffc5f"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ae65f83bfc538f3a850ea9b9ce7bffc5f">MsgStereo&lt; half, half, kDispVals1 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:ae65f83bfc538f3a850ea9b9ce7bffc5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5600906aea30aead9a11cf27cec6edba"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a5600906aea30aead9a11cf27cec6edba"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a5600906aea30aead9a11cf27cec6edba">MsgStereo&lt; half, half, kDispVals2 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:a5600906aea30aead9a11cf27cec6edba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a97a080216a1043109c892d4369502215"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a97a080216a1043109c892d4369502215"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a97a080216a1043109c892d4369502215">MsgStereo&lt; half, half, kDispVals3 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:a97a080216a1043109c892d4369502215"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac44cc560cc809b14717ea3ee5128330e"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ac44cc560cc809b14717ea3ee5128330e"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ac44cc560cc809b14717ea3ee5128330e">MsgStereo&lt; half, half, kDispVals4 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:ac44cc560cc809b14717ea3ee5128330e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43e85acc12fa8dd4c559320aa0a3dd42"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:a43e85acc12fa8dd4c559320aa0a3dd42"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a43e85acc12fa8dd4c559320aa0a3dd42">MsgStereo&lt; half, half, kDispVals5 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:a43e85acc12fa8dd4c559320aa0a3dd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8ac45ad5ee949665c081684d32d1ae5"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
-<tr class="memitem:ad8ac45ad5ee949665c081684d32d1ae5"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ad8ac45ad5ee949665c081684d32d1ae5">MsgStereo&lt; half, half, kDispVals6 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
-<tr class="separator:ad8ac45ad5ee949665c081684d32d1ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a198388b9d4eeab13c803721e3f0fe3f4"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
+<tr class="memitem:a198388b9d4eeab13c803721e3f0fe3f4"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a198388b9d4eeab13c803721e3f0fe3f4">MsgStereoHalf</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[DISP_VALS], half messages_neighbor_2[DISP_VALS], half messages_neighbor_3[DISP_VALS], half data_costs[DISP_VALS], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:a198388b9d4eeab13c803721e3f0fe3f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45e52a2533a1a44b900c2edcbe1843cb"><td class="memTemplParams" colspan="2">template&lt;beliefprop::MessageComp M&gt; </td></tr>
+<tr class="memitem:a45e52a2533a1a44b900c2edcbe1843cb"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a45e52a2533a1a44b900c2edcbe1843cb">MsgStereoHalf</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
+<tr class="separator:a45e52a2533a1a44b900c2edcbe1843cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3b8c527d5f32c4aa8950176edd9bdb3"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ad3b8c527d5f32c4aa8950176edd9bdb3"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ad3b8c527d5f32c4aa8950176edd9bdb3">MsgStereo&lt; half, half, beliefprop::MessageComp::kUMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
+<tr class="separator:ad3b8c527d5f32c4aa8950176edd9bdb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa142b84ff57786f4ba6033f6cd2a1f61"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aa142b84ff57786f4ba6033f6cd2a1f61"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aa142b84ff57786f4ba6033f6cd2a1f61">MsgStereo&lt; half, half, beliefprop::MessageComp::kDMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
+<tr class="separator:aa142b84ff57786f4ba6033f6cd2a1f61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88049133364b0b63c20f4c823f463c2d"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a88049133364b0b63c20f4c823f463c2d"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a88049133364b0b63c20f4c823f463c2d">MsgStereo&lt; half, half, beliefprop::MessageComp::kLMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
+<tr class="separator:a88049133364b0b63c20f4c823f463c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bf567e2ef82d147456e84beb986ce3e"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a9bf567e2ef82d147456e84beb986ce3e"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a9bf567e2ef82d147456e84beb986ce3e">MsgStereo&lt; half, half, beliefprop::MessageComp::kRMessage &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half *prev_u_messageArray, half *prev_d_messageArray, half *prev_l_messageArray, half *prev_r_messageArray, half *data_message_array, half *dst_message_array, half disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals, half *dst_processing, unsigned int checkerboard_adjustment, unsigned int offset_data)</td></tr>
+<tr class="separator:a9bf567e2ef82d147456e84beb986ce3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4fdc6d4a8dc4e65c3128087386b20c9"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aa4fdc6d4a8dc4e65c3128087386b20c9"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aa4fdc6d4a8dc4e65c3128087386b20c9">MsgStereo&lt; half, half, kDispVals0 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7474412faa4e43da9f5c6edd4e9b6db1">kDispVals0</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:aa4fdc6d4a8dc4e65c3128087386b20c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57613566806ceaf2b6d8298459d6f42d"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:a57613566806ceaf2b6d8298459d6f42d"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#a57613566806ceaf2b6d8298459d6f42d">MsgStereo&lt; half, half, kDispVals1 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a7f85b4beee0a47cfee10753afc15f47f">kDispVals1</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:a57613566806ceaf2b6d8298459d6f42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee3bbefb978bcc313b2d3b8d436b3e17"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aee3bbefb978bcc313b2d3b8d436b3e17"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aee3bbefb978bcc313b2d3b8d436b3e17">MsgStereo&lt; half, half, kDispVals2 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a72f8ceb3e71c7cc4ed493da015ddce8d">kDispVals2</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:aee3bbefb978bcc313b2d3b8d436b3e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa326d0deba23d43f31104f54cc18cc1c"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aa326d0deba23d43f31104f54cc18cc1c"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aa326d0deba23d43f31104f54cc18cc1c">MsgStereo&lt; half, half, kDispVals3 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#aedcbbeacb5aad7de79eaee4fa3be4afc">kDispVals3</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:aa326d0deba23d43f31104f54cc18cc1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad10485cff9832f695918ee004b93d417"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ad10485cff9832f695918ee004b93d417"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ad10485cff9832f695918ee004b93d417">MsgStereo&lt; half, half, kDispVals4 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#ac3e230ddebb7bacfbad3884243b21395">kDispVals4</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:ad10485cff9832f695918ee004b93d417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad71842899c2d7e98c80a5bd391fce59c"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:ad71842899c2d7e98c80a5bd391fce59c"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#ad71842899c2d7e98c80a5bd391fce59c">MsgStereo&lt; half, half, kDispVals5 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#afdeb63e1dfa227d7a0fd5f944b1788ff">kDispVals5</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:ad71842899c2d7e98c80a5bd391fce59c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef500eb135e803dab500e70d53c207f4"><td class="memItemLeft" align="right" valign="top">template&lt;&gt; </td></tr>
+<tr class="memitem:aef500eb135e803dab500e70d53c207f4"><td class="memTemplItemLeft" align="right" valign="top">__device__ void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="_kernel_bp_stereo_half_8cu.html#aef500eb135e803dab500e70d53c207f4">MsgStereo&lt; half, half, kDispVals6 &gt;</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;current_bp_level, half messages_neighbor_1[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half messages_neighbor_2[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half messages_neighbor_3[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half data_costs[<a class="el" href="_kernel_bp_stereo_half_8cu.html#a078f41d1eeb19edecc1dc1f0849a1cbe">kDispVals6</a>], half *dst_message_array, half disc_k_bp, bool data_aligned)</td></tr>
+<tr class="separator:aef500eb135e803dab500e70d53c207f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -160,8 +160,8 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition in file <a class="el" href="_kernel_bp_stereo_half_8cu_source.html">KernelBpStereoHalf.cu</a>.</p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="aa28c4c283c4b74a18b33440f5e5cba27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa28c4c283c4b74a18b33440f5e5cba27">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kDMessage &gt;()</h2>
+<a id="aa142b84ff57786f4ba6033f6cd2a1f61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa142b84ff57786f4ba6033f6cd2a1f61">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kDMessage &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,7 +186,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -278,8 +278,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a4a48914dbd05a1af021a4c6219837f37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a48914dbd05a1af021a4c6219837f37">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kLMessage &gt;()</h2>
+<a id="a88049133364b0b63c20f4c823f463c2d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88049133364b0b63c20f4c823f463c2d">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kLMessage &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -304,7 +304,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -396,8 +396,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="aab0abd5e359e24f0c0049fb727deffbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab0abd5e359e24f0c0049fb727deffbf">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kRMessage &gt;()</h2>
+<a id="a9bf567e2ef82d147456e84beb986ce3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bf567e2ef82d147456e84beb986ce3e">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kRMessage &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -422,7 +422,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -514,8 +514,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ae5e9c81953c11dfd60caf55d93ba6c31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae5e9c81953c11dfd60caf55d93ba6c31">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kUMessage &gt;()</h2>
+<a id="ad3b8c527d5f32c4aa8950176edd9bdb3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3b8c527d5f32c4aa8950176edd9bdb3">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, beliefprop::MessageComp::kUMessage &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +540,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -632,8 +632,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a278b54b9ee7ae5435e0afebc73fe5036"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a278b54b9ee7ae5435e0afebc73fe5036">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals0 &gt;()</h2>
+<a id="aa4fdc6d4a8dc4e65c3128087386b20c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4fdc6d4a8dc4e65c3128087386b20c9">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals0 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -658,7 +658,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -720,8 +720,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ae65f83bfc538f3a850ea9b9ce7bffc5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae65f83bfc538f3a850ea9b9ce7bffc5f">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals1 &gt;()</h2>
+<a id="a57613566806ceaf2b6d8298459d6f42d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57613566806ceaf2b6d8298459d6f42d">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals1 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -746,7 +746,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -808,8 +808,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a5600906aea30aead9a11cf27cec6edba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5600906aea30aead9a11cf27cec6edba">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals2 &gt;()</h2>
+<a id="aee3bbefb978bcc313b2d3b8d436b3e17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee3bbefb978bcc313b2d3b8d436b3e17">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals2 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -834,7 +834,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -896,8 +896,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a97a080216a1043109c892d4369502215"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97a080216a1043109c892d4369502215">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals3 &gt;()</h2>
+<a id="aa326d0deba23d43f31104f54cc18cc1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa326d0deba23d43f31104f54cc18cc1c">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals3 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -922,7 +922,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -984,8 +984,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ac44cc560cc809b14717ea3ee5128330e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac44cc560cc809b14717ea3ee5128330e">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals4 &gt;()</h2>
+<a id="ad10485cff9832f695918ee004b93d417"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad10485cff9832f695918ee004b93d417">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals4 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1010,7 +1010,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -1072,8 +1072,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a43e85acc12fa8dd4c559320aa0a3dd42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43e85acc12fa8dd4c559320aa0a3dd42">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals5 &gt;()</h2>
+<a id="ad71842899c2d7e98c80a5bd391fce59c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad71842899c2d7e98c80a5bd391fce59c">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals5 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1098,7 +1098,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -1160,8 +1160,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="ad8ac45ad5ee949665c081684d32d1ae5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8ac45ad5ee949665c081684d32d1ae5">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals6 &gt;()</h2>
+<a id="aef500eb135e803dab500e70d53c207f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef500eb135e803dab500e70d53c207f4">&#9670;&nbsp;</a></span>MsgStereo&lt; half, half, kDispVals6 &gt;()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1186,7 +1186,7 @@ template&lt;&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -1248,8 +1248,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a557ee92210f8a05c6bfb851913bf4d58"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a557ee92210f8a05c6bfb851913bf4d58">&#9670;&nbsp;</a></span>MsgStereoHalf() <span class="overload">[1/2]</span></h2>
+<a id="a45e52a2533a1a44b900c2edcbe1843cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45e52a2533a1a44b900c2edcbe1843cb">&#9670;&nbsp;</a></span>MsgStereoHalf() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1274,7 +1274,7 @@ template&lt;beliefprop::MessageComp M&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -1366,18 +1366,18 @@ template&lt;beliefprop::MessageComp M&gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="_kernel_bp_stereo_half_8cu_a557ee92210f8a05c6bfb851913bf4d58_cgraph.png" border="0" usemap="#a_kernel_bp_stereo_half_8cu_a557ee92210f8a05c6bfb851913bf4d58_cgraph" alt=""/></div>
-<map name="a_kernel_bp_stereo_half_8cu_a557ee92210f8a05c6bfb851913bf4d58_cgraph" id="a_kernel_bp_stereo_half_8cu_a557ee92210f8a05c6bfb851913bf4d58_cgraph">
-<area shape="rect" title=" " alt="" coords="5,46,124,73"/>
-<area shape="rect" href="classbeliefprop_1_1_bp_level.html#a8c7b0fdbb4dc2f84c2460562727ae47f" title="Return level properties as const reference to avoid copying and not allow it to be modified." alt="" coords="191,5,339,47"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="172,71,359,112"/>
+<div class="center"><img src="_kernel_bp_stereo_half_8cu_a45e52a2533a1a44b900c2edcbe1843cb_cgraph.png" border="0" usemap="#a_kernel_bp_stereo_half_8cu_a45e52a2533a1a44b900c2edcbe1843cb_cgraph" alt=""/></div>
+<map name="a_kernel_bp_stereo_half_8cu_a45e52a2533a1a44b900c2edcbe1843cb_cgraph" id="a_kernel_bp_stereo_half_8cu_a45e52a2533a1a44b900c2edcbe1843cb_cgraph">
+<area shape="rect" title=" " alt="" coords="5,35,124,61"/>
+<area shape="rect" href="class_bp_level.html#a2ebe06b467bae6692dd5bdb7a5d2e994" title="Return level properties as const reference to avoid copying and not allow it to be modified." alt="" coords="174,5,357,32"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="172,57,359,98"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a2c6a4d28409a96c3996ba2d2bf4249df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c6a4d28409a96c3996ba2d2bf4249df">&#9670;&nbsp;</a></span>MsgStereoHalf() <span class="overload">[2/2]</span></h2>
+<a id="a198388b9d4eeab13c803721e3f0fe3f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a198388b9d4eeab13c803721e3f0fe3f4">&#9670;&nbsp;</a></span>MsgStereoHalf() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1402,7 +1402,7 @@ template&lt;unsigned int DISP_VALS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classbeliefprop_1_1_bp_level.html">beliefprop::BpLevel</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="class_bp_level.html">BpLevel</a> &amp;&#160;</td>
           <td class="paramname"><em>current_bp_level</em>, </td>
         </tr>
         <tr>
@@ -1464,11 +1464,11 @@ template&lt;unsigned int DISP_VALS&gt; </div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="_kernel_bp_stereo_half_8cu_a2c6a4d28409a96c3996ba2d2bf4249df_cgraph.png" border="0" usemap="#a_kernel_bp_stereo_half_8cu_a2c6a4d28409a96c3996ba2d2bf4249df_cgraph" alt=""/></div>
-<map name="a_kernel_bp_stereo_half_8cu_a2c6a4d28409a96c3996ba2d2bf4249df_cgraph" id="a_kernel_bp_stereo_half_8cu_a2c6a4d28409a96c3996ba2d2bf4249df_cgraph">
-<area shape="rect" title=" " alt="" coords="5,46,124,73"/>
-<area shape="rect" href="classbeliefprop_1_1_bp_level.html#a8c7b0fdbb4dc2f84c2460562727ae47f" title="Return level properties as const reference to avoid copying and not allow it to be modified." alt="" coords="191,5,339,47"/>
-<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="172,71,359,112"/>
+<div class="center"><img src="_kernel_bp_stereo_half_8cu_a198388b9d4eeab13c803721e3f0fe3f4_cgraph.png" border="0" usemap="#a_kernel_bp_stereo_half_8cu_a198388b9d4eeab13c803721e3f0fe3f4_cgraph" alt=""/></div>
+<map name="a_kernel_bp_stereo_half_8cu_a198388b9d4eeab13c803721e3f0fe3f4_cgraph" id="a_kernel_bp_stereo_half_8cu_a198388b9d4eeab13c803721e3f0fe3f4_cgraph">
+<area shape="rect" title=" " alt="" coords="5,35,124,61"/>
+<area shape="rect" href="class_bp_level.html#a2ebe06b467bae6692dd5bdb7a5d2e994" title="Return level properties as const reference to avoid copying and not allow it to be modified." alt="" coords="174,5,357,32"/>
+<area shape="rect" href="namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="172,57,359,98"/>
 </map>
 </div>
 

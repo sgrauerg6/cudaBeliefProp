@@ -1,6 +1,6 @@
 <map id="RetrieveOutputDisparityPixel&lt; short, short, beliefprop::kStereoSetsToProcess[5].num_disp_vals &gt;" name="RetrieveOutputDisparityPixel&lt; short, short, beliefprop::kStereoSetsToProcess[5].num_disp_vals &gt;">
-<area shape="rect" id="node1" title=" " alt="" coords="5,24,228,95"/>
-<area shape="rect" id="node2" href="$namespacebeliefprop.html#a0d76573309b4b64236efc8c471b7831a" title=" " alt="" coords="276,39,471,80"/>
-<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="519,5,705,47"/>
-<area shape="rect" id="node4" href="$namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="521,71,703,112"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,20,228,91"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#a0d76573309b4b64236efc8c471b7831a" title=" " alt="" coords="276,35,471,76"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="539,5,725,47"/>
+<area shape="rect" id="node4" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="519,71,745,98"/>
 </map>
