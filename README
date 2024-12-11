@@ -47,10 +47,11 @@ work which is distributed must also contain this license.
 Please email comments and bug reports to: sgrauerg@gmail.com
 
 
-INSTRUCTIONS:
+INSTRUCTIONS - EVALUATE OPTIMIZED IMPLEMENTATION ON TARGET ARCHITECTURE VS
+OTHER ARCHITECTURES:
 
-This code runs belief propagation for stereo vision on the CPU and GPU using
-CUDA on Linux-based systems.
+This code runs and evaluates belief propagation for stereo vision on the CPU
+and GPU using CUDA on Linux-based systems.
 
 The parameters are defined in BpResultsEvaluation/BpEvaluationStereoSets.h and
 are documented in that file and the paper.  
@@ -62,9 +63,9 @@ on ARM processors), or LinuxMakeAndRunBPCUDA (for CUDA implementation) and run
 "make clean" and "make".
 
 A number of stereo sets including the Tsukuba stereo are included in the
-"BeliefProp/BpStereoSets" folder.  In order to run the
-implementation on these stereo sets using the initial parameters as defined in
-BpResultsEvaluation/BpEvaluationStereoSets.h, perform the following steps:
+"BeliefProp/BpStereoSets" folder.  In order to run and evaluate the
+implementation across six of these stereo sets using default parameters,
+perform the following steps:
 
 1a.  (CUDA ONLY) If needed, set the PATH and LD_LIBRARY_PATH to the necessary
 paths needed to run CUDA programs (usually PATH is appended with $CUDA_DIR/bin
@@ -93,16 +94,26 @@ and OMP_PROC_BIND to optimize OpenMP thread configuration. In some tests on
 multi-CPU systems have gotten faster results with setting OMP_PROC_BIND=true
 and OMP_PLACES="sockets".
 
-2.  If running optimized CPU implementation on x86 CPU, navigate to the folder 
+2.  By default, belief propagation is run on 6 stereo sets using the float,
+double, and half datatypes with and without using templated disparity counts
+for each stereo set, and is run up to 15 times in each configuration for
+accurate benchmarking with median runtimes used in evaluation. As a result,
+it takes awhile to run the full evaluation. For quicker results, can limit the
+number of stereo sets used, datatypes used in evaluation, optimization options,
+templated disparity count options, and number of runs for each configuration
+by enabling defines in the common.mk file that are included in the Makefile
+for each implementation.
+
+3.  If running optimized CPU implementation on x86 CPU, navigate to the folder 
     beliefprop/LinuxMakeAndRunBPOptimizedCPU.
     If running optimized CPU implementation on ARM CPU, navigate to the folder
     beliefprop/LinuxMakeAndRunBPOptimizedCPU_ARM.
     If running CUDA implemenetation, navigate to folder
     beliefprop/LinuxMakeAndRunBPCUDA.
 
-3.  Execute the commands "make clean" and "make" on the command line.
+4.  Execute the commands "make clean" and "make" on the command line.
 
-4.  Run "./driverCPUBp {RUN_NAME}" or "./driverCudaBp {RUN_NAME}",
+5.  Run "./driverCPUBp {RUN_NAME}" or "./driverCudaBp {RUN_NAME}",
 calling generated executable "driver{CPU/CUDA}Bp" with input parameter
 {RUN_NAME} to run the implementation on multiple stereo sets and in multiple
 configurations (run name cannot have any spaces). Implementation is run
@@ -117,7 +128,7 @@ architecture so can easily match run results with corresponding architecture.
 CPU with the AMD Rome architecture and is used as baseline when computing
 runtime speedup.
 
-5.  The locations of the output disparity maps are given in the console output.
+6.  The locations of the output disparity maps are given in the console output.
 Detailed input and results for each run including input stereo set and
 parameters, detailed timings along with overall speedup data, output disparity
 map evaluation as compared to ground truth for each run are written to files in
@@ -125,7 +136,7 @@ subfolders of beliefprop/impResults folder the file names and paths given in
 the console output. A comparison of runtimes and speedups across runs with
 results in beliefprop/impResults is written to
 beliefprop/impResults/EvaluationAcrossRuns.csv, with the runs ordered from
-fastest to slowest; each run is labeled using {RUN_NAME} from (4).
+fastest to slowest; each run is labeled using {RUN_NAME} from (5).
 
 RUNTIME RESULTS:
 
