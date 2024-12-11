@@ -40,14 +40,14 @@ https://sgrauerg6.github.io/beliefPropCodePost.zip.
 Doxygen documentation for current code:
 https://sgrauerg6.github.io/Documentation/cudaBeliefProp/html/index.html
 
+This code is distributed using the GNU General Public License, so any derivative
+work which is distributed must also contain this license.
+
 See "RUNTIME RESULTS" section at end of README for runtime
 info across various processors including the NVIDIA A100 and H100 GPUs,
 AMD Rome and Milan-X CPUs, and Intel Ice Lake CPU.
 
-This code is distributed using the GNU General Public License, so any derivative
-work which is distributed must also contain this license.
-
-Please email comments and bug reports to: sgrauerg@gmail.com
+Please email comments and bug reports to sgrauerg@gmail.com
 
 
 INSTRUCTIONS - EVALUATE OPTIMIZED IMPLEMENTATION ON TARGET ARCHITECTURE VS
