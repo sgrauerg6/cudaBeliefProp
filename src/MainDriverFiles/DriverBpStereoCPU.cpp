@@ -112,14 +112,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     {run_eval::kDataTypesEvalSizes.begin(),
      run_eval::kDataTypesEvalSizes.end()};
 
-  //remove any parallel processing below given minimum number of threads
-  run_imp_settings.RemoveParallelParamBelowMinThreads(
-    run_cpu::kMinNumThreadsRun);
-
   //set setting of whether or not to use templated loop iterations in implementation
   //in evaluation runs
   run_imp_settings.templated_iters_setting =
-    run_environment::TemplatedItersSetting::kRunOnlyNonTemplated;
+    run_eval::kTemplatedItersEvalSettings;
 
   //set path of baseline runtimes and baseline description
   run_imp_settings.baseline_runtimes_path_desc =
@@ -128,6 +124,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
 
   //set data subsets to evaluate separate from all data
   run_imp_settings.subset_desc_input_sig = beliefprop::kEvalDataSubsets;
+
+  //remove any parallel processing below given minimum number of threads
+  run_imp_settings.RemoveParallelParamBelowMinThreads(
+    run_cpu::kMinNumThreadsRun);
 
   //run belief propagation with AVX512, AVX256, and no vectorization implementations,
   //with the AVX512 implementation given first as the expected fastest implementation

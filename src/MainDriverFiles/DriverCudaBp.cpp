@@ -35,7 +35,17 @@ int main(int argc, char** argv)
 {
   //initialize run implementation settings
   run_environment::RunImpSettings run_imp_settings;
+  
+  //set datatype(s) to use in run processing in evaluation
+  run_imp_settings.datatypes_eval_sizes =
+    {run_eval::kDataTypesEvalSizes.begin(),
+     run_eval::kDataTypesEvalSizes.end()};
 
+  //set setting of whether or not to use templated loop iterations in implementation
+  //in evaluation runs
+  run_imp_settings.templated_iters_setting =
+    run_eval::kTemplatedItersEvalSettings;
+  
   //enable optimization of parallel parameters with setting to use the allow different thread block dimensions
   //on kernels in same run
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
@@ -44,20 +54,11 @@ int main(int argc, char** argv)
     {true,
      run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
 
-  //set datatype(s) to use in run processing in evaluation
-  run_imp_settings.datatypes_eval_sizes =
-    {run_eval::kDataTypesEvalSizes.begin(),
-     run_eval::kDataTypesEvalSizes.end()};
-
   //set default parallel parameters and parallel parameters to benchmark when searching for optimal
   //parallel parameters
   run_imp_settings.p_params_default_opt_settings =
     {run_cuda::kParallelParamsDefault,
      run_cuda::kParallelParameterOptions};
-
-  //set setting of whether or not to use templated loop iterations in implementation 
-  run_imp_settings.templated_iters_setting =
-    run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
 
   //set path of baseline runtimes and baseline description
   run_imp_settings.baseline_runtimes_path_desc =

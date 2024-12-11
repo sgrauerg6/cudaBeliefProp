@@ -41,7 +41,7 @@ namespace beliefprop
   constexpr std::string_view kBeliefPropDirectoryName = "BeliefProp";
   constexpr std::string_view kStereoSetsDirectoryName = "BpStereoSets";
   constexpr std::string_view kBaselineRunDataPath{
-    "../BeliefProp/ImpResults/RunResults/AMDRome48Cores_RunResults.csv"};
+    "../../BeliefProp/ImpResults/RunResults/AMDRome48Cores_RunResults.csv"};
   constexpr std::string_view kBaselineRunDesc{"AMD Rome (48 Cores)"};
 };
 

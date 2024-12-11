@@ -1,4 +1,4 @@
-Input Index,Stereo Set,Data Type,Loop Iters Templated,Num Possible Disparity Values,Median Optimized Runtime (including transfer time),Average Single-Thread CPU run time
+Input Index,Stereo Set,Data Type,Loop Iters Templated,Num Possible Disparity Values,Median Optimized Runtime (including transfer time),Single-Thread CPU run time
 0,tsukubaSetHalfSize,FLOAT,YES,8,0.00057943,0.0104731
 0,tsukubaSetHalfSize,FLOAT,NO,8,0.00129303,0.0109373
 1,tsukubaSet,FLOAT,YES,16,0.00224934,0.119339

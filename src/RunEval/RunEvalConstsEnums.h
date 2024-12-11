@@ -39,8 +39,7 @@ namespace run_eval {
 /** @brief Enum for status to indicate if error or no error */
 enum class Status { kNoError, kError };
 
-/** @brief Enum to specify average or median for "middle" value
- * in data */
+/** @brief Enum to specify average or median for "middle" value in data */
 enum class MiddleValData { kAverage, kMedian };
 
 //set data types to use in evaluation
@@ -51,6 +50,15 @@ enum class MiddleValData { kAverage, kMedian };
 #else
   constexpr std::array<size_t, 3> kDataTypesEvalSizes{sizeof(float), sizeof(double), sizeof(halftype)};
 #endif //EVAL_FLOAT_DATATYPE_ONLY
+
+//set templated iterations setting to use in evaluation
+#ifdef EVAL_NOT_TEMPLATED_ITERS_ONLY
+  constexpr run_environment::TemplatedItersSetting kTemplatedItersEvalSettings =
+    run_environment::TemplatedItersSetting::kRunOnlyNonTemplated;
+#else
+  constexpr run_environment::TemplatedItersSetting kTemplatedItersEvalSettings =
+    run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated;
+#endif //EVAL_NOT_TEMPLATED_ITERS_ONLY
 
   /** @brief Define string for display of "true" and "false" values of bool value */
   constexpr std::array<std::string_view, 2> kBoolValFalseTrueDispStr{"NO", "YES"};
