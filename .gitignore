@@ -30,7 +30,6 @@ bld/
 *.exe
 
 # Outputs
-*.csv
 *.pgm
 *.txt
 
