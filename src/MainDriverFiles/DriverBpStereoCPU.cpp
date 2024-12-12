@@ -129,6 +129,10 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
   run_imp_settings.RemoveParallelParamBelowMinThreads(
     run_cpu::kMinNumThreadsRun);
 
+//run multiple belief propagation across multiple inputs and configurations,
+//with specific vectorization configurations dependent what's supported on
+//current CPU as defined at compile time
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   //run belief propagation with AVX512, AVX256, and no vectorization implementations,
   //with the AVX512 implementation given first as the expected fastest implementation
   RunImpMultTypesAccels().operator()({
@@ -140,6 +144,27 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
      std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
+#elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
+  //run belief propagation with AVX256 and no vectorization implementations,
+  //with the AVX256 implementation given first as the expected fastest implementation
+  RunImpMultTypesAccels().operator()({
+    {run_environment::AccSetting::kAVX256,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
+    {run_environment::AccSetting::kNone,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+    run_imp_settings,
+    std::make_unique<EvaluateImpResultsBp>());
+#elif (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
+  //run belief propagation with NEON and no vectorization implementations,
+  //with the NEON implementation given first as the expected fastest implementation
+  RunImpMultTypesAccels().operator()({
+    {run_environment::AccSetting::kNEON,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNEON)},
+    {run_environment::AccSetting::kNone,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+    run_imp_settings,
+    std::make_unique<EvaluateImpResultsBp>());
+#endif //CPU_VECTORIZATION_DEFINE
 }
 
 int main(int argc, char** argv)

@@ -65,15 +65,22 @@ void EvaluateAcrossRuns::operator()(
   }
 
   //get run inputs to parameters to display in evaluation across runs
-  const auto& inputs_to_runtimes = run_results_by_name.at(run_names[0]).InputsToKeyVal(
-    run_eval::kOptimizedRuntimeHeader);
-  std::map<InputSignature, std::vector<std::string>> input_set_to_input_disp;
-  for (const auto& input_runtime : inputs_to_runtimes) {
-    input_set_to_input_disp.insert({input_runtime.first, std::vector<std::string>()});
-    //add input parameters to display in evaluation across runs
-    for (const auto& disp_param : eval_across_runs_in_params_show) {
-      input_set_to_input_disp.at(input_runtime.first).push_back(
-        run_results_by_name.at(run_names[0]).DataForInput(input_runtime.first).at(disp_param));
+  std::map<InputSignature, std::vector<std::string>> inputs_to_params_display;
+  //go through every run so that all inputs in every run are included
+  for (const auto& run_results_w_name : run_results_by_name) {
+    const auto& inputs_to_runtimes = run_results_w_name.second.InputsToKeyVal(
+      run_eval::kOptimizedRuntimeHeader);
+    //go through inputs for current run results
+    for (const auto& input_runtime : inputs_to_runtimes) {
+      //check if input already addded to set of inputs
+      if (!(inputs_to_params_display.contains(input_runtime.first))) {
+        inputs_to_params_display.insert({input_runtime.first, std::vector<std::string>()});
+        //add input parameters to display in evaluation across runs
+        for (const auto& disp_param : eval_across_runs_in_params_show) {
+          inputs_to_params_display.at(input_runtime.first).push_back(
+            run_results_w_name.second.DataForInput(input_runtime.first).at(disp_param));
+        }
+      }
     }
   }
 
@@ -121,7 +128,7 @@ void EvaluateAcrossRuns::operator()(
 
   //write evaluation stereo set info, bp parameters, and total runtime for optimized bp implementation
   //across each run in the evaluation
-  for (const auto& curr_run_input : input_set_to_input_disp) {
+  for (const auto& curr_run_input : inputs_to_params_display) {
     for (const auto& run_input_val : curr_run_input.second) {
       result_across_archs_sstream << run_input_val << ',';
     }

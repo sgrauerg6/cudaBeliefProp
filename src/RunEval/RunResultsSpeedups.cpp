@@ -107,7 +107,7 @@ void RunResultsSpeedups::GenInputSignatureToDataMapping(
 
 //get mapping of run input signature to value corresponding to input key
 //for each run result
-std::map<InputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::string_view key)
+std::map<InputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::string_view key) const
 {
   std::map<InputSignature, std::string> input_sig_to_key_val;
   if (input_sig_to_run_data_) {

@@ -74,7 +74,7 @@ public:
    * @param key 
    * @return std::map<InputSignature, std::string> 
    */
-  std::map<InputSignature, std::string> InputsToKeyVal(std::string_view key);
+  std::map<InputSignature, std::string> InputsToKeyVal(std::string_view key) const;
 
   /**
    * @brief Return data for specified input signature
