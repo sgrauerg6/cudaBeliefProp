@@ -40,9 +40,10 @@ RunResultsSpeedups::RunResultsSpeedups(
     imp_results_file_path / run_eval::kImpResultsRunDataFolderName /
     (std::string(run_name_) + '_' + std::string(run_eval::kImpResultsRunDataFolderName) +
     std::string(run_eval::kCsvFileExtension));
-  std::map<std::string, std::vector<std::string>> run_results_header_to_data;
+  std::pair<std::map<std::string, std::vector<std::string>>, std::vector<std::string>>
+    run_results_header_to_data_ordered_headers;
   if (std::filesystem::exists(run_results_fp) && (std::filesystem::is_regular_file(run_results_fp))) {
-    run_results_header_to_data = HeaderToDataInCsvFile(run_results_fp);
+    run_results_header_to_data_ordered_headers = HeaderToDataWOrderedHeadersCsv(run_results_fp);
   }
 
   //get speedup evaluation data from file if available
@@ -51,11 +52,11 @@ RunResultsSpeedups::RunResultsSpeedups(
     (std::string(run_name_) + '_' + std::string(run_eval::kSpeedupsDescFileName) +
     std::string(run_eval::kCsvFileExtension));
   if (std::filesystem::exists(run_speedup_fp) && (std::filesystem::is_regular_file(run_speedup_fp))) {
-    speedup_header_to_result_ = HeaderToDataInCsvFile(run_speedup_fp);
+    speedup_header_to_result_speedup_order_ = HeaderToDataWOrderedHeadersCsv(run_speedup_fp);
   }
 
   //process run results, specifically generate input signature to data mappings
-  GenInputSignatureToDataMapping(run_results_header_to_data);
+  GenInputSignatureToDataMapping(run_results_header_to_data_ordered_headers.first);
 }
 
 //constructor that takes in run results path and processes run results
@@ -64,13 +65,14 @@ RunResultsSpeedups::RunResultsSpeedups(
   const std::filesystem::path& run_results_file_path)
 {
   //get run results data from file if available
-  std::map<std::string, std::vector<std::string>> run_results_header_to_data;
+  std::pair<std::map<std::string, std::vector<std::string>>, std::vector<std::string>>
+    run_results_header_to_data_ordered_headers;
   if (std::filesystem::exists(run_results_file_path) && (std::filesystem::is_regular_file(run_results_file_path))) {
-    run_results_header_to_data = HeaderToDataInCsvFile(run_results_file_path);
+    run_results_header_to_data_ordered_headers = HeaderToDataWOrderedHeadersCsv(run_results_file_path);
   }
 
   //process run results, specifically generate input signature to data mappings
-  GenInputSignatureToDataMapping(run_results_header_to_data);
+  GenInputSignatureToDataMapping(run_results_header_to_data_ordered_headers.first);
 }
 
 //generate input sig to run data mappings from run results as read from file
@@ -128,8 +130,8 @@ std::map<InputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::st
 //get mapping of headers to data in csv file for run results and speedups
 //assumed that there are no commas in data since it is used as delimiter between data
 //first output is headers in order, second output is mapping of headers to results
-std::map<std::string, std::vector<std::string>>
-RunResultsSpeedups::HeaderToDataInCsvFile(
+std::pair<std::map<std::string, std::vector<std::string>>, std::vector<std::string>>
+RunResultsSpeedups::HeaderToDataWOrderedHeadersCsv(
   const std::filesystem::path& csv_file_path) const
 {
   std::ifstream csv_file_str(csv_file_path);
@@ -157,5 +159,5 @@ RunResultsSpeedups::HeaderToDataInCsvFile(
       header_to_data[data_headers[num_data++]].push_back(data);
     }
   }
-  return header_to_data;
+  return {header_to_data, data_headers};
 }

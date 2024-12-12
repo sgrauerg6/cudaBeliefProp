@@ -414,10 +414,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
 
   if (run_imp_results_by_acc_setting.size() == 1) {
     //no alternate run results
-    return {{acc_to_speedup_str.at(run_environment::AccSetting::kNone),
-              {}},
-            {acc_to_speedup_str.at(run_environment::AccSetting::kAVX256),
-              {}}};
+    return {};
   }
   else {
     //initialize speedup/slowdown using alternate acceleration
