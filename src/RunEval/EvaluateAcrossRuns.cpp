@@ -43,6 +43,9 @@ void EvaluateAcrossRuns::operator()(
   const std::vector<std::string>& eval_across_runs_in_params_show,
   const std::vector<std::string>& speedup_headers) const
 {
+  //initialize speedup headers for output results across runs
+  auto speedup_headers_eval = speedup_headers;
+
   //retrieve names of runs with results
   //run names usually correspond to architecture of run
   const std::vector<std::string> run_names = GetRunNames(imp_results_file_path);
@@ -77,6 +80,31 @@ void EvaluateAcrossRuns::operator()(
         for (const auto& disp_param : eval_across_runs_in_params_show) {
           inputs_to_params_display.at(input_runtime.first).push_back(
             run_results_w_name.second.DataForInput(input_runtime.first).at(disp_param));
+        }
+      }
+    }
+    //go through speedups for run and add to speedup headers if not already included
+    const auto run_speedups_ordered = run_results_w_name.second.SpeedupHeadersOrder();
+    for (auto i = run_speedups_ordered.begin(); i < run_speedups_ordered.end(); i++)
+    {
+      //check if speedup in run is included in current evaluation speedups and add it
+      //in expected position in evaluation speedups if not
+      if (std::find(speedup_headers_eval.begin(), speedup_headers_eval.end(), *i) ==
+          speedup_headers_eval.end())
+      {
+        //add speedup header in front of previous ordered speedup header if not first
+        //ordered header
+        if (i != run_speedups_ordered.begin()) {
+          //find position in evaluation speedups of previous ordered header
+          //and add new header in front of it
+          speedup_headers_eval.insert(
+            (std::find(speedup_headers_eval.begin(), speedup_headers_eval.end(), *(i-1)) + 1),
+            *i);
+        }
+        else {
+          //add speedup header to front of evaluation speedup headers if first speedup
+          //header is at front of vector
+          speedup_headers_eval.insert(speedup_headers_eval.begin(), *i);
         }
       }
     }
@@ -147,7 +175,7 @@ void EvaluateAcrossRuns::operator()(
   //different evaluations of runtimes compared to a baseline
   result_across_archs_sstream << "Average Speedups" << std::endl;
   const std::string first_run_name = speedup_results_name_to_data.cbegin()->first;
-  for (const auto& speedup_header : speedup_headers) {
+  for (const auto& speedup_header : speedup_headers_eval) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       result_across_archs_sstream << speedup_header << ',';

@@ -64,7 +64,16 @@ public:
    * @return std::map<std::string, std::vector<std::string>> 
    */
   std::map<std::string, std::vector<std::string>> Speedups() const {
-    return speedup_header_to_result_.value();
+    return speedup_header_to_result_speedup_order_.value().first;
+  }
+
+  /**
+   * @brief Return order of speedup headers
+   * 
+   * @return std::vector<std::string>
+   */
+  std::vector<std::string> SpeedupHeadersOrder() const {
+    return speedup_header_to_result_speedup_order_.value().second;
   }
 
   /**
@@ -88,7 +97,8 @@ public:
 
 private:
   std::string run_name_;
-  std::optional<std::map<std::string, std::vector<std::string>>> speedup_header_to_result_;
+  std::optional<std::pair<std::map<std::string, std::vector<std::string>>, std::vector<std::string>>>
+    speedup_header_to_result_speedup_order_;
   std::optional<std::map<InputSignature, std::map<std::string, std::string>>> input_sig_to_run_data_;
 
   /**
@@ -100,15 +110,16 @@ private:
     const std::optional<std::map<std::string, std::vector<std::string>>>& run_results_header_to_data);
 
   /**
-   * @brief Get mapping of headers to data in csv file for run results and speedups
+   * @brief Get mapping of headers to data as well as headers in order in csv
+   * file for run results and speedups.
    * Assumed that there are no commas in data since it is used as delimiter between data
    * First output is headers in order, second output is mapping of headers to results
    * 
    * @param csv_file_path 
-   * @return std::map<std::string, std::vector<std::string>> 
+   * @return std::pair<std::map<std::string, std::vector<std::string>>, std::vector<std::string>>
    */
-  std::map<std::string, std::vector<std::string>> HeaderToDataInCsvFile(
-    const std::filesystem::path& csv_file_path) const;
+    std::pair<std::map<std::string, std::vector<std::string>>, std::vector<std::string>>
+      HeaderToDataWOrderedHeadersCsv(const std::filesystem::path& csv_file_path) const;
 };
 
 #endif //RUN_RESULTS_SPEEDUPS_H_
