@@ -67,7 +67,11 @@ RunData ParallelParamsBp::AsRunData() const
   //initialize RunData object
   RunData curr_run_data;
 
-  //show parallel parameters for each kernel1
+  //add parallel parameters setting
+  curr_run_data.AddDataWHeader(std::string(run_environment::kPParamsPerKernelSettingHeader),
+    std::string((run_environment::kOptPParmsSettingToDesc.at(opt_parallel_params_setting_))));
+
+  //add parallel parameters for each kernel
   curr_run_data.AddDataWHeader(std::string(beliefprop::kBlurImagesPDimsHeader),
     std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][0]) + " x " +
     std::to_string(parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][1]));

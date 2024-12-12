@@ -92,13 +92,11 @@ const std::map<std::size_t, std::string_view> kDataSizeToNameMap{
   {sizeof(short), "HALF"}
 };
 
-/**
- * @brief Enum that specifies whether or not to use templated counts for the
- * number of iterations in processing loops or to run implementation with and
- * without templated iteration counts
- * Templated counts for number of loop iterations can help with optimization
- * but requires that the number of iterations be known at compile time
- */
+/** @brief Enum that specifies whether or not to use templated counts for the
+ *  number of iterations in processing loops or to run implementation with and
+ *  without templated iteration counts
+ *  Templated counts for number of loop iterations can help with optimization
+ *  but requires that the number of iterations be known at compile time */
 enum class TemplatedItersSetting {
   kRunOnlyTempated,
   kRunOnlyNonTemplated,
@@ -108,15 +106,23 @@ enum class TemplatedItersSetting {
 /** @brief Enum for parallel parameters settings in run */
 enum class ParallelParamsSetting { kDefault, kOptimized };
 
-/**
- * @brief Enum to specify if optimizing parallel parameters per kernel or
- * using same parallel parameters across all kernels in run
- * In initial testing optimizing per kernel is faster on GPU and using same
- * parallel parameters across all kernels is faster on CPU
- */
+/** @brief Enum to specify if optimizing parallel parameters per kernel or
+ *  using same parallel parameters across all kernels in run
+ *  In initial testing optimizing per kernel is faster on GPU and using same
+ *  parallel parameters across all kernels is faster on CPU */
 enum class OptParallelParamsSetting {
   kSameParallelParamsAllKernels,
   kAllowDiffKernelParallelParamsInRun
+};
+
+//constants for header and descriptions corresponding to optimized parallel
+//parameters setting
+constexpr std::string_view kPParamsPerKernelSettingHeader{"Parallel Params Per Kernel Setting"};
+constexpr std::string_view kPParamsSameEveryKernelDesc{"Same Across Kernels"};
+constexpr std::string_view kPParamsSetEachKernelDesc{"Set Per Kernel"};
+const std::map<OptParallelParamsSetting, std::string_view> kOptPParmsSettingToDesc {
+  {OptParallelParamsSetting::kSameParallelParamsAllKernels, kPParamsSameEveryKernelDesc},
+  {OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun, kPParamsSetEachKernelDesc}
 };
 
 //constants for headers corresponding to run settings

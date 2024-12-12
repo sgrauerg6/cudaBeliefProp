@@ -54,23 +54,21 @@ void EvaluateAcrossRuns::operator()(
       {run_name, RunResultsSpeedups(imp_results_file_path, run_name)});
   }
 
-  //get header to data of run results and speedups for each run
-  //as well as mapping from input signature to runtime
+  //get header to data of run results and speedups for each run, mapping from
+  //input signature to runtime, and run inputs to parameters to display in
+  //evaluation across runs
   std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
   std::map<std::string, std::map<InputSignature, std::string>> input_to_runtime_across_archs;
-  for (const auto& run_name : run_names) {
-    speedup_results_name_to_data[run_name] = run_results_by_name.at(run_name).Speedups();
-    input_to_runtime_across_archs[run_name] = run_results_by_name.at(run_name).InputsToKeyVal(
-      run_eval::kOptimizedRuntimeHeader);
-  }
-
-  //get run inputs to parameters to display in evaluation across runs
   std::map<InputSignature, std::vector<std::string>> inputs_to_params_display;
-  //go through every run so that all inputs in every run are included
   for (const auto& run_results_w_name : run_results_by_name) {
+    speedup_results_name_to_data[run_results_w_name.first] =
+      run_results_w_name.second.Speedups();
+    input_to_runtime_across_archs[run_results_w_name.first] =
+      run_results_w_name.second.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader);
     const auto& inputs_to_runtimes = run_results_w_name.second.InputsToKeyVal(
       run_eval::kOptimizedRuntimeHeader);
     //go through inputs for current run results
+    //need to go through every run so that all inputs in every run are included
     for (const auto& input_runtime : inputs_to_runtimes) {
       //check if input already addded to set of inputs
       if (!(inputs_to_params_display.contains(input_runtime.first))) {
