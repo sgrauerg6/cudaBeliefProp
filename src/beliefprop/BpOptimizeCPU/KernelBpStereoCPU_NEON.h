@@ -100,11 +100,11 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   const beliefprop::BpLevelProperties& current_bp_level,
-  float* data_cost_checkerboard_0, float* data_cost_checkerboard_1,
-  float* message_u_prev_checkerboard_0, float* message_d_prev_checkerboard_0,
-  float* message_l_prev_checkerboard_0, float* message_r_prev_checkerboard_0,
-  float* message_u_prev_checkerboard_1, float* message_d_prev_checkerboard_1,
-  float* message_l_prev_checkerboard_1, float* message_r_prev_checkerboard_1,
+  const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
+  const float* message_u_prev_checkerboard_0, const float* message_d_prev_checkerboard_0,
+  const float* message_l_prev_checkerboard_0, const float* message_r_prev_checkerboard_0,
+  const float* message_u_prev_checkerboard_1, const float* message_d_prev_checkerboard_1,
+  const float* message_l_prev_checkerboard_1, const float* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
@@ -122,11 +122,11 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16_t* data_cost_checkerboard_0, float16_t* data_cost_checkerboard_1,
-  float16_t* message_u_prev_checkerboard_0, float16_t* message_d_prev_checkerboard_0,
-  float16_t* message_l_prev_checkerboard_0, float16_t* message_r_prev_checkerboard_0,
-  float16_t* message_u_prev_checkerboard_1, float16_t* message_d_prev_checkerboard_1,
-  float16_t* message_l_prev_checkerboard_1, float16_t* message_r_prev_checkerboard_1,
+  const float16_t* data_cost_checkerboard_0, const float16_t* data_cost_checkerboard_1,
+  const float16_t* message_u_prev_checkerboard_0, const float16_t* message_d_prev_checkerboard_0,
+  const float16_t* message_l_prev_checkerboard_0, const float16_t* message_r_prev_checkerboard_0,
+  const float16_t* message_u_prev_checkerboard_1, const float16_t* message_d_prev_checkerboard_1,
+  const float16_t* message_l_prev_checkerboard_1, const float16_t* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
@@ -144,11 +144,11 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   const beliefprop::BpLevelProperties& current_bp_level,
-  double* data_cost_checkerboard_0, double* data_cost_checkerboard_1,
-  double* message_u_prev_checkerboard_0, double* message_d_prev_checkerboard_0,
-  double* message_l_prev_checkerboard_0, double* message_r_prev_checkerboard_0,
-  double* message_u_prev_checkerboard_1, double* message_d_prev_checkerboard_1,
-  double* message_l_prev_checkerboard_1, double* message_r_prev_checkerboard_1,
+  const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
+  const double* message_u_prev_checkerboard_0, const double* message_d_prev_checkerboard_0,
+  const double* message_l_prev_checkerboard_0, const double* message_r_prev_checkerboard_0,
+  const double* message_u_prev_checkerboard_1, const double* message_d_prev_checkerboard_1,
+  const double* message_l_prev_checkerboard_1, const double* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
@@ -186,10 +186,10 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float64x2_t>(float
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[0].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
@@ -201,10 +201,10 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[1].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[1].num_disp_vals>(
@@ -216,10 +216,10 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[2].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[2].num_disp_vals>(
@@ -231,10 +231,10 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[3].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[3].num_disp_vals>(
@@ -246,10 +246,10 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[4].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[4].num_disp_vals>(
@@ -261,10 +261,10 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[5].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[5].num_disp_vals>(
@@ -276,10 +276,10 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
-  float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
-  float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
-  float16x4_t data_costs[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
+  const float16x4_t messages_neighbor_1[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
+  const float16x4_t messages_neighbor_2[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
+  const float16x4_t messages_neighbor_3[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
+  const float16x4_t data_costs[beliefprop::kStereoSetsToProcess[6].num_disp_vals],
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned)
 {
   MsgStereoSIMDProcessing<float16_t, float16x4_t, float, float32x4_t, beliefprop::kStereoSetsToProcess[6].num_disp_vals>(
@@ -289,8 +289,8 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
 
 template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t>(unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
-  float16x4_t* messages_neighbor_1, float16x4_t* messages_neighbor_2,
-  float16x4_t* messages_neighbor_3, float16x4_t* data_costs,
+  const float16x4_t* messages_neighbor_1, const float16x4_t* messages_neighbor_2,
+  const float16x4_t* messages_neighbor_3, const float16x4_t* data_costs,
   float16_t* dst_message_array, const float16x4_t& disc_k_bp, bool data_aligned,
   unsigned int bp_settings_disp_vals)
 {
