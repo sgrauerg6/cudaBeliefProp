@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-  float* data_cost_checkerboard_0, float* data_cost_checkerboard_1,
+  const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
   float* message_u_checkerboard_0, float* message_d_checkerboard_0,
   float* message_l_checkerboard_0, float* message_r_checkerboard_0,
   float* message_u_checkerboard_1, float* message_d_checkerboard_1,
@@ -56,7 +56,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-  float16_t* data_cost_checkerboard_0, float16_t* data_cost_checkerboard_1,
+  const float16_t* data_cost_checkerboard_0, const float16_t* data_cost_checkerboard_1,
   float16_t* message_u_checkerboard_0, float16_t* message_d_checkerboard_0,
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
   float16_t* message_u_checkerboard_1, float16_t* message_d_checkerboard_1,
@@ -78,7 +78,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-  double* data_cost_checkerboard_0, double* data_cost_checkerboard_1,
+  const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
   double* message_u_checkerboard_0, double* message_d_checkerboard_0,
   double* message_l_checkerboard_0, double* message_r_checkerboard_0,
   double* message_u_checkerboard_1, double* message_d_checkerboard_1,
