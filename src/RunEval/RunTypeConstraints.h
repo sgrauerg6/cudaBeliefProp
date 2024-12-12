@@ -55,6 +55,11 @@ concept RunData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std
 template <typename T>
 concept RunDataVect_t = std::is_same_v<T, float64x2_t> || std::is_same_v<T, float32x4_t> || std::is_same_v<T, float16x4_t>;
 
+//data processing on CPU only uses float or double
+//half type gets converted to float for processing and then back to half for storage
+template <typename T>
+concept RunDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double>;
+
 template <typename T>
 concept RunDataVectProcess_t = std::is_same_v<T, float64x2_t> || std::is_same_v<T, float32x4_t>;
 #else //COMPILING_FOR_ARM
