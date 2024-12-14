@@ -8,3 +8,5 @@ the CPU/GPU implementations share the same code where possible; the framework is
 there to add optimized belief propagation implementations for additional
 architectures and also to use the evaluation code for evaluation of other
 benchmarks.
+
+Visualization of class hierarchy: https://sgrauerg6.github.io/Documentation/cudaBeliefProp/html/inherits.html
