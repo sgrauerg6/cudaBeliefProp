@@ -148,27 +148,59 @@ float type w/ prior run using AMD Rome (48 cores) used as baseline:
 -Column marked as "Median Optimized Runtime (including transfer time)" in 
 {RUN_NAME}_RunResults.csv used for runtime comparison.
 -Speedups given is average across a number of input stereo sets and configurations.
-NVIDIA H100: 2.41x
-AMD Genoa-X (88 Cores*): 2.17x
-NVIDIA A100: 1.80x
+NVIDIA H100 (GH200): 3.34x
+NVIDIA H100 (SXM5): 2.99x
+AMD Genoa-X (176 Cores across 2 CPUs): 2.31x
+NVIDIA H100 (PCIe): 2.27x
+AMD Genoa-X (88 Cores*): 2.12x
+AMD Genoa (192 Cores across 2 CPUs): 2.07x
+AMD Genoa (96 Cores*): 1.98x
+Amazon Graviton4 (96 ARM cores): 1.97x
+Microsoft Cobalt (96 ARM cores): 1.91x
+NVIDIA A100: 1.89x
+Intel Emerald Rapids (48 cores): 1.84x
 NVIDIA RTX 3090 Ti: 1.65x
-Intel Sapphire Rapids (48 cores): 1.52x
-AMD Milan-X (60 cores*): 1.35x
-Amazon Graviton3 (64 core ARM server): 1.21x
-NVIDIA V100: 1.14x
-Amphere Altra (80 cores): 1.00x
-Intel Ice Lake (32 cores): 0.975x
-AMD Rome (48 cores): 0.97x
-Amazon Graviton2 (64 core ARM server): 0.925x
-NVIDIA P100: 0.785x
-Intel Cascade Lake (24 cores): 0.63x
+AMD Milan-X (120 Cores across 2 CPUs): 1.60x
+Intel Sapphire Rapids (48 cores): 1.53x
+NVIDIA GH200 CPU (64 ARM cores): 1.44x
+AMD Milan-X (60 cores*): 1.37x
+Amazon Graviton3 (64 ARM cores): 1.20x
+Amazon Graviton3E (64 ARM cores): 1.20x
+NVIDIA V100: 1.15x
+AMD Rome (48 Cores): 1.00x
+Intel Ice Lake (32 cores): 1.00x
+AMD Milan (48 cores): 0.91x
+Amazon Graviton2 (64 ARM cores): 0.90x
+NVIDIA P100: 0.78x
+Intel Cascade Lake (24 cores): 0.66x
+Intel Tiger Lake laptop (8 Cores): 0.33x
+AMD 3600 (6 Cores): 0.27x
 Spreadsheet with detailed results:
-https://docs.google.com/spreadsheets/d/1pFMbbEGv1ulor1HP0lZNnd1IL8xETfr3tHRk_S9VzzE/edit?usp=sharing
+https://docs.google.com/spreadsheets/d/1j_JWKx9K2puHnWB0qRaxP3TyEkMDaoNpiLhUHleev-w/edit?usp=sharing
 
 *Run on system with 2 socketed CPUs with total of 2x listed core count across
 CPUs and with SMT disabled...benchmarked runs are with max number of threads
-*limited to core count on single CPU w/ threads pinned to socket so should be using
+limited to core count on single CPU w/ threads pinned to socket so should be using
 single CPU in the run.
 Commands to pin OMP threads to socket:
 export OMP_PLACES="sockets"
 export OMP_PROC_BIND=true
+
+Single-thread implementation speedups (relative single-core performance): 
+Intel Emerald Rapids (48 cores): 1.48x
+Intel Sapphire Rapids (48 cores): 1.41x
+NVIDIA GH200 CPU (64 ARM cores): 1.36x
+Intel Tiger Lake laptop (8 Cores): 1.31x
+AMD Genoa-X (88 Cores): 1.24x
+Microsoft Cobalt (96 ARM cores): 1.13x
+AMD Genoa (96 Cores): 1.12x
+Amazon Graviton4 (96 ARM cores): 1.10x
+Intel Ice Lake (32 cores): 1.07x
+AMD 3600 (6 Cores): 1.00x
+AMD Milan (48 cores): 0.97x
+AMD Milan-X (60 cores): 0.95x
+Intel Cascade Lake (24 cores): 0.92x
+Amazon Graviton3 (64 ARM cores): 0.86x
+Amazon Graviton3E (64 ARM cores): 0.86x
+AMD Rome (48 Cores): 0.78x
+Amazon Graviton2 (64 ARM cores): 0.63x
