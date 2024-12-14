@@ -86,7 +86,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_src_main"></a> Documentation of code for Optimized Belief Propagation (CPU and GPU)</p>
-<p>Project page with code and README: <a href="https://github.com/sgrauerg6/cudaBeliefProp">https://github.com/sgrauerg6/cudaBeliefProp</a> </p>
+<p>Project page with code and README: <a href="https://github.com/sgrauerg6/cudaBeliefProp">https://github.com/sgrauerg6/cudaBeliefProp</a></p>
+<p>Code is structured such as evaluation portion is separate from implementation and also using parent/child classes in the belief propagation implementation so the CPU/GPU implementations share the same code where possible; the framework is there to add optimized belief propagation implementations for additional architectures and also to use the evaluation code for evaluation of other benchmarks. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
