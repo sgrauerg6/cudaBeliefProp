@@ -96,14 +96,14 @@ void EvaluateAcrossRuns::operator()(
         //ordered header
         if (i != run_speedups_ordered.begin()) {
           //find position in evaluation speedups of previous ordered header
-          //and add new header in front of it
+          //and add new header behind it
           speedup_headers_eval.insert(
             (std::find(speedup_headers_eval.begin(), speedup_headers_eval.end(), *(i-1)) + 1),
             *i);
         }
         else {
-          //add speedup header to front of evaluation speedup headers if first speedup
-          //header is at front of vector
+          //add speedup header to front of evaluation speedup headers if no previous
+          //ordered header in speedups for run
           speedup_headers_eval.insert(speedup_headers_eval.begin(), *i);
         }
       }
