@@ -3,8 +3,9 @@
 {\ttfamily \#include $<$map$>$}\newline
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$numeric$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
-{\ttfamily \#include \char`\"{}Disparity\+Map\+Evaluation\+Params.\+h\char`\"{}}\newline
 Include dependency graph for Disparity\+Map\+Evaluation.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -22,18 +23,24 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_disparity_map_evaluation_params}{beliefprop\+::\+Disparity\+Map\+Evaluation\+Params}}
+\begin{DoxyCompactList}\small\item\em Struct to store parameters for evaluation of disparity map from stereo processing. \end{DoxyCompactList}\item 
 class \mbox{\hyperlink{class_disparity_map_evaluation}{Disparity\+Map\+Evaluation}}
 \begin{DoxyCompactList}\small\item\em Class to store disparity map evaluation results. Specifically comparison between two disparity maps such as output disparity map from bp processing and ground truth disparity map. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace for enums, constants, structures, and functions specific to belief propagation processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}{beliefprop\+::k\+Avg\+RMSError\+Header}} \{\char`\"{}Average RMS error\char`\"{}\}
-\end{DoxyCompactItemize}
+\item 
+constexpr std\+::array$<$ float, 4 $>$ \mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{beliefprop\+::k\+Disparity\+Diff\+Thresholds}}
+\begin{DoxyCompactList}\small\item\em Difference thresholds in output disparity for a computed disparity at a pixel to be considered a \char`\"{}bad pixel\char`\"{} when compared to the ground truth in the evaluation. \end{DoxyCompactList}\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}{beliefprop\+::k\+Max\+Diff\+Cap}}
+\begin{DoxyCompactList}\small\item\em Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers in the average difference across all pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}

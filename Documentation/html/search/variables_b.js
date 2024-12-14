@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['r_1222',['r',['../structrgb.html#aac0e0e7953ab42709ecf5de38e5db492',1,'rgb']]],
-  ['run_5fbp_5fstereo_1223',['run_bp_stereo',['../struct_bp_on_device.html#a92da849cf328d5a033bbaf0224fddf8a',1,'BpOnDevice']]],
-  ['run_5fdata_1224',['run_data',['../struct_process_stereo_set_output.html#adc44a4231d3783f4ca092152d49ff8e8',1,'ProcessStereoSetOutput']]],
-  ['run_5fname_1225',['run_name',['../structrun__environment_1_1_run_imp_settings.html#a7af6109466c11f58c020cb12e787407c',1,'run_environment::RunImpSettings']]],
-  ['run_5ftime_1226',['run_time',['../struct_process_stereo_set_output.html#ad6365f9dcb7456d899e13da4403a5846',1,'ProcessStereoSetOutput']]],
-  ['rundata_5fptr_1227',['RunData_ptr',['../_run_type_constraints_8h.html#a378c0f42f400de5ad6fffbe9f7626027',1,'RunTypeConstraints.h']]]
+  ['r_1232',['r',['../structbp__single__thread__imp_1_1rgb.html#a568bd2dbbf22ee686bb26fbd1ad9a8e8',1,'bp_single_thread_imp::rgb']]],
+  ['run_5fbp_5fstereo_1233',['run_bp_stereo',['../structbeliefprop_1_1_bp_on_device.html#a646d61f418c2d5b3d3af2f0d7493b025',1,'beliefprop::BpOnDevice']]],
+  ['run_5fdata_1234',['run_data',['../structbeliefprop_1_1_bp_run_output.html#ad470a5b15826b3b87c9067c81ecca1a4',1,'beliefprop::BpRunOutput']]],
+  ['run_5fname_1235',['run_name',['../structrun__environment_1_1_run_imp_settings.html#a7af6109466c11f58c020cb12e787407c',1,'run_environment::RunImpSettings']]],
+  ['run_5ftime_1236',['run_time',['../structbeliefprop_1_1_bp_run_output.html#a42e4e521e4cd172c9866ca9cfa7b9e00',1,'beliefprop::BpRunOutput']]],
+  ['rundata_5fptr_1237',['RunData_ptr',['../_run_type_constraints_8h.html#a378c0f42f400de5ad6fffbe9f7626027',1,'RunTypeConstraints.h']]]
 ];

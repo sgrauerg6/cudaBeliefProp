@@ -1,0 +1,104 @@
+\hypertarget{classbp__single__thread__imp_1_1_filter_image}{}\doxysection{bp\+\_\+single\+\_\+thread\+\_\+imp\+::Filter\+Image Class Reference}
+\label{classbp__single__thread__imp_1_1_filter_image}\index{bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}}
+
+
+{\ttfamily \#include $<$filter.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbp__single__thread__imp_1_1_filter_image_a97a2661bcf9a6caf91151467b944baf5}{MAKE\+\_\+\+FILTER}} (f0, exp(-\/0.\+5 $\ast$\mbox{\hyperlink{namespacebp__single__thread__imp_a50998211a974ebd37ba215f57c986a4d}{square}}(i/sigma)))
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classbp__single__thread__imp_1_1_filter_image_a530e288d511a1277418018b58c87f339}{normalize}} (std\+::vector$<$ float $>$ \&mask)
+\item 
+static \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$ \mbox{\hyperlink{classbp__single__thread__imp_1_1_filter_image_a8c9fecb95bf215288137eb699c32cb35}{smooth}} (\mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$src, float sigma)
+\item 
+static \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$ \mbox{\hyperlink{classbp__single__thread__imp_1_1_filter_image_abd41a56039b24b014085c7b88b356a8d}{smooth}} (\mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ \mbox{\hyperlink{misc_8h_a65f85814a8290f9797005d3b28e7e5fc}{uchar}} $>$ $\ast$src, float sigma)
+\item 
+static \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$ \mbox{\hyperlink{classbp__single__thread__imp_1_1_filter_image_a038ea31213e1224c38ebc0185a552e7c}{laplacian}} (\mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$src)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line 39 of file filter.\+h.
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classbp__single__thread__imp_1_1_filter_image_a038ea31213e1224c38ebc0185a552e7c}\label{classbp__single__thread__imp_1_1_filter_image_a038ea31213e1224c38ebc0185a552e7c}} 
+\index{bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}!laplacian@{laplacian}}
+\index{laplacian@{laplacian}!bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}}
+\doxysubsubsection{\texorpdfstring{laplacian()}{laplacian()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$float$>$$\ast$ bp\+\_\+single\+\_\+thread\+\_\+imp\+::\+Filter\+Image\+::laplacian (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$}]{src }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 92 of file filter.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbp__single__thread__imp_1_1_filter_image_a038ea31213e1224c38ebc0185a552e7c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbp__single__thread__imp_1_1_filter_image_a97a2661bcf9a6caf91151467b944baf5}\label{classbp__single__thread__imp_1_1_filter_image_a97a2661bcf9a6caf91151467b944baf5}} 
+\index{bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}!MAKE\_FILTER@{MAKE\_FILTER}}
+\index{MAKE\_FILTER@{MAKE\_FILTER}!bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}}
+\doxysubsubsection{\texorpdfstring{MAKE\_FILTER()}{MAKE\_FILTER()}}
+{\footnotesize\ttfamily bp\+\_\+single\+\_\+thread\+\_\+imp\+::\+Filter\+Image\+::\+MAKE\+\_\+\+FILTER (\begin{DoxyParamCaption}\item[{f0}]{,  }\item[{exp(-\/0.\+5 $\ast$\mbox{\hyperlink{namespacebp__single__thread__imp_a50998211a974ebd37ba215f57c986a4d}{square}}(i/sigma))}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classbp__single__thread__imp_1_1_filter_image_a530e288d511a1277418018b58c87f339}\label{classbp__single__thread__imp_1_1_filter_image_a530e288d511a1277418018b58c87f339}} 
+\index{bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}!normalize@{normalize}}
+\index{normalize@{normalize}!bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}}
+\doxysubsubsection{\texorpdfstring{normalize()}{normalize()}}
+{\footnotesize\ttfamily static void bp\+\_\+single\+\_\+thread\+\_\+imp\+::\+Filter\+Image\+::normalize (\begin{DoxyParamCaption}\item[{std\+::vector$<$ float $>$ \&}]{mask }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 43 of file filter.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbp__single__thread__imp_1_1_filter_image_a530e288d511a1277418018b58c87f339_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbp__single__thread__imp_1_1_filter_image_a8c9fecb95bf215288137eb699c32cb35}\label{classbp__single__thread__imp_1_1_filter_image_a8c9fecb95bf215288137eb699c32cb35}} 
+\index{bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}!smooth@{smooth}}
+\index{smooth@{smooth}!bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}}
+\doxysubsubsection{\texorpdfstring{smooth()}{smooth()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$float$>$$\ast$ bp\+\_\+single\+\_\+thread\+\_\+imp\+::\+Filter\+Image\+::smooth (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ float $>$ $\ast$}]{src,  }\item[{float}]{sigma }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 70 of file filter.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classbp__single__thread__imp_1_1_filter_image_a8c9fecb95bf215288137eb699c32cb35_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classbp__single__thread__imp_1_1_filter_image_abd41a56039b24b014085c7b88b356a8d}\label{classbp__single__thread__imp_1_1_filter_image_abd41a56039b24b014085c7b88b356a8d}} 
+\index{bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}!smooth@{smooth}}
+\index{smooth@{smooth}!bp\_single\_thread\_imp::FilterImage@{bp\_single\_thread\_imp::FilterImage}}
+\doxysubsubsection{\texorpdfstring{smooth()}{smooth()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$float$>$$\ast$ bp\+\_\+single\+\_\+thread\+\_\+imp\+::\+Filter\+Image\+::smooth (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}$<$ \mbox{\hyperlink{misc_8h_a65f85814a8290f9797005d3b28e7e5fc}{uchar}} $>$ $\ast$}]{src,  }\item[{float}]{sigma }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+Definition at line 84 of file filter.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Single\+Thread\+CPU/\mbox{\hyperlink{filter_8h}{filter.\+h}}\end{DoxyCompactItemize}

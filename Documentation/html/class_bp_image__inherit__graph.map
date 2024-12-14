@@ -1,5 +1,5 @@
 <map id="BpImage&lt; T &gt;" name="BpImage&lt; T &gt;">
 <area shape="rect" id="node1" title="Class to define images that are used in bp processing." alt="" coords="121,5,239,32"/>
 <area shape="rect" id="node2" href="$class_disparity_map.html" title=" " alt="" coords="5,80,173,107"/>
-<area shape="rect" id="node3" href="$class_disparity_map.html" title="Class to define disparity map image that is output from bp processing." alt="" coords="197,80,344,107"/>
+<area shape="rect" id="node3" href="$class_disparity_map.html" title="Child class of BpImage to define disparity map image that is output from bp processing." alt="" coords="197,80,344,107"/>
 </map>

@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('_smooth_image_c_u_d_a_8cpp_source.html
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      (in_image.<a class="code" href="class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2">Width</a>()*in_image.<a class="code" href="class_bp_image.html#a17a1a389e427daa94dc18635fafe2b6a">Height</a>()*<span class="keyword">sizeof</span>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>)), cudaMemcpyHostToDevice);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="comment">//call kernel to convert input unsigned int pixels to output float pixels on the device</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    beliefpropCUDA::convertUnsignedIntImageToFloat &lt;&lt;&lt; grid, threads &gt;&gt;&gt; (</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    beliefprop_cuda::convertUnsignedIntImageToFloat &lt;&lt;&lt; grid, threads &gt;&gt;&gt; (</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;      original_image_device, smoothed_image, in_image.<a class="code" href="class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2">Width</a>(), in_image.<a class="code" href="class_bp_image.html#a17a1a389e427daa94dc18635fafe2b6a">Height</a>());</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    cudaDeviceSynchronize();</div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
@@ -164,14 +164,14 @@ $(document).ready(function(){initNavTree('_smooth_image_c_u_d_a_8cpp_source.html
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="comment">//first filter the image horizontally, then vertically</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="comment">//the result is applying a 2D gaussian filter with the given sigma value to the image</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    beliefpropCUDA::FilterImageAcross&lt;unsigned int&gt; &lt;&lt;&lt; grid, threads &gt;&gt;&gt; (</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    beliefprop_cuda::FilterImageAcross&lt;unsigned int&gt; &lt;&lt;&lt; grid, threads &gt;&gt;&gt; (</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;      original_image_device, intermediate_image_device,</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;      in_image.<a class="code" href="class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2">Width</a>(), in_image.<a class="code" href="class_bp_image.html#a17a1a389e427daa94dc18635fafe2b6a">Height</a>(),</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;      filter_device, filter_w_size.second);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    cudaDeviceSynchronize();</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">//now use the vertical filter to complete the smoothing of image on the device</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    beliefpropCUDA::FilterImageVertical&lt;float&gt; &lt;&lt;&lt; grid, threads &gt;&gt;&gt; (</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    beliefprop_cuda::FilterImageVertical&lt;float&gt; &lt;&lt;&lt; grid, threads &gt;&gt;&gt; (</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      intermediate_image_device, smoothed_image,</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      in_image.<a class="code" href="class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2">Width</a>(), in_image.<a class="code" href="class_bp_image.html#a17a1a389e427daa94dc18635fafe2b6a">Height</a>(),</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      filter_device, filter_w_size.second);</div>

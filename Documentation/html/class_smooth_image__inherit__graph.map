@@ -1,5 +1,5 @@
 <map id="SmoothImage" name="SmoothImage">
 <area shape="rect" id="node1" title="Class for smoothing the images before running BP. Smoothing image always uses float data type." alt="" coords="103,5,216,32"/>
-<area shape="rect" id="node2" href="$class_smooth_image_c_p_u.html" title="Class for smoothing images in the optimized CPU implementation." alt="" coords="5,80,145,107"/>
-<area shape="rect" id="node3" href="$class_smooth_image_c_u_d_a.html" title="Class for smoothing images in the CUDA implementation." alt="" coords="169,80,320,107"/>
+<area shape="rect" id="node2" href="$class_smooth_image_c_p_u.html" title="Child class of SmoothImage for smoothing images in the optimized CPU implementation." alt="" coords="5,80,145,107"/>
+<area shape="rect" id="node3" href="$class_smooth_image_c_u_d_a.html" title="Child class of SmoothImage for smoothing images in the CUDA implementation." alt="" coords="169,80,320,107"/>
 </map>

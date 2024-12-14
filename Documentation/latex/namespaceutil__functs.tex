@@ -2,7 +2,7 @@
 \label{namespaceutil__functs}\index{util\_functs@{util\_functs}}
 
 
-Namespace with utility functions for bp implementation.  
+Namespace with utility functions for implementation.  
 
 
 \doxysubsection*{Functions}
@@ -15,15 +15,11 @@ Namespace with utility functions for bp implementation.
 {\footnotesize template$<$typename T $>$ }\\requires std\+::is\+\_\+arithmetic\+\_\+v$<$ T $>$ \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespaceutil__functs_a152949893a393787be955df9fb4a638d}{Get\+Min}} (T val1, T val2)
 \item 
 {\footnotesize template$<$typename T $>$ }\\requires std\+::is\+\_\+arithmetic\+\_\+v$<$ T $>$ \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} T \mbox{\hyperlink{namespaceutil__functs_aca34e7c44469367a700c4e23d2637cbb}{Get\+Max}} (T val1, T val2)
-\item 
-\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool \mbox{\hyperlink{namespaceutil__functs_a02d622e2afabbaa1396d0213c5a505af}{Within\+Image\+Bounds}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height)
-\begin{DoxyCompactList}\small\item\em Checks if the current point is within the image bounds Assumed that input x/y vals are above zero since their unsigned int so no need for $>$= 0 check. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{namespaceutil__functs_a9d24a6a516382fc3d84c9a2076d244f2}{Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
-\begin{DoxyCompactList}\small\item\em Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-Namespace with utility functions for bp implementation. 
+Namespace with utility functions for implementation. 
 
 \doxysubsection{Function Documentation}
 \mbox{\Hypertarget{namespaceutil__functs_a6a1aba89f14c521198e0f8a0640f7e00}\label{namespaceutil__functs_a6a1aba89f14c521198e0f8a0640f7e00}} 
@@ -49,9 +45,6 @@ T is input type, U is output type.
 {\em data} & \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
 
 
 Definition at line 53 of file Utility\+Functs.\+h.
@@ -90,78 +83,6 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespaceutil__functs_a152949893a393787be955df9fb4a638d_icgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{namespaceutil__functs_a9d24a6a516382fc3d84c9a2076d244f2}\label{namespaceutil__functs_a9d24a6a516382fc3d84c9a2076d244f2}} 
-\index{util\_functs@{util\_functs}!MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}}
-\index{MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}!util\_functs@{util\_functs}}
-\doxysubsubsection{\texorpdfstring{MemoryAlignedAtDataStart()}{MemoryAlignedAtDataStart()}}
-{\footnotesize\ttfamily bool util\+\_\+functs\+::\+Memory\+Aligned\+At\+Data\+Start (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+data\+\_\+start,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{unsigned int}]{num\+\_\+data\+\_\+align\+\_\+width,  }\item[{unsigned int}]{div\+Padded\+Ch\+Board\+Width\+For\+Align }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-
-
-Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x\+\_\+val\+\_\+data\+\_\+start} & \\
-\hline
-{\em simd\+\_\+data\+\_\+size} & \\
-\hline
-{\em num\+\_\+data\+\_\+align\+\_\+width} & \\
-\hline
-{\em div\+Padded\+Ch\+Board\+Width\+For\+Align} & \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-true 
-
-false 
-\end{DoxyReturn}
-
-
-Definition at line 102 of file Utility\+Functs.\+h.
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespaceutil__functs_a9d24a6a516382fc3d84c9a2076d244f2_icgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{namespaceutil__functs_a02d622e2afabbaa1396d0213c5a505af}\label{namespaceutil__functs_a02d622e2afabbaa1396d0213c5a505af}} 
-\index{util\_functs@{util\_functs}!WithinImageBounds@{WithinImageBounds}}
-\index{WithinImageBounds@{WithinImageBounds}!util\_functs@{util\_functs}}
-\doxysubsubsection{\texorpdfstring{WithinImageBounds()}{WithinImageBounds()}}
-{\footnotesize\ttfamily \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool util\+\_\+functs\+::\+Within\+Image\+Bounds (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-
-
-Checks if the current point is within the image bounds Assumed that input x/y vals are above zero since their unsigned int so no need for $>$= 0 check. 
-
-
-\begin{DoxyParams}{Parameters}
-{\em x\+\_\+val} & \\
-\hline
-{\em y\+\_\+val} & \\
-\hline
-{\em width} & \\
-\hline
-{\em height} & \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
-
-
-Definition at line 84 of file Utility\+Functs.\+h.
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[height=550pt]{namespaceutil__functs_a02d622e2afabbaa1396d0213c5a505af_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespaceutil__functs_af509aad8fbf0c563f8880ac1f1572b99}\label{namespaceutil__functs_af509aad8fbf0c563f8880ac1f1572b99}} 

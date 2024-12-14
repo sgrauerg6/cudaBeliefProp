@@ -1,6 +1,6 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$class_run_bp_on_stereo_set.html" title="Abstract class to set up and run belief propagation on target device using specified acceleration." alt="" coords="5,71,223,112"/>
-<area shape="rect" id="node2" href="$class_run_bp_on_stereo_set_c_u_d_a.html" title="Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference ..." alt="" coords="284,5,528,47"/>
-<area shape="rect" id="node3" href="$class_run_bp_on_stereo_set_optimized_c_p_u.html" title="Class to run optimized CPU implementation of belief propagation on a given stereo set as defined by r..." alt="" coords="271,71,541,112"/>
-<area shape="rect" id="node4" href="$class_run_bp_stereo_c_p_u_single_thread.html" title="Class to run single&#45;threaded CPU implementation of belief propagation on a given stereo set as define..." alt="" coords="284,136,528,177"/>
+<area shape="rect" id="node2" href="$class_run_bp_on_stereo_set_c_u_d_a.html" title="Child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given stereo se..." alt="" coords="284,5,528,47"/>
+<area shape="rect" id="node3" href="$class_run_bp_on_stereo_set_optimized_c_p_u.html" title="Child class of RunBpOnStereoSet to run optimized CPU implementation of belief propagation on a given ..." alt="" coords="271,71,541,112"/>
+<area shape="rect" id="node4" href="$class_run_bp_on_stereo_set_single_thread_c_p_u.html" title="Child class of RunBpOnStereoSet to run single&#45;threaded CPU implementation of belief propagation on a ..." alt="" coords="271,136,541,177"/>
 </map>

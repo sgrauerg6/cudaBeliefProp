@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$structrgb.html" title=" " alt="" coords="5,5,48,32"/>
+<area shape="rect" id="node1" href="$class_process_bp.html" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="5,39,188,80"/>
+<area shape="rect" id="node2" href="$class_process_bp_c_u_d_a.html" title="Child class of ProcessBp that define functions used in processing bp in the CUDA implementation." alt="" coords="264,5,452,47"/>
+<area shape="rect" id="node3" href="$class_process_bp_optimized_c_p_u.html" title="Child class of ProcessBp that define functions used in processing bp in the optimized CPU implementat..." alt="" coords="236,71,480,112"/>
 </map>

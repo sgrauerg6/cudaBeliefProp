@@ -1,5 +1,5 @@
 <map id="beliefprop::RetrieveOutputDisparityPixel" name="beliefprop::RetrieveOutputDisparityPixel">
-<area shape="rect" id="node1" title=" " alt="" coords="5,39,200,80"/>
-<area shape="rect" id="node2" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="248,5,435,47"/>
-<area shape="rect" id="node3" href="$namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="251,71,432,112"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,35,200,76"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="268,5,455,47"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="248,71,475,98"/>
 </map>

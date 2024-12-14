@@ -1,0 +1,594 @@
+\hypertarget{namespacebeliefprop__cuda}{}\doxysection{beliefprop\+\_\+cuda Namespace Reference}
+\label{namespacebeliefprop__cuda}\index{beliefprop\_cuda@{beliefprop\_cuda}}
+
+
+Namespace to define global kernel functions for parallel belief propagation processing using CUDA.  
+
+
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_aa26f576e04e40f0a4f907772433d4ae0}{Initialize\+Bottom\+Level\+Data}} (\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, float $\ast$image\+\_\+1\+\_\+pixels\+\_\+device, float $\ast$image\+\_\+2\+\_\+pixels\+\_\+device, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1, float lambda\+\_\+bp, float data\+\_\+k\+\_\+bp, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Initialize the \char`\"{}data cost\char`\"{} for each possible disparity between the two full-\/sized input images (\char`\"{}bottom\char`\"{} of the image pyramid). The image data is stored in the image\+\_\+1\+\_\+pixels\+\_\+device and image\+\_\+2\+\_\+pixels\+\_\+device arrays. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_aad53fa3d6b6ffbd594170ca738f41515}{Initialize\+Current\+Level\+Data}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} prev\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$data\+\_\+cost\+\_\+current\+\_\+level, unsigned int offset\+\_\+num, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Initialize the data costs at the \char`\"{}next\char`\"{} level up in the pyramid given that the data at the lower has been set. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_a319e93b6f471e7c43afbff1c9506882f}{Initialize\+Message\+Vals\+To\+Default\+Kernel}} (\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Initialize the message values at each pixel of the current level to the default value. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_a316a4698e007f4722b4cc9bc4015c692}{Run\+BPIteration\+Using\+Checkerboard\+Updates}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_ae991742366ec63db54f1a4ec8c6c911c}{Run\+BPIteration\+Using\+Checkerboard\+Updates}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+to\+\_\+update, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float disc\+\_\+k\+\_\+bp, bool data\+\_\+aligned, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals, void $\ast$dst\+\_\+processing)
+\begin{DoxyCompactList}\small\item\em Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. Function differs from counterpart overloaded function with same name in that it takes in allocated memory to use in processing. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_a27664210a6760cfc437104ae51e806c0}{Copy\+Msg\+Data\+To\+Next\+Level}} (\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}} checkerboard\+\_\+part, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} next\+\_\+bp\+\_\+level, T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Kernel to copy the computed BP message values at the current level to the corresponding locations at the \char`\"{}next\char`\"{} level down. The kernel works from the point of view of the pixel at the current level that is being copied to four corresponding pixels in the next level. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_afa30b0a712350ea00fbf2c2e12c245ce}{Retrieve\+Output\+Disparity}} (\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} current\+\_\+bp\+\_\+level, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, float $\ast$disparity\+\_\+between\+\_\+images\+\_\+device, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel. \end{DoxyCompactList}\item 
+\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_ac53d5d96410244e46aa762ef124a2ab8}{convert\+Unsigned\+Int\+Image\+To\+Float}} (unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
+\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_a6b22895185baed07e4f89a72f1d0255a}{Filter\+Image\+Across}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\item 
+{\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_a86c1630433f168f5c0148a2399cbe733}{Filter\+Image\+Vertical}} (const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
+\begin{DoxyCompactList}\small\item\em Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. \end{DoxyCompactList}\item 
+\+\_\+\+\_\+global\+\_\+\+\_\+ void \mbox{\hyperlink{namespacebeliefprop__cuda_a7b60234dbc9be14aad8591e3a6a9bce0}{convert\+Unsigned\+Int\+Image\+To\+Float}} (const unsigned int $\ast$uint\+\_\+image\+\_\+pixels, float $\ast$float\+\_\+image\+\_\+pixels, unsigned int width\+\_\+images, unsigned int height\+\_\+images)
+\begin{DoxyCompactList}\small\item\em Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float\+\_\+image\+\_\+pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Namespace to define global kernel functions for parallel belief propagation processing using CUDA. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_a7b60234dbc9be14aad8591e3a6a9bce0}\label{namespacebeliefprop__cuda_a7b60234dbc9be14aad8591e3a6a9bce0}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!convertUnsignedIntImageToFloat@{convertUnsignedIntImageToFloat}}
+\index{convertUnsignedIntImageToFloat@{convertUnsignedIntImageToFloat}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{convertUnsignedIntImageToFloat()}{convertUnsignedIntImageToFloat()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::convert\+Unsigned\+Int\+Image\+To\+Float (\begin{DoxyParamCaption}\item[{const unsigned int $\ast$}]{uint\+\_\+image\+\_\+pixels,  }\item[{float $\ast$}]{float\+\_\+image\+\_\+pixels,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images }\end{DoxyParamCaption})}
+
+
+
+Kernel to convert the unsigned int pixels to float pixels in an image when smoothing is not desired but the pixels need to be converted to floats the input image is stored as unsigned ints output filtered image stored in float\+\_\+image\+\_\+pixels. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em uint\+\_\+image\+\_\+pixels} & \\
+\hline
+{\em float\+\_\+image\+\_\+pixels} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_ac53d5d96410244e46aa762ef124a2ab8}\label{namespacebeliefprop__cuda_ac53d5d96410244e46aa762ef124a2ab8}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!convertUnsignedIntImageToFloat@{convertUnsignedIntImageToFloat}}
+\index{convertUnsignedIntImageToFloat@{convertUnsignedIntImageToFloat}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{convertUnsignedIntImageToFloat()}{convertUnsignedIntImageToFloat()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::convert\+Unsigned\+Int\+Image\+To\+Float (\begin{DoxyParamCaption}\item[{unsigned int $\ast$}]{uint\+\_\+image\+\_\+pixels,  }\item[{float $\ast$}]{float\+\_\+image\+\_\+pixels,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file Kernel\+Filter.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_ac53d5d96410244e46aa762ef124a2ab8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_a27664210a6760cfc437104ae51e806c0}\label{namespacebeliefprop__cuda_a27664210a6760cfc437104ae51e806c0}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!CopyMsgDataToNextLevel@{CopyMsgDataToNextLevel}}
+\index{CopyMsgDataToNextLevel@{CopyMsgDataToNextLevel}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{CopyMsgDataToNextLevel()}{CopyMsgDataToNextLevel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Copy\+Msg\+Data\+To\+Next\+Level (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{next\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Kernel to copy the computed BP message values at the current level to the corresponding locations at the \char`\"{}next\char`\"{} level down. The kernel works from the point of view of the pixel at the current level that is being copied to four corresponding pixels in the next level. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+part} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em next\+\_\+bp\+\_\+level} & \\
+\hline
+{\em message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+prev\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 316 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_a27664210a6760cfc437104ae51e806c0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_a6b22895185baed07e4f89a72f1d0255a}\label{namespacebeliefprop__cuda_a6b22895185baed07e4f89a72f1d0255a}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!FilterImageAcross@{FilterImageAcross}}
+\index{FilterImageAcross@{FilterImageAcross}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{FilterImageAcross()}{FilterImageAcross()}}
+{\footnotesize\ttfamily template$<$Bp\+Im\+Data\+\_\+t T$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Filter\+Image\+Across (\begin{DoxyParamCaption}\item[{const T $\ast$}]{image\+\_\+to\+\_\+filter,  }\item[{float $\ast$}]{filtered\+\_\+image,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images,  }\item[{const float $\ast$}]{image\+\_\+filter,  }\item[{unsigned int}]{size\+\_\+filter }\end{DoxyParamCaption})}
+
+
+
+Kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em image\+\_\+to\+\_\+filter} & \\
+\hline
+{\em filtered\+\_\+image} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+{\em image\+\_\+filter} & \\
+\hline
+{\em size\+\_\+filter} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 62 of file Kernel\+Filter.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_a6b22895185baed07e4f89a72f1d0255a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_a86c1630433f168f5c0148a2399cbe733}\label{namespacebeliefprop__cuda_a86c1630433f168f5c0148a2399cbe733}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!FilterImageVertical@{FilterImageVertical}}
+\index{FilterImageVertical@{FilterImageVertical}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{FilterImageVertical()}{FilterImageVertical()}}
+{\footnotesize\ttfamily template$<$Bp\+Im\+Data\+\_\+t T$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Filter\+Image\+Vertical (\begin{DoxyParamCaption}\item[{const T $\ast$}]{image\+\_\+to\+\_\+filter,  }\item[{float $\ast$}]{filtered\+\_\+image,  }\item[{unsigned int}]{width\+\_\+images,  }\item[{unsigned int}]{height\+\_\+images,  }\item[{const float $\ast$}]{image\+\_\+filter,  }\item[{unsigned int}]{size\+\_\+filter }\end{DoxyParamCaption})}
+
+
+
+Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints the output filtered image is returned as an array of floats. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em image\+\_\+to\+\_\+filter} & \\
+\hline
+{\em filtered\+\_\+image} & \\
+\hline
+{\em width\+\_\+images} & \\
+\hline
+{\em height\+\_\+images} & \\
+\hline
+{\em image\+\_\+filter} & \\
+\hline
+{\em size\+\_\+filter} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 82 of file Kernel\+Filter.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_a86c1630433f168f5c0148a2399cbe733_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_aa26f576e04e40f0a4f907772433d4ae0}\label{namespacebeliefprop__cuda_aa26f576e04e40f0a4f907772433d4ae0}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!InitializeBottomLevelData@{InitializeBottomLevelData}}
+\index{InitializeBottomLevelData@{InitializeBottomLevelData}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{InitializeBottomLevelData()}{InitializeBottomLevelData()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Initialize\+Bottom\+Level\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{float $\ast$}]{image\+\_\+1\+\_\+pixels\+\_\+device,  }\item[{float $\ast$}]{image\+\_\+2\+\_\+pixels\+\_\+device,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1,  }\item[{float}]{lambda\+\_\+bp,  }\item[{float}]{data\+\_\+k\+\_\+bp,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Initialize the \char`\"{}data cost\char`\"{} for each possible disparity between the two full-\/sized input images (\char`\"{}bottom\char`\"{} of the image pyramid). The image data is stored in the image\+\_\+1\+\_\+pixels\+\_\+device and image\+\_\+2\+\_\+pixels\+\_\+device arrays. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em image\+\_\+1\+\_\+pixels\+\_\+device} & \\
+\hline
+{\em image\+\_\+2\+\_\+pixels\+\_\+device} & \\
+\hline
+{\em data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+stereo\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em lambda\+\_\+bp} & \\
+\hline
+{\em data\+\_\+k\+\_\+bp} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 69 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_aa26f576e04e40f0a4f907772433d4ae0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_aad53fa3d6b6ffbd594170ca738f41515}\label{namespacebeliefprop__cuda_aad53fa3d6b6ffbd594170ca738f41515}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!InitializeCurrentLevelData@{InitializeCurrentLevelData}}
+\index{InitializeCurrentLevelData@{InitializeCurrentLevelData}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{InitializeCurrentLevelData()}{InitializeCurrentLevelData()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Initialize\+Current\+Level\+Data (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+part,  }\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{prev\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+current\+\_\+level,  }\item[{unsigned int}]{offset\+\_\+num,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Initialize the data costs at the \char`\"{}next\char`\"{} level up in the pyramid given that the data at the lower has been set. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+part} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em prev\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em data\+\_\+cost\+\_\+current\+\_\+level} & \\
+\hline
+{\em offset\+\_\+num} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 110 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_aad53fa3d6b6ffbd594170ca738f41515_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_a319e93b6f471e7c43afbff1c9506882f}\label{namespacebeliefprop__cuda_a319e93b6f471e7c43afbff1c9506882f}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!InitializeMessageValsToDefaultKernel@{InitializeMessageValsToDefaultKernel}}
+\index{InitializeMessageValsToDefaultKernel@{InitializeMessageValsToDefaultKernel}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{InitializeMessageValsToDefaultKernel()}{InitializeMessageValsToDefaultKernel()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Initialize\+Message\+Vals\+To\+Default\+Kernel (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Initialize the message values at each pixel of the current level to the default value. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 149 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_a319e93b6f471e7c43afbff1c9506882f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_afa30b0a712350ea00fbf2c2e12c245ce}\label{namespacebeliefprop__cuda_afa30b0a712350ea00fbf2c2e12c245ce}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!RetrieveOutputDisparity@{RetrieveOutputDisparity}}
+\index{RetrieveOutputDisparity@{RetrieveOutputDisparity}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{RetrieveOutputDisparity()}{RetrieveOutputDisparity()}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Retrieve\+Output\+Disparity (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float $\ast$}]{disparity\+\_\+between\+\_\+images\+\_\+device,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em disparity\+\_\+between\+\_\+images\+\_\+device} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 372 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_afa30b0a712350ea00fbf2c2e12c245ce_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_a316a4698e007f4722b4cc9bc4015c692}\label{namespacebeliefprop__cuda_a316a4698e007f4722b4cc9bc4015c692}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!RunBPIterationUsingCheckerboardUpdates@{RunBPIterationUsingCheckerboardUpdates}}
+\index{RunBPIterationUsingCheckerboardUpdates@{RunBPIterationUsingCheckerboardUpdates}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdates()}{RunBPIterationUsingCheckerboardUpdates()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals }\end{DoxyParamCaption})}
+
+
+
+Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+to\+\_\+update} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em disc\+\_\+k\+\_\+bp} & \\
+\hline
+{\em data\+\_\+aligned} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 201 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_a316a4698e007f4722b4cc9bc4015c692_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop__cuda_ae991742366ec63db54f1a4ec8c6c911c}\label{namespacebeliefprop__cuda_ae991742366ec63db54f1a4ec8c6c911c}} 
+\index{beliefprop\_cuda@{beliefprop\_cuda}!RunBPIterationUsingCheckerboardUpdates@{RunBPIterationUsingCheckerboardUpdates}}
+\index{RunBPIterationUsingCheckerboardUpdates@{RunBPIterationUsingCheckerboardUpdates}!beliefprop\_cuda@{beliefprop\_cuda}}
+\doxysubsubsection{\texorpdfstring{RunBPIterationUsingCheckerboardUpdates()}{RunBPIterationUsingCheckerboardUpdates()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ \\
+\+\_\+\+\_\+global\+\_\+\+\_\+ void beliefprop\+\_\+cuda\+::\+Run\+BPIteration\+Using\+Checkerboard\+Updates (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}{beliefprop\+::\+Checkerboard\+Part}}}]{checkerboard\+\_\+to\+\_\+update,  }\item[{\mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}}}]{current\+\_\+bp\+\_\+level,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{data\+\_\+cost\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+0,  }\item[{T $\ast$}]{message\+\_\+u\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+d\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+l\+\_\+checkerboard\+\_\+1,  }\item[{T $\ast$}]{message\+\_\+r\+\_\+checkerboard\+\_\+1,  }\item[{float}]{disc\+\_\+k\+\_\+bp,  }\item[{bool}]{data\+\_\+aligned,  }\item[{unsigned int}]{bp\+\_\+settings\+\_\+disp\+\_\+vals,  }\item[{void $\ast$}]{dst\+\_\+processing }\end{DoxyParamCaption})}
+
+
+
+Kernel function to run the current iteration of belief propagation in parallel using the checkerboard update method where half the pixels in the \char`\"{}checkerboard\char`\"{} scheme retrieve messages from each 4-\/connected neighbor and then update their message based on the retrieved messages and the data cost. Function differs from counterpart overloaded function with same name in that it takes in allocated memory to use in processing. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em checkerboard\+\_\+to\+\_\+update} & \\
+\hline
+{\em current\+\_\+bp\+\_\+level} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em data\+\_\+cost\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+0} & \\
+\hline
+{\em message\+\_\+u\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+d\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+l\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em message\+\_\+r\+\_\+checkerboard\+\_\+1} & \\
+\hline
+{\em disc\+\_\+k\+\_\+bp} & \\
+\hline
+{\em data\+\_\+aligned} & \\
+\hline
+{\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
+\hline
+{\em dst\+\_\+processing} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+{\bfseries{global}} 
+\end{DoxyReturn}
+
+
+Definition at line 257 of file Kernel\+Bp\+Stereo.\+cu.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop__cuda_ae991742366ec63db54f1a4ec8c6c911c_cgraph}
+\end{center}
+\end{figure}

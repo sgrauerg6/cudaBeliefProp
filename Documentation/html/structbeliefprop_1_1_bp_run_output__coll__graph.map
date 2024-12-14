@@ -1,0 +1,6 @@
+<map id="beliefprop::BpRunOutput" name="beliefprop::BpRunOutput">
+<area shape="rect" id="node1" title="Structure with output disparity map, runtime, and other evaluation data." alt="" coords="5,171,188,197"/>
+<area shape="rect" id="node2" href="$class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="12,81,91,108"/>
+<area shape="rect" id="node3" href="$class_disparity_map.html" title=" " alt="" coords="115,81,283,108"/>
+<area shape="rect" id="node4" href="$class_bp_image.html" title="Class to define images that are used in bp processing." alt="" coords="140,5,259,32"/>
+</map>

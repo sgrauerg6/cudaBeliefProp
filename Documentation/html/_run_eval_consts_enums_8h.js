@@ -40,5 +40,6 @@ var _run_eval_consts_enums_8h =
     [ "kSpeedupLoopItersCountTemplate", "_run_eval_consts_enums_8h.html#af964fa30f21da7faca4e5b2d56ac7bb3", null ],
     [ "kSpeedupOptParParamsHeader", "_run_eval_consts_enums_8h.html#ad93c0dd070cda950d788bd5f22c8f237", null ],
     [ "kSpeedupsDescFileName", "_run_eval_consts_enums_8h.html#a6f7327cf25d1b917872c8d98f9fd84f3", null ],
-    [ "kSpeedupVsAvx256Vectorization", "_run_eval_consts_enums_8h.html#aca67196adcd344aa6f31a7a7521fd385", null ]
+    [ "kSpeedupVsAvx256Vectorization", "_run_eval_consts_enums_8h.html#aca67196adcd344aa6f31a7a7521fd385", null ],
+    [ "kTemplatedItersEvalSettings", "_run_eval_consts_enums_8h.html#a9c724309a03d12aa405c65a93c716bed", null ]
 ];

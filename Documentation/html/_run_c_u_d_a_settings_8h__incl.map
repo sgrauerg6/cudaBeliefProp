@@ -1,6 +1,13 @@
 <map id="src/RunImpCUDA/RunCUDASettings.h" name="src/RunImpCUDA/RunCUDASettings.h">
-<area shape="rect" id="node1" title=" " alt="" coords="5,5,271,32"/>
-<area shape="rect" id="node2" title=" " alt="" coords="23,80,85,107"/>
-<area shape="rect" id="node3" title=" " alt="" coords="110,80,166,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="190,80,291,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="80,5,345,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,155,68,181"/>
+<area shape="rect" id="node3" title=" " alt="" coords="122,80,178,107"/>
+<area shape="rect" id="node4" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="202,80,349,107"/>
+<area shape="rect" id="node11" title=" " alt="" coords="373,80,474,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="93,155,143,181"/>
+<area shape="rect" id="node6" title=" " alt="" coords="167,155,226,181"/>
+<area shape="rect" id="node7" title=" " alt="" coords="250,155,335,181"/>
+<area shape="rect" id="node8" title=" " alt="" coords="359,155,439,181"/>
+<area shape="rect" id="node9" title=" " alt="" coords="463,155,538,181"/>
+<area shape="rect" id="node10" title=" " alt="" coords="563,155,631,181"/>
 </map>

@@ -1,0 +1,4 @@
+<map id="beliefprop_cuda::CopyMsgDataToNextLevel" name="beliefprop_cuda::CopyMsgDataToNextLevel">
+<area shape="rect" id="node1" title="Kernel to copy the computed BP message values at the current level to the corresponding locations at ..." alt="" coords="5,5,200,47"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="248,13,475,39"/>
+</map>

@@ -113,59 +113,64 @@ $(document).ready(function(){initNavTree('convolve_8h_source.html',''); initResi
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &lt;cmath&gt;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="image_8h.html">image.h</a>&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_convolve.html">   29</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_convolve.html">Convolve</a></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;{</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment">/* convolve src with mask.  dst is flipped! */</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="class_convolve.html#a939da53e64270b817d8b94b919a4eb4c">   33</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_convolve.html#a939da53e64270b817d8b94b919a4eb4c">convolve_even</a>(<a class="code" href="classimage.html">image&lt;float&gt;</a> *src, <a class="code" href="classimage.html">image&lt;float&gt;</a> *dst,</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;          std::vector&lt;float&gt; &amp;mask) {</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordtype">int</span> width = src-&gt;<a class="code" href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">width</a>();</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keywordtype">int</span> height = src-&gt;<a class="code" href="classimage.html#ac54a992877efda99723f8aec84f86428">height</a>();</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="keywordtype">int</span> len = mask.size();</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++) {</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++) {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;      <span class="keywordtype">float</span> sum = mask[0] * <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, x, y);</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; len; i++) {</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    sum += mask[i] *</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;      (<a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::max(x-i,0), y) +</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;       <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::min(x+i, width-1), y));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;      }</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(dst, y, x) = sum;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    }</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  }</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  <span class="comment">/* convolve src with mask.  dst is flipped! */</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_convolve.html#afb56df6395ac36fed69f6bd08cfec234">   53</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_convolve.html#afb56df6395ac36fed69f6bd08cfec234">convolve_odd</a>(<a class="code" href="classimage.html">image&lt;float&gt;</a> *src, <a class="code" href="classimage.html">image&lt;float&gt;</a> *dst,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;         std::vector&lt;float&gt; &amp;mask) {</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">int</span> width = src-&gt;<a class="code" href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">width</a>();</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">int</span> height = src-&gt;<a class="code" href="classimage.html#ac54a992877efda99723f8aec84f86428">height</a>();</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">int</span> len = mask.size();</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++) {</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++) {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;      <span class="keywordtype">float</span> sum = mask[0] * <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, x, y);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; len; i++) {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    sum += mask[i] *</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;      (<a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::max(x-i,0), y) -</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;       <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::min(x+i, width-1), y));</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;      }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(dst, y, x) = sum;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    }</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  }</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;};</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_convolve_html"><div class="ttname"><a href="class_convolve.html">Convolve</a></div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00029">convolve.h:30</a></div></div>
-<div class="ttc" id="aclass_convolve_html_a939da53e64270b817d8b94b919a4eb4c"><div class="ttname"><a href="class_convolve.html#a939da53e64270b817d8b94b919a4eb4c">Convolve::convolve_even</a></div><div class="ttdeci">static void convolve_even(image&lt; float &gt; *src, image&lt; float &gt; *dst, std::vector&lt; float &gt; &amp;mask)</div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00033">convolve.h:33</a></div></div>
-<div class="ttc" id="aclass_convolve_html_afb56df6395ac36fed69f6bd08cfec234"><div class="ttname"><a href="class_convolve.html#afb56df6395ac36fed69f6bd08cfec234">Convolve::convolve_odd</a></div><div class="ttdeci">static void convolve_odd(image&lt; float &gt; *src, image&lt; float &gt; *dst, std::vector&lt; float &gt; &amp;mask)</div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00053">convolve.h:53</a></div></div>
-<div class="ttc" id="aclassimage_html"><div class="ttname"><a href="classimage.html">image</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00027">image.h:27</a></div></div>
-<div class="ttc" id="aclassimage_html_ab4a8935aa8982c6e83782a81b7705a34"><div class="ttname"><a href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">image::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00042">image.h:42</a></div></div>
-<div class="ttc" id="aclassimage_html_ac54a992877efda99723f8aec84f86428"><div class="ttname"><a href="classimage.html#ac54a992877efda99723f8aec84f86428">image::height</a></div><div class="ttdeci">int height() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00045">image.h:45</a></div></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="namespacebp__single__thread__imp.html">   33</a></span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacebp__single__thread__imp.html">bp_single_thread_imp</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
+<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1_convolve.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="classbp__single__thread__imp_1_1_convolve.html">Convolve</a></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">/* convolve src with mask.  dst is flipped! */</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1_convolve.html#ab940c54f1eb8cac684081a53f7b77640">   39</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classbp__single__thread__imp_1_1_convolve.html#ab940c54f1eb8cac684081a53f7b77640">convolve_even</a>(<a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;float&gt;</a> *src, <a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;float&gt;</a> *dst,</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;          std::vector&lt;float&gt; &amp;mask) {</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">int</span> width = src-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">width</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">int</span> height = src-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">height</a>();</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">int</span> len = mask.size();</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++) {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++) {</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;      <span class="keywordtype">float</span> sum = mask[0] * <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, x, y);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; len; i++) {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    sum += mask[i] *</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      (<a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::max(x-i,0), y) +</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;       <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::min(x+i, width-1), y));</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      }</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(dst, y, x) = sum;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    }</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    }</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  }</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="comment">/* convolve src with mask.  dst is flipped! */</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1_convolve.html#ab0a67fbe2340437289fdf92f9b0ac5ce">   59</a></span>&#160;  <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="classbp__single__thread__imp_1_1_convolve.html#ab0a67fbe2340437289fdf92f9b0ac5ce">convolve_odd</a>(<a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;float&gt;</a> *src, <a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;float&gt;</a> *dst,</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;         std::vector&lt;float&gt; &amp;mask) {</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keywordtype">int</span> width = src-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">width</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">int</span> height = src-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">height</a>();</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">int</span> len = mask.size();</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++) {</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++) {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;      <span class="keywordtype">float</span> sum = mask[0] * <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, x, y);</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 1; i &lt; len; i++) {</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    sum += mask[i] *</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;      (<a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::max(x-i,0), y) -</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;       <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(src, std::min(x+i, width-1), y));</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      }</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;      <a class="code" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a>(dst, y, x) = sum;</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  }</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;};</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1_convolve_html"><div class="ttname"><a href="classbp__single__thread__imp_1_1_convolve.html">bp_single_thread_imp::Convolve</a></div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00035">convolve.h:36</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1_convolve_html_ab0a67fbe2340437289fdf92f9b0ac5ce"><div class="ttname"><a href="classbp__single__thread__imp_1_1_convolve.html#ab0a67fbe2340437289fdf92f9b0ac5ce">bp_single_thread_imp::Convolve::convolve_odd</a></div><div class="ttdeci">static void convolve_odd(image&lt; float &gt; *src, image&lt; float &gt; *dst, std::vector&lt; float &gt; &amp;mask)</div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00059">convolve.h:59</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1_convolve_html_ab940c54f1eb8cac684081a53f7b77640"><div class="ttname"><a href="classbp__single__thread__imp_1_1_convolve.html#ab940c54f1eb8cac684081a53f7b77640">bp_single_thread_imp::Convolve::convolve_even</a></div><div class="ttdeci">static void convolve_even(image&lt; float &gt; *src, image&lt; float &gt; *dst, std::vector&lt; float &gt; &amp;mask)</div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00039">convolve.h:39</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00033">image.h:33</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a2ad768bb7cc3c17af88a30d0dd10b353"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">bp_single_thread_imp::image::height</a></div><div class="ttdeci">int height() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00051">image.h:51</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a52d7e0317229f4a6b074d57f31cbb182"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">bp_single_thread_imp::image::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00048">image.h:48</a></div></div>
 <div class="ttc" id="aimage_8h_html"><div class="ttname"><a href="image_8h.html">image.h</a></div></div>
-<div class="ttc" id="aimage_8h_html_af8a1068eeff9818890793f3b66db818c"><div class="ttname"><a href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a></div><div class="ttdeci">#define imRef(im, x, y)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00058">image.h:58</a></div></div>
+<div class="ttc" id="aimage_8h_html_af8a1068eeff9818890793f3b66db818c"><div class="ttname"><a href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a></div><div class="ttdeci">#define imRef(im, x, y)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00064">image.h:64</a></div></div>
+<div class="ttc" id="anamespacebp__single__thread__imp_html"><div class="ttname"><a href="namespacebp__single__thread__imp.html">bp_single_thread_imp</a></div><div class="ttdoc">Class and structs in single-thread CPU bp implementation by Pedro Felzenwalb available at https://cs....</div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00033">convolve.h:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

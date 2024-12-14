@@ -6,13 +6,13 @@
 <area shape="rect" id="node5" href="$namespacebeliefprop.html#aa2c2c16cad2efdda7495ac8334ef7b4c" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="320,337,520,379"/>
 <area shape="rect" id="node13" href="$namespacebeliefprop.html#a69d6c06ed54958dc8377f79d65fb0d18" title="Initialize the message values at each pixel of the current level to the default value." alt="" coords="315,403,525,444"/>
 <area shape="rect" id="node14" href="$namespacebeliefprop.html#a719026072592bb9a4c99be94655253ef" title=" " alt="" coords="337,469,503,495"/>
-<area shape="rect" id="node15" href="$_kernel_bp_stereo_half_8cu.html#a2c6a4d28409a96c3996ba2d2bf4249df" title=" " alt="" coords="361,519,479,546"/>
-<area shape="rect" id="node16" href="$namespacebeliefprop_c_p_u.html#ae4241f07ead9d7e35ce97fda430d163a" title=" " alt="" coords="324,571,516,612"/>
+<area shape="rect" id="node15" href="$_kernel_bp_stereo_half_8cu.html#a198388b9d4eeab13c803721e3f0fe3f4" title=" " alt="" coords="361,519,479,546"/>
+<area shape="rect" id="node16" href="$namespacebeliefprop__cpu.html#aecd40c6ff412a00c65fc2a782e74d6b1" title=" " alt="" coords="323,571,517,612"/>
 <area shape="rect" id="node17" href="$_kernel_bp_stereo_debug_8cu.html#ae0891794806910b92158b98ddef37fb8" title=" " alt="" coords="317,636,523,677"/>
-<area shape="rect" id="node18" href="$namespacebeliefprop_c_p_u.html#ae0f2240415020ec80d3b79ad3cd35afd" title=" " alt="" coords="310,701,530,743"/>
+<area shape="rect" id="node18" href="$namespacebeliefprop__cpu.html#a9075546b914cd7c4f756645e77aea708" title=" " alt="" coords="310,701,530,743"/>
 <area shape="rect" id="node19" href="$namespacebeliefprop.html#a5085344408155d487a5c63ad64236eab" title=" " alt="" coords="323,767,517,808"/>
 <area shape="rect" id="node20" href="$_kernel_bp_stereo_debug_8cu.html#a3e866b02eed4e07788dc0eafce35239a" title=" " alt="" coords="317,832,523,873"/>
-<area shape="rect" id="node21" href="$namespacebeliefprop_c_p_u.html#a8ae046dfc3fc8d99f38a353906a7bf10" title=" " alt="" coords="310,897,530,939"/>
+<area shape="rect" id="node21" href="$namespacebeliefprop__cpu.html#a983fb4cc050b8cdc77dfe0482f3bd60e" title=" " alt="" coords="310,897,530,939"/>
 <area shape="rect" id="node22" href="$namespacebeliefprop.html#a81aace5409ee7378733e21689955b681" title=" " alt="" coords="323,963,517,1004"/>
 <area shape="rect" id="node23" href="$namespacebeliefprop.html#a0d76573309b4b64236efc8c471b7831a" title=" " alt="" coords="323,1028,517,1069"/>
 <area shape="rect" id="node31" href="$namespacebeliefprop.html#a62cc29e7b1d8257b0d3f4e85ad7cd9e0" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="299,1535,541,1576"/>

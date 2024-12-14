@@ -10,7 +10,9 @@ var dir_6d83f76d1c6d057d65c64394a7ea105b =
       [ "ProcessBpCUDA", "class_process_bp_c_u_d_a.html", "class_process_bp_c_u_d_a" ]
     ] ],
     [ "RunBpOnStereoSetCUDA.cpp", "_run_bp_on_stereo_set_c_u_d_a_8cpp.html", null ],
-    [ "RunBpOnStereoSetCUDA.h", "_run_bp_on_stereo_set_c_u_d_a_8h.html", "_run_bp_on_stereo_set_c_u_d_a_8h" ],
+    [ "RunBpOnStereoSetCUDA.h", "_run_bp_on_stereo_set_c_u_d_a_8h.html", [
+      [ "RunBpOnStereoSetCUDA", "class_run_bp_on_stereo_set_c_u_d_a.html", "class_run_bp_on_stereo_set_c_u_d_a" ]
+    ] ],
     [ "SmoothImageCUDA.cpp", "_smooth_image_c_u_d_a_8cpp.html", null ],
     [ "SmoothImageCUDA.h", "_smooth_image_c_u_d_a_8h.html", [
       [ "SmoothImageCUDA", "class_smooth_image_c_u_d_a.html", "class_smooth_image_c_u_d_a" ]

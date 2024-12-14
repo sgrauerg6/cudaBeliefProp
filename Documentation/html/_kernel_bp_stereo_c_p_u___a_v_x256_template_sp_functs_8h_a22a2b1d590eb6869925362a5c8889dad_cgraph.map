@@ -1,0 +1,5 @@
+<map id="MsgStereoSIMD&lt; short, __m128i, beliefprop::kStereoSetsToProcess[1].num_disp_vals &gt;" name="MsgStereoSIMD&lt; short, __m128i, beliefprop::kStereoSetsToProcess[1].num_disp_vals &gt;">
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,183,76"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop__cpu.html#aacc0b873ef990a118971a7f5c2cb4c32" title=" " alt="" coords="231,20,425,61"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="473,20,660,61"/>
+</map>

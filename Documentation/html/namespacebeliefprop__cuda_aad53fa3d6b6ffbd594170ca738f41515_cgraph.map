@@ -1,0 +1,4 @@
+<map id="beliefprop_cuda::InitializeCurrentLevelData" name="beliefprop_cuda::InitializeCurrentLevelData">
+<area shape="rect" id="node1" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="5,5,196,47"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="244,13,471,39"/>
+</map>

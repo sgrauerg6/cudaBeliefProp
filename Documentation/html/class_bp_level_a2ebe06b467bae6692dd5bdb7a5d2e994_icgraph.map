@@ -1,0 +1,4 @@
+<map id="BpLevel::LevelProperties" name="BpLevel::LevelProperties">
+<area shape="rect" id="node1" title="Return level properties as const reference to avoid copying and not allow it to be modified." alt="" coords="172,5,355,32"/>
+<area shape="rect" id="node2" href="$_kernel_bp_stereo_half_8cu.html#a198388b9d4eeab13c803721e3f0fe3f4" title=" " alt="" coords="5,5,124,32"/>
+</map>

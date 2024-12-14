@@ -89,7 +89,7 @@ $(document).ready(function(){initNavTree('class_run_bp_on_stereo_set_c_u_d_a.htm
 </div><!--header-->
 <div class="contents">
 
-<p>Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths.  
+<p>Child class of <a class="el" href="class_run_bp_on_stereo_set.html" title="Abstract class to set up and run belief propagation on target device using specified acceleration.">RunBpOnStereoSet</a> to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths.  
  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>&gt;</code></p>
@@ -98,7 +98,7 @@ Inheritance diagram for RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;
 <div class="dyncontent">
 <div class="center"><img src="class_run_bp_on_stereo_set_c_u_d_a__inherit__graph.png" border="0" usemap="#a_run_bp_on_stereo_set_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_run_bp_on_stereo_set_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_inherit__map" id="a_run_bp_on_stereo_set_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_inherit__map">
-<area shape="rect" title="Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference ..." alt="" coords="5,95,249,136"/>
+<area shape="rect" title="Child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given stereo se..." alt="" coords="5,95,249,136"/>
 <area shape="rect" href="class_run_bp_on_stereo_set.html" title="Abstract class to set up and run belief propagation on target device using specified acceleration." alt="" coords="19,5,236,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
@@ -107,7 +107,7 @@ Collaboration diagram for RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &g
 <div class="dyncontent">
 <div class="center"><img src="class_run_bp_on_stereo_set_c_u_d_a__coll__graph.png" border="0" usemap="#a_run_bp_on_stereo_set_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map" alt="Collaboration graph"/></div>
 <map name="a_run_bp_on_stereo_set_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map" id="a_run_bp_on_stereo_set_c_u_d_a_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_coll__map">
-<area shape="rect" title="Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference ..." alt="" coords="5,95,249,136"/>
+<area shape="rect" title="Child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given stereo se..." alt="" coords="5,95,249,136"/>
 <area shape="rect" href="class_run_bp_on_stereo_set.html" title="Abstract class to set up and run belief propagation on target device using specified acceleration." alt="" coords="19,5,236,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
@@ -117,22 +117,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a089aaf8fb93fb15283c75171b6c4792e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#a089aaf8fb93fb15283c75171b6c4792e">BpRunDescription</a> () const override</td></tr>
 <tr class="memdesc:a089aaf8fb93fb15283c75171b6c4792e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pure virtual function to return run description corresponding to target acceleration.  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#a089aaf8fb93fb15283c75171b6c4792e">More...</a><br /></td></tr>
 <tr class="separator:a089aaf8fb93fb15283c75171b6c4792e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8e0dd1cd0c36fa75769a2dc8f49dd42"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="struct_process_stereo_set_output.html">ProcessStereoSetOutput</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#ae8e0dd1cd0c36fa75769a2dc8f49dd42">operator()</a> (const std::array&lt; std::string, 2 &gt; &amp;ref_test_image_path, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;parallel_params) const override</td></tr>
-<tr class="memdesc:ae8e0dd1cd0c36fa75769a2dc8f49dd42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the disparity map estimation BP on a set of stereo images and save the results between each set of images.  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#ae8e0dd1cd0c36fa75769a2dc8f49dd42">More...</a><br /></td></tr>
-<tr class="separator:ae8e0dd1cd0c36fa75769a2dc8f49dd42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbc8134aa5f34a8f396778fc1e73af7d"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structbeliefprop_1_1_bp_run_output.html">beliefprop::BpRunOutput</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d">operator()</a> (const std::array&lt; std::string, 2 &gt; &amp;ref_test_image_path, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;parallel_params) const override</td></tr>
+<tr class="memdesc:adbc8134aa5f34a8f396778fc1e73af7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the disparity map estimation BP on a set of stereo images and save the results between each set of images.  <a href="class_run_bp_on_stereo_set_c_u_d_a.html#adbc8134aa5f34a8f396778fc1e73af7d">More...</a><br /></td></tr>
+<tr class="separator:adbc8134aa5f34a8f396778fc1e73af7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_methods_class_run_bp_on_stereo_set"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_run_bp_on_stereo_set')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_run_bp_on_stereo_set.html">RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</a></td></tr>
-<tr class="memitem:a4cf48a8872cb1bfca6152c2f5ac9c900 inherit pro_methods_class_run_bp_on_stereo_set"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="struct_process_stereo_set_output.html">ProcessStereoSetOutput</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900">ProcessStereoSet</a> (const std::array&lt; std::string, 2 &gt; &amp;ref_test_image_path, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const <a class="el" href="struct_bp_on_device.html">BpOnDevice</a>&lt; T, DISP_VALS, ACCELERATION &gt; &amp;run_bp_on_device) const</td></tr>
-<tr class="memdesc:a4cf48a8872cb1bfca6152c2f5ac9c900 inherit pro_methods_class_run_bp_on_stereo_set"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image, process BP, and memory management child class objects.  <a href="class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900">More...</a><br /></td></tr>
-<tr class="separator:a4cf48a8872cb1bfca6152c2f5ac9c900 inherit pro_methods_class_run_bp_on_stereo_set"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5008d2d735a622fce0493f058647ac5c inherit pro_methods_class_run_bp_on_stereo_set"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structbeliefprop_1_1_bp_run_output.html">beliefprop::BpRunOutput</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_run_bp_on_stereo_set.html#a5008d2d735a622fce0493f058647ac5c">ProcessStereoSet</a> (const std::array&lt; std::string, 2 &gt; &amp;ref_test_image_path, const <a class="el" href="structbeliefprop_1_1_bp_settings.html">beliefprop::BpSettings</a> &amp;alg_settings, const <a class="el" href="structbeliefprop_1_1_bp_on_device.html">beliefprop::BpOnDevice</a>&lt; T, DISP_VALS, ACCELERATION &gt; &amp;run_bp_on_device) const</td></tr>
+<tr class="memdesc:a5008d2d735a622fce0493f058647ac5c inherit pro_methods_class_run_bp_on_stereo_set"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-specific smooth image, process BP, and memory management child class objects.  <a href="class_run_bp_on_stereo_set.html#a5008d2d735a622fce0493f058647ac5c">More...</a><br /></td></tr>
+<tr class="separator:a5008d2d735a622fce0493f058647ac5c inherit pro_methods_class_run_bp_on_stereo_set"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt;<br />
 class RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;</h3>
 
-<p>Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths. </p>
+<p>Child class of <a class="el" href="class_run_bp_on_stereo_set.html" title="Abstract class to set up and run belief propagation on target device using specified acceleration.">RunBpOnStereoSet</a> to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
     <tr><td class="paramname">T</td><td></td></tr>
@@ -142,7 +142,7 @@ class RunBpOnStereoSetCUDA&lt; T, DISP_VALS, ACCELERATION &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00077">77</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00049">49</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a089aaf8fb93fb15283c75171b6c4792e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a089aaf8fb93fb15283c75171b6c4792e">&#9670;&nbsp;</a></span>BpRunDescription()</h2>
@@ -174,12 +174,12 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 
 <p>Implements <a class="el" href="class_run_bp_on_stereo_set.html#a6c70f066d355522c0c01f896d12b3970">RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00080">80</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00052">52</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 
 </div>
 </div>
-<a id="ae8e0dd1cd0c36fa75769a2dc8f49dd42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8e0dd1cd0c36fa75769a2dc8f49dd42">&#9670;&nbsp;</a></span>operator()()</h2>
+<a id="adbc8134aa5f34a8f396778fc1e73af7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbc8134aa5f34a8f396778fc1e73af7d">&#9670;&nbsp;</a></span>operator()()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -190,7 +190,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt;<a class="el" href="struct_process_stereo_set_output.html">ProcessStereoSetOutput</a>&gt; <a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html">RunBpOnStereoSetCUDA</a>&lt; T, DISP_VALS, ACCELERATION &gt;::operator() </td>
+          <td class="memname">std::optional&lt;<a class="el" href="structbeliefprop_1_1_bp_run_output.html">beliefprop::BpRunOutput</a>&gt; <a class="el" href="class_run_bp_on_stereo_set_c_u_d_a.html">RunBpOnStereoSetCUDA</a>&lt; T, DISP_VALS, ACCELERATION &gt;::operator() </td>
           <td>(</td>
           <td class="paramtype">const std::array&lt; std::string, 2 &gt; &amp;&#160;</td>
           <td class="paramname"><em>ref_test_image_path</em>, </td>
@@ -229,20 +229,20 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::optional&lt;ProcessStereoSetOutput&gt; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::optional&lt;beliefprop::BpRunOutput&gt; </dd></dl>
 
-<p>Implements <a class="el" href="class_run_bp_on_stereo_set.html#a6fcf78b3ea23a566300e0413a1cc0002">RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
+<p>Implements <a class="el" href="class_run_bp_on_stereo_set.html#a7aceac573cf31e0ddc18b43e18aa3c0b">RunBpOnStereoSet&lt; T, DISP_VALS, ACCELERATION &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00092">92</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html#l00064">64</a> of file <a class="el" href="_run_bp_on_stereo_set_c_u_d_a_8h_source.html">RunBpOnStereoSetCUDA.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="class_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42_cgraph.png" border="0" usemap="#aclass_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42_cgraph" alt=""/></div>
-<map name="aclass_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42_cgraph" id="aclass_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42_cgraph">
+<div class="center"><img src="class_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d_cgraph.png" border="0" usemap="#aclass_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d_cgraph" alt=""/></div>
+<map name="aclass_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d_cgraph" id="aclass_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d_cgraph">
 <area shape="rect" title="Run the disparity map estimation BP on a set of stereo images and save the results between each set o..." alt="" coords="5,343,188,385"/>
 <area shape="rect" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb" title="Append current RunData with input RunData." alt="" coords="519,107,685,133"/>
-<area shape="rect" href="class_run_bp_on_stereo_set.html#a4cf48a8872cb1bfca6152c2f5ac9c900" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,343,439,385"/>
-<area shape="rect" href="namespacebp__cuda__device.html#ac3cf9c027bafbab0576b2b21fc0d1caf" title=" " alt="" coords="245,518,430,559"/>
+<area shape="rect" href="class_run_bp_on_stereo_set.html#a5008d2d735a622fce0493f058647ac5c" title="Protected function to set up, run, and evaluate bp processing on target device using pointers to acce..." alt="" coords="236,343,439,385"/>
+<area shape="rect" href="namespacerun__cuda.html#abc1f0ce06247bbe4dd5b7e6b4245aca3" title=" " alt="" coords="245,510,430,551"/>
 <area shape="rect" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401" title="Add string data with header describing added data." alt="" coords="765,292,968,319"/>
 <area shape="rect" href="class_run_data.html#afbe69aa62856cc330c3848b712e32ea7" title="Get data corresponding to header as boolean Return null if data corresponds to a different data type." alt="" coords="774,5,959,32"/>
 <area shape="rect" href="class_run_data.html#af19b921e7fc7f0d30f78a3a4bf813197" title="Get data corresponding to header as double Return null if data corresponds to a different data type." alt="" coords="765,56,968,83"/>
@@ -254,9 +254,9 @@ Here is the call graph for this function:</div>
 <area shape="rect" href="class_detailed_timings.html#ade7af05257684e97b210e2a6bb999c1d" title="Return current timing data as a RunData object for evaluation." alt="" coords="497,325,707,352"/>
 <area shape="rect" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542" title="Get median timing for a specified segment that may have been run multiple times." alt="" coords="487,376,717,403"/>
 <area shape="rect" href="namespacebeliefprop.html#ab39f3c4ff5ad8ea07d7b25ca0281ea26" title="Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number o..." alt="" coords="493,427,711,453"/>
-<area shape="rect" href="classbeliefprop_1_1_bp_level.html#ac0b437e4d823108a024e37db8124d012" title="Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev..." alt="" coords="521,478,683,519"/>
-<area shape="rect" href="class_bp_image.html#ae7808967582f083e9351d49bd810aec8" title=" " alt="" coords="509,543,695,585"/>
-<area shape="rect" href="class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2" title=" " alt="" coords="539,609,665,636"/>
+<area shape="rect" href="class_bp_level.html#aae2bc8907d6b0c911f0d49dea231c670" title="Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev..." alt="" coords="495,477,709,504"/>
+<area shape="rect" href="class_bp_image.html#ae7808967582f083e9351d49bd810aec8" title=" " alt="" coords="509,529,695,570"/>
+<area shape="rect" href="class_bp_image.html#a7c5baaf04ad48c6ac9c3f0d5423ce4a2" title=" " alt="" coords="539,595,665,621"/>
 </map>
 </div>
 

@@ -1,4 +1,4 @@
 <map id="RunImpMultInputs" name="RunImpMultInputs">
 <area shape="rect" id="node1" title="Base class for running and evaluating multiple runs of an implementation that may be optimized on CPU..." alt="" coords="14,5,155,32"/>
-<area shape="rect" id="node2" href="$class_run_bp_imp_mult_inputs.html" title="Class to run specified belief propagation implementation on a number of inputs." alt="" coords="5,80,164,107"/>
+<area shape="rect" id="node2" href="$class_run_imp_mult_inputs_bp.html" title="Child class of RunImpMultInputs to run specified belief propagation implementation on a number of inp..." alt="" coords="5,80,164,107"/>
 </map>

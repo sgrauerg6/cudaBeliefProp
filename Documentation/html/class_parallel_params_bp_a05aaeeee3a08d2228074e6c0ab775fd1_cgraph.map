@@ -1,0 +1,4 @@
+<map id="ParallelParamsBp::AddTestResultsForParallelParams" name="ParallelParamsBp::AddTestResultsForParallelParams">
+<area shape="rect" id="node1" title="Add results from run with same specified parallel parameters used every parallel component." alt="" coords="5,5,200,47"/>
+<area shape="rect" id="node2" href="$class_run_data.html#af19b921e7fc7f0d30f78a3a4bf813197" title="Get data corresponding to header as double Return null if data corresponds to a different data type." alt="" coords="248,13,451,39"/>
+</map>

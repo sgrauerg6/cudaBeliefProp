@@ -1,0 +1,4 @@
+<map id="RunImpOnInputBp&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;" name="RunImpOnInputBp&lt; T, OPT_IMP_ACCEL, NUM_INPUT &gt;">
+<area shape="rect" id="node1" title="Child class of RunImpOnInput to run and evaluate belief propagation implementation on a specified inp..." alt="" coords="21,95,193,151"/>
+<area shape="rect" id="node2" href="$class_run_imp_on_input.html" title="Virtual class to run and evaluate implementation on a input specified by index number." alt="" coords="5,5,209,47"/>
+</map>

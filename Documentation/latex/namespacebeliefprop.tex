@@ -1,16 +1,25 @@
 \hypertarget{namespacebeliefprop}{}\doxysection{beliefprop Namespace Reference}
 \label{namespacebeliefprop}\index{beliefprop@{beliefprop}}
+
+
+Namespace for enums, constants, structures, and functions specific to belief propagation processing.  
+
+
 \doxysubsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structbeliefprop_1_1_bp_stereo_set}{Bp\+Stereo\+Set}}
 \begin{DoxyCompactList}\small\item\em Structure with stereo set name, disparity count, and scale factor for output disparity map. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_disparity_map_evaluation_params}{Disparity\+Map\+Evaluation\+Params}}
+\begin{DoxyCompactList}\small\item\em Struct to store parameters for evaluation of disparity map from stereo processing. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{Bp\+Level\+Properties}}
 \begin{DoxyCompactList}\small\item\em POD struct to store bp level data. Struct can be passed to global CUDAs kernel so needs to take restrictions of what\textquotesingle{}s allowed for passing data from the host to a CUDA kernel into account. \end{DoxyCompactList}\item 
-class \mbox{\hyperlink{classbeliefprop_1_1_bp_level}{Bp\+Level}}
-\begin{DoxyCompactList}\small\item\em Class to store and retrieve properties of a bp processing level. \end{DoxyCompactList}\item 
 struct \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{Bp\+Settings}}
-\begin{DoxyCompactList}\small\item\em Structure to store the settings for the number of levels and iterations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Structure to store the belief propagation settings including the number of levels and iterations. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{Bp\+Run\+Output}}
+\begin{DoxyCompactList}\small\item\em Structure with output disparity map, runtime, and other evaluation data. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{Bp\+On\+Device}}
+\begin{DoxyCompactList}\small\item\em Structure with pointers to objects containing functions for smoothing images, processing bp, and memory management on target device using specified acceleration. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
 \item 
@@ -109,7 +118,7 @@ enum class \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b290
 \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aee780e8bd275dbe845fd72ccbbc57b25}{k\+Copy\+At\+Level}}
 , \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906aa4d6694818fc8b0338c6516e15a7cb78}{k\+Output\+Disp}}
  \}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Enum corresponding to each kernel in belief propagation that can be run in parallel. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
@@ -117,8 +126,8 @@ unsigned int \mbox{\hyperlink{namespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281e
 \begin{DoxyCompactList}\small\item\em Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number of disparity values since implementation takes longer in those case, so there is likely less variance between runs and therefore less need to have as many runs. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}{Run\+Settings}} ()
 \begin{DoxyCompactList}\small\item\em Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for output. \end{DoxyCompactList}\item 
-\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} unsigned int \mbox{\hyperlink{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}{Retrieve\+Index\+In\+Data\+And\+Message}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height, unsigned int current\+\_\+disparity, unsigned int total\+\_\+num\+\_\+disp\+\_\+vals, unsigned int offset\+\_\+data=0u)
-\begin{DoxyCompactList}\small\item\em Retrieve the current 1-\/D index value of the given point at the given disparity in the data cost and message data. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}{Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
+\begin{DoxyCompactList}\small\item\em Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ae68eab6f8bff8879cdf5eef4d4fe6fa8}{Dt\+Stereo}} (T f\mbox{[}DISP\+\_\+\+VALS\mbox{]})
 \begin{DoxyCompactList}\small\item\em function retrieve the minimum value at each 1-\/d disparity value in O(n) time using Felzenszwalb\textquotesingle{}s method (see \char`\"{}\+Efficient Belief Propagation for Early Vision\char`\"{}) \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_aa78f83157a3b8ea34135bd45d86e75f5}{Dt\+Stereo}} (T $\ast$f, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)
@@ -157,12 +166,34 @@ unsigned int \mbox{\hyperlink{namespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281e
 \item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a81aace5409ee7378733e21689955b681}{Print\+Data\+And\+Message\+Vals\+To\+Point\+Kernel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const \mbox{\hyperlink{structbeliefprop_1_1_bp_level_properties}{beliefprop\+::\+Bp\+Level\+Properties}} \&current\+\_\+bp\+\_\+level, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+0, const T $\ast$data\+\_\+cost\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+0, const T $\ast$message\+\_\+u\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+d\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+l\+\_\+checkerboard\+\_\+1, const T $\ast$message\+\_\+r\+\_\+checkerboard\+\_\+1, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals=0)
 \item 
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool \mbox{\hyperlink{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f}{Within\+Image\+Bounds}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height)
+\begin{DoxyCompactList}\small\item\em Checks if the current point is within the image bounds Assumed that input x/y vals are above zero since their unsigned int so no need for $>$= 0 check. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} unsigned int \mbox{\hyperlink{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}{Retrieve\+Index\+In\+Data\+And\+Message}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height, unsigned int current\+\_\+disparity, unsigned int total\+\_\+num\+\_\+disp\+\_\+vals, unsigned int offset\+\_\+data=0u)
+\begin{DoxyCompactList}\small\item\em Retrieve the current 1-\/D index value of the given point at the given disparity in the data cost and message data. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}{Filter\+Image\+Across\+Process\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
 \begin{DoxyCompactList}\small\item\em kernel to apply a horizontal filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture the output filtered image is returned as an array of floats \end{DoxyCompactList}\item 
 {\footnotesize template$<$Bp\+Im\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_a527bc69220d92b30d3f74e8aaf182824}{Filter\+Image\+Vertical\+Process\+Pixel}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, const T $\ast$image\+\_\+to\+\_\+filter, float $\ast$filtered\+\_\+image, unsigned int width\+\_\+images, unsigned int height\+\_\+images, const float $\ast$image\+\_\+filter, unsigned int size\+\_\+filter)
 \begin{DoxyCompactList}\small\item\em kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as unsigned ints in the texture uint\+\_\+image\+\_\+pixels\+Texture the output filtered image is returned as an array of floats \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a400045efcf3a0cd6f13c343e27919230}{k\+Ref\+Image\+Name}} = \char`\"{}ref\+Image\char`\"{}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_acfd2acd7ff3e70ef11cedaea3e28fd68}{k\+Test\+Image\+Name}} = \char`\"{}test\+Image\char`\"{}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a7ff00475fff3ace85a2f2dfaf3344fad}{k\+In\+Image\+Poss\+Extensions}} \mbox{[}$\,$\mbox{]} = \{\char`\"{}pgm\char`\"{}, \char`\"{}ppm\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a60b08e61b334e512065dc4760911be3e}{k\+Ground\+Truth\+Disp\+File}} = \char`\"{}ground\+Truth\+Disparity.\+pgm\char`\"{}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ae8b15fc96e016daddc0a21d238fd4733}{k\+Out\+Disp\+Image\+Name\+Base}} = \char`\"{}computed\+Disparity\char`\"{}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad5f85c97e7b10b11a214136459edf6ed}{k\+Belief\+Prop\+Directory\+Name}} = \char`\"{}Belief\+Prop\char`\"{}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aa3d390af2a6bbea1625aa43603435d65}{k\+Stereo\+Sets\+Directory\+Name}} = \char`\"{}Bp\+Stereo\+Sets\char`\"{}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aa8830c4c888697edb89bfc2f54335f00}{k\+Baseline\+Run\+Data\+Path}}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5dfc815fd6841000db07896d1198c26d}{k\+Baseline\+Run\+Desc}} \{\char`\"{}AMD Rome (48 Cores)\char`\"{}\}
 \item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}{k\+Use\+Weighted\+RGBTo\+Grayscale\+Conversion}} \{true\}
 \item 
@@ -175,12 +206,6 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ab3250ec5
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a1d0ee3d94819fc462712ab9a45d0808a}{k\+Num\+Parallel\+CPUThreads\+Header}} \{\char`\"{}Number of parallel CPU threads in run\char`\"{}\}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a7525a88a7c61114d68d619797c28b82c}{k\+CPUVectorization\+Header}} \{\char`\"{}Vectorization\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_abc3d515f5c6acdf84668ae8445a28dd5}{k\+Bp\+Optimize\+CUDADesc}} \{\char`\"{}CUDA\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aa3e2f34ee6b0852564617fdd4a22079c}{k\+CUDAVersion\+Header}} \{\char`\"{}Cuda version\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a6a6afcc9f7fdd032580bb44c0733124b}{k\+CUDARuntime\+Header}} \{\char`\"{}Cuda Runtime Version\char`\"{}\}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a8778b3e5a5eacd6b90b010227e13f0b5}{k\+Image\+Width\+Header}} \{\char`\"{}Image Width\char`\"{}\}
 \item 
@@ -204,39 +229,25 @@ constexpr std\+::array$<$ float, 4 $>$ \mbox{\hyperlink{namespacebeliefprop_ae8d
 \begin{DoxyCompactList}\small\item\em Difference thresholds in output disparity for a computed disparity at a pixel to be considered a \char`\"{}bad pixel\char`\"{} when compared to the ground truth in the evaluation. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}{k\+Max\+Diff\+Cap}}
 \begin{DoxyCompactList}\small\item\em Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers in the average difference across all pixels. \end{DoxyCompactList}\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}{k\+Acceleration\+Desc\+Header}} \{\char`\"{}Acceleration\char`\"{}\}
-\item 
-constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{k\+Inf\+Bp}} \{65504\}
-\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}{k\+Num\+Checkerboard\+Parts}} \{2\}
 \begin{DoxyCompactList}\small\item\em Number of checkerboard parts for processing. \end{DoxyCompactList}\item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}{k\+Num\+Message\+Arrays}} \{4\}
 \begin{DoxyCompactList}\small\item\em Number of message arrays in each checkerboard part. \end{DoxyCompactList}\item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a6651cc44f605190082858f8c391e417c}{k\+Num\+Kernels}} \{6\}
-\begin{DoxyCompactList}\small\item\em Enum corresponding to each kernel in belief propagation that can be run in parallel. \end{DoxyCompactList}\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}{k\+Blur\+Images\+PDims\+Header}} \{\char`\"{}Blur Images Parallel Dimensions\char`\"{}\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}{k\+Init\+MVals\+PDims\+Header}} \{\char`\"{}Init Message Values Parallel Dimensions\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}{k\+Data\+Costs\+PDims\+Header}} \{\char`\"{}Data Costs Parallel Dimensions\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}{k\+Bp\+Iters\+PDims\+Header}} \{\char`\"{}BP Thread Parallel Dimensions\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}{k\+Copy\+To\+Next\+Level\+PDims\+Header}} \{\char`\"{}Copy Thread Parallel Dimensions\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}{k\+Comp\+Output\+Disp\+PDims\+Header}} \{\char`\"{}Get Output Disparity Parallel Dimensions\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a967ce853e69a6075f1fa1f572efcc999}{k\+Level\+Text}} \{\char`\"{}Level\char`\"{}\}
-\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{k\+Inf\+Bp}} \{65504\}
+\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}{k\+Use\+Opt\+GPUMem\+Management}} \{true\}
 \item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}{k\+Optimized\+Indexing\+Setting}} \{true\}
 \item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}{k\+Allocate\+Free\+Bp\+Memory\+Outside\+Runs}} \{true\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5afcf811c27dd005009bc134e9a7c4bb}{k\+Mem\+Opt\+Level\+Header}} \{\char`\"{}Memory Optimization Level\char`\"{}\}
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_acd0b247144b676dcad6e6edba702a1f4}{k\+Mem\+Alloc\+Opt\+Header}} \{\char`\"{}Memory allocation of all BP data run at or before start of run\char`\"{}\}
 \item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a83752776983b00dc2b06270e4639ede7}{k\+Indexing\+Opt\+Level\+Header}} \{\char`\"{}Indexing Optimization Level\char`\"{}\}
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5f60d2312e165b39e28a446bb19e89d1}{k\+Memory\+Coalesced\+Bp\+Data\+Header}} \{\char`\"{}BP data arranged for memory coalescence\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a55bf926d18288a14ddc6c20014d23c22}{k\+Allocate\+Free\+Mem\+Outside\+Runs\+Header}} \{\char`\"{}Memory for BP allocated/freed outside of runs\char`\"{}\}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}{k\+Num\+Disp\+Vals\+Header}} \{\char`\"{}Num Possible Disparity Values\char`\"{}\}
 \item 
@@ -253,16 +264,33 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a3bd976de
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}{k\+Bp\+Settings\+Sigma\+Header}} \{\char`\"{}Sigma\+Bp\char`\"{}\}
 \item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}{k\+Default\+Levels\+Bp}} \{5\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default values for BP settings. Number of scales/levels in the pyramid to run BP. \end{DoxyCompactList}\item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}{k\+Default\+Iters\+Bp}} \{7\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default number of BP iterations at each scale/level. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}{k\+Default\+Sigma\+Bp}} \{0.\+0\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default sigma value for smoothing input images. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}{k\+Default\+Lambda\+Bp}} \{0.\+1\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default weighing of data cost. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}{k\+Default\+Data\+KBp}} \{15.\+0\}
+\begin{DoxyCompactList}\small\item\em Default truncation of data cost. \end{DoxyCompactList}\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}{k\+Blur\+Images\+PDims\+Header}} \{\char`\"{}Blur Images Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}{k\+Init\+MVals\+PDims\+Header}} \{\char`\"{}Init Message Values Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}{k\+Data\+Costs\+PDims\+Header}} \{\char`\"{}Data Costs Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}{k\+Bp\+Iters\+PDims\+Header}} \{\char`\"{}BP Thread Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}{k\+Copy\+To\+Next\+Level\+PDims\+Header}} \{\char`\"{}Copy Thread Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}{k\+Comp\+Output\+Disp\+PDims\+Header}} \{\char`\"{}Get Output Disparity Parallel Dimensions\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a967ce853e69a6075f1fa1f572efcc999}{k\+Level\+Text}} \{\char`\"{}Level\char`\"{}\}
 \end{DoxyCompactItemize}
 
+
+\doxysubsection{Detailed Description}
+Namespace for enums, constants, structures, and functions specific to belief propagation processing. 
 
 \doxysubsection{Typedef Documentation}
 \mbox{\Hypertarget{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}\label{namespacebeliefprop_acef942066296774fdf5d9839ac48abfd}} 
@@ -283,7 +311,7 @@ Each checkerboard messages element corresponds to an array of message values cou
 \end{DoxyTemplParams}
 
 
-Definition at line 71 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 59 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}\label{namespacebeliefprop_a4894af1b3cdafd201f5df63411074d91}} 
 \index{beliefprop@{beliefprop}!DataCostsCheckerboards@{DataCostsCheckerboards}}
@@ -303,7 +331,7 @@ Belief propagation checkerboard messages and data costs must be pointers to a bp
 \end{DoxyTemplParams}
 
 
-Definition at line 80 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 68 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 
 
@@ -313,6 +341,10 @@ Definition at line 80 of file Bp\+Consts\+Enums\+Aliases.\+h.
 \index{BpKernel@{BpKernel}!beliefprop@{beliefprop}}
 \doxysubsubsection{\texorpdfstring{BpKernel}{BpKernel}}
 {\footnotesize\ttfamily enum \mbox{\hyperlink{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906}{beliefprop\+::\+Bp\+Kernel}} \+: unsigned int\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Enum corresponding to each kernel in belief propagation that can be run in parallel. 
 
 \begin{DoxyEnumFields}{Enumerator}
 \raisebox{\heightof{T}}[0pt][0pt]{\index{kBlurImages@{kBlurImages}!beliefprop@{beliefprop}}\index{beliefprop@{beliefprop}!kBlurImages@{kBlurImages}}}\mbox{\Hypertarget{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a66cfb84630289cb7250dd31170937f26}\label{namespacebeliefprop_a02c0faefb0868b58b9bfc8f3bb8b2906a66cfb84630289cb7250dd31170937f26}} 
@@ -342,7 +374,7 @@ k\+Output\+Disp&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 87 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 73 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}\label{namespacebeliefprop_a85dcfe709b354b19752ea8ae432f5af5}} 
 \index{beliefprop@{beliefprop}!CheckerboardPart@{CheckerboardPart}}
@@ -366,7 +398,7 @@ k\+Checkerboard\+Part1&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 46 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 40 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}\label{namespacebeliefprop_a8ccdee0ce862f5a5c1130ed1c23dd59f}} 
 \index{beliefprop@{beliefprop}!ImageType@{ImageType}}
@@ -414,7 +446,7 @@ k\+Messages\+RCheckerboard&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 47 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 41 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}\label{namespacebeliefprop_a89a58fd265a9f79972785260b1735e8c}} 
 \index{beliefprop@{beliefprop}!MessageComp@{MessageComp}}
@@ -442,7 +474,7 @@ k\+RMessage&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 49 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 43 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_aec799311905a37226da8b05f8375d951}\label{namespacebeliefprop_aec799311905a37226da8b05f8375d951}} 
 \index{beliefprop@{beliefprop}!Runtime\_Type@{Runtime\_Type}}
@@ -706,7 +738,7 @@ Kernel to copy the computed BP message values at the current level to the corres
 \end{DoxyParams}
 
 
-Definition at line 1149 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 1126 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -724,7 +756,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 93 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 70 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8}\label{namespacebeliefprop_a482a4e6f83ad07ea3b4484cca463e6e8}} 
 \index{beliefprop@{beliefprop}!DtStereo@{DtStereo}}
@@ -735,7 +767,7 @@ Definition at line 93 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 
 
-Definition at line 112 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 89 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -767,12 +799,9 @@ function retrieve the minimum value at each 1-\/d disparity value in O(n) time u
 {\em f} & \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
 
 
-Definition at line 74 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 51 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}\label{namespacebeliefprop_a07aa59f661cbbe5d130e95f5a2f0193f}} 
 \index{beliefprop@{beliefprop}!FilterImageAcrossProcessPixel@{FilterImageAcrossProcessPixel}}
@@ -809,12 +838,9 @@ kernel to apply a horizontal filter on each pixel of the image in parallel the i
 {\em size\+\_\+filter} & \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
 
 
-Definition at line 53 of file Shared\+Smooth\+Image\+Functs.\+h.
+Definition at line 54 of file Shared\+Smooth\+Image\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -858,12 +884,9 @@ kernel to apply a vertical filter on each pixel of the image in parallel the inp
 {\em size\+\_\+filter} & \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
 
 
-Definition at line 86 of file Shared\+Smooth\+Image\+Functs.\+h.
+Definition at line 87 of file Shared\+Smooth\+Image\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -915,7 +938,7 @@ Initialize the \char`\"{}data cost\char`\"{} for each possible disparity between
 \end{DoxyParams}
 
 
-Definition at line 454 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 431 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -969,7 +992,7 @@ Initialize the data costs at the \char`\"{}next\char`\"{} level up in the pyrami
 \end{DoxyParams}
 
 
-Definition at line 585 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 562 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1032,13 +1055,50 @@ Initialize the message values at each pixel of the current level to the default 
 \end{DoxyParams}
 
 
-Definition at line 672 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 649 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}\label{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}} 
+\index{beliefprop@{beliefprop}!MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}}
+\index{MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{MemoryAlignedAtDataStart()}{MemoryAlignedAtDataStart()}}
+{\footnotesize\ttfamily bool beliefprop\+::\+Memory\+Aligned\+At\+Data\+Start (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+data\+\_\+start,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{unsigned int}]{num\+\_\+data\+\_\+align\+\_\+width,  }\item[{unsigned int}]{div\+Padded\+Ch\+Board\+Width\+For\+Align }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+val\+\_\+data\+\_\+start} & \\
+\hline
+{\em simd\+\_\+data\+\_\+size} & \\
+\hline
+{\em num\+\_\+data\+\_\+align\+\_\+width} & \\
+\hline
+{\em div\+Padded\+Ch\+Board\+Width\+For\+Align} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true 
+
+false 
+\end{DoxyReturn}
+
+
+Definition at line 114 of file Bp\+Run\+Utils.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}\label{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}} 
@@ -1050,7 +1110,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 356 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 333 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1068,7 +1128,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 213 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 190 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1086,7 +1146,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 155 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 132 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1115,7 +1175,7 @@ unsigned int
 \end{DoxyReturn}
 
 
-Definition at line 46 of file Bp\+Run\+Settings.\+h.
+Definition at line 53 of file Bp\+Run\+Utils.\+h.
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1133,7 +1193,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 1539 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 1516 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1151,7 +1211,7 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 1605 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 1582 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1187,12 +1247,9 @@ Retrieve the current 1-\/D index value of the given point at the given disparity
 {\em offset\+\_\+data} & \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
 
 
-Definition at line 51 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 71 of file Shared\+Bp\+Util\+Functs.\+h.
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1210,7 +1267,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 1300 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 1277 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1235,7 +1292,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 845 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 822 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a2ffa558874a17f1d28f6587e89be8eec}\label{namespacebeliefprop_a2ffa558874a17f1d28f6587e89be8eec}} 
 \index{beliefprop@{beliefprop}!RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}}
@@ -1246,7 +1303,7 @@ Definition at line 845 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 
 
-Definition at line 818 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 795 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a01e4c1fb7d6c8647a0050e9e5c3213bb}\label{namespacebeliefprop_a01e4c1fb7d6c8647a0050e9e5c3213bb}} 
 \index{beliefprop@{beliefprop}!RunBPIterationUpdateMsgVals@{RunBPIterationUpdateMsgVals}}
@@ -1301,7 +1358,7 @@ Kernel function to run the current iteration of belief propagation where the inp
 \end{DoxyParams}
 
 
-Definition at line 791 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 768 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}\label{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0}} 
 \index{beliefprop@{beliefprop}!RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}}
@@ -1362,12 +1419,9 @@ Kernel function to run the current iteration of belief propagation in parallel u
 {\em bp\+\_\+settings\+\_\+disp\+\_\+vals} & \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-ARCHITECTURE\+\_\+\+ADDITION 
-\end{DoxyReturn}
 
 
-Definition at line 906 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 883 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1392,7 +1446,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 1074 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 1051 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}\label{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}} 
 \index{beliefprop@{beliefprop}!RunSettings@{RunSettings}}
@@ -1409,7 +1463,7 @@ Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object f
 \end{DoxyReturn}
 
 
-Definition at line 81 of file Bp\+Run\+Settings.\+h.
+Definition at line 89 of file Bp\+Run\+Utils.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1434,7 +1488,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 273 of file Shared\+Bp\+Processing\+Functs.\+h.
+Definition at line 250 of file Shared\+Bp\+Processing\+Functs.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1443,19 +1497,41 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{namespacebeliefprop_a449917ceaa07c2271c379759b2c08400_cgraph}
 \end{center}
 \end{figure}
+\mbox{\Hypertarget{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f}\label{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f}} 
+\index{beliefprop@{beliefprop}!WithinImageBounds@{WithinImageBounds}}
+\index{WithinImageBounds@{WithinImageBounds}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{WithinImageBounds()}{WithinImageBounds()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool beliefprop\+::\+Within\+Image\+Bounds (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val,  }\item[{unsigned int}]{y\+\_\+val,  }\item[{unsigned int}]{width,  }\item[{unsigned int}]{height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Checks if the current point is within the image bounds Assumed that input x/y vals are above zero since their unsigned int so no need for $>$= 0 check. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+val} & \\
+\hline
+{\em y\+\_\+val} & \\
+\hline
+{\em width} & \\
+\hline
+{\em height} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 51 of file Shared\+Bp\+Util\+Functs.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f_icgraph}
+\end{center}
+\end{figure}
 
 
 \doxysubsection{Variable Documentation}
-\mbox{\Hypertarget{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}\label{namespacebeliefprop_abe583ef1227cb1c521017e5608741878}} 
-\index{beliefprop@{beliefprop}!kAccelerationDescHeader@{kAccelerationDescHeader}}
-\index{kAccelerationDescHeader@{kAccelerationDescHeader}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kAccelerationDescHeader}{kAccelerationDescHeader}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Acceleration\+Desc\+Header \{\char`\"{}Acceleration\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 89 of file Run\+Bp\+Imp\+On\+Input.\+h.
-
 \mbox{\Hypertarget{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}\label{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}} 
 \index{beliefprop@{beliefprop}!kAllocateFreeBpMemoryOutsideRuns@{kAllocateFreeBpMemoryOutsideRuns}}
 \index{kAllocateFreeBpMemoryOutsideRuns@{kAllocateFreeBpMemoryOutsideRuns}!beliefprop@{beliefprop}}
@@ -1464,7 +1540,17 @@ Definition at line 89 of file Run\+Bp\+Imp\+On\+Input.\+h.
 
 
 
-Definition at line 70 of file Bp\+Run\+Settings.\+h.
+Definition at line 77 of file Bp\+Run\+Utils.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a55bf926d18288a14ddc6c20014d23c22}\label{namespacebeliefprop_a55bf926d18288a14ddc6c20014d23c22}} 
+\index{beliefprop@{beliefprop}!kAllocateFreeMemOutsideRunsHeader@{kAllocateFreeMemOutsideRunsHeader}}
+\index{kAllocateFreeMemOutsideRunsHeader@{kAllocateFreeMemOutsideRunsHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kAllocateFreeMemOutsideRunsHeader}{kAllocateFreeMemOutsideRunsHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Allocate\+Free\+Mem\+Outside\+Runs\+Header \{\char`\"{}Memory for BP allocated/freed outside of runs\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 82 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}\label{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}} 
 \index{beliefprop@{beliefprop}!kAvgRMSErrorHeader@{kAvgRMSErrorHeader}}
@@ -1474,7 +1560,43 @@ Definition at line 70 of file Bp\+Run\+Settings.\+h.
 
 
 
-Definition at line 37 of file Disparity\+Map\+Evaluation.\+h.
+Definition at line 39 of file Disparity\+Map\+Evaluation.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_aa8830c4c888697edb89bfc2f54335f00}\label{namespacebeliefprop_aa8830c4c888697edb89bfc2f54335f00}} 
+\index{beliefprop@{beliefprop}!kBaselineRunDataPath@{kBaselineRunDataPath}}
+\index{kBaselineRunDataPath@{kBaselineRunDataPath}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBaselineRunDataPath}{kBaselineRunDataPath}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Baseline\+Run\+Data\+Path\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\{}
+\DoxyCodeLine{    \textcolor{stringliteral}{"{}../../BeliefProp/ImpResults/RunResults/AMDRome48Cores\_RunResults.csv"{}}\}}
+
+\end{DoxyCode}
+
+
+Definition at line 43 of file Bp\+File\+Handling\+Consts.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a5dfc815fd6841000db07896d1198c26d}\label{namespacebeliefprop_a5dfc815fd6841000db07896d1198c26d}} 
+\index{beliefprop@{beliefprop}!kBaselineRunDesc@{kBaselineRunDesc}}
+\index{kBaselineRunDesc@{kBaselineRunDesc}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBaselineRunDesc}{kBaselineRunDesc}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Baseline\+Run\+Desc \{\char`\"{}AMD Rome (48 Cores)\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 45 of file Bp\+File\+Handling\+Consts.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ad5f85c97e7b10b11a214136459edf6ed}\label{namespacebeliefprop_ad5f85c97e7b10b11a214136459edf6ed}} 
+\index{beliefprop@{beliefprop}!kBeliefPropDirectoryName@{kBeliefPropDirectoryName}}
+\index{kBeliefPropDirectoryName@{kBeliefPropDirectoryName}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kBeliefPropDirectoryName}{kBeliefPropDirectoryName}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Belief\+Prop\+Directory\+Name = \char`\"{}Belief\+Prop\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 41 of file Bp\+File\+Handling\+Consts.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}\label{namespacebeliefprop_aed300a1ea4c5e2196d75a891af650995}} 
 \index{beliefprop@{beliefprop}!kBlurImagesPDimsHeader@{kBlurImagesPDimsHeader}}
@@ -1484,7 +1606,7 @@ Definition at line 37 of file Disparity\+Map\+Evaluation.\+h.
 
 
 
-Definition at line 42 of file Bp\+Parallel\+Params.\+h.
+Definition at line 43 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}\label{namespacebeliefprop_af93021521133883d659ccd15d5dfed3b}} 
 \index{beliefprop@{beliefprop}!kBpItersPDimsHeader@{kBpItersPDimsHeader}}
@@ -1494,7 +1616,7 @@ Definition at line 42 of file Bp\+Parallel\+Params.\+h.
 
 
 
-Definition at line 45 of file Bp\+Parallel\+Params.\+h.
+Definition at line 46 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ab3250ec5e02b035ac6f5290c04068521}\label{namespacebeliefprop_ab3250ec5e02b035ac6f5290c04068521}} 
 \index{beliefprop@{beliefprop}!kBpOptimizeCPUDesc@{kBpOptimizeCPUDesc}}
@@ -1506,16 +1628,6 @@ Definition at line 45 of file Bp\+Parallel\+Params.\+h.
 
 Definition at line 41 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
 
-\mbox{\Hypertarget{namespacebeliefprop_abc3d515f5c6acdf84668ae8445a28dd5}\label{namespacebeliefprop_abc3d515f5c6acdf84668ae8445a28dd5}} 
-\index{beliefprop@{beliefprop}!kBpOptimizeCUDADesc@{kBpOptimizeCUDADesc}}
-\index{kBpOptimizeCUDADesc@{kBpOptimizeCUDADesc}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kBpOptimizeCUDADesc}{kBpOptimizeCUDADesc}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Bp\+Optimize\+CUDADesc \{\char`\"{}CUDA\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 41 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
-
 \mbox{\Hypertarget{namespacebeliefprop_a3bd976de25e1c840fa0cc97e6e721da0}\label{namespacebeliefprop_a3bd976de25e1c840fa0cc97e6e721da0}} 
 \index{beliefprop@{beliefprop}!kBpSettingsLambdaHeader@{kBpSettingsLambdaHeader}}
 \index{kBpSettingsLambdaHeader@{kBpSettingsLambdaHeader}!beliefprop@{beliefprop}}
@@ -1524,7 +1636,7 @@ Definition at line 41 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
 
 
 
-Definition at line 57 of file Bp\+Settings.\+h.
+Definition at line 62 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}\label{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}} 
 \index{beliefprop@{beliefprop}!kBpSettingsSigmaHeader@{kBpSettingsSigmaHeader}}
@@ -1534,7 +1646,7 @@ Definition at line 57 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 58 of file Bp\+Settings.\+h.
+Definition at line 63 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}\label{namespacebeliefprop_a2d16582de076c59b2c04e91d8dc815f7}} 
 \index{beliefprop@{beliefprop}!kCompOutputDispPDimsHeader@{kCompOutputDispPDimsHeader}}
@@ -1544,7 +1656,7 @@ Definition at line 58 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 47 of file Bp\+Parallel\+Params.\+h.
+Definition at line 48 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}\label{namespacebeliefprop_a9b4956bf7d0f682afdde9e05ac88a767}} 
 \index{beliefprop@{beliefprop}!kCopyToNextLevelPDimsHeader@{kCopyToNextLevelPDimsHeader}}
@@ -1554,7 +1666,7 @@ Definition at line 47 of file Bp\+Parallel\+Params.\+h.
 
 
 
-Definition at line 46 of file Bp\+Parallel\+Params.\+h.
+Definition at line 47 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a7525a88a7c61114d68d619797c28b82c}\label{namespacebeliefprop_a7525a88a7c61114d68d619797c28b82c}} 
 \index{beliefprop@{beliefprop}!kCPUVectorizationHeader@{kCPUVectorizationHeader}}
@@ -1566,26 +1678,6 @@ Definition at line 46 of file Bp\+Parallel\+Params.\+h.
 
 Definition at line 43 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
 
-\mbox{\Hypertarget{namespacebeliefprop_a6a6afcc9f7fdd032580bb44c0733124b}\label{namespacebeliefprop_a6a6afcc9f7fdd032580bb44c0733124b}} 
-\index{beliefprop@{beliefprop}!kCUDARuntimeHeader@{kCUDARuntimeHeader}}
-\index{kCUDARuntimeHeader@{kCUDARuntimeHeader}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kCUDARuntimeHeader}{kCUDARuntimeHeader}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+CUDARuntime\+Header \{\char`\"{}Cuda Runtime Version\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 43 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
-
-\mbox{\Hypertarget{namespacebeliefprop_aa3e2f34ee6b0852564617fdd4a22079c}\label{namespacebeliefprop_aa3e2f34ee6b0852564617fdd4a22079c}} 
-\index{beliefprop@{beliefprop}!kCUDAVersionHeader@{kCUDAVersionHeader}}
-\index{kCUDAVersionHeader@{kCUDAVersionHeader}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kCUDAVersionHeader}{kCUDAVersionHeader}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+CUDAVersion\+Header \{\char`\"{}Cuda version\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 42 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
-
 \mbox{\Hypertarget{namespacebeliefprop_a35a079b98adae166d0f527cf840a8df5}\label{namespacebeliefprop_a35a079b98adae166d0f527cf840a8df5}} 
 \index{beliefprop@{beliefprop}!kDataCostCapHeader@{kDataCostCapHeader}}
 \index{kDataCostCapHeader@{kDataCostCapHeader}!beliefprop@{beliefprop}}
@@ -1594,7 +1686,7 @@ Definition at line 42 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
 
 
 
-Definition at line 56 of file Bp\+Settings.\+h.
+Definition at line 61 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}\label{namespacebeliefprop_a84af1efd2a62265a3cc385d1485f1bf8}} 
 \index{beliefprop@{beliefprop}!kDataCostsPDimsHeader@{kDataCostsPDimsHeader}}
@@ -1604,7 +1696,7 @@ Definition at line 56 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 44 of file Bp\+Parallel\+Params.\+h.
+Definition at line 45 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}\label{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}} 
 \index{beliefprop@{beliefprop}!kDefaultDataKBp@{kDefaultDataKBp}}
@@ -1614,7 +1706,11 @@ Definition at line 44 of file Bp\+Parallel\+Params.\+h.
 
 
 
-Definition at line 74 of file Bp\+Settings.\+h.
+Default truncation of data cost. 
+
+
+
+Definition at line 79 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}\label{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}} 
 \index{beliefprop@{beliefprop}!kDefaultItersBp@{kDefaultItersBp}}
@@ -1624,7 +1720,11 @@ Definition at line 74 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 65 of file Bp\+Settings.\+h.
+Default number of BP iterations at each scale/level. 
+
+
+
+Definition at line 70 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}\label{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}} 
 \index{beliefprop@{beliefprop}!kDefaultLambdaBp@{kDefaultLambdaBp}}
@@ -1634,7 +1734,11 @@ Definition at line 65 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 71 of file Bp\+Settings.\+h.
+Default weighing of data cost. 
+
+
+
+Definition at line 76 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}\label{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}} 
 \index{beliefprop@{beliefprop}!kDefaultLevelsBp@{kDefaultLevelsBp}}
@@ -1644,7 +1748,11 @@ Definition at line 71 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 62 of file Bp\+Settings.\+h.
+Default values for BP settings. Number of scales/levels in the pyramid to run BP. 
+
+
+
+Definition at line 67 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}\label{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}} 
 \index{beliefprop@{beliefprop}!kDefaultSigmaBp@{kDefaultSigmaBp}}
@@ -1654,7 +1762,11 @@ Definition at line 62 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 68 of file Bp\+Settings.\+h.
+Default sigma value for smoothing input images. 
+
+
+
+Definition at line 73 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a7db5ca97e804117029e4986b2d46dbf9}\label{namespacebeliefprop_a7db5ca97e804117029e4986b2d46dbf9}} 
 \index{beliefprop@{beliefprop}!kDiscCostCapHeader@{kDiscCostCapHeader}}
@@ -1664,7 +1776,7 @@ Definition at line 68 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 55 of file Bp\+Settings.\+h.
+Definition at line 60 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}\label{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}} 
 \index{beliefprop@{beliefprop}!kDisparityDiffThresholds@{kDisparityDiffThresholds}}
@@ -1675,7 +1787,7 @@ Definition at line 55 of file Bp\+Settings.\+h.
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\{}
-\DoxyCodeLine{    0.001, 2.01, 5.01, 10.01\}}
+\DoxyCodeLine{  0.001, 2.01, 5.01, 10.01\}}
 
 \end{DoxyCode}
 
@@ -1684,7 +1796,7 @@ Difference thresholds in output disparity for a computed disparity at a pixel to
 
 
 
-Definition at line 39 of file Disparity\+Map\+Evaluation\+Params.\+h.
+Definition at line 43 of file Disparity\+Map\+Evaluation.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}\label{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}} 
 \index{beliefprop@{beliefprop}!kEvalDataSubsets@{kEvalDataSubsets}}
@@ -1713,6 +1825,16 @@ Define subsets for evaluating run results on specified inputs the first three st
 
 Definition at line 80 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
+\mbox{\Hypertarget{namespacebeliefprop_a60b08e61b334e512065dc4760911be3e}\label{namespacebeliefprop_a60b08e61b334e512065dc4760911be3e}} 
+\index{beliefprop@{beliefprop}!kGroundTruthDispFile@{kGroundTruthDispFile}}
+\index{kGroundTruthDispFile@{kGroundTruthDispFile}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kGroundTruthDispFile}{kGroundTruthDispFile}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Ground\+Truth\+Disp\+File = \char`\"{}ground\+Truth\+Disparity.\+pgm\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 39 of file Bp\+File\+Handling\+Consts.\+h.
+
 \mbox{\Hypertarget{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}\label{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}} 
 \index{beliefprop@{beliefprop}!kImageHeightHeader@{kImageHeightHeader}}
 \index{kImageHeightHeader@{kImageHeightHeader}!beliefprop@{beliefprop}}
@@ -1733,16 +1855,6 @@ Definition at line 41 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
 Definition at line 40 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
-\mbox{\Hypertarget{namespacebeliefprop_a83752776983b00dc2b06270e4639ede7}\label{namespacebeliefprop_a83752776983b00dc2b06270e4639ede7}} 
-\index{beliefprop@{beliefprop}!kIndexingOptLevelHeader@{kIndexingOptLevelHeader}}
-\index{kIndexingOptLevelHeader@{kIndexingOptLevelHeader}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kIndexingOptLevelHeader}{kIndexingOptLevelHeader}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Indexing\+Opt\+Level\+Header \{\char`\"{}Indexing Optimization Level\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 74 of file Bp\+Run\+Settings.\+h.
-
 \mbox{\Hypertarget{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}\label{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}} 
 \index{beliefprop@{beliefprop}!kInfBp@{kInfBp}}
 \index{kInfBp@{kInfBp}!beliefprop@{beliefprop}}
@@ -1755,7 +1867,17 @@ Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision.
 
 
 
-Definition at line 40 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 42 of file Bp\+Run\+Utils.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a7ff00475fff3ace85a2f2dfaf3344fad}\label{namespacebeliefprop_a7ff00475fff3ace85a2f2dfaf3344fad}} 
+\index{beliefprop@{beliefprop}!kInImagePossExtensions@{kInImagePossExtensions}}
+\index{kInImagePossExtensions@{kInImagePossExtensions}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kInImagePossExtensions}{kInImagePossExtensions}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+In\+Image\+Poss\+Extensions\mbox{[}$\,$\mbox{]} = \{\char`\"{}pgm\char`\"{}, \char`\"{}ppm\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 38 of file Bp\+File\+Handling\+Consts.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}\label{namespacebeliefprop_a5d6de5f3350fb96c375c220db93e8b10}} 
 \index{beliefprop@{beliefprop}!kInitMValsPDimsHeader@{kInitMValsPDimsHeader}}
@@ -1765,7 +1887,7 @@ Definition at line 40 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 
 
-Definition at line 43 of file Bp\+Parallel\+Params.\+h.
+Definition at line 44 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_af2ed8e4173e3700fa5a358b3d689b995}\label{namespacebeliefprop_af2ed8e4173e3700fa5a358b3d689b995}} 
 \index{beliefprop@{beliefprop}!kLevelDCostBpTimeCTimeNames@{kLevelDCostBpTimeCTimeNames}}
@@ -1801,7 +1923,7 @@ Definition at line 36 of file Detailed\+Timing\+Bp\+Consts.\+h.
 
 
 
-Definition at line 48 of file Bp\+Parallel\+Params.\+h.
+Definition at line 49 of file Parallel\+Params\+Bp.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}\label{namespacebeliefprop_aa1e602740ccd3b53ebde4971c0e2c5a8}} 
 \index{beliefprop@{beliefprop}!kMaxDiffCap@{kMaxDiffCap}}
@@ -1812,7 +1934,7 @@ Definition at line 48 of file Bp\+Parallel\+Params.\+h.
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
 \DoxyCodeLine{\{}
-\DoxyCodeLine{    \mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{kDisparityDiffThresholds}}[std::size(\mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{kDisparityDiffThresholds}}) -\/ 1]\}}
+\DoxyCodeLine{  \mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{kDisparityDiffThresholds}}[std::size(\mbox{\hyperlink{namespacebeliefprop_ae8d98ea7ba0ebd3d0242a40a36d3ab75}{kDisparityDiffThresholds}}) -\/ 1]\}}
 
 \end{DoxyCode}
 
@@ -1821,17 +1943,27 @@ Max difference in disparity for evaluation where disparity difference for each p
 
 
 
-Definition at line 47 of file Disparity\+Map\+Evaluation\+Params.\+h.
+Definition at line 48 of file Disparity\+Map\+Evaluation.\+h.
 
-\mbox{\Hypertarget{namespacebeliefprop_a5afcf811c27dd005009bc134e9a7c4bb}\label{namespacebeliefprop_a5afcf811c27dd005009bc134e9a7c4bb}} 
-\index{beliefprop@{beliefprop}!kMemOptLevelHeader@{kMemOptLevelHeader}}
-\index{kMemOptLevelHeader@{kMemOptLevelHeader}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kMemOptLevelHeader}{kMemOptLevelHeader}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Mem\+Opt\+Level\+Header \{\char`\"{}Memory Optimization Level\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+\mbox{\Hypertarget{namespacebeliefprop_acd0b247144b676dcad6e6edba702a1f4}\label{namespacebeliefprop_acd0b247144b676dcad6e6edba702a1f4}} 
+\index{beliefprop@{beliefprop}!kMemAllocOptHeader@{kMemAllocOptHeader}}
+\index{kMemAllocOptHeader@{kMemAllocOptHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kMemAllocOptHeader}{kMemAllocOptHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Mem\+Alloc\+Opt\+Header \{\char`\"{}Memory allocation of all BP data run at or before start of run\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
 
 
 
-Definition at line 73 of file Bp\+Run\+Settings.\+h.
+Definition at line 80 of file Bp\+Run\+Utils.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_a5f60d2312e165b39e28a446bb19e89d1}\label{namespacebeliefprop_a5f60d2312e165b39e28a446bb19e89d1}} 
+\index{beliefprop@{beliefprop}!kMemoryCoalescedBpDataHeader@{kMemoryCoalescedBpDataHeader}}
+\index{kMemoryCoalescedBpDataHeader@{kMemoryCoalescedBpDataHeader}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kMemoryCoalescedBpDataHeader}{kMemoryCoalescedBpDataHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Memory\+Coalesced\+Bp\+Data\+Header \{\char`\"{}BP data arranged for memory coalescence\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 81 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}\label{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}} 
 \index{beliefprop@{beliefprop}!kNumBpItersHeader@{kNumBpItersHeader}}
@@ -1841,7 +1973,7 @@ Definition at line 73 of file Bp\+Run\+Settings.\+h.
 
 
 
-Definition at line 54 of file Bp\+Settings.\+h.
+Definition at line 59 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a6c32b79a4a0cd6395898595b62e7e022}\label{namespacebeliefprop_a6c32b79a4a0cd6395898595b62e7e022}} 
 \index{beliefprop@{beliefprop}!kNumBpLevelsHeader@{kNumBpLevelsHeader}}
@@ -1851,7 +1983,7 @@ Definition at line 54 of file Bp\+Settings.\+h.
 
 
 
-Definition at line 53 of file Bp\+Settings.\+h.
+Definition at line 58 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}\label{namespacebeliefprop_a59f855b4108004c78cfbdc194c5f0dbe}} 
 \index{beliefprop@{beliefprop}!kNumCheckerboardParts@{kNumCheckerboardParts}}
@@ -1865,7 +1997,7 @@ Number of checkerboard parts for processing.
 
 
 
-Definition at line 55 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 46 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}\label{namespacebeliefprop_a408277cf851b36e4231bfc18fbbe6585}} 
 \index{beliefprop@{beliefprop}!kNumDispValsHeader@{kNumDispValsHeader}}
@@ -1875,7 +2007,7 @@ Definition at line 55 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 
 
-Definition at line 52 of file Bp\+Settings.\+h.
+Definition at line 57 of file Bp\+Settings.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a70964fd46ccbdd02ee846c7fbcb8eee9}\label{namespacebeliefprop_a70964fd46ccbdd02ee846c7fbcb8eee9}} 
 \index{beliefprop@{beliefprop}!kNumEvalRuns@{kNumEvalRuns}}
@@ -1895,11 +2027,7 @@ Definition at line 45 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
 
 
-Enum corresponding to each kernel in belief propagation that can be run in parallel. 
-
-
-
-Definition at line 86 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 70 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}\label{namespacebeliefprop_a78e00715ab8b6953e5e0719d81c0de83}} 
 \index{beliefprop@{beliefprop}!kNumMessageArrays@{kNumMessageArrays}}
@@ -1913,7 +2041,7 @@ Number of message arrays in each checkerboard part.
 
 
 
-Definition at line 61 of file Bp\+Consts\+Enums\+Aliases.\+h.
+Definition at line 49 of file Bp\+Consts\+Enums\+Aliases.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a1d0ee3d94819fc462712ab9a45d0808a}\label{namespacebeliefprop_a1d0ee3d94819fc462712ab9a45d0808a}} 
 \index{beliefprop@{beliefprop}!kNumParallelCPUThreadsHeader@{kNumParallelCPUThreadsHeader}}
@@ -1933,7 +2061,17 @@ Definition at line 42 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
 
 
 
-Definition at line 69 of file Bp\+Run\+Settings.\+h.
+Definition at line 76 of file Bp\+Run\+Utils.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ae8b15fc96e016daddc0a21d238fd4733}\label{namespacebeliefprop_ae8b15fc96e016daddc0a21d238fd4733}} 
+\index{beliefprop@{beliefprop}!kOutDispImageNameBase@{kOutDispImageNameBase}}
+\index{kOutDispImageNameBase@{kOutDispImageNameBase}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kOutDispImageNameBase}{kOutDispImageNameBase}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Out\+Disp\+Image\+Name\+Base = \char`\"{}computed\+Disparity\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 40 of file Bp\+File\+Handling\+Consts.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a1fac75fef6dd56eb148c38941ce78290}\label{namespacebeliefprop_a1fac75fef6dd56eb148c38941ce78290}} 
 \index{beliefprop@{beliefprop}!kPGMExt@{kPGMExt}}
@@ -1955,6 +2093,16 @@ Definition at line 45 of file Bp\+Image.\+h.
 
 Definition at line 46 of file Bp\+Image.\+h.
 
+\mbox{\Hypertarget{namespacebeliefprop_a400045efcf3a0cd6f13c343e27919230}\label{namespacebeliefprop_a400045efcf3a0cd6f13c343e27919230}} 
+\index{beliefprop@{beliefprop}!kRefImageName@{kRefImageName}}
+\index{kRefImageName@{kRefImageName}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kRefImageName}{kRefImageName}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Ref\+Image\+Name = \char`\"{}ref\+Image\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 36 of file Bp\+File\+Handling\+Consts.\+h.
+
 \mbox{\Hypertarget{namespacebeliefprop_a0fe14039eac011f72a659873a7ef6e09}\label{namespacebeliefprop_a0fe14039eac011f72a659873a7ef6e09}} 
 \index{beliefprop@{beliefprop}!kStereoSetHeader@{kStereoSetHeader}}
 \index{kStereoSetHeader@{kStereoSetHeader}!beliefprop@{beliefprop}}
@@ -1964,6 +2112,16 @@ Definition at line 46 of file Bp\+Image.\+h.
 
 
 Definition at line 42 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_aa3d390af2a6bbea1625aa43603435d65}\label{namespacebeliefprop_aa3d390af2a6bbea1625aa43603435d65}} 
+\index{beliefprop@{beliefprop}!kStereoSetsDirectoryName@{kStereoSetsDirectoryName}}
+\index{kStereoSetsDirectoryName@{kStereoSetsDirectoryName}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kStereoSetsDirectoryName}{kStereoSetsDirectoryName}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Stereo\+Sets\+Directory\+Name = \char`\"{}Bp\+Stereo\+Sets\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 42 of file Bp\+File\+Handling\+Consts.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ade9084f410319841c34418be4a556df4}\label{namespacebeliefprop_ade9084f410319841c34418be4a556df4}} 
 \index{beliefprop@{beliefprop}!kStereoSetsToProcess@{kStereoSetsToProcess}}
@@ -1993,6 +2151,16 @@ Declare stereo sets to process with name, num disparity values, and scale factor
 
 Definition at line 63 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
+\mbox{\Hypertarget{namespacebeliefprop_acfd2acd7ff3e70ef11cedaea3e28fd68}\label{namespacebeliefprop_acfd2acd7ff3e70ef11cedaea3e28fd68}} 
+\index{beliefprop@{beliefprop}!kTestImageName@{kTestImageName}}
+\index{kTestImageName@{kTestImageName}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kTestImageName}{kTestImageName}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view beliefprop\+::k\+Test\+Image\+Name = \char`\"{}test\+Image\char`\"{}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 37 of file Bp\+File\+Handling\+Consts.\+h.
+
 \mbox{\Hypertarget{namespacebeliefprop_a790873cf6727591d5674d7fafa90c497}\label{namespacebeliefprop_a790873cf6727591d5674d7fafa90c497}} 
 \index{beliefprop@{beliefprop}!kTimingNames@{kTimingNames}}
 \index{kTimingNames@{kTimingNames}!beliefprop@{beliefprop}}
@@ -2011,7 +2179,7 @@ Definition at line 57 of file Detailed\+Timing\+Bp\+Consts.\+h.
 
 
 
-Definition at line 68 of file Bp\+Run\+Settings.\+h.
+Definition at line 75 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}\label{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}} 
 \index{beliefprop@{beliefprop}!kUseWeightedRGBToGrayscaleConversion@{kUseWeightedRGBToGrayscaleConversion}}

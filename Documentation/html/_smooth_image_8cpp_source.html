@@ -124,9 +124,9 @@ $(document).ready(function(){initNavTree('_smooth_image_8cpp_source.html',''); i
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keyword"></span>{</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  <span class="keywordtype">float</span> sum{0.0};</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 1; i &lt; size_filter; i++) {</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    sum += <a class="code" href="misc_8h.html#a51ede53be47a91867b5b99eb7ebe0488">std::abs</a>(filter[i]);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    sum += <a class="code" href="namespacebp__single__thread__imp.html#a86db79ff905b4d1b521cf4e64168c64a">std::abs</a>(filter[i]);</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  sum = 2*sum + <a class="code" href="misc_8h.html#a51ede53be47a91867b5b99eb7ebe0488">std::abs</a>(filter[0]);</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  sum = 2*sum + <a class="code" href="namespacebp__single__thread__imp.html#a86db79ff905b4d1b521cf4e64168c64a">std::abs</a>(filter[0]);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; size_filter; i++) {</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    filter[i] /= sum;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  }</div>
@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('_smooth_image_8cpp_source.html',''); i
 <div class="ttc" id="a_smooth_image_8h_html"><div class="ttname"><a href="_smooth_image_8h.html">SmoothImage.h</a></div><div class="ttdoc">Declares the functions used to smooth the input images with a gaussian filter of kSigmaBp (see bpCuda...</div></div>
 <div class="ttc" id="a_smooth_image_8h_html_a7a51f208cd21823c5076ecc5c7e5096b"><div class="ttname"><a href="_smooth_image_8h.html#a7a51f208cd21823c5076ecc5c7e5096b">kWidthSigma1</a></div><div class="ttdeci">constexpr float kWidthSigma1</div><div class="ttdef"><b>Definition:</b> <a href="_smooth_image_8h_source.html#l00042">SmoothImage.h:42</a></div></div>
 <div class="ttc" id="aclass_smooth_image_html_ac5320911cc70ee47757dc0cf1c2671cb"><div class="ttname"><a href="class_smooth_image.html#ac5320911cc70ee47757dc0cf1c2671cb">SmoothImage::MakeFilter</a></div><div class="ttdeci">std::pair&lt; std::vector&lt; float &gt;, unsigned int &gt; MakeFilter(float sigma) const</div><div class="ttdoc">Create a Gaussian filter from a sigma value.</div><div class="ttdef"><b>Definition:</b> <a href="_smooth_image_8cpp_source.html#l00030">SmoothImage.cpp:30</a></div></div>
-<div class="ttc" id="amisc_8h_html_a51ede53be47a91867b5b99eb7ebe0488"><div class="ttname"><a href="misc_8h.html#a51ede53be47a91867b5b99eb7ebe0488">abs</a></div><div class="ttdeci">T abs(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> <a href="misc_8h_source.html#l00039">misc.h:39</a></div></div>
+<div class="ttc" id="anamespacebp__single__thread__imp_html_a86db79ff905b4d1b521cf4e64168c64a"><div class="ttname"><a href="namespacebp__single__thread__imp.html#a86db79ff905b4d1b521cf4e64168c64a">bp_single_thread_imp::abs</a></div><div class="ttdeci">T abs(const T &amp;x)</div><div class="ttdef"><b>Definition:</b> <a href="misc_8h_source.html#l00045">misc.h:45</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

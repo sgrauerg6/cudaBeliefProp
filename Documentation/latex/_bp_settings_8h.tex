@@ -6,6 +6,7 @@
 {\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Bp\+Consts\+Enums\+Aliases.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Utils.\+h\char`\"{}}\newline
 Include dependency graph for Bp\+Settings.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -24,12 +25,12 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{DoxyCompactItemize}
 \item 
 struct \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}}
-\begin{DoxyCompactList}\small\item\em Structure to store the settings for the number of levels and iterations. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Structure to store the belief propagation settings including the number of levels and iterations. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Namespaces}
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace for enums, constants, structures, and functions specific to belief propagation processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -50,15 +51,15 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a3bd976de
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_ad4ef5f507937e5b53e6a5401970a5a4c}{beliefprop\+::k\+Bp\+Settings\+Sigma\+Header}} \{\char`\"{}Sigma\+Bp\char`\"{}\}
 \item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_ab9e9f3c48a3cd5073a4ddacc82a7fd3f}{beliefprop\+::k\+Default\+Levels\+Bp}} \{5\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default values for BP settings. Number of scales/levels in the pyramid to run BP. \end{DoxyCompactList}\item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a108721a4f4480e245cc4e5aa95e7e16d}{beliefprop\+::k\+Default\+Iters\+Bp}} \{7\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default number of BP iterations at each scale/level. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_a336c28d6cef3c20ef1440d9cd384545d}{beliefprop\+::k\+Default\+Sigma\+Bp}} \{0.\+0\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default sigma value for smoothing input images. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_a8a88eaca1cd79df0e09e0cc9ff2f8660}{beliefprop\+::k\+Default\+Lambda\+Bp}} \{0.\+1\}
-\item 
+\begin{DoxyCompactList}\small\item\em Default weighing of data cost. \end{DoxyCompactList}\item 
 constexpr float \mbox{\hyperlink{namespacebeliefprop_ae1fda26c8ba4d19dd5ce47b1be5a3d39}{beliefprop\+::k\+Default\+Data\+KBp}} \{15.\+0\}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default truncation of data cost. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -97,5 +98,5 @@ Parameters type requires As\+Run\+Data() function to return the parameters as a 
 \end{DoxyTemplParams}
 
 
-Definition at line 44 of file Bp\+Settings.\+h.
+Definition at line 45 of file Bp\+Settings.\+h.
 

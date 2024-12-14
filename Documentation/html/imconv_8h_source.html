@@ -113,10 +113,10 @@ $(document).ready(function(){initNavTree('imconv_8h_source.html',''); initResiza
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="imutil_8h.html">imutil.h</a>&quot;</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="misc_8h.html">misc.h</a>&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">static</span> <a class="code" href="classimage.html">image&lt;float&gt;</a> *imageUCHARtoFLOAT(<a class="code" href="classimage.html">image&lt;uchar&gt;</a> *input) {</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keywordtype">int</span> width = input-&gt;<a class="code" href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">width</a>();</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordtype">int</span> height = input-&gt;<a class="code" href="classimage.html#ac54a992877efda99723f8aec84f86428">height</a>();</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="classimage.html">image&lt;float&gt;</a> *output = <span class="keyword">new</span> <a class="code" href="classimage.html">image&lt;float&gt;</a>(width, height, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keyword">static</span> <a class="code" href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image&lt;float&gt;</a> *imageUCHARtoFLOAT(<a class="code" href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image&lt;uchar&gt;</a> *input) {</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <span class="keywordtype">int</span> width = input-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">width</a>();</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;  <span class="keywordtype">int</span> height = input-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">height</a>();</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <a class="code" href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image&lt;float&gt;</a> *output = <span class="keyword">new</span> <a class="code" href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image&lt;float&gt;</a>(width, height, <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> y = 0; y &lt; height; y++) {</div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> x = 0; x &lt; width; x++) {</div>
@@ -130,7 +130,7 @@ $(document).ready(function(){initNavTree('imconv_8h_source.html',''); initResiza
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="comment">#define GREEN_WEIGHT  0.587</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="comment">#define BLUE_WEIGHT  0.114</span></div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">static image&lt;uchar&gt; *imageRGBtoGRAY(image&lt;rgb&gt; *input) {</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="comment">static image&lt;uchar&gt; *imageRGBtoGRAY(image&lt;bp_single_thread_imp::rgb&gt; *input) {</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">  int width = input-&gt;width();</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">  int height = input-&gt;height();</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">  image&lt;uchar&gt; *output = new image&lt;uchar&gt;(width, height, false);</span></div>
@@ -146,10 +146,10 @@ $(document).ready(function(){initNavTree('imconv_8h_source.html',''); initResiza
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="comment">  return output;</span></div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">}</span></div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment"></span> </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">static image&lt;rgb&gt; *imageGRAYtoRGB(image&lt;uchar&gt; *input) {</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">static image&lt;bp_single_thread_imp::rgb&gt; *imageGRAYtoRGB(image&lt;uchar&gt; *input) {</span></div>
 <div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">  int width = input-&gt;width();</span></div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="comment">  int height = input-&gt;height();</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">  image&lt;rgb&gt; *output = new image&lt;rgb&gt;(width, height, false);</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">  image&lt;bp_single_thread_imp::rgb&gt; *output = new image&lt;bp_single_thread_imp::rgb&gt;(width, height, false);</span></div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment"></span> </div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="comment">  for (int y = 0; y &lt; height; y++) {</span></div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="comment">    for (int x = 0; x &lt; width; x++) {</span></div>
@@ -262,11 +262,11 @@ $(document).ready(function(){initNavTree('imconv_8h_source.html',''); initResiza
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="comment">}*/</span></div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclassimage_html"><div class="ttname"><a href="classimage.html">image</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00027">image.h:27</a></div></div>
-<div class="ttc" id="aclassimage_html_ab4a8935aa8982c6e83782a81b7705a34"><div class="ttname"><a href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">image::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00042">image.h:42</a></div></div>
-<div class="ttc" id="aclassimage_html_ac54a992877efda99723f8aec84f86428"><div class="ttname"><a href="classimage.html#ac54a992877efda99723f8aec84f86428">image::height</a></div><div class="ttdeci">int height() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00045">image.h:45</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00033">image.h:33</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a2ad768bb7cc3c17af88a30d0dd10b353"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">bp_single_thread_imp::image::height</a></div><div class="ttdeci">int height() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00051">image.h:51</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a52d7e0317229f4a6b074d57f31cbb182"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">bp_single_thread_imp::image::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00048">image.h:48</a></div></div>
 <div class="ttc" id="aimage_8h_html"><div class="ttname"><a href="image_8h.html">image.h</a></div></div>
-<div class="ttc" id="aimage_8h_html_af8a1068eeff9818890793f3b66db818c"><div class="ttname"><a href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a></div><div class="ttdeci">#define imRef(im, x, y)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00058">image.h:58</a></div></div>
+<div class="ttc" id="aimage_8h_html_af8a1068eeff9818890793f3b66db818c"><div class="ttname"><a href="image_8h.html#af8a1068eeff9818890793f3b66db818c">imRef</a></div><div class="ttdeci">#define imRef(im, x, y)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00064">image.h:64</a></div></div>
 <div class="ttc" id="aimutil_8h_html"><div class="ttname"><a href="imutil_8h.html">imutil.h</a></div></div>
 <div class="ttc" id="amisc_8h_html"><div class="ttname"><a href="misc_8h.html">misc.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

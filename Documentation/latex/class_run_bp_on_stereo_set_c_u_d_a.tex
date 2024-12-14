@@ -2,7 +2,7 @@
 \label{class_run_bp_on_stereo_set_c_u_d_a}\index{RunBpOnStereoSetCUDA$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetCUDA$<$ T, DISP\_VALS, ACCELERATION $>$}}
 
 
-Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths.  
+Child class of \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set}} to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths.  
 
 
 
@@ -32,7 +32,7 @@ Collaboration diagram for Run\+Bp\+On\+Stereo\+Set\+CUDA$<$ T, DISP\+\_\+\+VALS,
 \item 
 std\+::string \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_a089aaf8fb93fb15283c75171b6c4792e}{Bp\+Run\+Description}} () const override
 \begin{DoxyCompactList}\small\item\em Pure virtual function to return run description corresponding to target acceleration. \end{DoxyCompactList}\item 
-std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42}{operator()}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params) const override
+std\+::optional$<$ \mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{beliefprop\+::\+Bp\+Run\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d}{operator()}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params) const override
 \begin{DoxyCompactList}\small\item\em Run the disparity map estimation BP on a set of stereo images and save the results between each set of images. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Additional Inherited Members}
 
@@ -41,7 +41,7 @@ std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+S
 \subsubsection*{template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$\newline
 class Run\+Bp\+On\+Stereo\+Set\+CUDA$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}
 
-Class to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths. 
+Child class of \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set}} to run CUDA implementation of belief propagation on a given stereo set as defined by reference and test image file paths. 
 
 
 \begin{DoxyTemplParams}{Template Parameters}
@@ -54,7 +54,7 @@ Class to run CUDA implementation of belief propagation on a given stereo set as 
 \end{DoxyTemplParams}
 
 
-Definition at line 77 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
+Definition at line 49 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
 
 
 
@@ -79,14 +79,14 @@ Implements \mbox{\hyperlink{class_run_bp_on_stereo_set_a6c70f066d355522c0c01f896
 
 
 
-Definition at line 80 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
+Definition at line 52 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
 
-\mbox{\Hypertarget{class_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42}\label{class_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42}} 
+\mbox{\Hypertarget{class_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d}\label{class_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d}} 
 \index{RunBpOnStereoSetCUDA$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetCUDA$<$ T, DISP\_VALS, ACCELERATION $>$}!operator()@{operator()}}
 \index{operator()@{operator()}!RunBpOnStereoSetCUDA$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSetCUDA$<$ T, DISP\_VALS, ACCELERATION $>$}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
 {\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
-std\+::optional$<$\mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}}$>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a}{Run\+Bp\+On\+Stereo\+Set\+CUDA}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+std\+::optional$<$\mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{beliefprop\+::\+Bp\+Run\+Output}}$>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a}{Run\+Bp\+On\+Stereo\+Set\+CUDA}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
 
 
 
@@ -102,21 +102,21 @@ Run the disparity map estimation BP on a set of stereo images and save the resul
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$\+Process\+Stereo\+Set\+Output$>$ 
+std\+::optional$<$beliefprop\+::\+Bp\+Run\+Output$>$ 
 \end{DoxyReturn}
 
 
-Implements \mbox{\hyperlink{class_run_bp_on_stereo_set_a6fcf78b3ea23a566300e0413a1cc0002}{Run\+Bp\+On\+Stereo\+Set$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
+Implements \mbox{\hyperlink{class_run_bp_on_stereo_set_a7aceac573cf31e0ddc18b43e18aa3c0b}{Run\+Bp\+On\+Stereo\+Set$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
 
 
 
-Definition at line 92 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
+Definition at line 64 of file Run\+Bp\+On\+Stereo\+Set\+CUDA.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42_cgraph}
+\includegraphics[width=350pt]{class_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d_cgraph}
 \end{center}
 \end{figure}
 

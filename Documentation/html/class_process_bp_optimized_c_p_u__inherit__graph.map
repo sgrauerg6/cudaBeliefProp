@@ -1,4 +1,4 @@
 <map id="ProcessBpOptimizedCPU&lt; T, DISP_VALS, ACCELERATION &gt;" name="ProcessBpOptimizedCPU&lt; T, DISP_VALS, ACCELERATION &gt;">
-<area shape="rect" id="node1" title="Class that define functions used in processing bp in the optimized CPU implementation." alt="" coords="5,95,249,136"/>
+<area shape="rect" id="node1" title="Child class of ProcessBp that define functions used in processing bp in the optimized CPU implementat..." alt="" coords="5,95,249,136"/>
 <area shape="rect" id="node2" href="$class_process_bp.html" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="36,5,219,47"/>
 </map>

@@ -12,7 +12,6 @@ var _shared_bp_processing_functs_8h =
     [ "MsgStereo", "_shared_bp_processing_functs_8h.html#a719026072592bb9a4c99be94655253ef", null ],
     [ "PrintDataAndMessageValsAtPointKernel", "_shared_bp_processing_functs_8h.html#a5085344408155d487a5c63ad64236eab", null ],
     [ "PrintDataAndMessageValsToPointKernel", "_shared_bp_processing_functs_8h.html#a81aace5409ee7378733e21689955b681", null ],
-    [ "RetrieveIndexInDataAndMessage", "_shared_bp_processing_functs_8h.html#ab6a5d9752a11f9ee11a7792ce1538a2a", null ],
     [ "RetrieveOutputDisparityPixel", "_shared_bp_processing_functs_8h.html#a0d76573309b4b64236efc8c471b7831a", null ],
     [ "RunBPIterationUpdateMsgVals", "_shared_bp_processing_functs_8h.html#ac36b5b646e6c8bc15b731b2ec71325eb", null ],
     [ "RunBPIterationUpdateMsgVals", "_shared_bp_processing_functs_8h.html#a2ffa558874a17f1d28f6587e89be8eec", null ],

@@ -12,7 +12,7 @@ Class to store disparity map evaluation results. Specifically comparison between
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{class_disparity_map_evaluation_a90ee58f3a234ec905477f8abbd850d2d}{Initialize\+With\+Eval\+Params}} (const \mbox{\hyperlink{struct_disparity_map_evaluation_params}{Disparity\+Map\+Evaluation\+Params}} \&eval\+\_\+params)
+void \mbox{\hyperlink{class_disparity_map_evaluation_a832c32b7b5d5d323a2294ae8dcebcc73}{Initialize\+With\+Eval\+Params}} (const \mbox{\hyperlink{structbeliefprop_1_1_disparity_map_evaluation_params}{beliefprop\+::\+Disparity\+Map\+Evaluation\+Params}} \&eval\+\_\+params)
 \begin{DoxyCompactList}\small\item\em Initialize evaluation results with evaluation parameters. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_disparity_map_evaluation_aa934545f3103a05db5d5d6a5233693c0}{As\+Run\+Data}} () const
 \begin{DoxyCompactList}\small\item\em Retrieve evaluation results as \mbox{\hyperlink{class_run_data}{Run\+Data}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -32,7 +32,7 @@ std\+::map$<$ float, unsigned int $>$ \mbox{\hyperlink{class_disparity_map_evalu
 \doxysubsection{Detailed Description}
 Class to store disparity map evaluation results. Specifically comparison between two disparity maps such as output disparity map from bp processing and ground truth disparity map. 
 
-Definition at line 47 of file Disparity\+Map\+Evaluation.\+h.
+Definition at line 70 of file Disparity\+Map\+Evaluation.\+h.
 
 
 
@@ -61,11 +61,11 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{class_disparity_map_evaluation_aa934545f3103a05db5d5d6a5233693c0_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{class_disparity_map_evaluation_a90ee58f3a234ec905477f8abbd850d2d}\label{class_disparity_map_evaluation_a90ee58f3a234ec905477f8abbd850d2d}} 
+\mbox{\Hypertarget{class_disparity_map_evaluation_a832c32b7b5d5d323a2294ae8dcebcc73}\label{class_disparity_map_evaluation_a832c32b7b5d5d323a2294ae8dcebcc73}} 
 \index{DisparityMapEvaluation@{DisparityMapEvaluation}!InitializeWithEvalParams@{InitializeWithEvalParams}}
 \index{InitializeWithEvalParams@{InitializeWithEvalParams}!DisparityMapEvaluation@{DisparityMapEvaluation}}
 \doxysubsubsection{\texorpdfstring{InitializeWithEvalParams()}{InitializeWithEvalParams()}}
-{\footnotesize\ttfamily void Disparity\+Map\+Evaluation\+::\+Initialize\+With\+Eval\+Params (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{struct_disparity_map_evaluation_params}{Disparity\+Map\+Evaluation\+Params}} \&}]{eval\+\_\+params }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily void Disparity\+Map\+Evaluation\+::\+Initialize\+With\+Eval\+Params (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbeliefprop_1_1_disparity_map_evaluation_params}{beliefprop\+::\+Disparity\+Map\+Evaluation\+Params}} \&}]{eval\+\_\+params }\end{DoxyParamCaption})}
 
 
 
@@ -84,7 +84,7 @@ Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_disparity_map_evaluation_a90ee58f3a234ec905477f8abbd850d2d_icgraph}
+\includegraphics[width=350pt]{class_disparity_map_evaluation_a832c32b7b5d5d323a2294ae8dcebcc73_icgraph}
 \end{center}
 \end{figure}
 
@@ -102,7 +102,7 @@ Total and average value of the absolute difference between the disparity values 
 
 
 
-Definition at line 69 of file Disparity\+Map\+Evaluation.\+h.
+Definition at line 89 of file Disparity\+Map\+Evaluation.\+h.
 
 \mbox{\Hypertarget{class_disparity_map_evaluation_a18d9c42d66bfefc879a4ba6b548412f7}\label{class_disparity_map_evaluation_a18d9c42d66bfefc879a4ba6b548412f7}} 
 \index{DisparityMapEvaluation@{DisparityMapEvaluation}!disparity\_error\_max\_@{disparity\_error\_max\_}}
@@ -112,7 +112,7 @@ Definition at line 69 of file Disparity\+Map\+Evaluation.\+h.
 
 
 
-Definition at line 70 of file Disparity\+Map\+Evaluation.\+h.
+Definition at line 90 of file Disparity\+Map\+Evaluation.\+h.
 
 \mbox{\Hypertarget{class_disparity_map_evaluation_a61c48d27c0790d15b6644f8a0f005680}\label{class_disparity_map_evaluation_a61c48d27c0790d15b6644f8a0f005680}} 
 \index{DisparityMapEvaluation@{DisparityMapEvaluation}!num\_sig\_diff\_pixels\_at\_thresholds\_@{num\_sig\_diff\_pixels\_at\_thresholds\_}}
@@ -126,7 +126,7 @@ Stores the number of pixels where the difference between the disparity values in
 
 
 
-Definition at line 86 of file Disparity\+Map\+Evaluation.\+h.
+Definition at line 100 of file Disparity\+Map\+Evaluation.\+h.
 
 \mbox{\Hypertarget{class_disparity_map_evaluation_ad37c71450b65c4cd83c8005e97d4d93e}\label{class_disparity_map_evaluation_ad37c71450b65c4cd83c8005e97d4d93e}} 
 \index{DisparityMapEvaluation@{DisparityMapEvaluation}!prop\_sig\_diff\_pixels\_at\_thresholds\_@{prop\_sig\_diff\_pixels\_at\_thresholds\_}}
@@ -140,7 +140,7 @@ Proportion of pixels where the difference between the disparity values in dispar
 
 
 
-Definition at line 78 of file Disparity\+Map\+Evaluation.\+h.
+Definition at line 95 of file Disparity\+Map\+Evaluation.\+h.
 
 
 

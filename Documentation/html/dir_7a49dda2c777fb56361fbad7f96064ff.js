@@ -1,7 +1,7 @@
 var dir_7a49dda2c777fb56361fbad7f96064ff =
 [
     [ "convolve.h", "convolve_8h.html", [
-      [ "Convolve", "class_convolve.html", null ]
+      [ "Convolve", "classbp__single__thread__imp_1_1_convolve.html", null ]
     ] ],
     [ "filter.h", "filter_8h.html", "filter_8h" ],
     [ "image.h", "image_8h.html", "image_8h" ],
@@ -11,6 +11,6 @@ var dir_7a49dda2c777fb56361fbad7f96064ff =
     [ "pnmfile.h", "pnmfile_8h.html", "pnmfile_8h" ],
     [ "stereo.cpp", "stereo_8cpp.html", null ],
     [ "stereo.h", "stereo_8h.html", [
-      [ "RunBpStereoCPUSingleThread", "class_run_bp_stereo_c_p_u_single_thread.html", "class_run_bp_stereo_c_p_u_single_thread" ]
+      [ "RunBpOnStereoSetSingleThreadCPU", "class_run_bp_on_stereo_set_single_thread_c_p_u.html", "class_run_bp_on_stereo_set_single_thread_c_p_u" ]
     ] ]
 ];

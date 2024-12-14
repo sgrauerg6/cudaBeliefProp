@@ -1,0 +1,60 @@
+\hypertarget{_bp_run_utils_8h}{}\doxysection{src/beliefprop/\+Bp\+Run\+Processing/\+Bp\+Run\+Utils.h File Reference}
+\label{_bp_run_utils_8h}\index{src/beliefprop/BpRunProcessing/BpRunUtils.h@{src/beliefprop/BpRunProcessing/BpRunUtils.h}}
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$string\+\_\+view$>$}\newline
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
+Include dependency graph for Bp\+Run\+Utils.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_run_utils_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_bp_run_utils_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\begin{DoxyCompactList}\small\item\em Namespace for enums, constants, structures, and functions specific to belief propagation processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+unsigned int \mbox{\hyperlink{namespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281ea26}{beliefprop\+::\+Num\+Bp\+Stereo\+Runs}} (unsigned int disparity\+\_\+vals)
+\begin{DoxyCompactList}\small\item\em Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number of disparity values since implementation takes longer in those case, so there is likely less variance between runs and therefore less need to have as many runs. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}{beliefprop\+::\+Run\+Settings}} ()
+\begin{DoxyCompactList}\small\item\em Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for output. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}{beliefprop\+::\+Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
+\begin{DoxyCompactList}\small\item\em Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{beliefprop\+::k\+Inf\+Bp}} \{65504\}
+\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}{beliefprop\+::k\+Use\+Opt\+GPUMem\+Management}} \{true\}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}{beliefprop\+::k\+Optimized\+Indexing\+Setting}} \{true\}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebeliefprop_a16cf33c722213b90b0e2f7c98a5fe0f4}{beliefprop\+::k\+Allocate\+Free\+Bp\+Memory\+Outside\+Runs}} \{true\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_acd0b247144b676dcad6e6edba702a1f4}{beliefprop\+::k\+Mem\+Alloc\+Opt\+Header}} \{\char`\"{}Memory allocation of all BP data run at or before start of run\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a5f60d2312e165b39e28a446bb19e89d1}{beliefprop\+::k\+Memory\+Coalesced\+Bp\+Data\+Header}} \{\char`\"{}BP data arranged for memory coalescence\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacebeliefprop_a55bf926d18288a14ddc6c20014d23c22}{beliefprop\+::k\+Allocate\+Free\+Mem\+Outside\+Runs\+Header}} \{\char`\"{}Memory for BP allocated/freed outside of runs\char`\"{}\}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}

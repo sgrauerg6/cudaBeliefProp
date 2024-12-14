@@ -1,5 +1,5 @@
 <map id="beliefprop::InitializeCurrentLevelDataPixel" name="beliefprop::InitializeCurrentLevelDataPixel">
-<area shape="rect" id="node1" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="5,39,205,80"/>
-<area shape="rect" id="node2" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="253,5,440,47"/>
-<area shape="rect" id="node3" href="$namespaceutil__functs.html#a02d622e2afabbaa1396d0213c5a505af" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="256,71,437,112"/>
+<area shape="rect" id="node1" title="Initialize the data costs at the &quot;next&quot; level up in the pyramid given that the data at the lower has ..." alt="" coords="5,35,205,76"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#ab6a5d9752a11f9ee11a7792ce1538a2a" title="Retrieve the current 1&#45;D index value of the given point at the given disparity in the data cost and m..." alt="" coords="273,5,460,47"/>
+<area shape="rect" id="node3" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="253,71,480,98"/>
 </map>

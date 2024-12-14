@@ -1,0 +1,234 @@
+\hypertarget{class_parallel_params_bp}{}\doxysection{Parallel\+Params\+Bp Class Reference}
+\label{class_parallel_params_bp}\index{ParallelParamsBp@{ParallelParamsBp}}
+
+
+Child class of \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} to store and process parallelization parameters to use in each BP kernel at each level.  
+
+
+
+
+{\ttfamily \#include $<$Parallel\+Params\+Bp.\+h$>$}
+
+
+
+Inheritance diagram for Parallel\+Params\+Bp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{class_parallel_params_bp__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Parallel\+Params\+Bp\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{class_parallel_params_bp__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_parallel_params_bp_adc04d046de540b6601542f0a52691723}{Parallel\+Params\+Bp}} (\mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{run\+\_\+environment\+::\+Opt\+Parallel\+Params\+Setting}} opt\+\_\+parallel\+\_\+params\+\_\+setting, unsigned int num\+\_\+levels, const std\+::array$<$ unsigned int, 2 $>$ \&default\+\_\+parallel\+\_\+dims)
+\begin{DoxyCompactList}\small\item\em Constructor to set parallel parameters with default dimensions for each kernel. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_parallel_params_bp_a34ef3a653e1f8893bd48c80de3854db5}{Set\+Parallel\+Dims}} (const std\+::array$<$ unsigned int, 2 $>$ \&parallel\+\_\+dims) override
+\begin{DoxyCompactList}\small\item\em Set parallel parameters for each kernel to the same input dimensions. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_parallel_params_bp_a05aaeeee3a08d2228074e6c0ab775fd1}{Add\+Test\+Results\+For\+Parallel\+Params}} (const std\+::array$<$ unsigned int, 2 $>$ \&p\+\_\+params\+\_\+curr\+\_\+run, const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&curr\+\_\+run\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Add results from run with same specified parallel parameters used every parallel component. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_parallel_params_bp_aa6f41bebd9f5539e391b0431bf2ef410}{Set\+Optimized\+Params}} () override
+\begin{DoxyCompactList}\small\item\em Retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters to retrieved optimized parameters. \end{DoxyCompactList}\item 
+std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{class_parallel_params_bp_a8411119df587e1eff8c6dd38e22a718a}{Opt\+Params\+For\+Kernel}} (const std\+::array$<$ unsigned int, 2 $>$ \&kernel\+\_\+location) const override
+\begin{DoxyCompactList}\small\item\em Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers that correspond to the kernel name and bp level. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{class_parallel_params_bp_a6e273ac19c8161cd15e6d734d79f55d8}{As\+Run\+Data}} () const override
+\begin{DoxyCompactList}\small\item\em Retrieve current parallel parameters as \mbox{\hyperlink{class_run_data}{Run\+Data}} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Child class of \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} to store and process parallelization parameters to use in each BP kernel at each level. 
+
+Definition at line 56 of file Parallel\+Params\+Bp.\+h.
+
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_parallel_params_bp_adc04d046de540b6601542f0a52691723}\label{class_parallel_params_bp_adc04d046de540b6601542f0a52691723}} 
+\index{ParallelParamsBp@{ParallelParamsBp}!ParallelParamsBp@{ParallelParamsBp}}
+\index{ParallelParamsBp@{ParallelParamsBp}!ParallelParamsBp@{ParallelParamsBp}}
+\doxysubsubsection{\texorpdfstring{ParallelParamsBp()}{ParallelParamsBp()}}
+{\footnotesize\ttfamily Parallel\+Params\+Bp\+::\+Parallel\+Params\+Bp (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}{run\+\_\+environment\+::\+Opt\+Parallel\+Params\+Setting}}}]{opt\+\_\+parallel\+\_\+params\+\_\+setting,  }\item[{unsigned int}]{num\+\_\+levels,  }\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{default\+\_\+parallel\+\_\+dims }\end{DoxyParamCaption})}
+
+
+
+Constructor to set parallel parameters with default dimensions for each kernel. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em opt\+\_\+parallel\+\_\+params\+\_\+setting} & \\
+\hline
+{\em num\+\_\+levels} & \\
+\hline
+{\em default\+\_\+parallel\+\_\+dims} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 33 of file Parallel\+Params\+Bp.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_parallel_params_bp_adc04d046de540b6601542f0a52691723_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_parallel_params_bp_a05aaeeee3a08d2228074e6c0ab775fd1}\label{class_parallel_params_bp_a05aaeeee3a08d2228074e6c0ab775fd1}} 
+\index{ParallelParamsBp@{ParallelParamsBp}!AddTestResultsForParallelParams@{AddTestResultsForParallelParams}}
+\index{AddTestResultsForParallelParams@{AddTestResultsForParallelParams}!ParallelParamsBp@{ParallelParamsBp}}
+\doxysubsubsection{\texorpdfstring{AddTestResultsForParallelParams()}{AddTestResultsForParallelParams()}}
+{\footnotesize\ttfamily void Parallel\+Params\+Bp\+::\+Add\+Test\+Results\+For\+Parallel\+Params (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{p\+\_\+params\+\_\+curr\+\_\+run,  }\item[{const \mbox{\hyperlink{class_run_data}{Run\+Data}} \&}]{curr\+\_\+run\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Add results from run with same specified parallel parameters used every parallel component. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em p\+\_\+params\+\_\+curr\+\_\+run} & \\
+\hline
+{\em curr\+\_\+run\+\_\+data} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_parallel_params_a511d0e529facedc797d37422ce38a2dd}{Parallel\+Params}}.
+
+
+
+Definition at line 107 of file Parallel\+Params\+Bp.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_parallel_params_bp_a05aaeeee3a08d2228074e6c0ab775fd1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_parallel_params_bp_a6e273ac19c8161cd15e6d734d79f55d8}\label{class_parallel_params_bp_a6e273ac19c8161cd15e6d734d79f55d8}} 
+\index{ParallelParamsBp@{ParallelParamsBp}!AsRunData@{AsRunData}}
+\index{AsRunData@{AsRunData}!ParallelParamsBp@{ParallelParamsBp}}
+\doxysubsubsection{\texorpdfstring{AsRunData()}{AsRunData()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_run_data}{Run\+Data}} Parallel\+Params\+Bp\+::\+As\+Run\+Data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Retrieve current parallel parameters as \mbox{\hyperlink{class_run_data}{Run\+Data}} object. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{class_run_data}{Run\+Data}} 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_parallel_params_a6bc7e67cfcb4a5c6290c65d8c9718af8}{Parallel\+Params}}.
+
+
+
+Definition at line 65 of file Parallel\+Params\+Bp.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_parallel_params_bp_a6e273ac19c8161cd15e6d734d79f55d8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_parallel_params_bp_a8411119df587e1eff8c6dd38e22a718a}\label{class_parallel_params_bp_a8411119df587e1eff8c6dd38e22a718a}} 
+\index{ParallelParamsBp@{ParallelParamsBp}!OptParamsForKernel@{OptParamsForKernel}}
+\index{OptParamsForKernel@{OptParamsForKernel}!ParallelParamsBp@{ParallelParamsBp}}
+\doxysubsubsection{\texorpdfstring{OptParamsForKernel()}{OptParamsForKernel()}}
+{\footnotesize\ttfamily std\+::array$<$unsigned int, 2$>$ Parallel\+Params\+Bp\+::\+Opt\+Params\+For\+Kernel (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{kernel\+\_\+location }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an array of two unsigned integers that correspond to the kernel name and bp level. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em kernel\+\_\+location} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+std\+::array$<$unsigned int, 2$>$ 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{class_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d}{Parallel\+Params}}.
+
+
+
+Definition at line 99 of file Parallel\+Params\+Bp.\+h.
+
+\mbox{\Hypertarget{class_parallel_params_bp_aa6f41bebd9f5539e391b0431bf2ef410}\label{class_parallel_params_bp_aa6f41bebd9f5539e391b0431bf2ef410}} 
+\index{ParallelParamsBp@{ParallelParamsBp}!SetOptimizedParams@{SetOptimizedParams}}
+\index{SetOptimizedParams@{SetOptimizedParams}!ParallelParamsBp@{ParallelParamsBp}}
+\doxysubsubsection{\texorpdfstring{SetOptimizedParams()}{SetOptimizedParams()}}
+{\footnotesize\ttfamily void Parallel\+Params\+Bp\+::\+Set\+Optimized\+Params (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters to retrieved optimized parameters. 
+
+
+
+Implements \mbox{\hyperlink{class_parallel_params_aa37adf58582750f9c012bcb1213ef4b4}{Parallel\+Params}}.
+
+
+
+Definition at line 138 of file Parallel\+Params\+Bp.\+cpp.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_parallel_params_bp_aa6f41bebd9f5539e391b0431bf2ef410_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{class_parallel_params_bp_a34ef3a653e1f8893bd48c80de3854db5}\label{class_parallel_params_bp_a34ef3a653e1f8893bd48c80de3854db5}} 
+\index{ParallelParamsBp@{ParallelParamsBp}!SetParallelDims@{SetParallelDims}}
+\index{SetParallelDims@{SetParallelDims}!ParallelParamsBp@{ParallelParamsBp}}
+\doxysubsubsection{\texorpdfstring{SetParallelDims()}{SetParallelDims()}}
+{\footnotesize\ttfamily void Parallel\+Params\+Bp\+::\+Set\+Parallel\+Dims (\begin{DoxyParamCaption}\item[{const std\+::array$<$ unsigned int, 2 $>$ \&}]{parallel\+\_\+dims }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Set parallel parameters for each kernel to the same input dimensions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em parallel\+\_\+dims} & \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_parallel_params_abba11482dc47ab3bfec2f0e1200ed7b1}{Parallel\+Params}}.
+
+
+
+Definition at line 49 of file Parallel\+Params\+Bp.\+cpp.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_parallel_params_bp_a34ef3a653e1f8893bd48c80de3854db5_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_parallel_params_bp_8h}{Parallel\+Params\+Bp.\+h}}\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_parallel_params_bp_8cpp}{Parallel\+Params\+Bp.\+cpp}}\end{DoxyCompactItemize}

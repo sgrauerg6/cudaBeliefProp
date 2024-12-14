@@ -100,8 +100,8 @@ Inheritance diagram for ProcessBp&lt; T, DISP_VALS, ACCELERATION &gt;:</div>
 <div class="center"><img src="class_process_bp__inherit__graph.png" border="0" usemap="#a_process_bp_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_process_bp_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_inherit__map" id="a_process_bp_3_01_t_00_01_d_i_s_p___v_a_l_s_00_01_a_c_c_e_l_e_r_a_t_i_o_n_01_4_inherit__map">
 <area shape="rect" title="Abstract class to run belief propagation on target device. Some of the class functions need to be ove..." alt="" coords="5,39,188,80"/>
-<area shape="rect" href="class_process_bp_c_u_d_a.html" title="Class that define functions used in processing bp in the CUDA implementation." alt="" coords="264,5,452,47"/>
-<area shape="rect" href="class_process_bp_optimized_c_p_u.html" title="Class that define functions used in processing bp in the optimized CPU implementation." alt="" coords="236,71,480,112"/>
+<area shape="rect" href="class_process_bp_c_u_d_a.html" title="Child class of ProcessBp that define functions used in processing bp in the CUDA implementation." alt="" coords="264,5,452,47"/>
+<area shape="rect" href="class_process_bp_optimized_c_p_u.html" title="Child class of ProcessBp that define functions used in processing bp in the optimized CPU implementat..." alt="" coords="236,71,480,112"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
@@ -143,7 +143,7 @@ class ProcessBp&lt; T, DISP_VALS, ACCELERATION &gt;</h3>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00067">67</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00066">66</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a222abd86e8786a73f62056d9337f2a54"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a222abd86e8786a73f62056d9337f2a54">&#9670;&nbsp;</a></span>ProcessBp()</h2>
@@ -171,7 +171,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00069">69</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00068">68</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 
 </div>
 </div>
@@ -218,7 +218,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00071">71</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00070">70</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 
 </div>
 </div>
@@ -288,7 +288,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::optional&lt;std::pair&lt;float*, DetailedTimings&lt;beliefprop::Runtime_Type&gt;&gt;&gt; </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00371">371</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00370">370</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -297,7 +297,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="5,56,168,83"/>
 <area shape="rect" href="class_detailed_timings.html#ade899fc5c569139d6109f5c2bd0727b8" title="Add timing by segment index." alt="" coords="228,5,435,32"/>
 <area shape="rect" href="class_detailed_timings.html#a158238eb5d20564311ed04423769d542" title="Get median timing for a specified segment that may have been run multiple times." alt="" coords="216,56,447,83"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#acd3c4a1364c13cba9f180a18dd1c6a23" title=" " alt="" coords="220,107,443,149"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#aefc3512e6ee1730e923a897554504685" title=" " alt="" coords="241,107,422,149"/>
 <area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="495,107,692,149"/>
 </map>
 </div>
@@ -327,7 +327,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00095">95</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_process_bp_8h_source.html#l00094">94</a> of file <a class="el" href="_process_bp_8h_source.html">ProcessBp.h</a>.</p>
 
 </div>
 </div>

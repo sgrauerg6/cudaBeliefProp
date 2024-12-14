@@ -2,11 +2,22 @@
 \label{namespacerun__cuda}\index{run\_cuda@{run\_cuda}}
 
 
-Namespace with constants for parallel parameters default and options to use in run optimization.  
+Namespace with constants and functions to get CUDA device properties as well as default and test parallel parameters to use in CUDA implementation run optimization.  
 
 
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacerun__cuda_abc1f0ce06247bbe4dd5b7e6b4245aca3}{retrieve\+Device\+Properties}} (int num\+\_\+device)
+\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_ad92742879f8cb076cc70d96dbb1af539}{k\+Optimize\+CUDADesc}} \{\char`\"{}CUDA\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_a22dba15c8443a5912ae124644ed3618e}{k\+CUDAVersion\+Header}} \{\char`\"{}Cuda version\char`\"{}\}
+\item 
+constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_ae961a381430c465b5db8e1f45f13e7a3}{k\+CUDARuntime\+Header}} \{\char`\"{}Cuda Runtime Version\char`\"{}\}
 \item 
 const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}{k\+Parallel\+Parameter\+Options}}
 \begin{DoxyCompactList}\small\item\em Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation. \end{DoxyCompactList}\item 
@@ -15,9 +26,66 @@ constexpr std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cud
 
 
 \doxysubsection{Detailed Description}
-Namespace with constants for parallel parameters default and options to use in run optimization. 
+Namespace with constants and functions to get CUDA device properties as well as default and test parallel parameters to use in CUDA implementation run optimization. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacerun__cuda_abc1f0ce06247bbe4dd5b7e6b4245aca3}\label{namespacerun__cuda_abc1f0ce06247bbe4dd5b7e6b4245aca3}} 
+\index{run\_cuda@{run\_cuda}!retrieveDeviceProperties@{retrieveDeviceProperties}}
+\index{retrieveDeviceProperties@{retrieveDeviceProperties}!run\_cuda@{run\_cuda}}
+\doxysubsubsection{\texorpdfstring{retrieveDeviceProperties()}{retrieveDeviceProperties()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_run_data}{Run\+Data}} run\+\_\+cuda\+::retrieve\+Device\+Properties (\begin{DoxyParamCaption}\item[{int}]{num\+\_\+device }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 54 of file Run\+CUDASettings.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__cuda_abc1f0ce06247bbe4dd5b7e6b4245aca3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__cuda_abc1f0ce06247bbe4dd5b7e6b4245aca3_icgraph}
+\end{center}
+\end{figure}
+
 
 \doxysubsection{Variable Documentation}
+\mbox{\Hypertarget{namespacerun__cuda_ae961a381430c465b5db8e1f45f13e7a3}\label{namespacerun__cuda_ae961a381430c465b5db8e1f45f13e7a3}} 
+\index{run\_cuda@{run\_cuda}!kCUDARuntimeHeader@{kCUDARuntimeHeader}}
+\index{kCUDARuntimeHeader@{kCUDARuntimeHeader}!run\_cuda@{run\_cuda}}
+\doxysubsubsection{\texorpdfstring{kCUDARuntimeHeader}{kCUDARuntimeHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+cuda\+::k\+CUDARuntime\+Header \{\char`\"{}Cuda Runtime Version\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 52 of file Run\+CUDASettings.\+h.
+
+\mbox{\Hypertarget{namespacerun__cuda_a22dba15c8443a5912ae124644ed3618e}\label{namespacerun__cuda_a22dba15c8443a5912ae124644ed3618e}} 
+\index{run\_cuda@{run\_cuda}!kCUDAVersionHeader@{kCUDAVersionHeader}}
+\index{kCUDAVersionHeader@{kCUDAVersionHeader}!run\_cuda@{run\_cuda}}
+\doxysubsubsection{\texorpdfstring{kCUDAVersionHeader}{kCUDAVersionHeader}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+cuda\+::k\+CUDAVersion\+Header \{\char`\"{}Cuda version\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 51 of file Run\+CUDASettings.\+h.
+
+\mbox{\Hypertarget{namespacerun__cuda_ad92742879f8cb076cc70d96dbb1af539}\label{namespacerun__cuda_ad92742879f8cb076cc70d96dbb1af539}} 
+\index{run\_cuda@{run\_cuda}!kOptimizeCUDADesc@{kOptimizeCUDADesc}}
+\index{kOptimizeCUDADesc@{kOptimizeCUDADesc}!run\_cuda@{run\_cuda}}
+\doxysubsubsection{\texorpdfstring{kOptimizeCUDADesc}{kOptimizeCUDADesc}}
+{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+cuda\+::k\+Optimize\+CUDADesc \{\char`\"{}CUDA\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+Definition at line 50 of file Run\+CUDASettings.\+h.
+
 \mbox{\Hypertarget{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}\label{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}} 
 \index{run\_cuda@{run\_cuda}!kParallelParameterOptions@{kParallelParameterOptions}}
 \index{kParallelParameterOptions@{kParallelParameterOptions}!run\_cuda@{run\_cuda}}
@@ -39,7 +107,7 @@ Parallel parameter options to run to retrieve optimized parallel parameters in C
 
 
 
-Definition at line 54 of file Run\+CUDASettings.\+h.
+Definition at line 79 of file Run\+CUDASettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}\label{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}} 
 \index{run\_cuda@{run\_cuda}!kParallelParamsDefault@{kParallelParamsDefault}}
@@ -53,5 +121,5 @@ Default thread block dimensions (which is what parallel parameters corresponds t
 
 
 
-Definition at line 63 of file Run\+CUDASettings.\+h.
+Definition at line 88 of file Run\+CUDASettings.\+h.
 

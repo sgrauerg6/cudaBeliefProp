@@ -1,0 +1,4 @@
+<map id="beliefprop_cuda::RetrieveOutputDisparity" name="beliefprop_cuda::RetrieveOutputDisparity">
+<area shape="rect" id="node1" title="Retrieve the best disparity estimate from image 1 to image 2 for each pixel in parallel." alt="" coords="5,5,195,47"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="243,13,469,39"/>
+</map>

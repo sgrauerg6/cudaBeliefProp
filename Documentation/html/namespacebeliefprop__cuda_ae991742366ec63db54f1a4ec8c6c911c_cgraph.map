@@ -1,0 +1,4 @@
+<map id="beliefprop_cuda::RunBPIterationUsingCheckerboardUpdates" name="beliefprop_cuda::RunBPIterationUsingCheckerboardUpdates">
+<area shape="rect" id="node1" title="Kernel function to run the current iteration of belief propagation in parallel using the checkerboard..." alt="" coords="5,5,236,47"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="284,13,511,39"/>
+</map>

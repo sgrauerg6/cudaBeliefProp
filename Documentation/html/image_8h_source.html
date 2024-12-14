@@ -110,92 +110,97 @@ $(document).ready(function(){initNavTree('image_8h_source.html',''); initResizab
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;cstring&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="classimage.html">   27</a></span>&#160;<span class="keyword">class </span><a class="code" href="classimage.html">image</a> {</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;  <span class="comment">/* create an image */</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;  <a class="code" href="classimage.html#abb6ec9100af99ab9af0396df57108673">image</a>(<span class="keywordtype">int</span> <a class="code" href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">width</a>, <span class="keywordtype">int</span> <a class="code" href="classimage.html#ac54a992877efda99723f8aec84f86428">height</a>, <span class="keywordtype">bool</span> <a class="code" href="classimage.html#a0717355904d2ddf8550acc46e7785d22">init</a> = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="keyword">namespace </span><a class="code" href="namespacebp__single__thread__imp.html">bp_single_thread_imp</a> {</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;  <span class="comment">/* delete an image */</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;  <a class="code" href="classimage.html#a4ac3a27e13f8e2d1c55d79f0dddefbb2">~image</a>();</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="comment">/* init an image */</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classimage.html#a0717355904d2ddf8550acc46e7785d22">init</a>(<span class="keyword">const</span> T &amp;val);</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html">   33</a></span>&#160;<span class="keyword">class </span><a class="code" href="classbp__single__thread__imp_1_1image.html">image</a> {</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;  <span class="comment">/* create an image */</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <a class="code" href="classbp__single__thread__imp_1_1image.html#a10f539a7f8496e87f9ce3c62c371bc0e">image</a>(<span class="keywordtype">int</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">width</a>, <span class="keywordtype">int</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">height</a>, <span class="keywordtype">bool</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a42d288169faab41f21bc10d583ad84e9">init</a> = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">/* copy an image */</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classimage.html">image&lt;T&gt;</a> *<a class="code" href="classimage.html#a4795885389b229c036e24b5e392f8c6a">copy</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;  </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">/* get the width of an image. */</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">   42</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">width</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> w; }</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;  </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">/* get the height of an image. */</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="classimage.html#ac54a992877efda99723f8aec84f86428">   45</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classimage.html#ac54a992877efda99723f8aec84f86428">height</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> h; }</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;  <span class="comment">/* delete an image */</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;  <a class="code" href="classbp__single__thread__imp_1_1image.html#a60768921ae244bddfe983939ba03d27e">~image</a>();</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;  <span class="comment">/* init an image */</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a42d288169faab41f21bc10d583ad84e9">init</a>(<span class="keyword">const</span> T &amp;val);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <span class="comment">/* copy an image */</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;  <a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;T&gt;</a> *<a class="code" href="classbp__single__thread__imp_1_1image.html#a45b222a57760c10f4223dddb1dc8cdb3">copy</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;  </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">/* image data. */</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classimage.html#a7711731e8e379e682e39ac6b7d5c39e8">   48</a></span>&#160;  T *<a class="code" href="classimage.html#a7711731e8e379e682e39ac6b7d5c39e8">data</a>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="comment">/* get the width of an image. */</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">   48</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">width</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> w; }</div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">/* row pointers. */</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classimage.html#a39e1a64f51364ce67f90c1efb105cd4d">   51</a></span>&#160;  T **<a class="code" href="classimage.html#a39e1a64f51364ce67f90c1efb105cd4d">access</a>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="comment">/* get the height of an image. */</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">   51</a></span>&#160;  <span class="keywordtype">int</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">height</a>()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> h; }</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;  </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keywordtype">int</span> w, h;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;};</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="comment">/* use imRef to access image data. */</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">   58</a></span>&#160;<span class="preprocessor">#define imRef(im, x, y) (im-&gt;access[y][x])</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="comment">/* use imPtr to get pointer to image data. */</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">   61</a></span>&#160;<span class="preprocessor">#define imPtr(im, x, y) &amp;(im-&gt;access[y][x])</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;  <span class="comment">/* image data. */</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#aa2b2e6c4a72d0b71869a0094a309884d">   54</a></span>&#160;  T *<a class="code" href="classbp__single__thread__imp_1_1image.html#aa2b2e6c4a72d0b71869a0094a309884d">data</a>;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;  </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="comment">/* row pointers. */</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#afe3ea975dbd3bc54742b8559531b6a11">   57</a></span>&#160;  T **<a class="code" href="classbp__single__thread__imp_1_1image.html#afe3ea975dbd3bc54742b8559531b6a11">access</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keywordtype">int</span> w, h;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classimage.html#abb6ec9100af99ab9af0396df57108673">   64</a></span>&#160;<a class="code" href="classimage.html#abb6ec9100af99ab9af0396df57108673">image&lt;T&gt;::image</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">bool</span> init) {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  w = width;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  h = height;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  data = <span class="keyword">new</span> T[w * h];  <span class="comment">// allocate space for image data</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  access = <span class="keyword">new</span> T*[h];   <span class="comment">// allocate space for row pointers</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="comment">// initialize row pointers</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; h; i++)</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    access[i] = data + (i * w);  </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keywordflow">if</span> (init)</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    memset(data, 0, w * h * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;}</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="classimage.html#a4ac3a27e13f8e2d1c55d79f0dddefbb2">   79</a></span>&#160;<a class="code" href="classimage.html#a4ac3a27e13f8e2d1c55d79f0dddefbb2">image&lt;T&gt;::~image</a>() {</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keyword">delete</span> [] data; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;  <span class="keyword">delete</span> [] access;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">/* use imRef to access image data. */</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="image_8h.html#af8a1068eeff9818890793f3b66db818c">   64</a></span>&#160;<span class="preprocessor">#define imRef(im, x, y) (im-&gt;access[y][x])</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;  </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">/* use imPtr to get pointer to image data. */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">   67</a></span>&#160;<span class="preprocessor">#define imPtr(im, x, y) &amp;(im-&gt;access[y][x])</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00070"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#a10f539a7f8496e87f9ce3c62c371bc0e">   70</a></span>&#160;<a class="code" href="classbp__single__thread__imp_1_1image.html#a10f539a7f8496e87f9ce3c62c371bc0e">image&lt;T&gt;::image</a>(<span class="keywordtype">int</span> width, <span class="keywordtype">int</span> height, <span class="keywordtype">bool</span> init) {</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  w = width;</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  h = height;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;  data = <span class="keyword">new</span> T[w * h];  <span class="comment">// allocate space for image data</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  access = <span class="keyword">new</span> T*[h];   <span class="comment">// allocate space for row pointers</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;  </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;  <span class="comment">// initialize row pointers</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; h; i++)</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    access[i] = data + (i * w);  </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;  </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;  <span class="keywordflow">if</span> (init)</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    memset(data, 0, w * h * <span class="keyword">sizeof</span>(T));</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;}</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
 <div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classimage.html#a0717355904d2ddf8550acc46e7785d22">   85</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classimage.html#a0717355904d2ddf8550acc46e7785d22">image&lt;T&gt;::init</a>(<span class="keyword">const</span> T &amp;val) {</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  T *ptr = <a class="code" href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">imPtr</a>(<span class="keyword">this</span>, 0, 0);</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  T *end = <a class="code" href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">imPtr</a>(<span class="keyword">this</span>, w-1, h-1);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keywordflow">while</span> (ptr &lt;= end)</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    *ptr++ = val;</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;}</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="classimage.html#a4795885389b229c036e24b5e392f8c6a">   94</a></span>&#160;<a class="code" href="classimage.html">image&lt;T&gt;</a> *<a class="code" href="classimage.html#a4795885389b229c036e24b5e392f8c6a">image&lt;T&gt;::copy</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <a class="code" href="classimage.html">image&lt;T&gt;</a> *im = <span class="keyword">new</span> <a class="code" href="classimage.html">image&lt;T&gt;</a>(w, h, <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  memcpy(im-&gt;<a class="code" href="classimage.html#a7711731e8e379e682e39ac6b7d5c39e8">data</a>, data, w * h * <span class="keyword">sizeof</span>(T));</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  <span class="keywordflow">return</span> im;</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;}</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  </div>
-<div class="ttc" id="aclassimage_html"><div class="ttname"><a href="classimage.html">image</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00027">image.h:27</a></div></div>
-<div class="ttc" id="aclassimage_html_a0717355904d2ddf8550acc46e7785d22"><div class="ttname"><a href="classimage.html#a0717355904d2ddf8550acc46e7785d22">image::init</a></div><div class="ttdeci">void init(const T &amp;val)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00085">image.h:85</a></div></div>
-<div class="ttc" id="aclassimage_html_a39e1a64f51364ce67f90c1efb105cd4d"><div class="ttname"><a href="classimage.html#a39e1a64f51364ce67f90c1efb105cd4d">image::access</a></div><div class="ttdeci">T ** access</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00051">image.h:51</a></div></div>
-<div class="ttc" id="aclassimage_html_a4795885389b229c036e24b5e392f8c6a"><div class="ttname"><a href="classimage.html#a4795885389b229c036e24b5e392f8c6a">image::copy</a></div><div class="ttdeci">image&lt; T &gt; * copy() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00094">image.h:94</a></div></div>
-<div class="ttc" id="aclassimage_html_a4ac3a27e13f8e2d1c55d79f0dddefbb2"><div class="ttname"><a href="classimage.html#a4ac3a27e13f8e2d1c55d79f0dddefbb2">image::~image</a></div><div class="ttdeci">~image()</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00079">image.h:79</a></div></div>
-<div class="ttc" id="aclassimage_html_a7711731e8e379e682e39ac6b7d5c39e8"><div class="ttname"><a href="classimage.html#a7711731e8e379e682e39ac6b7d5c39e8">image::data</a></div><div class="ttdeci">T * data</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00048">image.h:48</a></div></div>
-<div class="ttc" id="aclassimage_html_ab4a8935aa8982c6e83782a81b7705a34"><div class="ttname"><a href="classimage.html#ab4a8935aa8982c6e83782a81b7705a34">image::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00042">image.h:42</a></div></div>
-<div class="ttc" id="aclassimage_html_abb6ec9100af99ab9af0396df57108673"><div class="ttname"><a href="classimage.html#abb6ec9100af99ab9af0396df57108673">image::image</a></div><div class="ttdeci">image(int width, int height, bool init=true)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00064">image.h:64</a></div></div>
-<div class="ttc" id="aclassimage_html_ac54a992877efda99723f8aec84f86428"><div class="ttname"><a href="classimage.html#ac54a992877efda99723f8aec84f86428">image::height</a></div><div class="ttdeci">int height() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00045">image.h:45</a></div></div>
-<div class="ttc" id="aimage_8h_html_a7eee0691d0d430c8bd7878d72925d68e"><div class="ttname"><a href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">imPtr</a></div><div class="ttdeci">#define imPtr(im, x, y)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00061">image.h:61</a></div></div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#a60768921ae244bddfe983939ba03d27e">   85</a></span>&#160;<a class="code" href="classbp__single__thread__imp_1_1image.html#a60768921ae244bddfe983939ba03d27e">image&lt;T&gt;::~image</a>() {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">delete</span> [] data; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">delete</span> [] access;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#a42d288169faab41f21bc10d583ad84e9">   91</a></span>&#160;<span class="keywordtype">void</span> <a class="code" href="classbp__single__thread__imp_1_1image.html#a42d288169faab41f21bc10d583ad84e9">image&lt;T&gt;::init</a>(<span class="keyword">const</span> T &amp;val) {</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;  T *ptr = <a class="code" href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">imPtr</a>(<span class="keyword">this</span>, 0, 0);</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  T *end = <a class="code" href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">imPtr</a>(<span class="keyword">this</span>, w-1, h-1);</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keywordflow">while</span> (ptr &lt;= end)</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    *ptr++ = val;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;}</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
+<div class="line"><a name="l00100"></a><span class="lineno"><a class="line" href="classbp__single__thread__imp_1_1image.html#a45b222a57760c10f4223dddb1dc8cdb3">  100</a></span>&#160;<a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;T&gt;</a> *<a class="code" href="classbp__single__thread__imp_1_1image.html#a45b222a57760c10f4223dddb1dc8cdb3">image&lt;T&gt;::copy</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;T&gt;</a> *im = <span class="keyword">new</span> <a class="code" href="classbp__single__thread__imp_1_1image.html">image&lt;T&gt;</a>(w, h, <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  memcpy(im-&gt;<a class="code" href="classbp__single__thread__imp_1_1image.html#aa2b2e6c4a72d0b71869a0094a309884d">data</a>, data, w * h * <span class="keyword">sizeof</span>(T));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  <span class="keywordflow">return</span> im;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;}</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;};</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  </div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html">bp_single_thread_imp::image</a></div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00033">image.h:33</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a10f539a7f8496e87f9ce3c62c371bc0e"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a10f539a7f8496e87f9ce3c62c371bc0e">bp_single_thread_imp::image::image</a></div><div class="ttdeci">image(int width, int height, bool init=true)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00070">image.h:70</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a2ad768bb7cc3c17af88a30d0dd10b353"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a2ad768bb7cc3c17af88a30d0dd10b353">bp_single_thread_imp::image::height</a></div><div class="ttdeci">int height() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00051">image.h:51</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a42d288169faab41f21bc10d583ad84e9"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a42d288169faab41f21bc10d583ad84e9">bp_single_thread_imp::image::init</a></div><div class="ttdeci">void init(const T &amp;val)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00091">image.h:91</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a45b222a57760c10f4223dddb1dc8cdb3"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a45b222a57760c10f4223dddb1dc8cdb3">bp_single_thread_imp::image::copy</a></div><div class="ttdeci">image&lt; T &gt; * copy() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00100">image.h:100</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a52d7e0317229f4a6b074d57f31cbb182"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a52d7e0317229f4a6b074d57f31cbb182">bp_single_thread_imp::image::width</a></div><div class="ttdeci">int width() const</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00048">image.h:48</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_a60768921ae244bddfe983939ba03d27e"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#a60768921ae244bddfe983939ba03d27e">bp_single_thread_imp::image::~image</a></div><div class="ttdeci">~image()</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00085">image.h:85</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_aa2b2e6c4a72d0b71869a0094a309884d"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#aa2b2e6c4a72d0b71869a0094a309884d">bp_single_thread_imp::image::data</a></div><div class="ttdeci">T * data</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00054">image.h:54</a></div></div>
+<div class="ttc" id="aclassbp__single__thread__imp_1_1image_html_afe3ea975dbd3bc54742b8559531b6a11"><div class="ttname"><a href="classbp__single__thread__imp_1_1image.html#afe3ea975dbd3bc54742b8559531b6a11">bp_single_thread_imp::image::access</a></div><div class="ttdeci">T ** access</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00057">image.h:57</a></div></div>
+<div class="ttc" id="aimage_8h_html_a7eee0691d0d430c8bd7878d72925d68e"><div class="ttname"><a href="image_8h.html#a7eee0691d0d430c8bd7878d72925d68e">imPtr</a></div><div class="ttdeci">#define imPtr(im, x, y)</div><div class="ttdef"><b>Definition:</b> <a href="image_8h_source.html#l00067">image.h:67</a></div></div>
+<div class="ttc" id="anamespacebp__single__thread__imp_html"><div class="ttname"><a href="namespacebp__single__thread__imp.html">bp_single_thread_imp</a></div><div class="ttdoc">Class and structs in single-thread CPU bp implementation by Pedro Felzenwalb available at https://cs....</div><div class="ttdef"><b>Definition:</b> <a href="convolve_8h_source.html#l00033">convolve.h:33</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

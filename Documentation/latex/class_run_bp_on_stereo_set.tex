@@ -23,12 +23,12 @@ Inheritance diagram for Run\+Bp\+On\+Stereo\+Set$<$ T, DISP\+\_\+\+VALS, ACCELER
 \item 
 virtual std\+::string \mbox{\hyperlink{class_run_bp_on_stereo_set_a6c70f066d355522c0c01f896d12b3970}{Bp\+Run\+Description}} () const =0
 \begin{DoxyCompactList}\small\item\em Pure virtual function to return run description corresponding to target acceleration. \end{DoxyCompactList}\item 
-virtual std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_a6fcf78b3ea23a566300e0413a1cc0002}{operator()}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params) const =0
+virtual std\+::optional$<$ \mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{beliefprop\+::\+Bp\+Run\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_a7aceac573cf31e0ddc18b43e18aa3c0b}{operator()}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&parallel\+\_\+params) const =0
 \begin{DoxyCompactList}\small\item\em Pure virtual operator() overload that must be defined in child class. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Protected Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_a4cf48a8872cb1bfca6152c2f5ac9c900}{Process\+Stereo\+Set}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ \&run\+\_\+bp\+\_\+on\+\_\+device) const
+std\+::optional$<$ \mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{beliefprop\+::\+Bp\+Run\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set_a5008d2d735a622fce0493f058647ac5c}{Process\+Stereo\+Set}} (const std\+::array$<$ std\+::string, 2 $>$ \&ref\+\_\+test\+\_\+image\+\_\+path, const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&alg\+\_\+settings, const \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{beliefprop\+::\+Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ \&run\+\_\+bp\+\_\+on\+\_\+device) const
 \begin{DoxyCompactList}\small\item\em Protected function to set up, run, and evaluate bp processing on target device using pointers to acceleration-\/specific smooth image, process BP, and memory management child class objects. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -49,7 +49,7 @@ Abstract class to set up and run belief propagation on target device using speci
 \end{DoxyTemplParams}
 
 
-Definition at line 86 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+Definition at line 89 of file Run\+Bp\+On\+Stereo\+Set.\+h.
 
 
 
@@ -70,14 +70,14 @@ std\+::string
 \end{DoxyReturn}
 
 
-Implemented in \mbox{\hyperlink{class_run_bp_stereo_c_p_u_single_thread_a3e525b7b34e9e325b86960b1c2840717}{Run\+Bp\+Stereo\+CPUSingle\+Thread$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_a089aaf8fb93fb15283c75171b6c4792e}{Run\+Bp\+On\+Stereo\+Set\+CUDA$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, and \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u_a78d05e0c1d14367f9e5c951f49f486df}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
+Implemented in \mbox{\hyperlink{class_run_bp_on_stereo_set_single_thread_c_p_u_af0039d2461d5479520081a7fd65fd928}{Run\+Bp\+On\+Stereo\+Set\+Single\+Thread\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_a089aaf8fb93fb15283c75171b6c4792e}{Run\+Bp\+On\+Stereo\+Set\+CUDA$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, and \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u_a78d05e0c1d14367f9e5c951f49f486df}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
 
-\mbox{\Hypertarget{class_run_bp_on_stereo_set_a6fcf78b3ea23a566300e0413a1cc0002}\label{class_run_bp_on_stereo_set_a6fcf78b3ea23a566300e0413a1cc0002}} 
+\mbox{\Hypertarget{class_run_bp_on_stereo_set_a7aceac573cf31e0ddc18b43e18aa3c0b}\label{class_run_bp_on_stereo_set_a7aceac573cf31e0ddc18b43e18aa3c0b}} 
 \index{RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$}!operator()@{operator()}}
 \index{operator()@{operator()}!RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
 {\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
-virtual std\+::optional$<$\mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}}$>$ \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+virtual std\+::optional$<$\mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{beliefprop\+::\+Bp\+Run\+Output}}$>$ \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{class_parallel_params}{Parallel\+Params}} \&}]{parallel\+\_\+params }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
 
 
 
@@ -93,18 +93,18 @@ Pure virtual operator() overload that must be defined in child class.
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$\+Process\+Stereo\+Set\+Output$>$ 
+std\+::optional$<$beliefprop\+::\+Bp\+Run\+Output$>$ 
 \end{DoxyReturn}
 
 
-Implemented in \mbox{\hyperlink{class_run_bp_stereo_c_p_u_single_thread_a2f68dcb344642cd76aec40662737a972}{Run\+Bp\+Stereo\+CPUSingle\+Thread$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_ae8e0dd1cd0c36fa75769a2dc8f49dd42}{Run\+Bp\+On\+Stereo\+Set\+CUDA$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, and \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u_aaf001fae4f5a536ad1ab07057d6b7fe0}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
+Implemented in \mbox{\hyperlink{class_run_bp_on_stereo_set_single_thread_c_p_u_adb4777dae1af57ab138bc10615074020}{Run\+Bp\+On\+Stereo\+Set\+Single\+Thread\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, \mbox{\hyperlink{class_run_bp_on_stereo_set_c_u_d_a_adbc8134aa5f34a8f396778fc1e73af7d}{Run\+Bp\+On\+Stereo\+Set\+CUDA$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}, and \mbox{\hyperlink{class_run_bp_on_stereo_set_optimized_c_p_u_ad134068d69c4c87272a8b22537df88da}{Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}}.
 
-\mbox{\Hypertarget{class_run_bp_on_stereo_set_a4cf48a8872cb1bfca6152c2f5ac9c900}\label{class_run_bp_on_stereo_set_a4cf48a8872cb1bfca6152c2f5ac9c900}} 
+\mbox{\Hypertarget{class_run_bp_on_stereo_set_a5008d2d735a622fce0493f058647ac5c}\label{class_run_bp_on_stereo_set_a5008d2d735a622fce0493f058647ac5c}} 
 \index{RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$}!ProcessStereoSet@{ProcessStereoSet}}
 \index{ProcessStereoSet@{ProcessStereoSet}!RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$@{RunBpOnStereoSet$<$ T, DISP\_VALS, ACCELERATION $>$}}
 \doxysubsubsection{\texorpdfstring{ProcessStereoSet()}{ProcessStereoSet()}}
 {\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
-std\+::optional$<$ \mbox{\hyperlink{struct_process_stereo_set_output}{Process\+Stereo\+Set\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::Process\+Stereo\+Set (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{struct_bp_on_device}{Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ \&}]{run\+\_\+bp\+\_\+on\+\_\+device }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+std\+::optional$<$ \mbox{\hyperlink{structbeliefprop_1_1_bp_run_output}{beliefprop\+::\+Bp\+Run\+Output}} $>$ \mbox{\hyperlink{class_run_bp_on_stereo_set}{Run\+Bp\+On\+Stereo\+Set}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::Process\+Stereo\+Set (\begin{DoxyParamCaption}\item[{const std\+::array$<$ std\+::string, 2 $>$ \&}]{ref\+\_\+test\+\_\+image\+\_\+path,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_settings}{beliefprop\+::\+Bp\+Settings}} \&}]{alg\+\_\+settings,  }\item[{const \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{beliefprop\+::\+Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ \&}]{run\+\_\+bp\+\_\+on\+\_\+device }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
 
 
 
@@ -120,24 +120,24 @@ Protected function to set up, run, and evaluate bp processing on target device u
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
-std\+::optional$<$\+Process\+Stereo\+Set\+Output$>$ 
+std\+::optional$<$beliefprop\+::\+Bp\+Run\+Output$>$ 
 \end{DoxyReturn}
 
 
-Definition at line 128 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+Definition at line 131 of file Run\+Bp\+On\+Stereo\+Set.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_run_bp_on_stereo_set_a4cf48a8872cb1bfca6152c2f5ac9c900_cgraph}
+\includegraphics[width=350pt]{class_run_bp_on_stereo_set_a5008d2d735a622fce0493f058647ac5c_cgraph}
 \end{center}
 \end{figure}
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{class_run_bp_on_stereo_set_a4cf48a8872cb1bfca6152c2f5ac9c900_icgraph}
+\includegraphics[width=350pt]{class_run_bp_on_stereo_set_a5008d2d735a622fce0493f058647ac5c_icgraph}
 \end{center}
 \end{figure}
 

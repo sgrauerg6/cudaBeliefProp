@@ -1,0 +1,45 @@
+\hypertarget{_shared_bp_util_functs_8h}{}\doxysection{src/beliefprop/\+Bp\+Shared\+Functs/\+Shared\+Bp\+Util\+Functs.h File Reference}
+\label{_shared_bp_util_functs_8h}\index{src/beliefprop/BpSharedFuncts/SharedBpUtilFuncts.h@{src/beliefprop/BpSharedFuncts/SharedBpUtilFuncts.h}}
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp/\+Utility\+Functs.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Consts\+Enums\+Aliases.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Run\+Utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Level.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Stereo\+Sets.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Shared\+Bp\+Util\+Functs.\+h\char`\"{}}\newline
+Include dependency graph for Shared\+Bp\+Util\+Functs.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_shared_bp_util_functs_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_shared_bp_util_functs_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
+\begin{DoxyCompactList}\small\item\em Namespace for enums, constants, structures, and functions specific to belief propagation processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} bool \mbox{\hyperlink{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f}{beliefprop\+::\+Within\+Image\+Bounds}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height)
+\begin{DoxyCompactList}\small\item\em Checks if the current point is within the image bounds Assumed that input x/y vals are above zero since their unsigned int so no need for $>$= 0 check. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} unsigned int \mbox{\hyperlink{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}{beliefprop\+::\+Retrieve\+Index\+In\+Data\+And\+Message}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height, unsigned int current\+\_\+disparity, unsigned int total\+\_\+num\+\_\+disp\+\_\+vals, unsigned int offset\+\_\+data=0u)
+\begin{DoxyCompactList}\small\item\em Retrieve the current 1-\/D index value of the given point at the given disparity in the data cost and message data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray 
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}

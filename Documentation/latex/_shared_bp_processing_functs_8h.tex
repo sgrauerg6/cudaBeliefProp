@@ -4,7 +4,10 @@
 {\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Imp/\+Utility\+Functs.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Consts\+Enums\+Aliases.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Run\+Utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Level.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Stereo\+Sets.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Shared\+Bp\+Util\+Functs.\+h\char`\"{}}\newline
 Include dependency graph for Shared\+Bp\+Processing\+Functs.\+h\+:\nopagebreak
 \begin{figure}[H]
 \begin{center}
@@ -23,12 +26,10 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \begin{DoxyCompactItemize}
 \item 
  \mbox{\hyperlink{namespacebeliefprop}{beliefprop}}
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Namespace for enums, constants, structures, and functions specific to belief propagation processing. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Functions}
 \begin{DoxyCompactItemize}
 \item 
-\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} unsigned int \mbox{\hyperlink{namespacebeliefprop_ab6a5d9752a11f9ee11a7792ce1538a2a}{beliefprop\+::\+Retrieve\+Index\+In\+Data\+And\+Message}} (unsigned int x\+\_\+val, unsigned int y\+\_\+val, unsigned int width, unsigned int height, unsigned int current\+\_\+disparity, unsigned int total\+\_\+num\+\_\+disp\+\_\+vals, unsigned int offset\+\_\+data=0u)
-\begin{DoxyCompactList}\small\item\em Retrieve the current 1-\/D index value of the given point at the given disparity in the data cost and message data. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ae68eab6f8bff8879cdf5eef4d4fe6fa8}{beliefprop\+::\+Dt\+Stereo}} (T f\mbox{[}DISP\+\_\+\+VALS\mbox{]})
 \begin{DoxyCompactList}\small\item\em function retrieve the minimum value at each 1-\/d disparity value in O(n) time using Felzenszwalb\textquotesingle{}s method (see \char`\"{}\+Efficient Belief Propagation for Early Vision\char`\"{}) \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_aa78f83157a3b8ea34135bd45d86e75f5}{beliefprop\+::\+Dt\+Stereo}} (T $\ast$f, unsigned int bp\+\_\+settings\+\_\+disp\+\_\+vals)

@@ -99,7 +99,7 @@ Inheritance diagram for ParallelParams:</div>
 <div class="center"><img src="class_parallel_params__inherit__graph.png" border="0" usemap="#a_parallel_params_inherit__map" alt="Inheritance graph"/></div>
 <map name="a_parallel_params_inherit__map" id="a_parallel_params_inherit__map">
 <area shape="rect" title="Abstract class for holding and processing parallelization parameters. Child class(es) specific to imp..." alt="" coords="13,5,132,32"/>
-<area shape="rect" href="class_bp_parallel_params.html" title="Class containing parameters including parallelization parameters to use at each BP level." alt="" coords="5,80,140,107"/>
+<area shape="rect" href="class_parallel_params_bp.html" title="Child class of ParallelParams to store and process parallelization parameters to use in each BP kerne..." alt="" coords="5,80,140,107"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -124,7 +124,7 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract class for holding and processing parallelization parameters. Child class(es) specific to implementation(s) must be defined. </p>
 
-<p class="definition">Definition at line <a class="el" href="_parallel_params_8h_source.html#l00038">38</a> of file <a class="el" href="_parallel_params_8h_source.html">ParallelParams.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_parallel_params_8h_source.html#l00037">37</a> of file <a class="el" href="_parallel_params_8h_source.html">ParallelParams.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a511d0e529facedc797d37422ce38a2dd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a511d0e529facedc797d37422ce38a2dd">&#9670;&nbsp;</a></span>AddTestResultsForParallelParams()</h2>
@@ -169,7 +169,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_bp_parallel_params.html#ac5b668aa24cfd323fa95939e944977f1">BpParallelParams</a>.</p>
+<p>Implemented in <a class="el" href="class_parallel_params_bp.html#a05aaeeee3a08d2228074e6c0ab775fd1">ParallelParamsBp</a>.</p>
 
 </div>
 </div>
@@ -199,7 +199,7 @@ Public Member Functions</h2></td></tr>
 <p>Retrieve current parallel parameters as <a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> type. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_run_data.html" title="Class to store headers with data corresponding to current program run and evaluation.">RunData</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_bp_parallel_params.html#a879c11cf3c7f5cac4e65245e92ca2a0d">BpParallelParams</a>.</p>
+<p>Implemented in <a class="el" href="class_parallel_params_bp.html#a6e273ac19c8161cd15e6d734d79f55d8">ParallelParamsBp</a>.</p>
 
 </div>
 </div>
@@ -236,22 +236,22 @@ Public Member Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>std::array&lt;unsigned int, 2&gt; </dd></dl>
 
-<p>Implemented in <a class="el" href="class_bp_parallel_params.html#a122456794ada5661077f6a81b66726df">BpParallelParams</a>.</p>
+<p>Implemented in <a class="el" href="class_parallel_params_bp.html#a8411119df587e1eff8c6dd38e22a718a">ParallelParamsBp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="class_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d_icgraph.png" border="0" usemap="#aclass_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d_icgraph" alt=""/></div>
 <map name="aclass_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d_icgraph" id="aclass_parallel_params_ad7c403dc0082fb66b8a75d40a56e679d_icgraph">
 <area shape="rect" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="573,253,771,295"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#a5780eec38de355362567165aa2c81e02" title=" " alt="" coords="281,5,460,47"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#ad0eb9d91117883907e1cdf53e8782c6c" title=" " alt="" coords="281,71,460,112"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#ab7e56053523e0ce7a577c1033725bd4a" title=" " alt="" coords="265,136,476,177"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#ab1377ebddcb99fe4a8ce9d4d8ea6172c" title=" " alt="" coords="279,5,462,47"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#add64ba4899c73265e494c9618e8b461f" title=" " alt="" coords="279,71,462,112"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#a6213dee0a11cf8b1f512e45667c77212" title=" " alt="" coords="265,136,476,177"/>
 <area shape="rect" href="class_smooth_image_c_u_d_a.html#ac810f2f4cb5608673dd21a6f69214444" title="For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)" alt="" coords="259,202,483,229"/>
-<area shape="rect" href="class_run_bp_on_stereo_set_optimized_c_p_u.html#aaf001fae4f5a536ad1ab07057d6b7fe0" title="Pure virtual operator() overload that must be defined in child class." alt="" coords="265,253,477,295"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#acd3c4a1364c13cba9f180a18dd1c6a23" title=" " alt="" coords="259,319,482,360"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#a64141ccc62bed8128e4dc46a019228a2" title=" " alt="" coords="259,384,482,425"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#a955c3398c2d327e758da9a2c40a2a262" title=" " alt="" coords="238,450,503,506"/>
-<area shape="rect" href="namespacebeliefprop_c_p_u.html#a3af66d30eb16713911cc5e8a6a7ef794" title=" " alt="" coords="216,530,525,586"/>
+<area shape="rect" href="class_run_bp_on_stereo_set_optimized_c_p_u.html#ad134068d69c4c87272a8b22537df88da" title="Pure virtual operator() overload that must be defined in child class." alt="" coords="265,253,477,295"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#aefc3512e6ee1730e923a897554504685" title=" " alt="" coords="280,319,461,360"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#a40deb00185bba3606692532d7af7fd00" title=" " alt="" coords="255,384,487,425"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#a8d913c91e262abe5ff88a1027e06993f" title=" " alt="" coords="238,450,503,506"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#ad0ce88d2c8059f2b9fbffd98cb629a84" title=" " alt="" coords="216,530,525,586"/>
 <area shape="rect" href="class_process_bp.html#a0ccd2a3bcea7ef8b3129ce32667f740d" title="Run the belief propagation algorithm with on a set of stereo images to generate a disparity map input..." alt="" coords="5,326,168,353"/>
 </map>
 </div>
@@ -283,7 +283,7 @@ Here is the caller graph for this function:</div>
 
 <p>Retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters to retrieved optimized parameters. </p>
 
-<p>Implemented in <a class="el" href="class_bp_parallel_params.html#a5124d69f85a291bc84d00c5fbbbd778b">BpParallelParams</a>.</p>
+<p>Implemented in <a class="el" href="class_parallel_params_bp.html#aa6f41bebd9f5539e391b0431bf2ef410">ParallelParamsBp</a>.</p>
 
 </div>
 </div>
@@ -319,7 +319,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="class_bp_parallel_params.html#a4c07664f7bba0931ea36e2858a242313">BpParallelParams</a>.</p>
+<p>Implemented in <a class="el" href="class_parallel_params_bp.html#a34ef3a653e1f8893bd48c80de3854db5">ParallelParamsBp</a>.</p>
 
 </div>
 </div>

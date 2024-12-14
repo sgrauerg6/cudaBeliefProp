@@ -18,7 +18,9 @@ Class to load and store run results data including speedups from evaluation.
 \begin{DoxyCompactList}\small\item\em Constructor that takes in run results path and processes run results speedups not available when using this constructor. \end{DoxyCompactList}\item 
 std\+::map$<$ std\+::string, std\+::vector$<$ std\+::string $>$ $>$ \mbox{\hyperlink{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}{Speedups}} () const
 \begin{DoxyCompactList}\small\item\em Return speedups from evaluation across all runs on an architecture. \end{DoxyCompactList}\item 
-std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_ac55adfc7e6626debcd61ba5b626ddeb0}{Inputs\+To\+Key\+Val}} (std\+::string\+\_\+view key)
+std\+::vector$<$ std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_a2e0c77627269d9e30411a822dd4fe871}{Speedup\+Headers\+Order}} () const
+\begin{DoxyCompactList}\small\item\em Return order of speedup headers. \end{DoxyCompactList}\item 
+std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_ac40c246ed0b8535ce88f300b120e8e0f}{Inputs\+To\+Key\+Val}} (std\+::string\+\_\+view key) const
 \begin{DoxyCompactList}\small\item\em Get mapping of run input signature to value corresponding to input key for each run result. \end{DoxyCompactList}\item 
 std\+::map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{class_run_results_speedups_a99a61c4f92c0dc0a81b4ef997c5ca883}{Data\+For\+Input}} (const \mbox{\hyperlink{class_input_signature}{Input\+Signature}} \&input\+\_\+sig) const
 \begin{DoxyCompactList}\small\item\em Return data for specified input signature. \end{DoxyCompactList}\end{DoxyCompactItemize}
@@ -27,7 +29,7 @@ std\+::map$<$ std\+::string, std\+::string $>$ \mbox{\hyperlink{class_run_result
 \doxysubsection{Detailed Description}
 Class to load and store run results data including speedups from evaluation. 
 
-Definition at line 41 of file Run\+Results\+Speedups.\+h.
+Definition at line 40 of file Run\+Results\+Speedups.\+h.
 
 
 
@@ -70,7 +72,7 @@ Constructor that takes in run results path and processes run results speedups no
 \end{DoxyParams}
 
 
-Definition at line 63 of file Run\+Results\+Speedups.\+cpp.
+Definition at line 64 of file Run\+Results\+Speedups.\+cpp.
 
 
 
@@ -95,13 +97,13 @@ std\+::map$<$std\+::string, std\+::string$>$
 \end{DoxyReturn}
 
 
-Definition at line 86 of file Run\+Results\+Speedups.\+h.
+Definition at line 94 of file Run\+Results\+Speedups.\+h.
 
-\mbox{\Hypertarget{class_run_results_speedups_ac55adfc7e6626debcd61ba5b626ddeb0}\label{class_run_results_speedups_ac55adfc7e6626debcd61ba5b626ddeb0}} 
+\mbox{\Hypertarget{class_run_results_speedups_ac40c246ed0b8535ce88f300b120e8e0f}\label{class_run_results_speedups_ac40c246ed0b8535ce88f300b120e8e0f}} 
 \index{RunResultsSpeedups@{RunResultsSpeedups}!InputsToKeyVal@{InputsToKeyVal}}
 \index{InputsToKeyVal@{InputsToKeyVal}!RunResultsSpeedups@{RunResultsSpeedups}}
 \doxysubsubsection{\texorpdfstring{InputsToKeyVal()}{InputsToKeyVal()}}
-{\footnotesize\ttfamily std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ Run\+Results\+Speedups\+::\+Inputs\+To\+Key\+Val (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{key }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily std\+::map$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}}, std\+::string $>$ Run\+Results\+Speedups\+::\+Inputs\+To\+Key\+Val (\begin{DoxyParamCaption}\item[{std\+::string\+\_\+view}]{key }\end{DoxyParamCaption}) const}
 
 
 
@@ -117,7 +119,24 @@ std\+::map$<$\+Input\+Signature, std\+::string$>$
 \end{DoxyReturn}
 
 
-Definition at line 110 of file Run\+Results\+Speedups.\+cpp.
+Definition at line 112 of file Run\+Results\+Speedups.\+cpp.
+
+\mbox{\Hypertarget{class_run_results_speedups_a2e0c77627269d9e30411a822dd4fe871}\label{class_run_results_speedups_a2e0c77627269d9e30411a822dd4fe871}} 
+\index{RunResultsSpeedups@{RunResultsSpeedups}!SpeedupHeadersOrder@{SpeedupHeadersOrder}}
+\index{SpeedupHeadersOrder@{SpeedupHeadersOrder}!RunResultsSpeedups@{RunResultsSpeedups}}
+\doxysubsubsection{\texorpdfstring{SpeedupHeadersOrder()}{SpeedupHeadersOrder()}}
+{\footnotesize\ttfamily std\+::vector$<$std\+::string$>$ Run\+Results\+Speedups\+::\+Speedup\+Headers\+Order (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Return order of speedup headers. 
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::string$>$ 
+\end{DoxyReturn}
+
+
+Definition at line 75 of file Run\+Results\+Speedups.\+h.
 
 \mbox{\Hypertarget{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}\label{class_run_results_speedups_af16114eb72a5997f72d8f84bdcc8d279}} 
 \index{RunResultsSpeedups@{RunResultsSpeedups}!Speedups@{Speedups}}
@@ -134,7 +153,7 @@ std\+::map$<$std\+::string, std\+::vector$<$std\+::string$>$$>$
 \end{DoxyReturn}
 
 
-Definition at line 67 of file Run\+Results\+Speedups.\+h.
+Definition at line 66 of file Run\+Results\+Speedups.\+h.
 
 
 

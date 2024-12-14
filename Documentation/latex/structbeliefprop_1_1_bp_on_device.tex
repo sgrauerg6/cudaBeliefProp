@@ -1,0 +1,95 @@
+\hypertarget{structbeliefprop_1_1_bp_on_device}{}\doxysection{beliefprop\+::Bp\+On\+Device$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ Struct Template Reference}
+\label{structbeliefprop_1_1_bp_on_device}\index{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+
+
+Structure with pointers to objects containing functions for smoothing images, processing bp, and memory management on target device using specified acceleration.  
+
+
+
+
+{\ttfamily \#include $<$Run\+Bp\+On\+Stereo\+Set.\+h$>$}
+
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_smooth_image}{Smooth\+Image}} $>$ \& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device_add9e7e7d3fb67ba54fbfdb39ca8e19ec}{smooth\+\_\+image}}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$ $>$ \& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device_a646d61f418c2d5b3d3af2f0d7493b025}{run\+\_\+bp\+\_\+stereo}}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ T $>$ $>$ \& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device_a88f8f029a29fda375021a3c5fb71e8f9}{mem\+\_\+management\+\_\+bp\+\_\+run}}
+\item 
+const std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$ float $>$ $>$ \& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device_a151ef7b1777ed11cea9c28165af1eb7d}{mem\+\_\+management\+\_\+images}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$\newline
+struct beliefprop\+::\+Bp\+On\+Device$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$}
+
+Structure with pointers to objects containing functions for smoothing images, processing bp, and memory management on target device using specified acceleration. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & \\
+\hline
+{\em DISP\+\_\+\+VALS} & \\
+\hline
+{\em ACCELERATION} & \\
+\hline
+\end{DoxyTemplParams}
+
+
+Definition at line 72 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_on_device_a88f8f029a29fda375021a3c5fb71e8f9}\label{structbeliefprop_1_1_bp_on_device_a88f8f029a29fda375021a3c5fb71e8f9}} 
+\index{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!mem\_management\_bp\_run@{mem\_management\_bp\_run}}
+\index{mem\_management\_bp\_run@{mem\_management\_bp\_run}!beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{mem\_management\_bp\_run}{mem\_management\_bp\_run}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$T$>$ $>$\& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{beliefprop\+::\+Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::mem\+\_\+management\+\_\+bp\+\_\+run}
+
+
+
+Definition at line 75 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_on_device_a151ef7b1777ed11cea9c28165af1eb7d}\label{structbeliefprop_1_1_bp_on_device_a151ef7b1777ed11cea9c28165af1eb7d}} 
+\index{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!mem\_management\_images@{mem\_management\_images}}
+\index{mem\_management\_images@{mem\_management\_images}!beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{mem\_management\_images}{mem\_management\_images}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_memory_management}{Memory\+Management}}$<$float$>$ $>$\& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{beliefprop\+::\+Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::mem\+\_\+management\+\_\+images}
+
+
+
+Definition at line 76 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_on_device_a646d61f418c2d5b3d3af2f0d7493b025}\label{structbeliefprop_1_1_bp_on_device_a646d61f418c2d5b3d3af2f0d7493b025}} 
+\index{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!run\_bp\_stereo@{run\_bp\_stereo}}
+\index{run\_bp\_stereo@{run\_bp\_stereo}!beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{run\_bp\_stereo}{run\_bp\_stereo}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_process_bp}{Process\+Bp}}$<$T, DISP\+\_\+\+VALS, ACCELERATION$>$ $>$\& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{beliefprop\+::\+Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::run\+\_\+bp\+\_\+stereo}
+
+
+
+Definition at line 74 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+\mbox{\Hypertarget{structbeliefprop_1_1_bp_on_device_add9e7e7d3fb67ba54fbfdb39ca8e19ec}\label{structbeliefprop_1_1_bp_on_device_add9e7e7d3fb67ba54fbfdb39ca8e19ec}} 
+\index{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}!smooth\_image@{smooth\_image}}
+\index{smooth\_image@{smooth\_image}!beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$@{beliefprop::BpOnDevice$<$ T, DISP\_VALS, ACCELERATION $>$}}
+\doxysubsubsection{\texorpdfstring{smooth\_image}{smooth\_image}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS, run\+\_\+environment\+::\+Acc\+Setting ACCELERATION$>$ \\
+const std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{class_smooth_image}{Smooth\+Image}}$>$\& \mbox{\hyperlink{structbeliefprop_1_1_bp_on_device}{beliefprop\+::\+Bp\+On\+Device}}$<$ T, DISP\+\_\+\+VALS, ACCELERATION $>$\+::smooth\+\_\+image}
+
+
+
+Definition at line 73 of file Run\+Bp\+On\+Stereo\+Set.\+h.
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/beliefprop/\+Bp\+Run\+Processing/\mbox{\hyperlink{_run_bp_on_stereo_set_8h}{Run\+Bp\+On\+Stereo\+Set.\+h}}\end{DoxyCompactItemize}

@@ -1,0 +1,66 @@
+\hypertarget{_run_imp_on_input_bp_8h}{}\doxysection{src/beliefprop/\+Bp\+Run\+Eval\+Imp/\+Run\+Imp\+On\+Input\+Bp.h File Reference}
+\label{_run_imp_on_input_bp_8h}\index{src/beliefprop/BpRunEvalImp/RunImpOnInputBp.h@{src/beliefprop/BpRunEvalImp/RunImpOnInputBp.h}}
+{\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$map$>$}\newline
+{\ttfamily \#include $<$memory$>$}\newline
+{\ttfamily \#include $<$filesystem$>$}\newline
+{\ttfamily \#include $<$optional$>$}\newline
+{\ttfamily \#include $<$iostream$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Eval\+Consts\+Enums.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Imp/\+Run\+Imp\+On\+Input.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+File\+Processing/\+Bp\+File\+Handling.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Consts\+Enums\+Aliases.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Stereo\+Sets.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Bp\+Single\+Thread\+CPU/stereo.\+h\char`\"{}}\newline
+Include dependency graph for Run\+Imp\+On\+Input\+Bp.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_imp_on_input_bp_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_run_imp_on_input_bp_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_run_imp_on_input_bp}{Run\+Imp\+On\+Input\+Bp$<$ T, OPT\+\_\+\+IMP\+\_\+\+ACCEL, NUM\+\_\+\+INPUT $>$}}
+\begin{DoxyCompactList}\small\item\em Child class of \mbox{\hyperlink{class_run_imp_on_input}{Run\+Imp\+On\+Input}} to run and evaluate belief propagation implementation on a specified input. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \mbox{\hyperlink{namespacebp__single__thread}{bp\+\_\+single\+\_\+thread}}
+\begin{DoxyCompactList}\small\item\em Namespace with setting of whether or not to run single thread implementation a single time for each input stereo set when running evaluation and storage of single thread implementation output so it can be re-\/used so that single thread implementation only needs to be run once for each evaluation stereo set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \mbox{\hyperlink{_run_imp_on_input_bp_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}} = std\+::filesystem\+::path
+\end{DoxyCompactItemize}
+\doxysubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+constexpr bool \mbox{\hyperlink{namespacebp__single__thread_a2ec5e511ba4290d2451484dcacc4f9bf}{bp\+\_\+single\+\_\+thread\+::k\+Run\+Single\+Thread\+Once\+For\+Set}} \{true\}
+\begin{DoxyCompactList}\small\item\em Setting of whether or not to run single thread implementation once for each stereo set in evaluation. \end{DoxyCompactList}\item 
+std\+::map$<$ std\+::array$<$ \mbox{\hyperlink{_run_imp_on_input_bp_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}}, 2 $>$, std\+::tuple$<$ std\+::chrono\+::duration$<$ double $>$, \mbox{\hyperlink{class_run_data}{Run\+Data}}, \mbox{\hyperlink{_run_imp_on_input_bp_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}} $>$ $>$ \mbox{\hyperlink{namespacebp__single__thread_aedcfceb5c175f20137e3031a9dd0f2f3}{bp\+\_\+single\+\_\+thread\+::single\+\_\+thread\+\_\+run\+\_\+output}}
+\begin{DoxyCompactList}\small\item\em Map to store output and run results for single thread implementation for each stereo set. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Typedef Documentation}
+\mbox{\Hypertarget{_run_imp_on_input_bp_8h_a08a9399520bba2f68aa047363f26ca29}\label{_run_imp_on_input_bp_8h_a08a9399520bba2f68aa047363f26ca29}} 
+\index{RunImpOnInputBp.h@{RunImpOnInputBp.h}!filepathtype@{filepathtype}}
+\index{filepathtype@{filepathtype}!RunImpOnInputBp.h@{RunImpOnInputBp.h}}
+\doxysubsubsection{\texorpdfstring{filepathtype}{filepathtype}}
+{\footnotesize\ttfamily using \mbox{\hyperlink{_run_imp_on_input_bp_8h_a08a9399520bba2f68aa047363f26ca29}{filepathtype}} =  std\+::filesystem\+::path}
+
+
+
+Definition at line 46 of file Run\+Imp\+On\+Input\+Bp.\+h.
+

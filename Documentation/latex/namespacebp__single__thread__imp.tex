@@ -1,0 +1,163 @@
+\hypertarget{namespacebp__single__thread__imp}{}\doxysection{bp\+\_\+single\+\_\+thread\+\_\+imp Namespace Reference}
+\label{namespacebp__single__thread__imp}\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+
+
+Class and structs in single-\/thread CPU bp implementation by Pedro Felzenwalb available at \href{https://cs.brown.edu/people/pfelzens/bp/index.html}{\texttt{ https\+://cs.\+brown.\+edu/people/pfelzens/bp/index.\+html}}.  
+
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classbp__single__thread__imp_1_1_convolve}{Convolve}}
+\item 
+class \mbox{\hyperlink{classbp__single__thread__imp_1_1_filter_image}{Filter\+Image}}
+\item 
+class \mbox{\hyperlink{classbp__single__thread__imp_1_1image}{image}}
+\item 
+struct \mbox{\hyperlink{structbp__single__thread__imp_1_1rgb}{rgb}}
+\item 
+class \mbox{\hyperlink{classbp__single__thread__imp_1_1pnm__error}{pnm\+\_\+error}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \mbox{\hyperlink{namespacebp__single__thread__imp_a3e12901d28ca1b41c7e88ec9993decfb}{operator==}} (const \mbox{\hyperlink{structbp__single__thread__imp_1_1rgb}{rgb}} \&a, const \mbox{\hyperlink{structbp__single__thread__imp_1_1rgb}{rgb}} \&b)
+\item 
+{\footnotesize template$<$class T $>$ }\\T \mbox{\hyperlink{namespacebp__single__thread__imp_a86db79ff905b4d1b521cf4e64168c64a}{abs}} (const T \&x)
+\item 
+{\footnotesize template$<$class T $>$ }\\int \mbox{\hyperlink{namespacebp__single__thread__imp_ac6c47eec6737e46c147d67279f96ef2c}{sign}} (const T \&x)
+\item 
+{\footnotesize template$<$class T $>$ }\\T \mbox{\hyperlink{namespacebp__single__thread__imp_a50998211a974ebd37ba215f57c986a4d}{square}} (const T \&x)
+\item 
+{\footnotesize template$<$class T $>$ }\\T \mbox{\hyperlink{namespacebp__single__thread__imp_aaae8225ff8f25c760e53948a62fccc8b}{bound}} (const T \&x, const T \&min, const T \&max)
+\item 
+{\footnotesize template$<$class T $>$ }\\bool \mbox{\hyperlink{namespacebp__single__thread__imp_a27e1461a190dbec530433270ca35822f}{check\+\_\+bound}} (const T \&x, const T \&min, const T \&max)
+\item 
+int \mbox{\hyperlink{namespacebp__single__thread__imp_a484d786ed225d0cbff279c01ac6556ef}{vlib\+\_\+round}} (float x)
+\item 
+int \mbox{\hyperlink{namespacebp__single__thread__imp_addf238b743915b06c69d8f72af787d85}{vlib\+\_\+round}} (double x)
+\item 
+double \mbox{\hyperlink{namespacebp__single__thread__imp_aa368da4dd6676c8ce4447b89f60acd66}{gaussian}} (double val, double sigma)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class and structs in single-\/thread CPU bp implementation by Pedro Felzenwalb available at \href{https://cs.brown.edu/people/pfelzens/bp/index.html}{\texttt{ https\+://cs.\+brown.\+edu/people/pfelzens/bp/index.\+html}}. 
+
+\doxysubsection{Function Documentation}
+\mbox{\Hypertarget{namespacebp__single__thread__imp_a86db79ff905b4d1b521cf4e64168c64a}\label{namespacebp__single__thread__imp_a86db79ff905b4d1b521cf4e64168c64a}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!abs@{abs}}
+\index{abs@{abs}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{abs()}{abs()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T bp\+\_\+single\+\_\+thread\+\_\+imp\+::abs (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 45 of file misc.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebp__single__thread__imp_a86db79ff905b4d1b521cf4e64168c64a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebp__single__thread__imp_aaae8225ff8f25c760e53948a62fccc8b}\label{namespacebp__single__thread__imp_aaae8225ff8f25c760e53948a62fccc8b}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!bound@{bound}}
+\index{bound@{bound}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{bound()}{bound()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T bp\+\_\+single\+\_\+thread\+\_\+imp\+::bound (\begin{DoxyParamCaption}\item[{const T \&}]{x,  }\item[{const T \&}]{min,  }\item[{const T \&}]{max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 54 of file misc.\+h.
+
+\mbox{\Hypertarget{namespacebp__single__thread__imp_a27e1461a190dbec530433270ca35822f}\label{namespacebp__single__thread__imp_a27e1461a190dbec530433270ca35822f}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!check\_bound@{check\_bound}}
+\index{check\_bound@{check\_bound}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{check\_bound()}{check\_bound()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+bool bp\+\_\+single\+\_\+thread\+\_\+imp\+::check\+\_\+bound (\begin{DoxyParamCaption}\item[{const T \&}]{x,  }\item[{const T \&}]{min,  }\item[{const T \&}]{max }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 59 of file misc.\+h.
+
+\mbox{\Hypertarget{namespacebp__single__thread__imp_aa368da4dd6676c8ce4447b89f60acd66}\label{namespacebp__single__thread__imp_aa368da4dd6676c8ce4447b89f60acd66}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!gaussian@{gaussian}}
+\index{gaussian@{gaussian}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{gaussian()}{gaussian()}}
+{\footnotesize\ttfamily double bp\+\_\+single\+\_\+thread\+\_\+imp\+::gaussian (\begin{DoxyParamCaption}\item[{double}]{val,  }\item[{double}]{sigma }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 67 of file misc.\+h.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebp__single__thread__imp_aa368da4dd6676c8ce4447b89f60acd66_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebp__single__thread__imp_a3e12901d28ca1b41c7e88ec9993decfb}\label{namespacebp__single__thread__imp_a3e12901d28ca1b41c7e88ec9993decfb}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!operator==@{operator==}}
+\index{operator==@{operator==}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{operator==()}{operator==()}}
+{\footnotesize\ttfamily bool bp\+\_\+single\+\_\+thread\+\_\+imp\+::operator== (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structbp__single__thread__imp_1_1rgb}{rgb}} \&}]{a,  }\item[{const \mbox{\hyperlink{structbp__single__thread__imp_1_1rgb}{rgb}} \&}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 40 of file misc.\+h.
+
+\mbox{\Hypertarget{namespacebp__single__thread__imp_ac6c47eec6737e46c147d67279f96ef2c}\label{namespacebp__single__thread__imp_ac6c47eec6737e46c147d67279f96ef2c}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!sign@{sign}}
+\index{sign@{sign}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{sign()}{sign()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+int bp\+\_\+single\+\_\+thread\+\_\+imp\+::sign (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 48 of file misc.\+h.
+
+\mbox{\Hypertarget{namespacebp__single__thread__imp_a50998211a974ebd37ba215f57c986a4d}\label{namespacebp__single__thread__imp_a50998211a974ebd37ba215f57c986a4d}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!square@{square}}
+\index{square@{square}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{square()}{square()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T bp\+\_\+single\+\_\+thread\+\_\+imp\+::square (\begin{DoxyParamCaption}\item[{const T \&}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 51 of file misc.\+h.
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacebp__single__thread__imp_a50998211a974ebd37ba215f57c986a4d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{namespacebp__single__thread__imp_addf238b743915b06c69d8f72af787d85}\label{namespacebp__single__thread__imp_addf238b743915b06c69d8f72af787d85}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!vlib\_round@{vlib\_round}}
+\index{vlib\_round@{vlib\_round}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{vlib\_round()}{vlib\_round()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily int bp\+\_\+single\+\_\+thread\+\_\+imp\+::vlib\+\_\+round (\begin{DoxyParamCaption}\item[{double}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 65 of file misc.\+h.
+
+\mbox{\Hypertarget{namespacebp__single__thread__imp_a484d786ed225d0cbff279c01ac6556ef}\label{namespacebp__single__thread__imp_a484d786ed225d0cbff279c01ac6556ef}} 
+\index{bp\_single\_thread\_imp@{bp\_single\_thread\_imp}!vlib\_round@{vlib\_round}}
+\index{vlib\_round@{vlib\_round}!bp\_single\_thread\_imp@{bp\_single\_thread\_imp}}
+\doxysubsubsection{\texorpdfstring{vlib\_round()}{vlib\_round()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily int bp\+\_\+single\+\_\+thread\+\_\+imp\+::vlib\+\_\+round (\begin{DoxyParamCaption}\item[{float}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 63 of file misc.\+h.
+

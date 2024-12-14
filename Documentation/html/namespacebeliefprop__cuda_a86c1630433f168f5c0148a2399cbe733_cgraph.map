@@ -1,0 +1,4 @@
+<map id="beliefprop_cuda::FilterImageVertical" name="beliefprop_cuda::FilterImageVertical">
+<area shape="rect" id="node1" title="Kernel to apply a vertical filter on each pixel of the image in parallel the input image is stored as..." alt="" coords="5,5,213,47"/>
+<area shape="rect" id="node2" href="$namespacebeliefprop.html#aae2269b7359108e636eebcb74a557e7f" title="Checks if the current point is within the image bounds Assumed that input x/y vals are above zero sin..." alt="" coords="261,13,488,39"/>
+</map>
