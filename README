@@ -45,7 +45,8 @@ work which is distributed must also contain this license.
 
 See "RUNTIME RESULTS" section at end of README for runtime
 info across various processors including the NVIDIA A100 and H100 GPUs,
-AMD Rome and Milan-X CPUs, and Intel Ice Lake CPU.
+AMD Genoa and Genoa-X CPUs, Intel Emerald Rapids and Sapphire Rapids CPUs,
+and Amazon Graviton, Microsoft Cobalt, and NVIDIA Grace ARM server CPUs.
 
 Please email comments and bug reports to sgrauerg@gmail.com
 
@@ -135,19 +136,21 @@ runtime speedup.
 Detailed input and results for each run including input stereo set and
 parameters, detailed timings along with overall speedup data, output disparity
 map evaluation as compared to ground truth for each run are written to files in
-subfolders of beliefprop/impResults folder the file names and paths given in
-the console output. A comparison of runtimes and speedups across runs with
-results in beliefprop/impResults is written to
+subfolders of beliefprop/impResults folder with the file names and paths for
+each result file given in the console output. A comparison of runtimes and
+speedups across runs with results in beliefprop/impResults is written to
 beliefprop/impResults/EvaluationAcrossRuns.csv, with the runs ordered from
 fastest to slowest; each run is labeled using {RUN_NAME} from (5).
 
 RUNTIME RESULTS:
 
-Relative speedup using optimized implementation across various processors using
-float type w/ prior run using AMD Rome (48 cores) used as baseline:
+Relative speedup using optimized implementation across GPUs/CPUs using
+float type w/ prior run on AMD Rome (48 cores) used as baseline:
 -Column marked as "Median Optimized Runtime (including transfer time)" in 
-{RUN_NAME}_RunResults.csv used for runtime comparison.
--Speedups given is average across a number of input stereo sets and configurations.
+beliefprop/impResults/RunResults/{RUN_NAME}_RunResults.csv used for runtime
+comparison
+-Dispayed speedup is average across a number of input stereo sets and
+configurations using float datatype in processing
 NVIDIA H100 (GH200): 3.34x
 NVIDIA H100 (SXM5): 2.99x
 AMD Genoa-X (176 Cores across 2 CPUs): 2.31x
@@ -162,7 +165,7 @@ Intel Emerald Rapids (48 cores): 1.84x
 NVIDIA RTX 3090 Ti: 1.65x
 AMD Milan-X (120 Cores across 2 CPUs): 1.60x
 Intel Sapphire Rapids (48 cores): 1.53x
-NVIDIA GH200 CPU (64 ARM cores): 1.44x
+NVIDIA Grace CPU in GH200 (64 ARM cores): 1.44x
 AMD Milan-X (60 cores*): 1.37x
 Amazon Graviton3 (64 ARM cores): 1.20x
 Amazon Graviton3E (64 ARM cores): 1.20x
@@ -180,8 +183,8 @@ https://docs.google.com/spreadsheets/d/1j_JWKx9K2puHnWB0qRaxP3TyEkMDaoNpiLhUHlee
 
 *Run on system with 2 socketed CPUs with total of 2x listed core count across
 CPUs and with SMT disabled...benchmarked runs are with max number of threads
-limited to core count on single CPU w/ threads pinned to socket so should be using
-single CPU in the run.
+limited to thread count on single CPU w/ threads pinned to socket so should be
+using single CPU in the run.
 Commands to pin OMP threads to socket:
 export OMP_PLACES="sockets"
 export OMP_PROC_BIND=true
@@ -189,7 +192,7 @@ export OMP_PROC_BIND=true
 Single-thread implementation speedups (relative single-core performance): 
 Intel Emerald Rapids (48 cores): 1.48x
 Intel Sapphire Rapids (48 cores): 1.41x
-NVIDIA GH200 CPU (64 ARM cores): 1.36x
+NVIDIA Grace CPU in GH200 (64 ARM cores): 1.36x
 Intel Tiger Lake laptop (8 Cores): 1.31x
 AMD Genoa-X (88 Cores): 1.24x
 Microsoft Cobalt (96 ARM cores): 1.13x
