@@ -148,9 +148,9 @@ Relative speedup using optimized implementation across GPUs/CPUs using
 float type w/ prior run on AMD Rome (48 cores) used as baseline:
 -Column marked as "Median Optimized Runtime (including transfer time)" in 
 beliefprop/impResults/RunResults/{RUN_NAME}_RunResults.csv used for runtime
-comparison
--Dispayed speedup is average across a number of input stereo sets and
-configurations using float datatype in processing
+comparison to get relative speedup for each run
+-Displayed speedup is average relative speedup compared to baseline across a
+number of runs with different input stereo sets and/or run configurations
 NVIDIA H100 (GH200): 3.34x
 NVIDIA H100 (SXM5): 2.99x
 AMD Genoa-X (176 Cores across 2 CPUs): 2.31x
