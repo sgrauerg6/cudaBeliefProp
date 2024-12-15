@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file ProcessBpCUDA.cpp
  * @author Scott Grauer-Gray
- * @brief Declares the host functions to run the CUDA implementation of Stereo estimation using BP
+ * @brief Declares child class of ProcessBp that define functions used in
+ * processing bp in the CUDA implementation
  * 
  * @copyright Copyright (c) 2024
  */

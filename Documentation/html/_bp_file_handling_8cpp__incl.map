@@ -1,9 +1,9 @@
 <map id="src/beliefprop/BpFileProcessing/BpFileHandling.cpp" name="src/beliefprop/BpFileProcessing/BpFileHandling.cpp">
 <area shape="rect" id="node1" title=" " alt="" coords="50,5,275,47"/>
-<area shape="rect" id="node2" href="$_bp_file_handling_8h.html" title=" " alt="" coords="97,95,229,121"/>
+<area shape="rect" id="node2" href="$_bp_file_handling_8h.html" title="Declares class to retrieve path of stereo set files for reading and for output." alt="" coords="97,95,229,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,169,96,196"/>
 <area shape="rect" id="node4" title=" " alt="" coords="120,169,205,196"/>
-<area shape="rect" id="node5" href="$_bp_file_handling_consts_8h.html" title=" " alt="" coords="229,169,405,196"/>
+<area shape="rect" id="node5" href="$_bp_file_handling_consts_8h.html" title="Belief propagation implementation constants related to file processing." alt="" coords="229,169,405,196"/>
 <area shape="rect" id="node6" title=" " alt="" coords="166,244,263,271"/>
 <area shape="rect" id="node7" title=" " alt="" coords="288,244,347,271"/>
 <area shape="rect" id="node8" title=" " alt="" coords="371,244,427,271"/>

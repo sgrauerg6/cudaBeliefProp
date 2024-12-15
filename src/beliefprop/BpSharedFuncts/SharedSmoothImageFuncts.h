@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file SharedSmoothImageFuncts.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Functions for smoothing input images that are used in both
+ * optimized CPU and CUDA implementations
  * 
  * @copyright Copyright (c) 2024
  */

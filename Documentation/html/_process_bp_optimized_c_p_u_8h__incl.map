@@ -1,18 +1,18 @@
 <map id="src/beliefprop/BpOptimizeCPU/ProcessBpOptimizedCPU.h" name="src/beliefprop/BpOptimizeCPU/ProcessBpOptimizedCPU.h">
-<area shape="rect" id="node1" title="Declares the host functions to run the CUDA implementation of Stereo estimation using BP." alt="" coords="1814,5,2041,47"/>
+<area shape="rect" id="node1" title="Declares child class of ProcessBp that defines functions used in processing bp in the optimized CPU i..." alt="" coords="1814,5,2041,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,95,84,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="587,698,649,725"/>
 <area shape="rect" id="node4" title=" " alt="" coords="3645,698,3730,725"/>
 <area shape="rect" id="node5" title=" " alt="" coords="186,534,253,561"/>
 <area shape="rect" id="node6" title=" " alt="" coords="4016,95,4087,121"/>
-<area shape="rect" id="node7" href="$_process_bp_8h.html" title=" " alt="" coords="1157,266,1375,293"/>
+<area shape="rect" id="node7" href="$_process_bp_8h.html" title="Declares abstract class to run belief propagation on target device. Some of the class functions need ..." alt="" coords="1157,266,1375,293"/>
 <area shape="rect" id="node14" href="$_run_settings_8h.html" title=" " alt="" coords="1911,445,2154,471"/>
 <area shape="rect" id="node25" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="959,616,1191,643"/>
 <area shape="rect" id="node30" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="3273,616,3493,643"/>
-<area shape="rect" id="node34" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="3097,527,3296,568"/>
-<area shape="rect" id="node35" href="$_bp_evaluation_stereo_sets_8h.html" title=" " alt="" coords="1695,348,1890,389"/>
-<area shape="rect" id="node39" href="$_parallel_params_bp_8h.html" title=" " alt="" coords="2403,355,2550,382"/>
-<area shape="rect" id="node43" href="$_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions and constant/texture storage to run belief propagation on C..." alt="" coords="3013,95,3175,121"/>
+<area shape="rect" id="node34" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="3097,527,3296,568"/>
+<area shape="rect" id="node35" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="1695,348,1890,389"/>
+<area shape="rect" id="node39" href="$_parallel_params_bp_8h.html" title="Declares child class of ParallelParams to store and process parallelization parameters to use in each..." alt="" coords="2403,355,2550,382"/>
+<area shape="rect" id="node43" href="$_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="3013,95,3175,121"/>
 <area shape="rect" id="node8" title=" " alt="" coords="3379,355,3447,382"/>
 <area shape="rect" id="node9" title=" " alt="" coords="341,534,465,561"/>
 <area shape="rect" id="node10" title=" " alt="" coords="261,355,338,382"/>
@@ -21,10 +21,10 @@
 <area shape="rect" id="node13" title=" " alt="" coords="541,534,607,561"/>
 <area shape="rect" id="node28" href="$_memory_management_8h.html" title="Class for memory management with functions defined for standard memory allocation using CPU and can b..." alt="" coords="1147,355,1375,382"/>
 <area shape="rect" id="node32" href="$_detailed_timings_8h.html" title=" " alt="" coords="826,445,1071,471"/>
-<area shape="rect" id="node36" href="$_bp_settings_8h.html" title=" " alt="" coords="1299,445,1519,471"/>
-<area shape="rect" id="node37" href="$_bp_run_utils_8h.html" title=" " alt="" coords="1605,534,1711,561"/>
-<area shape="rect" id="node38" href="$_detailed_timing_bp_consts_8h.html" title=" " alt="" coords="377,437,576,479"/>
-<area shape="rect" id="node42" href="$_bp_level_8h.html" title=" " alt="" coords="2819,355,2905,382"/>
+<area shape="rect" id="node36" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="1299,445,1519,471"/>
+<area shape="rect" id="node37" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1605,534,1711,561"/>
+<area shape="rect" id="node38" href="$_detailed_timing_bp_consts_8h.html" title="Constants for timing belief propagation implementation." alt="" coords="377,437,576,479"/>
+<area shape="rect" id="node42" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="2819,355,2905,382"/>
 <area shape="rect" id="node15" title=" " alt="" coords="2094,698,2169,725"/>
 <area shape="rect" id="node16" title=" " alt="" coords="1027,780,1124,807"/>
 <area shape="rect" id="node17" title=" " alt="" coords="2706,534,2770,561"/>
@@ -43,10 +43,10 @@
 <area shape="rect" id="node40" title=" " alt="" coords="2859,445,2921,471"/>
 <area shape="rect" id="node41" href="$_parallel_params_8h.html" title=" " alt="" coords="2381,527,2581,568"/>
 <area shape="rect" id="node44" title=" " alt="" coords="3725,355,3788,382"/>
-<area shape="rect" id="node45" href="$_shared_bp_processing_functs_8h.html" title=" " alt="" coords="2763,259,3025,300"/>
+<area shape="rect" id="node45" href="$_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="2763,259,3025,300"/>
 <area shape="rect" id="node46" href="$_utility_functs_8h.html" title=" " alt="" coords="3183,355,3354,382"/>
 <area shape="rect" id="node47" href="$_run_c_p_u_settings_8h.html" title=" " alt="" coords="2575,355,2795,382"/>
 <area shape="rect" id="node48" href="$_s_i_m_d_processing_8h.html" title=" " alt="" coords="3519,266,3738,293"/>
-<area shape="rect" id="node49" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html" title=" " alt="" coords="2583,169,2799,211"/>
-<area shape="rect" id="node50" href="$_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html" title=" " alt="" coords="2824,169,3031,211"/>
+<area shape="rect" id="node49" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html" title="Define functions in belief propagation processing that involve going between short/half and float dat..." alt="" coords="2583,169,2799,211"/>
+<area shape="rect" id="node50" href="$_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html" title="Defines functions used in processing belief propagation that are specific to implementation with AVX2..." alt="" coords="2824,169,3031,211"/>
 </map>

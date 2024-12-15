@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file BpFileHandling.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares class to retrieve path of stereo set files for reading and for output
  * 
  * @copyright Copyright (c) 2024
  */

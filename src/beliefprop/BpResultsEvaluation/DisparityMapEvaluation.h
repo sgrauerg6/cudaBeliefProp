@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file DisparityMapEvaluation.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares class to store disparity map evaluation results.
  * 
  * @copyright Copyright (c) 2024
  */

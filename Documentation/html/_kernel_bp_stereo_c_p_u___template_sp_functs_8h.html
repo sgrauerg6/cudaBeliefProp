@@ -87,6 +87,9 @@ $(document).ready(function(){initNavTree('_kernel_bp_stereo_c_p_u___template_sp_
 <div class="title">KernelBpStereoCPU_TemplateSpFuncts.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Define functions in belief propagation processing that involve going between short/half and float datatypes.  
+<a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;x86intrin.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="_shared_bp_processing_functs_8h_source.html">BpSharedFuncts/SharedBpProcessingFuncts.h</a>&quot;</code><br />
@@ -95,30 +98,30 @@ Include dependency graph for KernelBpStereoCPU_TemplateSpFuncts.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="_kernel_bp_stereo_c_p_u___template_sp_functs_8h__incl.png" border="0" usemap="#asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___template_sp_functs_8h" alt=""/></div>
 <map name="asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___template_sp_functs_8h" id="asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___template_sp_functs_8h">
-<area shape="rect" title=" " alt="" coords="2415,5,2662,61"/>
+<area shape="rect" title="Define functions in belief propagation processing that involve going between short/half and float dat..." alt="" coords="2415,5,2662,61"/>
 <area shape="rect" title=" " alt="" coords="3125,527,3217,553"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions and constant/texture storage to run belief propagation on C..." alt="" coords="2458,109,2619,136"/>
-<area shape="rect" href="_shared_bp_processing_functs_8h.html" title=" " alt="" coords="1387,273,1650,315"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="2458,109,2619,136"/>
+<area shape="rect" href="_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="1387,273,1650,315"/>
 <area shape="rect" title=" " alt="" coords="2577,445,2645,471"/>
 <area shape="rect" title=" " alt="" coords="2669,445,2731,471"/>
 <area shape="rect" title=" " alt="" coords="2975,773,3060,799"/>
 <area shape="rect" title=" " alt="" coords="3084,773,3164,799"/>
-<area shape="rect" href="_bp_evaluation_stereo_sets_8h.html" title=" " alt="" coords="519,437,713,479"/>
-<area shape="rect" href="_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="743,609,929,635"/>
+<area shape="rect" href="_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="519,437,713,479"/>
+<area shape="rect" href="_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="743,609,929,635"/>
 <area shape="rect" href="_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="2382,691,2602,717"/>
 <area shape="rect" href="_utility_functs_8h.html" title=" " alt="" coords="2407,527,2577,553"/>
-<area shape="rect" href="_parallel_params_bp_8h.html" title=" " alt="" coords="1576,437,1763,479"/>
+<area shape="rect" href="_parallel_params_bp_8h.html" title="Declares child class of ParallelParams to store and process parallelization parameters to use in each..." alt="" coords="1576,437,1763,479"/>
 <area shape="rect" href="_run_c_p_u_settings_8h.html" title=" " alt="" coords="2027,445,2247,471"/>
 <area shape="rect" href="_s_i_m_d_processing_8h.html" title=" " alt="" coords="2700,363,2919,389"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html" title=" " alt="" coords="2729,184,2935,225"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html" title="Defines functions used in processing belief propagation that are specific to implementation with AVX2..." alt="" coords="2729,184,2935,225"/>
 <area shape="rect" title=" " alt="" coords="394,855,491,881"/>
 <area shape="rect" title=" " alt="" coords="1051,773,1107,799"/>
-<area shape="rect" href="_bp_settings_8h.html" title=" " alt="" coords="506,527,726,553"/>
+<area shape="rect" href="_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="506,527,726,553"/>
 <area shape="rect" href="_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="179,609,437,635"/>
 <area shape="rect" title=" " alt="" coords="2037,773,2099,799"/>
 <area shape="rect" title=" " alt="" coords="497,773,556,799"/>
 <area shape="rect" href="_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="1823,691,1969,717"/>
-<area shape="rect" href="_bp_run_utils_8h.html" title=" " alt="" coords="612,609,719,635"/>
+<area shape="rect" href="_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="612,609,719,635"/>
 <area shape="rect" title=" " alt="" coords="145,691,221,717"/>
 <area shape="rect" title=" " alt="" coords="245,691,304,717"/>
 <area shape="rect" title=" " alt="" coords="1719,773,1793,799"/>
@@ -128,8 +131,8 @@ Include dependency graph for KernelBpStereoCPU_TemplateSpFuncts.h:</div>
 <area shape="rect" title=" " alt="" coords="1818,773,1886,799"/>
 <area shape="rect" title=" " alt="" coords="2446,773,2538,799"/>
 <area shape="rect" href="_run_settings_8h.html" title=" " alt="" coords="1613,527,1856,553"/>
-<area shape="rect" href="_bp_level_8h.html" title=" " alt="" coords="1299,445,1501,471"/>
-<area shape="rect" href="_shared_bp_util_functs_8h.html" title=" " alt="" coords="1438,363,1599,389"/>
+<area shape="rect" href="_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1299,445,1501,471"/>
+<area shape="rect" href="_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="1438,363,1599,389"/>
 <area shape="rect" title=" " alt="" coords="2167,609,2231,635"/>
 <area shape="rect" title=" " alt="" coords="1873,609,1940,635"/>
 <area shape="rect" href="_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="1431,609,1646,635"/>
@@ -145,12 +148,12 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="_kernel_bp_stereo_c_p_u___template_sp_functs_8h__dep__incl.png" border="0" usemap="#asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___template_sp_functs_8hdep" alt=""/></div>
 <map name="asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___template_sp_functs_8hdep" id="asrc_2beliefprop_2_bp_optimize_c_p_u_2_kernel_bp_stereo_c_p_u___template_sp_functs_8hdep">
-<area shape="rect" title=" " alt="" coords="158,5,405,61"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions and constant/texture storage to run belief propagation on C..." alt="" coords="185,109,377,151"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_r_m_template_sp_functs_8h.html" title=" " alt="" coords="5,199,283,255"/>
-<area shape="rect" href="_process_bp_optimized_c_p_u_8h.html" title="Declares the host functions to run the CUDA implementation of Stereo estimation using BP." alt="" coords="307,206,533,247"/>
+<area shape="rect" title="Define functions in belief propagation processing that involve going between short/half and float dat..." alt="" coords="158,5,405,61"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="185,109,377,151"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_r_m_template_sp_functs_8h.html" title="Defines functions used in processing belief propagation that are specific to ARM implementation." alt="" coords="5,199,283,255"/>
+<area shape="rect" href="_process_bp_optimized_c_p_u_8h.html" title="Declares child class of ProcessBp that defines functions used in processing bp in the optimized CPU i..." alt="" coords="307,206,533,247"/>
 <area shape="rect" href="_process_bp_optimized_c_p_u_8cpp.html" title="Defines the functions to run the CUDA implementation of 2&#45;D Stereo estimation using BP." alt="" coords="155,303,397,344"/>
-<area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title=" " alt="" coords="421,303,704,344"/>
+<area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title="Declares child class of RunBpOnStereoSet to run optimized CPU implementation of belief propagation on..." alt="" coords="421,303,704,344"/>
 <area shape="rect" href="_run_bp_on_stereo_set_optimized_c_p_u_8cpp.html" title=" " alt="" coords="262,392,559,433"/>
 <area shape="rect" href="_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title="File with main() function to run optimized belief propagation implementation on CPU on an input stere..." alt="" coords="584,392,843,433"/>
 </map>
@@ -225,7 +228,8 @@ Functions</h2></td></tr>
 <tr class="separator:a9b96f0dd635f56d73fa9a9760fa49521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>Scott Grauer-Gray </dd></dl>
+<div class="textblock"><p>Define functions in belief propagation processing that involve going between short/half and float datatypes. </p>
+<dl class="section author"><dt>Author</dt><dd>Scott Grauer-Gray</dd></dl>
 <dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2024 </dd></dl>
 
 <p class="definition">Definition in file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
@@ -314,7 +318,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00246">246</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00247">247</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -413,7 +417,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00260">260</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00261">261</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -512,7 +516,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00274">274</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00275">275</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -611,7 +615,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00288">288</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00289">289</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -710,7 +714,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00302">302</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00303">303</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -809,7 +813,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00316">316</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00317">317</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -908,7 +912,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00330">330</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00331">331</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1037,7 +1041,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00362">362</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00363">363</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1166,7 +1170,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00380">380</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00381">381</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1295,7 +1299,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00398">398</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00399">399</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1424,7 +1428,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00416">416</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00417">417</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1553,7 +1557,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00434">434</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00435">435</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1682,7 +1686,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00452">452</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00453">453</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1811,7 +1815,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00470">470</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00471">471</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1958,7 +1962,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00083">83</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00084">84</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2104,7 +2108,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00104">104</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00105">105</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2250,7 +2254,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00125">125</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00126">126</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2396,7 +2400,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00146">146</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00147">147</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2542,7 +2546,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00167">167</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00168">168</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2688,7 +2692,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00188">188</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00189">189</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -2834,7 +2838,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00209">209</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html#l00210">210</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___template_sp_functs_8h_source.html">KernelBpStereoCPU_TemplateSpFuncts.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">

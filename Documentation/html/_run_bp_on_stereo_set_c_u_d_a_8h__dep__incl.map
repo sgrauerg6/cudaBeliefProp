@@ -1,5 +1,5 @@
 <map id="src/beliefprop/BpOptimizeCUDA/RunBpOnStereoSetCUDA.h" name="src/beliefprop/BpOptimizeCUDA/RunBpOnStereoSetCUDA.h">
-<area shape="rect" id="node1" title="Declares the methods to run Stereo BP on a series of images." alt="" coords="129,5,366,47"/>
+<area shape="rect" id="node1" title="Declares child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given ..." alt="" coords="129,5,366,47"/>
 <area shape="rect" id="node2" href="$_run_bp_on_stereo_set_c_u_d_a_8cpp.html" title="Defines the methods to run BP Stereo implementation on a series of images using various options." alt="" coords="5,102,257,143"/>
 <area shape="rect" id="node3" href="$_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title="File with main() function to run optimized CUDA belief propagation implementation on CPU on an input ..." alt="" coords="282,95,445,151"/>
 </map>

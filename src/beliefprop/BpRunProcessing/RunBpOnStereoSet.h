@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunBpOnStereoSet.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares abstract class to set up and run belief propagation on target device using
+ * specified acceleration
  * 
  * @copyright Copyright (c) 2024
  */
@@ -79,7 +80,8 @@ struct BpOnDevice {
 };
 
 /**
- * @brief Abstract class to set up and run belief propagation on target device using specified acceleration
+ * @brief Abstract class to set up and run belief propagation on target device using
+ * specified acceleration
  * 
  * @tparam T 
  * @tparam DISP_VALS 

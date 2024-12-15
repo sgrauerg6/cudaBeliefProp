@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file KernelBpStereoCPU.h
  * @author Scott Grauer-Gray
- * @brief This header declares the kernel functions and constant/texture storage to run belief propagation on CUDA
+ * @brief This header declares the kernel functions to run optimized belief
+ * propagation on CPU
  * 
  * @copyright Copyright (c) 2024
  */

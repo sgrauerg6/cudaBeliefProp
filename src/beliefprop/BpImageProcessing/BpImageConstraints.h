@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file BpImageConstraints.h
  * @author Scott Grauer-Gray
- * @brief Define constraints for data type in belief propagation processing
+ * @brief Define constraint for data type in belief propagation processing
  * related to image processing
  * 
  * @copyright Copyright (c) 2024

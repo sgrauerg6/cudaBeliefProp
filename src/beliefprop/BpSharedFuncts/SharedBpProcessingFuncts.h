@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file SharedBpProcessingFuncts.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Functions for belief propagation processing that are used in both
+ * optimized CPU and CUDA implementations
  * 
  * @copyright Copyright (c) 2024
  */

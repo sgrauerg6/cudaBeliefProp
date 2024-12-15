@@ -1,5 +1,10 @@
 \hypertarget{_process_bp_8h}{}\doxysection{src/beliefprop/\+Bp\+Run\+Processing/\+Process\+Bp.h File Reference}
 \label{_process_bp_8h}\index{src/beliefprop/BpRunProcessing/ProcessBp.h@{src/beliefprop/BpRunProcessing/ProcessBp.h}}
+
+
+Declares abstract class to run belief propagation on target device. Some of the class functions need to be overridden for processing on target device.  
+
+
 {\ttfamily \#include $<$math.\+h$>$}\newline
 {\ttfamily \#include $<$chrono$>$}\newline
 {\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
@@ -20,14 +25,16 @@
 {\ttfamily \#include \char`\"{}Bp\+Run\+Utils.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Parallel\+Params\+Bp.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Bp\+Level.\+h\char`\"{}}\newline
-Include dependency graph for Process\+Bp.\+h\+:\nopagebreak
+Include dependency graph for Process\+Bp.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_process_bp_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -47,8 +54,10 @@ using \mbox{\hyperlink{_process_bp_8h_a01aa9bc45db0055702c34b28327be3e1}{timing\
 
 
 \doxysubsection{Detailed Description}
+Declares abstract class to run belief propagation on target device. Some of the class functions need to be overridden for processing on target device. 
+
 \begin{DoxyAuthor}{Author}
-Scott Grauer-\/\+Gray 
+Scott Grauer-\/\+Gray
 \end{DoxyAuthor}
 \begin{DoxyCopyright}{Copyright}
 Copyright (c) 2024 
@@ -68,5 +77,5 @@ Alias for time point for start and end time for each timing segment.
 
 
 
-Definition at line 54 of file Process\+Bp.\+h.
+Definition at line 56 of file Process\+Bp.\+h.
 

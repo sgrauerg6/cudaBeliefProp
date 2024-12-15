@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file BpRunUtils.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief File with namespace for enums, constants, structures, and
+ * functions specific to belief propagation processing
  * 
  * @copyright Copyright (c) 2024
  */

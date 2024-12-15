@@ -19,13 +19,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file SmoothImage.h
  * @author Scott Grauer-Gray
- * @brief Declares the functions used to smooth the input images with a gaussian filter of kSigmaBp (see bpCudaParameters.cuh) implemented in CUDA
+ * @brief Declares class for smoothing the images before running BP
  * 
  * @copyright Copyright (c) 2024
  */
 
-#ifndef SMOOTH_IMAGE_HOST_HEADER_CUH
-#define SMOOTH_IMAGE_HOST_HEADER_CUH
+#ifndef SMOOTH_IMAGE_HOST_HEADER_H
+#define SMOOTH_IMAGE_HOST_HEADER_H
 
 #include <cmath>
 #include <memory>
@@ -89,4 +89,4 @@ private:
   void NormalizeFilter(std::vector<float>& filter, unsigned int size_filter) const;
 };
 
-#endif //SMOOTH_IMAGE_HOST_HEADER_CUH
+#endif //SMOOTH_IMAGE_HOST_HEADER_H

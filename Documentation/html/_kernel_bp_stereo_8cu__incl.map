@@ -1,14 +1,14 @@
 <map id="src/beliefprop/BpOptimizeCUDA/KernelBpStereo.cu" name="src/beliefprop/BpOptimizeCUDA/KernelBpStereo.cu">
 <area shape="rect" id="node1" title="This file defines the methods to perform belief propagation for disparity map estimation from stereo ..." alt="" coords="1382,5,1572,47"/>
-<area shape="rect" id="node2" href="$_shared_bp_processing_functs_8h.html" title=" " alt="" coords="1346,95,1608,136"/>
+<area shape="rect" id="node2" href="$_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="1346,95,1608,136"/>
 <area shape="rect" id="node3" href="$_run_settings_8h.html" title=" " alt="" coords="1129,348,1372,375"/>
 <area shape="rect" id="node23" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="1678,512,1898,539"/>
 <area shape="rect" id="node25" href="$_utility_functs_8h.html" title=" " alt="" coords="1774,266,1945,293"/>
-<area shape="rect" id="node26" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="1448,423,1647,464"/>
-<area shape="rect" id="node27" href="$_bp_run_utils_8h.html" title=" " alt="" coords="26,430,248,457"/>
-<area shape="rect" id="node28" href="$_bp_level_8h.html" title=" " alt="" coords="1446,266,1649,293"/>
-<area shape="rect" id="node30" href="$_bp_evaluation_stereo_sets_8h.html" title=" " alt="" coords="765,259,960,300"/>
-<area shape="rect" id="node32" href="$_shared_bp_util_functs_8h.html" title=" " alt="" coords="1326,184,1487,211"/>
+<area shape="rect" id="node26" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1448,423,1647,464"/>
+<area shape="rect" id="node27" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="26,430,248,457"/>
+<area shape="rect" id="node28" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1446,266,1649,293"/>
+<area shape="rect" id="node30" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="765,259,960,300"/>
+<area shape="rect" id="node32" href="$_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="1326,184,1487,211"/>
 <area shape="rect" id="node4" title=" " alt="" coords="809,594,884,621"/>
 <area shape="rect" id="node5" title=" " alt="" coords="899,676,996,703"/>
 <area shape="rect" id="node6" title=" " alt="" coords="1310,430,1374,457"/>
@@ -30,5 +30,5 @@
 <area shape="rect" id="node22" title=" " alt="" coords="1242,512,1307,539"/>
 <area shape="rect" id="node24" title=" " alt="" coords="1742,594,1834,621"/>
 <area shape="rect" id="node29" title=" " alt="" coords="1586,348,1648,375"/>
-<area shape="rect" id="node31" href="$_bp_settings_8h.html" title=" " alt="" coords="368,348,588,375"/>
+<area shape="rect" id="node31" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="368,348,588,375"/>
 </map>

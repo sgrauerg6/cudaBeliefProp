@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file EvaluateImpResultsBp.h
  * @author Scott Grauer-Gray
- * @brief Class to evaluate belief propagation implementation results.
+ * @brief Declares child class of EvaluateImpResults that defines member
+ * functions for belief propagation evaluation which override pure virtual
+ * functions in parent class.
  * 
  * @copyright Copyright (c) 2024
  */

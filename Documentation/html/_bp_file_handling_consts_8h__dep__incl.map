@@ -1,6 +1,6 @@
 <map id="src/beliefprop/BpFileProcessing/BpFileHandlingConsts.h" name="src/beliefprop/BpFileProcessing/BpFileHandlingConsts.h">
-<area shape="rect" id="node1" title=" " alt="" coords="676,5,901,47"/>
-<area shape="rect" id="node2" href="$_bp_file_handling_8h.html" title=" " alt="" coords="401,102,627,143"/>
+<area shape="rect" id="node1" title="Belief propagation implementation constants related to file processing." alt="" coords="676,5,901,47"/>
+<area shape="rect" id="node2" href="$_bp_file_handling_8h.html" title="Declares class to retrieve path of stereo set files for reading and for output." alt="" coords="401,102,627,143"/>
 <area shape="rect" id="node7" href="$_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title="File with main() function to run optimized belief propagation implementation on CPU on an input stere..." alt="" coords="465,295,723,337"/>
 <area shape="rect" id="node8" href="$_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title="File with main() function to run optimized CUDA belief propagation implementation on CPU on an input ..." alt="" coords="747,288,910,344"/>
 <area shape="rect" id="node9" href="$_evaluate_imp_results_bp_8cpp.html" title="Function definition for class to evaluate belief propagation implementation results." alt="" coords="751,95,976,151"/>

@@ -1,17 +1,24 @@
 \hypertarget{_bp_evaluation_stereo_sets_8h}{}\doxysection{src/beliefprop/\+Bp\+Results\+Evaluation/\+Bp\+Evaluation\+Stereo\+Sets.h File Reference}
 \label{_bp_evaluation_stereo_sets_8h}\index{src/beliefprop/BpResultsEvaluation/BpEvaluationStereoSets.h@{src/beliefprop/BpResultsEvaluation/BpEvaluationStereoSets.h}}
+
+
+Header file that contains information about the stereo sets used for evaluation of the bp implementation. Stereo sets are in Bp\+Stereo\+Sets folder.  
+
+
 {\ttfamily \#include $<$string\+\_\+view$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include \char`\"{}Bp\+Run\+Processing/\+Bp\+Settings.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Input\+Signature.\+h\char`\"{}}\newline
-Include dependency graph for Bp\+Evaluation\+Stereo\+Sets.\+h\+:\nopagebreak
+Include dependency graph for Bp\+Evaluation\+Stereo\+Sets.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_bp_evaluation_stereo_sets_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -43,3 +50,14 @@ constexpr std\+::array$<$ Bp\+Stereo\+Set, 8 $>$ \mbox{\hyperlink{namespacebelie
 \begin{DoxyCompactList}\small\item\em Declare stereo sets to process with name, num disparity values, and scale factor currently cones\+Full\+Size is not used. \end{DoxyCompactList}\item 
 const std\+::vector$<$ std\+::pair$<$ std\+::string, std\+::vector$<$ \mbox{\hyperlink{class_input_signature}{Input\+Signature}} $>$ $>$ $>$ \mbox{\hyperlink{namespacebeliefprop_ac10a904aec4af293befba96d151bda95}{beliefprop\+::k\+Eval\+Data\+Subsets}}
 \begin{DoxyCompactList}\small\item\em Define subsets for evaluating run results on specified inputs the first three stereo sets are labeled as \char`\"{}smallest 3 stereo sets\char`\"{} the last three stereo sets (excluding \char`\"{}cones\+Full\+Sized\char`\"{}) are labeled as \char`\"{}largest 3 stereo sets\char`\"{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Header file that contains information about the stereo sets used for evaluation of the bp implementation. Stereo sets are in Bp\+Stereo\+Sets folder. 
+
+\begin{DoxyAuthor}{Author}
+Scott Grauer-\/\+Gray
+\end{DoxyAuthor}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2024 
+\end{DoxyCopyright}

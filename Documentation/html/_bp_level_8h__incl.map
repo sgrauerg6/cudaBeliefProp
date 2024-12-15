@@ -1,5 +1,5 @@
 <map id="src/beliefprop/BpRunProcessing/BpLevel.h" name="src/beliefprop/BpRunProcessing/BpLevel.h">
-<area shape="rect" id="node1" title=" " alt="" coords="1216,5,1442,47"/>
+<area shape="rect" id="node1" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1216,5,1442,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="1150,326,1206,353"/>
 <area shape="rect" id="node3" title=" " alt="" coords="1332,95,1395,121"/>
 <area shape="rect" id="node4" href="$_run_settings_8h.html" title=" " alt="" coords="429,95,672,121"/>

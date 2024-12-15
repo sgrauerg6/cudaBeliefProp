@@ -1,5 +1,5 @@
 <map id="src/beliefprop/BpFileProcessing/BpFileHandling.h" name="src/beliefprop/BpFileProcessing/BpFileHandling.h">
-<area shape="rect" id="node1" title=" " alt="" coords="240,5,465,47"/>
+<area shape="rect" id="node1" title="Declares class to retrieve path of stereo set files for reading and for output." alt="" coords="240,5,465,47"/>
 <area shape="rect" id="node2" href="$_bp_file_handling_8cpp.html" title=" " alt="" coords="125,95,351,136"/>
 <area shape="rect" id="node3" href="$_run_imp_on_input_bp_8h.html" title=" " alt="" coords="375,95,560,136"/>
 <area shape="rect" id="node4" href="$_run_imp_mult_inputs_bp_8cpp.html" title=" " alt="" coords="5,191,220,233"/>

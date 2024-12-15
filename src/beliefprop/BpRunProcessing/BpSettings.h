@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file BpSettings.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares structure to store the belief propagation settings including the
+ * number of levels and iterations
  * 
  * @copyright Copyright (c) 2024
  */

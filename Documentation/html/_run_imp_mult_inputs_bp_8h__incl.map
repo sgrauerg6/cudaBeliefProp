@@ -1,5 +1,5 @@
 <map id="src/beliefprop/BpRunEvalImp/RunImpMultInputsBp.h" name="src/beliefprop/BpRunEvalImp/RunImpMultInputsBp.h">
-<area shape="rect" id="node1" title=" " alt="" coords="510,5,708,47"/>
+<area shape="rect" id="node1" title="Declares child class of RunImpMultInputs to run specified belief propagation implementation on a numb..." alt="" coords="510,5,708,47"/>
 <area shape="rect" id="node2" href="$_run_settings_8h.html" title=" " alt="" coords="928,244,1170,271"/>
 <area shape="rect" id="node22" href="$_run_imp_mult_inputs_8h.html" title=" " alt="" coords="191,95,398,121"/>
 <area shape="rect" id="node28" href="$_evaluate_imp_aliases_8h.html" title="Header for defining aliases for storing run results and evaluating implementations." alt="" coords="328,244,490,271"/>

@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file ParallelParamsBp.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares child class of ParallelParams to store and process
+ * parallelization parameters to use in each BP kernel at each level
  * 
  * @copyright Copyright (c) 2024
  */

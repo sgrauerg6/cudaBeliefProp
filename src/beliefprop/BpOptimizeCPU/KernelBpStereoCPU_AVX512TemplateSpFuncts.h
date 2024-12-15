@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file KernelBpStereoCPU_AVX512TemplateSpFuncts.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Defines functions used in processing belief propagation that are
+ * specific to implementation with AVX512 vectorization
  * 
  * @copyright Copyright (c) 2024
  */

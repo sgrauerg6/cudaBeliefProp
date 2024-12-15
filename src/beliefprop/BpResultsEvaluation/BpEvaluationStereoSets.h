@@ -17,10 +17,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 */
 
 /**
- * @file BpEvaluationStereoSets.cpp
+ * @file BpEvaluationStereoSets.h
  * @author Scott Grauer-Gray
- * @brief This header file contains information about the stereo sets used for evaluation of
- * the bp implementation.
+ * @brief Header file that contains information about the stereo sets used for
+ * evaluation of the bp implementation.
  * Stereo sets are in BpStereoSets folder
  * 
  * @copyright Copyright (c) 2024

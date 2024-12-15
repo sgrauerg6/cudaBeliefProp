@@ -1,16 +1,16 @@
 <map id="src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU_AVX256TemplateSpFuncts.h" name="src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU_AVX256TemplateSpFuncts.h">
-<area shape="rect" id="node1" title=" " alt="" coords="276,5,573,61"/>
+<area shape="rect" id="node1" title="Defines functions used in processing belief propagation that are specific to implementation with AVX2..." alt="" coords="276,5,573,61"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,363,97,389"/>
-<area shape="rect" id="node3" href="$_shared_bp_processing_functs_8h.html" title=" " alt="" coords="1211,109,1473,151"/>
+<area shape="rect" id="node3" href="$_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="1211,109,1473,151"/>
 <area shape="rect" id="node34" href="$_a_v_x256_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by AVX256." alt="" coords="318,109,531,151"/>
 <area shape="rect" id="node4" href="$_run_settings_8h.html" title=" " alt="" coords="1107,363,1350,389"/>
 <area shape="rect" id="node24" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="649,527,869,553"/>
 <area shape="rect" id="node26" href="$_utility_functs_8h.html" title=" " alt="" coords="707,363,878,389"/>
-<area shape="rect" id="node27" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="1616,437,1815,479"/>
-<area shape="rect" id="node28" href="$_bp_run_utils_8h.html" title=" " alt="" coords="1939,445,2161,471"/>
-<area shape="rect" id="node29" href="$_bp_level_8h.html" title=" " alt="" coords="1311,281,1514,307"/>
-<area shape="rect" id="node31" href="$_bp_evaluation_stereo_sets_8h.html" title=" " alt="" coords="2171,273,2366,315"/>
-<area shape="rect" id="node33" href="$_shared_bp_util_functs_8h.html" title=" " alt="" coords="1261,199,1423,225"/>
+<area shape="rect" id="node27" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1616,437,1815,479"/>
+<area shape="rect" id="node28" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1939,445,2161,471"/>
+<area shape="rect" id="node29" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1311,281,1514,307"/>
+<area shape="rect" id="node31" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="2171,273,2366,315"/>
+<area shape="rect" id="node33" href="$_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="1261,199,1423,225"/>
 <area shape="rect" id="node5" title=" " alt="" coords="1695,609,1770,635"/>
 <area shape="rect" id="node6" title=" " alt="" coords="2408,691,2505,717"/>
 <area shape="rect" id="node7" title=" " alt="" coords="995,445,1059,471"/>
@@ -32,7 +32,7 @@
 <area shape="rect" id="node23" title=" " alt="" coords="1357,527,1423,553"/>
 <area shape="rect" id="node25" title=" " alt="" coords="713,609,805,635"/>
 <area shape="rect" id="node30" title=" " alt="" coords="1381,363,1444,389"/>
-<area shape="rect" id="node32" href="$_bp_settings_8h.html" title=" " alt="" coords="1965,363,2185,389"/>
+<area shape="rect" id="node32" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="1965,363,2185,389"/>
 <area shape="rect" id="node35" href="$_s_i_m_d_processing_8h.html" title=" " alt="" coords="355,199,494,225"/>
 <area shape="rect" id="node36" title=" " alt="" coords="427,281,495,307"/>
 <area shape="rect" id="node37" title=" " alt="" coords="519,281,581,307"/>

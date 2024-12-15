@@ -2,10 +2,10 @@
 <area shape="rect" id="node1" title=" " alt="" coords="297,5,487,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,95,128,121"/>
 <area shape="rect" id="node3" title=" " alt="" coords="152,95,253,121"/>
-<area shape="rect" id="node4" href="$_process_bp_8h.html" title=" " alt="" coords="1718,95,1935,121"/>
+<area shape="rect" id="node4" href="$_process_bp_8h.html" title="Declares abstract class to run belief propagation on target device. Some of the class functions need ..." alt="" coords="1718,95,1935,121"/>
 <area shape="rect" id="node26" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="827,423,1059,449"/>
 <area shape="rect" id="node32" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="379,423,599,449"/>
-<area shape="rect" id="node41" href="$_parallel_params_bp_8h.html" title=" " alt="" coords="2232,177,2379,203"/>
+<area shape="rect" id="node41" href="$_parallel_params_bp_8h.html" title="Declares child class of ParallelParams to store and process parallelization parameters to use in each..." alt="" coords="2232,177,2379,203"/>
 <area shape="rect" id="node5" title=" " alt="" coords="1406,177,1474,203"/>
 <area shape="rect" id="node6" title=" " alt="" coords="2811,423,2877,449"/>
 <area shape="rect" id="node7" title=" " alt="" coords="2662,423,2786,449"/>
@@ -17,12 +17,12 @@
 <area shape="rect" id="node13" href="$_run_settings_8h.html" title=" " alt="" coords="1763,259,2005,285"/>
 <area shape="rect" id="node30" href="$_memory_management_8h.html" title="Class for memory management with functions defined for standard memory allocation using CPU and can b..." alt="" coords="1713,177,1941,203"/>
 <area shape="rect" id="node34" href="$_detailed_timings_8h.html" title=" " alt="" coords="2931,341,3176,367"/>
-<area shape="rect" id="node36" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="682,333,881,375"/>
-<area shape="rect" id="node37" href="$_bp_evaluation_stereo_sets_8h.html" title=" " alt="" coords="736,169,931,211"/>
-<area shape="rect" id="node38" href="$_bp_settings_8h.html" title=" " alt="" coords="1330,259,1550,285"/>
-<area shape="rect" id="node39" href="$_bp_run_utils_8h.html" title=" " alt="" coords="1419,341,1525,367"/>
-<area shape="rect" id="node40" href="$_detailed_timing_bp_consts_8h.html" title=" " alt="" coords="2282,333,2481,375"/>
-<area shape="rect" id="node44" href="$_bp_level_8h.html" title=" " alt="" coords="1550,177,1637,203"/>
+<area shape="rect" id="node36" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="682,333,881,375"/>
+<area shape="rect" id="node37" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="736,169,931,211"/>
+<area shape="rect" id="node38" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="1330,259,1550,285"/>
+<area shape="rect" id="node39" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1419,341,1525,367"/>
+<area shape="rect" id="node40" href="$_detailed_timing_bp_consts_8h.html" title="Constants for timing belief propagation implementation." alt="" coords="2282,333,2481,375"/>
+<area shape="rect" id="node44" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1550,177,1637,203"/>
 <area shape="rect" id="node14" title=" " alt="" coords="2083,505,2157,531"/>
 <area shape="rect" id="node15" title=" " alt="" coords="894,587,991,613"/>
 <area shape="rect" id="node16" title=" " alt="" coords="1941,341,2005,367"/>

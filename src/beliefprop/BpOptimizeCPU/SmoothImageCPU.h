@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file SmoothImageCPU.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares child class of SmoothImage for smoothing images in the
+ * optimized CPU implementation
  * 
  * @copyright Copyright (c) 2024
  */

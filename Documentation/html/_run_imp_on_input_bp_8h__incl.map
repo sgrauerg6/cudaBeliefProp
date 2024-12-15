@@ -10,10 +10,10 @@
 <area shape="rect" id="node17" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="1139,445,1269,471"/>
 <area shape="rect" id="node20" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="347,527,579,553"/>
 <area shape="rect" id="node24" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="3097,527,3317,553"/>
-<area shape="rect" id="node26" href="$_run_imp_on_input_8h.html" title=" " alt="" coords="675,266,864,293"/>
-<area shape="rect" id="node31" href="$_bp_file_handling_8h.html" title=" " alt="" coords="3669,445,3915,471"/>
-<area shape="rect" id="node33" href="$_bp_consts_enums_aliases_8h.html" title=" " alt="" coords="2906,437,3105,479"/>
-<area shape="rect" id="node34" href="$_bp_evaluation_stereo_sets_8h.html" title=" " alt="" coords="1192,259,1387,300"/>
+<area shape="rect" id="node26" href="$_run_imp_on_input_8h.html" title="Declares child class of RunImpOnInput to run and evaluate belief propagation implementation on a spec..." alt="" coords="675,266,864,293"/>
+<area shape="rect" id="node31" href="$_bp_file_handling_8h.html" title="Declares class to retrieve path of stereo set files for reading and for output." alt="" coords="3669,445,3915,471"/>
+<area shape="rect" id="node33" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="2906,437,3105,479"/>
+<area shape="rect" id="node34" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="1192,259,1387,300"/>
 <area shape="rect" id="node37" href="$stereo_8h.html" title=" " alt="" coords="3045,95,3253,121"/>
 <area shape="rect" id="node9" title=" " alt="" coords="2025,691,2122,717"/>
 <area shape="rect" id="node10" title=" " alt="" coords="2232,445,2296,471"/>
@@ -33,9 +33,9 @@
 <area shape="rect" id="node28" href="$_parallel_params_8h.html" title=" " alt="" coords="1693,348,1893,389"/>
 <area shape="rect" id="node29" href="$_evaluate_imp_aliases_8h.html" title="Header for defining aliases for storing run results and evaluating implementations." alt="" coords="593,355,813,382"/>
 <area shape="rect" id="node30" title=" " alt="" coords="889,445,1013,471"/>
-<area shape="rect" id="node32" href="$_bp_file_handling_consts_8h.html" title=" " alt="" coords="3419,527,3595,553"/>
-<area shape="rect" id="node35" href="$_bp_settings_8h.html" title=" " alt="" coords="2409,355,2629,382"/>
-<area shape="rect" id="node36" href="$_bp_run_utils_8h.html" title=" " alt="" coords="2523,445,2629,471"/>
+<area shape="rect" id="node32" href="$_bp_file_handling_consts_8h.html" title="Belief propagation implementation constants related to file processing." alt="" coords="3419,527,3595,553"/>
+<area shape="rect" id="node35" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="2409,355,2629,382"/>
+<area shape="rect" id="node36" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="2523,445,2629,471"/>
 <area shape="rect" id="node38" title=" " alt="" coords="3187,177,3248,203"/>
 <area shape="rect" id="node39" title=" " alt="" coords="3272,177,3347,203"/>
 <area shape="rect" id="node40" title=" " alt="" coords="3371,177,3437,203"/>
@@ -44,8 +44,8 @@
 <area shape="rect" id="node45" href="$pnmfile_8h.html" title=" " alt="" coords="3285,266,3368,293"/>
 <area shape="rect" id="node47" href="$filter_8h.html" title=" " alt="" coords="3513,177,3575,203"/>
 <area shape="rect" id="node48" href="$imconv_8h.html" title=" " alt="" coords="3393,266,3474,293"/>
-<area shape="rect" id="node49" href="$_parallel_params_bp_8h.html" title=" " alt="" coords="2244,259,2431,300"/>
-<area shape="rect" id="node50" href="$_run_bp_on_stereo_set_8h.html" title=" " alt="" coords="1719,169,1959,211"/>
+<area shape="rect" id="node49" href="$_parallel_params_bp_8h.html" title="Declares child class of ParallelParams to store and process parallelization parameters to use in each..." alt="" coords="2244,259,2431,300"/>
+<area shape="rect" id="node50" href="$_run_bp_on_stereo_set_8h.html" title="Declares abstract class to set up and run belief propagation on target device using specified acceler..." alt="" coords="1719,169,1959,211"/>
 <area shape="rect" id="node42" title=" " alt="" coords="3280,445,3347,471"/>
 <area shape="rect" id="node44" title=" " alt="" coords="3430,445,3493,471"/>
 <area shape="rect" id="node46" title=" " alt="" coords="3411,355,3477,382"/>

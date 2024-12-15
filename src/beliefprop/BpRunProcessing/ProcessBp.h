@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file ProcessBp.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares abstract class to run belief propagation on target device.
+ * Some of the class functions need to be overridden for processing on
+ * target device.
  * 
  * @copyright Copyright (c) 2024
  */

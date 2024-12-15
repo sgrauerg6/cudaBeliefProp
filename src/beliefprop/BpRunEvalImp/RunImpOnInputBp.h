@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunImpOnInput.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares child class of RunImpOnInput to run and evaluate belief
+ * propagation implementation on a specified input
  * 
  * @copyright Copyright (c) 2024
  */

@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file BpImage.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares class to define images that are used in bp processing
  * 
  * @copyright Copyright (c) 2024
  */

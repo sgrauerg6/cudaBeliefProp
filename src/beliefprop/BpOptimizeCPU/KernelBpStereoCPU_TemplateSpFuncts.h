@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file KernelBpStereoCPU_TemplateSpFuncts.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Define functions in belief propagation processing that involve going
+ * between short/half and float datatypes
  * 
  * @copyright Copyright (c) 2024
  */

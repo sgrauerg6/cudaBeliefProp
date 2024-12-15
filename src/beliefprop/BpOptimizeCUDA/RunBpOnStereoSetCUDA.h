@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunBpOnStereoSetCUDA.h
  * @author Scott Grauer-Gray
- * @brief Declares the methods to run Stereo BP on a series of images
+ * @brief Declares child class of RunBpOnStereoSet to run CUDA implementation
+ * of belief propagation on a given stereo set as defined by reference and test
+ * image file paths
  * 
  * @copyright Copyright (c) 2024
  */

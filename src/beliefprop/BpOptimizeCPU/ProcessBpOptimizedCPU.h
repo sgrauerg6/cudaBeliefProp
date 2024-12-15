@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file ProcessBpOptimizedCPU.h
  * @author Scott Grauer-Gray
- * @brief Declares the host functions to run the CUDA implementation of Stereo estimation using BP
+ * @brief Declares child class of ProcessBp that defines functions used in
+ * processing bp in the optimized CPU implementation
  * 
  * @copyright Copyright (c) 2024
  */
@@ -44,8 +45,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.h"
 
 /**
- * @brief Child class of ProcessBp that define functions used in processing bp in the
- * optimized CPU implementation
+ * @brief Child class of ProcessBp that defines functions used in processing bp
+ * in the optimized CPU implementation
  * 
  * @tparam T 
  * @tparam DISP_VALS 

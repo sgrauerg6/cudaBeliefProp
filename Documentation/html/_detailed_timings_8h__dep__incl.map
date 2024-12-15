@@ -1,12 +1,12 @@
 <map id="src/RuntimeTiming/DetailedTimings.h" name="src/RuntimeTiming/DetailedTimings.h">
 <area shape="rect" id="node1" title=" " alt="" coords="948,5,1152,47"/>
-<area shape="rect" id="node2" href="$_process_bp_8h.html" title=" " alt="" coords="937,95,1163,136"/>
-<area shape="rect" id="node14" href="$_run_bp_on_stereo_set_8h.html" title=" " alt="" coords="786,184,1013,225"/>
+<area shape="rect" id="node2" href="$_process_bp_8h.html" title="Declares abstract class to run belief propagation on target device. Some of the class functions need ..." alt="" coords="937,95,1163,136"/>
+<area shape="rect" id="node14" href="$_run_bp_on_stereo_set_8h.html" title="Declares abstract class to set up and run belief propagation on target device using specified acceler..." alt="" coords="786,184,1013,225"/>
 <area shape="rect" id="node21" href="$_detailed_timings_8cpp.html" title=" " alt="" coords="1188,95,1392,136"/>
-<area shape="rect" id="node3" href="$_process_bp_optimized_c_p_u_8h.html" title="Declares the host functions to run the CUDA implementation of Stereo estimation using BP." alt="" coords="299,184,526,225"/>
-<area shape="rect" id="node5" href="$_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title=" " alt="" coords="271,273,554,315"/>
+<area shape="rect" id="node3" href="$_process_bp_optimized_c_p_u_8h.html" title="Declares child class of ProcessBp that defines functions used in processing bp in the optimized CPU i..." alt="" coords="299,184,526,225"/>
+<area shape="rect" id="node5" href="$_run_bp_on_stereo_set_optimized_c_p_u_8h.html" title="Declares child class of RunBpOnStereoSet to run optimized CPU implementation of belief propagation on..." alt="" coords="271,273,554,315"/>
 <area shape="rect" id="node8" href="$_process_bp_c_u_d_a_8h.html" title=" " alt="" coords="1088,184,1279,225"/>
-<area shape="rect" id="node10" href="$_run_bp_on_stereo_set_c_u_d_a_8h.html" title="Declares the methods to run Stereo BP on a series of images." alt="" coords="1065,273,1302,315"/>
+<area shape="rect" id="node10" href="$_run_bp_on_stereo_set_c_u_d_a_8h.html" title="Declares child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a given ..." alt="" coords="1065,273,1302,315"/>
 <area shape="rect" id="node13" href="$_process_bp_8cpp.html" title=" " alt="" coords="1303,184,1530,225"/>
 <area shape="rect" id="node4" href="$_process_bp_optimized_c_p_u_8cpp.html" title="Defines the functions to run the CUDA implementation of 2&#45;D Stereo estimation using BP." alt="" coords="5,273,247,315"/>
 <area shape="rect" id="node6" href="$_run_bp_on_stereo_set_optimized_c_p_u_8cpp.html" title=" " alt="" coords="141,363,439,404"/>

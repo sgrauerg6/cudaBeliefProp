@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunBpOnStereoSetOptimizedCPU.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares child class of RunBpOnStereoSet to run optimized CPU
+ * implementation of belief propagation on a given stereo set as defined
+ * by reference and test image file paths
  * 
  * @copyright Copyright (c) 2024
  */

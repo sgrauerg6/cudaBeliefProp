@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file BpFileHandlingConsts.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Belief propagation implementation constants related to file
+ * processing
  * 
  * @copyright Copyright (c) 2024
  */

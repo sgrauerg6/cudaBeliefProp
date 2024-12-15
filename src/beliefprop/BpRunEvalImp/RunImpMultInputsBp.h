@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunImpMultInputsBp.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares child class of RunImpMultInputs to run specified belief
+ * propagation implementation on a number of inputs.
  * 
  * @copyright Copyright (c) 2024
  */
