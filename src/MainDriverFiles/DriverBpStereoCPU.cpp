@@ -19,12 +19,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file DriverBpStereoCPU.cpp
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Contains the main() function that drives the optimized CPU
+ * belief propgation implementation evaluation across multiple input
+ * stereo sets and run configurations.
  * 
  * @copyright Copyright (c) 2024
  */
-
-//This file contains the "main" function that drives the optimized CPU BP implementation
 
 #include <iostream>
 #include <array>
@@ -42,7 +42,15 @@ enum class RunImpSetting {
   kRunImpSimSingleCPUTwoCPUSystem
 };
 
-//run implementation using input parameters from command line with specified setting
+//
+/**
+ * @brief Run and evaluate optimized CPU implementation for belief propagation
+ * using input parameters from command line and specified implementation setting.
+ * 
+ * @param argc 
+ * @param argv 
+ * @param impSetting 
+ */
 void runImp(int argc, char** argv, RunImpSetting impSetting)
 {
   //initialize settings to run implementation and evaluation
@@ -167,6 +175,22 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
 #endif //CPU_VECTORIZATION_DEFINE
 }
 
+/**
+ * @brief Main() function that drives the optimized CPU
+ * belief propgation implementation evaluation across multiple input
+ * stereo sets and run configurations.
+ * First input argument corresponds to run name; recommended that run name
+ * include architecture that implementation is run on...if no input argument
+ * given run name is set to "CurrentRun"
+ * Can add second input argument "SimulateSingleCPU" to specify simulating a
+ * single-CPU on a dual-CPU system in the run (also need to set CPU threads pinned
+ * to socket by calling "export OMP_PLACES="sockets"" and "export OMP_PROC_BIND=true"
+ * commands on command line before run if enabling this option)
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, char** argv)
 {
   //if running on a system with two cpus, run implementation with settings adjusted

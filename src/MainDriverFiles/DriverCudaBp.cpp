@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file DriverCudaBp.cpp
  * @author Scott Grauer-Gray
- * @brief This file contains the "main" function that drives the CUDA BP implementation
+ * @brief Contains the main() function that drives the optimized CUDA
+ * belief propagation implementation evaluation across multiple input
+ * stereo sets and run configurations.
  * 
  * @copyright Copyright (c) 2024
  */
@@ -31,6 +33,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpRunEvalImp/RunImpMultInputsBp.h"
 #include "BpResultsEvaluation/EvaluateImpResultsBp.h"
 
+/**
+ * @brief Main() function that drives the optimized CPU
+ * belief propgation implementation evaluation across multiple input
+ * stereo sets and run configurations.
+ * Takes one input argument that corresponds to run name; recommended that run
+ * name include architecture that implementation is run on...if no input
+ * argument given run name is set to "CurrentRun"
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
 int main(int argc, char** argv)
 {
   //initialize run implementation settings
