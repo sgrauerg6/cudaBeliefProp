@@ -2,7 +2,7 @@
 \label{_driver_cuda_bp_8cpp}\index{src/MainDriverFiles/DriverCudaBp.cpp@{src/MainDriverFiles/DriverCudaBp.cpp}}
 
 
-This file contains the \char`\"{}main\char`\"{} function that drives the CUDA BP implementation.  
+Contains the \mbox{\hyperlink{_driver_cuda_bp_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main()}} function that drives the optimized CUDA belief propagation implementation evaluation across multiple input stereo sets and run configurations.  
 
 
 {\ttfamily \#include \char`\"{}Run\+Imp/\+Run\+Imp\+Mult\+Types\+Accels.\+h\char`\"{}}\newline
@@ -22,11 +22,11 @@ Include dependency graph for Driver\+Cuda\+Bp.\+cpp\+:\nopagebreak
 \begin{DoxyCompactItemize}
 \item 
 int \mbox{\hyperlink{_driver_cuda_bp_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Main() function that drives the optimized CPU belief propgation implementation evaluation across multiple input stereo sets and run configurations. Takes one input argument that corresponds to run name; recommended that run name include architecture that implementation is run on...if no input argument given run name is set to \char`\"{}\+Current\+Run\char`\"{}. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
-This file contains the \char`\"{}main\char`\"{} function that drives the CUDA BP implementation. 
+Contains the \mbox{\hyperlink{_driver_cuda_bp_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main()}} function that drives the optimized CUDA belief propagation implementation evaluation across multiple input stereo sets and run configurations. 
 
 \begin{DoxyAuthor}{Author}
 Scott Grauer-\/\+Gray
@@ -45,5 +45,19 @@ Copyright (c) 2024
 
 
 
-Definition at line 34 of file Driver\+Cuda\+Bp.\+cpp.
+Main() function that drives the optimized CPU belief propgation implementation evaluation across multiple input stereo sets and run configurations. Takes one input argument that corresponds to run name; recommended that run name include architecture that implementation is run on...if no input argument given run name is set to \char`\"{}\+Current\+Run\char`\"{}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & \\
+\hline
+{\em argv} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Definition at line 48 of file Driver\+Cuda\+Bp.\+cpp.
 

@@ -1,6 +1,6 @@
 <map id="src/beliefprop/BpResultsEvaluation/EvaluateImpResultsBp.h" name="src/beliefprop/BpResultsEvaluation/EvaluateImpResultsBp.h">
 <area shape="rect" id="node1" title="Class to evaluate belief propagation implementation results." alt="" coords="217,5,472,47"/>
 <area shape="rect" id="node2" href="$_evaluate_imp_results_bp_8cpp.html" title="Function definition for class to evaluate belief propagation implementation results." alt="" coords="5,95,231,151"/>
-<area shape="rect" id="node3" href="$_driver_bp_stereo_c_p_u_8cpp.html" title=" " alt="" coords="255,102,434,143"/>
-<area shape="rect" id="node4" href="$_driver_cuda_bp_8cpp.html" title="This file contains the &quot;main&quot; function that drives the CUDA BP implementation." alt="" coords="458,102,605,143"/>
+<area shape="rect" id="node3" href="$_driver_bp_stereo_c_p_u_8cpp.html" title="Contains the main() function that drives the optimized CPU belief propgation implementation evaluatio..." alt="" coords="255,102,434,143"/>
+<area shape="rect" id="node4" href="$_driver_cuda_bp_8cpp.html" title="Contains the main() function that drives the optimized CUDA belief propagation implementation evaluat..." alt="" coords="458,102,605,143"/>
 </map>

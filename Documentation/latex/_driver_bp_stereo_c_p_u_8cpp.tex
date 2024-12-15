@@ -1,5 +1,10 @@
 \hypertarget{_driver_bp_stereo_c_p_u_8cpp}{}\doxysection{src/\+Main\+Driver\+Files/\+Driver\+Bp\+Stereo\+CPU.cpp File Reference}
 \label{_driver_bp_stereo_c_p_u_8cpp}\index{src/MainDriverFiles/DriverBpStereoCPU.cpp@{src/MainDriverFiles/DriverBpStereoCPU.cpp}}
+
+
+Contains the \mbox{\hyperlink{_driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main()}} function that drives the optimized CPU belief propgation implementation evaluation across multiple input stereo sets and run configurations.  
+
+
 {\ttfamily \#include $<$iostream$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include \char`\"{}Run\+Imp/\+Run\+Imp\+Mult\+Types\+Accels.\+h\char`\"{}}\newline
@@ -27,14 +32,16 @@ enum class \mbox{\hyperlink{_driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54
 \begin{DoxyCompactItemize}
 \item 
 void \mbox{\hyperlink{_driver_bp_stereo_c_p_u_8cpp_afd0dafa5176b51fbc42b5066484aa593}{run\+Imp}} (int argc, char $\ast$$\ast$argv, \mbox{\hyperlink{_driver_bp_stereo_c_p_u_8cpp_af2ad0827ba0323f0dc2f54daafaf9ba6}{Run\+Imp\+Setting}} imp\+Setting)
-\item 
+\begin{DoxyCompactList}\small\item\em Run and evaluate optimized CPU implementation for belief propagation using input parameters from command line and specified implementation setting. \end{DoxyCompactList}\item 
 int \mbox{\hyperlink{_driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main}} (int argc, char $\ast$$\ast$argv)
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Main() function that drives the optimized CPU belief propgation implementation evaluation across multiple input stereo sets and run configurations. First input argument corresponds to run name; recommended that run name include architecture that implementation is run on...if no input argument given run name is set to \char`\"{}\+Current\+Run\char`\"{} Can add second input argument \char`\"{}\+Simulate\+Single\+CPU\char`\"{} to specify simulating a single-\/\+CPU on a dual-\/\+CPU system in the run (also need to set CPU threads pinned to socket by calling \char`\"{}export OMP\+\_\+\+PLACES=\char`\"{}sockets\char`\"{}\char`\"{} and \char`\"{}export OMP\+\_\+\+PROC\+\_\+\+BIND=true\char`\"{} commands on command line before run if enabling this option) \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
+Contains the \mbox{\hyperlink{_driver_bp_stereo_c_p_u_8cpp_a3c04138a5bfe5d72780bb7e82a18e627}{main()}} function that drives the optimized CPU belief propgation implementation evaluation across multiple input stereo sets and run configurations. 
+
 \begin{DoxyAuthor}{Author}
-Scott Grauer-\/\+Gray 
+Scott Grauer-\/\+Gray
 \end{DoxyAuthor}
 \begin{DoxyCopyright}{Copyright}
 Copyright (c) 2024 
@@ -77,7 +84,21 @@ Definition at line 39 of file Driver\+Bp\+Stereo\+CPU.\+cpp.
 
 
 
-Definition at line 170 of file Driver\+Bp\+Stereo\+CPU.\+cpp.
+Main() function that drives the optimized CPU belief propgation implementation evaluation across multiple input stereo sets and run configurations. First input argument corresponds to run name; recommended that run name include architecture that implementation is run on...if no input argument given run name is set to \char`\"{}\+Current\+Run\char`\"{} Can add second input argument \char`\"{}\+Simulate\+Single\+CPU\char`\"{} to specify simulating a single-\/\+CPU on a dual-\/\+CPU system in the run (also need to set CPU threads pinned to socket by calling \char`\"{}export OMP\+\_\+\+PLACES=\char`\"{}sockets\char`\"{}\char`\"{} and \char`\"{}export OMP\+\_\+\+PROC\+\_\+\+BIND=true\char`\"{} commands on command line before run if enabling this option) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & \\
+\hline
+{\em argv} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+int 
+\end{DoxyReturn}
+
+
+Definition at line 194 of file Driver\+Bp\+Stereo\+CPU.\+cpp.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -94,7 +115,20 @@ Here is the call graph for this function\+:\nopagebreak
 
 
 
-Definition at line 46 of file Driver\+Bp\+Stereo\+CPU.\+cpp.
+Run and evaluate optimized CPU implementation for belief propagation using input parameters from command line and specified implementation setting. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em argc} & \\
+\hline
+{\em argv} & \\
+\hline
+{\em imp\+Setting} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 54 of file Driver\+Bp\+Stereo\+CPU.\+cpp.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]

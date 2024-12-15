@@ -4,8 +4,8 @@
 <area shape="rect" id="node3" href="$filter_8h.html" title=" " alt="" coords="649,184,867,225"/>
 <area shape="rect" id="node4" href="$stereo_8h.html" title=" " alt="" coords="576,273,793,315"/>
 <area shape="rect" id="node5" href="$_run_imp_on_input_bp_8h.html" title=" " alt="" coords="436,363,621,404"/>
-<area shape="rect" id="node8" href="$_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title=" " alt="" coords="465,459,723,501"/>
-<area shape="rect" id="node9" href="$_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title=" " alt="" coords="747,452,910,508"/>
+<area shape="rect" id="node8" href="$_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title="File with main() function to run optimized belief propagation implementation on CPU on an input stere..." alt="" coords="465,459,723,501"/>
+<area shape="rect" id="node9" href="$_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title="File with main() function to run optimized CUDA belief propagation implementation on CPU on an input ..." alt="" coords="747,452,910,508"/>
 <area shape="rect" id="node10" href="$stereo_8cpp.html" title=" " alt="" coords="748,363,965,404"/>
 <area shape="rect" id="node6" href="$_run_imp_mult_inputs_bp_8cpp.html" title=" " alt="" coords="5,459,220,501"/>
 <area shape="rect" id="node7" href="$_run_imp_on_input_bp_8cpp.html" title=" " alt="" coords="244,459,440,501"/>

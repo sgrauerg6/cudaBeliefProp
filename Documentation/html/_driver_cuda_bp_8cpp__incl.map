@@ -1,5 +1,5 @@
 <map id="src/MainDriverFiles/DriverCudaBp.cpp" name="src/MainDriverFiles/DriverCudaBp.cpp">
-<area shape="rect" id="node1" title="This file contains the &quot;main&quot; function that drives the CUDA BP implementation." alt="" coords="1861,5,2008,47"/>
+<area shape="rect" id="node1" title="Contains the main() function that drives the optimized CUDA belief propagation implementation evaluat..." alt="" coords="1861,5,2008,47"/>
 <area shape="rect" id="node2" href="$_run_imp_mult_types_accels_8h.html" title=" " alt="" coords="321,95,567,121"/>
 <area shape="rect" id="node30" href="$_run_c_u_d_a_settings_8h.html" title=" " alt="" coords="2323,423,2565,449"/>
 <area shape="rect" id="node32" href="$_bp_file_handling_consts_8h.html" title=" " alt="" coords="2795,497,3029,539"/>
