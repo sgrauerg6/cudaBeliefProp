@@ -142,6 +142,27 @@ speedups across runs with results in beliefprop/impResults is written to
 beliefprop/impResults/EvaluationAcrossRuns.csv, with the runs ordered from
 fastest to slowest; each run is labeled using {RUN_NAME} from (5).
 
+INSTRUCTIONS - SINGLE RUN OF OPTIMIZED BELIEF PROPAGATION ON GPU OR CPU:
+-Input stereo set reference and test images must be grayscale images of PGM
+file type
+-Stereo sets using PGM file type available in BeliefProp/BpStereoSets
+
+1. Follow instructions 1, 2, and 4 in above "EVALUATE OPTIMIZED IMPLEMENTATION
+ON TARGET ARCHITECTURE VS OTHER ARCHITECTURES" instructions to compile program.
+
+2. Run "./driverCPUBpCustom" or "./driverCudaBpCustom" with the following
+arguments in order:
+-File path of reference image of stereo set (must be PGM type)
+-File path of test image of stereo set (must be PGM type)
+-Number of possible disparity values
+-File path of disparity image that is generated and saved during program run
+
+Example run call: ./driverCPUBpCustom ../BpStereoSets/barn1/refImage.pgm ../BpStereoSets/barn1/testImage.pgm 32 ../BpStereoSets/barn1/dispMapFromSingleRun.pgm
+
+Sample output from example run:
+BP processing runtime (optimized w/ OpenMP + SIMD on CPU): 0.0518162
+Output disparity map saved to ../BpStereoSets/barn1/dispMapFromSingleRun.pgm
+
 RUNTIME RESULTS:
 
 Relative speedup using optimized implementation across GPUs/CPUs using
