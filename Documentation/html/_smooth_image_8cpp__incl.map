@@ -15,20 +15,20 @@
 <area shape="rect" id="node13" title=" " alt="" coords="1093,355,1157,382"/>
 <area shape="rect" id="node14" title=" " alt="" coords="939,519,1019,546"/>
 <area shape="rect" id="node15" title=" " alt="" coords="1697,519,1756,546"/>
-<area shape="rect" id="node16" href="$_parallel_params_8h.html" title=" " alt="" coords="768,348,968,389"/>
-<area shape="rect" id="node17" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="1093,437,1240,464"/>
-<area shape="rect" id="node21" href="$_run_settings_8h.html" title=" " alt="" coords="1175,266,1417,293"/>
+<area shape="rect" id="node16" href="$_parallel_params_8h.html" title="Declares abstract class for holding and processing parallelization parameters." alt="" coords="768,348,968,389"/>
+<area shape="rect" id="node17" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="1093,437,1240,464"/>
+<area shape="rect" id="node21" href="$_run_settings_8h.html" title="Declares and defines structure that stores settings for current implementation run as well as functio..." alt="" coords="1175,266,1417,293"/>
 <area shape="rect" id="node18" title=" " alt="" coords="1640,601,1691,628"/>
 <area shape="rect" id="node19" title=" " alt="" coords="1291,519,1365,546"/>
 <area shape="rect" id="node20" title=" " alt="" coords="1133,519,1201,546"/>
 <area shape="rect" id="node22" title=" " alt="" coords="1381,601,1478,628"/>
 <area shape="rect" id="node23" title=" " alt="" coords="851,437,917,464"/>
-<area shape="rect" id="node24" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="1518,355,1647,382"/>
-<area shape="rect" id="node28" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="1867,512,2098,553"/>
-<area shape="rect" id="node29" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="1859,355,2074,382"/>
+<area shape="rect" id="node24" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="1518,355,1647,382"/>
+<area shape="rect" id="node28" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="1867,512,2098,553"/>
+<area shape="rect" id="node29" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Declares class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="1859,355,2074,382"/>
 <area shape="rect" id="node25" title=" " alt="" coords="1723,437,1799,464"/>
 <area shape="rect" id="node26" title=" " alt="" coords="1824,437,1883,464"/>
-<area shape="rect" id="node27" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="1467,437,1699,464"/>
+<area shape="rect" id="node27" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="1467,437,1699,464"/>
 <area shape="rect" id="node30" title=" " alt="" coords="2009,437,2074,464"/>
 <area shape="rect" id="node32" title=" " alt="" coords="451,437,525,464"/>
 <area shape="rect" id="node33" title=" " alt="" coords="549,437,624,464"/>

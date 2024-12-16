@@ -1,11 +1,11 @@
 <map id="src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU_ARMTemplateSpFuncts.h" name="src/beliefprop/BpOptimizeCPU/KernelBpStereoCPU_ARMTemplateSpFuncts.h">
 <area shape="rect" id="node1" title="Defines functions used in processing belief propagation that are specific to ARM implementation." alt="" coords="2328,5,2605,61"/>
 <area shape="rect" id="node2" href="$_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="1601,273,1863,315"/>
-<area shape="rect" id="node33" href="$_a_r_m_template_sp_functs_8h.html" title=" " alt="" coords="2517,109,2779,136"/>
+<area shape="rect" id="node33" href="$_a_r_m_template_sp_functs_8h.html" title="Contains template specializations for ARM/NEON vector processing." alt="" coords="2517,109,2779,136"/>
 <area shape="rect" id="node34" href="$_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="1317,109,1478,136"/>
-<area shape="rect" id="node3" href="$_run_settings_8h.html" title=" " alt="" coords="871,527,1113,553"/>
+<area shape="rect" id="node3" href="$_run_settings_8h.html" title="Declares and defines structure that stores settings for current implementation run as well as functio..." alt="" coords="871,527,1113,553"/>
 <area shape="rect" id="node23" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="2375,691,2595,717"/>
-<area shape="rect" id="node25" href="$_utility_functs_8h.html" title=" " alt="" coords="2352,445,2523,471"/>
+<area shape="rect" id="node25" href="$_utility_functs_8h.html" title="Contains namespace with utility functions for implementation." alt="" coords="2352,445,2523,471"/>
 <area shape="rect" id="node26" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="2199,601,2398,643"/>
 <area shape="rect" id="node27" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1495,609,1718,635"/>
 <area shape="rect" id="node28" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1512,445,1715,471"/>
@@ -15,10 +15,10 @@
 <area shape="rect" id="node5" title=" " alt="" coords="1925,855,2022,881"/>
 <area shape="rect" id="node6" title=" " alt="" coords="397,609,461,635"/>
 <area shape="rect" id="node7" title=" " alt="" coords="1029,609,1096,635"/>
-<area shape="rect" id="node8" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="472,691,619,717"/>
-<area shape="rect" id="node15" href="$_input_signature_8h.html" title="Class for defining input signature for evaluation run that consists of evaluation set number,..." alt="" coords="1843,609,1973,635"/>
-<area shape="rect" id="node20" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="859,765,1090,807"/>
-<area shape="rect" id="node21" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="739,609,954,635"/>
+<area shape="rect" id="node8" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="472,691,619,717"/>
+<area shape="rect" id="node15" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="1843,609,1973,635"/>
+<area shape="rect" id="node20" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="859,765,1090,807"/>
+<area shape="rect" id="node21" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Declares class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="739,609,954,635"/>
 <area shape="rect" id="node9" title=" " alt="" coords="342,773,405,799"/>
 <area shape="rect" id="node10" title=" " alt="" coords="723,855,773,881"/>
 <area shape="rect" id="node11" title=" " alt="" coords="773,773,832,799"/>
@@ -27,7 +27,7 @@
 <area shape="rect" id="node14" title=" " alt="" coords="558,773,626,799"/>
 <area shape="rect" id="node16" title=" " alt="" coords="2011,691,2087,717"/>
 <area shape="rect" id="node17" title=" " alt="" coords="1621,691,1680,717"/>
-<area shape="rect" id="node18" href="$_run_eval_consts_enums_8h.html" title=" " alt="" coords="1704,691,1936,717"/>
+<area shape="rect" id="node18" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="1704,691,1936,717"/>
 <area shape="rect" id="node19" title=" " alt="" coords="1531,773,1587,799"/>
 <area shape="rect" id="node22" title=" " alt="" coords="889,691,954,717"/>
 <area shape="rect" id="node24" title=" " alt="" coords="2439,773,2531,799"/>
@@ -36,12 +36,12 @@
 <area shape="rect" id="node35" title=" " alt="" coords="354,281,422,307"/>
 <area shape="rect" id="node36" title=" " alt="" coords="446,281,509,307"/>
 <area shape="rect" id="node37" href="$_parallel_params_bp_8h.html" title="Declares child class of ParallelParams to store and process parallelization parameters to use in each..." alt="" coords="895,437,1081,479"/>
-<area shape="rect" id="node39" href="$_run_c_p_u_settings_8h.html" title=" " alt="" coords="443,445,663,471"/>
-<area shape="rect" id="node40" href="$_s_i_m_d_processing_8h.html" title=" " alt="" coords="605,191,824,218"/>
+<area shape="rect" id="node39" href="$_run_c_p_u_settings_8h.html" title="Contains namespace with CPU run defaults and constants." alt="" coords="443,445,663,471"/>
+<area shape="rect" id="node40" href="$_s_i_m_d_processing_8h.html" title="Contains general functions for processing using SIMD vector data types on CPU." alt="" coords="605,191,824,218"/>
 <area shape="rect" id="node44" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html" title="Define functions in belief propagation processing that involve going between short/half and float dat..." alt="" coords="1407,184,1623,225"/>
 <area shape="rect" id="node45" href="$_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html" title="Defines functions used in processing belief propagation that are specific to implementation with AVX2..." alt="" coords="1167,184,1374,225"/>
-<area shape="rect" id="node38" href="$_parallel_params_8h.html" title=" " alt="" coords="1221,601,1421,643"/>
-<area shape="rect" id="node41" href="$_a_v_x_template_sp_functs_8h.html" title=" " alt="" coords="1303,281,1481,307"/>
+<area shape="rect" id="node38" href="$_parallel_params_8h.html" title="Declares abstract class for holding and processing parallelization parameters." alt="" coords="1221,601,1421,643"/>
+<area shape="rect" id="node41" href="$_a_v_x_template_sp_functs_8h.html" title="Contains template specializations for AVX vector processing." alt="" coords="1303,281,1481,307"/>
 <area shape="rect" id="node43" href="$_a_v_x256_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by AVX256." alt="" coords="1025,281,1228,307"/>
 <area shape="rect" id="node42" title=" " alt="" coords="1223,363,1315,389"/>
 </map>

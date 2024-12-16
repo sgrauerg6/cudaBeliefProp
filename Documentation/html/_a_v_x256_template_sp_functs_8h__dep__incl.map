@@ -1,7 +1,7 @@
 <map id="src/RunImpCPU/AVX256TemplateSpFuncts.h" name="src/RunImpCPU/AVX256TemplateSpFuncts.h">
 <area shape="rect" id="node1" title="Template specializations for processing on SIMD vector data types supported by AVX256." alt="" coords="607,5,843,47"/>
 <area shape="rect" id="node2" href="$_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html" title="Defines functions used in processing belief propagation that are specific to implementation with AVX2..." alt="" coords="282,95,579,151"/>
-<area shape="rect" id="node11" href="$_s_i_m_d_processing_8h.html" title=" " alt="" coords="604,109,847,136"/>
+<area shape="rect" id="node11" href="$_s_i_m_d_processing_8h.html" title="Contains general functions for processing using SIMD vector data types on CPU." alt="" coords="604,109,847,136"/>
 <area shape="rect" id="node3" href="$_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="335,199,527,240"/>
 <area shape="rect" id="node4" href="$_kernel_bp_stereo_c_p_u___a_r_m_template_sp_functs_8h.html" title="Defines functions used in processing belief propagation that are specific to ARM implementation." alt="" coords="5,288,283,344"/>
 <area shape="rect" id="node5" href="$_kernel_bp_stereo_c_p_u___template_sp_functs_8h.html" title="Define functions in belief propagation processing that involve going between short/half and float dat..." alt="" coords="307,288,554,344"/>

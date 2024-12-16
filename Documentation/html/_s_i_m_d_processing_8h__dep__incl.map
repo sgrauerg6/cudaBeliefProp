@@ -1,5 +1,5 @@
 <map id="src/RunImpCPU/SIMDProcessing.h" name="src/RunImpCPU/SIMDProcessing.h">
-<area shape="rect" id="node1" title=" " alt="" coords="403,5,645,32"/>
+<area shape="rect" id="node1" title="Contains general functions for processing using SIMD vector data types on CPU." alt="" coords="403,5,645,32"/>
 <area shape="rect" id="node2" href="$_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="335,273,527,315"/>
 <area shape="rect" id="node10" href="$_a_v_x256_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by AVX256." alt="" coords="406,80,642,121"/>
 <area shape="rect" id="node12" href="$_a_v_x512_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by AVX512." alt="" coords="697,80,933,121"/>

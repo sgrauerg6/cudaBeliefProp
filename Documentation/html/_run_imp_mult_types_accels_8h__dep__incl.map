@@ -1,5 +1,5 @@
 <map id="src/RunImp/RunImpMultTypesAccels.h" name="src/RunImp/RunImpMultTypesAccels.h">
-<area shape="rect" id="node1" title=" " alt="" coords="465,5,679,47"/>
+<area shape="rect" id="node1" title="Declares class to run and evaluate implementation(s) of an algorithm using multiple settings includin..." alt="" coords="465,5,679,47"/>
 <area shape="rect" id="node2" href="$_driver_bp_stereo_c_p_u_8cpp.html" title="Contains the main() function that drives the optimized CPU belief propgation implementation evaluatio..." alt="" coords="5,102,184,143"/>
 <area shape="rect" id="node3" href="$_driver_bp_stereo_c_p_u__custom_run_8cpp.html" title="File with main() function to run optimized belief propagation implementation on CPU on an input stere..." alt="" coords="208,102,467,143"/>
 <area shape="rect" id="node4" href="$_driver_bp_stereo_c_u_d_a__custom_run_8cpp.html" title="File with main() function to run optimized CUDA belief propagation implementation on CPU on an input ..." alt="" coords="491,95,653,151"/>

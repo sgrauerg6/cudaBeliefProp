@@ -103,60 +103,60 @@ $(document).ready(function(){initNavTree('_run_results_speedups_8h_source.html',
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">*/</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#ifndef RUN_RESULTS_SPEEDUPS_H_</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define RUN_RESULTS_SPEEDUPS_H_</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;filesystem&gt;</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_input_signature_8h.html">RunSettingsParams/InputSignature.h</a>&quot;</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html">   40</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_run_results_speedups.html">RunResultsSpeedups</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> std::string&amp; run_name);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;  <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(<span class="keyword">const</span> std::filesystem::path&amp; run_results_file_path);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">   66</a></span>&#160;  std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; <a class="code" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">Speedups</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_.value().first;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">   75</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">SpeedupHeadersOrder</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_.value().second;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;  }</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  std::map&lt;InputSignature, std::string&gt; <a class="code" href="class_run_results_speedups.html#ac40c246ed0b8535ce88f300b120e8e0f">InputsToKeyVal</a>(std::string_view key) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883">   94</a></span>&#160;  std::map&lt;std::string, std::string&gt; <a class="code" href="class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883">DataForInput</a>(<span class="keyword">const</span> <a class="code" href="class_input_signature.html">InputSignature</a>&amp; input_sig)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordflow">return</span> input_sig_to_run_data_-&gt;at(input_sig);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  }</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  std::string run_name_;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  std::optional&lt;std::pair&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;, std::vector&lt;std::string&gt;&gt;&gt;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    speedup_header_to_result_speedup_order_;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  std::optional&lt;std::map&lt;InputSignature, std::map&lt;std::string, std::string&gt;&gt;&gt; input_sig_to_run_data_;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;  <span class="keywordtype">void</span> GenInputSignatureToDataMapping(</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">const</span> std::optional&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;&gt;&amp; run_results_header_to_data);</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    std::pair&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;, std::vector&lt;std::string&gt;&gt;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      HeaderToDataWOrderedHeadersCsv(<span class="keyword">const</span> std::filesystem::path&amp; csv_file_path) <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;};</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//RUN_RESULTS_SPEEDUPS_H_</span></div>
-<div class="ttc" id="a_input_signature_8h_html"><div class="ttname"><a href="_input_signature_8h.html">InputSignature.h</a></div><div class="ttdoc">Class for defining input signature for evaluation run that consists of evaluation set number,...</div></div>
-<div class="ttc" id="aclass_input_signature_html"><div class="ttname"><a href="class_input_signature.html">InputSignature</a></div><div class="ttdoc">Class defines input signature for evaluation run that contains evaluation set number,...</div><div class="ttdef"><b>Definition:</b> <a href="_input_signature_8h_source.html#l00042">InputSignature.h:42</a></div></div>
-<div class="ttc" id="aclass_run_results_speedups_html"><div class="ttname"><a href="class_run_results_speedups.html">RunResultsSpeedups</a></div><div class="ttdoc">Class to load and store run results data including speedups from evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00040">RunResultsSpeedups.h:40</a></div></div>
-<div class="ttc" id="aclass_run_results_speedups_html_a2e0c77627269d9e30411a822dd4fe871"><div class="ttname"><a href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">RunResultsSpeedups::SpeedupHeadersOrder</a></div><div class="ttdeci">std::vector&lt; std::string &gt; SpeedupHeadersOrder() const</div><div class="ttdoc">Return order of speedup headers.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00075">RunResultsSpeedups.h:75</a></div></div>
-<div class="ttc" id="aclass_run_results_speedups_html_a99a61c4f92c0dc0a81b4ef997c5ca883"><div class="ttname"><a href="class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883">RunResultsSpeedups::DataForInput</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; DataForInput(const InputSignature &amp;input_sig) const</div><div class="ttdoc">Return data for specified input signature.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00094">RunResultsSpeedups.h:94</a></div></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#ifndef RUN_RESULTS_SPEEDUPS_H_</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define RUN_RESULTS_SPEEDUPS_H_</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#include &lt;map&gt;</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;filesystem&gt;</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_input_signature_8h.html">RunSettingsParams/InputSignature.h</a>&quot;</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_run_results_speedups.html">RunResultsSpeedups</a> {</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path,</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">const</span> std::string&amp; run_name);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(<span class="keyword">const</span> std::filesystem::path&amp; run_results_file_path);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">   67</a></span>&#160;  std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; <a class="code" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">Speedups</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_.value().first;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">   76</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">SpeedupHeadersOrder</a>()<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_.value().second;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  std::map&lt;InputSignature, std::string&gt; <a class="code" href="class_run_results_speedups.html#ac40c246ed0b8535ce88f300b120e8e0f">InputsToKeyVal</a>(std::string_view key) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00095"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883">   95</a></span>&#160;  std::map&lt;std::string, std::string&gt; <a class="code" href="class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883">DataForInput</a>(<span class="keyword">const</span> <a class="code" href="class_input_signature.html">InputSignature</a>&amp; input_sig)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordflow">return</span> input_sig_to_run_data_-&gt;at(input_sig);</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  }</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  std::string run_name_;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  std::optional&lt;std::pair&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;, std::vector&lt;std::string&gt;&gt;&gt;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    speedup_header_to_result_speedup_order_;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  std::optional&lt;std::map&lt;InputSignature, std::map&lt;std::string, std::string&gt;&gt;&gt; input_sig_to_run_data_;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;  <span class="keywordtype">void</span> GenInputSignatureToDataMapping(</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="keyword">const</span> std::optional&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;&gt;&amp; run_results_header_to_data);</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    std::pair&lt;std::map&lt;std::string, std::vector&lt;std::string&gt;&gt;, std::vector&lt;std::string&gt;&gt;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      HeaderToDataWOrderedHeadersCsv(<span class="keyword">const</span> std::filesystem::path&amp; csv_file_path) <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;};</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//RUN_RESULTS_SPEEDUPS_H_</span></div>
+<div class="ttc" id="a_input_signature_8h_html"><div class="ttname"><a href="_input_signature_8h.html">InputSignature.h</a></div><div class="ttdoc">Declares class for defining input signature for evaluation run that consists of evaluation set number...</div></div>
+<div class="ttc" id="aclass_input_signature_html"><div class="ttname"><a href="class_input_signature.html">InputSignature</a></div><div class="ttdoc">Class defines input signature for evaluation run that contains evaluation set number,...</div><div class="ttdef"><b>Definition:</b> <a href="_input_signature_8h_source.html#l00043">InputSignature.h:43</a></div></div>
+<div class="ttc" id="aclass_run_results_speedups_html"><div class="ttname"><a href="class_run_results_speedups.html">RunResultsSpeedups</a></div><div class="ttdoc">Class to load and store run results data including speedups from evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00041">RunResultsSpeedups.h:41</a></div></div>
+<div class="ttc" id="aclass_run_results_speedups_html_a2e0c77627269d9e30411a822dd4fe871"><div class="ttname"><a href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">RunResultsSpeedups::SpeedupHeadersOrder</a></div><div class="ttdeci">std::vector&lt; std::string &gt; SpeedupHeadersOrder() const</div><div class="ttdoc">Return order of speedup headers.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00076">RunResultsSpeedups.h:76</a></div></div>
+<div class="ttc" id="aclass_run_results_speedups_html_a99a61c4f92c0dc0a81b4ef997c5ca883"><div class="ttname"><a href="class_run_results_speedups.html#a99a61c4f92c0dc0a81b4ef997c5ca883">RunResultsSpeedups::DataForInput</a></div><div class="ttdeci">std::map&lt; std::string, std::string &gt; DataForInput(const InputSignature &amp;input_sig) const</div><div class="ttdoc">Return data for specified input signature.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00095">RunResultsSpeedups.h:95</a></div></div>
 <div class="ttc" id="aclass_run_results_speedups_html_abfaa82cd1582d3eed0c866c832cbae78"><div class="ttname"><a href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups::RunResultsSpeedups</a></div><div class="ttdeci">RunResultsSpeedups(const std::filesystem::path &amp;imp_results_file_path, const std::string &amp;run_name)</div><div class="ttdoc">Constructor that takes in implementation file path and run name and retrieves run results and speedup...</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8cpp_source.html#l00034">RunResultsSpeedups.cpp:34</a></div></div>
 <div class="ttc" id="aclass_run_results_speedups_html_ac40c246ed0b8535ce88f300b120e8e0f"><div class="ttname"><a href="class_run_results_speedups.html#ac40c246ed0b8535ce88f300b120e8e0f">RunResultsSpeedups::InputsToKeyVal</a></div><div class="ttdeci">std::map&lt; InputSignature, std::string &gt; InputsToKeyVal(std::string_view key) const</div><div class="ttdoc">Get mapping of run input signature to value corresponding to input key for each run result.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8cpp_source.html#l00112">RunResultsSpeedups.cpp:112</a></div></div>
-<div class="ttc" id="aclass_run_results_speedups_html_af16114eb72a5997f72d8f84bdcc8d279"><div class="ttname"><a href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">RunResultsSpeedups::Speedups</a></div><div class="ttdeci">std::map&lt; std::string, std::vector&lt; std::string &gt; &gt; Speedups() const</div><div class="ttdoc">Return speedups from evaluation across all runs on an architecture.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00066">RunResultsSpeedups.h:66</a></div></div>
+<div class="ttc" id="aclass_run_results_speedups_html_af16114eb72a5997f72d8f84bdcc8d279"><div class="ttname"><a href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">RunResultsSpeedups::Speedups</a></div><div class="ttdeci">std::map&lt; std::string, std::vector&lt; std::string &gt; &gt; Speedups() const</div><div class="ttdoc">Return speedups from evaluation across all runs on an architecture.</div><div class="ttdef"><b>Definition:</b> <a href="_run_results_speedups_8h_source.html#l00067">RunResultsSpeedups.h:67</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

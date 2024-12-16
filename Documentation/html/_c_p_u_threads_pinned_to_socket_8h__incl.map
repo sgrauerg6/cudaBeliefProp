@@ -1,9 +1,9 @@
 <map id="src/RunSettingsParams/CPUThreadsPinnedToSocket.h" name="src/RunSettingsParams/CPUThreadsPinnedToSocket.h">
-<area shape="rect" id="node1" title="Class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="151,5,369,47"/>
+<area shape="rect" id="node1" title="Declares class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="151,5,369,47"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,169,64,196"/>
 <area shape="rect" id="node3" title=" " alt="" coords="162,95,227,121"/>
-<area shape="rect" id="node4" href="$_run_data_8h.html" title="Class to store headers with data corresponding to current program run and evaluation." alt="" coords="252,95,399,121"/>
-<area shape="rect" id="node11" href="$_run_settings_consts_enums_8h.html" title=" " alt="" coords="507,95,707,121"/>
+<area shape="rect" id="node4" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="252,95,399,121"/>
+<area shape="rect" id="node11" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="507,95,707,121"/>
 <area shape="rect" id="node5" title=" " alt="" coords="89,169,151,196"/>
 <area shape="rect" id="node6" title=" " alt="" coords="581,169,632,196"/>
 <area shape="rect" id="node7" title=" " alt="" coords="176,169,261,196"/>

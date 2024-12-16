@@ -1,4 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
 <area shape="rect" id="node1" href="$class_memory_management.html" title="Class for memory management with functions defined for standard memory allocation using CPU...." alt="" coords="5,5,205,32"/>
-<area shape="rect" id="node2" href="$class_memory_management_c_u_d_a.html" title="Functions to manage memory on CUDA device including transferring data between host and CUDA device...." alt="" coords="253,5,492,32"/>
+<area shape="rect" id="node2" href="$class_memory_management_c_u_d_a.html" title="Child class of MemoryManagement with overriden member functions to manage memory on CUDA device inclu..." alt="" coords="253,5,492,32"/>
 </map>

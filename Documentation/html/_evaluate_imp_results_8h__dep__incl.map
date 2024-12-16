@@ -1,9 +1,9 @@
 <map id="src/RunEval/EvaluateImpResults.h" name="src/RunEval/EvaluateImpResults.h">
-<area shape="rect" id="node1" title="Class to evaluate implementation results." alt="" coords="796,5,1040,32"/>
+<area shape="rect" id="node1" title="Declares class with operator function to evaluate implementations of the same algorithm across differ..." alt="" coords="796,5,1040,32"/>
 <area shape="rect" id="node2" href="$_evaluate_imp_results_bp_8h.html" title="Declares child class of EvaluateImpResults that defines member functions for belief propagation evalu..." alt="" coords="217,155,472,196"/>
 <area shape="rect" id="node6" href="$_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="1033,80,1291,107"/>
-<area shape="rect" id="node7" href="$_run_imp_mult_inputs_8h.html" title=" " alt="" coords="727,80,957,107"/>
-<area shape="rect" id="node13" href="$_run_imp_mult_types_accels_8h.html" title=" " alt="" coords="989,155,1204,196"/>
+<area shape="rect" id="node7" href="$_run_imp_mult_inputs_8h.html" title="Declares base class for running and evaluating multiple runs of an implementation that may be optimiz..." alt="" coords="727,80,957,107"/>
+<area shape="rect" id="node13" href="$_run_imp_mult_types_accels_8h.html" title="Declares class to run and evaluate implementation(s) of an algorithm using multiple settings includin..." alt="" coords="989,155,1204,196"/>
 <area shape="rect" id="node3" href="$_evaluate_imp_results_bp_8cpp.html" title="Function definition for class to evaluate belief propagation implementation results." alt="" coords="5,244,231,300"/>
 <area shape="rect" id="node4" href="$_driver_bp_stereo_c_p_u_8cpp.html" title="Contains the main() function that drives the optimized CPU belief propgation implementation evaluatio..." alt="" coords="255,251,434,293"/>
 <area shape="rect" id="node5" href="$_driver_cuda_bp_8cpp.html" title="Contains the main() function that drives the optimized CUDA belief propagation implementation evaluat..." alt="" coords="458,251,605,293"/>

@@ -1,4 +1,4 @@
 <map id="MemoryManagementCUDA&lt; T &gt;" name="MemoryManagementCUDA&lt; T &gt;">
-<area shape="rect" id="node1" title="Functions to manage memory on CUDA device including transferring data between host and CUDA device...." alt="" coords="5,80,244,107"/>
+<area shape="rect" id="node1" title="Child class of MemoryManagement with overriden member functions to manage memory on CUDA device inclu..." alt="" coords="5,80,244,107"/>
 <area shape="rect" id="node2" href="$class_memory_management.html" title="Class for memory management with functions defined for standard memory allocation using CPU...." alt="" coords="25,5,225,32"/>
 </map>

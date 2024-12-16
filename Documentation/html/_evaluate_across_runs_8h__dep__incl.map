@@ -1,5 +1,5 @@
 <map id="src/RunEval/EvaluateAcrossRuns.h" name="src/RunEval/EvaluateAcrossRuns.h">
-<area shape="rect" id="node1" title=" " alt="" coords="132,5,335,47"/>
+<area shape="rect" id="node1" title="Declares class with operator function to evaluate implementation runs across multiple architectures...." alt="" coords="132,5,335,47"/>
 <area shape="rect" id="node2" href="$_evaluate_across_runs_8cpp.html" title="Definition of functions in class for evaluating results across multiple runs, potentially on differen..." alt="" coords="5,95,208,136"/>
 <area shape="rect" id="node3" href="$_evaluate_imp_results_8cpp.html" title="Function definitions for class to evaluate implementation results." alt="" coords="232,102,491,129"/>
 </map>

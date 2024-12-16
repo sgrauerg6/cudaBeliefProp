@@ -1,6 +1,6 @@
 <map id="src/RunImpCPU/AVXTemplateSpFuncts.h" name="src/RunImpCPU/AVXTemplateSpFuncts.h">
-<area shape="rect" id="node1" title=" " alt="" coords="418,5,630,47"/>
-<area shape="rect" id="node2" href="$_s_i_m_d_processing_8h.html" title=" " alt="" coords="403,95,645,121"/>
+<area shape="rect" id="node1" title="Contains template specializations for AVX vector processing." alt="" coords="418,5,630,47"/>
+<area shape="rect" id="node2" href="$_s_i_m_d_processing_8h.html" title="Contains general functions for processing using SIMD vector data types on CPU." alt="" coords="403,95,645,121"/>
 <area shape="rect" id="node3" href="$_kernel_bp_stereo_c_p_u_8h.html" title="This header declares the kernel functions to run optimized belief propagation on CPU." alt="" coords="335,363,527,404"/>
 <area shape="rect" id="node11" href="$_a_v_x256_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by AVX256." alt="" coords="406,169,642,211"/>
 <area shape="rect" id="node13" href="$_a_v_x512_template_sp_functs_8h.html" title="Template specializations for processing on SIMD vector data types supported by AVX512." alt="" coords="697,169,933,211"/>
