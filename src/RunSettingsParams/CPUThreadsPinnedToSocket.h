@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file CPUThreadsPinnedToSocket.h
  * @author Scott Grauer-Gray
- * @brief Class for setting and retrieving setting of CPU threads pinned to socket
+ * @brief Declares class for setting and retrieving setting of CPU threads pinned to socket
  * 
  * @copyright Copyright (c) 2024
  */

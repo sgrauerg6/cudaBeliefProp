@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file ARMTemplateSpFuncts.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Contains template specializations for ARM/NEON vector processing
  * 
  * @copyright Copyright (c) 2024
  */

@@ -19,8 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file InputSignature.h
  * @author Scott Grauer-Gray
- * @brief Class for defining input signature for evaluation run that consists of evaluation set number,
- *  data type, and whether or not to use templated loop iteration count.
+ * @brief Declares class for defining input signature for evaluation run that
+ * consists of evaluation set number, data type, and whether or not to use
+ * templated loop iteration count.
  * 
  * @copyright Copyright (c) 2024
  */

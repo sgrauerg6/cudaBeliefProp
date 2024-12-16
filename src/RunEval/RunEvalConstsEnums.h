@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunEvalConstsEnums.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Contains namespace with enums and constants for implementation run
+ * evaluation
  * 
  * @copyright Copyright (c) 2024
  */

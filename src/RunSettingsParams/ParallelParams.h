@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file ParallelParams.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares abstract class for holding and processing parallelization
+ * parameters.
  * 
  * @copyright Copyright (c) 2024
  */

@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunSettingsConstsEnums.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Contains namespace with constants and enums related to run
+ * environment and settings for run
  * 
  * @copyright Copyright (c) 2024
  */

@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunCPUSettings.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Contains namespace with CPU run defaults and constants.
  * 
  * @copyright Copyright (c) 2024
  */

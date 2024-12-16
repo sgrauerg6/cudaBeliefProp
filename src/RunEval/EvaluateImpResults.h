@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file EvaluateImpResults.h
  * @author Scott Grauer-Gray
- * @brief Class to evaluate implementation results.
+ * @brief Declares class with operator function to evaluate implementations of
+ * the same algorithm across different data types and acceleration methods
  * 
  * @copyright Copyright (c) 2024
  */

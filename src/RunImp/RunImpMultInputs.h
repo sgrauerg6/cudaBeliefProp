@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunImpMultInputs.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares base class for running and evaluating multiple runs of an
+ * implementation that may be optimized on CPU or GPU
  * 
  * @copyright Copyright (c) 2024
  */

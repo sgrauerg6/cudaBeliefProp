@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunResultsSpeedups.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares class to load and store run results data including speedups
+ * from evaluation
  * 
  * @copyright Copyright (c) 2024
  */

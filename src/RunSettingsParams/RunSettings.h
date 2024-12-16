@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunSettings.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares and defines structure that stores settings for current
+ * implementation run as well as functions related to run settings
  * 
  * @copyright Copyright (c) 2024
  */

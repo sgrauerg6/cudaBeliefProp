@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file MemoryManagementCUDA.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares and defines child class of MemoryManagement with overriden
+ * member functions to manage memory on CUDA device including transferring data
+ * between host and CUDA device.
  * 
  * @copyright Copyright (c) 2024
  */
@@ -32,9 +34,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImp/MemoryManagement.h"
 
 /**
- * @brief Functions to manage memory on CUDA device including transferring data between host and CUDA device.
- * Functions defined in class override functions in parent class MemoryManagement
- * which is used for CPU only processing.
+ * @brief Child class of MemoryManagement with overriden member functions to
+ * manage memory on CUDA device including transferring data between host and CUDA
+ * device.
  * 
  * @tparam T 
  */

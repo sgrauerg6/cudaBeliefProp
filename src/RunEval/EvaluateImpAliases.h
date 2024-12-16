@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file EvaluateImpAliases.h
  * @author Scott Grauer-Gray
- * @brief Header for defining aliases for storing run results and evaluating implementations.
+ * @brief Header for defining aliases for storing run results and evaluating
+ * implementations.
  * 
  * @copyright Copyright (c) 2024
  */

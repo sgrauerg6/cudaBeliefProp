@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunData.h
  * @author Scott Grauer-Gray
- * @brief Class to store headers with data corresponding to current program run and evaluation.
+ * @brief Declares class to store headers with data corresponding to current
+ * program run and evaluation.
  * 
  * @copyright Copyright (c) 2024
  */

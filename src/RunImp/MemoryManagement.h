@@ -19,9 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file MemoryManagement.h
  * @author Scott Grauer-Gray
- * @brief Class for memory management with functions defined
- * for standard memory allocation using CPU and can be
- * overridden to support other computation devices
+ * @brief Declares class for memory management with functions defined for
+ * standard memory allocation using CPU and can be overridden to support
+ * other computation devices
  * 
  * @copyright Copyright (c) 2024
  */

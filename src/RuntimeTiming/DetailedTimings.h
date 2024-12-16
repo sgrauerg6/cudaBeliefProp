@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file DetailedTimings.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares class to store timings of one or more segments taken during the run(s)
+ * of an implementation or across multiple implementations.
  * 
  * @copyright Copyright (c) 2024
  */

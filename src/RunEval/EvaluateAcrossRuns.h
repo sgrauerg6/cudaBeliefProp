@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file EvaluateAcrossRuns.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Declares class with operator function to evaluate implementation runs
+ * across multiple architectures. Outputs a file with speedup data on every run
+ * with the runs ordered from fastest to slowest.
  * 
  * @copyright Copyright (c) 2024
  */

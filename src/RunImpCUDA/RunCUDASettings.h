@@ -19,7 +19,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file RunCUDASettings.h
  * @author Scott Grauer-Gray
- * @brief 
+ * @brief Contains namespace with constants and functions to get CUDA device
+ * properties as well as default and test parallel parameters to use in CUDA
+ * implementation run optimization
  * 
  * @copyright Copyright (c) 2024
  */
