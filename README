@@ -38,6 +38,7 @@ The original code is available at
 https://sgrauerg6.github.io/beliefPropCodePost.zip.
 
 Doxygen documentation for current code:
+Documentation/html/index.html and
 https://sgrauerg6.github.io/Documentation/cudaBeliefProp/html/index.html
 
 This code is distributed using the GNU General Public License, so any derivative
