@@ -41,7 +41,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <arm_neon.h> //needed for float16_t type
 using halftype = float16_t;
 #else
+#include "RunImpCPU/RunCPUSettings.h"
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
+using halftype = _Float16;
+#else
 using halftype = short;
+#endif //AVX_512_F16_DEFINE || AVX_256_F16_DEFINE
 #endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 

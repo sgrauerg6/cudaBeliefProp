@@ -46,6 +46,7 @@ concept RunData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std
 #elif defined(OPTIMIZED_CPU_RUN)
 
 #include "RunImpCPU/RunCPUSettings.h"
+#include "RunSettingsParams/RunSettingsConstsEnums.h"
 
 #if defined(COMPILING_FOR_ARM)
 
@@ -73,15 +74,17 @@ concept RunDataVectProcess_t = std::is_same_v<T, float64x2_t> || std::is_same_v<
 #include <x86intrin.h>
 #endif
 #include <immintrin.h>
+#include "RunImpCPU/RunCPUSettings.h"
+#include "RunSettingsParams/RunSettingsConstsEnums.h"
 
-//short is used for half data type in x86 processing
+//halftype alias is used for half data type in x86 processing
 template <typename T>
-concept RunData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
+concept RunData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, halftype>;
 
 //data processing on CPU only uses float or double
 //half type gets converted to float for processing and then back to half for storage
 template <typename T>
-concept RunDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, short>;
+concept RunDataProcess_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, halftype>;
 
 //SIMD types for AVX processing on x86
 #if defined(AVX_512_VECTORIZATION)

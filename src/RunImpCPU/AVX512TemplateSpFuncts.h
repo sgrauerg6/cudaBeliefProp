@@ -53,9 +53,9 @@ template<> inline __m512 simd_processing::LoadPackedDataAligned<float, __m512>(
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
-template<> inline __m256i simd_processing::LoadPackedDataAligned<short, __m256i>(
+template<> inline __m256i simd_processing::LoadPackedDataAligned<halftype, __m256i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
 {
   return _mm256_load_si256((__m256i*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -65,9 +65,9 @@ template<> inline __m256i simd_processing::LoadPackedDataAligned<short, __m256i>
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
-template<> inline __m512h simd_processing::LoadPackedDataAligned<short, __m512h>(
+template<> inline __m512h simd_processing::LoadPackedDataAligned<halftype, __m512h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
 {
   return _mm512_load_ph((__m512h*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -86,9 +86,9 @@ template<> inline __m512 simd_processing::LoadPackedDataUnaligned<float, __m512>
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
-template<> inline __m256i simd_processing::LoadPackedDataUnaligned<short, __m256i>(
+template<> inline __m256i simd_processing::LoadPackedDataUnaligned<halftype, __m256i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
 {
   return _mm256_loadu_si256((__m256i*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -106,9 +106,9 @@ template<> inline __m512d simd_processing::LoadPackedDataUnaligned<double, __m51
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
-template<> inline __m512h simd_processing::LoadPackedDataUnaligned<short, __m512h>(
+template<> inline __m512h simd_processing::LoadPackedDataUnaligned<halftype, __m512h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
+  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
 {
   return _mm512_loadu_ph(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -207,7 +207,7 @@ template<> inline __m512d simd_processing::ConvertValToDatatype<__m512d, double>
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
-template<> inline __m512h simd_processing::ConvertValToDatatype<__m512h, short>(short val) {
+template<> inline __m512h simd_processing::ConvertValToDatatype<__m512h, halftype>(halftype val) {
   return _mm512_set1_ph((_Float16)val);
 }
 
@@ -235,8 +235,8 @@ template<> inline void simd_processing::StorePackedDataAligned<float, __m512>(
   _mm512_store_ps(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void simd_processing::StorePackedDataAligned<short, __m512>(
-  unsigned int indexDataStore, short* locationDataStore, const __m512& dataToStore)
+template<> inline void simd_processing::StorePackedDataAligned<halftype, __m512>(
+  unsigned int indexDataStore, halftype* locationDataStore, const __m512& dataToStore)
 {
   _mm256_store_si256((__m256i*)(&locationDataStore[indexDataStore]), _mm512_cvtps_ph(dataToStore, 0));
 }
@@ -249,8 +249,8 @@ template<> inline void simd_processing::StorePackedDataAligned<double, __m512d>(
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
-template<> inline void simd_processing::StorePackedDataAligned<short, __m512h>(
-  unsigned int indexDataStore, short* locationDataStore, const __m512h& dataToStore)
+template<> inline void simd_processing::StorePackedDataAligned<halftype, __m512h>(
+  unsigned int indexDataStore, halftype* locationDataStore, const __m512h& dataToStore)
 {
   _mm512_store_ph(&locationDataStore[indexDataStore], dataToStore);
 }
@@ -263,8 +263,8 @@ template<> inline void simd_processing::StorePackedDataUnaligned<float, __m512>(
   _mm512_storeu_ps(&locationDataStore[indexDataStore], dataToStore);
 }
 
-template<> inline void simd_processing::StorePackedDataUnaligned<short, __m512>(
-  unsigned int indexDataStore, short* locationDataStore, const __m512& dataToStore)
+template<> inline void simd_processing::StorePackedDataUnaligned<halftype, __m512>(
+  unsigned int indexDataStore, halftype* locationDataStore, const __m512& dataToStore)
 {
   _mm256_storeu_si256((__m256i*)(&locationDataStore[indexDataStore]), _mm512_cvtps_ph(dataToStore, 0));
 }
@@ -277,8 +277,8 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, __m512d
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
-template<> inline void simd_processing::StorePackedDataUnaligned<short, __m512h>(
-  unsigned int indexDataStore, short* locationDataStore, const __m512h& dataToStore)
+template<> inline void simd_processing::StorePackedDataUnaligned<halftype, __m512h>(
+  unsigned int indexDataStore, halftype* locationDataStore, const __m512h& dataToStore)
 {
   _mm512_storeu_ph(&locationDataStore[indexDataStore], dataToStore);
 }

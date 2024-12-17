@@ -30,7 +30,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <array>
 #include <thread>
-#include "RunSettingsParams/RunSettings.h"
 
 //check if running on ARM architecture
 #ifdef COMPILING_FOR_ARM

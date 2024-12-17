@@ -154,11 +154,11 @@ namespace beliefprop_cpu
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-    const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
-    const short* message_l_prev_checkerboard_0, const short* message_r_prev_checkerboard_0,
-    const short* message_u_prev_checkerboard_1, const short* message_d_prev_checkerboard_1,
-    const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
+    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
+    const halftype* message_u_prev_checkerboard_0, const halftype* message_d_prev_checkerboard_0,
+    const halftype* message_l_prev_checkerboard_0, const halftype* message_r_prev_checkerboard_0,
+    const halftype* message_u_prev_checkerboard_1, const halftype* message_d_prev_checkerboard_1,
+    const halftype* message_l_prev_checkerboard_1, const halftype* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -188,11 +188,11 @@ namespace beliefprop_cpu
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-    const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
-    const short* message_l_prev_checkerboard_0, const short* message_r_prev_checkerboard_0,
-    const short* message_u_prev_checkerboard_1, const short* message_d_prev_checkerboard_1,
-    const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
+    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
+    const halftype* message_u_prev_checkerboard_0, const halftype* message_d_prev_checkerboard_0,
+    const halftype* message_l_prev_checkerboard_0, const halftype* message_r_prev_checkerboard_0,
+    const halftype* message_u_prev_checkerboard_1, const halftype* message_d_prev_checkerboard_1,
+    const halftype* message_l_prev_checkerboard_1, const halftype* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -281,11 +281,11 @@ namespace beliefprop_cpu
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-    short* message_u_checkerboard_0, short* message_d_checkerboard_0,
-    short* message_l_checkerboard_0, short* message_r_checkerboard_0,
-    short* message_u_checkerboard_1, short* message_d_checkerboard_1,
-    short* message_l_checkerboard_1, short* message_r_checkerboard_1,
+    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
+    halftype* message_u_checkerboard_0, halftype* message_d_checkerboard_0,
+    halftype* message_l_checkerboard_0, halftype* message_r_checkerboard_0,
+    halftype* message_u_checkerboard_1, halftype* message_d_checkerboard_1,
+    halftype* message_l_checkerboard_1, halftype* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
@@ -315,11 +315,11 @@ namespace beliefprop_cpu
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
-    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
-    short* message_u_checkerboard_0, short* message_d_checkerboard_0,
-    short* message_l_checkerboard_0, short* message_r_checkerboard_0,
-    short* message_u_checkerboard_1, short* message_d_checkerboard_1,
-    short* message_l_checkerboard_1, short* message_r_checkerboard_1,
+    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
+    halftype* message_u_checkerboard_0, halftype* message_d_checkerboard_0,
+    halftype* message_l_checkerboard_0, halftype* message_r_checkerboard_0,
+    halftype* message_u_checkerboard_1, halftype* message_d_checkerboard_1,
+    halftype* message_l_checkerboard_1, halftype* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
