@@ -215,7 +215,7 @@ template<> inline __m512d simd_processing::ConvertValToDatatype<__m512d, double>
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
-template<> inline __m512d simd_processing::ConvertValToDatatype<__m512h, short>(short val) {
+template<> inline __m512h simd_processing::ConvertValToDatatype<__m512h, short>(short val) {
   return _mm512_set1_ph((_Float16)val);
 }
 
