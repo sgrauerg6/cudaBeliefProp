@@ -40,10 +40,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //define and set CPU vectorization options using preprocessor
 //needed to determine what code gets compiled to support vectorization
 #define AVX_256_DEFINE 0
-#define AVX_512_DEFINE 1
-#define AVX_512_F16_DEFINE 2
-#define NEON_DEFINE 3
-#define NO_VECTORIZATION 4
+#define AVX_256_F16_DEFINE 1
+#define AVX_512_DEFINE 2
+#define AVX_512_F16_DEFINE 3
+#define NEON_DEFINE 4
+#define NO_VECTORIZATION 5
 #ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
 #define CPU_VECTORIZATION_DEFINE NEON_DEFINE
 #else
@@ -55,6 +56,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define CPU_VECTORIZATION_DEFINE AVX_512_F16_DEFINE
 #elif defined(AVX_256_VECTORIZATION)
 #define CPU_VECTORIZATION_DEFINE AVX_256_DEFINE
+#elif defined(AVX_256_F16_VECTORIZATION)
+#define CPU_VECTORIZATION_DEFINE AVX_256_F16_DEFINE
 #else
 #define CPU_VECTORIZATION_DEFINE AVX_512_DEFINE
 #endif //defined(AVX_512_VECTORIZATION)
