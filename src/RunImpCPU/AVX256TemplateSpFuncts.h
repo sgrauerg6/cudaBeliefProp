@@ -69,7 +69,7 @@ template<> inline __m256h simd_processing::LoadPackedDataAligned<short, __m256h>
   unsigned int x, unsigned int y, unsigned int current_disparity,
   const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
 {
-  return _mm256_load_psh((__m256h *)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
+  return _mm256_load_ph((__m256h *)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
     current_bp_level.height_level_, current_disparity,
     numDispVals)]));
