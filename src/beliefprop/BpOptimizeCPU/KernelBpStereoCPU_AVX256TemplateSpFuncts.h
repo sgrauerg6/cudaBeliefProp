@@ -70,6 +70,17 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
+  constexpr unsigned int simd_data_size{16};
+  RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m256h, DISP_VALS>(
+    checkerboard_to_update, current_bp_level,
+    data_cost_checkerboard_0, data_cost_checkerboard_1,
+    message_u_checkerboard_0, message_d_checkerboard_0,
+    message_l_checkerboard_0, message_r_checkerboard_0,
+    message_u_checkerboard_1, message_d_checkerboard_1,
+    message_l_checkerboard_1, message_r_checkerboard_1,
+    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+#else
   constexpr unsigned int simd_data_size{8};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m128i, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
@@ -79,6 +90,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
     disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+#endif //AVX_512_F16_DEFINE || AVX_256_F16_DEFINE
 }
 
 template<unsigned int DISP_VALS>
@@ -136,6 +148,17 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
+  constexpr unsigned int simd_data_size{16};
+  RetrieveOutputDisparityUseSIMDVectors<short, __m256h, short, __m256h, DISP_VALS>(current_bp_level,
+    data_cost_checkerboard_0, data_cost_checkerboard_1,
+    message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
+    message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,
+    message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
+    message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
+    disparity_between_images_device, bp_settings_disp_vals,
+    simd_data_size, opt_cpu_params);
+#else
   constexpr unsigned int simd_data_size{8};
   RetrieveOutputDisparityUseSIMDVectors<short, __m128i, float, __m256, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -145,6 +168,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
     simd_data_size, opt_cpu_params);
+#endif //AVX_512_F16_DEFINE || AVX_256_F16_DEFINE
 }
 
 template<unsigned int DISP_VALS>
@@ -204,7 +228,9 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256h>(__m256h& 
   best_disparities = _mm256_mask_blend_ph(maskNeedUpdate, best_disparities, current_disparity);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //AVX_512_F16_DEFINE || AVX_256_F16_DEFINE
+
+#if ((CPU_VECTORIZATION_DEFINE != AVX_512_F16_DEFINE) && (CPU_VECTORIZATION_DEFINE != AVX_256_F16_DEFINE))
 
 // compute current message
 template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
@@ -322,5 +348,7 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i>(unsigned in
     messages_neighbor_1, messages_neighbor_2, messages_neighbor_3, data_costs,
     dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals);
 }
+
+#endif //AVX_512_F16_DEFINE || AVX_256_F16_DEFINE
 
 #endif /* KERNELBPSTEREOCPU_AVX256TEMPLATESPFUNCTS_H_ */
