@@ -37,7 +37,11 @@ BpLevel::BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t of
   level_properties_.padded_width_checkerboard_level_ = PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);
   level_properties_.offset_into_arrays_=  offset_into_arrays;
   level_properties_.level_num_ = level_num;
-  level_properties_.div_padded_checkerboard_w_align_ = (acc_setting == run_environment::AccSetting::kAVX512) ? 16u : 8u;
+  level_properties_.div_padded_checkerboard_w_align_ = 
+    ((acc_setting == run_environment::AccSetting::kAVX512) ||
+     (acc_setting == run_environment::AccSetting::kAVX512_F16)) ?
+    16u :
+    8u;
 }
   
 BpLevel::BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays, unsigned int level_num,
