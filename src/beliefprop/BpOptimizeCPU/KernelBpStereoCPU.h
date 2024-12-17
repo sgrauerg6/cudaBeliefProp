@@ -1014,7 +1014,7 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
       disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
   }
 #else
-#if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE))
+#if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)))
   if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256)
   {
     //only use AVX-256 if width of processing checkerboard is over 10
