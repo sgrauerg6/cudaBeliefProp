@@ -44,6 +44,9 @@ template <typename T>
 concept RunData_t = std::is_same_v<T, float> || std::is_same_v<T, double> || std::is_same_v<T, halftype>;
 
 #elif defined(OPTIMIZED_CPU_RUN)
+
+#include "RunImpCPU/RunCPUSettings.h"
+
 #if defined(COMPILING_FOR_ARM)
 
 #include <arm_neon.h>
@@ -96,6 +99,15 @@ concept RunDataVect_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> 
 
 template <typename T>
 concept RunDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256>;
+
+
+#elif defined(AVX_512_F16_VECTORIZATION)
+
+template <typename T>
+concept RunDataVect_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m128i> || std::is_same_v<T, __m512d> || std::is_same_v<T, __m512> || std::is_same_v<T, __m256i> || std::is_same_v<T, __m512h> || std::is_same_v<T, __m256h>;
+
+template <typename T>
+concept RunDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m512d> || std::is_same_v<T, __m512> || std::is_same_v<T, __m512h> || std::is_same_v<T, __m256h>;
 
 #else
 
