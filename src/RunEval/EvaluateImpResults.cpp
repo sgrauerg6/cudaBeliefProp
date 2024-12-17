@@ -410,6 +410,8 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
     {run_environment::AccSetting::kNone, 
      std::string(run_eval::kSpeedupCPUVectorization) + " - " + std::string(run_environment::kDataSizeToNameMap.at(data_type_size))},
     {run_environment::AccSetting::kAVX256, 
+     std::string(run_eval::kSpeedupVsAvx256Vectorization) + " - " + std::string(run_environment::kDataSizeToNameMap.at(data_type_size))},
+    {run_environment::AccSetting::kAVX256_F16, 
      std::string(run_eval::kSpeedupVsAvx256Vectorization) + " - " + std::string(run_environment::kDataSizeToNameMap.at(data_type_size))}};
 
   if (run_imp_results_by_acc_setting.size() == 1) {

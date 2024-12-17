@@ -42,6 +42,9 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
   else if (this->opt_imp_accel_ == run_environment::AccSetting::kAVX256) {
     return RunEvalImpMultDataSets<run_environment::AccSetting::kAVX256>(run_imp_settings, data_type_size);
   }
+  else if (this->opt_imp_accel_ == run_environment::AccSetting::kAVX256_F16) {
+    return RunEvalImpMultDataSets<run_environment::AccSetting::kAVX256_F16>(run_imp_settings, data_type_size);
+  }
   else if (this->opt_imp_accel_ == run_environment::AccSetting::kNEON) {
     return RunEvalImpMultDataSets<run_environment::AccSetting::kNEON>(run_imp_settings, data_type_size);
   }

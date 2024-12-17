@@ -159,8 +159,8 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
   RunImpMultTypesAccels().operator()({
     {run_environment::AccSetting::kAVX512_F16,
      std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX512_F16)},
-    {run_environment::AccSetting::kAVX256,
-     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
+    {run_environment::AccSetting::kAVX256_F16,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256_F16)},
     {run_environment::AccSetting::kNone,
      std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,

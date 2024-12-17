@@ -82,6 +82,11 @@ run_environment::AccSetting RunImpMultTypesAccels::FastestAvailableAcc(
     return run_environment::AccSetting::kNEON;
   }
   else if (run_benchmark_imps_by_acc_setting.contains(
+    run_environment::AccSetting::kAVX256_F16))
+  {
+    return run_environment::AccSetting::kAVX256_F16;
+  }
+  else if (run_benchmark_imps_by_acc_setting.contains(
     run_environment::AccSetting::kAVX256))
   {
     return run_environment::AccSetting::kAVX256;

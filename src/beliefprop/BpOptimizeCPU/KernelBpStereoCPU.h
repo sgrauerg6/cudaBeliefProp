@@ -1015,7 +1015,8 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
   }
 #else
 #if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)))
-  if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256)
+  if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX256) ||
+                (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
   {
     //only use AVX-256 if width of processing checkerboard is over 10
     if (current_bp_level.width_checkerboard_level_ > 10)
@@ -1180,8 +1181,10 @@ void beliefprop_cpu::RetrieveOutputDisparity(
         disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
     }
-    else if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256) {
+    else if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX256) ||
+                       (ACCELERATION == run_environment::AccSetting::kAVX256_F16)) {
       RetrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(current_bp_level,
+
         data_cost_checkerboard_0, data_cost_checkerboard_1,
         message_u_checkerboard_0, message_d_checkerboard_0,
         message_l_checkerboard_0, message_r_checkerboard_0,
