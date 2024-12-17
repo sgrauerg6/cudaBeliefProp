@@ -277,7 +277,7 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, __m256d
 
 #if ((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
 
-template<> inline void simd_processing::StorePackedDataAligned<short, __m256h>(
+template<> inline void simd_processing::StorePackedDataUnaligned<short, __m256h>(
   unsigned int indexDataStore, short* locationDataStore, const __m256h& dataToStore)
 {
   _mm256_storeu_ph(&locationDataStore[indexDataStore], dataToStore);
