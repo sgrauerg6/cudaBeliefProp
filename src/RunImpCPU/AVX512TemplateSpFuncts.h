@@ -31,7 +31,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #else
 #include <x86intrin.h>
 #endif
+#include "RunImpCPU/RunCPUSettings.h"
 #include "SIMDProcessing.h"
+#include <immintrin.h>
 
 template<> inline __m512d simd_processing::LoadPackedDataAligned<double, __m512d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -61,7 +63,7 @@ template<> inline __m256i simd_processing::LoadPackedDataAligned<short, __m256i>
     numDispVals)]));
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::LoadPackedDataAligned<short, __m512h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -102,7 +104,7 @@ template<> inline __m512d simd_processing::LoadPackedDataUnaligned<double, __m51
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::LoadPackedDataUnaligned<short, __m512h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -127,7 +129,7 @@ template<> inline __m512d simd_processing::createSIMDVectorSameData<__m512d>(flo
   return _mm512_set1_pd((double)data);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::createSIMDVectorSameData<__m512h>(float data) {
   return _mm512_set1_ph((_Float16)data);
@@ -143,7 +145,7 @@ template<> inline __m512d simd_processing::AddVals<__m512d, __m512d, __m512d>(co
   return _mm512_add_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::AddVals<__m512h, __m512h, __m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_add_ph(val1, val2);
@@ -171,7 +173,7 @@ template<> inline __m512d simd_processing::SubtractVals<__m512d, __m512d, __m512
   return _mm512_sub_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::SubtractVals<__m512h, __m512h, __m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_sub_ph(val1, val2);
@@ -187,7 +189,7 @@ template<> inline __m512d simd_processing::divideVals<__m512d, __m512d, __m512d>
   return _mm512_div_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::divideVals<__m512h, __m512h, __m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_div_ph(val1, val2);
@@ -203,7 +205,7 @@ template<> inline __m512d simd_processing::ConvertValToDatatype<__m512d, double>
   return _mm512_set1_pd(val);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512d simd_processing::ConvertValToDatatype<__m512h, short>(short val) {
   return _mm512_set1_ph((_Float16)val);
@@ -219,7 +221,7 @@ template<> inline __m512d simd_processing::GetMinByElement<__m512d>(const __m512
   return _mm512_min_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m512h simd_processing::GetMinByElement<__m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_min_ph(val1, val2);
@@ -245,7 +247,7 @@ template<> inline void simd_processing::StorePackedDataAligned<double, __m512d>(
   _mm512_store_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline void simd_processing::StorePackedDataAligned<short, __m512h>(
   unsigned int indexDataStore, short* locationDataStore, const __m512h& dataToStore)
@@ -273,7 +275,7 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, __m512d
   _mm512_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline void simd_processing::StorePackedDataUnaligned<short, __m512h>(
   unsigned int indexDataStore, short* locationDataStore, const __m512h& dataToStore)

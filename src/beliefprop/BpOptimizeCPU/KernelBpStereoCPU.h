@@ -173,7 +173,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
   template<unsigned int DISP_VALS>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
@@ -300,7 +300,7 @@ namespace beliefprop_cpu
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
   
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
   template<unsigned int DISP_VALS>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
@@ -464,7 +464,7 @@ namespace beliefprop_cpu
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
-#elif (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+#elif ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 #include "KernelBpStereoCPU_AVX512TemplateSpFuncts.h"
 #endif //CPU_VECTORIZATION_DEFINE
@@ -1040,8 +1040,9 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
     }
   }
 #endif //CPU_VECTORIZATION_DEFINE
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
-  else if constexpr (ACCELERATION == run_environment::AccSetting::kAVX512)
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
+  else if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX512) ||
+                     (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
   {
     //only use AVX-512 if width of processing checkerboard is over 20
     if (current_bp_level.width_checkerboard_level_ > 20)
@@ -1166,8 +1167,10 @@ void beliefprop_cpu::RetrieveOutputDisparity(
   else {
 #ifndef COMPILING_FOR_ARM
     //SIMD vectorization of output disparity
-    if constexpr (ACCELERATION == run_environment::AccSetting::kAVX512) {
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
+    if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX512) ||
+                  (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
+{
+#if ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
       RetrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS>(current_bp_level,
         data_cost_checkerboard_0, data_cost_checkerboard_1,
         message_u_checkerboard_0, message_d_checkerboard_0,

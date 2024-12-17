@@ -32,6 +32,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <x86intrin.h>
 #endif
 #include "SIMDProcessing.h"
+#include <immintrin.h>
+#include "RunImpCPU/RunCPUSettings.h"
 
 template<> inline __m256d simd_processing::LoadPackedDataAligned<double, __m256d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -61,7 +63,7 @@ template<> inline __m128i simd_processing::LoadPackedDataAligned<short, __m128i>
     numDispVals)]));
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::LoadPackedDataAligned<short, __m256h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -102,7 +104,7 @@ template<> inline __m256d simd_processing::LoadPackedDataUnaligned<double, __m25
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::LoadPackedDataUnaligned<short, __m256h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -127,7 +129,7 @@ template<> inline __m256d simd_processing::createSIMDVectorSameData<__m256d>(flo
   return _mm256_set1_pd((double)data);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::createSIMDVectorSameData<__m256h>(float data) {
   return _mm256_set1_ph((_Float16)data);
@@ -155,7 +157,7 @@ template<> inline __m256 simd_processing::AddVals<__m128i, __m128i, __m256>(cons
   return _mm256_add_ps(_mm256_cvtph_ps(val1), _mm256_cvtph_ps(val2));
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::AddVals<__m256h, __m256h, __m256h>(const __m256h& val1, const __m256h& val2) {
   return _mm256_add_ph(val1, val2);
@@ -171,7 +173,7 @@ template<> inline __m256d simd_processing::SubtractVals<__m256d, __m256d, __m256
   return _mm256_sub_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::SubtractVals<__m256h, __m256h, __m256h>(const __m256h& val1, const __m256h& val2) {
   return _mm256_sub_ph(val1, val2);
@@ -187,7 +189,7 @@ template<> inline __m256d simd_processing::divideVals<__m256d, __m256d, __m256d>
   return _mm256_div_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::divideVals<__m256h, __m256h, __m256h>(const __m256h& val1, const __m256h& val2) {
   return _mm256_div_ph(val1, val2);
@@ -203,7 +205,7 @@ template<> inline __m256d simd_processing::ConvertValToDatatype<__m256d, double>
   return _mm256_set1_pd(val);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::ConvertValToDatatype<__m256h, short>(short val) {
   return _mm256_set1_ph((_Float16)val);
@@ -219,7 +221,7 @@ template<> inline __m256d simd_processing::GetMinByElement<__m256d>(const __m256
   return _mm256_min_pd(val1, val2);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline __m256h simd_processing::GetMinByElement<__m256h>(const __m256h& val1, const __m256h& val2) {
   return _mm256_min_ph(val1, val2);
@@ -245,7 +247,7 @@ template<> inline void simd_processing::StorePackedDataAligned<double, __m256d>(
   _mm256_store_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline void simd_processing::StorePackedDataAligned<short, __m256h>(
   unsigned int indexDataStore, short* locationDataStore, const __m256h& dataToStore)
@@ -273,7 +275,7 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, __m256d
   _mm256_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline void simd_processing::StorePackedDataAligned<short, __m256h>(
   unsigned int indexDataStore, short* locationDataStore, const __m256h& dataToStore)

@@ -34,10 +34,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #else
 #include <x86intrin.h>
 #endif
+#include <immintrin.h>
 #include "KernelBpStereoCPU.h"
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 
-#ifndef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE != AVX_512_F16_DEFINE)
 
 //template speciaizations for belief propagation processing using 32-bit
 //floating point datatype while data stored as 16-bit for case where 16-bit

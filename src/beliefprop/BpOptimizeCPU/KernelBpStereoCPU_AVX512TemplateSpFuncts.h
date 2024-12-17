@@ -32,8 +32,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #else
 #include <x86intrin.h>
 #endif
+#include <immintrin.h>
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "RunImpCPU/AVX512TemplateSpFuncts.h"
+#include "RunImpCPU/RunCPUSettings.h"
 
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
@@ -68,7 +70,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
   constexpr unsigned int simd_data_size{32};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m512h, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
@@ -146,7 +148,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
   constexpr unsigned int simd_data_size{32};
   RetrieveOutputDisparityUseSIMDVectors<short, __m512h, short, __m512h, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -207,7 +209,7 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512d>(__m512d& 
   best_disparities = _mm512_mask_blend_pd(maskNeedUpdate, best_disparities, current_disparity);
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512h>(__m512h& best_disparities, __m512h& best_vals,
   const __m512h& current_disparity, const __m512h& val_at_disp)
@@ -219,7 +221,7 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512h>(__m512h& 
 
 #endif //AVX_512_F16_DEFINE
 
-#ifndef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE != AVX_512_F16_DEFINE)
 
 //template speciaization for message processing using 32-bit floating point while data stored as 16-bit
 //for case where 16-bit float vector arithmetic not supported

@@ -32,8 +32,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #else
 #include <x86intrin.h>
 #endif
+#include <immintrin.h>
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 #include "RunImpCPU/AVX256TemplateSpFuncts.h"
+#include "RunImpCPU/RunCPUSettings.h"
 
 template<unsigned int DISP_VALS>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
@@ -189,7 +191,7 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256d>(__m256d& 
   best_disparities = _mm256_mask_blend_pd(maskNeedUpdate, best_disparities, current_disparity);*/
 }
 
-#ifdef AVX_512_F16_DEFINE
+#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256h>(__m256h& best_disparities, __m256h& best_vals,
   const __m256h& current_disparity, const __m256h& val_at_disp)

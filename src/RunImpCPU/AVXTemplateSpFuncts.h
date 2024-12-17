@@ -35,6 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #endif
 
 #include "RunImp/UtilityFuncts.h"
+#include <immintrin.h>
 
 //used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
 //for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio

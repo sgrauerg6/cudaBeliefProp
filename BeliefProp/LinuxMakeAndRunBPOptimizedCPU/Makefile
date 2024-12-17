@@ -13,6 +13,7 @@ OPENMP_LIB := -fopenmp
 
 # setting for CPU vectorization
 # switch to -DAVX_256_VECTORIZATION if AVX 512 not supported on target CPU
+# switch to -DAVX_512_F16_VECTORIZATION if half-precision vectorization supported on target CPU
 CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 
 # set compile flags and debug setting

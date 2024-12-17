@@ -69,6 +69,7 @@ concept RunDataVectProcess_t = std::is_same_v<T, float64x2_t> || std::is_same_v<
 #else
 #include <x86intrin.h>
 #endif
+#include <immintrin.h>
 
 //short is used for half data type in x86 processing
 template <typename T>
