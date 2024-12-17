@@ -68,6 +68,17 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+#ifdef AVX_512_F16_DEFINE
+  constexpr unsigned int simd_data_size{32};
+  RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m512h, DISP_VALS>(
+    checkerboard_to_update, current_bp_level,
+    data_cost_checkerboard_0, data_cost_checkerboard_1,
+    message_u_checkerboard_0, message_d_checkerboard_0,
+    message_l_checkerboard_0, message_r_checkerboard_0,
+    message_u_checkerboard_1, message_d_checkerboard_1,
+    message_l_checkerboard_1, message_r_checkerboard_1,
+    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+#else
   constexpr unsigned int simd_data_size{16};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<short, __m256i, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
@@ -77,6 +88,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
     disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+#endif //AVX_512_F16_DEFINE
 }
 
 template<unsigned int DISP_VALS>
@@ -133,7 +145,18 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512(
   const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
-{      
+{
+#ifdef AVX_512_F16_DEFINE
+  constexpr unsigned int simd_data_size{32};
+  RetrieveOutputDisparityUseSIMDVectors<short, __m512h, short, __m512h, DISP_VALS>(current_bp_level,
+    data_cost_checkerboard_0, data_cost_checkerboard_1,
+    message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
+    message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,
+    message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
+    message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
+    disparity_between_images_device, bp_settings_disp_vals,
+    simd_data_size, opt_cpu_params);
+#else
   constexpr unsigned int simd_data_size{16};
   RetrieveOutputDisparityUseSIMDVectors<short, __m256i, float, __m512, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -143,6 +166,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512(
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
     simd_data_size, opt_cpu_params);
+#endif //AVX_512_F16_DEFINE
 }
 
 template<unsigned int DISP_VALS>
@@ -182,6 +206,23 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512d>(__m512d& 
   best_vals = _mm512_mask_blend_pd(maskNeedUpdate, best_vals, val_at_disp);
   best_disparities = _mm512_mask_blend_pd(maskNeedUpdate, best_disparities, current_disparity);
 }
+
+#ifdef AVX_512_F16_DEFINE
+
+template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512h>(__m512h& best_disparities, __m512h& best_vals,
+  const __m512h& current_disparity, const __m512h& val_at_disp)
+{
+  __mmask16 maskNeedUpdate =  _mm512_cmp_ph_mask(val_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm512_mask_blend_ph(maskNeedUpdate, best_vals, val_at_disp);
+  best_disparities = _mm512_mask_blend_ph(maskNeedUpdate, best_disparities, current_disparity);
+}
+
+#endif //AVX_512_F16_DEFINE
+
+#ifndef AVX_512_F16_DEFINE
+
+//template speciaization for message processing using 32-bit floating point while data stored as 16-bit
+//for case where 16-bit float vector arithmetic not supported
 
 // compute current message
 template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m256i, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
@@ -299,5 +340,7 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m256i>(unsigned in
     messages_neighbor_1, messages_neighbor_2, messages_neighbor_3, data_costs,
     dst_message_array, disc_k_bp, data_aligned, bp_settings_disp_vals);
 }
+
+#endif //AVX_512_F16_DEFINE
 
 #endif /* KERNELBPSTEREOCPU_AVX512TEMPLATESPFUNCTS_H_ */

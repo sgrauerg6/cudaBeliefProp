@@ -67,6 +67,11 @@ run_environment::AccSetting RunImpMultTypesAccels::FastestAvailableAcc(
     return run_environment::AccSetting::kCUDA;
   }
   else if (run_benchmark_imps_by_acc_setting.contains(
+    run_environment::AccSetting::kAVX512_F16))
+  {
+    return run_environment::AccSetting::kAVX512_F16;
+  }
+  else if (run_benchmark_imps_by_acc_setting.contains(
     run_environment::AccSetting::kAVX512))
   {
     return run_environment::AccSetting::kAVX512;

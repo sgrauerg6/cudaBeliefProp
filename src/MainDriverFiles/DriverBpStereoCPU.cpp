@@ -152,6 +152,19 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
      std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
+#elif (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+  //run belief propagation with AVX512 w/ f16 vectorization, AVX256, and no
+  //vectorization implementations, with the AVX512 implementation given first
+  //as the expected fastest implementation
+  RunImpMultTypesAccels().operator()({
+    {run_environment::AccSetting::kAVX512_F16,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX512_F16)},
+    {run_environment::AccSetting::kAVX256,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
+    {run_environment::AccSetting::kNone,
+     std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+    run_imp_settings,
+    std::make_unique<EvaluateImpResultsBp>());
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
   //run belief propagation with AVX256 and no vectorization implementations,
   //with the AVX256 implementation given first as the expected fastest implementation

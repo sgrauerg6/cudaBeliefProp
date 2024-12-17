@@ -37,6 +37,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "KernelBpStereoCPU.h"
 #include "BpSharedFuncts/SharedBpProcessingFuncts.h"
 
+#ifndef AVX_512_F16_DEFINE
+
+//template speciaizations for belief propagation processing using 32-bit
+//floating point datatype while data stored as 16-bit for case where 16-bit
+//float vector arithmetic not supported
+
 template<> inline
 void beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<short, short, 0>(
   unsigned int x_val, unsigned int y_val,
@@ -484,5 +490,8 @@ void beliefprop::RetrieveOutputDisparityPixel<short, short, beliefprop::kStereoS
     message_u_checkerboard_1, message_d_checkerboard_1, message_l_checkerboard_1, message_r_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals);
 }
+
+#endif //AVX_512_F16_DEFINE
+
 
 #endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_

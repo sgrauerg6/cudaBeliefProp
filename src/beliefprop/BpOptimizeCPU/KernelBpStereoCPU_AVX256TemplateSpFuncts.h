@@ -189,6 +189,18 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256d>(__m256d& 
   best_disparities = _mm256_mask_blend_pd(maskNeedUpdate, best_disparities, current_disparity);*/
 }
 
+#ifdef AVX_512_F16_DEFINE
+
+template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256h>(__m256h& best_disparities, __m256h& best_vals,
+  const __m256h& current_disparity, const __m256h& val_at_disp)
+{
+  __m256h maskNeedUpdate = _mm256_cmp_ph(val_at_disp, best_vals, _CMP_LT_OS);
+  best_vals = _mm256_blendv_ph(best_vals, val_at_disp, maskNeedUpdate);
+  best_disparities = _mm256_blendv_ph(best_disparities, current_disparity, maskNeedUpdate);
+}
+
+#endif //AVX_512_F16_DEFINE
+
 // compute current message
 template<> inline void beliefprop_cpu::MsgStereoSIMD<short, __m128i, beliefprop::kStereoSetsToProcess[0].num_disp_vals>(
   unsigned int x_val, unsigned int y_val,

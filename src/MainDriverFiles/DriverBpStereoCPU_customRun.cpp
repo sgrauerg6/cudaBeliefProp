@@ -73,6 +73,10 @@ int main(int argc, char** argv)
   std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX512>>
     runOptBpNumItersNoTemplate =
       std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512>>();
+#elif (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+  std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX512_F16>>
+    runOptBpNumItersNoTemplate =
+      std::make_unique<RunBpOnStereoSetOptimizedCPU<float, 0, run_environment::AccSetting::kAVX512_F16>>();
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
   std::unique_ptr<RunBpOnStereoSet<float, 0, run_environment::AccSetting::kAVX256>>
     runOptBpNumItersNoTemplate =

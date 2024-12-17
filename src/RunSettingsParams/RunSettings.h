@@ -41,12 +41,18 @@ namespace run_environment {
 
 inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
   //avx512 requires data to be aligned on 64 bytes
-  return (accel_setting == AccSetting::kAVX512) ? 64 : 16;
+  return ((accel_setting == AccSetting::kAVX512) ||
+          (accel_setting == AccSetting::kAVX512_F16)) ?
+          64 :
+          16;
 }
 
 inline unsigned int GetNumDataAlignWidth(AccSetting accel_setting) {
   //align width with 16 data values in AVX512
-  return (accel_setting == AccSetting::kAVX512) ? 16 : 8;
+  return ((accel_setting == AccSetting::kAVX512) ||
+          (accel_setting == AccSetting::kAVX512_F16)) ?
+          16 :
+          8;
 }
 
 /**
