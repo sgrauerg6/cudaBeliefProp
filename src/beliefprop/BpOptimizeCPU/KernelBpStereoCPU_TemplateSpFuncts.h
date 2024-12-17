@@ -28,6 +28,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #ifndef KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_
 
+//conversion to 32-bit float should not be necessary if _Float16 is supported
+#if (!((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE)))
+
 //this is only processed when on x86
 #ifdef _WIN32
 #include <intrin.h>
@@ -489,5 +492,7 @@ void beliefprop::RetrieveOutputDisparityPixel<halftype, halftype, beliefprop::kS
     message_u_checkerboard_1, message_d_checkerboard_1, message_l_checkerboard_1, message_r_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals);
 }
+
+#endif //(!((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE)))
 
 #endif //KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_
