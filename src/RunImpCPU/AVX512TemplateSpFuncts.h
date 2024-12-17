@@ -53,6 +53,8 @@ template<> inline __m512 simd_processing::LoadPackedDataAligned<float, __m512>(
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
+#if (CPU_VECTORIZATION_DEFINE != AVX_512_F16_DEFINE)
+
 template<> inline __m256i simd_processing::LoadPackedDataAligned<short, __m256i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
   const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const short* inData)
@@ -62,6 +64,8 @@ template<> inline __m256i simd_processing::LoadPackedDataAligned<short, __m256i>
     current_bp_level.height_level_, current_disparity,
     numDispVals)]));
 }
+
+#endif //CPU_VECTORIZATION_DEFINE
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
@@ -95,6 +99,8 @@ template<> inline __m256i simd_processing::LoadPackedDataUnaligned<short, __m256
     current_bp_level.height_level_, current_disparity, numDispVals)]));
 }
 
+#if (CPU_VECTORIZATION_DEFINE != AVX_512_F16_DEFINE)
+
 template<> inline __m512d simd_processing::LoadPackedDataUnaligned<double, __m512d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
   const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const double* inData)
@@ -103,6 +109,8 @@ template<> inline __m512d simd_processing::LoadPackedDataUnaligned<double, __m51
     x, y, current_bp_level.padded_width_checkerboard_level_,
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
+
+#endif //CPU_VECTORIZATION_DEFINE
 
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 
