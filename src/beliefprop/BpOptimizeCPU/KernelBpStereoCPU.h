@@ -462,7 +462,7 @@ namespace beliefprop_cpu
 //needed so that template specializations are used when available
 #include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
+#if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
 #elif ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
@@ -1014,7 +1014,7 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
       disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
   }
 #else
-#if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)))
+#if (((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE)) || ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)))
   if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX256) ||
                 (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
   {
@@ -1184,7 +1184,6 @@ void beliefprop_cpu::RetrieveOutputDisparity(
     else if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX256) ||
                        (ACCELERATION == run_environment::AccSetting::kAVX256_F16)) {
       RetrieveOutputDisparityUseSIMDVectorsAVX256<DISP_VALS>(current_bp_level,
-
         data_cost_checkerboard_0, data_cost_checkerboard_1,
         message_u_checkerboard_0, message_d_checkerboard_0,
         message_l_checkerboard_0, message_r_checkerboard_0,
