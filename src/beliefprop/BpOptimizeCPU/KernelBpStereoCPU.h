@@ -699,7 +699,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
-    #pragma omp parallel for
+    //#pragma omp parallel for
 #endif
 #ifdef _WIN32
     for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
@@ -715,6 +715,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
+        std::cout << "A1: " << y_val << " " << x_val << " " << simd_data_size << std::endl;
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
@@ -727,6 +728,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
         x_val_process = std::max(start_x, x_val_process);
+        std::cout << "B1: " << x_val_process << " " << end_final << " " << start_x << std::endl;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
         const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart(
@@ -839,7 +841,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
-    #pragma omp parallel for
+    //#pragma omp parallel for
 #endif
 #ifdef _WIN32
     for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
@@ -855,6 +857,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
+        std::cout << "A2: " << y_val << " " << x_val << " " << simd_data_size << std::endl;
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
@@ -867,6 +870,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
         x_val_process = std::max(start_x, x_val_process);
+        std::cout << "B2: " << x_val_process << " " << end_final << " " << start_x << std::endl;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
         const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart(x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
