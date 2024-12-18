@@ -1287,8 +1287,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         const unsigned int index_output = (y_val * width_disp_checkerboard) + x_val_process;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart(x_val_process, simd_data_size,
-          current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_);
+        const bool data_aligned_x_val = ((sizeof(T) > 2) && (beliefprop::MemoryAlignedAtDataStart(x_val_process, simd_data_size,
+          current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_)));
 
         //declare SIMD vectors for data and message values at each disparity
         //U data_message, prev_u_message, prev_d_message, prev_l_message, prev_r_message;
