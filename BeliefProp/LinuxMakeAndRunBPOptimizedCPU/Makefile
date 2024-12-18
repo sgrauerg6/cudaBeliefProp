@@ -51,5 +51,8 @@ impDriverCPU: ${DRIVER_BENCHMARK_CPU_OBJECT} ${OBJECTS}
 impDriverCPUCustom: ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS} 
 	$(CC) ${DRIVER_BENCHMARK_CPU_OBJECT_CUSTOM} ${OBJECTS} $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o ${DRIVER_BENCHMARK_CPU_CUSTOM}
 
+Float16Test: ${OBJ_DIR}/Float16Test.o 
+	$(CC) ${OBJ_DIR}/Float16Test.o $(COMPILE_FLAGS) $(LIB_CPU) $(OPENMP_LIB) -o float16Test
+
 make clean:
-	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom
+	rm *.o ${OBJ_DIR}/*.o driverCPUBp driverCPUBpCustom float16Test
