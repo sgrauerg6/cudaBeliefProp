@@ -697,9 +697,9 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
       {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
-    //#pragma omp parallel for num_threads(num_threads_kernel)
+    #pragma omp parallel for num_threads(num_threads_kernel)
 #else
-    //#pragma omp parallel for
+    #pragma omp parallel for
 #endif
 #ifdef _WIN32
     for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
@@ -715,7 +715,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
-        std::cout << "A1: " << y_val << " " << x_val << " " << simd_data_size << std::endl;
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
@@ -728,31 +727,29 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
         x_val_process = std::max(start_x, x_val_process);
-        std::cout << "B1: " << x_val_process << " " << end_final << " " << start_x << std::endl;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart(
+        //for not set data to unaligned if using half type since got error with aligned
+        //using using half-type
+        const bool data_aligned_x_val = ((sizeof(T) > 2) && (beliefprop::MemoryAlignedAtDataStart(
           x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
-          current_bp_level.div_padded_checkerboard_w_align_);
+          current_bp_level.div_padded_checkerboard_w_align_)));
         
-        std::cout << "C1" << std::endl;
         //initialize arrays for data and message values
         U data_message[DISP_VALS], prev_u_message[DISP_VALS], prev_d_message[DISP_VALS],
           prev_l_message[DISP_VALS], prev_r_message[DISP_VALS];
 
         //load using aligned instructions when possible
         if (data_aligned_x_val) {
-        std::cout << "D1" << std::endl;
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-        std::cout << "D1a" << std::endl;
-              data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
+              data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
                 DISP_VALS, data_cost_checkerboard_0);
-              prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
+              prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
                 DISP_VALS, message_u_checkerboard_1);
-              prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
+              prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
                 DISP_VALS, message_d_checkerboard_1);
               prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
@@ -764,14 +761,13 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
-        std::cout << "D1b" << std::endl;
-              data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
+              data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
                 DISP_VALS, data_cost_checkerboard_1);
-              prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
+              prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
                 DISP_VALS, message_u_checkerboard_0);
-              prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
+              prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
                 DISP_VALS, message_d_checkerboard_0);
               prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
@@ -781,10 +777,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
                 (x_val_process + checkerboard_adjustment) - 1, y_val, current_disparity, current_bp_level,
                 DISP_VALS, message_r_checkerboard_0);
             }
-        std::cout << "E1" << std::endl;
           }
         } else {
-        std::cout << "F1" << std::endl;
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
@@ -822,26 +816,21 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
                 DISP_VALS, message_r_checkerboard_0);
             }
           }
-        std::cout << "G1" << std::endl;
         }
 
         if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-        std::cout << "H1" << std::endl;
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U, DISP_VALS>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
             message_u_checkerboard_0, message_d_checkerboard_0,
             message_l_checkerboard_0, message_r_checkerboard_0,
             disc_k_bp_vect, data_aligned_x_val);
-        std::cout << "I1" << std::endl;
         }
         else {
-        std::cout << "J1" << std::endl;
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U, DISP_VALS>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
             message_u_checkerboard_1, message_d_checkerboard_1,
             message_l_checkerboard_1, message_r_checkerboard_1,
             disc_k_bp_vect, data_aligned_x_val);
-        std::cout << "K1" << std::endl;
         }
       }
     }
@@ -852,7 +841,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
 #else
-    //#pragma omp parallel for
+    #pragma omp parallel for
 #endif
 #ifdef _WIN32
     for (int y_val = 1; y_val < current_bp_level.height_level_ - 1; y_val++) {
@@ -868,7 +857,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
       const unsigned int end_x_simd_vect_start = (end_final / simd_data_size) * simd_data_size - simd_data_size;
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
-        std::cout << "A2: " << y_val << " " << x_val << " " << simd_data_size << std::endl;
         unsigned int x_val_process = x_val;
 
         //need this check first for case where endXAvxStart is 0 and start_x is 1
@@ -881,11 +869,12 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         //not processing at x=0 if start_x is 1 (this will cause this processing to be less aligned than ideal for this iteration)
         x_val_process = std::max(start_x, x_val_process);
-        std::cout << "B2: " << x_val_process << " " << end_final << " " << start_x << std::endl;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart(x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
-          current_bp_level.div_padded_checkerboard_w_align_);
+        const bool data_aligned_x_val = ((sizeof(T) > 2) && 
+          (beliefprop::MemoryAlignedAtDataStart(
+             x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
+             current_bp_level.div_padded_checkerboard_w_align_)));
 
         //initialize arrays for data and message values
         U* data_message = new U[bp_settings_disp_vals];
@@ -894,11 +883,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         U* prev_l_message = new U[bp_settings_disp_vals];
         U* prev_r_message = new U[bp_settings_disp_vals];
 
-        std::cout << "C2" << std::endl;
-
         //load using aligned instructions when possible
         if (data_aligned_x_val) {
-        std::cout << "C3" << std::endl;
           for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(x_val_process, y_val,
@@ -926,10 +912,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
                 current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0);
             }
           }
-        std::cout << "C4" << std::endl;
         } 
         else {
-        std::cout << "C5" << std::endl;
           for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
               data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(x_val_process, y_val,
@@ -957,26 +941,21 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
                 current_disparity, current_bp_level, bp_settings_disp_vals, message_r_checkerboard_0);
             }
           }
-        std::cout << "C6" << std::endl;
         }
 
         if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-        std::cout << "C7" << std::endl;
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
             message_u_checkerboard_0, message_d_checkerboard_0,
             message_l_checkerboard_0, message_r_checkerboard_0,
             disc_k_bp_vect, data_aligned_x_val, bp_settings_disp_vals);
-        std::cout << "C8" << std::endl;
         }
         else {
-        std::cout << "C9" << std::endl;
           RunBPIterationUpdateMsgValsUseSIMDVectors<T, U>(x_val_process, y_val, current_bp_level,
             prev_u_message, prev_d_message, prev_l_message, prev_r_message, data_message,
             message_u_checkerboard_1, message_d_checkerboard_1,
             message_l_checkerboard_1, message_r_checkerboard_1,
             disc_k_bp_vect, data_aligned_x_val, bp_settings_disp_vals);
-        std::cout << "C10" << std::endl;
         }
 
         delete [] data_message;

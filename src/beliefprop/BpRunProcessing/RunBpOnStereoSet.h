@@ -135,7 +135,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const
 {
-  std::cout << "2" << std::endl;
   //retrieve the images as well as the width and height
   const std::array<BpImage<unsigned int>, 2> input_images{
     BpImage<unsigned int>(ref_test_image_path[0]),
@@ -151,7 +150,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
 
   //initialize output disparity map
   DisparityMap<float> output_disparity_map(width_height_images);
-  std::cout << "3" << std::endl;
 
   //allocate data for bp processing on target device ahead of runs if option selected
   T* bp_data{nullptr};
@@ -169,14 +167,12 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     if (run_bp_on_device.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }
   }
 
-  std::cout << "4" << std::endl;
   //run bp processing for specified number of runs
   const unsigned int num_evaluation_runs{beliefprop::NumBpStereoRuns(alg_settings.num_disp_vals)};
   for (unsigned int num_run = 0; 
        num_run < num_evaluation_runs;
        num_run++)
   {
-  std::cout << "4a" << std::endl;
     //allocate the device memory to store and x and y smoothed images
     std::array<float*, 2> smoothed_images{
       run_bp_on_device.mem_management_images->AllocateMemoryOnDevice(tot_num_pixels_images),
@@ -186,13 +182,11 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
       //return std::optional object with no value indicating error in run
       return {};
     }
-  std::cout << "4b" << std::endl;
 
     //set start timer for specified runtime segments at time before smoothing images
     runtime_start_end_timings[beliefprop::Runtime_Type::kSmoothing][0] = std::chrono::system_clock::now();
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalNoTransfer][0] = std::chrono::system_clock::now();
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalWithTransfer][0] = std::chrono::system_clock::now();
-  std::cout << "4c" << std::endl;
 
     //first smooth the images using the Gaussian filter with the given smoothing sigma value
     //smoothed images are stored on the target device
@@ -203,7 +197,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
         return {};
       }
     }
-  std::cout << "4d" << std::endl;
 
     //end timer for image smoothing and add to image smoothing timings
     runtime_start_end_timings[beliefprop::Runtime_Type::kSmoothing][1] = std::chrono::system_clock::now();
@@ -220,7 +213,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
       //return std::optional object with no value if null output indicating error in run
       return {};
     }
-  std::cout << "4e" << std::endl;
 
     //get and store end timepoint of bp run for computation of total runtime
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalBp][1] =
@@ -231,7 +223,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     //transfer the disparity map estimation on the device to the host for output
     run_bp_on_device.mem_management_images->TransferDataFromDeviceToHost(
       output_disparity_map.PointerToPixelsStart(), bp_stereo_output->first, tot_num_pixels_images);
-  std::cout << "4f" << std::endl;
 
     //compute timings for each portion of interest and add to vector timings
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalWithTransfer][1] =
@@ -243,7 +234,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
         detailed_bp_timings.AddTiming(current_runtime_name_timing.first,
           current_runtime_name_timing.second[1] - current_runtime_name_timing.second[0]);
     });
-  std::cout << "4g" << std::endl;
 
     //add bp timings from current run to overall timings
     detailed_bp_timings.AddToCurrentTimings(bp_stereo_output->second);
@@ -253,9 +243,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     for (auto& smoothed_image : smoothed_images) {
       run_bp_on_device.mem_management_images->FreeMemoryOnDevice(smoothed_image);
     }
-  std::cout << "4h" << std::endl;
   }
-  std::cout << "4i" << std::endl;
 
   //free data for bp processing on target device if this memory
   //management set to be done outside of runs
@@ -263,7 +251,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     run_bp_on_device.mem_management_bp_run->FreeAlignedMemoryOnDevice(bp_data);
     run_bp_on_device.mem_management_bp_run->FreeAlignedMemoryOnDevice(bp_proc_store);
   }
-  std::cout << "5" << std::endl;
 
   //construct RunData object with bp input and timing info
   RunData run_data;
@@ -271,7 +258,6 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
   run_data.AddDataWHeader(std::string(beliefprop::kImageHeightHeader), width_height_images[1]);
   run_data.AddDataWHeader(std::string(beliefprop::kNumEvalRuns), num_evaluation_runs);
   run_data.AppendData(detailed_bp_timings.AsRunData());
-  std::cout << "6" << std::endl;
 
   //construct and return beliefprop::BpRunOutput object inside of std::optional object
   return {beliefprop::BpRunOutput{
