@@ -72,6 +72,9 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
 {
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
 std::cout << "RUN HALF TYPE SIMD START" << std::endl;
+std::cout << "width_checkerboard_level_: " << current_bp_level.width_checkerboard_level_ << std::endl;
+std::cout << "padded_width_checkerboard_level_: " << current_bp_level.padded_width_checkerboard_level_ << std::endl;
+std::cout << "width_level_: " << current_bp_level.width_level_ << std::endl;
   constexpr unsigned int simd_data_size{32};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<halftype, __m512h, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
