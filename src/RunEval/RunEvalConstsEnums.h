@@ -45,11 +45,15 @@ enum class MiddleValData { kAverage, kMedian };
 
 //set data types to use in evaluation
 //by default evaluate using float, double, and half data types
-//but can set to only evaluate using float datatype
-#ifdef EVAL_FLOAT_DATATYPE_ONLY
+//can set to only evaluate specific datatype via preprocessor define
+#if defined(EVAL_FLOAT_DATATYPE_ONLY)
   constexpr std::array<size_t, 1> kDataTypesEvalSizes{sizeof(float)};
-#else
+#elif defined(EVAL_DOUBLE_DATATYPE_ONLY)
+  constexpr std::array<size_t, 1> kDataTypesEvalSizes{sizeof(double)};
+#elif defined(EVAL_HALF_DATATYPE_ONLY)
   constexpr std::array<size_t, 1> kDataTypesEvalSizes{sizeof(halftype)};
+#else
+  constexpr std::array<size_t, 3> kDataTypesEvalSizes{sizeof(float), sizeof(double), sizeof(halftype)};
 #endif //EVAL_FLOAT_DATATYPE_ONLY
 
 //set templated iterations setting to use in evaluation
