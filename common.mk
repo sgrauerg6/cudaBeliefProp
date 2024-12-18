@@ -12,9 +12,12 @@ LIMITED_TEST_PARAMS_SETTING :=
 FEWER_RUNS_PER_CONFIG_SETTING :=
 #-DFEWER_RUNS_PER_CONFIG
 
-# set to use only run evaluation using float datatype
-FLOAT_DATATYPE_ONLY_SETTING :=
+# set to use only run evaluation using specific datatype
+# only can use one of these defines at a time
+SINGLE_DATATYPE_ONLY_SETTING :=
 #-DEVAL_FLOAT_DATATYPE_ONLY
+#-DEVAL_DOUBLE_DATATYPE_ONLY
+#-DEVAL_HALF_DATATYPE_ONLY
 
 # set to only run evaluation using runs where the loop iteration counts are not templated
 USE_NOT_TEMPLATED_LOOP_ITER_COUNTS_ONLY_SETTING :=
@@ -25,7 +28,7 @@ USE_NOT_TEMPLATED_LOOP_ITER_COUNTS_ONLY_SETTING :=
 COMMON_IMP_DEFINES := ${USE_ONLY_SMALLER_DATA_SETTING} \
                       ${LIMITED_TEST_PARAMS_SETTING} \
                       ${FEWER_RUNS_PER_CONFIG_SETTING} \
-					  ${FLOAT_DATATYPE_ONLY_SETTING} \
+					  ${SINGLE_DATATYPE_ONLY_SETTING} \
                       ${USE_NOT_TEMPLATED_LOOP_ITER_COUNTS_ONLY_SETTING}
 
 # define source code directory to use in Makefile
