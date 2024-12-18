@@ -269,6 +269,9 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   if (!run_opt_imp_only) {
     std::cout << " and " << run_bp_stereo_single_thread_->BpRunDescription();
   }
+  std::cout << "Data size: " << sizeof(T) << std::endl;
+  std::cout << "run_imp_templated_loop_iters: " << run_imp_templated_loop_iters << std::endl;
+  std::cout << "Acceleration: " << run_environment::AccelerationString<OPT_IMP_ACCEL>() << std::endl;
   std::cout << std::endl;
       
   //run optimized implementation and retrieve structure with runtime and output disparity map
