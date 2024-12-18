@@ -71,6 +71,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
   const ParallelParams& opt_cpu_params)
 {
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+std::cout << "RUN HALF TYPE SIMD START" << std::endl;
   constexpr unsigned int simd_data_size{32};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<halftype, __m512h, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
@@ -80,6 +81,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
     disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+std::cout << "RUN HALF TYPE SIMD END" << std::endl;
 #else
   constexpr unsigned int simd_data_size{16};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<halftype, __m256i, DISP_VALS>(
