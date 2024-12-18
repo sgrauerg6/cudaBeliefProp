@@ -1019,7 +1019,10 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
                 (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
   {
     //only use AVX-256 if width of processing checkerboard is over 10
-    if (current_bp_level.width_checkerboard_level_ > 10)
+    //if using AVX-256 w/ fp16 processing width needs to be greater than 20
+    if ((((sizeof(T) > 2) || (ACCELERATION != run_environment::AccSetting::kAVX256_F16)) &&
+            (current_bp_level.width_checkerboard_level_ > 10)) ||
+        (current_bp_level.width_checkerboard_level_ > 20))
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256<DISP_VALS>(checkerboard_to_update,
         current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -1045,8 +1048,11 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
   else if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX512) ||
                      (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
   {
-    //only use AVX-512 if width of processing checkerboard is over 20
-    if (current_bp_level.width_checkerboard_level_ > 20)
+    //only use AVX-512 if width of processing checkerboard is over 20 for float/double and 35 for half
+    //if using kAVX512_F16
+    if ((((sizeof(T) > 2) || (ACCELERATION != run_environment::AccSetting::kAVX512_F16)) &&
+            (current_bp_level.width_checkerboard_level_ > 20)) ||
+        (current_bp_level.width_checkerboard_level_ > 35))
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512<DISP_VALS>(checkerboard_to_update,
         current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
