@@ -42,7 +42,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 using halftype = float16_t;
 #else
 #include "RunImpCPU/RunCPUSettings.h"
-#if ((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
+#if defined(FLOAT16_VECTORIZATION)
 using halftype = _Float16;
 #else
 using halftype = short;

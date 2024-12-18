@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define KERNELBPSTEREOCPU_TEMPLATESPFUNCTS_H_
 
 //conversion to 32-bit float should not be necessary if _Float16 is supported
-#if (!((CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE)))
+#if (!(defined(FLOAT16_VECTORIZATION)))
 
 //this is only processed when on x86
 #ifdef _WIN32

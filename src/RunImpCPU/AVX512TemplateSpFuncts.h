@@ -63,7 +63,7 @@ template<> inline __m256i simd_processing::LoadPackedDataAligned<halftype, __m25
     numDispVals)]));
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::LoadPackedDataAligned<halftype, __m512h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -75,7 +75,7 @@ template<> inline __m512h simd_processing::LoadPackedDataAligned<halftype, __m51
     numDispVals)]));
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::LoadPackedDataUnaligned<float, __m512>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -104,7 +104,7 @@ template<> inline __m512d simd_processing::LoadPackedDataUnaligned<double, __m51
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::LoadPackedDataUnaligned<halftype, __m512h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -115,7 +115,7 @@ template<> inline __m512h simd_processing::LoadPackedDataUnaligned<halftype, __m
     current_bp_level.height_level_, current_disparity, numDispVals)]);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::createSIMDVectorSameData<__m512>(float data) {
   return _mm512_set1_ps(data);
@@ -129,13 +129,13 @@ template<> inline __m512d simd_processing::createSIMDVectorSameData<__m512d>(flo
   return _mm512_set1_pd((double)data);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::createSIMDVectorSameData<__m512h>(float data) {
   return _mm512_set1_ph((_Float16)data);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::AddVals<__m512, __m512, __m512>(const __m512& val1, const __m512& val2) {
   return _mm512_add_ps(val1, val2);
@@ -145,13 +145,13 @@ template<> inline __m512d simd_processing::AddVals<__m512d, __m512d, __m512d>(co
   return _mm512_add_pd(val1, val2);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::AddVals<__m512h, __m512h, __m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_add_ph(val1, val2);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::AddVals<__m512, __m256i, __m512>(const __m512& val1, const __m256i& val2) {
   return _mm512_add_ps(val1, _mm512_cvtph_ps(val2));
@@ -173,13 +173,13 @@ template<> inline __m512d simd_processing::SubtractVals<__m512d, __m512d, __m512
   return _mm512_sub_pd(val1, val2);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::SubtractVals<__m512h, __m512h, __m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_sub_ph(val1, val2);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::divideVals<__m512, __m512, __m512>(const __m512& val1, const __m512& val2) {
   return _mm512_div_ps(val1, val2);
@@ -189,13 +189,13 @@ template<> inline __m512d simd_processing::divideVals<__m512d, __m512d, __m512d>
   return _mm512_div_pd(val1, val2);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::divideVals<__m512h, __m512h, __m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_div_ph(val1, val2);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::ConvertValToDatatype<__m512, float>(float val) {
   return _mm512_set1_ps(val);
@@ -205,13 +205,13 @@ template<> inline __m512d simd_processing::ConvertValToDatatype<__m512d, double>
   return _mm512_set1_pd(val);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::ConvertValToDatatype<__m512h, halftype>(halftype val) {
   return _mm512_set1_ph((_Float16)val);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline __m512 simd_processing::GetMinByElement<__m512>(const __m512& val1, const __m512& val2) {
   return _mm512_min_ps(val1, val2);
@@ -221,13 +221,13 @@ template<> inline __m512d simd_processing::GetMinByElement<__m512d>(const __m512
   return _mm512_min_pd(val1, val2);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline __m512h simd_processing::GetMinByElement<__m512h>(const __m512h& val1, const __m512h& val2) {
   return _mm512_min_ph(val1, val2);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline void simd_processing::StorePackedDataAligned<float, __m512>(
   unsigned int indexDataStore, float* locationDataStore, const __m512& dataToStore)
@@ -247,7 +247,7 @@ template<> inline void simd_processing::StorePackedDataAligned<double, __m512d>(
   _mm512_store_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline void simd_processing::StorePackedDataAligned<halftype, __m512h>(
   unsigned int indexDataStore, halftype* locationDataStore, const __m512h& dataToStore)
@@ -255,7 +255,7 @@ template<> inline void simd_processing::StorePackedDataAligned<halftype, __m512h
   _mm512_store_ph(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 template<> inline void simd_processing::StorePackedDataUnaligned<float, __m512>(
   unsigned int indexDataStore, float* locationDataStore, const __m512& dataToStore)
@@ -275,7 +275,7 @@ template<> inline void simd_processing::StorePackedDataUnaligned<double, __m512d
   _mm512_storeu_pd(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#if (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
+#if defined(FLOAT16_VECTORIZATION)
 
 template<> inline void simd_processing::StorePackedDataUnaligned<halftype, __m512h>(
   unsigned int indexDataStore, halftype* locationDataStore, const __m512h& dataToStore)
@@ -283,6 +283,6 @@ template<> inline void simd_processing::StorePackedDataUnaligned<halftype, __m51
   _mm512_storeu_ph(&locationDataStore[indexDataStore], dataToStore);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 #endif /* AVX512TEMPLATESPFUNCTS_H_ */

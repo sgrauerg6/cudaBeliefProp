@@ -16,9 +16,14 @@ OPENMP_LIB := -fopenmp
 # switch to -DAVX_512_F16_VECTORIZATION if half-precision vectorization supported on target CPU
 CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION
 
+# setting to enable float16 vectorization
+# needs to be supported on architecture to work (such as support for AVX512_FP16)
+FLOAT16_VECTORIZATION_DEFINE = 
+#-DFLOAT16_VECTORIZATION
+
 # set compile flags and debug setting
 DBG_SETTING    =
-COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
+COMPILE_FLAGS = -DUNIX -DOPTIMIZED_CPU_RUN ${CPU_VECTORIZATION_DEFINE} ${FLOAT16_VECTORIZATION_DEFINE} ${COMMON_IMP_DEFINES} \
 				${DBG_SETTING} $(OPENMP_LIB) -O3 -std=c++20 -Wall -march=native
 
 # define directory for compiled objects and object files to generate during compilation
