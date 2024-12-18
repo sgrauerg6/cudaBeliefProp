@@ -103,6 +103,13 @@ concept RunDataVect_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> 
 template <typename T>
 concept RunDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256>;
 
+#elif defined(AVX_256_F16_VECTORIZATION)
+
+template <typename T>
+concept RunDataVect_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m128i> || std::is_same_v<T, __m256h>;
+
+template <typename T>
+concept RunDataVectProcess_t = std::is_same_v<T, __m256d> || std::is_same_v<T, __m256> || std::is_same_v<T, __m256h>;
 
 #elif defined(AVX_512_F16_VECTORIZATION)
 
