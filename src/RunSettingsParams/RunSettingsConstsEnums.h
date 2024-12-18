@@ -77,7 +77,7 @@ constexpr std::string_view AccelerationString() {
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256_F16) { return "AVX256 w/ float16"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "AVX512"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512_F16) { return "AVX512 w/ float16"; }
-  else { return std::string(std::to_string(static_cast<unsigned int>(ACCELERATION_SETTING)) + std::string("DEFAULT1")); }
+  else { return "DEFAULT"; }
 }
 
 /**
@@ -92,7 +92,7 @@ inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   else if (acceleration_setting == AccSetting::kAVX256_F16) { return AccelerationString<AccSetting::kAVX256_F16>(); }
   else if (acceleration_setting == AccSetting::kAVX512) { return AccelerationString<AccSetting::kAVX512>(); }
   else if (acceleration_setting == AccSetting::kAVX512_F16) { return AccelerationString<AccSetting::kAVX512_F16>(); }
-  else { return std::string(std::to_string(static_cast<unsigned int>(acceleration_setting)) + std::string("DEFAULT2")); }
+  else { return "DEFAULT"; }
 }
 
 /** @brief Mapping from data size to data type string */

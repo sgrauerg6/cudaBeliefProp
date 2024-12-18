@@ -135,6 +135,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
   const beliefprop::BpSettings& alg_settings,
   const beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>& run_bp_on_device) const
 {
+  std::cout << "2" << std::endl;
   //retrieve the images as well as the width and height
   const std::array<BpImage<unsigned int>, 2> input_images{
     BpImage<unsigned int>(ref_test_image_path[0]),
@@ -150,6 +151,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
 
   //initialize output disparity map
   DisparityMap<float> output_disparity_map(width_height_images);
+  std::cout << "3" << std::endl;
 
   //allocate data for bp processing on target device ahead of runs if option selected
   T* bp_data{nullptr};
@@ -167,6 +169,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     if (run_bp_on_device.run_bp_stereo->ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) { return {}; }
   }
 
+  std::cout << "4" << std::endl;
   //run bp processing for specified number of runs
   const unsigned int num_evaluation_runs{beliefprop::NumBpStereoRuns(alg_settings.num_disp_vals)};
   for (unsigned int num_run = 0; 
@@ -251,6 +254,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     run_bp_on_device.mem_management_bp_run->FreeAlignedMemoryOnDevice(bp_data);
     run_bp_on_device.mem_management_bp_run->FreeAlignedMemoryOnDevice(bp_proc_store);
   }
+  std::cout << "5" << std::endl;
 
   //construct RunData object with bp input and timing info
   RunData run_data;
@@ -258,6 +262,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
   run_data.AddDataWHeader(std::string(beliefprop::kImageHeightHeader), width_height_images[1]);
   run_data.AddDataWHeader(std::string(beliefprop::kNumEvalRuns), num_evaluation_runs);
   run_data.AppendData(detailed_bp_timings.AsRunData());
+  std::cout << "6" << std::endl;
 
   //construct and return beliefprop::BpRunOutput object inside of std::optional object
   return {beliefprop::BpRunOutput{

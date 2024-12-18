@@ -278,12 +278,14 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   //run optimized implementation and retrieve structure with runtime and output disparity map
   std::map<run_environment::AccSetting, std::optional<beliefprop::BpRunOutput>> run_output;
   if (run_imp_templated_loop_iters) {
+    std::cout << "1a" << std::endl;
     run_output[OPT_IMP_ACCEL] = run_opt_bp_num_iters_templated_->operator()(
       {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
       alg_settings_,
       *parallel_params);
   }
   else {
+    std::cout << "1b" << std::endl;
     run_output[OPT_IMP_ACCEL] = run_opt_bp_num_iters_no_template_->operator()(
       {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
       alg_settings_,
