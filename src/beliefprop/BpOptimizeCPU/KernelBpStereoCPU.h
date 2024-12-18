@@ -1019,7 +1019,7 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
                 (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
   {
     //only use AVX-256 if width of processing checkerboard is over 10
-    //if using AVX-256 w/ fp16 processing width needs to be greater than 20
+    //if using AVX-256 w/ fp16 processing width needs to be greater than 20 for half type
     if ((((sizeof(T) > 2) || (ACCELERATION != run_environment::AccSetting::kAVX256_F16)) &&
             (current_bp_level.width_checkerboard_level_ > 10)) ||
         (current_bp_level.width_checkerboard_level_ > 20))
@@ -1048,8 +1048,8 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
   else if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX512) ||
                      (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
   {
-    //only use AVX-512 if width of processing checkerboard is over 20 for float/double and 35 for half
-    //if using kAVX512_F16
+    //only use AVX-512 if width of processing checkerboard is over 20
+    //if using AVX-512 w/ fp16 processing width needs to be greater than 35 for half type
     if ((((sizeof(T) > 2) || (ACCELERATION != run_environment::AccSetting::kAVX512_F16)) &&
             (current_bp_level.width_checkerboard_level_ > 20)) ||
         (current_bp_level.width_checkerboard_level_ > 35))
