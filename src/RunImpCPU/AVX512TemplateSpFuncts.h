@@ -69,7 +69,7 @@ template<> inline __m512h simd_processing::LoadPackedDataAligned<halftype, __m51
   unsigned int x, unsigned int y, unsigned int current_disparity,
   const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
 {
-  return _mm512_load_ph((__m512h*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
+  return _mm512_loadu_ph((__m512h*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
     current_bp_level.height_level_, current_disparity,
     numDispVals)]));
@@ -252,7 +252,7 @@ template<> inline void simd_processing::StorePackedDataAligned<double, __m512d>(
 template<> inline void simd_processing::StorePackedDataAligned<halftype, __m512h>(
   unsigned int indexDataStore, halftype* locationDataStore, const __m512h& dataToStore)
 {
-  _mm512_store_ph(&locationDataStore[indexDataStore], dataToStore);
+  _mm512_storeu_ph(&locationDataStore[indexDataStore], dataToStore);
 }
 
 #endif //AVX_512_F16_DEFINE
