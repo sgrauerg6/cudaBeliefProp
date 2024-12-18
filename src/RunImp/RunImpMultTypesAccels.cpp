@@ -38,6 +38,8 @@ void RunImpMultTypesAccels::operator()(
   //get fastest implementation available
   const auto fastest_acc =
     FastestAvailableAcc(run_benchmark_imps_by_acc_setting);
+  
+  std::cout << "FASTEST_ACC: " << run_environment::AccelerationString(fastest_acc) << std::endl;
 
   //get results using each datatype and possible acceleration
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_imp_results;
@@ -45,6 +47,7 @@ void RunImpMultTypesAccels::operator()(
     run_imp_results[data_size] = MultRunDataWSpeedupByAcc();
     //run implementation using each acceleration setting
     for (auto& run_imp : run_benchmark_imps_by_acc_setting) {
+      std::cout << "acc run: " << run_environment::AccelerationString(run_imp.first) << std::endl;
       run_imp_results[data_size][run_imp.first] = run_imp.second->operator()(
         run_imp_settings, data_size, evalResultsPtr);
     }
