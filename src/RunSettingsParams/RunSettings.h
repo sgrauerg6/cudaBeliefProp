@@ -44,15 +44,7 @@ inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
   return ((accel_setting == AccSetting::kAVX512) ||
           (accel_setting == AccSetting::kAVX512_F16)) ?
           64 :
-          16;
-}
-
-inline unsigned int GetNumDataAlignWidth(AccSetting accel_setting) {
-  //align width with 16 data values in AVX512
-  return ((accel_setting == AccSetting::kAVX512) ||
-          (accel_setting == AccSetting::kAVX512_F16)) ?
-          16 :
-          8;
+          32;
 }
 
 /**
@@ -67,7 +59,6 @@ inline RunData RunSettings()  {
   RunData curr_run_data;
   curr_run_data.AddDataWHeader(std::string(kNumCPUThreadsHeader), std::thread::hardware_concurrency());
   curr_run_data.AddDataWHeader(std::string(kBytesAlignMemHeader), GetBytesAlignMemory(ACCELERATION_SETTING));
-  curr_run_data.AddDataWHeader(std::string(kNumDataAlignWidthHeader), GetNumDataAlignWidth(ACCELERATION_SETTING));
   curr_run_data.AppendData(CPUThreadsPinnedToSocket().SettingsAsRunData());
   return curr_run_data;
 }

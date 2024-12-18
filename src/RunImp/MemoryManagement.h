@@ -58,11 +58,11 @@ public:
   {
 #ifdef _WIN32
     T* memoryData = static_cast<T*>(_aligned_malloc(
-      numData * sizeof(T), run_environment::GetNumDataAlignWidth(acc_setting) * sizeof(T)));
+      numData * sizeof(T), run_environment::GetBytesAlignMemory(acc_setting)));
     return memoryData;
 #else
     T* memoryData = static_cast<T*>(std::aligned_alloc(
-      run_environment::GetNumDataAlignWidth(acc_setting) * sizeof(T), numData * sizeof(T)));
+      run_environment::GetBytesAlignMemory(acc_setting), numData * sizeof(T)));
     return memoryData;
 #endif
   }

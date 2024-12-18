@@ -141,7 +141,6 @@ constexpr std::string_view kOmpPlacesHeader{"OMP_PLACES"};
 constexpr std::string_view kOmpProcBindHeader{"OMP_PROC_BIND"};
 constexpr std::string_view kNumCPUThreadsHeader{"Total number of CPU threads"};
 constexpr std::string_view kBytesAlignMemHeader{"BYTES_ALIGN_MEMORY"};
-constexpr std::string_view kNumDataAlignWidthHeader{"NUM_DATA_ALIGN_WIDTH"};
 
 };
 

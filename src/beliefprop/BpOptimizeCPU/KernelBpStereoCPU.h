@@ -592,8 +592,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
 
   //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool data_aligned = beliefprop::MemoryAlignedAtDataStart(
-    0, 1, current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_);
+  const bool data_aligned = beliefprop::MemoryAlignedAtDataStart<T>(
+    0, 1, current_bp_level.bytes_align_memory_, current_bp_level.padded_width_checkerboard_level_);
 
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
@@ -731,9 +731,9 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         //check if the memory is aligned for AVX instructions at x_val_process location
         //for not set data to unaligned if using half type since got error with aligned
         //using using half-type
-        const bool data_aligned_x_val = ((sizeof(T) > 2) && (beliefprop::MemoryAlignedAtDataStart(
-          x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
-          current_bp_level.div_padded_checkerboard_w_align_)));
+        const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart<T>(
+          x_val_process, simd_data_size, current_bp_level.bytes_align_memory_,
+          current_bp_level.padded_width_checkerboard_level_);
         
         //initialize arrays for data and message values
         U data_message[DISP_VALS], prev_u_message[DISP_VALS], prev_d_message[DISP_VALS],
@@ -871,10 +871,10 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         x_val_process = std::max(start_x, x_val_process);
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = ((sizeof(T) > 2) && 
-          (beliefprop::MemoryAlignedAtDataStart(
-             x_val_process, simd_data_size, current_bp_level.num_data_align_width_,
-             current_bp_level.div_padded_checkerboard_w_align_)));
+        const bool data_aligned_x_val =
+          beliefprop::MemoryAlignedAtDataStart<T>(
+             x_val_process, simd_data_size, current_bp_level.bytes_align_memory_,
+             current_bp_level.padded_width_checkerboard_level_);
 
         //initialize arrays for data and message values
         U* data_message = new U[bp_settings_disp_vals];
@@ -1231,19 +1231,19 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   //initially get output for each checkerboard
   //set width of disparity checkerboard to be a multiple of simd_data_size so that SIMD vectors can be aligned
   unsigned int width_disp_checkerboard =
-    ((current_bp_level.padded_width_checkerboard_level_ % current_bp_level.num_data_align_width_) == 0) ?
+    ((current_bp_level.padded_width_checkerboard_level_ % (current_bp_level.bytes_align_memory_ / sizeof(T)) == 0) ?
       current_bp_level.padded_width_checkerboard_level_  :
-      (current_bp_level.padded_width_checkerboard_level_ + (current_bp_level.num_data_align_width_ - 
-        (current_bp_level.padded_width_checkerboard_level_ % current_bp_level.num_data_align_width_)));
+      (current_bp_level.padded_width_checkerboard_level_ + ((current_bp_level.bytes_align_memory_ / sizeof(T)) - 
+        (current_bp_level.padded_width_checkerboard_level_ % (current_bp_level.bytes_align_memory_ / sizeof(T))))));
   const unsigned int num_data_disp_checkerboard = width_disp_checkerboard * current_bp_level.height_level_;
 #ifdef _WIN32
   V* disparity_checkerboard_0 = 
     static_cast<V*>(
-      _aligned_malloc(2 * num_data_disp_checkerboard * sizeof(V), current_bp_level.num_data_align_width_ * sizeof(V)));
+      _aligned_malloc(2 * num_data_disp_checkerboard * sizeof(V), current_bp_level.bytes_align_memory_));
 #else
   V* disparity_checkerboard_0 =
     static_cast<V*>(std::aligned_alloc(
-      current_bp_level.num_data_align_width_ * sizeof(V), 2 * num_data_disp_checkerboard * sizeof(V)));
+      current_bp_level.bytes_align_memory_, 2 * num_data_disp_checkerboard * sizeof(V)));
 #endif
 
   for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
@@ -1287,8 +1287,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         const unsigned int index_output = (y_val * width_disp_checkerboard) + x_val_process;
 
         //check if the memory is aligned for AVX instructions at x_val_process location
-        const bool data_aligned_x_val = ((sizeof(T) > 2) && (beliefprop::MemoryAlignedAtDataStart(x_val_process, simd_data_size,
-          current_bp_level.num_data_align_width_, current_bp_level.div_padded_checkerboard_w_align_)));
+        const bool data_aligned_x_val = beliefprop::MemoryAlignedAtDataStart<T>(x_val_process, simd_data_size,
+          current_bp_level.bytes_align_memory_, current_bp_level.padded_width_checkerboard_level_);
 
         //declare SIMD vectors for data and message values at each disparity
         //U data_message, prev_u_message, prev_d_message, prev_l_message, prev_r_message;

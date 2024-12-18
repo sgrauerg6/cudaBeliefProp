@@ -62,38 +62,38 @@ public:
 private:
   run_eval::Status InitializeDataCosts(
     const beliefprop::BpSettings& alg_settings,
-    const BpLevel& current_bp_level,
+    const BpLevel<T>& current_bp_level,
     const std::array<float*, 2>& images_target_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const override;
 
   run_eval::Status InitializeDataCurrentLevel(
-    const BpLevel& current_bp_level,
-    const BpLevel& prev_bp_level,
+    const BpLevel<T>& current_bp_level,
+    const BpLevel<T>& prev_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
     unsigned int bp_settings_num_disp_vals) const override;
 
   run_eval::Status InitializeMessageValsToDefault(
-    const BpLevel& current_bp_level,
+    const BpLevel<T>& current_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const override;
 
   run_eval::Status RunBPAtCurrentLevel(
     const beliefprop::BpSettings& alg_settings,
-    const BpLevel& current_bp_level,
+    const BpLevel<T>& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     T* allocated_memory) const override;
 
   run_eval::Status CopyMessageValuesToNextLevelDown(
-    const BpLevel& current_bp_level,
-    const BpLevel& next_bp_level,
+    const BpLevel<T>& current_bp_level,
+    const BpLevel<T>& next_bp_level,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
     const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
     unsigned int bp_settings_num_disp_vals) const override;
 
   float* RetrieveOutputDisparity(
-    const BpLevel& current_bp_level,
+    const BpLevel<T>& current_bp_level,
     const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const override;
@@ -105,7 +105,7 @@ private:
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
   const beliefprop::BpSettings& alg_settings,
-  const BpLevel& current_bp_level,
+  const BpLevel<T>& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   T* allocated_memory) const
@@ -141,8 +141,8 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RunBP
 //need two different "sets" of message values to avoid read-write conflicts
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToNextLevelDown(
-  const BpLevel& current_bp_level,
-  const BpLevel& next_bp_level,
+  const BpLevel<T>& current_bp_level,
+  const BpLevel<T>& next_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_from,
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
   unsigned int bp_settings_num_disp_vals) const
@@ -179,7 +179,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::CopyM
 //initialize the data cost at each pixel with no estimated Stereo values...only the data and discontinuity costs are used
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
-  const beliefprop::BpSettings& alg_settings, const BpLevel& current_bp_level,
+  const beliefprop::BpSettings& alg_settings, const BpLevel<T>& current_bp_level,
   const std::array<float*, 2>& images_target_device, const beliefprop::DataCostsCheckerboards<T*>& data_costs_device) const
 {
   //initialize the data the the "bottom" of the image pyramid
@@ -195,7 +195,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 //initialize the message values with no previous message values...all message values are set to 0
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::InitializeMessageValsToDefault(
-  const BpLevel& current_bp_level,
+  const BpLevel<T>& current_bp_level,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const
 {
@@ -219,8 +219,8 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::InitializeDataCurrentLevel(
-  const BpLevel& current_bp_level,
-  const BpLevel& prev_bp_level,
+  const BpLevel<T>& current_bp_level,
+  const BpLevel<T>& prev_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
   unsigned int bp_settings_num_disp_vals) const
@@ -247,7 +247,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
 
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline float* ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
-  const BpLevel& current_bp_level,
+  const BpLevel<T>& current_bp_level,
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device,
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const
