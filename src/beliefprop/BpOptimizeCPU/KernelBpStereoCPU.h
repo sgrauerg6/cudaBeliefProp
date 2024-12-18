@@ -745,13 +745,14 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         std::cout << "D1" << std::endl;
           for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
             if (checkerboard_to_update == beliefprop::CheckerboardPart::kCheckerboardPart0) {
-              data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
+        std::cout << "D1a" << std::endl;
+              data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
                 DISP_VALS, data_cost_checkerboard_0);
-              prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
+              prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
                 DISP_VALS, message_u_checkerboard_1);
-              prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
+              prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
                 DISP_VALS, message_d_checkerboard_1);
               prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
@@ -763,13 +764,14 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
             }
             else //checkerboard_part_update == beliefprop::CheckerboardPart::kCheckerboardPart1
             {
-              data_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
+        std::cout << "D1b" << std::endl;
+              data_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val, current_disparity, current_bp_level,
                 DISP_VALS, data_cost_checkerboard_1);
-              prev_u_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
+              prev_u_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val + 1, current_disparity, current_bp_level,
                 DISP_VALS, message_u_checkerboard_0);
-              prev_d_message[current_disparity] = simd_processing::LoadPackedDataAligned<T, U>(
+              prev_d_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
                 x_val_process, y_val - 1, current_disparity, current_bp_level,
                 DISP_VALS, message_d_checkerboard_0);
               prev_l_message[current_disparity] = simd_processing::LoadPackedDataUnaligned<T, U>(
