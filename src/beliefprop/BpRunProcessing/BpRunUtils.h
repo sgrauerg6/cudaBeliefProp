@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include <limits>
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
+#include "RunEval/RunTypeConstraints.h"
 #include "RunEval/RunData.h"
 
 /**
@@ -45,6 +46,10 @@ namespace beliefprop {
 template <typename T>
 const T kInfBp{std::numeric_limits<T>::max()};
 
+/** @brief "infinity" value as used in kernel currently hard-coded to maximum float16 value */
+constexpr float kInfBpKernel{65504.0f};
+
+#if defined(OPTIMIZED_CPU_RUN)
 #if defined(FLOAT16_VECTORIZATION)
 
 //specialization of "infinity" value for half type
@@ -53,6 +58,7 @@ template<> inline
 const _Float16 kInfBp<_Float16>(65504);
 
 #endif //FLOAT16_VECTORIZATION
+#endif //OPTIMIZED_CPU_RUN
 
 //define specialization for "infinity" in half precision if using CUDA
 #if defined(OPTIMIZED_CUDA_RUN)
@@ -142,7 +148,7 @@ inline RunData RunSettings()  {
  * @return true 
  * @return false 
  */
-template <typename T>
+template <RunData_t T>
 inline bool MemoryAlignedAtDataStart(
   unsigned int x_val_data_start,
   unsigned int simd_data_size,

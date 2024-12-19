@@ -127,7 +127,7 @@ private:
   beliefprop::BpLevelProperties level_properties_;
 };
 
-template <typename T>
+template <RunData_t T>
 BpLevel<T>::BpLevel(
   const std::array<unsigned int, 2>& width_height,
   std::size_t offset_into_arrays,
@@ -147,7 +147,7 @@ BpLevel<T>::BpLevel(
 }
 
 
-template <typename T>
+template <RunData_t T>
 BpLevel<T>::BpLevel(
   const std::array<unsigned int, 2>& width_height,
   std::size_t offset_into_arrays,
@@ -166,7 +166,7 @@ BpLevel<T>::BpLevel(
 }
 
 //get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
-template <typename T>
+template <RunData_t T>
 BpLevel<T> BpLevel<T>::NextBpLevel(unsigned int num_disparity_values) const
 {
   const std::size_t offset_next_level =
@@ -182,7 +182,7 @@ BpLevel<T> BpLevel<T>::NextBpLevel(unsigned int num_disparity_values) const
 
 //get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
 //with the specified number of possible disparity values
-template <typename T>
+template <RunData_t T>
 std::size_t BpLevel<T>::NumDataInBpArrays(
   unsigned int num_disparity_values) const
 {
@@ -191,7 +191,7 @@ std::size_t BpLevel<T>::NumDataInBpArrays(
     num_disparity_values);
 }
 
-template <typename T>
+template <RunData_t T>
 std::size_t BpLevel<T>::NumDataForAlignedMemoryAtLevel(
   const std::array<unsigned int, 2>& width_height_level,
   unsigned int num_possible_disparities) const
@@ -213,14 +213,14 @@ std::size_t BpLevel<T>::NumDataForAlignedMemoryAtLevel(
   }
 }
 
-template <typename T>
+template <RunData_t T>
 unsigned int BpLevel<T>::CheckerboardWidthTargetDevice(
   unsigned int width_level) const
 {
   return (unsigned int)std::ceil(((float)width_level) / 2.0f);
 }
 
-template <typename T>
+template <RunData_t T>
 unsigned int BpLevel<T>::PaddedCheckerboardWidth(
   unsigned int checkerboard_width) const
 {
@@ -233,7 +233,7 @@ unsigned int BpLevel<T>::PaddedCheckerboardWidth(
 }
 
 //static function
-template <typename T>
+template <RunData_t T>
 std::size_t BpLevel<T>::TotalDataForAlignedMemoryAllLevels(
   const std::array<unsigned int, 2>& width_height_bottom_level,
   unsigned int num_possible_disparities,
