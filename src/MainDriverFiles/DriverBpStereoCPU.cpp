@@ -143,36 +143,36 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
 #if (CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
   //run belief propagation with AVX512, AVX256, and no vectorization implementations,
   //with the AVX512 implementation given first as the expected fastest implementation
-  RunImpMultTypesAccels().operator()({
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX512)},
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+  RunImpMultTypesAccels().operator()(
+    {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX512)},
+     {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
+     {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
 #elif (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)
   //run belief propagation with AVX512 w/ f16 vectorization, AVX256, and no
   //vectorization implementations, with the AVX512 implementation given first
   //as the expected fastest implementation
-  RunImpMultTypesAccels().operator()({
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX512_F16)},
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256_F16)},
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+  RunImpMultTypesAccels().operator()(
+    {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX512_F16)},
+     {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256_F16)},
+     {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
 #elif (CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE)
   //run belief propagation with AVX256 and no vectorization implementations,
   //with the AVX256 implementation given first as the expected fastest implementation
-  RunImpMultTypesAccels().operator()({
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+  RunImpMultTypesAccels().operator()(
+    {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kAVX256)},
+     {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
 #elif (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
   //run belief propagation with NEON and no vectorization implementations,
   //with the NEON implementation given first as the expected fastest implementation
-  RunImpMultTypesAccels().operator()({
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNEON)},
-    {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
+  RunImpMultTypesAccels().operator()(
+    {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNEON)},
+     {std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kNone)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
 #endif //CPU_VECTORIZATION_DEFINE
