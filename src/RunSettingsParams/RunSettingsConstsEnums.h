@@ -77,6 +77,7 @@ constexpr std::string_view AccelerationString() {
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256_F16) { return "AVX256 w/ float16"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "AVX512"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512_F16) { return "AVX512 w/ float16"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kCUDA) { return "CUDA"; }
   else { return "DEFAULT"; }
 }
 
@@ -92,6 +93,7 @@ inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   else if (acceleration_setting == AccSetting::kAVX256_F16) { return AccelerationString<AccSetting::kAVX256_F16>(); }
   else if (acceleration_setting == AccSetting::kAVX512) { return AccelerationString<AccSetting::kAVX512>(); }
   else if (acceleration_setting == AccSetting::kAVX512_F16) { return AccelerationString<AccSetting::kAVX512_F16>(); }
+  else if (acceleration_setting == AccSetting::kCUDA) { return AccelerationString<AccSetting::kCUDA>(); }
   else { return "DEFAULT"; }
 }
 
