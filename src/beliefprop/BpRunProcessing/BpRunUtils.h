@@ -46,8 +46,9 @@ namespace beliefprop {
 template <typename T>
 const T kInfBp{std::numeric_limits<T>::max()};
 
-/** @brief "infinity" value as used in kernel currently hard-coded to maximum float16 value */
-constexpr float kInfBpKernel{65504.0f};
+/** @brief "infinity" value as used in kernel currently hard-coded to be below
+ * maximum short value of 32767 */
+constexpr float kInfBpKernel{32000.0f};
 
 #if defined(OPTIMIZED_CPU_RUN)
 #if defined(FLOAT16_VECTORIZATION)
