@@ -221,7 +221,7 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m512h>(__m512h& 
   best_disparities = _mm512_mask_blend_ph(maskNeedUpdate, best_disparities, current_disparity);
 }
 
-#endif //AVX_512_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 
 //template speciaization for message processing using 32-bit floating point while data stored as 16-bit
 //for case where 16-bit float vector arithmetic not supported

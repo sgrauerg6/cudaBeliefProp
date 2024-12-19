@@ -46,7 +46,7 @@ using halftype = float16_t;
 using halftype = _Float16;
 #else
 using halftype = short;
-#endif //AVX_512_F16_DEFINE || AVX_256_F16_DEFINE
+#endif //FLOAT16_VECTORIZATION
 #endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 
