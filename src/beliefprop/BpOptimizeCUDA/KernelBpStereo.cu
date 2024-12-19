@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //recommend using bfloat rather than enabling this setting if target GPU supports bflow
 //#define CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 
-#ifdef CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
+#if defined(CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF)
 #include "KernelBpStereoHalf.cu"
 #endif //CHECK_VAL_TO_NORMALIZE_VALID_CUDA_HALF
 

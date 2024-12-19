@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #if defined(OPTIMIZED_CUDA_RUN)
 
 //set data type used for half-precision with CUDA
-#ifdef USE_BFLOAT16_FOR_HALF_PRECISION
+#if defined(USE_BFLOAT16_FOR_HALF_PRECISION)
 #include <cuda_bf16.h>
 using halftype = __nv_bfloat16;
 #else

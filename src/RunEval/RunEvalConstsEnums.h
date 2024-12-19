@@ -57,7 +57,7 @@ enum class MiddleValData { kAverage, kMedian };
 #endif //EVAL_FLOAT_DATATYPE_ONLY
 
 //set templated iterations setting to use in evaluation
-#ifdef EVAL_NOT_TEMPLATED_ITERS_ONLY
+#if defined(EVAL_NOT_TEMPLATED_ITERS_ONLY)
   constexpr run_environment::TemplatedItersSetting kTemplatedItersEvalSettings =
     run_environment::TemplatedItersSetting::kRunOnlyNonTemplated;
 #else

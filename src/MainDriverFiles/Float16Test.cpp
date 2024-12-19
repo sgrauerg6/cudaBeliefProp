@@ -36,8 +36,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 int main(int argc, char** argv)
 {
-#define TEST_FLOAT61 
-#ifdef TEST_FLOAT61
+#define TEST_FLOAT16 
+#if defined(TEST_FLOAT16)
   _Float16 x1{1.0f};
   _Float16 x2{3.0f};
   _Float16 x3{5.0f};

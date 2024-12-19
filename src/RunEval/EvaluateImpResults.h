@@ -38,7 +38,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/InputSignature.h"
 #include "EvaluateImpAliases.h"
 
-#ifdef OPTIMIZED_CUDA_RUN
+#if defined(OPTIMIZED_CUDA_RUN)
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
 

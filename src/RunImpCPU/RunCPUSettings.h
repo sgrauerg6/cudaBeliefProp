@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <thread>
 
 //check if running on ARM architecture
-#ifdef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
 #include <arm_neon.h> //needed for float16_t type
 #endif
 
@@ -44,7 +44,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #define AVX_512_F16_DEFINE 3
 #define NEON_DEFINE 4
 #define NO_VECTORIZATION 5
-#ifdef COMPILING_FOR_ARM //NEON supported on ARM but AVX is not
+#if defined(COMPILING_FOR_ARM) //NEON supported on ARM but AVX is not
 #define CPU_VECTORIZATION_DEFINE NEON_DEFINE
 #else
 //by default CPU vectorization during compilation via Makefile
@@ -73,7 +73,7 @@ constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 /** @brief Constant corresponding to number of threads on CPU. */
 const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
 
-#ifdef LIMITED_TEST_PARAMS
+#if defined(LIMITED_TEST_PARAMS)
 
 /** @brief Parallel parameters options that are tested in order to find optimized
  *  configuration in run. */

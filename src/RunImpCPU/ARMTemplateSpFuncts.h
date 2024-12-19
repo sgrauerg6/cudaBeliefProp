@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "RunImp/UtilityFuncts.h"
 
-#ifdef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
 
 #include <arm_neon.h>
 

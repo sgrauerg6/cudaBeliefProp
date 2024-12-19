@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include "RunEval/RunTypeConstraints.h"
 
-#ifdef OPTIMIZED_CUDA_RUN
+#if defined(OPTIMIZED_CUDA_RUN)
 //added in front of function header to indicate that function is device function to be processed on GPU
 #define ARCHITECTURE_ADDITION __device__
 #else

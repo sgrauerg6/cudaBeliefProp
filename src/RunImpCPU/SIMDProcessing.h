@@ -198,7 +198,7 @@ namespace simd_processing
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting
-#ifdef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
 #include "ARMTemplateSpFuncts.h"
 
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)

@@ -43,12 +43,34 @@ namespace beliefprop {
 
 /** @brief "Infinity"" value for type to use if initializing to "high" value */
 template <typename T>
-constexpr T kInfBp{std::numeric_limits<T>::max()};
+const T kInfBp{std::numeric_limits<T>::max()};
+
+#if defined(FLOAT16_VECTORIZATION)
 
 //specialization of "infinity" value for half type
 //that corresponds to max value in float16
 template<> inline
-constexpr halftype kInfBp<halftype>(65504);
+const _Float16 kInfBp<_Float16>(65504);
+
+#endif //FLOAT16_VECTORIZATION
+
+//define specialization for "infinity" in half precision if using CUDA
+#if defined(OPTIMIZED_CUDA_RUN)
+
+//set data type used for half-precision with CUDA
+#if defined(USE_BFLOAT16_FOR_HALF_PRECISION)
+#include <cuda_bf16.h>
+//specialization for CUDA bfloat16
+template<> inline
+const __nv_bfloat16 kInfBp<__nv_bfloat16>{CUDART_MAX_NORMAL_BF16};
+#else
+#include <cuda_fp16.h>
+//specialization for CUDA bfloat16
+template<> inline
+const half kInfBp<half>{CUDART_MAX_NORMAL_FP16};
+#endif //USE_BFLOAT16_FOR_HALF_PRECISION
+
+#endif //OPTIMIZED_CUDA_RUN
 
 /**
  * @brief Get number of stereo runs when evaluating implementation
@@ -60,7 +82,7 @@ constexpr halftype kInfBp<halftype>(65504);
  * @return unsigned int 
  */
 inline unsigned int NumBpStereoRuns(unsigned int disparity_vals) {
-#ifdef FEWER_RUNS_PER_CONFIG
+#if defined(FEWER_RUNS_PER_CONFIG)
   //fewer runs if set to use limited parameters/fewer runs
   //for faster processing
   return 3;

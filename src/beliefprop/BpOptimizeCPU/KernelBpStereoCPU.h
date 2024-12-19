@@ -229,7 +229,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-#ifdef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
@@ -356,7 +356,7 @@ namespace beliefprop_cpu
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-#ifdef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
@@ -449,7 +449,7 @@ namespace beliefprop_cpu
 };
 
 //headers to include differ depending on architecture and CPU vectorization setting
-#ifdef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
 
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
 #include "KernelBpStereoCPU_NEON.h"
@@ -478,7 +478,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
   float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
 #else
@@ -510,7 +510,7 @@ void beliefprop_cpu::InitializeCurrentLevelData(
   T* data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.level_num_})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
@@ -561,7 +561,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
@@ -606,7 +606,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   const bool data_aligned = beliefprop::MemoryAlignedAtDataStart<T>(
     0, 1, current_bp_level.bytes_align_memory_, current_bp_level.padded_width_checkerboard_level_);
 
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
@@ -725,7 +725,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
   const U disc_k_bp_vect = simd_processing::createSIMDVectorSameData<U>(disc_k_bp);
 
   if constexpr (DISP_VALS > 0) {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
       {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
@@ -867,7 +867,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
     }
   }
   else {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.level_num_})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
@@ -1106,7 +1106,7 @@ void beliefprop_cpu::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checker
   unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{(int)opt_cpu_params.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.level_num_})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
@@ -1148,7 +1148,7 @@ void beliefprop_cpu::RetrieveOutputDisparity(
   const ParallelParams& opt_cpu_params)
 {
   if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
@@ -1267,7 +1267,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   for (const auto checkerboardGetDispMap : {beliefprop::CheckerboardPart::kCheckerboardPart0,
                                             beliefprop::CheckerboardPart::kCheckerboardPart1})
   {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
     int num_threads_kernel{
       (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
     #pragma omp parallel for num_threads(num_threads_kernel)
@@ -1542,7 +1542,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   //combine output disparity maps from each checkerboard
   //start with checkerboard 0 in first row since (0, 0) corresponds to (0, 0)
   //in checkerboard 0 and (1, 0) corresponds to (0, 0) in checkerboard 1
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)

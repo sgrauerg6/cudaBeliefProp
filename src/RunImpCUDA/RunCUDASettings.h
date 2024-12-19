@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunData.h"
 
 //set data type used for half-precision with CUDA
-#ifdef USE_BFLOAT16_FOR_HALF_PRECISION
+#if defined(USE_BFLOAT16_FOR_HALF_PRECISION)
 #include <cuda_bf16.h>
 using halftype = __nv_bfloat16;
 #else
@@ -74,7 +74,7 @@ inline RunData retrieveDeviceProperties(int num_device)
 
 /** @brief Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation
  *  Parallel parameter corresponds to thread block dimensions in CUDA implementation */
-#ifdef LIMITED_TEST_PARAMS
+#if defined(LIMITED_TEST_PARAMS)
 const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
   {16, 1}, {32, 4}, {64, 4}};
 #else

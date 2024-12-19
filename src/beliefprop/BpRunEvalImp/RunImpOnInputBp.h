@@ -47,7 +47,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 using filepathtype = std::filesystem::path;
 
 //check if optimized CPU run defined and make any necessary additions to support it
-#ifdef OPTIMIZED_CPU_RUN
+#if defined(OPTIMIZED_CPU_RUN)
 //needed to run the optimized implementation a stereo set using CPU
 #include "BpOptimizeCPU/RunBpOnStereoSetOptimizedCPU.h"
 //set RunBpOptimized alias to correspond to optimized CPU implementation
@@ -56,7 +56,7 @@ using RunBpOptimized = RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>;
 #endif //OPTIMIZED_CPU_RUN
 
 //check if CUDA run defined and make any necessary additions to support it
-#ifdef OPTIMIZED_CUDA_RUN
+#if defined(OPTIMIZED_CUDA_RUN)
 //needed to run the implementation a stereo set using CUDA
 #include "BpOptimizeCUDA/RunBpOnStereoSetCUDA.h"
 //set RunBpOptimized alias to correspond to CUDA implementation

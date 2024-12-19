@@ -67,7 +67,7 @@ void SmoothImageCPU::ConvertUnsignedIntImageToFloatCPU(
     unsigned int width_images, unsigned int height_images,
     const ParallelParams& opt_cpu_params) const
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)
@@ -94,7 +94,7 @@ void SmoothImageCPU::FilterImageAcrossCPU(
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel(
       {static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
@@ -123,7 +123,7 @@ void SmoothImageCPU::FilterImageVerticalCPU(
   const float* image_filter, unsigned int size_filter,
   const ParallelParams& opt_cpu_params) const
 {
-#ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
+#if defined(SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU)
   int num_threads_kernel{
     (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages), 0})[0]};
   #pragma omp parallel for num_threads(num_threads_kernel)

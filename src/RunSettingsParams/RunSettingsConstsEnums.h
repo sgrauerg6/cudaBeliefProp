@@ -31,13 +31,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string_view>
 #include <map>
 
-#ifdef OPTIMIZED_CUDA_RUN
+#if defined(OPTIMIZED_CUDA_RUN)
 #include "RunImpCUDA/RunCUDASettings.h"
 #endif //OPTIMIZED_CUDA_RUN
 
 //set alias for data type used for half-precision
-#ifdef OPTIMIZED_CPU_RUN
-#ifdef COMPILING_FOR_ARM
+#if defined(OPTIMIZED_CPU_RUN)
+#if defined(COMPILING_FOR_ARM)
 #include <arm_neon.h> //needed for float16_t type
 using halftype = float16_t;
 #else
