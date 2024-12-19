@@ -110,7 +110,7 @@ inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::msg(flo
   float val;
 
   // aggregate and find min
-  float minimum = beliefprop::kInfBp<float>;
+  float minimum = beliefprop::kHighValBp<float>;
   for (unsigned int value = 0; value < DISP_VALS; value++) {
     dst[value] = s1[value] + s2[value] + s3[value] + s4[value];
     if (dst[value] < minimum)
@@ -180,7 +180,7 @@ inline bp_single_thread_imp::image<uchar> * RunBpOnStereoSetSingleThreadCPU<T, D
     for (unsigned int x = 1; x < width - 1; x++) {
       // keep track of best value for current pixel
       unsigned int best = 0;
-      float best_val = beliefprop::kInfBp<float>;
+      float best_val = beliefprop::kHighValBp<float>;
       for (unsigned int value = 0; value < DISP_VALS; value++) {
         const float val =
         imRef(u, x, y+1)[value] +

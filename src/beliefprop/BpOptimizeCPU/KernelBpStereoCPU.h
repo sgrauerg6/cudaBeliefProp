@@ -1642,8 +1642,8 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_
   T* dst_message_array, const U& disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
-  //T minimum = beliefprop::kInfBp;
-  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kInfBp<V>);
+  //T minimum = beliefprop::kHighValBp;
+  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kHighValBp<V>);
   W dst[DISP_VALS];
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
@@ -1752,8 +1752,8 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_
   unsigned int bp_settings_disp_vals)
 {
   // aggregate and find min
-  //T minimum = beliefprop::kInfBp;
-  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kInfBp<V>);
+  //T minimum = beliefprop::kHighValBp;
+  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kHighValBp<V>);
   W* dst = new W[bp_settings_disp_vals];
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)

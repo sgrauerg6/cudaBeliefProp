@@ -92,10 +92,10 @@ struct BpSettings
   float lambda_bp{kDefaultLambdaBp};
   float data_k_bp{kDefaultDataKBp};
 
-  /** @brief Discontinuity cost cap set to infinity by default but is
+  /** @brief Discontinuity cost cap set to high value by default but is
    *  expected to be dependent on number of disparity values and set when
    *  number of disparity values is set */
-  float disc_k_bp{beliefprop::kInfBp<float>};
+  float disc_k_bp{beliefprop::kHighValBp<float>};
 
   /** @brief Number of disparity values must be set for each stereo set */
   unsigned int num_disp_vals{0};

@@ -42,26 +42,26 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 namespace beliefprop {
 
-/** @brief "Infinity"" value for type to use if initializing to "high" value */
+/** @brief High value for type to use if initializing to "high" value */
 template <typename T>
-const T kInfBp{std::numeric_limits<T>::max()};
+const T kHighValBp{std::numeric_limits<T>::max()};
 
-/** @brief "infinity" value as used in kernel currently hard-coded to be below
+/** @brief High value as used in kernel currently hard-coded to be below
  * maximum short value of 32767 */
-constexpr float kInfBpKernel{32000.0f};
+constexpr float kHighValBpKernel{32000.0f};
 
 #if defined(OPTIMIZED_CPU_RUN)
 #if defined(FLOAT16_VECTORIZATION)
 
-//specialization of "infinity" value for half type
+//specialization of high value value for half type
 //that corresponds to max value in float16
 template<> inline
-const _Float16 kInfBp<_Float16>(65504);
+const _Float16 kHighValBp<_Float16>(65504);
 
 #endif //FLOAT16_VECTORIZATION
 #endif //OPTIMIZED_CPU_RUN
 
-//define specialization for "infinity" in half precision if using CUDA
+//define specialization for high value in half precision if using CUDA
 #if defined(OPTIMIZED_CUDA_RUN)
 
 //set data type used for half-precision with CUDA
@@ -69,12 +69,12 @@ const _Float16 kInfBp<_Float16>(65504);
 #include <cuda_bf16.h>
 //specialization for CUDA bfloat16
 template<> inline
-const __nv_bfloat16 kInfBp<__nv_bfloat16>{CUDART_MAX_NORMAL_BF16};
+const __nv_bfloat16 kHighValBp<__nv_bfloat16>{CUDART_MAX_NORMAL_BF16};
 #else
 #include <cuda_fp16.h>
 //specialization for CUDA bfloat16
 template<> inline
-const half kInfBp<half>{CUDART_MAX_NORMAL_FP16};
+const half kHighValBp<half>{CUDART_MAX_NORMAL_FP16};
 #endif //USE_BFLOAT16_FOR_HALF_PRECISION
 
 #endif //OPTIMIZED_CUDA_RUN

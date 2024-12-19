@@ -138,7 +138,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
   T* dst_message_array, U disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
-  U minimum{(U)beliefprop::kInfBpKernel};
+  U minimum{(U)beliefprop::kHighValBpKernel};
   U dst[DISP_VALS];
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
@@ -196,7 +196,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
   T* dst_message_array, U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
 {
   // aggregate and find min
-  U minimum{(U)beliefprop::kInfBpKernel};
+  U minimum{(U)beliefprop::kHighValBpKernel};
   U* dst = new U[bp_settings_disp_vals];
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)
@@ -341,7 +341,7 @@ ARCHITECTURE_ADDITION inline void MsgStereo(unsigned int x_val, unsigned int y_v
   unsigned int offset_data)
 {
   // aggregate and find min
-  U minimum{(U)beliefprop::kInfBpKernel};
+  U minimum{(U)beliefprop::kHighValBpKernel};
   unsigned int proc_array_idx_disp_0 = RetrieveIndexInDataAndMessage(x_val, y_val,
     current_bp_level.padded_width_checkerboard_level_,
     current_bp_level.height_level_, 0,
@@ -1302,7 +1302,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
     {
       // keep track of "best" disparity for current pixel
       unsigned int bestDisparity{0u};
-      U best_val{(U)beliefprop::kInfBpKernel};
+      U best_val{(U)beliefprop::kHighValBpKernel};
       if constexpr (DISP_VALS > 0) {
         for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
           const U val =
@@ -1414,7 +1414,7 @@ ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
     {
       // keep track of "best" disparity for current pixel
       unsigned int bestDisparity{0u};
-      U best_val{(U)beliefprop::kInfBpKernel};
+      U best_val{(U)beliefprop::kHighValBpKernel};
       if constexpr (DISP_VALS > 0) {
         for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
           const U val = 
