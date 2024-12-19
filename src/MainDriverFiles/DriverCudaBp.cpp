@@ -88,8 +88,7 @@ int main(int argc, char** argv)
 
   //run and evaluate benchmark with multiple inputs and configurations using CUDA acceleration
   RunImpMultTypesAccels().operator()(
-    {{run_environment::AccSetting::kCUDA,
-      std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kCUDA)}},
+    {{std::make_shared<RunImpMultInputsBp>(run_environment::AccSetting::kCUDA)}},
     run_imp_settings,
     std::make_unique<EvaluateImpResultsBp>());
 

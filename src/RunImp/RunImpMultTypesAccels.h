@@ -48,26 +48,24 @@ public:
    * @brief Run and evaluate benchmark using multiple datatypes,
    * inputs, and implementations if available
    * 
-   * @param run_benchmark_imps_by_acc_setting 
+   * @param run_benchmark_imps_w_acc 
    * @param run_imp_settings 
    * @param evalResultsPtr 
    */
   void operator()(
-    const std::map<run_environment::AccSetting,
-    std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_by_acc_setting,
+    const std::vector<std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_w_acc,
     const run_environment::RunImpSettings& run_imp_settings,
     std::unique_ptr<EvaluateImpResults> evalResultsPtr) const;
 
 private:
   /**
-   * @brief Get fastest available implementation
+   * @brief Get fastest acceleration across input run implementations
    * 
-   * @param run_benchmark_imps_by_acc_setting 
+   * @param run_benchmark_imps_w_acc 
    * @return run_environment::AccSetting 
    */
   run_environment::AccSetting FastestAvailableAcc(
-    const std::map<run_environment::AccSetting,
-    std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_by_acc_setting) const;
+    const std::vector<std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_w_acc) const;
 };
 
 #endif /* RUN_IMP_MULT_TYPES_ACCELS_H_ */
