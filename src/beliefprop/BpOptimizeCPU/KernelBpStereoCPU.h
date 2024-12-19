@@ -51,7 +51,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 namespace beliefprop_cpu
 {
   //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
-  template<RunData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void InitializeBottomLevelData(const beliefprop::BpLevelProperties& current_bp_level,
     const float* image_1_pixels_device, const float* image_2_pixels_device,
     T* data_cost_stereo_checkerboard_0, T* data_cost_stereo_checkerboard_1,
@@ -59,7 +59,7 @@ namespace beliefprop_cpu
     const ParallelParams& opt_cpu_params);
 
   //initialize the "data cost" for each possible disparity at the current level using the data costs from the previous level
-  template<RunData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void InitializeCurrentLevelData(beliefprop::CheckerboardPart checkerboard_part,
     const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
     const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
@@ -67,7 +67,7 @@ namespace beliefprop_cpu
     const ParallelParams& opt_cpu_params);
 
   //initialize the message values at each pixel of the current level to the default value
-  template<RunData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void InitializeMessageValsToDefaultKernel(const beliefprop::BpLevelProperties& current_bp_level,
     T* message_u_checkerboard_0, T* message_d_checkerboard_0,
     T* message_l_checkerboard_0, T* message_r_checkerboard_0,
@@ -89,7 +89,7 @@ namespace beliefprop_cpu
     float disc_k_bp, unsigned int bp_settings_num_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-  template<RunData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
     beliefprop::CheckerboardPart checkerboard_part_update,
     const beliefprop::BpLevelProperties& current_bp_level,
@@ -103,7 +103,7 @@ namespace beliefprop_cpu
 
   //copy the computed BP message values at the current level to the corresponding locations at the "next" level down
   //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
-  template<RunData_t T, unsigned int DISP_VALS>
+  template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part,
     const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& next_bp_level,
     const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
@@ -140,7 +140,7 @@ namespace beliefprop_cpu
     unsigned int simd_data_size,
     const ParallelParams& opt_cpu_params);
   
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
     const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
@@ -151,7 +151,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
     const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
@@ -162,7 +162,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
     const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
@@ -174,7 +174,7 @@ namespace beliefprop_cpu
     const ParallelParams& opt_cpu_params);
 
 #if ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
     const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
@@ -185,7 +185,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
     const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
@@ -196,7 +196,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
     const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
@@ -208,7 +208,7 @@ namespace beliefprop_cpu
     const ParallelParams& opt_cpu_params);
 #endif //(CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE)
 
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
     const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
@@ -219,7 +219,7 @@ namespace beliefprop_cpu
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
     const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
@@ -231,7 +231,7 @@ namespace beliefprop_cpu
     const ParallelParams& opt_cpu_params);
 
 #ifdef COMPILING_FOR_ARM
-  template<unsigned int DISP_VALS>
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsNEON(
     const beliefprop::BpLevelProperties& current_bp_level,
     const float16_t* data_cost_checkerboard_0, const float16_t* data_cost_checkerboard_1,
@@ -452,15 +452,12 @@ namespace beliefprop_cpu
 
 //headers to include differ depending on architecture and CPU vectorization setting
 #ifdef COMPILING_FOR_ARM
-#include "KernelBpStereoCPU_ARMTemplateSpFuncts.h"
 
 #if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)
 #include "KernelBpStereoCPU_NEON.h"
 #endif //CPU_VECTORIZATION_DEFINE == NEON_DEFINE
 
 #else
-//needed so that template specializations are used when available
-#include "KernelBpStereoCPU_TemplateSpFuncts.h"
 
 #if ((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE))
 #include "KernelBpStereoCPU_AVX256TemplateSpFuncts.h"
@@ -475,7 +472,7 @@ namespace beliefprop_cpu
 
 //initialize the "data cost" for each possible disparity between the two full-sized input images ("bottom" of the image pyramid)
 //the image data is stored in the CUDA arrays image1PixelsTextureBPStereo and image2PixelsTextureBPStereo
-template<RunData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::InitializeBottomLevelData(
   const beliefprop::BpLevelProperties& current_bp_level,
   const float* image_1_pixels_device, const float* image_2_pixels_device,
@@ -506,7 +503,7 @@ void beliefprop_cpu::InitializeBottomLevelData(
 }
 
 //initialize the data costs at the "next" level up in the pyramid given that the data at the lower has been set
-template<RunData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::InitializeCurrentLevelData(
   beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level,
@@ -531,16 +528,32 @@ void beliefprop_cpu::InitializeCurrentLevelData(
     const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
     const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
 
-    beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
+    //if datatype is halftype (2 bytes) and acceleration type doesn't support float16
+    //vectorization, set to process data using float
+    if constexpr ((sizeof(T) == 2) && 
+                    (((ACCELERATION == run_environment::AccSetting::kAVX256) ||
+                      (ACCELERATION == run_environment::AccSetting::kAVX512)) ||
+                     (ACCELERATION == run_environment::AccSetting::kNEON)))
+    {
+      beliefprop::InitializeCurrentLevelDataPixel<T, float, DISP_VALS>(
         x_val, y_val, checkerboard_part,
         current_bp_level, prev_bp_level,
         data_cost_checkerboard_0, data_cost_checkerboard_1,
         data_cost_current_level, offset_num, bp_settings_disp_vals);
+    }
+    else
+    {
+      beliefprop::InitializeCurrentLevelDataPixel<T, T, DISP_VALS>(
+        x_val, y_val, checkerboard_part,
+        current_bp_level, prev_bp_level,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        data_cost_current_level, offset_num, bp_settings_disp_vals);
+    }
   }
 }
 
 //initialize the message values at each pixel of the current level to the default value
-template<RunData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
   const beliefprop::BpLevelProperties& current_bp_level,
   T* message_u_checkerboard_0, T* message_d_checkerboard_0,
@@ -576,7 +589,7 @@ void beliefprop_cpu::InitializeMessageValsToDefaultKernel(
   }
 }
 
-template<RunData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
   beliefprop::CheckerboardPart checkerboard_part_update,
   const beliefprop::BpLevelProperties& current_bp_level,
@@ -611,14 +624,34 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions(
     const unsigned int y_val = val / width_checkerboard_run_processing;
     const unsigned int x_val = val % width_checkerboard_run_processing;
 
-    beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
-      x_val, y_val, checkerboard_part_update, current_bp_level,
-      data_cost_checkerboard_0, data_cost_checkerboard_1,
-      message_u_checkerboard_0, message_d_checkerboard_0,
-      message_l_checkerboard_0, message_r_checkerboard_0,
-      message_u_checkerboard_1, message_d_checkerboard_1,
-      message_l_checkerboard_1, message_r_checkerboard_1,
-      disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
+    //if datatype is halftype (2 bytes) and acceleration type doesn't support float16
+    //vectorization, set to process data using float
+    if constexpr ((sizeof(T) == 2) && 
+                    (((ACCELERATION == run_environment::AccSetting::kAVX256) ||
+                      (ACCELERATION == run_environment::AccSetting::kAVX512)) ||
+                     (ACCELERATION == run_environment::AccSetting::kNEON)))
+    {
+      beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, float, DISP_VALS>(
+        x_val, y_val, checkerboard_part_update, current_bp_level,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
+        disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
+
+    }
+    else
+    {
+      beliefprop::RunBPIterationUsingCheckerboardUpdatesKernel<T, T, DISP_VALS>(
+        x_val, y_val, checkerboard_part_update, current_bp_level,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
+        disc_k_bp, 0, data_aligned, bp_settings_disp_vals);
+    }
   }
 }
 
@@ -983,39 +1016,22 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdates(
   float disc_k_bp, unsigned int bp_settings_num_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-#ifdef COMPILING_FOR_ARM
-if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
+#if defined(COMPILING_FOR_ARM)
+  if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
   {
     if (current_bp_level.width_checkerboard_level_ > 5)
     {
-      RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON<DISP_VALS>(checkerboard_to_update,
+      RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON<DISP_VALS, ACCELERATION>(checkerboard_to_update,
         current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
         message_u_checkerboard_0, message_d_checkerboard_0,
         message_l_checkerboard_0, message_r_checkerboard_0,
         message_u_checkerboard_1, message_d_checkerboard_1,
         message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
+
+      //return now that bp iteration run
+      return;
     }
-    else
-    {
-      RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
-        message_u_checkerboard_0, message_d_checkerboard_0,
-        message_l_checkerboard_0, message_r_checkerboard_0,
-        message_u_checkerboard_1, message_d_checkerboard_1,
-        message_l_checkerboard_1, message_r_checkerboard_1,
-        disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
-    }
-  }
-  else
-  {
-    RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-      current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
-      message_u_checkerboard_0, message_d_checkerboard_0,
-      message_l_checkerboard_0, message_r_checkerboard_0,
-      message_u_checkerboard_1, message_d_checkerboard_1,
-      message_l_checkerboard_1, message_r_checkerboard_1,
-      disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
   }
 #else
 #if (((CPU_VECTORIZATION_DEFINE == AVX_256_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_256_F16_DEFINE)) || ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE)))
@@ -1035,16 +1051,9 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
         message_u_checkerboard_1, message_d_checkerboard_1,
         message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
-    }
-    else
-    {
-      RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
-        message_u_checkerboard_0, message_d_checkerboard_0,
-        message_l_checkerboard_0, message_r_checkerboard_0,
-        message_u_checkerboard_1, message_d_checkerboard_1,
-        message_l_checkerboard_1, message_r_checkerboard_1,
-        disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
+
+        //return now that bp iteration run
+        return;
     }
   }
 #endif //CPU_VECTORIZATION_DEFINE
@@ -1065,35 +1074,27 @@ if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
         message_u_checkerboard_1, message_d_checkerboard_1,
         message_l_checkerboard_1, message_r_checkerboard_1,
         disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
-    }
-    else
-    {
-      RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-        current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
-        message_u_checkerboard_0, message_d_checkerboard_0,
-        message_l_checkerboard_0, message_r_checkerboard_0,
-        message_u_checkerboard_1, message_d_checkerboard_1,
-        message_l_checkerboard_1, message_r_checkerboard_1,
-        disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
+
+        //return now that bp iteration run
+        return;
     }
   }
 #endif //CPU_VECTORIZATION_DEFINE
-  else
-  {
-    RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS>(checkerboard_to_update,
-      current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
-      message_u_checkerboard_0, message_d_checkerboard_0,
-      message_l_checkerboard_0, message_r_checkerboard_0,
-      message_u_checkerboard_1, message_d_checkerboard_1,
-      message_l_checkerboard_1, message_r_checkerboard_1,
-      disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
-  }
 #endif //COMPILING_FOR_ARM
+  //run bp iteration without vectorization if it hasn't been run
+  //function should have already returned if bp iteration run
+  RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions<T, DISP_VALS, ACCELERATION>(checkerboard_to_update,
+    current_bp_level, data_cost_checkerboard_0, data_cost_checkerboard_1,
+    message_u_checkerboard_0, message_d_checkerboard_0,
+    message_l_checkerboard_0, message_r_checkerboard_0,
+    message_u_checkerboard_1, message_d_checkerboard_1,
+    message_l_checkerboard_1, message_r_checkerboard_1,
+    disc_k_bp, bp_settings_num_disp_vals, opt_cpu_params);
 }
 
 //kernel to copy the computed BP message values at the current level to the corresponding locations at the "next" level down
 //the kernel works from the point of view of the pixel at the prev level that is being copied to four different places
-template<RunData_t T, unsigned int DISP_VALS>
+template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::CopyMsgDataToNextLevel(beliefprop::CheckerboardPart checkerboard_part,
   const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& next_bp_level,
   const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
@@ -1150,37 +1151,64 @@ void beliefprop_cpu::RetrieveOutputDisparity(
 {
   if constexpr (ACCELERATION == run_environment::AccSetting::kNone) {
 #ifdef SET_THREAD_COUNT_INDIVIDUAL_KERNELS_CPU
-  int num_threads_kernel{
-    (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
-  #pragma omp parallel for num_threads(num_threads_kernel)
+    int num_threads_kernel{
+      (int)opt_cpu_params.OptParamsForKernel({static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0})[0]};
+    #pragma omp parallel for num_threads(num_threads_kernel)
 #else
-  #pragma omp parallel for
+    #pragma omp parallel for
 #endif
 #ifdef _WIN32
-  for (int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
+    for (int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
 #else
-  for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
+    for (unsigned int val = 0; val < (current_bp_level.width_checkerboard_level_*current_bp_level.height_level_); val++)
 #endif //_WIN32
-  {
-    const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
-    const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
+    {
+      const unsigned int y_val = val / current_bp_level.width_checkerboard_level_;
+      const unsigned int x_val = val % current_bp_level.width_checkerboard_level_;
 
-    beliefprop::RetrieveOutputDisparityPixel<T, T, DISP_VALS>(
-      x_val, y_val, current_bp_level,
-      data_cost_checkerboard_0, data_cost_checkerboard_1,
-      message_u_checkerboard_0, message_d_checkerboard_0,
-      message_l_checkerboard_0, message_r_checkerboard_0,
-      message_u_checkerboard_1, message_d_checkerboard_1,
-      message_l_checkerboard_1, message_r_checkerboard_1,
-      disparity_between_images_device, bp_settings_disp_vals);
+      //if datatype is halftype (2 bytes) and acceleration type doesn't support float16
+      //vectorization, set to process data using float
+      if constexpr ((sizeof(T) == 2) && 
+                      (((ACCELERATION == run_environment::AccSetting::kAVX256) ||
+                        (ACCELERATION == run_environment::AccSetting::kAVX512)) ||
+                      (ACCELERATION == run_environment::AccSetting::kNEON)))
+      {
+        beliefprop::RetrieveOutputDisparityPixel<T, float, DISP_VALS>(
+          x_val, y_val, current_bp_level,
+          data_cost_checkerboard_0, data_cost_checkerboard_1,
+          message_u_checkerboard_0, message_d_checkerboard_0,
+          message_l_checkerboard_0, message_r_checkerboard_0,
+          message_u_checkerboard_1, message_d_checkerboard_1,
+          message_l_checkerboard_1, message_r_checkerboard_1,
+          disparity_between_images_device, bp_settings_disp_vals);
+      }
+      else
+      {
+        beliefprop::RetrieveOutputDisparityPixel<T, T, DISP_VALS>(
+          x_val, y_val, current_bp_level,
+          data_cost_checkerboard_0, data_cost_checkerboard_1,
+          message_u_checkerboard_0, message_d_checkerboard_0,
+          message_l_checkerboard_0, message_r_checkerboard_0,
+          message_u_checkerboard_1, message_d_checkerboard_1,
+          message_l_checkerboard_1, message_r_checkerboard_1,
+          disparity_between_images_device, bp_settings_disp_vals);
+      }
     }
   }
   else {
-#ifndef COMPILING_FOR_ARM
+#if defined(COMPILING_FOR_ARM)
+  RetrieveOutputDisparityUseSIMDVectorsNEON<DISP_VALS, ACCELERATION>(current_bp_level,
+        data_cost_checkerboard_0, data_cost_checkerboard_1,
+        message_u_checkerboard_0, message_d_checkerboard_0,
+        message_l_checkerboard_0, message_r_checkerboard_0,
+        message_u_checkerboard_1, message_d_checkerboard_1,
+        message_l_checkerboard_1, message_r_checkerboard_1,
+        disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
+#else
     //SIMD vectorization of output disparity
     if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX512) ||
                   (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
-{
+    {
 #if ((CPU_VECTORIZATION_DEFINE == AVX_512_DEFINE) || (CPU_VECTORIZATION_DEFINE == AVX_512_F16_DEFINE))
       RetrieveOutputDisparityUseSIMDVectorsAVX512<DISP_VALS, ACCELERATION>(current_bp_level,
         data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -1201,14 +1229,6 @@ void beliefprop_cpu::RetrieveOutputDisparity(
         message_l_checkerboard_1, message_r_checkerboard_1,
         disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
     }
-#else
-      RetrieveOutputDisparityUseSIMDVectorsNEON<DISP_VALS>(current_bp_level,
-        data_cost_checkerboard_0, data_cost_checkerboard_1,
-        message_u_checkerboard_0, message_d_checkerboard_0,
-        message_l_checkerboard_0, message_r_checkerboard_0,
-        message_u_checkerboard_1, message_d_checkerboard_1,
-        message_l_checkerboard_1, message_r_checkerboard_1,
-        disparity_between_images_device, bp_settings_disp_vals, opt_cpu_params);
 #endif //COMPILING_FOR_ARM
   }
 }
