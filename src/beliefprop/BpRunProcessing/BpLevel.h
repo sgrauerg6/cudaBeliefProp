@@ -55,7 +55,7 @@ struct BpLevelProperties {
  * @brief Class to store and retrieve properties of a bp processing level
  * including a data type specified as a class template parameter
  */
-template <typename T>
+template <RunData_t T>
 class BpLevel
 {
 public:

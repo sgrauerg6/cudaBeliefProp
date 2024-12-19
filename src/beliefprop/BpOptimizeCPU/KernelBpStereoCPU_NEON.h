@@ -43,7 +43,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int simd_data_size{4};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float, float32x4_t, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -51,7 +50,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+    disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -65,7 +64,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int simd_data_size{4};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float16_t, float16x4_t, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -73,7 +71,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+    disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -87,7 +85,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int simd_data_size{2};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<double, float64x2_t, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -95,7 +92,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+    disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -108,8 +105,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   const float* message_l_prev_checkerboard_1, const float* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
-{      
-  constexpr unsigned int simd_data_size{4};
+{
   RetrieveOutputDisparityUseSIMDVectors<float, float32x4_t, float, float32x4_t, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -117,7 +113,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
     message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
-    simd_data_size, opt_cpu_params);
+    opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -130,8 +126,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   const float16_t* message_l_prev_checkerboard_1, const float16_t* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
-{      
-  constexpr unsigned int simd_data_size{4};
+{
   RetrieveOutputDisparityUseSIMDVectors<float16_t, float16x4_t, float, float32x4_t, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -139,7 +134,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
     message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
-    simd_data_size, opt_cpu_params);
+    opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -152,8 +147,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   const double* message_l_prev_checkerboard_1, const double* message_r_prev_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
-{      
-  constexpr unsigned int simd_data_size{2};
+{
   RetrieveOutputDisparityUseSIMDVectors<double, float64x2_t, double, float64x2_t, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -161,7 +155,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
     message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
-    simd_data_size, opt_cpu_params);
+    opt_cpu_params);
 }
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float32x4_t>(float32x4_t& best_disparities, float32x4_t& best_vals,

@@ -48,7 +48,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int simd_data_size{8};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<float, __m256, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -56,7 +55,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+    disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -73,7 +72,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256_F16)
   {
 #if defined(FLOAT16_VECTORIZATION)
-    constexpr unsigned int simd_data_size{16};
     RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<halftype, __m256h, DISP_VALS>(
       checkerboard_to_update, current_bp_level,
       data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -81,12 +79,11 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
       message_l_checkerboard_0, message_r_checkerboard_0,
       message_u_checkerboard_1, message_d_checkerboard_1,
       message_l_checkerboard_1, message_r_checkerboard_1,
-      disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+      disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
 #endif //FLOAT16_VECTORIZATION
   }
   else
   {
-    constexpr unsigned int simd_data_size{8};
     RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<halftype, __m128i, DISP_VALS>(
       checkerboard_to_update, current_bp_level,
       data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -94,7 +91,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
       message_l_checkerboard_0, message_r_checkerboard_0,
       message_u_checkerboard_1, message_d_checkerboard_1,
       message_l_checkerboard_1, message_r_checkerboard_1,
-      disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+      disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
   }
 }
 
@@ -109,7 +106,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
   float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  constexpr unsigned int simd_data_size{4};
   RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess<double, __m256d, DISP_VALS>(
     checkerboard_to_update, current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
@@ -117,7 +113,7 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     message_l_checkerboard_0, message_r_checkerboard_0,
     message_u_checkerboard_1, message_d_checkerboard_1,
     message_l_checkerboard_1, message_r_checkerboard_1,
-    disc_k_bp, simd_data_size, bp_settings_disp_vals, opt_cpu_params);
+    disc_k_bp, bp_settings_disp_vals, opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -131,7 +127,6 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
-  constexpr unsigned int simd_data_size{8};
   RetrieveOutputDisparityUseSIMDVectors<float, __m256, float, __m256, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -139,7 +134,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
     message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
-    simd_data_size, opt_cpu_params);
+    opt_cpu_params);
 }
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -156,7 +151,6 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   if constexpr (ACCELERATION == run_environment::AccSetting::kAVX256_F16)
   {
 #if defined(FLOAT16_VECTORIZATION)
-    constexpr unsigned int simd_data_size{16};
     RetrieveOutputDisparityUseSIMDVectors<halftype, __m256h, halftype, __m256h, DISP_VALS>(current_bp_level,
       data_cost_checkerboard_0, data_cost_checkerboard_1,
       message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -164,12 +158,11 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
       message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
       message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
       disparity_between_images_device, bp_settings_disp_vals,
-      simd_data_size, opt_cpu_params);
+      opt_cpu_params);
 #endif //FLOAT16_VECTORIZATION
   }
   else
   {
-    constexpr unsigned int simd_data_size{8};
     RetrieveOutputDisparityUseSIMDVectors<halftype, __m128i, float, __m256, DISP_VALS>(current_bp_level,
       data_cost_checkerboard_0, data_cost_checkerboard_1,
       message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -177,7 +170,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
       message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
       message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
       disparity_between_images_device, bp_settings_disp_vals,
-      simd_data_size, opt_cpu_params);
+      opt_cpu_params);
   }
 }
 
@@ -192,7 +185,6 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {      
-  constexpr unsigned int simd_data_size{4};
   RetrieveOutputDisparityUseSIMDVectors<double, __m256d, double, __m256d, DISP_VALS>(current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
@@ -200,7 +192,7 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256(
     message_u_prev_checkerboard_1, message_d_prev_checkerboard_1,
     message_l_prev_checkerboard_1, message_r_prev_checkerboard_1,
     disparity_between_images_device, bp_settings_disp_vals,
-    simd_data_size, opt_cpu_params);
+    opt_cpu_params);
 }
 
 template<> inline void beliefprop_cpu::UpdateBestDispBestVals<__m256>(__m256& best_disparities, __m256& best_vals,

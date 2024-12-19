@@ -46,7 +46,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   half data_costs[DISP_VALS], half* dst_message_array, half disc_k_bp, bool data_aligned)
 {
   // aggregate and find min
-  half minimum = beliefprop::kInfBp;
+  half minimum = beliefprop::kInfBp<half>;
   half dst[DISP_VALS];
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++) {
@@ -131,7 +131,7 @@ __device__ inline void MsgStereoHalf(unsigned int x_val, unsigned int y_val,
   unsigned int offset_data)
 {
   // aggregate and find min
-  half minimum{(half)beliefprop::kInfBp};
+  half minimum{beliefprop::kInfBp<half>};
   unsigned int proc_array_idx_disp_0 = beliefprop::RetrieveIndexInDataAndMessage(x_val, y_val,
     current_bp_level.LevelProperties().padded_width_checkerboard_level_,
     current_bp_level.LevelProperties().height_level_, 0,

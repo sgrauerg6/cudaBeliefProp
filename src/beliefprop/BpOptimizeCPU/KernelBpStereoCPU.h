@@ -137,7 +137,6 @@ namespace beliefprop_cpu
     const T* message_u_prev_checkerboard_1, const T* message_d_prev_checkerboard_1,
     const T* message_l_prev_checkerboard_1, const T* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
-    unsigned int simd_data_size,
     const ParallelParams& opt_cpu_params);
   
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
@@ -378,8 +377,7 @@ namespace beliefprop_cpu
     T* message_l_checkerboard_0, T* message_r_checkerboard_0,
     T* message_u_checkerboard_1, T* message_d_checkerboard_1,
     T* message_l_checkerboard_1, T* message_r_checkerboard_1,
-    float disc_k_bp, unsigned int simd_data_size,
-    unsigned int bp_settings_disp_vals,
+    float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
 
   // compute current message
@@ -719,10 +717,10 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
   T* message_u_checkerboard_1, T* message_d_checkerboard_1,
   T* message_l_checkerboard_1, T* message_r_checkerboard_1,
-  float disc_k_bp, unsigned int simd_data_size,
-  unsigned int bp_settings_disp_vals,
+  float disc_k_bp, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
+  constexpr size_t simd_data_size{sizeof(U) / sizeof(T)};
   const unsigned int width_checkerboard_run_processing = current_bp_level.width_level_ / 2;
   const U disc_k_bp_vect = simd_processing::createSIMDVectorSameData<U>(disc_k_bp);
 
@@ -1243,9 +1241,9 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
   const T* message_u_checkerboard_1, const T* message_d_checkerboard_1,
   const T* message_l_checkerboard_1, const T* message_r_checkerboard_1,
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
-  unsigned int simd_data_size,
   const ParallelParams& opt_cpu_params)
 {
+  constexpr size_t simd_data_size{sizeof(W) / sizeof(V)};
   const unsigned int width_checkerboard_run_processing = current_bp_level.width_level_ / 2;
 
   //initially get output for each checkerboard
@@ -1645,7 +1643,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_
 {
   // aggregate and find min
   //T minimum = beliefprop::kInfBp;
-  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kInfBp);
+  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kInfBp<V>);
   W dst[DISP_VALS];
 
   for (unsigned int current_disparity = 0; current_disparity < DISP_VALS; current_disparity++)
@@ -1755,7 +1753,7 @@ void beliefprop_cpu::MsgStereoSIMDProcessing(unsigned int x_val, unsigned int y_
 {
   // aggregate and find min
   //T minimum = beliefprop::kInfBp;
-  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kInfBp);
+  W minimum = simd_processing::ConvertValToDatatype<W, V>(beliefprop::kInfBp<V>);
   W* dst = new W[bp_settings_disp_vals];
 
   for (unsigned int current_disparity = 0; current_disparity < bp_settings_disp_vals; current_disparity++)

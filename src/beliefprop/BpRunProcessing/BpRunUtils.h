@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string>
 #include <string_view>
 #include <array>
+#include <limits>
+#include "RunSettingsParams/RunSettingsConstsEnums.h"
 #include "RunEval/RunData.h"
 
 /**
@@ -39,8 +41,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 namespace beliefprop {
 
-/** @brief Float value of "infinity" that works with half-precision */
-constexpr float kInfBp{65504};
+/** @brief "Infinity"" value for type to use if initializing to "high" value */
+template <typename T>
+constexpr T kInfBp{std::numeric_limits<T>::max()};
+
+//specialization of "infinity" value for half type
+//that corresponds to max value in float16
+template<> inline
+constexpr halftype kInfBp<halftype>(65504);
 
 /**
  * @brief Get number of stereo runs when evaluating implementation
