@@ -62,29 +62,29 @@ void EvaluateAcrossRuns::operator()(
   //evaluation across runs
   std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
   std::map<std::string, std::map<InputSignature, std::string>> input_to_runtime_across_archs;
-  std::map<InputSignature, std::vector<std::string>> inputs_to_params_display;
-  for (const auto& run_results_w_name : run_results_by_name) {
-    speedup_results_name_to_data[run_results_w_name.first] =
-      run_results_w_name.second.Speedups();
-    input_to_runtime_across_archs[run_results_w_name.first] =
-      run_results_w_name.second.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader);
-    const auto& inputs_to_runtimes = run_results_w_name.second.InputsToKeyVal(
+  std::map<InputSignature, std::vector<std::string>> inputs_to_params_disp_ordered;
+  for (const auto& [run_name, run_results] : run_results_by_name) {
+    speedup_results_name_to_data[run_name] =
+      run_results.Speedups();
+    input_to_runtime_across_archs[run_name] =
+      run_results.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader);
+    const auto& inputs_to_runtimes = run_results.InputsToKeyVal(
       run_eval::kOptimizedRuntimeHeader);
     //go through inputs for current run results
     //need to go through every run so that all inputs in every run are included
-    for (const auto& input_runtime : inputs_to_runtimes) {
+    for (const auto& [input_sig, runtime] : inputs_to_runtimes) {
       //check if input already addded to set of inputs
-      if (!(inputs_to_params_display.contains(input_runtime.first))) {
-        inputs_to_params_display.insert({input_runtime.first, std::vector<std::string>()});
+      if (!(inputs_to_params_disp_ordered.contains(input_sig))) {
+        inputs_to_params_disp_ordered.insert({input_sig, std::vector<std::string>()});
         //add input parameters to display in evaluation across runs
         for (const auto& disp_param : eval_across_runs_in_params_show) {
-          inputs_to_params_display.at(input_runtime.first).push_back(
-            run_results_w_name.second.DataForInput(input_runtime.first).at(disp_param));
+          inputs_to_params_disp_ordered.at(input_sig).push_back(
+            run_results.DataForInput(input_sig).at(disp_param));
         }
       }
     }
     //go through speedups for run and add to speedup headers if not already included
-    const auto run_speedups_ordered = run_results_w_name.second.SpeedupHeadersOrder();
+    const auto run_speedups_ordered = run_results.SpeedupHeadersOrder();
     for (auto i = run_speedups_ordered.begin(); i < run_speedups_ordered.end(); i++)
     {
       //check if speedup in run is included in current evaluation speedups and add it
@@ -131,39 +131,41 @@ void EvaluateAcrossRuns::operator()(
   //write each evaluation run name and save order of runs with speedup corresponding to first
   //speedup header
   //order of run names is in speedup from largest to smallest
-  std::set<std::pair<float, std::string>, std::greater<std::pair<float, std::string>>>
-    run_names_in_order_w_speedup;
+  auto cmp_speedup = 
+    [](const std::pair<std::string, float>& a, const std::pair<std::string, float>& b) {
+      return a.second > b.second; };
+  std::set<std::pair<std::string, float>, decltype(cmp_speedup)> run_names_in_order_w_speedup;
 
   //add first speedup with run name to order runs from fastest to slowest based on first speedup
-  for (const auto& arch_w_speedup_data : speedup_results_name_to_data) {
-    if (arch_w_speedup_data.second.contains(speedup_ordering)) {
+  for (const auto& [run_name, speedup_results] : speedup_results_name_to_data) {
+    if (speedup_results.contains(speedup_ordering)) {
       const float avgSpeedupVsBase = 
-        std::stof(std::string(arch_w_speedup_data.second.at(speedup_ordering).at(0)));
-      run_names_in_order_w_speedup.insert({avgSpeedupVsBase, arch_w_speedup_data.first});
+        std::stof(std::string(speedup_results.at(speedup_ordering).at(0)));
+      run_names_in_order_w_speedup.insert({run_name, avgSpeedupVsBase});
     }
     else {
-      run_names_in_order_w_speedup.insert({0, arch_w_speedup_data.first});
+      run_names_in_order_w_speedup.insert({run_name, 0});
     }
   }
 
   //write all the run names in order from fastest to slowest
-  for (const auto& run_name : run_names_in_order_w_speedup) {
-    result_across_archs_sstream << run_name.second << ',';
+  for (const auto& [run_name, run_speedup] : run_names_in_order_w_speedup) {
+    result_across_archs_sstream << run_name << ',';
   }
   result_across_archs_sstream << std::endl;
 
   //write evaluation stereo set info, bp parameters, and total runtime for optimized bp implementation
   //across each run in the evaluation
-  for (const auto& curr_run_input : inputs_to_params_display) {
-    for (const auto& run_input_val : curr_run_input.second) {
-      result_across_archs_sstream << run_input_val << ',';
+  for (const auto& [input_sig, params_display_ordered] : inputs_to_params_disp_ordered) {
+    for (const auto& param_val_disp : params_display_ordered) {
+      result_across_archs_sstream << param_val_disp << ',';
     }
-    for (const auto& run_name : run_names_in_order_w_speedup)
+    for (const auto& [run_name, run_speedup] : run_names_in_order_w_speedup)
     {
-      if (input_to_runtime_across_archs.at(run_name.second).contains(curr_run_input.first))
+      if (input_to_runtime_across_archs.at(run_name).contains(input_sig))
       {
         result_across_archs_sstream << 
-          input_to_runtime_across_archs.at(run_name.second).at(curr_run_input.first);
+          input_to_runtime_across_archs.at(run_name).at(input_sig);
       }
       result_across_archs_sstream << ',';
     }
@@ -186,10 +188,10 @@ void EvaluateAcrossRuns::operator()(
       }
       //write speedup for each run in separate cells in horizontal direction
       //where each column corresponds to a different evaluation run
-      for (const auto& run_name : run_names_in_order_w_speedup) {
-        if (speedup_results_name_to_data.at(run_name.second).contains(speedup_header)) {
+      for (const auto& [run_name, run_speedup] : run_names_in_order_w_speedup) {
+        if (speedup_results_name_to_data.at(run_name).contains(speedup_header)) {
           result_across_archs_sstream <<
-            speedup_results_name_to_data.at(run_name.second).at(speedup_header).at(0) << ',';
+            speedup_results_name_to_data.at(run_name).at(speedup_header).at(0) << ',';
         }
         else {
           result_across_archs_sstream << ',';

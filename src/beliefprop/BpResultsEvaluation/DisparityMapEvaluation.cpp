@@ -43,9 +43,9 @@ RunData DisparityMapEvaluation::AsRunData() const {
     std::string(beliefprop::kAvgRMSErrorHeader) + " (with disparity error cap at " + 
       std::to_string(disparity_error_max_) + ")",
     (double)average_disp_abs_diff_no_max_w_max_[1]);
-  for (const auto& propBadPixelsAtThreshold : prop_sig_diff_pixels_at_thresholds_) {
-    evalRunData.AddDataWHeader("Proportion bad pixels (error less than " + std::to_string(propBadPixelsAtThreshold.first) + ")",
-                               (double)propBadPixelsAtThreshold.second);
+  for (const auto& [threshold, prop_bad_pixels] : prop_sig_diff_pixels_at_thresholds_) {
+    evalRunData.AddDataWHeader("Proportion bad pixels (error less than " + std::to_string(threshold) + ")",
+                               (double)prop_bad_pixels);
   }
 
   return evalRunData;

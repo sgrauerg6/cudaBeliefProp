@@ -347,8 +347,8 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetSingleThreadCPU<T,
   std::chrono::duration<double> runtime;
 
   // compute disparities
-  auto outStereo = stereo_ms(img1, img2, alg_settings, runtime);
-  out = outStereo.first;
+  auto [output_disp_map, output_run_data] = stereo_ms(img1, img2, alg_settings, runtime);
+  out = output_disp_map;
 
   DisparityMap<float> outDispMap(std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
 
@@ -362,7 +362,7 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetSingleThreadCPU<T,
   std::optional<beliefprop::BpRunOutput> output{beliefprop::BpRunOutput{}};
   output->run_time = runtime;
   output->out_disparity_map = std::move(outDispMap);
-  output->run_data = outStereo.second;
+  output->run_data = output_run_data;
 
   delete img1;
   delete img2;

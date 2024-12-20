@@ -43,18 +43,18 @@ void SmoothImageCPU::operator()(const BpImage<unsigned int>& in_image, float sig
   else
   {
     //retrieve output filter (float array in unique_ptr) and size
-    const auto filter_w_size = this->MakeFilter(sigma);
+    const auto filter = this->MakeFilter(sigma);
 
     //space for intermediate image (when the image has been filtered horizontally but not vertically)
     std::unique_ptr<float[]> intermediateImage = std::make_unique<float[]>(in_image.Width() * in_image.Height());
 
      //first filter the image horizontally, then vertically; the result is applying a 2D gaussian filter with the given sigma value to the image
     FilterImageAcrossCPU<unsigned int>(in_image.PointerToPixelsStart(), intermediateImage.get(), in_image.Width(),
-      in_image.Height(), filter_w_size.first.data(), filter_w_size.second, this->parallel_params_);
+      in_image.Height(), filter.data(), filter.size(), this->parallel_params_);
 
     //now use the vertical filter to complete the smoothing of image 1 on the device
     FilterImageVerticalCPU<float>(intermediateImage.get(), smoothed_image,
-      in_image.Width(), in_image.Height(), filter_w_size.first.data(), filter_w_size.second, this->parallel_params_);
+      in_image.Width(), in_image.Height(), filter.data(), filter.size(), this->parallel_params_);
   }
 }
 

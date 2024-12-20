@@ -61,12 +61,12 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& in_image, float si
   {
     //apply a Guassian filter to the images
     //retrieve output filter (float array in unique_ptr) and size
-    const auto filter_w_size = this->MakeFilter(sigma);
+    const auto filter = this->MakeFilter(sigma);
 
     //copy the image filter to the GPU
     float* filter_device;
-    cudaMalloc((void**)&filter_device, filter_w_size.second*sizeof(float));
-    cudaMemcpy(filter_device, filter_w_size.first.data(),
+    cudaMalloc((void**)&filter_device, filter.size()*sizeof(float));
+    cudaMemcpy(filter_device, filter.data(),
       filter_w_size.second*sizeof(float), cudaMemcpyHostToDevice);
 
     //allocate the GPU global memory for the original, intermediate (when image filtered horizontally but not vertically),
@@ -88,14 +88,14 @@ void SmoothImageCUDA::operator()(const BpImage<unsigned int>& in_image, float si
     beliefprop_cuda::FilterImageAcross<unsigned int> <<< grid, threads >>> (
       original_image_device, intermediate_image_device,
       in_image.Width(), in_image.Height(),
-      filter_device, filter_w_size.second);
+      filter_device, filter_size);
     cudaDeviceSynchronize();
 
     //now use the vertical filter to complete the smoothing of image on the device
     beliefprop_cuda::FilterImageVertical<float> <<< grid, threads >>> (
       intermediate_image_device, smoothed_image,
       in_image.Width(), in_image.Height(),
-      filter_device, filter_w_size.second);
+      filter_device, filter_size);
     cudaDeviceSynchronize();
 
     //free the device memory used to store the images

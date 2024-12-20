@@ -226,7 +226,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
   unsigned int bp_settings_num_disp_vals) const
 {
   const size_t offset_num{0};
-  for (const auto& checkerboard_data_cost : {
+  for (const auto& [checkerboard_part, data_costs] : {
     std::make_pair(
       beliefprop::CheckerboardPart::kCheckerboardPart0,
       data_costs_device_write[0]),
@@ -235,10 +235,10 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
       data_costs_device_write[1])})
   {
     beliefprop_cpu::InitializeCurrentLevelData<T, DISP_VALS, ACCELERATION>(
-      checkerboard_data_cost.first,
+      checkerboard_part,
       current_bp_level.LevelProperties(), prev_bp_level.LevelProperties(),
       data_costs_device[0], data_costs_device[1],
-      checkerboard_data_cost.second,
+      data_costs,
       ((int) offset_num / sizeof(float)),
       bp_settings_num_disp_vals, this->parallel_params_);
   }

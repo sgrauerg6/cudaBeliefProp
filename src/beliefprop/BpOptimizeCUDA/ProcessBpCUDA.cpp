@@ -273,15 +273,15 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
   }
 
   const size_t offset_num{0};
-  for (const auto& checkerboard_data_cost : {
+  for (const auto& [checkerboard_part, data_costs_write] : {
     std::make_pair(beliefprop::CheckerboardPart::kCheckerboardPart0, data_costs_device_write[0]),
     std::make_pair(beliefprop::CheckerboardPart::kCheckerboardPart1, data_costs_device_write[1])})
   {
     beliefprop_cuda::InitializeCurrentLevelData<T, DISP_VALS> <<<grid, threads>>> (
-      checkerboard_data_cost.first,
+      checkerboard_part,
       current_bp_level.LevelProperties(), prev_bp_level.LevelProperties(),
       data_costs_device[0], data_costs_device[1],
-      checkerboard_data_cost.second, ((unsigned int) offset_num / sizeof(float)),
+      data_costs_write, ((unsigned int) offset_num / sizeof(float)),
       bp_settings_num_disp_vals);
 
     cudaDeviceSynchronize();

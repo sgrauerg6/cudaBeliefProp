@@ -70,7 +70,7 @@ protected:
    * @param sigma 
    * @return std::pair<std::vector<float>, unsigned int> 
    */
-  std::pair<std::vector<float>, unsigned int> MakeFilter(float sigma) const;
+  std::vector<float> MakeFilter(float sigma) const;
 
   /**
    * @brief Parallel parameters to use parallel operations
@@ -86,7 +86,7 @@ private:
    * @param filter 
    * @param size_filter 
    */
-  void NormalizeFilter(std::vector<float>& filter, unsigned int size_filter) const;
+  void NormalizeFilter(std::vector<float>& filter) const;
 };
 
 #endif //SMOOTH_IMAGE_HOST_HEADER_H
