@@ -64,9 +64,9 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
 
   //set default parallel parameters and parallel parameters to benchmark when searching for optimal
   //parallel parameters
-  run_imp_settings.p_params_default_opt_settings =
+  run_imp_settings.p_params_default_alt_options =
     {run_cpu::kParallelParamsDefault,
-     run_cpu::kParallelParameterOptions};
+     run_cpu::kParallelParameterAltOptions};
 
   //set run name to first argument if it exists
   //otherwise set to "CurrentRun"
@@ -81,7 +81,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     //maximum number of parallel threads is thread count of single CPU and set environment variables so that CPU threads
     //are pinned to socket
     //set default parallel threads count to be number of threads on a single CPU in the two-CPU system
-    run_imp_settings.p_params_default_opt_settings.first =
+    run_imp_settings.p_params_default_alt_options.first =
       {std::thread::hardware_concurrency() / 2, 1};
 
     //erase parallel thread count options with more than the number of threads on a single CPU in the two-CPU system

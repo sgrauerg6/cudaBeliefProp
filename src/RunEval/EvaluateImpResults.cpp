@@ -59,7 +59,7 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvaluateImpResults::Eva
 
   //compute and add speedup info for using optimized parallel parameters
   //compared to default parallel parameters
-  if (run_imp_settings.p_params_default_opt_settings.second.size() > 0) {
+  if (run_imp_settings.p_params_default_alt_options.second.size() > 0) {
     const std::string speedup_header_optimized_p_params =
       std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
       std::string(run_environment::kDataSizeToNameMap.at(data_size));
@@ -159,7 +159,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   }
 
   //get speedup info for using optimized parallel parameters
-  if (run_imp_settings.p_params_default_opt_settings.second.size() > 0) {
+  if (run_imp_settings.p_params_default_alt_options.second.size() > 0) {
     run_speedups.push_back(
       GetAvgMedSpeedupOptPParams(
         run_results,
@@ -242,7 +242,7 @@ void EvaluateImpResults::WriteRunOutput(
     //enabled in run
     std::vector<run_environment::ParallelParamsSetting> parallel_param_settings{
       run_environment::ParallelParamsSetting::kDefault};
-    if (run_imp_settings.p_params_default_opt_settings.second.size() > 0) {
+    if (run_imp_settings.p_params_default_alt_options.second.size() > 0) {
       //add optimized parallel parameters settings if enabled
       parallel_param_settings.push_back(run_environment::ParallelParamsSetting::kOptimized);
     }
@@ -361,7 +361,7 @@ void EvaluateImpResults::WriteRunOutput(
     std::map<run_environment::ParallelParamsSetting, std::ofstream> results_stream;
     results_stream[run_environment::ParallelParamsSetting::kDefault] =
       std::ofstream(default_params_results_file_path);
-    if (run_imp_settings.p_params_default_opt_settings.second.size() > 0) {
+    if (run_imp_settings.p_params_default_alt_options.second.size() > 0) {
       results_stream[run_environment::ParallelParamsSetting::kOptimized] =
         std::ofstream(opt_results_file_path);
     }
@@ -369,7 +369,7 @@ void EvaluateImpResults::WriteRunOutput(
     //write run results file with default parallel params
     results_stream[run_environment::ParallelParamsSetting::kDefault] <<
       run_data_sstr[run_environment::ParallelParamsSetting::kDefault].str();
-    if (run_imp_settings.p_params_default_opt_settings.second.size() > 0) {
+    if (run_imp_settings.p_params_default_alt_options.second.size() > 0) {
       //write run results file with optimized parallel params
       results_stream[run_environment::ParallelParamsSetting::kOptimized] <<
         run_data_sstr[run_environment::ParallelParamsSetting::kOptimized].str();

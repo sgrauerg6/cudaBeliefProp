@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <string_view>
 #include <thread>
 #include <ranges>
+#include <set>
 #include "RunEval/RunData.h"
 #include "InputSignature.h"
 #include "RunSettingsConstsEnums.h"
@@ -70,7 +71,7 @@ struct RunImpSettings {
   std::vector<unsigned int> datatypes_eval_sizes;
   TemplatedItersSetting templated_iters_setting;
   OptParallelParamsSetting opt_parallel_params_setting;
-  std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> p_params_default_opt_settings;
+  std::pair<std::array<unsigned int, 2>, std::set<std::array<unsigned int, 2>>> p_params_default_alt_options;
   std::optional<std::string> run_name;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
   std::optional<std::array<std::string_view, 2>> baseline_runtimes_path_desc;
@@ -82,9 +83,8 @@ struct RunImpSettings {
    * @param min_threads 
    */
   void RemoveParallelParamBelowMinThreads(unsigned int min_threads) {
-    const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
+    std::erase_if(p_params_default_alt_options.second,
       [min_threads](const auto& p_params) { return p_params[0] < min_threads; });
-    p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 
   /**
@@ -93,9 +93,8 @@ struct RunImpSettings {
    * @param max_threads 
    */
   void RemoveParallelParamAboveMaxThreads(unsigned int max_threads) {
-    const auto [first_remove, last_remove] = std::ranges::remove_if(p_params_default_opt_settings.second,
+    std::erase_if(p_params_default_alt_options.second,
       [max_threads](const auto& p_params) { return p_params[0] > max_threads; });
-    p_params_default_opt_settings.second.erase(first_remove, last_remove);
   }
 };
 

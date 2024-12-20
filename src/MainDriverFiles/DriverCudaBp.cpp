@@ -69,9 +69,9 @@ int main(int argc, char** argv)
 
   //set default parallel parameters and parallel parameters to benchmark when searching for optimal
   //parallel parameters
-  run_imp_settings.p_params_default_opt_settings =
+  run_imp_settings.p_params_default_alt_options =
     {run_cuda::kParallelParamsDefault,
-     run_cuda::kParallelParameterOptions};
+     run_cuda::kParallelParameterAltOptions};
 
   //set path of baseline runtimes and baseline description
   run_imp_settings.baseline_runtimes_path_desc =

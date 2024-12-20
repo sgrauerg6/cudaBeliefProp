@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <array>
 #include <thread>
+#include <set>
 
 //check if running on ARM architecture
 #if defined(COMPILING_FOR_ARM)
@@ -73,29 +74,35 @@ constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 /** @brief Constant corresponding to number of threads on CPU. */
 const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
 
-#if defined(LIMITED_TEST_PARAMS)
-
-/** @brief Parallel parameters options that are tested in order to find optimized
- *  configuration in run. */
-const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
-  { kNumThreadsCPU, 1},{ kNumThreadsCPU / 2, 1}};
-
-#else
-
-/** @brief Parallel parameters options that are tested in order to find optimized
- *  configuration in run. */
-const std::vector<std::array<unsigned int, 2>> kParallelParameterOptions{
-  { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
-  { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
-
-#endif //LIMITED_TEST_PARAMS
-
 /** @brief Minimum number of threads to allow for any parallel parameters
  *  setting on CPU. */
 const unsigned int kMinNumThreadsRun{std::min(kNumThreadsCPU, 4u)};
 
 /** @brief Default parallel parameters setting on CPU. */
 const std::array<unsigned int, 2> kParallelParamsDefault{{kNumThreadsCPU, 1}};
+
+#if defined(DEFAULT_PARALLEL_PARAMS_ONLY)
+
+/** @brief Empty parallel parameter alternative options since setting is to
+  *  only use default parallel parameters. */
+const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{};
+
+#elif defined(LIMITED_ALT_PARALLEL_PARAMS)
+
+/** @brief Parallel parameters options that are tested in order to find optimized
+ *  configuration in run. OK to include default option but not required.*/
+const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{
+  { kNumThreadsCPU, 1},{ kNumThreadsCPU / 2, 1}};
+
+#else
+
+/** @brief Parallel parameters options that are tested in order to find optimized
+ *  configuration in run. OK to include default option but not required.*/
+const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{
+  { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
+  { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
+
+#endif
 
 };
 

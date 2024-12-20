@@ -218,7 +218,7 @@ std::shared_ptr<ParallelParams> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::Se
   return std::make_shared<ParallelParamsBp>(
     run_imp_settings.opt_parallel_params_setting,
     alg_settings_.num_levels,
-    run_imp_settings.p_params_default_opt_settings.first);
+    run_imp_settings.p_params_default_alt_options.first);
 }
 
 //get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
