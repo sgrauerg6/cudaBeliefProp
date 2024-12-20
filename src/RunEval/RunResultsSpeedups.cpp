@@ -99,7 +99,7 @@ void RunResultsSpeedups::GenInputSignatureToDataMapping(
       //retrieve all data for run corresponding to current input signature
       //and generate mapping between input signature and run data
       std::map<std::string, std::string> run_headers_to_data;
-      for (const auto& header_data : run_results_header_to_data.value()) {
+      for (const auto& header_data : *run_results_header_to_data) {
         run_headers_to_data.insert({header_data.first, header_data.second.at(num_run)});
       }
       input_sig_to_run_data_->insert({run_input, run_headers_to_data});

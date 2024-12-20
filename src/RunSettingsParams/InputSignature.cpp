@@ -65,8 +65,8 @@ InputSignature::InputSignature(
 //don't use input signature parts where one of the comparison sides
 //has "no value" which corresponds to "any" for the input signature
 bool InputSignature::operator<(const InputSignature& rhs) const {
-  if (((data_type_size_.has_value()) && (rhs.data_type_size_.has_value())) &&
-      ((data_type_size_.value() != rhs.data_type_size_.value()))) {
+  if (((data_type_size_) && (rhs.data_type_size_)) &&
+      ((*data_type_size_ != *rhs.data_type_size_))) {
     //compare datatype
     //order is float, double, half
     //define mapping of datatype string to value for comparison
@@ -74,20 +74,20 @@ bool InputSignature::operator<(const InputSignature& rhs) const {
       {sizeof(float), 0},
       {sizeof(double), 1},
       {sizeof(short), 2}};
-    return (datatype_size_to_order_num.at(data_type_size_.value()) <
-            datatype_size_to_order_num.at(rhs.data_type_size_.value()));
+    return (datatype_size_to_order_num.at(*data_type_size_) <
+            datatype_size_to_order_num.at(*rhs.data_type_size_));
   }
-  else if (((eval_set_num_.has_value()) && (rhs.eval_set_num_.has_value())) &&
-           ((eval_set_num_.value() != rhs.eval_set_num_.value()))) {
+  else if (((eval_set_num_) && (rhs.eval_set_num_)) &&
+           ((*eval_set_num_ != *rhs.eval_set_num_))) {
     //compare evaluation data number
     //ordering is as expected by numeric value (such as 0 < 1)
     return (eval_set_num_ < rhs.eval_set_num_);
   }
-  else if (((use_templated_loop_iters_.has_value()) && (rhs.use_templated_loop_iters_.has_value())) &&
-           ((use_templated_loop_iters_.value() != rhs.use_templated_loop_iters_.value()))) {
+  else if ((use_templated_loop_iters_ && rhs.use_templated_loop_iters_) &&
+           ((*use_templated_loop_iters_ != *rhs.use_templated_loop_iters_))) {
     //compare whether or not using templated iter count
     //order is using templated iter count followed by not using templated iter count
-    if (use_templated_loop_iters_.value() == true) { return true; /* a < b is true */ }
+    if (*use_templated_loop_iters_ == true) { return true; /* a < b is true */ }
   }
   return false; /* a <= b is false */
 }

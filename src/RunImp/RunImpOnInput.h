@@ -203,7 +203,7 @@ protected:
 
       //add data results from current run if run successful
       if (run_imps_results) {
-        curr_run_data.AppendData(run_imps_results.value());
+        curr_run_data.AppendData(*run_imps_results);
       }
 
       //add current run results for output if using default parallel 

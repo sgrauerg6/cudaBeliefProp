@@ -98,44 +98,44 @@ public:
   bool EqualsUsingAny(const InputSignature& rhs) const;
 
   std::string DataTypeStr() const {
-    if (!(data_type_size_.has_value())) {
+    if (!data_type_size_) {
       return "ANY";
     }
-    if (data_type_size_.value() == 2) {
+    if (*data_type_size_ == 2) {
       return "HALF";
     }
-    else if (data_type_size_.value() == 4) {
+    else if (*data_type_size_ == 4) {
       return "FLOAT";
     }
-    else if (data_type_size_.value() == 8) {
+    else if (*data_type_size_ == 8) {
       return "DOUBLE";
     }
     return "UNKNOWN";
   }
 
   std::string EvalSetNumStr() const {
-    if (!(eval_set_num_.has_value())) {
+    if (!eval_set_num_) {
       return "ANY";
     }
     else {
-      return std::to_string(eval_set_num_.value());
+      return std::to_string(*eval_set_num_);
     }
   }
 
   unsigned int EvalSetNum() const {
-    if (!(eval_set_num_.has_value())) {
+    if (!eval_set_num_) {
       return std::numeric_limits<unsigned int>::max();
     }
     else {
-      return eval_set_num_.value();
+      return *eval_set_num_;
     }
   }
 
   std::string UseTemplatedLoopItersStr() const {
-    if (!(use_templated_loop_iters_.has_value())) {
+    if (!use_templated_loop_iters_) {
       return "BOTH";
     }
-    return ((!(use_templated_loop_iters_.value())) ?
+    return ((!(*use_templated_loop_iters_)) ?
       std::string(run_eval::kBoolValFalseTrueDispStr[0]) :
       std::string(run_eval::kBoolValFalseTrueDispStr[1]));
   }

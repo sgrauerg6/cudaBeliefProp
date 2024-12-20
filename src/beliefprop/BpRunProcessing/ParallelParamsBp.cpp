@@ -109,28 +109,28 @@ void ParallelParamsBp::AddTestResultsForParallelParams(const std::array<unsigned
   if (opt_parallel_params_setting_ == run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun) {
     for (unsigned int level=0; level < num_levels_; level++) {
       p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)][level][p_params_curr_run] =
-        curr_run_data.GetDataAsDouble(
-          std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][0]) + " " + std::string(run_eval::kMedianOfTestRunsDesc)).value();
+        *curr_run_data.GetDataAsDouble(
+          std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][0]) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
       p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel)][level][p_params_curr_run] = 
-        curr_run_data.GetDataAsDouble(
-          std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][1]) + " " + std::string(run_eval::kMedianOfTestRunsDesc)).value();
+        *curr_run_data.GetDataAsDouble(
+          std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][1]) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
       p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel)][level][p_params_curr_run] =
-        curr_run_data.GetDataAsDouble(
-          std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][2]) + " " + std::string(run_eval::kMedianOfTestRunsDesc)).value();
+        *curr_run_data.GetDataAsDouble(
+          std::string(beliefprop::kLevelDCostBpTimeCTimeNames[level][2]) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
     }
     p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)][0][p_params_curr_run] =
-      curr_run_data.GetDataAsDouble(
-        std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kSmoothing)) + " " + std::string(run_eval::kMedianOfTestRunsDesc)).value();
+      *curr_run_data.GetDataAsDouble(
+        std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kSmoothing)) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
     p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals)][0][p_params_curr_run] =
-      curr_run_data.GetDataAsDouble(
-        std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kInitMessagesKernel)) + " " + std::string(run_eval::kMedianOfTestRunsDesc)).value();
+      *curr_run_data.GetDataAsDouble(
+        std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kInitMessagesKernel)) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
     p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp)][0][p_params_curr_run] =
-      curr_run_data.GetDataAsDouble(
-        std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kOutputDisparity)) + " " + std::string(run_eval::kMedianOfTestRunsDesc)).value();
+      *curr_run_data.GetDataAsDouble(
+        std::string(beliefprop::kTimingNames.at(beliefprop::Runtime_Type::kOutputDisparity)) + " " + std::string(run_eval::kMedianOfTestRunsDesc));
   }
   //get total runtime
   p_params_to_run_time_each_kernel_[beliefprop::kNumKernels][0][p_params_curr_run] =
-    curr_run_data.GetDataAsDouble(run_eval::kOptimizedRuntimeHeader).value();
+    *curr_run_data.GetDataAsDouble(run_eval::kOptimizedRuntimeHeader);
 }
 
 //retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters

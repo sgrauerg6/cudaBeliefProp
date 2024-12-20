@@ -65,7 +65,7 @@ public:
    * @return std::map<std::string, std::vector<std::string>> 
    */
   std::map<std::string, std::vector<std::string>> Speedups() const {
-    return speedup_header_to_result_speedup_order_.value().first;
+    return speedup_header_to_result_speedup_order_->first;
   }
 
   /**
@@ -74,7 +74,7 @@ public:
    * @return std::vector<std::string>
    */
   std::vector<std::string> SpeedupHeadersOrder() const {
-    return speedup_header_to_result_speedup_order_.value().second;
+    return speedup_header_to_result_speedup_order_->second;
   }
 
   /**
