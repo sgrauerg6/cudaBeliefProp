@@ -117,10 +117,11 @@ protected:
     bool run_w_loop_iters_templated) const
   {
     MultRunData::mapped_type::value_type out_run_data;
-    enum class RunType { ONLY_RUN, TEST_PARAMS_ARE_DEFAULT, OPTIMIZED_RUN, TEST_PARAMS };
+    enum class RunType { ONLY_RUN, OPTIMIZED_RUN, TEST_PARAMS };
 
     //set up parallel parameters for specific benchmark
-    std::shared_ptr<ParallelParams> parallel_params = SetUpParallelParams(run_imp_settings);
+    std::shared_ptr<ParallelParams> parallel_params =
+      SetUpParallelParams(run_imp_settings);
 
     //get constant references to default and optimized options
     //for parallel parameters
@@ -166,12 +167,6 @@ protected:
         //set parallel parameters to parameters corresponding to current run
         //for each BP processing level
         parallel_params->SetParallelDims(*p_params_iter);
-        if (*p_params_iter == default_p_params) {
-          //set run type to indicate that current test params are default
-          //parameters if current test parameters are equal to default
-          //parameters
-          curr_run_type = RunType::TEST_PARAMS_ARE_DEFAULT;
-        }
       }
 
       //store input params data if current run is only run, run is using
@@ -198,8 +193,11 @@ protected:
       }
 
       //run only optimized implementation and not single-threaded run if
-      //current run is not final run or is using default parameter parameters
-      const bool run_opt_imp_only{curr_run_type == RunType::TEST_PARAMS};
+      //current run is using test parallel parameters run that are not equal
+      //to default parameter parameters
+      const bool run_opt_imp_only{
+        ((curr_run_type == RunType::TEST_PARAMS) &&
+         (*p_params_iter != default_p_params))};
 
       //run benchmark implementation(s) and return null output if error in run
       //detailed results stored to file that is generated using stream
@@ -236,12 +234,11 @@ protected:
       else if (curr_run_type == RunType::OPTIMIZED_RUN) {
         out_run_data[run_environment::ParallelParamsSetting::kOptimized] = curr_run_data;
       }
-      else if (curr_run_type == RunType::TEST_PARAMS_ARE_DEFAULT)
-      {
+      else if (*p_params_iter == default_p_params) {
         out_run_data[run_environment::ParallelParamsSetting::kDefault] = curr_run_data; 
       }
       
-      if ((curr_run_type == RunType::TEST_PARAMS_ARE_DEFAULT) || (curr_run_type == RunType::TEST_PARAMS)) {
+      if (curr_run_type == RunType::TEST_PARAMS) {
         //add test results including runtimes for each kernel to parallel parameters
         //object to use for computation of optimal parallel parameters
         //if error in run, don't add results for current parallel parameters to results set
