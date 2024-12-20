@@ -293,7 +293,7 @@ void EvaluateImpResults::WriteRunOutput(
       for (auto run_sig_data_iter=run_results.begin(); run_sig_data_iter != run_results.end(); run_sig_data_iter++) {
         //if run not successful only have single set of output data from run
         //don't write data if no data for run
-        if (run_sig_data_iter->second.has_value()) {
+        if (run_sig_data_iter->second) {
           for (const auto& curr_header : headers_in_order) {
             if (run_sig_data_iter->second->at(p_param_setting).IsData(curr_header))
             {
@@ -559,16 +559,19 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
              run_results_iter != run_results.end();
              run_results_iter++)
         {
-          //check if current run signature corresponds to subset signature and retrieve
-          //and process speedup if that's the case
-          if (run_results_iter->first.EqualsUsingAny(subset_input_signature)) {
-            speedups_vect.push_back(
-              std::stod(baseline_runtimes.at(run_results_iter->first)) /
-              run_results_iter->second->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                  run_eval::kOptimizedRuntimeHeader).value());
-            for (auto& run_data : run_results_iter->second.value()) {
-              run_data.second.AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+          if (run_results_iter->second)
+          {
+            //check if current run signature corresponds to subset signature and retrieve
+            //and process speedup if that's the case
+            if (run_results_iter->first.EqualsUsingAny(subset_input_signature)) {
+              speedups_vect.push_back(
+                std::stod(baseline_runtimes.at(run_results_iter->first)) /
+                run_results_iter->second->at(
+                  run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                    run_eval::kOptimizedRuntimeHeader).value());
+              for (auto& run_data : run_results_iter->second.value()) {
+                run_data.second.AddDataWHeader(std::string(speedup_header), speedups_vect.back());
+              }
             }
           }
         }
