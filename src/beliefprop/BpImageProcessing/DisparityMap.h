@@ -45,9 +45,9 @@ class DisparityMap : public BpImage<T> {
 public:
   DisparityMap() : BpImage<T>() {}
 
-  DisparityMap(const std::array<unsigned int, 2>& width_height) : BpImage<T>(width_height) {}
+  explicit DisparityMap(const std::array<unsigned int, 2>& width_height) : BpImage<T>(width_height) {}
 
-  DisparityMap(const std::array<unsigned int, 2>& width_height, const T* input_disparity_map_vals,
+  explicit DisparityMap(const std::array<unsigned int, 2>& width_height, const T* input_disparity_map_vals,
     unsigned int disparity_map_vals_scale = 1) : BpImage<T>(width_height, input_disparity_map_vals)
   {
     std::ranges::copy(input_disparity_map_vals,
@@ -59,7 +59,7 @@ public:
     }
   }
 
-  DisparityMap(const std::string& file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : 
+  explicit DisparityMap(const std::string& file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : 
     BpImage<T>(file_path_disparity_map)
   {
     if (disparity_map_vals_scale > 1) {

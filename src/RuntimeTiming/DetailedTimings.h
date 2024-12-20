@@ -56,7 +56,7 @@ public:
    * 
    * @param timing_segment_names 
    */
-  DetailedTimings(const std::unordered_map<T, std::string_view>& timing_segment_names);
+  explicit DetailedTimings(const std::unordered_map<T, std::string_view>& timing_segment_names);
 
   /**
    * @brief Reset all timings

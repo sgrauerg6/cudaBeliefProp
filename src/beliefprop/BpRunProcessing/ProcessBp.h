@@ -67,7 +67,7 @@ using timingType = std::chrono::time_point<std::chrono::system_clock>;
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 class ProcessBp {
 public:
-  ProcessBp(const ParallelParams& parallel_params) : parallel_params_{parallel_params} { }
+  explicit ProcessBp(const ParallelParams& parallel_params) : parallel_params_{parallel_params} { }
 
   virtual run_eval::Status ErrorCheck(const char *file = "", int line = 0, bool abort = false) const {
     return run_eval::Status::kNoError;

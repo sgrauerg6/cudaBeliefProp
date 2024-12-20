@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 class RunImpMultInputs {
 public:
-  RunImpMultInputs(run_environment::AccSetting opt_imp_accel) : opt_imp_accel_(opt_imp_accel) {}
+  explicit RunImpMultInputs(run_environment::AccSetting opt_imp_accel) : opt_imp_accel_(opt_imp_accel) {}
 
   /**
    * @brief Run and evaluate runs on one or more input of benchmark implementation using multiple settings

@@ -47,7 +47,7 @@ public:
    * @param imp_results_file_path 
    * @param run_name 
    */
-  RunResultsSpeedups(
+  explicit RunResultsSpeedups(
     const std::filesystem::path& imp_results_file_path,
     const std::string& run_name);
 
@@ -57,7 +57,7 @@ public:
    * 
    * @param run_results_file_path 
    */
-  RunResultsSpeedups(const std::filesystem::path& run_results_file_path);
+  explicit RunResultsSpeedups(const std::filesystem::path& run_results_file_path);
 
   /**
    * @brief Return speedups from evaluation across all runs on an architecture

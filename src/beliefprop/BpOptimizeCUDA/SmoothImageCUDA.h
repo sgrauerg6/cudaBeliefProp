@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 class SmoothImageCUDA final : public SmoothImage {
 public:
-  SmoothImageCUDA(const ParallelParams& cuda_params) : SmoothImage(cuda_params) {}
+  explicit SmoothImageCUDA(const ParallelParams& cuda_params) : SmoothImage(cuda_params) {}
 
   /**
    * @brief For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)

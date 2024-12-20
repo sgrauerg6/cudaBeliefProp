@@ -59,10 +59,10 @@ template <RunData_t T>
 class BpLevel
 {
 public:
-  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
+  explicit BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
     unsigned int level_num, run_environment::AccSetting acc_setting);
   
-  BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
+  explicit BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
     unsigned int level_num, unsigned int bytes_align_memory);
 
   /**

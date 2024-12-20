@@ -56,7 +56,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 class ProcessBpOptimizedCPU final : public ProcessBp<T, DISP_VALS, ACCELERATION>
 {
 public:
-  ProcessBpOptimizedCPU(const ParallelParams& opt_cpu_params) : 
+  explicit ProcessBpOptimizedCPU(const ParallelParams& opt_cpu_params) : 
     ProcessBp<T, DISP_VALS, ACCELERATION>(opt_cpu_params) {}
 
 private:

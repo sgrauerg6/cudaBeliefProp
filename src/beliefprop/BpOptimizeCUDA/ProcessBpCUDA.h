@@ -47,7 +47,7 @@ template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELE
 class ProcessBpCUDA final : public ProcessBp<T, DISP_VALS, ACCELERATION>
 {
 public:
-  ProcessBpCUDA(const ParallelParams& cuda_params) : 
+  explicit ProcessBpCUDA(const ParallelParams& cuda_params) : 
     ProcessBp<T, DISP_VALS, ACCELERATION>(cuda_params) {}
 
 private:

@@ -57,16 +57,16 @@ class BpImage {
 public:
   BpImage() : width_height_{0, 0} {}
 
-  BpImage(const std::array<unsigned int, 2>& width_height) : 
+  explicit BpImage(const std::array<unsigned int, 2>& width_height) : 
     width_height_{width_height}, pixels_(std::make_unique<T[]>(width_height_[0]*width_height_[1])) {}
 
-  BpImage(const std::array<unsigned int, 2>& width_height, const T* input_pixel_vals) :
+  explicit BpImage(const std::array<unsigned int, 2>& width_height, const T* input_pixel_vals) :
     width_height_{width_height}, pixels_(std::make_unique<T[]>(width_height_[0] * width_height_[1]))
   {
     std::ranges::copy(input_pixel_vals, input_pixel_vals + (TotalPixels()), pixels_.get());
   }
 
-  BpImage(const std::string& file_name) {
+  explicit BpImage(const std::string& file_name) {
     LoadImageAsGrayScale(file_name);
   }
 

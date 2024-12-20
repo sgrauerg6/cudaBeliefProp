@@ -48,7 +48,7 @@ public:
    * 
    * @param in_sig_strings 
    */
-  InputSignature(const std::array<std::string_view, 3>& in_sig_strings);
+  explicit InputSignature(const std::array<std::string_view, 3>& in_sig_strings);
 
   /**
    * @brief Constructor to generate evaluation input signature from parameters
@@ -58,7 +58,7 @@ public:
    * @param eval_set_num 
    * @param use_templated_loop_iters 
    */
-  InputSignature(
+  explicit InputSignature(
     std::optional<unsigned int> data_type_size,
     std::optional<unsigned int> eval_set_num,
     std::optional<bool> use_templated_loop_iters);

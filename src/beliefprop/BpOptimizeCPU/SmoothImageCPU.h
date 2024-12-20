@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 class SmoothImageCPU final : public SmoothImage {
 public:
-  SmoothImageCPU(const ParallelParams& opt_cpu_params) : SmoothImage(opt_cpu_params) {}
+  explicit SmoothImageCPU(const ParallelParams& opt_cpu_params) : SmoothImage(opt_cpu_params) {}
 
   //function to use the CPU image filter to apply a guassian filter to the a single images
   //input images have each pixel stored as an unsigned in (value between 0 and 255 assuming 8-bit grayscale image used)

@@ -42,7 +42,7 @@ public:
    * 
    * @param stereo_set_name 
    */
-  BpFileHandling(const std::string& stereo_set_name) : 
+  explicit BpFileHandling(const std::string& stereo_set_name) : 
     stereo_set_path_{StereoSetsPath() / stereo_set_name}, num_out_disp_map_{1} { }
 
   /**

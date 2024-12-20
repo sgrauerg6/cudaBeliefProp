@@ -49,7 +49,7 @@ constexpr float kWidthSigma1{4.0f};
 class SmoothImage
 {
 public:
-  SmoothImage(const ParallelParams& parallel_params) : parallel_params_{parallel_params} {}
+  explicit SmoothImage(const ParallelParams& parallel_params) : parallel_params_{parallel_params} {}
 
   /**
    * @brief Function to use the image filter to apply a guassian filter to the a single images

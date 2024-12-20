@@ -40,7 +40,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 class RunImpMultInputsBp final : public RunImpMultInputs {
 public:
-  RunImpMultInputsBp(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
+  explicit RunImpMultInputsBp(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
 
 private:
   /**

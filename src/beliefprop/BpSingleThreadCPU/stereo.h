@@ -339,35 +339,37 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetSingleThreadCPU<T,
     return {};
   }
 
-  bp_single_thread_imp::image<uchar> *img1, *img2, *out;// *edges;
-
-  // load input
+  //load input
+  bp_single_thread_imp::image<uchar> *img1, *img2;
   img1 = loadPGMOrPPMImage(ref_test_image_path[0].c_str());
   img2 = loadPGMOrPPMImage(ref_test_image_path[1].c_str());
+
+  //run single-thread belief propagation implementation and return output
+  //disparity map and run data
   std::chrono::duration<double> runtime;
+  const auto [output_disp_map, output_run_data] = stereo_ms(img1, img2, alg_settings, runtime);
 
-  // compute disparities
-  auto [output_disp_map, output_run_data] = stereo_ms(img1, img2, alg_settings, runtime);
-  out = output_disp_map;
+  //setup run output to return
+  std::optional<beliefprop::BpRunOutput> output{beliefprop::BpRunOutput{}};
+  output->run_time = runtime;
+  output->run_data = output_run_data;
+  output->out_disparity_map =
+    DisparityMap<float>(
+      std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
 
-  DisparityMap<float> outDispMap(std::array<unsigned int, 2>{(unsigned int)img1->width(), (unsigned int)img1->height()});
-
-  //set disparity at each point in disparity map
+  //set disparity at each point in disparity map from single-thread run output
   for (unsigned int y = 0; y < (unsigned int)img1->height(); y++) {
     for (unsigned int x = 0; x < (unsigned int)img1->width(); x++) {
-      outDispMap.SetPixelAtPoint({x, y}, (float)imRef(out, x, y));
+      output->out_disparity_map.SetPixelAtPoint({x, y}, (float)imRef(output_disp_map, x, y));
     }
   }
 
-  std::optional<beliefprop::BpRunOutput> output{beliefprop::BpRunOutput{}};
-  output->run_time = runtime;
-  output->out_disparity_map = std::move(outDispMap);
-  output->run_data = output_run_data;
-
+  //free dynamically allocated memory
   delete img1;
   delete img2;
-  delete out;
+  delete output_disp_map;
 
+  //return run output
   return output;
 }
 

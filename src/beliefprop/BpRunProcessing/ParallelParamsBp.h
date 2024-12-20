@@ -64,7 +64,7 @@ public:
    * @param num_levels 
    * @param default_parallel_dims 
    */
-  ParallelParamsBp(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
+  explicit ParallelParamsBp(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
     unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims);
 
   /**
