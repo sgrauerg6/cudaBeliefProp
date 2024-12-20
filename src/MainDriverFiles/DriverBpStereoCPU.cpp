@@ -60,8 +60,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
   //testing on i7-11800H has found that using different parallel parameters (corresponding to OpenMP thread counts)
   //in different kernels in the optimized CPU implementation can increase runtime (may want to test on additional processors)
   run_imp_settings.opt_parallel_params_setting =
-    {true,
-     run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels};
+     run_environment::OptParallelParamsSetting::kSameParallelParamsAllKernels;
 
   //set default parallel parameters and parallel parameters to benchmark when searching for optimal
   //parallel parameters

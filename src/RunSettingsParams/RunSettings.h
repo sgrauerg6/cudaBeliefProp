@@ -69,7 +69,7 @@ inline RunData RunSettings()  {
 struct RunImpSettings {
   std::vector<unsigned int> datatypes_eval_sizes;
   TemplatedItersSetting templated_iters_setting;
-  std::pair<bool, OptParallelParamsSetting> opt_parallel_params_setting;
+  OptParallelParamsSetting opt_parallel_params_setting;
   std::pair<std::array<unsigned int, 2>, std::vector<std::array<unsigned int, 2>>> p_params_default_opt_settings;
   std::optional<std::string> run_name;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes

@@ -72,7 +72,6 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kInputIdxHeader{"Input Index"};
   constexpr std::string_view kDatatypeHeader{"Data Type"};
   constexpr std::string_view kLoopItersTemplatedHeader{"Loop Iters Templated"};
-  constexpr std::string_view kRunSuccessHeader{"Run Success"};
 
   /** @brief Constant to describing timing as median across evaluation runs */
   constexpr std::string_view kMedianOfTestRunsDesc{"(median timing across evaluation runs)"};

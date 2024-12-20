@@ -216,7 +216,7 @@ std::shared_ptr<ParallelParams> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::Se
 {
   //parallel parameters initialized with default thread count dimensions at every level
   return std::make_shared<ParallelParamsBp>(
-    run_imp_settings.opt_parallel_params_setting.second,
+    run_imp_settings.opt_parallel_params_setting,
     alg_settings_.num_levels,
     run_imp_settings.p_params_default_opt_settings.first);
 }

@@ -65,8 +65,7 @@ int main(int argc, char** argv)
   //testing on has found that using different parallel parameters (corresponding to thread block dimensions)
   //in different kernels in the optimized CUDA implementation can decrease runtime
   run_imp_settings.opt_parallel_params_setting =
-    {true,
-     run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun};
+     run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun;
 
   //set default parallel parameters and parallel parameters to benchmark when searching for optimal
   //parallel parameters
