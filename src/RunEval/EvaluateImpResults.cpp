@@ -274,9 +274,11 @@ void EvaluateImpResults::WriteRunOutput(
     //then use vector of speedup headers to add to other headers for
     //run resuls
     for (const auto& speedup_header : speedup_headers) {
-      auto speedup_header_iter =
-        std::find(headers_in_order.begin(), headers_in_order.end(), speedup_header);
-      if (speedup_header_iter != headers_in_order.end()) {
+      if (auto speedup_header_iter = std::find(headers_in_order.begin(),
+                                               headers_in_order.end(),
+                                               speedup_header);
+          speedup_header_iter != headers_in_order.end())
+      {
         headers_in_order.erase(speedup_header_iter);
       }
     }
