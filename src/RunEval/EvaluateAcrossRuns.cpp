@@ -204,7 +204,7 @@ void EvaluateAcrossRuns::operator()(
   }
 
   //get file path for evaluation across runs and save evaluation across runs to csv file
-  std::filesystem::path results_across_run_fp = imp_results_file_path /
+  const std::filesystem::path results_across_run_fp = imp_results_file_path /
     (std::string(run_eval::kEvalAcrossRunsFileName) + std::string(run_eval::kCsvFileExtension));
   std::ofstream eval_results_across_run_str(results_across_run_fp);
   eval_results_across_run_str << result_across_archs_sstream.str();
@@ -238,7 +238,7 @@ std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
   //example where this could be the case is baseline data that is used for comparison with other runs
   for (auto run_names_iter = run_names.begin(); run_names_iter != run_names.end();)
   {
-    std::filesystem::path run_speedup_fp = 
+    const std::filesystem::path run_speedup_fp = 
       imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
       (std::string(*run_names_iter) + '_' + std::string(run_eval::kSpeedupsDescFileName) +
         std::string(run_eval::kCsvFileExtension));

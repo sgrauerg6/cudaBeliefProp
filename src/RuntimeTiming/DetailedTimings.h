@@ -56,7 +56,8 @@ public:
    * 
    * @param timing_segment_names 
    */
-  explicit DetailedTimings(const std::unordered_map<T, std::string_view>& timing_segment_names);
+  explicit DetailedTimings(
+    const std::unordered_map<T, std::string_view>& timing_segment_names);
 
   /**
    * @brief Reset all timings
@@ -76,7 +77,10 @@ public:
    * @param timing_segment 
    * @param segment_time 
    */
-  void AddTiming(const T timing_segment, const std::chrono::duration<double>& segment_time) {
+  void AddTiming(
+    const T timing_segment,
+    const std::chrono::duration<double>& segment_time)
+  {
     segment_timings_[timing_segment].push_back(segment_time);
   }
 
