@@ -174,7 +174,9 @@ protected:
       //since these runs results are in output
       //applies to all runs except for "test parameter" runs
       RunData curr_run_data;
-      if (curr_run_type != RunType::TEST_PARAMS) {
+      if ((curr_run_type != RunType::TEST_PARAMS) ||
+          (*p_params_iter == default_p_params))
+      {
         //add input and parameters data for specific benchmark to current run data
         curr_run_data.AddDataWHeader(
           std::string(run_eval::kInputIdxHeader),
