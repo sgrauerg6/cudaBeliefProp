@@ -214,6 +214,9 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
       return {};
     }
 
+    //get references to disparity map and run timings from bp output
+    const auto& [bp_disparity_map, bp_run_timings] = *bp_stereo_output;
+
     //get and store end timepoint of bp run for computation of total runtime
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalBp][1] =
       std::chrono::system_clock::now();
@@ -222,7 +225,7 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
 
     //transfer the disparity map estimation on the device to the host for output
     run_bp_on_device.mem_management_images->TransferDataFromDeviceToHost(
-      output_disparity_map.PointerToPixelsStart(), bp_stereo_output->first, tot_num_pixels_images);
+      output_disparity_map.PointerToPixelsStart(), bp_disparity_map, tot_num_pixels_images);
 
     //compute timings for each portion of interest and add to vector timings
     runtime_start_end_timings[beliefprop::Runtime_Type::kTotalWithTransfer][1] =
@@ -236,10 +239,10 @@ std::optional<beliefprop::BpRunOutput> RunBpOnStereoSet<T, DISP_VALS, ACCELERATI
     });
 
     //add bp timings from current run to overall timings
-    detailed_bp_timings.AddToCurrentTimings(bp_stereo_output->second);
+    detailed_bp_timings.AddToCurrentTimings(bp_run_timings);
 
     //free the space allocated to the resulting disparity map and smoothed images on the computation device
-    run_bp_on_device.mem_management_images->FreeMemoryOnDevice(bp_stereo_output->first);
+    run_bp_on_device.mem_management_images->FreeMemoryOnDevice(bp_disparity_map);
     for (auto& smoothed_image : smoothed_images) {
       run_bp_on_device.mem_management_images->FreeMemoryOnDevice(smoothed_image);
     }

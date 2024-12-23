@@ -114,13 +114,11 @@ std::map<InputSignature, std::string> RunResultsSpeedups::InputsToKeyVal(std::st
   std::map<InputSignature, std::string> input_sig_to_key_val;
   if (input_sig_to_run_data_) {
     //get input "signature" for run mapped to corresponding key value for each run on input
-    for (auto input_sig_to_data_iter = input_sig_to_run_data_->begin();
-         input_sig_to_data_iter != input_sig_to_run_data_->end();
-         input_sig_to_data_iter++)
+    for (const auto& [input_sig, run_data] : *input_sig_to_run_data_)
     {
       //add mapping of key value to corresponding input signature
       input_sig_to_key_val.insert(
-          {input_sig_to_data_iter->first, input_sig_to_data_iter->second.at(std::string(key))});
+        {input_sig, run_data.at(std::string(key))});
     }
   }
 

@@ -64,10 +64,12 @@ void EvaluateAcrossRuns::operator()(
   std::map<std::string, std::map<InputSignature, std::string>> input_to_runtime_across_archs;
   std::map<InputSignature, std::vector<std::string>> inputs_to_params_disp_ordered;
   for (const auto& [run_name, run_results] : run_results_by_name) {
-    speedup_results_name_to_data[run_name] =
-      run_results.Speedups();
-    input_to_runtime_across_archs[run_name] =
-      run_results.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader);
+    speedup_results_name_to_data.insert(
+      {run_name,
+       run_results.Speedups()});
+    input_to_runtime_across_archs.insert(
+      {run_name,
+       run_results.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader)});
     const auto& inputs_to_runtimes = run_results.InputsToKeyVal(
       run_eval::kOptimizedRuntimeHeader);
     //go through inputs for current run results
@@ -176,7 +178,6 @@ void EvaluateAcrossRuns::operator()(
   //write average speedup results for each run that correspond to a number of
   //different evaluations of runtimes compared to a baseline
   result_across_archs_sstream << "Average Speedups" << std::endl;
-  const std::string first_run_name = speedup_results_name_to_data.cbegin()->first;
   for (const auto& speedup_header : speedup_headers_eval) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
