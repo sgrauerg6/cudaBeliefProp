@@ -105,9 +105,9 @@ for each stereo set, and is run up to 15 times in each configuration for
 accurate benchmarking with median runtimes used in evaluation. As a result,
 it takes awhile to run the full evaluation. For quicker results, can limit the
 number of stereo sets used, datatypes used in evaluation, optimization options,
-templated disparity count options, and number of runs for each configuration
-by enabling defines in the common.mk file that are included in the Makefile
-for each implementation.
+templated disparity count options, alternate implementation run settings, and
+number of runs for each configuration by enabling defines in the common.mk file
+that are included in the Makefile for each implementation.
 
 3.  If running optimized CPU implementation on x86 CPU, navigate to the folder 
     beliefprop/LinuxMakeAndRunBPOptimizedCPU.
