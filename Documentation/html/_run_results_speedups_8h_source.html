@@ -115,18 +115,18 @@ $(document).ready(function(){initNavTree('_run_results_speedups_8h_source.html',
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_run_results_speedups.html">RunResultsSpeedups</a> {</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">const</span> std::filesystem::path&amp; imp_results_file_path,</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">const</span> std::string&amp; run_name);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(<span class="keyword">const</span> std::filesystem::path&amp; run_results_file_path);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">explicit</span> <a class="code" href="class_run_results_speedups.html#abfaa82cd1582d3eed0c866c832cbae78">RunResultsSpeedups</a>(<span class="keyword">const</span> std::filesystem::path&amp; run_results_file_path);</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
 <div class="line"><a name="l00067"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">   67</a></span>&#160;  std::map&lt;std::string, std::vector&lt;std::string&gt;&gt; <a class="code" href="class_run_results_speedups.html#af16114eb72a5997f72d8f84bdcc8d279">Speedups</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_.value().first;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_-&gt;first;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  }</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">   76</a></span>&#160;  std::vector&lt;std::string&gt; <a class="code" href="class_run_results_speedups.html#a2e0c77627269d9e30411a822dd4fe871">SpeedupHeadersOrder</a>()<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_.value().second;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordflow">return</span> speedup_header_to_result_speedup_order_-&gt;second;</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;  }</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  std::map&lt;InputSignature, std::string&gt; <a class="code" href="class_run_results_speedups.html#ac40c246ed0b8535ce88f300b120e8e0f">InputsToKeyVal</a>(std::string_view key) <span class="keyword">const</span>;</div>

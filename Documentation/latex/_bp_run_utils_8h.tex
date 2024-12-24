@@ -8,15 +8,20 @@ File with namespace for enums, constants, structures, and functions specific to 
 {\ttfamily \#include $<$string$>$}\newline
 {\ttfamily \#include $<$string\+\_\+view$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$limits$>$}\newline
+{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings\+Consts\+Enums.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Type\+Constraints.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
-Include dependency graph for Bp\+Run\+Utils.\+h\+:\nopagebreak
+Include dependency graph for Bp\+Run\+Utils.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{_bp_run_utils_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -35,13 +40,15 @@ unsigned int \mbox{\hyperlink{namespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281e
 \begin{DoxyCompactList}\small\item\em Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number of disparity values since implementation takes longer in those case, so there is likely less variance between runs and therefore less need to have as many runs. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}{beliefprop\+::\+Run\+Settings}} ()
 \begin{DoxyCompactList}\small\item\em Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for output. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}{beliefprop\+::\+Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\bool \mbox{\hyperlink{namespacebeliefprop_a807f65eef94c2acca5c49987e0eaa049}{beliefprop\+::\+Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int data\+\_\+bytes\+\_\+align\+\_\+width, unsigned int padded\+\_\+width\+\_\+data)
 \begin{DoxyCompactList}\small\item\em Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \doxysubsection*{Variables}
 \begin{DoxyCompactItemize}
 \item 
-constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{beliefprop\+::k\+Inf\+Bp}} \{65504\}
-\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const T \mbox{\hyperlink{namespacebeliefprop_a9d4a281c7c67e65e7e483afdb337047d}{beliefprop\+::k\+High\+Val\+Bp}} \{std\+::numeric\+\_\+limits$<$T$>$\+::max()\}
+\begin{DoxyCompactList}\small\item\em High value for type to use if initializing to \char`\"{}high\char`\"{} value. \end{DoxyCompactList}\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ae99198778a9119fe1ee9f9945b8645d3}{beliefprop\+::k\+High\+Val\+Bp\+Kernel}} \{32000.\+0f\}
+\begin{DoxyCompactList}\small\item\em High value as used in kernel currently hard-\/coded to be below maximum short value of 32767. \end{DoxyCompactList}\item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}{beliefprop\+::k\+Use\+Opt\+GPUMem\+Management}} \{true\}
 \item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}{beliefprop\+::k\+Optimized\+Indexing\+Setting}} \{true\}

@@ -12,7 +12,7 @@ Class to run and evaluate implementation(s) of an algorithm using multiple setti
 \doxysubsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-void \mbox{\hyperlink{class_run_imp_mult_types_accels_aa25668e889f188b4fc1153f5a3e609c4}{operator()}} (const std\+::map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_run_imp_mult_inputs}{Run\+Imp\+Mult\+Inputs}} $>$$>$ \&run\+\_\+benchmark\+\_\+imps\+\_\+by\+\_\+acc\+\_\+setting, const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_evaluate_imp_results}{Evaluate\+Imp\+Results}} $>$ eval\+Results\+Ptr) const
+void \mbox{\hyperlink{class_run_imp_mult_types_accels_aa5cc09b6bc095338a6e566d3be24b168}{operator()}} (const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_run_imp_mult_inputs}{Run\+Imp\+Mult\+Inputs}} $>$$>$ \&run\+\_\+benchmark\+\_\+imps\+\_\+w\+\_\+acc, const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&run\+\_\+imp\+\_\+settings, std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_evaluate_imp_results}{Evaluate\+Imp\+Results}} $>$ eval\+Results\+Ptr) const
 \begin{DoxyCompactList}\small\item\em Run and evaluate benchmark using multiple datatypes, inputs, and implementations if available. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
@@ -24,11 +24,11 @@ Definition at line 45 of file Run\+Imp\+Mult\+Types\+Accels.\+h.
 
 
 \doxysubsection{Member Function Documentation}
-\mbox{\Hypertarget{class_run_imp_mult_types_accels_aa25668e889f188b4fc1153f5a3e609c4}\label{class_run_imp_mult_types_accels_aa25668e889f188b4fc1153f5a3e609c4}} 
+\mbox{\Hypertarget{class_run_imp_mult_types_accels_aa5cc09b6bc095338a6e566d3be24b168}\label{class_run_imp_mult_types_accels_aa5cc09b6bc095338a6e566d3be24b168}} 
 \index{RunImpMultTypesAccels@{RunImpMultTypesAccels}!operator()@{operator()}}
 \index{operator()@{operator()}!RunImpMultTypesAccels@{RunImpMultTypesAccels}}
 \doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
-{\footnotesize\ttfamily void Run\+Imp\+Mult\+Types\+Accels\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::map$<$ \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{run\+\_\+environment\+::\+Acc\+Setting}}, std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_run_imp_mult_inputs}{Run\+Imp\+Mult\+Inputs}} $>$$>$ \&}]{run\+\_\+benchmark\+\_\+imps\+\_\+by\+\_\+acc\+\_\+setting,  }\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings,  }\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_evaluate_imp_results}{Evaluate\+Imp\+Results}} $>$}]{eval\+Results\+Ptr }\end{DoxyParamCaption}) const}
+{\footnotesize\ttfamily void Run\+Imp\+Mult\+Types\+Accels\+::operator() (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{class_run_imp_mult_inputs}{Run\+Imp\+Mult\+Inputs}} $>$$>$ \&}]{run\+\_\+benchmark\+\_\+imps\+\_\+w\+\_\+acc,  }\item[{const \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{run\+\_\+environment\+::\+Run\+Imp\+Settings}} \&}]{run\+\_\+imp\+\_\+settings,  }\item[{std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{class_evaluate_imp_results}{Evaluate\+Imp\+Results}} $>$}]{eval\+Results\+Ptr }\end{DoxyParamCaption}) const}
 
 
 
@@ -36,7 +36,7 @@ Run and evaluate benchmark using multiple datatypes, inputs, and implementations
 
 
 \begin{DoxyParams}{Parameters}
-{\em run\+\_\+benchmark\+\_\+imps\+\_\+by\+\_\+acc\+\_\+setting} & \\
+{\em run\+\_\+benchmark\+\_\+imps\+\_\+w\+\_\+acc} & \\
 \hline
 {\em run\+\_\+imp\+\_\+settings} & \\
 \hline
@@ -47,6 +47,14 @@ Run and evaluate benchmark using multiple datatypes, inputs, and implementations
 
 Definition at line 31 of file Run\+Imp\+Mult\+Types\+Accels.\+cpp.
 
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_run_imp_mult_types_accels_aa5cc09b6bc095338a6e566d3be24b168_cgraph}
+\end{center}
+\end{figure}
 
 
 The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}

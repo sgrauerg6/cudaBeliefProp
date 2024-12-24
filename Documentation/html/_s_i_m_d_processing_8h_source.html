@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('_s_i_m_d_processing_8h_source.html',''
 <div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;};</div>
 <div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
 <div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="comment">//headers to include differ depending on architecture and CPU vectorization setting</span></div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">#ifdef COMPILING_FOR_ARM</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">#if defined(COMPILING_FOR_ARM)</span></div>
 <div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_a_r_m_template_sp_functs_8h.html">ARMTemplateSpFuncts.h</a>&quot;</span></div>
 <div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
 <div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="preprocessor">#if (CPU_VECTORIZATION_DEFINE == NEON_DEFINE)</span></div>

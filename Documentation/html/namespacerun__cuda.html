@@ -105,12 +105,12 @@ Variables</h2></td></tr>
 <tr class="separator:a22dba15c8443a5912ae124644ed3618e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae961a381430c465b5db8e1f45f13e7a3"><td class="memItemLeft" align="right" valign="top">constexpr std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__cuda.html#ae961a381430c465b5db8e1f45f13e7a3">kCUDARuntimeHeader</a> {&quot;Cuda Runtime Version&quot;}</td></tr>
 <tr class="separator:ae961a381430c465b5db8e1f45f13e7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ea31d071eef0f90d7808a41ca2980ed"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; std::array&lt; unsigned int, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__cuda.html#a0ea31d071eef0f90d7808a41ca2980ed">kParallelParameterOptions</a></td></tr>
-<tr class="memdesc:a0ea31d071eef0f90d7808a41ca2980ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation.  <a href="namespacerun__cuda.html#a0ea31d071eef0f90d7808a41ca2980ed">More...</a><br /></td></tr>
-<tr class="separator:a0ea31d071eef0f90d7808a41ca2980ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60dce0a5f00eb5798909fdc56415ba3f"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; unsigned int, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__cuda.html#a60dce0a5f00eb5798909fdc56415ba3f">kParallelParamsDefault</a> {{32, 4}}</td></tr>
 <tr class="memdesc:a60dce0a5f00eb5798909fdc56415ba3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation)  <a href="namespacerun__cuda.html#a60dce0a5f00eb5798909fdc56415ba3f">More...</a><br /></td></tr>
 <tr class="separator:a60dce0a5f00eb5798909fdc56415ba3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7141e927caa5a74cbbb2c71de520dd21"><td class="memItemLeft" align="right" valign="top">const std::set&lt; std::array&lt; unsigned int, 2 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacerun__cuda.html#a7141e927caa5a74cbbb2c71de520dd21">kParallelParameterAltOptions</a></td></tr>
+<tr class="memdesc:a7141e927caa5a74cbbb2c71de520dd21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parallel parameter alternative options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation OK to include default parallel parameters in alternative options but not required.  <a href="namespacerun__cuda.html#a7141e927caa5a74cbbb2c71de520dd21">More...</a><br /></td></tr>
+<tr class="separator:a7141e927caa5a74cbbb2c71de520dd21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace with constants and functions to get CUDA device properties as well as default and test parallel parameters to use in CUDA implementation run optimization. </p>
@@ -139,7 +139,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00056">56</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00057">57</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -182,7 +182,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00054">54</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00055">55</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
 
 </div>
 </div>
@@ -206,7 +206,7 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00053">53</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00054">54</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
 
 </div>
 </div>
@@ -230,18 +230,18 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00052">52</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00053">53</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
 
 </div>
 </div>
-<a id="a0ea31d071eef0f90d7808a41ca2980ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ea31d071eef0f90d7808a41ca2980ed">&#9670;&nbsp;</a></span>kParallelParameterOptions</h2>
+<a id="a7141e927caa5a74cbbb2c71de520dd21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7141e927caa5a74cbbb2c71de520dd21">&#9670;&nbsp;</a></span>kParallelParameterAltOptions</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt;std::array&lt;unsigned int, 2&gt; &gt; run_cuda::kParallelParameterOptions</td>
+          <td class="memname">const std::set&lt;std::array&lt;unsigned int, 2&gt; &gt; run_cuda::kParallelParameterAltOptions</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -251,9 +251,9 @@ Here is the caller graph for this function:</div>
 <div class="line">  {128, 1}, {128, 2}, {256, 1}, {32, 10}, {32, 12}, {32, 14}, {32, 16},</div>
 <div class="line">  {64, 5}, {64, 6}, {64, 7}, {64, 8}, {128, 3}, {128, 4}, {256, 2}}</div>
 </div><!-- fragment -->
-<p>Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation. </p>
+<p>Parallel parameter alternative options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation OK to include default parallel parameters in alternative options but not required. </p>
 
-<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00081">81</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00101">101</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +279,7 @@ Here is the caller graph for this function:</div>
 
 <p>Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation) </p>
 
-<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00090">90</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_run_c_u_d_a_settings_8h_source.html#l00078">78</a> of file <a class="el" href="_run_c_u_d_a_settings_8h_source.html">RunCUDASettings.h</a>.</p>
 
 </div>
 </div>

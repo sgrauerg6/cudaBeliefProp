@@ -126,7 +126,7 @@ unsigned int \mbox{\hyperlink{namespacebeliefprop_ab39f3c4ff5ad8ea07d7b25ca0281e
 \begin{DoxyCompactList}\small\item\em Get number of stereo runs when evaluating implementation Perform less stereo runs if greater number of disparity values since implementation takes longer in those case, so there is likely less variance between runs and therefore less need to have as many runs. \end{DoxyCompactList}\item 
 \mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacebeliefprop_a508989fdb1d3512a0d3232d92ad094b4}{Run\+Settings}} ()
 \begin{DoxyCompactList}\small\item\em Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object for output. \end{DoxyCompactList}\item 
-bool \mbox{\hyperlink{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}{Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int num\+\_\+data\+\_\+align\+\_\+width, unsigned int div\+Padded\+Ch\+Board\+Width\+For\+Align)
+{\footnotesize template$<$Run\+Data\+\_\+t T$>$ }\\bool \mbox{\hyperlink{namespacebeliefprop_a807f65eef94c2acca5c49987e0eaa049}{Memory\+Aligned\+At\+Data\+Start}} (unsigned int x\+\_\+val\+\_\+data\+\_\+start, unsigned int simd\+\_\+data\+\_\+size, unsigned int data\+\_\+bytes\+\_\+align\+\_\+width, unsigned int padded\+\_\+width\+\_\+data)
 \begin{DoxyCompactList}\small\item\em Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start for SIMD loads/stores that require alignment. \end{DoxyCompactList}\item 
 {\footnotesize template$<$Run\+Data\+\_\+t T, unsigned int DISP\+\_\+\+VALS$>$ }\\\mbox{\hyperlink{_utility_functs_8h_a27d46e82335417157a0940d32a3fabfc}{ARCHITECTURE\+\_\+\+ADDITION}} void \mbox{\hyperlink{namespacebeliefprop_ae68eab6f8bff8879cdf5eef4d4fe6fa8}{Dt\+Stereo}} (T f\mbox{[}DISP\+\_\+\+VALS\mbox{]})
 \begin{DoxyCompactList}\small\item\em function retrieve the minimum value at each 1-\/d disparity value in O(n) time using Felzenszwalb\textquotesingle{}s method (see \char`\"{}\+Efficient Belief Propagation for Early Vision\char`\"{}) \end{DoxyCompactList}\item 
@@ -235,8 +235,10 @@ constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a78e00715ab8b6953e5e
 \begin{DoxyCompactList}\small\item\em Number of message arrays in each checkerboard part. \end{DoxyCompactList}\item 
 constexpr unsigned int \mbox{\hyperlink{namespacebeliefprop_a6651cc44f605190082858f8c391e417c}{k\+Num\+Kernels}} \{6\}
 \item 
-constexpr float \mbox{\hyperlink{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}{k\+Inf\+Bp}} \{65504\}
-\begin{DoxyCompactList}\small\item\em Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T $>$ }\\const T \mbox{\hyperlink{namespacebeliefprop_a9d4a281c7c67e65e7e483afdb337047d}{k\+High\+Val\+Bp}} \{std\+::numeric\+\_\+limits$<$T$>$\+::max()\}
+\begin{DoxyCompactList}\small\item\em High value for type to use if initializing to \char`\"{}high\char`\"{} value. \end{DoxyCompactList}\item 
+constexpr float \mbox{\hyperlink{namespacebeliefprop_ae99198778a9119fe1ee9f9945b8645d3}{k\+High\+Val\+Bp\+Kernel}} \{32000.\+0f\}
+\begin{DoxyCompactList}\small\item\em High value as used in kernel currently hard-\/coded to be below maximum short value of 32767. \end{DoxyCompactList}\item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a242b1649163c9f2d3c26b4dad2b84c08}{k\+Use\+Opt\+GPUMem\+Management}} \{true\}
 \item 
 constexpr bool \mbox{\hyperlink{namespacebeliefprop_a04b1a93f3c2a19cd5d2ca8f8e36a0384}{k\+Optimized\+Indexing\+Setting}} \{true\}
@@ -1001,13 +1003,6 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacebeliefprop_aa2c2c16cad2efdda7495ac8334ef7b4c_icgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18}\label{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18}} 
 \index{beliefprop@{beliefprop}!InitializeMessageValsToDefaultKernelPixel@{InitializeMessageValsToDefaultKernelPixel}}
 \index{InitializeMessageValsToDefaultKernelPixel@{InitializeMessageValsToDefaultKernelPixel}!beliefprop@{beliefprop}}
@@ -1064,11 +1059,12 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{namespacebeliefprop_a69d6c06ed54958dc8377f79d65fb0d18_cgraph}
 \end{center}
 \end{figure}
-\mbox{\Hypertarget{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}\label{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990}} 
+\mbox{\Hypertarget{namespacebeliefprop_a807f65eef94c2acca5c49987e0eaa049}\label{namespacebeliefprop_a807f65eef94c2acca5c49987e0eaa049}} 
 \index{beliefprop@{beliefprop}!MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}}
 \index{MemoryAlignedAtDataStart@{MemoryAlignedAtDataStart}!beliefprop@{beliefprop}}
 \doxysubsubsection{\texorpdfstring{MemoryAlignedAtDataStart()}{MemoryAlignedAtDataStart()}}
-{\footnotesize\ttfamily bool beliefprop\+::\+Memory\+Aligned\+At\+Data\+Start (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+data\+\_\+start,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{unsigned int}]{num\+\_\+data\+\_\+align\+\_\+width,  }\item[{unsigned int}]{div\+Padded\+Ch\+Board\+Width\+For\+Align }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+{\footnotesize\ttfamily template$<$Run\+Data\+\_\+t T$>$ \\
+bool beliefprop\+::\+Memory\+Aligned\+At\+Data\+Start (\begin{DoxyParamCaption}\item[{unsigned int}]{x\+\_\+val\+\_\+data\+\_\+start,  }\item[{unsigned int}]{simd\+\_\+data\+\_\+size,  }\item[{unsigned int}]{data\+\_\+bytes\+\_\+align\+\_\+width,  }\item[{unsigned int}]{padded\+\_\+width\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
 
 
 
@@ -1080,9 +1076,9 @@ Inline function to check if data is aligned at x\+\_\+val\+\_\+data\+\_\+start f
 \hline
 {\em simd\+\_\+data\+\_\+size} & \\
 \hline
-{\em num\+\_\+data\+\_\+align\+\_\+width} & \\
+{\em data\+\_\+bytes\+\_\+align\+\_\+width} & \\
 \hline
-{\em div\+Padded\+Ch\+Board\+Width\+For\+Align} & \\
+{\em padded\+\_\+width\+\_\+data} & \\
 \hline
 \end{DoxyParams}
 \begin{DoxyReturn}{Returns}
@@ -1092,15 +1088,8 @@ false
 \end{DoxyReturn}
 
 
-Definition at line 115 of file Bp\+Run\+Utils.\+h.
+Definition at line 153 of file Bp\+Run\+Utils.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacebeliefprop_a473a4cdee42051ee8890136a8c381990_icgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}\label{namespacebeliefprop_aba6e83ae8b9a208b34c4323f8c78f301}} 
 \index{beliefprop@{beliefprop}!MsgStereo@{MsgStereo}}
 \index{MsgStereo@{MsgStereo}!beliefprop@{beliefprop}}
@@ -1175,7 +1164,7 @@ unsigned int
 \end{DoxyReturn}
 
 
-Definition at line 54 of file Bp\+Run\+Utils.\+h.
+Definition at line 91 of file Bp\+Run\+Utils.\+h.
 
 Here is the caller graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1251,7 +1240,8 @@ Retrieve the current 1-\/D index value of the given point at the given disparity
 
 Definition at line 72 of file Shared\+Bp\+Util\+Functs.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -1274,13 +1264,6 @@ Here is the call graph for this function\+:\nopagebreak
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_cgraph}
-\end{center}
-\end{figure}
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacebeliefprop_a0d76573309b4b64236efc8c471b7831a_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacebeliefprop_ac36b5b646e6c8bc15b731b2ec71325eb}\label{namespacebeliefprop_ac36b5b646e6c8bc15b731b2ec71325eb}} 
@@ -1430,13 +1413,6 @@ Here is the call graph for this function\+:\nopagebreak
 \includegraphics[width=350pt]{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_cgraph}
 \end{center}
 \end{figure}
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacebeliefprop_a62cc29e7b1d8257b0d3f4e85ad7cd9e0_icgraph}
-\end{center}
-\end{figure}
 \mbox{\Hypertarget{namespacebeliefprop_a7b7d67f60b6b77a21c95aa186d3d15c0}\label{namespacebeliefprop_a7b7d67f60b6b77a21c95aa186d3d15c0}} 
 \index{beliefprop@{beliefprop}!RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}}
 \index{RunBPIterationUsingCheckerboardUpdatesKernel@{RunBPIterationUsingCheckerboardUpdatesKernel}!beliefprop@{beliefprop}}
@@ -1463,7 +1439,7 @@ Retrieve run settings as a \mbox{\hyperlink{class_run_data}{Run\+Data}} object f
 \end{DoxyReturn}
 
 
-Definition at line 90 of file Bp\+Run\+Utils.\+h.
+Definition at line 127 of file Bp\+Run\+Utils.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -1522,11 +1498,12 @@ Checks if the current point is within the image bounds Assumed that input x/y va
 
 Definition at line 52 of file Shared\+Bp\+Util\+Functs.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[height=550pt]{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f_icgraph}
+\includegraphics[width=350pt]{namespacebeliefprop_aae2269b7359108e636eebcb74a557e7f_icgraph}
 \end{center}
 \end{figure}
 
@@ -1540,7 +1517,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 78 of file Bp\+Run\+Utils.\+h.
+Definition at line 115 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a55bf926d18288a14ddc6c20014d23c22}\label{namespacebeliefprop_a55bf926d18288a14ddc6c20014d23c22}} 
 \index{beliefprop@{beliefprop}!kAllocateFreeMemOutsideRunsHeader@{kAllocateFreeMemOutsideRunsHeader}}
@@ -1550,7 +1527,7 @@ Definition at line 78 of file Bp\+Run\+Utils.\+h.
 
 
 
-Definition at line 83 of file Bp\+Run\+Utils.\+h.
+Definition at line 120 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}\label{namespacebeliefprop_af80e6a05a686d8446e8a065745a61983}} 
 \index{beliefprop@{beliefprop}!kAvgRMSErrorHeader@{kAvgRMSErrorHeader}}
@@ -1835,6 +1812,35 @@ Definition at line 80 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
 Definition at line 40 of file Bp\+File\+Handling\+Consts.\+h.
 
+\mbox{\Hypertarget{namespacebeliefprop_a9d4a281c7c67e65e7e483afdb337047d}\label{namespacebeliefprop_a9d4a281c7c67e65e7e483afdb337047d}} 
+\index{beliefprop@{beliefprop}!kHighValBp@{kHighValBp}}
+\index{kHighValBp@{kHighValBp}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kHighValBp}{kHighValBp}}
+{\footnotesize\ttfamily template$<$typename T $>$ \\
+const T beliefprop\+::k\+High\+Val\+Bp \{std\+::numeric\+\_\+limits$<$T$>$\+::max()\}}
+
+
+
+High value for type to use if initializing to \char`\"{}high\char`\"{} value. 
+
+
+
+Definition at line 47 of file Bp\+Run\+Utils.\+h.
+
+\mbox{\Hypertarget{namespacebeliefprop_ae99198778a9119fe1ee9f9945b8645d3}\label{namespacebeliefprop_ae99198778a9119fe1ee9f9945b8645d3}} 
+\index{beliefprop@{beliefprop}!kHighValBpKernel@{kHighValBpKernel}}
+\index{kHighValBpKernel@{kHighValBpKernel}!beliefprop@{beliefprop}}
+\doxysubsubsection{\texorpdfstring{kHighValBpKernel}{kHighValBpKernel}}
+{\footnotesize\ttfamily constexpr float beliefprop\+::k\+High\+Val\+Bp\+Kernel \{32000.\+0f\}\hspace{0.3cm}{\ttfamily [constexpr]}}
+
+
+
+High value as used in kernel currently hard-\/coded to be below maximum short value of 32767. 
+
+
+
+Definition at line 51 of file Bp\+Run\+Utils.\+h.
+
 \mbox{\Hypertarget{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}\label{namespacebeliefprop_af74582b75acb290b833eb6158956cbd9}} 
 \index{beliefprop@{beliefprop}!kImageHeightHeader@{kImageHeightHeader}}
 \index{kImageHeightHeader@{kImageHeightHeader}!beliefprop@{beliefprop}}
@@ -1854,20 +1860,6 @@ Definition at line 41 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
 
 
 Definition at line 40 of file Bp\+Evaluation\+Stereo\+Sets.\+h.
-
-\mbox{\Hypertarget{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}\label{namespacebeliefprop_ad5f37d5f7bdc89b098a8f0589f631001}} 
-\index{beliefprop@{beliefprop}!kInfBp@{kInfBp}}
-\index{kInfBp@{kInfBp}!beliefprop@{beliefprop}}
-\doxysubsubsection{\texorpdfstring{kInfBp}{kInfBp}}
-{\footnotesize\ttfamily constexpr float beliefprop\+::k\+Inf\+Bp \{65504\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Float value of \char`\"{}infinity\char`\"{} that works with half-\/precision. 
-
-
-
-Definition at line 43 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a7ff00475fff3ace85a2f2dfaf3344fad}\label{namespacebeliefprop_a7ff00475fff3ace85a2f2dfaf3344fad}} 
 \index{beliefprop@{beliefprop}!kInImagePossExtensions@{kInImagePossExtensions}}
@@ -1953,7 +1945,7 @@ Definition at line 48 of file Disparity\+Map\+Evaluation.\+h.
 
 
 
-Definition at line 81 of file Bp\+Run\+Utils.\+h.
+Definition at line 118 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a5f60d2312e165b39e28a446bb19e89d1}\label{namespacebeliefprop_a5f60d2312e165b39e28a446bb19e89d1}} 
 \index{beliefprop@{beliefprop}!kMemoryCoalescedBpDataHeader@{kMemoryCoalescedBpDataHeader}}
@@ -1963,7 +1955,7 @@ Definition at line 81 of file Bp\+Run\+Utils.\+h.
 
 
 
-Definition at line 82 of file Bp\+Run\+Utils.\+h.
+Definition at line 119 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}\label{namespacebeliefprop_ad208e095eadd27635c10a66bf4614660}} 
 \index{beliefprop@{beliefprop}!kNumBpItersHeader@{kNumBpItersHeader}}
@@ -2061,7 +2053,7 @@ Definition at line 44 of file Run\+Bp\+On\+Stereo\+Set\+Optimized\+CPU.\+h.
 
 
 
-Definition at line 77 of file Bp\+Run\+Utils.\+h.
+Definition at line 114 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_ae8b15fc96e016daddc0a21d238fd4733}\label{namespacebeliefprop_ae8b15fc96e016daddc0a21d238fd4733}} 
 \index{beliefprop@{beliefprop}!kOutDispImageNameBase@{kOutDispImageNameBase}}
@@ -2179,7 +2171,7 @@ Definition at line 57 of file Detailed\+Timing\+Bp\+Consts.\+h.
 
 
 
-Definition at line 76 of file Bp\+Run\+Utils.\+h.
+Definition at line 113 of file Bp\+Run\+Utils.\+h.
 
 \mbox{\Hypertarget{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}\label{namespacebeliefprop_a8672e8f5c1e0869b532fb037df9abc26}} 
 \index{beliefprop@{beliefprop}!kUseWeightedRGBToGrayscaleConversion@{kUseWeightedRGBToGrayscaleConversion}}

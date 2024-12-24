@@ -1,12 +1,11 @@
 <map id="run_environment::RunSettings" name="run_environment::RunSettings">
-<area shape="rect" id="node1" title="Generate RunData object that contains description header with corresponding value for each run settin..." alt="" coords="5,136,224,163"/>
-<area shape="rect" id="node2" href="$class_run_data.html#ae2642121388bb8f32b95eeeb498c7401" title="Add string data with header describing added data." alt="" coords="547,5,749,32"/>
-<area shape="rect" id="node3" href="$class_run_data.html#a938dd181b583b343480ad9294efff7fb" title="Append current RunData with input RunData." alt="" coords="302,107,469,133"/>
-<area shape="rect" id="node9" href="$namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda" title=" " alt="" coords="285,158,486,199"/>
-<area shape="rect" id="node10" href="$namespacerun__environment.html#a1531965e4d9740a8446833f2fa7e3163" title=" " alt="" coords="272,223,499,265"/>
-<area shape="rect" id="node4" href="$class_run_data.html#afbe69aa62856cc330c3848b712e32ea7" title="Get data corresponding to header as boolean Return null if data corresponds to a different data type." alt="" coords="555,56,741,83"/>
-<area shape="rect" id="node5" href="$class_run_data.html#af19b921e7fc7f0d30f78a3a4bf813197" title="Get data corresponding to header as double Return null if data corresponds to a different data type." alt="" coords="547,107,749,133"/>
-<area shape="rect" id="node6" href="$class_run_data.html#addf651aed946231dfc30634e42b3050c" title="Get data corresponding to header as a string Returns data as string regardless of underlying data typ..." alt="" coords="561,157,735,184"/>
-<area shape="rect" id="node7" href="$class_run_data.html#ab33fa60e663c99677c58fea09a0e33a6" title="Get data corresponding to header as unsigned int Return null if data corresponds to a different data ..." alt="" coords="557,208,739,235"/>
-<area shape="rect" id="node8" href="$class_run_data.html#a4c749ab4c1dd6fd5af50b40591094efe" title="Return data headers in order." alt="" coords="554,259,742,285"/>
+<area shape="rect" id="node1" title="Generate RunData object that contains description header with corresponding value for each run settin..." alt="" coords="5,107,224,133"/>
+<area shape="rect" id="node2" href="$class_run_data.html#ae2642121388bb8f32b95eeeb498c7401" title="Add string data with header describing added data." alt="" coords="521,5,724,32"/>
+<area shape="rect" id="node3" href="$class_run_data.html#a938dd181b583b343480ad9294efff7fb" title="Append current RunData with input RunData." alt="" coords="289,107,456,133"/>
+<area shape="rect" id="node9" href="$namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda" title=" " alt="" coords="272,158,473,199"/>
+<area shape="rect" id="node4" href="$class_run_data.html#afbe69aa62856cc330c3848b712e32ea7" title="Get data corresponding to header as boolean Return null if data corresponds to a different data type." alt="" coords="530,56,715,83"/>
+<area shape="rect" id="node5" href="$class_run_data.html#af19b921e7fc7f0d30f78a3a4bf813197" title="Get data corresponding to header as double Return null if data corresponds to a different data type." alt="" coords="521,107,724,133"/>
+<area shape="rect" id="node6" href="$class_run_data.html#addf651aed946231dfc30634e42b3050c" title="Get data corresponding to header as a string Returns data as string regardless of underlying data typ..." alt="" coords="535,157,710,184"/>
+<area shape="rect" id="node7" href="$class_run_data.html#ab33fa60e663c99677c58fea09a0e33a6" title="Get data corresponding to header as unsigned int Return null if data corresponds to a different data ..." alt="" coords="531,208,714,235"/>
+<area shape="rect" id="node8" href="$class_run_data.html#a4c749ab4c1dd6fd5af50b40591094efe" title="Return data headers in order." alt="" coords="529,259,717,285"/>
 </map>

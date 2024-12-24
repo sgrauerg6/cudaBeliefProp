@@ -19,10 +19,10 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_a22dba15c8
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_ae961a381430c465b5db8e1f45f13e7a3}{k\+CUDARuntime\+Header}} \{\char`\"{}Cuda Runtime Version\char`\"{}\}
 \item 
-const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}{k\+Parallel\+Parameter\+Options}}
-\begin{DoxyCompactList}\small\item\em Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation. \end{DoxyCompactList}\item 
 constexpr std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}{k\+Parallel\+Params\+Default}} \{\{32, 4\}\}
-\begin{DoxyCompactList}\small\item\em Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation) \end{DoxyCompactList}\item 
+const std\+::set$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cuda_a7141e927caa5a74cbbb2c71de520dd21}{k\+Parallel\+Parameter\+Alt\+Options}}
+\begin{DoxyCompactList}\small\item\em Parallel parameter alternative options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation OK to include default parallel parameters in alternative options but not required. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -37,7 +37,7 @@ Namespace with constants and functions to get CUDA device properties as well as 
 
 
 
-Definition at line 56 of file Run\+CUDASettings.\+h.
+Definition at line 57 of file Run\+CUDASettings.\+h.
 
 Here is the call graph for this function\+:\nopagebreak
 \begin{figure}[H]
@@ -64,7 +64,7 @@ Here is the caller graph for this function\+:\nopagebreak
 
 
 
-Definition at line 54 of file Run\+CUDASettings.\+h.
+Definition at line 55 of file Run\+CUDASettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cuda_a22dba15c8443a5912ae124644ed3618e}\label{namespacerun__cuda_a22dba15c8443a5912ae124644ed3618e}} 
 \index{run\_cuda@{run\_cuda}!kCUDAVersionHeader@{kCUDAVersionHeader}}
@@ -74,7 +74,7 @@ Definition at line 54 of file Run\+CUDASettings.\+h.
 
 
 
-Definition at line 53 of file Run\+CUDASettings.\+h.
+Definition at line 54 of file Run\+CUDASettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cuda_ad92742879f8cb076cc70d96dbb1af539}\label{namespacerun__cuda_ad92742879f8cb076cc70d96dbb1af539}} 
 \index{run\_cuda@{run\_cuda}!kOptimizeCUDADesc@{kOptimizeCUDADesc}}
@@ -84,13 +84,13 @@ Definition at line 53 of file Run\+CUDASettings.\+h.
 
 
 
-Definition at line 52 of file Run\+CUDASettings.\+h.
+Definition at line 53 of file Run\+CUDASettings.\+h.
 
-\mbox{\Hypertarget{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}\label{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}} 
-\index{run\_cuda@{run\_cuda}!kParallelParameterOptions@{kParallelParameterOptions}}
-\index{kParallelParameterOptions@{kParallelParameterOptions}!run\_cuda@{run\_cuda}}
-\doxysubsubsection{\texorpdfstring{kParallelParameterOptions}{kParallelParameterOptions}}
-{\footnotesize\ttfamily const std\+::vector$<$std\+::array$<$unsigned int, 2$>$ $>$ run\+\_\+cuda\+::k\+Parallel\+Parameter\+Options}
+\mbox{\Hypertarget{namespacerun__cuda_a7141e927caa5a74cbbb2c71de520dd21}\label{namespacerun__cuda_a7141e927caa5a74cbbb2c71de520dd21}} 
+\index{run\_cuda@{run\_cuda}!kParallelParameterAltOptions@{kParallelParameterAltOptions}}
+\index{kParallelParameterAltOptions@{kParallelParameterAltOptions}!run\_cuda@{run\_cuda}}
+\doxysubsubsection{\texorpdfstring{kParallelParameterAltOptions}{kParallelParameterAltOptions}}
+{\footnotesize\ttfamily const std\+::set$<$std\+::array$<$unsigned int, 2$>$ $>$ run\+\_\+cuda\+::k\+Parallel\+Parameter\+Alt\+Options}
 
 {\bfseries Initial value\+:}
 \begin{DoxyCode}{0}
@@ -103,11 +103,11 @@ Definition at line 52 of file Run\+CUDASettings.\+h.
 \end{DoxyCode}
 
 
-Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation. 
+Parallel parameter alternative options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation OK to include default parallel parameters in alternative options but not required. 
 
 
 
-Definition at line 81 of file Run\+CUDASettings.\+h.
+Definition at line 101 of file Run\+CUDASettings.\+h.
 
 \mbox{\Hypertarget{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}\label{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}} 
 \index{run\_cuda@{run\_cuda}!kParallelParamsDefault@{kParallelParamsDefault}}
@@ -121,5 +121,5 @@ Default thread block dimensions (which is what parallel parameters corresponds t
 
 
 
-Definition at line 90 of file Run\+CUDASettings.\+h.
+Definition at line 78 of file Run\+CUDASettings.\+h.
 

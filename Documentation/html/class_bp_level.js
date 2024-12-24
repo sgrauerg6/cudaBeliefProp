@@ -1,11 +1,11 @@
 var class_bp_level =
 [
-    [ "BpLevel", "class_bp_level.html#ac9134f0f24a35b6d00acd84e9126c8d9", null ],
-    [ "BpLevel", "class_bp_level.html#af59f68cc5c9d84ee83503317b9adc7c7", null ],
-    [ "CheckerboardWidthTargetDevice", "class_bp_level.html#addd2727f502726eec46beb1785a06d77", null ],
-    [ "LevelProperties", "class_bp_level.html#a2ebe06b467bae6692dd5bdb7a5d2e994", null ],
-    [ "NextBpLevel", "class_bp_level.html#a46e7d17a92bc59d27021eb53618eb5d1", null ],
-    [ "NumDataForAlignedMemoryAtLevel", "class_bp_level.html#ac0a3162ee744bed73cf4b93971613646", null ],
-    [ "NumDataInBpArrays", "class_bp_level.html#aae2bc8907d6b0c911f0d49dea231c670", null ],
-    [ "PaddedCheckerboardWidth", "class_bp_level.html#a84c686e46b46b1d5f7c178b1d9acaa24", null ]
+    [ "BpLevel", "class_bp_level.html#a369e556671f9e44ece9761086e4ccde4", null ],
+    [ "BpLevel", "class_bp_level.html#a73f3194887faf215b056311601e06b18", null ],
+    [ "CheckerboardWidthTargetDevice", "class_bp_level.html#aa08d95e4ce0647439a38bee59cf68306", null ],
+    [ "LevelProperties", "class_bp_level.html#a546d96e0009d22fa05403845bec98d42", null ],
+    [ "NextBpLevel", "class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07", null ],
+    [ "NumDataForAlignedMemoryAtLevel", "class_bp_level.html#ad6325cd5c3b66192ba6b4b3f489c9c2b", null ],
+    [ "NumDataInBpArrays", "class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b", null ],
+    [ "PaddedCheckerboardWidth", "class_bp_level.html#ad5b1ae253d5d0089e5f7acca96d6c895", null ]
 ];

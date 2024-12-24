@@ -7,9 +7,11 @@ Contains namespace with constants and functions to get CUDA device properties as
 
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
+{\ttfamily \#include $<$set$>$}\newline
 {\ttfamily \#include \char`\"{}Run\+Eval/\+Run\+Data.\+h\char`\"{}}\newline
 {\ttfamily \#include $<$cuda\+\_\+fp16.\+h$>$}\newline
-Include dependency graph for Run\+CUDASettings.\+h\+:\nopagebreak
+Include dependency graph for Run\+CUDASettings.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -47,10 +49,10 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_a22dba15c8
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cuda_ae961a381430c465b5db8e1f45f13e7a3}{run\+\_\+cuda\+::k\+CUDARuntime\+Header}} \{\char`\"{}Cuda Runtime Version\char`\"{}\}
 \item 
-const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cuda_a0ea31d071eef0f90d7808a41ca2980ed}{run\+\_\+cuda\+::k\+Parallel\+Parameter\+Options}}
-\begin{DoxyCompactList}\small\item\em Parallel parameter options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation. \end{DoxyCompactList}\item 
 constexpr std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cuda_a60dce0a5f00eb5798909fdc56415ba3f}{run\+\_\+cuda\+::k\+Parallel\+Params\+Default}} \{\{32, 4\}\}
-\begin{DoxyCompactList}\small\item\em Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation) \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default thread block dimensions (which is what parallel parameters corresponds to in CUDA implementation) \end{DoxyCompactList}\item 
+const std\+::set$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cuda_a7141e927caa5a74cbbb2c71de520dd21}{run\+\_\+cuda\+::k\+Parallel\+Parameter\+Alt\+Options}}
+\begin{DoxyCompactList}\small\item\em Parallel parameter alternative options to run to retrieve optimized parallel parameters in CUDA implementation Parallel parameter corresponds to thread block dimensions in CUDA implementation OK to include default parallel parameters in alternative options but not required. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -73,5 +75,5 @@ Copyright (c) 2024
 
 
 
-Definition at line 42 of file Run\+CUDASettings.\+h.
+Definition at line 43 of file Run\+CUDASettings.\+h.
 

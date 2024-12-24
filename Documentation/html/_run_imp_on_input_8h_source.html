@@ -112,173 +112,185 @@ $(document).ready(function(){initNavTree('_run_imp_on_input_8h_source.html','');
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &lt;array&gt;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_settings_8h.html">RunSettingsParams/RunSettings.h</a>&quot;</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_parallel_params_8h.html">RunSettingsParams/ParallelParams.h</a>&quot;</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_eval_consts_enums_8h.html">RunEval/RunEvalConstsEnums.h</a>&quot;</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_type_constraints_8h.html">RunEval/RunTypeConstraints.h</a>&quot;</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_evaluate_imp_aliases_8h.html">RunEval/EvaluateImpAliases.h</a>&quot;</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> NUM_INPUT&gt;</div>
-<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html">   51</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_run_imp_on_input.html">RunImpOnInput</a> {</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a8170bbd7503d68c37125350df0b3e9d9">   53</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="_evaluate_imp_aliases_8h.html#aae59d45d00750e48757e5a168e9ec6dc">MultRunData</a> <a class="code" href="class_run_imp_on_input.html#a8170bbd7503d68c37125350df0b3e9d9">operator()</a>(<span class="keyword">const</span> <a class="code" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a>&amp; run_imp_settings) = 0;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">   62</a></span>&#160;  <span class="keyword">virtual</span> std::shared_ptr&lt;ParallelParams&gt; <a class="code" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">SetUpParallelParams</a>(</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> <a class="code" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a>&amp; run_imp_settings) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">   71</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">InputAndParamsForCurrBenchmark</a>(<span class="keywordtype">bool</span> loop_iters_templated) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">   82</a></span>&#160;  <span class="keyword">virtual</span> std::optional&lt;RunData&gt; <a class="code" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">RunImpsAndCompare</a>(</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    std::shared_ptr&lt;ParallelParams&gt; parallel_params,</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">bool</span> run_opt_imp_only,</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">bool</span> run_imp_templated_loop_iters) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">   93</a></span>&#160;  <a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">InputAndParamsRunData</a>(<span class="keywordtype">bool</span> loop_iters_templated)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <a class="code" href="class_run_data.html">RunData</a> curr_run_data;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;      std::string(<a class="code" href="namespacerun__eval.html#a1bb38345922853340e189ff4e073bdf7">run_eval::kDatatypeHeader</a>),</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      std::string(<a class="code" href="namespacerun__environment.html#ab15f9538874f71da40e07434e820a1d7">run_environment::kDataSizeToNameMap</a>.at(<span class="keyword">sizeof</span>(T))));</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(run_environment::RunSettings&lt;OPT_IMP_ACCEL&gt;());</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      std::string(<a class="code" href="namespacerun__eval.html#aef29ac0eb3ad8078a51bc7612ee6863b">run_eval::kLoopItersTemplatedHeader</a>), loop_iters_templated);</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keywordflow">return</span> curr_run_data;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">  114</a></span>&#160;  MultRunData::mapped_type <a class="code" href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">RunEvalBenchmark</a>(</div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">const</span> <a class="code" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a>&amp; run_imp_settings,</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">bool</span> run_w_loop_iters_templated)<span class="keyword"> const</span></div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">  </span>{</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    MultRunData::mapped_type::value_type out_run_data;</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    <span class="keyword">enum class</span> RunType { ONLY_RUN, DEFAULT_PARAMS, OPTIMIZED_RUN, TEST_PARAMS };</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="comment">//set up parallel parameters for specific benchmark</span></div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    std::shared_ptr&lt;ParallelParams&gt; parallel_params = <a class="code" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">SetUpParallelParams</a>(run_imp_settings);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    <span class="comment">//if optimizing parallel parameters, parallel_params_vect contains parallel parameter settings to run</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="comment">//(and contains only the default parallel parameters if not)</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    std::vector&lt;std::array&lt;unsigned int, 2&gt;&gt; parallel_params_vect{</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;      run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#a1040ce93aa97fa38b4df8e687894f351">opt_parallel_params_setting</a>.first ? </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;      run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#aee8eb53207a93b657d487f81fba77608">p_params_default_opt_settings</a>.second :</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      std::vector&lt;std::array&lt;unsigned int, 2&gt;&gt;()};</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;      </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">//if optimizing parallel parameters, run BP for each parallel parameters option,</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="comment">//retrieve best parameters for each kernel or overall for the run,</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">//and then run BP with best found parallel parameters</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="comment">//if not optimizing parallel parameters, run BP once using default parallel parameters</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordflow">for</span> (<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> run_num = 0; run_num &lt; (parallel_params_vect.size() + 1); run_num++) {</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="comment">//initialize current run type to specify if current run is only run, run with</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="comment">//default params, test params run, or final run with optimized params</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;      RunType curr_run_type{RunType::TEST_PARAMS};</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;      <span class="keywordflow">if</span> (!run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#a1040ce93aa97fa38b4df8e687894f351">opt_parallel_params_setting</a>.first) {</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        curr_run_type = RunType::ONLY_RUN;</div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;      }</div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (run_num == parallel_params_vect.size()) {</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;        curr_run_type = RunType::OPTIMIZED_RUN;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      }</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="comment">//get and set parallel parameters for current run if not final run that uses optimized parameters</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      std::array&lt;unsigned int, 2&gt; p_params_curr_run{run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#aee8eb53207a93b657d487f81fba77608">p_params_default_opt_settings</a>.first};</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      <span class="keywordflow">if</span> (curr_run_type == RunType::ONLY_RUN) {</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        parallel_params-&gt;SetParallelDims(run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#aee8eb53207a93b657d487f81fba77608">p_params_default_opt_settings</a>.first);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;      }</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (curr_run_type == RunType::TEST_PARAMS) {</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        <span class="comment">//set parallel parameters to parameters corresponding to current run for each BP processing level</span></div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        p_params_curr_run = parallel_params_vect[run_num];</div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;        parallel_params-&gt;SetParallelDims(p_params_curr_run);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;        <span class="keywordflow">if</span> (p_params_curr_run == run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#aee8eb53207a93b657d487f81fba77608">p_params_default_opt_settings</a>.first) {</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;          <span class="comment">//set run type to default parameters if current run uses default parameters</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;          curr_run_type = RunType::DEFAULT_PARAMS;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        }</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;      }</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;      <span class="comment">//store input params data if using default parallel parameters or final run with optimized parameters</span></div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      <a class="code" href="class_run_data.html">RunData</a> curr_run_data;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="keywordflow">if</span> (curr_run_type != RunType::TEST_PARAMS) {</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="comment">//add input and parameters data for specific benchmark to current run data</span></div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;          std::string(<a class="code" href="namespacerun__eval.html#a07d7885ec260b8cfe897bdecf3bc428f">run_eval::kInputIdxHeader</a>),</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;          std::to_string(NUM_INPUT));</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(<a class="code" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">InputAndParamsForCurrBenchmark</a>(run_w_loop_iters_templated));</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        <span class="keywordflow">if</span> ((run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#a1040ce93aa97fa38b4df8e687894f351">opt_parallel_params_setting</a>.first) &amp;&amp;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;            (run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#a1040ce93aa97fa38b4df8e687894f351">opt_parallel_params_setting</a>.second ==</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;             <a class="code" href="namespacerun__environment.html#ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc">run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun</a>))</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;        {</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;          <span class="comment">//add parallel parameters for each kernel to current input data if</span></div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;          <span class="comment">//allowing different parallel parameters for each kernel</span></div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;          <span class="comment">//in the same run</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;          curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(parallel_params-&gt;AsRunData());</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;        }</div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;      }</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      <span class="comment">//run only optimized implementation and not single-threaded run if</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;      <span class="comment">//current run is not final run or is using default parameter parameters</span></div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">bool</span> run_opt_imp_only{curr_run_type == RunType::TEST_PARAMS};</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      <span class="comment">//run benchmark implementation(s) and return null output if error in run</span></div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;      <span class="comment">//detailed results stored to file that is generated using stream</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      <span class="keyword">const</span> <span class="keyword">auto</span> run_imps_results =</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        <a class="code" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">RunImpsAndCompare</a>(parallel_params, run_opt_imp_only, run_w_loop_iters_templated);</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;      curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        std::string(<a class="code" href="namespacerun__eval.html#acbceca007a683b12400a658170453b7a">run_eval::kRunSuccessHeader</a>),</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;        run_imps_results.has_value());</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;      <span class="comment">//if error in run and run is any type other than for testing parameters,</span></div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;      <span class="comment">//exit function with null output to indicate error</span></div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;      <span class="keywordflow">if</span> ((!run_imps_results) &amp;&amp; (curr_run_type != RunType::TEST_PARAMS)) {</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;        <span class="keywordflow">return</span> {};</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;      }</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160; </div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      <span class="comment">//add data results from current run if run successful</span></div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;      <span class="keywordflow">if</span> (run_imps_results) {</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(run_imps_results.value());</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      }</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="comment">//add current run results for output if using default parallel </span></div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      <span class="comment">//parameters or is final run w/ optimized parallel parameters</span></div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;      <span class="keywordflow">if</span> (curr_run_type != RunType::TEST_PARAMS) {</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;        <span class="comment">//set output for runs using default parallel parameters and final run</span></div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        <span class="comment">//(which is the same run if not optimizing parallel parameters)</span></div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;        <span class="keywordflow">if</span> (curr_run_type == RunType::OPTIMIZED_RUN) {</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;          out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc">run_environment::ParallelParamsSetting::kOptimized</a>] = curr_run_data;</div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;        }</div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;        <span class="keywordflow">else</span> {</div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;          out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8">run_environment::ParallelParamsSetting::kDefault</a>] = curr_run_data;</div>
-<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;          <span class="keywordflow">if</span> (curr_run_type == RunType::ONLY_RUN) {</div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;            <span class="comment">//if current run is only run due to setting of not optimizing parallel parameters,</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;            <span class="comment">//set optimized parallel parameters output to current run data, resulting in same</span></div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;            <span class="comment">//run data mapped to default and optimized parallel parameters enums</span></div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;            out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc">run_environment::ParallelParamsSetting::kOptimized</a>] = curr_run_data;</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;          }</div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;        }</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;      }</div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;      <span class="keywordflow">if</span> (run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#a1040ce93aa97fa38b4df8e687894f351">opt_parallel_params_setting</a>.first) {</div>
-<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="comment">//retrieve and store results including runtimes for each kernel if</span></div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="comment">//allowing different parallel parameters for each kernel and</span></div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment">//total runtime for current run</span></div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="comment">//if error in run, don&#39;t add results for current parallel parameters to results set</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#include &lt;set&gt;</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_settings_8h.html">RunSettingsParams/RunSettings.h</a>&quot;</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_parallel_params_8h.html">RunSettingsParams/ParallelParams.h</a>&quot;</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_eval_consts_enums_8h.html">RunEval/RunEvalConstsEnums.h</a>&quot;</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_run_type_constraints_8h.html">RunEval/RunTypeConstraints.h</a>&quot;</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="_evaluate_imp_aliases_8h.html">RunEval/EvaluateImpAliases.h</a>&quot;</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">template</span>&lt;RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> NUM_INPUT&gt;</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html">   52</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_run_imp_on_input.html">RunImpOnInput</a> {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a8170bbd7503d68c37125350df0b3e9d9">   54</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="_evaluate_imp_aliases_8h.html#aae59d45d00750e48757e5a168e9ec6dc">MultRunData</a> <a class="code" href="class_run_imp_on_input.html#a8170bbd7503d68c37125350df0b3e9d9">operator()</a>(<span class="keyword">const</span> <a class="code" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a>&amp; run_imp_settings) = 0;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">   63</a></span>&#160;  <span class="keyword">virtual</span> std::shared_ptr&lt;ParallelParams&gt; <a class="code" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">SetUpParallelParams</a>(</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">const</span> <a class="code" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a>&amp; run_imp_settings) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">   72</a></span>&#160;  <span class="keyword">virtual</span> <a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">InputAndParamsForCurrBenchmark</a>(<span class="keywordtype">bool</span> loop_iters_templated) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">   83</a></span>&#160;  <span class="keyword">virtual</span> std::optional&lt;RunData&gt; <a class="code" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">RunImpsAndCompare</a>(</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    std::shared_ptr&lt;ParallelParams&gt; parallel_params,</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    <span class="keywordtype">bool</span> run_opt_imp_only,</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">bool</span> run_imp_templated_loop_iters) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">   94</a></span>&#160;  <a class="code" href="class_run_data.html">RunData</a> <a class="code" href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">InputAndParamsRunData</a>(<span class="keywordtype">bool</span> loop_iters_templated)<span class="keyword"> const </span>{</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="class_run_data.html">RunData</a> curr_run_data;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      std::string(<a class="code" href="namespacerun__eval.html#a1bb38345922853340e189ff4e073bdf7">run_eval::kDatatypeHeader</a>),</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      std::string(<a class="code" href="namespacerun__environment.html#ab15f9538874f71da40e07434e820a1d7">run_environment::kDataSizeToNameMap</a>.at(<span class="keyword">sizeof</span>(T))));</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(run_environment::RunSettings&lt;OPT_IMP_ACCEL&gt;());</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;      std::string(<a class="code" href="namespacerun__eval.html#aef29ac0eb3ad8078a51bc7612ee6863b">run_eval::kLoopItersTemplatedHeader</a>), loop_iters_templated);</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> curr_run_data;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">  115</a></span>&#160;  MultRunData::mapped_type <a class="code" href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">RunEvalBenchmark</a>(</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">const</span> <a class="code" href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a>&amp; run_imp_settings,</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;    <span class="keywordtype">bool</span> run_w_loop_iters_templated)<span class="keyword"> const</span></div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">  </span>{</div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    MultRunData::mapped_type::value_type out_run_data;</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keyword">enum class</span> RunType { ONLY_RUN, OPTIMIZED_RUN, TEST_PARAMS };</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="comment">//set up parallel parameters for specific benchmark</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    std::shared_ptr&lt;ParallelParams&gt; parallel_params =</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;      <a class="code" href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">SetUpParallelParams</a>(run_imp_settings);</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="comment">//get constant references to default and optimized options</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="comment">//for parallel parameters</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span>&amp; [default_p_params, alt_p_params] =</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;      run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#a9d77982a3381547917ce2071ad96a1ea">p_params_default_alt_options</a>;</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="comment">//generate set with default parallel parameters and all</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="comment">//alternate parallel parameter options</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keyword">auto</span> p_param_options = alt_p_params;</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    p_param_options.insert(default_p_params);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="comment">//if optimizing parallel parameters, run BP for each parallel parameters option,</span></div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="comment">//retrieve best parameters for each kernel or overall for the run,</span></div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="comment">//and then run BP with best found parallel parameters</span></div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="comment">//if not optimizing parallel parameters, run BP once using default parallel parameters</span></div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordflow">for</span> (<span class="keyword">auto</span> [p_params_iter, run_num] = std::tuple{p_param_options.cbegin(), 0u};</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;         run_num &lt; (p_param_options.size() + 1);</div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;         p_params_iter++, run_num++)</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    {</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;      <span class="comment">//initialize current run type to specify if current run is only run, run with</span></div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;      <span class="comment">//default params, test params run, or final run with optimized params and</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;      <span class="comment">//get and set parallel parameters for current run if not final run</span></div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;      <span class="comment">//that uses optimized parameters</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;      RunType curr_run_type;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;      <span class="keywordflow">if</span> (alt_p_params.size() == 0) {</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;        <span class="comment">//no alternate parallel parameters to test</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;        <span class="comment">//so only one run with default parameters</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;        curr_run_type = RunType::ONLY_RUN;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;        parallel_params-&gt;SetParallelDims(</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;          default_p_params);</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      }</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (run_num == p_param_options.size()) {</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;        <span class="comment">//last run with optimized parallel parameters</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;        curr_run_type = RunType::OPTIMIZED_RUN;</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;        <span class="comment">//optimized parallel parameters are determined from previous evaluation runs</span></div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;        <span class="comment">//using multiple evaluation parallel parameters</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;        parallel_params-&gt;SetOptimizedParams();</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;      }</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;      <span class="keywordflow">else</span> {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="comment">//run with test parallel parameters that will be used to determine</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;        <span class="comment">//optimized parallel parameters</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        curr_run_type = RunType::TEST_PARAMS;</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;        <span class="comment">//set parallel parameters to parameters corresponding to current run</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="comment">//for each BP processing level</span></div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;        parallel_params-&gt;SetParallelDims(*p_params_iter);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;      }</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;      <span class="comment">//run results are output as part of run evaluation if run is not using</span></div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;      <span class="comment">//test parallel parameters or is using test parallel parameters that</span></div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;      <span class="comment">//match default parallel parameters</span></div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;      <span class="keyword">const</span> <span class="keywordtype">bool</span> run_results_output{</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;        ((curr_run_type != RunType::TEST_PARAMS) ||</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;         (*p_params_iter == default_p_params))};</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;      <span class="comment">//store input params data if current run results are output</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;      <a class="code" href="class_run_data.html">RunData</a> curr_run_data;</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;      <span class="keywordflow">if</span> (run_results_output)</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;      {</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;        <span class="comment">//add input and parameters data for specific benchmark to current run data</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;        curr_run_data.<a class="code" href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">AddDataWHeader</a>(</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;          std::string(<a class="code" href="namespacerun__eval.html#a07d7885ec260b8cfe897bdecf3bc428f">run_eval::kInputIdxHeader</a>),</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;          std::to_string(NUM_INPUT));</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;        curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;          <a class="code" href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">InputAndParamsForCurrBenchmark</a>(run_w_loop_iters_templated));</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        <span class="keywordflow">if</span> ((alt_p_params.size() &gt; 0) &amp;&amp;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;            (run_imp_settings.<a class="code" href="structrun__environment_1_1_run_imp_settings.html#aa0ec79e36ccca6b24e02176f6946dd67">opt_parallel_params_setting</a> ==</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;             <a class="code" href="namespacerun__environment.html#ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc">run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun</a>))</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;        {</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;          <span class="comment">//add parallel parameters for each kernel to current input data if</span></div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;          <span class="comment">//allowing different parallel parameters for each kernel</span></div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;          <span class="comment">//in the same run</span></div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;          curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(parallel_params-&gt;AsRunData());</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;        }</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;      }</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;      <span class="comment">//run benchmark implementation(s) and return null output if error in run</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      <span class="comment">//detailed results stored to file that is generated using stream</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;      <span class="comment">//only run optimized implementation if run results are not output as part</span></div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;      <span class="comment">//of evaluation</span></div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;      <span class="keyword">const</span> <span class="keyword">auto</span> run_imps_results =</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;        <a class="code" href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">RunImpsAndCompare</a>(</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;          parallel_params,</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;          !run_results_output, <span class="comment">//if true, only run optimized implementation</span></div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;          run_w_loop_iters_templated);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;      <span class="comment">//if error in run and run is type where results are output as part of</span></div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;      <span class="comment">//evaluation, exit function with null output to indicate error</span></div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;      <span class="keywordflow">if</span> ((!run_imps_results) &amp;&amp; run_results_output) {</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160;        <span class="keywordflow">return</span> {};</div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;      }</div>
+<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;      <span class="comment">//add data results from current run if run successful</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;      <span class="keywordflow">if</span> (run_imps_results) {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        curr_run_data.<a class="code" href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">AppendData</a>(*run_imps_results);</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;      }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;      <span class="keywordflow">if</span> (curr_run_type == RunType::TEST_PARAMS) {</div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;        <span class="comment">//current run using test parallel parameters, so add test results</span></div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160;        <span class="comment">//including runtimes for each kernel to parallel parameters object to</span></div>
+<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;        <span class="comment">//use for computation of optimal parallel parameters</span></div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        <span class="comment">//if error in run, don&#39;t add results for current parallel parameters to</span></div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;        <span class="comment">//results set</span></div>
 <div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        <span class="keywordflow">if</span> (run_imps_results) {</div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;          <span class="keywordflow">if</span> (curr_run_type != RunType::OPTIMIZED_RUN) {</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;            parallel_params-&gt;AddTestResultsForParallelParams(p_params_curr_run, curr_run_data);</div>
-<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;          }</div>
-<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;        }</div>
-<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;        <span class="comment">//set optimized parallel parameters if next run is final run</span></div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="comment">//that uses optimized parallel parameters</span></div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;        <span class="comment">//optimized parallel parameters are determined from previous evaluation runs</span></div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="comment">//using multiple evaluation parallel parameters</span></div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="keywordflow">if</span> (run_num == (parallel_params_vect.size() - 1)) {</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;          parallel_params-&gt;SetOptimizedParams();</div>
-<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        }</div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;      }</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    }</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160;      </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordflow">return</span> out_run_data;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;  }</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;};</div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//RUN_IMP_ON_INPUT_H_</span></div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;          parallel_params-&gt;AddTestResultsForParallelParams(*p_params_iter, curr_run_data);</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;        }</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;        <span class="keywordflow">if</span> (*p_params_iter == default_p_params) {</div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;          <span class="comment">//set output for run with default parallel parameters if current test</span></div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160;          <span class="comment">//params runs is run with default parallel parameters</span></div>
+<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;          out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8">run_environment::ParallelParamsSetting::kDefault</a>] = curr_run_data; </div>
+<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        }</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;      }</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (curr_run_type == RunType::ONLY_RUN) {</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;        <span class="comment">//if current run is only run due to setting of not optimizing parallel parameters,</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;        <span class="comment">//set optimized and default parallel parameters output to current run data,</span></div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;        <span class="comment">//resulting in same run data mapped to default and optimized parallel parameters enums</span></div>
+<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;        out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8">run_environment::ParallelParamsSetting::kDefault</a>] = curr_run_data;</div>
+<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;        out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc">run_environment::ParallelParamsSetting::kOptimized</a>] = curr_run_data;</div>
+<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;        <span class="comment">//exit loop since only running with default parameters and that is done</span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;      }</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;      <span class="keywordflow">else</span> <span class="keywordflow">if</span> (curr_run_type == RunType::OPTIMIZED_RUN) {</div>
+<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;        <span class="comment">//set output for final run with optimized parallel parameters</span></div>
+<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;        out_run_data[<a class="code" href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc">run_environment::ParallelParamsSetting::kOptimized</a>] = curr_run_data;</div>
+<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160; </div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;        <span class="comment">//exit loop since run with optimized parameters is final run</span></div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordflow">break</span>;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;      }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    }</div>
+<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160;      </div>
+<div class="line"><a name="l00255"></a><span class="lineno">  255</span>&#160;    <span class="keywordflow">return</span> out_run_data;</div>
+<div class="line"><a name="l00256"></a><span class="lineno">  256</span>&#160;  }</div>
+<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;};</div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;<span class="preprocessor">#endif </span><span class="comment">//RUN_IMP_ON_INPUT_H_</span></div>
 <div class="ttc" id="a_evaluate_imp_aliases_8h_html"><div class="ttname"><a href="_evaluate_imp_aliases_8h.html">EvaluateImpAliases.h</a></div><div class="ttdoc">Header for defining aliases for storing run results and evaluating implementations.</div></div>
 <div class="ttc" id="a_evaluate_imp_aliases_8h_html_aae59d45d00750e48757e5a168e9ec6dc"><div class="ttname"><a href="_evaluate_imp_aliases_8h.html#aae59d45d00750e48757e5a168e9ec6dc">MultRunData</a></div><div class="ttdeci">std::map&lt; InputSignature, std::optional&lt; std::map&lt; run_environment::ParallelParamsSetting, RunData &gt; &gt;&gt; MultRunData</div><div class="ttdef"><b>Definition:</b> <a href="_evaluate_imp_aliases_8h_source.html#l00042">EvaluateImpAliases.h:42</a></div></div>
 <div class="ttc" id="a_parallel_params_8h_html"><div class="ttname"><a href="_parallel_params_8h.html">ParallelParams.h</a></div><div class="ttdoc">Declares abstract class for holding and processing parallelization parameters.</div></div>
@@ -286,26 +298,25 @@ $(document).ready(function(){initNavTree('_run_imp_on_input_8h_source.html','');
 <div class="ttc" id="a_run_settings_8h_html"><div class="ttname"><a href="_run_settings_8h.html">RunSettings.h</a></div><div class="ttdoc">Declares and defines structure that stores settings for current implementation run as well as functio...</div></div>
 <div class="ttc" id="a_run_type_constraints_8h_html"><div class="ttname"><a href="_run_type_constraints_8h.html">RunTypeConstraints.h</a></div><div class="ttdoc">Define constraints for data type in processing.</div></div>
 <div class="ttc" id="aclass_run_data_html"><div class="ttname"><a href="class_run_data.html">RunData</a></div><div class="ttdoc">Class to store headers with data corresponding to current program run and evaluation.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8h_source.html#l00042">RunData.h:42</a></div></div>
-<div class="ttc" id="aclass_run_data_html_a938dd181b583b343480ad9294efff7fb"><div class="ttname"><a href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">RunData::AppendData</a></div><div class="ttdeci">void AppendData(const RunData &amp;rundata)</div><div class="ttdoc">Append current RunData with input RunData.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8cpp_source.html#l00079">RunData.cpp:79</a></div></div>
-<div class="ttc" id="aclass_run_data_html_ae2642121388bb8f32b95eeeb498c7401"><div class="ttname"><a href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">RunData::AddDataWHeader</a></div><div class="ttdeci">void AddDataWHeader(const std::string &amp;header, const std::string &amp;data)</div><div class="ttdoc">Add string data with header describing added data.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8cpp_source.html#l00044">RunData.cpp:44</a></div></div>
-<div class="ttc" id="aclass_run_imp_on_input_html"><div class="ttname"><a href="class_run_imp_on_input.html">RunImpOnInput</a></div><div class="ttdoc">Virtual class to run and evaluate implementation on a input specified by index number.</div><div class="ttdef"><b>Definition:</b> <a href="_run_imp_on_input_8h_source.html#l00051">RunImpOnInput.h:51</a></div></div>
+<div class="ttc" id="aclass_run_data_html_a938dd181b583b343480ad9294efff7fb"><div class="ttname"><a href="class_run_data.html#a938dd181b583b343480ad9294efff7fb">RunData::AppendData</a></div><div class="ttdeci">void AppendData(const RunData &amp;rundata)</div><div class="ttdoc">Append current RunData with input RunData.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8cpp_source.html#l00084">RunData.cpp:84</a></div></div>
+<div class="ttc" id="aclass_run_data_html_ae2642121388bb8f32b95eeeb498c7401"><div class="ttname"><a href="class_run_data.html#ae2642121388bb8f32b95eeeb498c7401">RunData::AddDataWHeader</a></div><div class="ttdeci">void AddDataWHeader(const std::string &amp;header, const std::string &amp;data)</div><div class="ttdoc">Add string data with header describing added data.</div><div class="ttdef"><b>Definition:</b> <a href="_run_data_8cpp_source.html#l00049">RunData.cpp:49</a></div></div>
+<div class="ttc" id="aclass_run_imp_on_input_html"><div class="ttname"><a href="class_run_imp_on_input.html">RunImpOnInput</a></div><div class="ttdoc">Virtual class to run and evaluate implementation on a input specified by index number.</div><div class="ttdef"><b>Definition:</b> <a href="_run_imp_on_input_8h_source.html#l00052">RunImpOnInput.h:52</a></div></div>
 <div class="ttc" id="aclass_run_imp_on_input_html_a2bb42e69ca28f0ddfab281739c815ac4"><div class="ttname"><a href="class_run_imp_on_input.html#a2bb42e69ca28f0ddfab281739c815ac4">RunImpOnInput::RunImpsAndCompare</a></div><div class="ttdeci">virtual std::optional&lt; RunData &gt; RunImpsAndCompare(std::shared_ptr&lt; ParallelParams &gt; parallel_params, bool run_opt_imp_only, bool run_imp_templated_loop_iters) const =0</div><div class="ttdoc">Run one or two implementations of benchmark and compare results if running multiple implementations.</div></div>
 <div class="ttc" id="aclass_run_imp_on_input_html_a302212627bed8c6dd60d59fad0b0dca8"><div class="ttname"><a href="class_run_imp_on_input.html#a302212627bed8c6dd60d59fad0b0dca8">RunImpOnInput::SetUpParallelParams</a></div><div class="ttdeci">virtual std::shared_ptr&lt; ParallelParams &gt; SetUpParallelParams(const run_environment::RunImpSettings &amp;run_imp_settings) const =0</div><div class="ttdoc">Set up parallel parameters for benchmark.</div></div>
 <div class="ttc" id="aclass_run_imp_on_input_html_a34a6f5d3387c29607e2249786b725257"><div class="ttname"><a href="class_run_imp_on_input.html#a34a6f5d3387c29607e2249786b725257">RunImpOnInput::InputAndParamsForCurrBenchmark</a></div><div class="ttdeci">virtual RunData InputAndParamsForCurrBenchmark(bool loop_iters_templated) const =0</div><div class="ttdoc">Retrieve input and parameters for run of current benchmark.</div></div>
 <div class="ttc" id="aclass_run_imp_on_input_html_a8170bbd7503d68c37125350df0b3e9d9"><div class="ttname"><a href="class_run_imp_on_input.html#a8170bbd7503d68c37125350df0b3e9d9">RunImpOnInput::operator()</a></div><div class="ttdeci">virtual MultRunData operator()(const run_environment::RunImpSettings &amp;run_imp_settings)=0</div></div>
-<div class="ttc" id="aclass_run_imp_on_input_html_a90b1b66d576a10fc4f5c4099e703a44e"><div class="ttname"><a href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">RunImpOnInput::InputAndParamsRunData</a></div><div class="ttdeci">RunData InputAndParamsRunData(bool loop_iters_templated) const</div><div class="ttdoc">Get current run inputs and parameters in RunData structure.</div><div class="ttdef"><b>Definition:</b> <a href="_run_imp_on_input_8h_source.html#l00093">RunImpOnInput.h:93</a></div></div>
-<div class="ttc" id="aclass_run_imp_on_input_html_ac81fc1fb17b7c4127972746d232b87ef"><div class="ttname"><a href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">RunImpOnInput::RunEvalBenchmark</a></div><div class="ttdeci">MultRunData::mapped_type RunEvalBenchmark(const run_environment::RunImpSettings &amp;run_imp_settings, bool run_w_loop_iters_templated) const</div><div class="ttdoc">Run optimized and single threaded implementations using multiple sets of parallel parameters in optim...</div><div class="ttdef"><b>Definition:</b> <a href="_run_imp_on_input_8h_source.html#l00114">RunImpOnInput.h:114</a></div></div>
+<div class="ttc" id="aclass_run_imp_on_input_html_a90b1b66d576a10fc4f5c4099e703a44e"><div class="ttname"><a href="class_run_imp_on_input.html#a90b1b66d576a10fc4f5c4099e703a44e">RunImpOnInput::InputAndParamsRunData</a></div><div class="ttdeci">RunData InputAndParamsRunData(bool loop_iters_templated) const</div><div class="ttdoc">Get current run inputs and parameters in RunData structure.</div><div class="ttdef"><b>Definition:</b> <a href="_run_imp_on_input_8h_source.html#l00094">RunImpOnInput.h:94</a></div></div>
+<div class="ttc" id="aclass_run_imp_on_input_html_ac81fc1fb17b7c4127972746d232b87ef"><div class="ttname"><a href="class_run_imp_on_input.html#ac81fc1fb17b7c4127972746d232b87ef">RunImpOnInput::RunEvalBenchmark</a></div><div class="ttdeci">MultRunData::mapped_type RunEvalBenchmark(const run_environment::RunImpSettings &amp;run_imp_settings, bool run_w_loop_iters_templated) const</div><div class="ttdoc">Run optimized and single threaded implementations using multiple sets of parallel parameters in optim...</div><div class="ttdef"><b>Definition:</b> <a href="_run_imp_on_input_8h_source.html#l00115">RunImpOnInput.h:115</a></div></div>
 <div class="ttc" id="anamespacerun__environment_html_a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc"><div class="ttname"><a href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a51014a338329cb5629fd324cf7493bbc">run_environment::ParallelParamsSetting::kOptimized</a></div><div class="ttdeci">@ kOptimized</div></div>
 <div class="ttc" id="anamespacerun__environment_html_a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8"><div class="ttname"><a href="namespacerun__environment.html#a1ff774df4801b48d66861eb53eef88f9a6867faeaa475fda467e48267db2bb8a8">run_environment::ParallelParamsSetting::kDefault</a></div><div class="ttdeci">@ kDefault</div></div>
-<div class="ttc" id="anamespacerun__environment_html_ab15f9538874f71da40e07434e820a1d7"><div class="ttname"><a href="namespacerun__environment.html#ab15f9538874f71da40e07434e820a1d7">run_environment::kDataSizeToNameMap</a></div><div class="ttdeci">const std::map&lt; std::size_t, std::string_view &gt; kDataSizeToNameMap</div><div class="ttdoc">Mapping from data size to data type string.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_consts_enums_8h_source.html#l00090">RunSettingsConstsEnums.h:90</a></div></div>
+<div class="ttc" id="anamespacerun__environment_html_ab15f9538874f71da40e07434e820a1d7"><div class="ttname"><a href="namespacerun__environment.html#ab15f9538874f71da40e07434e820a1d7">run_environment::kDataSizeToNameMap</a></div><div class="ttdeci">const std::map&lt; std::size_t, std::string_view &gt; kDataSizeToNameMap</div><div class="ttdoc">Mapping from data size to data type string.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_consts_enums_8h_source.html#l00101">RunSettingsConstsEnums.h:101</a></div></div>
 <div class="ttc" id="anamespacerun__environment_html_ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc"><div class="ttname"><a href="namespacerun__environment.html#ae2a548033e399bc59f63aa6a9ec75bf0afda1ba06dc4441ce25315b4d9831f5cc">run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun</a></div><div class="ttdeci">@ kAllowDiffKernelParallelParamsInRun</div></div>
-<div class="ttc" id="anamespacerun__eval_html_a07d7885ec260b8cfe897bdecf3bc428f"><div class="ttname"><a href="namespacerun__eval.html#a07d7885ec260b8cfe897bdecf3bc428f">run_eval::kInputIdxHeader</a></div><div class="ttdeci">constexpr std::string_view kInputIdxHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00068">RunEvalConstsEnums.h:68</a></div></div>
-<div class="ttc" id="anamespacerun__eval_html_a1bb38345922853340e189ff4e073bdf7"><div class="ttname"><a href="namespacerun__eval.html#a1bb38345922853340e189ff4e073bdf7">run_eval::kDatatypeHeader</a></div><div class="ttdeci">constexpr std::string_view kDatatypeHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00069">RunEvalConstsEnums.h:69</a></div></div>
-<div class="ttc" id="anamespacerun__eval_html_acbceca007a683b12400a658170453b7a"><div class="ttname"><a href="namespacerun__eval.html#acbceca007a683b12400a658170453b7a">run_eval::kRunSuccessHeader</a></div><div class="ttdeci">constexpr std::string_view kRunSuccessHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00071">RunEvalConstsEnums.h:71</a></div></div>
-<div class="ttc" id="anamespacerun__eval_html_aef29ac0eb3ad8078a51bc7612ee6863b"><div class="ttname"><a href="namespacerun__eval.html#aef29ac0eb3ad8078a51bc7612ee6863b">run_eval::kLoopItersTemplatedHeader</a></div><div class="ttdeci">constexpr std::string_view kLoopItersTemplatedHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00070">RunEvalConstsEnums.h:70</a></div></div>
-<div class="ttc" id="astructrun__environment_1_1_run_imp_settings_html"><div class="ttname"><a href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a></div><div class="ttdoc">Structure that stores settings for current implementation run.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00072">RunSettings.h:72</a></div></div>
-<div class="ttc" id="astructrun__environment_1_1_run_imp_settings_html_a1040ce93aa97fa38b4df8e687894f351"><div class="ttname"><a href="structrun__environment_1_1_run_imp_settings.html#a1040ce93aa97fa38b4df8e687894f351">run_environment::RunImpSettings::opt_parallel_params_setting</a></div><div class="ttdeci">std::pair&lt; bool, OptParallelParamsSetting &gt; opt_parallel_params_setting</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00075">RunSettings.h:75</a></div></div>
-<div class="ttc" id="astructrun__environment_1_1_run_imp_settings_html_aee8eb53207a93b657d487f81fba77608"><div class="ttname"><a href="structrun__environment_1_1_run_imp_settings.html#aee8eb53207a93b657d487f81fba77608">run_environment::RunImpSettings::p_params_default_opt_settings</a></div><div class="ttdeci">std::pair&lt; std::array&lt; unsigned int, 2 &gt;, std::vector&lt; std::array&lt; unsigned int, 2 &gt; &gt; &gt; p_params_default_opt_settings</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00076">RunSettings.h:76</a></div></div>
+<div class="ttc" id="anamespacerun__eval_html_a07d7885ec260b8cfe897bdecf3bc428f"><div class="ttname"><a href="namespacerun__eval.html#a07d7885ec260b8cfe897bdecf3bc428f">run_eval::kInputIdxHeader</a></div><div class="ttdeci">constexpr std::string_view kInputIdxHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00081">RunEvalConstsEnums.h:81</a></div></div>
+<div class="ttc" id="anamespacerun__eval_html_a1bb38345922853340e189ff4e073bdf7"><div class="ttname"><a href="namespacerun__eval.html#a1bb38345922853340e189ff4e073bdf7">run_eval::kDatatypeHeader</a></div><div class="ttdeci">constexpr std::string_view kDatatypeHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00082">RunEvalConstsEnums.h:82</a></div></div>
+<div class="ttc" id="anamespacerun__eval_html_aef29ac0eb3ad8078a51bc7612ee6863b"><div class="ttname"><a href="namespacerun__eval.html#aef29ac0eb3ad8078a51bc7612ee6863b">run_eval::kLoopItersTemplatedHeader</a></div><div class="ttdeci">constexpr std::string_view kLoopItersTemplatedHeader</div><div class="ttdef"><b>Definition:</b> <a href="_run_eval_consts_enums_8h_source.html#l00083">RunEvalConstsEnums.h:83</a></div></div>
+<div class="ttc" id="astructrun__environment_1_1_run_imp_settings_html"><div class="ttname"><a href="structrun__environment_1_1_run_imp_settings.html">run_environment::RunImpSettings</a></div><div class="ttdoc">Structure that stores settings for current implementation run.</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00070">RunSettings.h:70</a></div></div>
+<div class="ttc" id="astructrun__environment_1_1_run_imp_settings_html_a9d77982a3381547917ce2071ad96a1ea"><div class="ttname"><a href="structrun__environment_1_1_run_imp_settings.html#a9d77982a3381547917ce2071ad96a1ea">run_environment::RunImpSettings::p_params_default_alt_options</a></div><div class="ttdeci">std::pair&lt; std::array&lt; unsigned int, 2 &gt;, std::set&lt; std::array&lt; unsigned int, 2 &gt; &gt; &gt; p_params_default_alt_options</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00074">RunSettings.h:74</a></div></div>
+<div class="ttc" id="astructrun__environment_1_1_run_imp_settings_html_aa0ec79e36ccca6b24e02176f6946dd67"><div class="ttname"><a href="structrun__environment_1_1_run_imp_settings.html#aa0ec79e36ccca6b24e02176f6946dd67">run_environment::RunImpSettings::opt_parallel_params_setting</a></div><div class="ttdeci">OptParallelParamsSetting opt_parallel_params_setting</div><div class="ttdef"><b>Definition:</b> <a href="_run_settings_8h_source.html#l00073">RunSettings.h:73</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

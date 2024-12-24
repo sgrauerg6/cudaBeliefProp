@@ -1,0 +1,5 @@
+<map id="SmoothImage::MakeFilter" name="SmoothImage::MakeFilter">
+<area shape="rect" id="node1" title="Create a Gaussian filter from a sigma value." alt="" coords="277,31,467,57"/>
+<area shape="rect" id="node2" href="$class_smooth_image_c_p_u.html#a1c9a703874e1112ff7da7ce3b310653a" title="Function to use the image filter to apply a guassian filter to the a single images input images have ..." alt="" coords="11,5,224,32"/>
+<area shape="rect" id="node3" href="$class_smooth_image_c_u_d_a.html#ac810f2f4cb5608673dd21a6f69214444" title="For the CUDA smoothing, the input image is on the host and the output image is on the device (GPU)" alt="" coords="5,56,229,83"/>
+</map>

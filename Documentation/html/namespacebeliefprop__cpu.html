@@ -93,87 +93,87 @@ $(document).ready(function(){initNavTree('namespacebeliefprop__cpu.html',''); in
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab1377ebddcb99fe4a8ce9d4d8ea6172c"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:ab1377ebddcb99fe4a8ce9d4d8ea6172c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#ab1377ebddcb99fe4a8ce9d4d8ea6172c">InitializeBottomLevelData</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *image_1_pixels_device, const float *image_2_pixels_device, T *data_cost_stereo_checkerboard_0, T *data_cost_stereo_checkerboard_1, float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:ab1377ebddcb99fe4a8ce9d4d8ea6172c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add64ba4899c73265e494c9618e8b461f"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:add64ba4899c73265e494c9618e8b461f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#add64ba4899c73265e494c9618e8b461f">InitializeCurrentLevelData</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;prev_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:add64ba4899c73265e494c9618e8b461f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6213dee0a11cf8b1f512e45667c77212"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a6213dee0a11cf8b1f512e45667c77212"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a6213dee0a11cf8b1f512e45667c77212">InitializeMessageValsToDefaultKernel</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a6213dee0a11cf8b1f512e45667c77212"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46391cbfa153ffbd6e92d1bbd651ebc1"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a46391cbfa153ffbd6e92d1bbd651ebc1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a46391cbfa153ffbd6e92d1bbd651ebc1">InitializeBottomLevelData</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *image_1_pixels_device, const float *image_2_pixels_device, T *data_cost_stereo_checkerboard_0, T *data_cost_stereo_checkerboard_1, float lambda_bp, float data_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a46391cbfa153ffbd6e92d1bbd651ebc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6fcfdaea0586ff95c008a7561bd58c7"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:ab6fcfdaea0586ff95c008a7561bd58c7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#ab6fcfdaea0586ff95c008a7561bd58c7">InitializeCurrentLevelData</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;prev_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *data_cost_current_level, unsigned int offset_num, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:ab6fcfdaea0586ff95c008a7561bd58c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc3cae77658cc6fed55f59f61fabdff"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:adfc3cae77658cc6fed55f59f61fabdff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#adfc3cae77658cc6fed55f59f61fabdff">InitializeMessageValsToDefaultKernel</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:adfc3cae77658cc6fed55f59f61fabdff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0997655fdfd58dd33365d875e0511efc"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
 <tr class="memitem:a0997655fdfd58dd33365d875e0511efc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a0997655fdfd58dd33365d875e0511efc">RunBPIterationUsingCheckerboardUpdates</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_num_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
 <tr class="separator:a0997655fdfd58dd33365d875e0511efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d913c91e262abe5ff88a1027e06993f"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a8d913c91e262abe5ff88a1027e06993f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a8d913c91e262abe5ff88a1027e06993f">RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a8d913c91e262abe5ff88a1027e06993f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad31b32d62cd2129639a079208c17e694"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:ad31b32d62cd2129639a079208c17e694"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#ad31b32d62cd2129639a079208c17e694">CopyMsgDataToNextLevel</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;next_bp_level, const T *message_u_prev_checkerboard_0, const T *message_d_prev_checkerboard_0, const T *message_l_prev_checkerboard_0, const T *message_r_prev_checkerboard_0, const T *message_u_prev_checkerboard_1, const T *message_d_prev_checkerboard_1, const T *message_l_prev_checkerboard_1, const T *message_r_prev_checkerboard_1, const T *message_u_checkerboard_0, const T *message_d_checkerboard_0, const T *message_l_checkerboard_0, const T *message_r_checkerboard_0, const T *message_u_checkerboard_1, const T *message_d_checkerboard_1, const T *message_l_checkerboard_1, const T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:ad31b32d62cd2129639a079208c17e694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb3848c046c62e840da41161a1168fde"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:abb3848c046c62e840da41161a1168fde"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#abb3848c046c62e840da41161a1168fde">RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:abb3848c046c62e840da41161a1168fde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afad59db5de04363f6f5021be3ff8f4af"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:afad59db5de04363f6f5021be3ff8f4af"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#afad59db5de04363f6f5021be3ff8f4af">CopyMsgDataToNextLevel</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_part, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;next_bp_level, const T *message_u_prev_checkerboard_0, const T *message_d_prev_checkerboard_0, const T *message_l_prev_checkerboard_0, const T *message_r_prev_checkerboard_0, const T *message_u_prev_checkerboard_1, const T *message_d_prev_checkerboard_1, const T *message_l_prev_checkerboard_1, const T *message_r_prev_checkerboard_1, const T *message_u_checkerboard_0, const T *message_d_checkerboard_0, const T *message_l_checkerboard_0, const T *message_r_checkerboard_0, const T *message_u_checkerboard_1, const T *message_d_checkerboard_1, const T *message_l_checkerboard_1, const T *message_r_checkerboard_1, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:afad59db5de04363f6f5021be3ff8f4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aefc3512e6ee1730e923a897554504685"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
 <tr class="memitem:aefc3512e6ee1730e923a897554504685"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#aefc3512e6ee1730e923a897554504685">RetrieveOutputDisparity</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, const T *message_u_prev_checkerboard_0, const T *message_d_prev_checkerboard_0, const T *message_l_prev_checkerboard_0, const T *message_r_prev_checkerboard_0, const T *message_u_prev_checkerboard_1, const T *message_d_prev_checkerboard_1, const T *message_l_prev_checkerboard_1, const T *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
 <tr class="separator:aefc3512e6ee1730e923a897554504685"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40deb00185bba3606692532d7af7fd00"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a40deb00185bba3606692532d7af7fd00"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a40deb00185bba3606692532d7af7fd00">RetrieveOutputDisparityUseSIMDVectors</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, const T *message_u_prev_checkerboard_0, const T *message_d_prev_checkerboard_0, const T *message_l_prev_checkerboard_0, const T *message_r_prev_checkerboard_0, const T *message_u_prev_checkerboard_1, const T *message_d_prev_checkerboard_1, const T *message_l_prev_checkerboard_1, const T *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, unsigned int simd_data_size, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a40deb00185bba3606692532d7af7fd00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58e8278a652eb8ff7fcddeec0cf9024c"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a58e8278a652eb8ff7fcddeec0cf9024c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a58e8278a652eb8ff7fcddeec0cf9024c">RetrieveOutputDisparityUseSIMDVectorsAVX256</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, const float *message_u_prev_checkerboard_0, const float *message_d_prev_checkerboard_0, const float *message_l_prev_checkerboard_0, const float *message_r_prev_checkerboard_0, const float *message_u_prev_checkerboard_1, const float *message_d_prev_checkerboard_1, const float *message_l_prev_checkerboard_1, const float *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a58e8278a652eb8ff7fcddeec0cf9024c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4796be1ea21f64d73dfeadc8e9d79819"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a4796be1ea21f64d73dfeadc8e9d79819"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a4796be1ea21f64d73dfeadc8e9d79819">RetrieveOutputDisparityUseSIMDVectorsAVX256</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const short *data_cost_checkerboard_0, const short *data_cost_checkerboard_1, const short *message_u_prev_checkerboard_0, const short *message_d_prev_checkerboard_0, const short *message_l_prev_checkerboard_0, const short *message_r_prev_checkerboard_0, const short *message_u_prev_checkerboard_1, const short *message_d_prev_checkerboard_1, const short *message_l_prev_checkerboard_1, const short *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a4796be1ea21f64d73dfeadc8e9d79819"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6af156c3844c368c4089642641f5f369"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a6af156c3844c368c4089642641f5f369"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a6af156c3844c368c4089642641f5f369">RetrieveOutputDisparityUseSIMDVectorsAVX256</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, const double *message_u_prev_checkerboard_0, const double *message_d_prev_checkerboard_0, const double *message_l_prev_checkerboard_0, const double *message_r_prev_checkerboard_0, const double *message_u_prev_checkerboard_1, const double *message_d_prev_checkerboard_1, const double *message_l_prev_checkerboard_1, const double *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a6af156c3844c368c4089642641f5f369"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a176a94ac8c6ea853495cf4dd725a8c78"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a176a94ac8c6ea853495cf4dd725a8c78"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a176a94ac8c6ea853495cf4dd725a8c78">RetrieveOutputDisparityUseSIMDVectorsAVX512</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, const float *message_u_prev_checkerboard_0, const float *message_d_prev_checkerboard_0, const float *message_l_prev_checkerboard_0, const float *message_r_prev_checkerboard_0, const float *message_u_prev_checkerboard_1, const float *message_d_prev_checkerboard_1, const float *message_l_prev_checkerboard_1, const float *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a176a94ac8c6ea853495cf4dd725a8c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3657a4c2138ca536e7dfa76bea75412e"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a3657a4c2138ca536e7dfa76bea75412e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a3657a4c2138ca536e7dfa76bea75412e">RetrieveOutputDisparityUseSIMDVectorsAVX512</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const short *data_cost_checkerboard_0, const short *data_cost_checkerboard_1, const short *message_u_prev_checkerboard_0, const short *message_d_prev_checkerboard_0, const short *message_l_prev_checkerboard_0, const short *message_r_prev_checkerboard_0, const short *message_u_prev_checkerboard_1, const short *message_d_prev_checkerboard_1, const short *message_l_prev_checkerboard_1, const short *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a3657a4c2138ca536e7dfa76bea75412e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af420ae631c218d38e11a53e65e6097c5"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:af420ae631c218d38e11a53e65e6097c5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#af420ae631c218d38e11a53e65e6097c5">RetrieveOutputDisparityUseSIMDVectorsAVX512</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, const double *message_u_prev_checkerboard_0, const double *message_d_prev_checkerboard_0, const double *message_l_prev_checkerboard_0, const double *message_r_prev_checkerboard_0, const double *message_u_prev_checkerboard_1, const double *message_d_prev_checkerboard_1, const double *message_l_prev_checkerboard_1, const double *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:af420ae631c218d38e11a53e65e6097c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a035b2d21adcdcdfca6b102d5e909c366"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a035b2d21adcdcdfca6b102d5e909c366"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a035b2d21adcdcdfca6b102d5e909c366">RetrieveOutputDisparityUseSIMDVectorsNEON</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, const float *message_u_prev_checkerboard_0, const float *message_d_prev_checkerboard_0, const float *message_l_prev_checkerboard_0, const float *message_r_prev_checkerboard_0, const float *message_u_prev_checkerboard_1, const float *message_d_prev_checkerboard_1, const float *message_l_prev_checkerboard_1, const float *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a035b2d21adcdcdfca6b102d5e909c366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ae47697f4d85e6b57d2501780ef228d"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a8ae47697f4d85e6b57d2501780ef228d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a8ae47697f4d85e6b57d2501780ef228d">RetrieveOutputDisparityUseSIMDVectorsNEON</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, const double *message_u_prev_checkerboard_0, const double *message_d_prev_checkerboard_0, const double *message_l_prev_checkerboard_0, const double *message_r_prev_checkerboard_0, const double *message_u_prev_checkerboard_1, const double *message_d_prev_checkerboard_1, const double *message_l_prev_checkerboard_1, const double *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a8ae47697f4d85e6b57d2501780ef228d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa83687bc3259c02910351a8f280f912c"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess_t W, unsigned int DISP_VALS&gt; </td></tr>
+<tr class="memitem:aa83687bc3259c02910351a8f280f912c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#aa83687bc3259c02910351a8f280f912c">RetrieveOutputDisparityUseSIMDVectors</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, const T *message_u_prev_checkerboard_0, const T *message_d_prev_checkerboard_0, const T *message_l_prev_checkerboard_0, const T *message_r_prev_checkerboard_0, const T *message_u_prev_checkerboard_1, const T *message_d_prev_checkerboard_1, const T *message_l_prev_checkerboard_1, const T *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:aa83687bc3259c02910351a8f280f912c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cd514877dbd2c2846a1bec59802336a"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a2cd514877dbd2c2846a1bec59802336a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a2cd514877dbd2c2846a1bec59802336a">RetrieveOutputDisparityUseSIMDVectorsAVX256</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, const float *message_u_prev_checkerboard_0, const float *message_d_prev_checkerboard_0, const float *message_l_prev_checkerboard_0, const float *message_r_prev_checkerboard_0, const float *message_u_prev_checkerboard_1, const float *message_d_prev_checkerboard_1, const float *message_l_prev_checkerboard_1, const float *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a2cd514877dbd2c2846a1bec59802336a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acec0fbb1a67763844883f7f62ff29187"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:acec0fbb1a67763844883f7f62ff29187"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#acec0fbb1a67763844883f7f62ff29187">RetrieveOutputDisparityUseSIMDVectorsAVX256</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_prev_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_prev_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_prev_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:acec0fbb1a67763844883f7f62ff29187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f8002b76cb8ff937bdbab34e04b9466"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a7f8002b76cb8ff937bdbab34e04b9466"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a7f8002b76cb8ff937bdbab34e04b9466">RetrieveOutputDisparityUseSIMDVectorsAVX256</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, const double *message_u_prev_checkerboard_0, const double *message_d_prev_checkerboard_0, const double *message_l_prev_checkerboard_0, const double *message_r_prev_checkerboard_0, const double *message_u_prev_checkerboard_1, const double *message_d_prev_checkerboard_1, const double *message_l_prev_checkerboard_1, const double *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a7f8002b76cb8ff937bdbab34e04b9466"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5ecedbb93e7a2671287ad044898c6e3"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:ad5ecedbb93e7a2671287ad044898c6e3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#ad5ecedbb93e7a2671287ad044898c6e3">RetrieveOutputDisparityUseSIMDVectorsAVX512</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, const float *message_u_prev_checkerboard_0, const float *message_d_prev_checkerboard_0, const float *message_l_prev_checkerboard_0, const float *message_r_prev_checkerboard_0, const float *message_u_prev_checkerboard_1, const float *message_d_prev_checkerboard_1, const float *message_l_prev_checkerboard_1, const float *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:ad5ecedbb93e7a2671287ad044898c6e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8adeea221fc449414df906fc0ce3d363"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a8adeea221fc449414df906fc0ce3d363"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a8adeea221fc449414df906fc0ce3d363">RetrieveOutputDisparityUseSIMDVectorsAVX512</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_prev_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_prev_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_prev_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_prev_checkerboard_1, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a8adeea221fc449414df906fc0ce3d363"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b735fcbee82e63e730799f83fe72862"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a2b735fcbee82e63e730799f83fe72862"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a2b735fcbee82e63e730799f83fe72862">RetrieveOutputDisparityUseSIMDVectorsAVX512</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, const double *message_u_prev_checkerboard_0, const double *message_d_prev_checkerboard_0, const double *message_l_prev_checkerboard_0, const double *message_r_prev_checkerboard_0, const double *message_u_prev_checkerboard_1, const double *message_d_prev_checkerboard_1, const double *message_l_prev_checkerboard_1, const double *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a2b735fcbee82e63e730799f83fe72862"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72961c09c0e21f2e696c0a077a0c8187"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a72961c09c0e21f2e696c0a077a0c8187"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a72961c09c0e21f2e696c0a077a0c8187">RetrieveOutputDisparityUseSIMDVectorsNEON</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, const float *message_u_prev_checkerboard_0, const float *message_d_prev_checkerboard_0, const float *message_l_prev_checkerboard_0, const float *message_r_prev_checkerboard_0, const float *message_u_prev_checkerboard_1, const float *message_d_prev_checkerboard_1, const float *message_l_prev_checkerboard_1, const float *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a72961c09c0e21f2e696c0a077a0c8187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb69f49f2005c5978b89811dde903ef"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:aacb69f49f2005c5978b89811dde903ef"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#aacb69f49f2005c5978b89811dde903ef">RetrieveOutputDisparityUseSIMDVectorsNEON</a> (const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, const double *message_u_prev_checkerboard_0, const double *message_d_prev_checkerboard_0, const double *message_l_prev_checkerboard_0, const double *message_r_prev_checkerboard_0, const double *message_u_prev_checkerboard_1, const double *message_d_prev_checkerboard_1, const double *message_l_prev_checkerboard_1, const double *message_r_prev_checkerboard_1, float *disparity_between_images_device, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:aacb69f49f2005c5978b89811dde903ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8859c6411ff85e13c5b3225d2095012c"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a8859c6411ff85e13c5b3225d2095012c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a8859c6411ff85e13c5b3225d2095012c">RunBPIterationUpdateMsgValsUseSIMDVectors</a> (unsigned int x_val_start_processing, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS], const U prev_l_message[DISP_VALS], const U prev_r_message[DISP_VALS], const U data_message[DISP_VALS], T *current_u_message, T *current_d_message, T *current_l_message, T *current_r_message, const U disc_k_bp_vect, bool data_aligned)</td></tr>
 <tr class="separator:a8859c6411ff85e13c5b3225d2095012c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a113dd7d93158c8f5e1bac7f22b7d1a7e"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U&gt; </td></tr>
 <tr class="memitem:a113dd7d93158c8f5e1bac7f22b7d1a7e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a113dd7d93158c8f5e1bac7f22b7d1a7e">RunBPIterationUpdateMsgValsUseSIMDVectors</a> (unsigned int x_val_start_processing, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const U *prev_u_message, const U *prev_d_message, const U *prev_l_message, const U *prev_r_message, const U *data_message, T *current_u_message, T *current_d_message, T *current_l_message, T *current_r_message, const U disc_k_bp_vect, bool data_aligned, unsigned int bp_settings_disp_vals)</td></tr>
 <tr class="separator:a113dd7d93158c8f5e1bac7f22b7d1a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf7687545f4a2ceed24b8d3c3d756e8"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:aedf7687545f4a2ceed24b8d3c3d756e8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#aedf7687545f4a2ceed24b8d3c3d756e8">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, float *message_u_checkerboard_0, float *message_d_checkerboard_0, float *message_l_checkerboard_0, float *message_r_checkerboard_0, float *message_u_checkerboard_1, float *message_d_checkerboard_1, float *message_l_checkerboard_1, float *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:aedf7687545f4a2ceed24b8d3c3d756e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5acbc1632371450e83ce4a82853ad95c"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a5acbc1632371450e83ce4a82853ad95c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a5acbc1632371450e83ce4a82853ad95c">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const short *data_cost_checkerboard_0, const short *data_cost_checkerboard_1, short *message_u_checkerboard_0, short *message_d_checkerboard_0, short *message_l_checkerboard_0, short *message_r_checkerboard_0, short *message_u_checkerboard_1, short *message_d_checkerboard_1, short *message_l_checkerboard_1, short *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a5acbc1632371450e83ce4a82853ad95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8debbf6016248045a13abd3efffc4a8c"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a8debbf6016248045a13abd3efffc4a8c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a8debbf6016248045a13abd3efffc4a8c">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, double *message_u_checkerboard_0, double *message_d_checkerboard_0, double *message_l_checkerboard_0, double *message_r_checkerboard_0, double *message_u_checkerboard_1, double *message_d_checkerboard_1, double *message_l_checkerboard_1, double *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a8debbf6016248045a13abd3efffc4a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a820e787a5c4afb8508803e4342fc53b7"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a820e787a5c4afb8508803e4342fc53b7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a820e787a5c4afb8508803e4342fc53b7">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, float *message_u_checkerboard_0, float *message_d_checkerboard_0, float *message_l_checkerboard_0, float *message_r_checkerboard_0, float *message_u_checkerboard_1, float *message_d_checkerboard_1, float *message_l_checkerboard_1, float *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a820e787a5c4afb8508803e4342fc53b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a361de0e1ebcf270b1d50ea51561fc614"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a361de0e1ebcf270b1d50ea51561fc614"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a361de0e1ebcf270b1d50ea51561fc614">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const short *data_cost_checkerboard_0, const short *data_cost_checkerboard_1, short *message_u_checkerboard_0, short *message_d_checkerboard_0, short *message_l_checkerboard_0, short *message_r_checkerboard_0, short *message_u_checkerboard_1, short *message_d_checkerboard_1, short *message_l_checkerboard_1, short *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a361de0e1ebcf270b1d50ea51561fc614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ed6347eecc39c9491f364c325d96f13"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a9ed6347eecc39c9491f364c325d96f13"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a9ed6347eecc39c9491f364c325d96f13">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, double *message_u_checkerboard_0, double *message_d_checkerboard_0, double *message_l_checkerboard_0, double *message_r_checkerboard_0, double *message_u_checkerboard_1, double *message_d_checkerboard_1, double *message_l_checkerboard_1, double *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a9ed6347eecc39c9491f364c325d96f13"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abffe6af867b8d3f8d9da717dcccbb4ec"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:abffe6af867b8d3f8d9da717dcccbb4ec"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#abffe6af867b8d3f8d9da717dcccbb4ec">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, float *message_u_checkerboard_0, float *message_d_checkerboard_0, float *message_l_checkerboard_0, float *message_r_checkerboard_0, float *message_u_checkerboard_1, float *message_d_checkerboard_1, float *message_l_checkerboard_1, float *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:abffe6af867b8d3f8d9da717dcccbb4ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24b6cc3ee0a5268900f9fe9674734684"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:a24b6cc3ee0a5268900f9fe9674734684"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a24b6cc3ee0a5268900f9fe9674734684">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, double *message_u_checkerboard_0, double *message_d_checkerboard_0, double *message_l_checkerboard_0, double *message_r_checkerboard_0, double *message_u_checkerboard_1, double *message_d_checkerboard_1, double *message_l_checkerboard_1, double *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:a24b6cc3ee0a5268900f9fe9674734684"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0ce88d2c8059f2b9fbffd98cb629a84"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </td></tr>
-<tr class="memitem:ad0ce88d2c8059f2b9fbffd98cb629a84"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#ad0ce88d2c8059f2b9fbffd98cb629a84">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int simd_data_size, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
-<tr class="separator:ad0ce88d2c8059f2b9fbffd98cb629a84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39e92946c93fc2feb918da8089d0a90b"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a39e92946c93fc2feb918da8089d0a90b"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a39e92946c93fc2feb918da8089d0a90b">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, float *message_u_checkerboard_0, float *message_d_checkerboard_0, float *message_l_checkerboard_0, float *message_r_checkerboard_0, float *message_u_checkerboard_1, float *message_d_checkerboard_1, float *message_l_checkerboard_1, float *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a39e92946c93fc2feb918da8089d0a90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3dc7a483349298b38702f63db82c0103"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a3dc7a483349298b38702f63db82c0103"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a3dc7a483349298b38702f63db82c0103">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a3dc7a483349298b38702f63db82c0103"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b11e6e9c4820398d01a95e6f1d77ec4"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a4b11e6e9c4820398d01a95e6f1d77ec4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a4b11e6e9c4820398d01a95e6f1d77ec4">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, double *message_u_checkerboard_0, double *message_d_checkerboard_0, double *message_l_checkerboard_0, double *message_r_checkerboard_0, double *message_u_checkerboard_1, double *message_d_checkerboard_1, double *message_l_checkerboard_1, double *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a4b11e6e9c4820398d01a95e6f1d77ec4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fb923c6e4470c694da19f5b57971505"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a0fb923c6e4470c694da19f5b57971505"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a0fb923c6e4470c694da19f5b57971505">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, float *message_u_checkerboard_0, float *message_d_checkerboard_0, float *message_l_checkerboard_0, float *message_r_checkerboard_0, float *message_u_checkerboard_1, float *message_d_checkerboard_1, float *message_l_checkerboard_1, float *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a0fb923c6e4470c694da19f5b57971505"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cb961cd33f35b5b489c996fa2d7b5e2"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a6cb961cd33f35b5b489c996fa2d7b5e2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a6cb961cd33f35b5b489c996fa2d7b5e2">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_0, const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *data_cost_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_checkerboard_0, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_u_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_d_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_l_checkerboard_1, <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a6cb961cd33f35b5b489c996fa2d7b5e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c7fbdb66d3376ea2fe00e35b14c9f44"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:a4c7fbdb66d3376ea2fe00e35b14c9f44"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a4c7fbdb66d3376ea2fe00e35b14c9f44">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, double *message_u_checkerboard_0, double *message_d_checkerboard_0, double *message_l_checkerboard_0, double *message_r_checkerboard_0, double *message_u_checkerboard_1, double *message_d_checkerboard_1, double *message_l_checkerboard_1, double *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a4c7fbdb66d3376ea2fe00e35b14c9f44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3b43245ca8095cc0fb0f634eb76b08e"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:ac3b43245ca8095cc0fb0f634eb76b08e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#ac3b43245ca8095cc0fb0f634eb76b08e">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const float *data_cost_checkerboard_0, const float *data_cost_checkerboard_1, float *message_u_checkerboard_0, float *message_d_checkerboard_0, float *message_l_checkerboard_0, float *message_r_checkerboard_0, float *message_u_checkerboard_1, float *message_d_checkerboard_1, float *message_l_checkerboard_1, float *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:ac3b43245ca8095cc0fb0f634eb76b08e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af66200a010a6cb582005e629a2ab070a"><td class="memTemplParams" colspan="2">template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </td></tr>
+<tr class="memitem:af66200a010a6cb582005e629a2ab070a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#af66200a010a6cb582005e629a2ab070a">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const double *data_cost_checkerboard_0, const double *data_cost_checkerboard_1, double *message_u_checkerboard_0, double *message_d_checkerboard_0, double *message_l_checkerboard_0, double *message_r_checkerboard_0, double *message_u_checkerboard_1, double *message_d_checkerboard_1, double *message_l_checkerboard_1, double *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:af66200a010a6cb582005e629a2ab070a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95f8e5cb8763210eb634cea8ff8c93a2"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </td></tr>
+<tr class="memitem:a95f8e5cb8763210eb634cea8ff8c93a2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a95f8e5cb8763210eb634cea8ff8c93a2">RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess</a> (<a class="el" href="namespacebeliefprop.html#a85dcfe709b354b19752ea8ae432f5af5">beliefprop::CheckerboardPart</a> checkerboard_to_update, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const T *data_cost_checkerboard_0, const T *data_cost_checkerboard_1, T *message_u_checkerboard_0, T *message_d_checkerboard_0, T *message_l_checkerboard_0, T *message_r_checkerboard_0, T *message_u_checkerboard_1, T *message_d_checkerboard_1, T *message_l_checkerboard_1, T *message_r_checkerboard_1, float disc_k_bp, unsigned int bp_settings_disp_vals, const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;opt_cpu_params)</td></tr>
+<tr class="separator:a95f8e5cb8763210eb634cea8ff8c93a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a426176129284e2641e9b06913032afde"><td class="memTemplParams" colspan="2">template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </td></tr>
 <tr class="memitem:a426176129284e2641e9b06913032afde"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacebeliefprop__cpu.html#a426176129284e2641e9b06913032afde">MsgStereoSIMD</a> (unsigned int x_val, unsigned int y_val, const <a class="el" href="structbeliefprop_1_1_bp_level_properties.html">beliefprop::BpLevelProperties</a> &amp;current_bp_level, const U messages_neighbor_1[DISP_VALS], const U messages_neighbor_2[DISP_VALS], const U messages_neighbor_3[DISP_VALS], const U data_costs[DISP_VALS], T *dst_message_array, const U &amp;disc_k_bp, bool data_aligned)</td></tr>
 <tr class="separator:a426176129284e2641e9b06913032afde"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,13 +205,13 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Namespace to define global kernel functions for optimized belief propagation processing on the CPU using OpenMP and SIMD vectorization. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
-<a id="ad31b32d62cd2129639a079208c17e694"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad31b32d62cd2129639a079208c17e694">&#9670;&nbsp;</a></span>CopyMsgDataToNextLevel()</h2>
+<a id="afad59db5de04363f6f5021be3ff8f4af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afad59db5de04363f6f5021be3ff8f4af">&#9670;&nbsp;</a></span>CopyMsgDataToNextLevel()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
+template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::CopyMsgDataToNextLevel </td>
@@ -377,7 +377,7 @@ template&lt;RunDataProcess_t T, RunDataVectProcess_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01686">1686</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01719">1719</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
@@ -399,17 +399,17 @@ template&lt;RunDataProcess_t T, RunDataVectProcess_t U, unsigned int DISP_VALS&g
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01578">1578</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01611">1611</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
-<a id="ab1377ebddcb99fe4a8ce9d4d8ea6172c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1377ebddcb99fe4a8ce9d4d8ea6172c">&#9670;&nbsp;</a></span>InitializeBottomLevelData()</h2>
+<a id="a46391cbfa153ffbd6e92d1bbd651ebc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46391cbfa153ffbd6e92d1bbd651ebc1">&#9670;&nbsp;</a></span>InitializeBottomLevelData()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
+template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::InitializeBottomLevelData </td>
@@ -473,12 +473,12 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00479">479</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00474">474</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebeliefprop__cpu_ab1377ebddcb99fe4a8ce9d4d8ea6172c_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_ab1377ebddcb99fe4a8ce9d4d8ea6172c_cgraph" alt=""/></div>
-<map name="anamespacebeliefprop__cpu_ab1377ebddcb99fe4a8ce9d4d8ea6172c_cgraph" id="anamespacebeliefprop__cpu_ab1377ebddcb99fe4a8ce9d4d8ea6172c_cgraph">
+<div class="center"><img src="namespacebeliefprop__cpu_a46391cbfa153ffbd6e92d1bbd651ebc1_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_a46391cbfa153ffbd6e92d1bbd651ebc1_cgraph" alt=""/></div>
+<map name="anamespacebeliefprop__cpu_a46391cbfa153ffbd6e92d1bbd651ebc1_cgraph" id="anamespacebeliefprop__cpu_a46391cbfa153ffbd6e92d1bbd651ebc1_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,188,47"/>
 <area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="236,5,433,47"/>
 </map>
@@ -486,13 +486,13 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="add64ba4899c73265e494c9618e8b461f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add64ba4899c73265e494c9618e8b461f">&#9670;&nbsp;</a></span>InitializeCurrentLevelData()</h2>
+<a id="ab6fcfdaea0586ff95c008a7561bd58c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6fcfdaea0586ff95c008a7561bd58c7">&#9670;&nbsp;</a></span>InitializeCurrentLevelData()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
+template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::InitializeCurrentLevelData </td>
@@ -556,12 +556,12 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00510">510</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00505">505</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebeliefprop__cpu_add64ba4899c73265e494c9618e8b461f_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_add64ba4899c73265e494c9618e8b461f_cgraph" alt=""/></div>
-<map name="anamespacebeliefprop__cpu_add64ba4899c73265e494c9618e8b461f_cgraph" id="anamespacebeliefprop__cpu_add64ba4899c73265e494c9618e8b461f_cgraph">
+<div class="center"><img src="namespacebeliefprop__cpu_ab6fcfdaea0586ff95c008a7561bd58c7_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_ab6fcfdaea0586ff95c008a7561bd58c7_cgraph" alt=""/></div>
+<map name="anamespacebeliefprop__cpu_ab6fcfdaea0586ff95c008a7561bd58c7_cgraph" id="anamespacebeliefprop__cpu_ab6fcfdaea0586ff95c008a7561bd58c7_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,188,47"/>
 <area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="236,5,433,47"/>
 </map>
@@ -569,13 +569,13 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a6213dee0a11cf8b1f512e45667c77212"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6213dee0a11cf8b1f512e45667c77212">&#9670;&nbsp;</a></span>InitializeMessageValsToDefaultKernel()</h2>
+<a id="adfc3cae77658cc6fed55f59f61fabdff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfc3cae77658cc6fed55f59f61fabdff">&#9670;&nbsp;</a></span>InitializeMessageValsToDefaultKernel()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
+template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::InitializeMessageValsToDefaultKernel </td>
@@ -651,12 +651,12 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00544">544</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00555">555</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebeliefprop__cpu_a6213dee0a11cf8b1f512e45667c77212_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_a6213dee0a11cf8b1f512e45667c77212_cgraph" alt=""/></div>
-<map name="anamespacebeliefprop__cpu_a6213dee0a11cf8b1f512e45667c77212_cgraph" id="anamespacebeliefprop__cpu_a6213dee0a11cf8b1f512e45667c77212_cgraph">
+<div class="center"><img src="namespacebeliefprop__cpu_adfc3cae77658cc6fed55f59f61fabdff_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_adfc3cae77658cc6fed55f59f61fabdff_cgraph" alt=""/></div>
+<map name="anamespacebeliefprop__cpu_adfc3cae77658cc6fed55f59f61fabdff_cgraph" id="anamespacebeliefprop__cpu_adfc3cae77658cc6fed55f59f61fabdff_cgraph">
 <area shape="rect" title=" " alt="" coords="5,5,216,47"/>
 <area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="264,5,461,47"/>
 </map>
@@ -746,7 +746,7 @@ template&lt;RunData_t T, RunDataVect_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01811">1811</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01844">1844</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
@@ -826,7 +826,7 @@ template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01797">1797</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01830">1830</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
@@ -912,7 +912,7 @@ template&lt;RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01713">1713</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01746">1746</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -935,20 +935,20 @@ Here is the caller graph for this function:</div>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h.html#ad959242b6e4570d0d925bdac91463164" title=" " alt="" coords="5,384,228,455"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h.html#a097a8cf6d34f72746ee0d61008f367ef" title=" " alt="" coords="5,479,228,549"/>
 <area shape="rect" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h.html#a05029346064425152625d4a8ce4575d3" title=" " alt="" coords="5,573,228,644"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#af4ce29f020eeaf423f2f8efb4bdecb9a" title=" " alt="" coords="28,668,205,739"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a22a2b1d590eb6869925362a5c8889dad" title=" " alt="" coords="28,763,205,833"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a6064659abdeed1c5920bc7e9221e2915" title=" " alt="" coords="28,857,205,928"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#ae8e45ef9ed82d16074338257db1dba0f" title=" " alt="" coords="28,952,205,1023"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a03dac2614e966e7358e06c8a31b092fb" title=" " alt="" coords="28,1047,205,1117"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a652869a85f4bd7abddb3d38e8a79ea47" title=" " alt="" coords="28,1141,205,1212"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a3dabb066e53efdeed399291702b1ec4c" title=" " alt="" coords="28,1236,205,1307"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a91df30545b7dc5c2f340eb4b90670ae0" title=" " alt="" coords="28,1331,205,1401"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#afa91c894de4529d3aaac65db40f56561" title=" " alt="" coords="28,1425,205,1496"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a5db44f8bd9888ab66bce82aab030f43e" title=" " alt="" coords="28,1520,205,1591"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#ad2756a13b10ed25b8a69e49d3d172a6a" title=" " alt="" coords="28,1615,205,1685"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#abf79ac586a5c4194dc465b5af6c6e201" title=" " alt="" coords="28,1709,205,1780"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a27e0e80338bd2a8d64b088857b8a63f1" title=" " alt="" coords="28,1804,205,1875"/>
-<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a310cba61faa74d54db631e3d93980c96" title=" " alt="" coords="28,1899,205,1969"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#aa9f93445b046a781ad865260f4cbf46a" title=" " alt="" coords="18,668,215,739"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#adc1a9c2c82c921c5573307db50e474af" title=" " alt="" coords="18,763,215,833"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a4c5930bb3e04c1d8ab54f6b7f439b1cb" title=" " alt="" coords="18,857,215,928"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a5df0dc1b2b8b6b3ef14f33ad9d0a1be2" title=" " alt="" coords="18,952,215,1023"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#acb29b84c27de507bda47b9c3f55b2dbb" title=" " alt="" coords="18,1047,215,1117"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#ae332a3e8155fa0e18aca77cdaea22d04" title=" " alt="" coords="18,1141,215,1212"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h.html#a990a71382b4bd982e6ead29a8a05c3eb" title=" " alt="" coords="18,1236,215,1307"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a02ccd1d9e9e68a2b76bc9a4d706c8aef" title=" " alt="" coords="18,1331,215,1401"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a957ef4b742f3a356f265142c02115e28" title=" " alt="" coords="18,1425,215,1496"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a104f6d19390e226267baa11f96d37564" title=" " alt="" coords="18,1520,215,1591"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a7329f045cb1a308df56843d9e22d8c77" title=" " alt="" coords="18,1615,215,1685"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#a85444246509cf039d12a47ce0c67732d" title=" " alt="" coords="18,1709,215,1780"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#aaca23b8e3955ef1876f2aa64208de733" title=" " alt="" coords="18,1804,215,1875"/>
+<area shape="rect" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h.html#adfd9a05dc256182d52be58f75fb96e70" title=" " alt="" coords="18,1899,215,1969"/>
 </map>
 </div>
 
@@ -1030,7 +1030,7 @@ template&lt;RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01605">1605</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01638">1638</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1137,7 +1137,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01827">1827</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01860">1860</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1244,7 +1244,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01892">1892</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01925">1925</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1357,7 +1357,7 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01129">1129</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01140">1140</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -1379,8 +1379,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a40deb00185bba3606692532d7af7fd00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40deb00185bba3606692532d7af7fd00">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectors()</h2>
+<a id="aa83687bc3259c02910351a8f280f912c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa83687bc3259c02910351a8f280f912c">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectors()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1468,12 +1468,6 @@ template&lt;RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>simd_data_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">const <a class="el" href="class_parallel_params.html">ParallelParams</a> &amp;&#160;</td>
           <td class="paramname"><em>opt_cpu_params</em>&#160;</td>
         </tr>
@@ -1485,28 +1479,27 @@ template&lt;RunData_t T, RunDataVect_t U, RunDataProcess_t V, RunDataVectProcess
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01203">1203</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01236">1236</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebeliefprop__cpu_a40deb00185bba3606692532d7af7fd00_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_a40deb00185bba3606692532d7af7fd00_cgraph" alt=""/></div>
-<map name="anamespacebeliefprop__cpu_a40deb00185bba3606692532d7af7fd00_cgraph" id="anamespacebeliefprop__cpu_a40deb00185bba3606692532d7af7fd00_cgraph">
-<area shape="rect" title=" " alt="" coords="5,71,237,112"/>
-<area shape="rect" href="namespacebeliefprop.html#a473a4cdee42051ee8890136a8c381990" title="Inline function to check if data is aligned at x_val_data_start for SIMD loads/stores that require al..." alt="" coords="287,5,486,47"/>
-<area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="288,71,485,112"/>
-<area shape="rect" href="namespacebeliefprop__cpu.html#af0c163360371120b67ec75f4679f140a" title=" " alt="" coords="285,136,488,177"/>
+<div class="center"><img src="namespacebeliefprop__cpu_aa83687bc3259c02910351a8f280f912c_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_aa83687bc3259c02910351a8f280f912c_cgraph" alt=""/></div>
+<map name="anamespacebeliefprop__cpu_aa83687bc3259c02910351a8f280f912c_cgraph" id="anamespacebeliefprop__cpu_aa83687bc3259c02910351a8f280f912c_cgraph">
+<area shape="rect" title=" " alt="" coords="5,39,237,80"/>
+<area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="288,5,485,47"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#af0c163360371120b67ec75f4679f140a" title=" " alt="" coords="285,71,488,112"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a6af156c3844c368c4089642641f5f369"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6af156c3844c368c4089642641f5f369">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX256() <span class="overload">[1/3]</span></h2>
+<a id="a7f8002b76cb8ff937bdbab34e04b9466"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f8002b76cb8ff937bdbab34e04b9466">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX256() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256 </td>
@@ -1600,17 +1593,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00149">149</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00178">178</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a58e8278a652eb8ff7fcddeec0cf9024c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58e8278a652eb8ff7fcddeec0cf9024c">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX256() <span class="overload">[2/3]</span></h2>
+<a id="a2cd514877dbd2c2846a1bec59802336a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2cd514877dbd2c2846a1bec59802336a">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX256() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256 </td>
@@ -1704,17 +1697,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00105">105</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00120">120</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a4796be1ea21f64d73dfeadc8e9d79819"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4796be1ea21f64d73dfeadc8e9d79819">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX256() <span class="overload">[3/3]</span></h2>
+<a id="acec0fbb1a67763844883f7f62ff29187"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acec0fbb1a67763844883f7f62ff29187">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX256() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX256 </td>
@@ -1725,61 +1718,61 @@ template&lt;unsigned int DISP_VALS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
@@ -1808,17 +1801,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00127">127</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00141">141</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="af420ae631c218d38e11a53e65e6097c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af420ae631c218d38e11a53e65e6097c5">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX512() <span class="overload">[1/3]</span></h2>
+<a id="a2b735fcbee82e63e730799f83fe72862"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2b735fcbee82e63e730799f83fe72862">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX512() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512 </td>
@@ -1912,17 +1905,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00149">149</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00178">178</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a176a94ac8c6ea853495cf4dd725a8c78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a176a94ac8c6ea853495cf4dd725a8c78">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX512() <span class="overload">[2/3]</span></h2>
+<a id="ad5ecedbb93e7a2671287ad044898c6e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5ecedbb93e7a2671287ad044898c6e3">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX512() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512 </td>
@@ -2016,17 +2009,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00105">105</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00120">120</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a3657a4c2138ca536e7dfa76bea75412e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3657a4c2138ca536e7dfa76bea75412e">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX512() <span class="overload">[3/3]</span></h2>
+<a id="a8adeea221fc449414df906fc0ce3d363"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8adeea221fc449414df906fc0ce3d363">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsAVX512() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsAVX512 </td>
@@ -2037,61 +2030,61 @@ template&lt;unsigned int DISP_VALS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_prev_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_prev_checkerboard_1</em>, </td>
         </tr>
         <tr>
@@ -2120,17 +2113,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00127">127</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00141">141</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a8ae47697f4d85e6b57d2501780ef228d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ae47697f4d85e6b57d2501780ef228d">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsNEON() <span class="overload">[1/2]</span></h2>
+<a id="aacb69f49f2005c5978b89811dde903ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacb69f49f2005c5978b89811dde903ef">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsNEON() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON </td>
@@ -2224,17 +2217,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00146">146</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00141">141</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 
 </div>
 </div>
-<a id="a035b2d21adcdcdfca6b102d5e909c366"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a035b2d21adcdcdfca6b102d5e909c366">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsNEON() <span class="overload">[2/2]</span></h2>
+<a id="a72961c09c0e21f2e696c0a077a0c8187"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72961c09c0e21f2e696c0a077a0c8187">&#9670;&nbsp;</a></span>RetrieveOutputDisparityUseSIMDVectorsNEON() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON </td>
@@ -2328,7 +2321,7 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00102">102</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00099">99</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 
 </div>
 </div>
@@ -2438,7 +2431,7 @@ template&lt;RunData_t T, RunDataVect_t U&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00654">654</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00685">685</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
@@ -2542,7 +2535,7 @@ template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00626">626</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00657">657</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
@@ -2652,17 +2645,17 @@ template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACC
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00972">972</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l01007">1007</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 
 </div>
 </div>
-<a id="a8d913c91e262abe5ff88a1027e06993f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d913c91e262abe5ff88a1027e06993f">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions()</h2>
+<a id="abb3848c046c62e840da41161a1168fde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb3848c046c62e840da41161a1168fde">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
+template&lt;RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesNoPackedInstructions </td>
@@ -2762,27 +2755,26 @@ template&lt;RunData_t T, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00580">580</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00591">591</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebeliefprop__cpu_a8d913c91e262abe5ff88a1027e06993f_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_a8d913c91e262abe5ff88a1027e06993f_cgraph" alt=""/></div>
-<map name="anamespacebeliefprop__cpu_a8d913c91e262abe5ff88a1027e06993f_cgraph" id="anamespacebeliefprop__cpu_a8d913c91e262abe5ff88a1027e06993f_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,271,87"/>
-<area shape="rect" href="namespacebeliefprop.html#a473a4cdee42051ee8890136a8c381990" title="Inline function to check if data is aligned at x_val_data_start for SIMD loads/stores that require al..." alt="" coords="319,5,517,47"/>
-<area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="319,71,517,112"/>
+<div class="center"><img src="namespacebeliefprop__cpu_abb3848c046c62e840da41161a1168fde_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_abb3848c046c62e840da41161a1168fde_cgraph" alt=""/></div>
+<map name="anamespacebeliefprop__cpu_abb3848c046c62e840da41161a1168fde_cgraph" id="anamespacebeliefprop__cpu_abb3848c046c62e840da41161a1168fde_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,271,61"/>
+<area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="319,13,516,54"/>
 </map>
 </div>
 
 </div>
 </div>
-<a id="a8debbf6016248045a13abd3efffc4a8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8debbf6016248045a13abd3efffc4a8c">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256() <span class="overload">[1/3]</span></h2>
+<a id="a4b11e6e9c4820398d01a95e6f1d77ec4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b11e6e9c4820398d01a95e6f1d77ec4">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256 </td>
@@ -2882,17 +2874,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00083">83</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00099">99</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="aedf7687545f4a2ceed24b8d3c3d756e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedf7687545f4a2ceed24b8d3c3d756e8">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256() <span class="overload">[2/3]</span></h2>
+<a id="a39e92946c93fc2feb918da8089d0a90b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39e92946c93fc2feb918da8089d0a90b">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256 </td>
@@ -2992,17 +2984,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00039">39</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00041">41</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a5acbc1632371450e83ce4a82853ad95c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5acbc1632371450e83ce4a82853ad95c">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256() <span class="overload">[3/3]</span></h2>
+<a id="a3dc7a483349298b38702f63db82c0103"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3dc7a483349298b38702f63db82c0103">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256 </td>
@@ -3019,61 +3011,61 @@ template&lt;unsigned int DISP_VALS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_checkerboard_1</em>, </td>
         </tr>
         <tr>
@@ -3102,17 +3094,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00061">61</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html#l00062">62</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x256_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX256TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a9ed6347eecc39c9491f364c325d96f13"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ed6347eecc39c9491f364c325d96f13">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512() <span class="overload">[1/3]</span></h2>
+<a id="a4c7fbdb66d3376ea2fe00e35b14c9f44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c7fbdb66d3376ea2fe00e35b14c9f44">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512 </td>
@@ -3212,17 +3204,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00083">83</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00099">99</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a820e787a5c4afb8508803e4342fc53b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a820e787a5c4afb8508803e4342fc53b7">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512() <span class="overload">[2/3]</span></h2>
+<a id="a0fb923c6e4470c694da19f5b57971505"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fb923c6e4470c694da19f5b57971505">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512 </td>
@@ -3322,17 +3314,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00039">39</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00041">41</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a361de0e1ebcf270b1d50ea51561fc614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a361de0e1ebcf270b1d50ea51561fc614">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512() <span class="overload">[3/3]</span></h2>
+<a id="a6cb961cd33f35b5b489c996fa2d7b5e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cb961cd33f35b5b489c996fa2d7b5e2">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512 </td>
@@ -3349,61 +3341,61 @@ template&lt;unsigned int DISP_VALS&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const short *&#160;</td>
+          <td class="paramtype">const <a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>data_cost_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_checkerboard_0</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_u_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_d_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_l_checkerboard_1</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">short *&#160;</td>
+          <td class="paramtype"><a class="el" href="_run_c_u_d_a_settings_8h.html#ae0ec76c243989a7b368bb78677ff6b30">halftype</a> *&#160;</td>
           <td class="paramname"><em>message_r_checkerboard_1</em>, </td>
         </tr>
         <tr>
@@ -3432,17 +3424,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00061">61</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html#l00062">62</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___a_v_x512_template_sp_functs_8h_source.html">KernelBpStereoCPU_AVX512TemplateSpFuncts.h</a>.</p>
 
 </div>
 </div>
-<a id="a24b6cc3ee0a5268900f9fe9674734684"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24b6cc3ee0a5268900f9fe9674734684">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON() <span class="overload">[1/2]</span></h2>
+<a id="af66200a010a6cb582005e629a2ab070a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af66200a010a6cb582005e629a2ab070a">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON </td>
@@ -3542,17 +3534,17 @@ template&lt;unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00080">80</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html#l00078">78</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u___n_e_o_n_8h_source.html">KernelBpStereoCPU_NEON.h</a>.</p>
 
 </div>
 </div>
-<a id="abffe6af867b8d3f8d9da717dcccbb4ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abffe6af867b8d3f8d9da717dcccbb4ec">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON() <span class="overload">[2/2]</span></h2>
+<a id="ac3b43245ca8095cc0fb0f634eb76b08e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3b43245ca8095cc0fb0f634eb76b08e">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;unsigned int DISP_VALS&gt; </div>
+template&lt;unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON </td>
@@ -3656,8 +3648,8 @@ template&lt;unsigned int DISP_VALS&gt; </div>
 
 </div>
 </div>
-<a id="ad0ce88d2c8059f2b9fbffd98cb629a84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0ce88d2c8059f2b9fbffd98cb629a84">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess()</h2>
+<a id="a95f8e5cb8763210eb634cea8ff8c93a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95f8e5cb8763210eb634cea8ff8c93a2">&#9670;&nbsp;</a></span>RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3746,12 +3738,6 @@ template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>simd_data_size</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>bp_settings_disp_vals</em>, </td>
         </tr>
         <tr>
@@ -3768,15 +3754,14 @@ template&lt;RunData_t T, RunDataVect_t U, unsigned int DISP_VALS&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00682">682</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00713">713</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="namespacebeliefprop__cpu_ad0ce88d2c8059f2b9fbffd98cb629a84_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_ad0ce88d2c8059f2b9fbffd98cb629a84_cgraph" alt=""/></div>
-<map name="anamespacebeliefprop__cpu_ad0ce88d2c8059f2b9fbffd98cb629a84_cgraph" id="anamespacebeliefprop__cpu_ad0ce88d2c8059f2b9fbffd98cb629a84_cgraph">
-<area shape="rect" title=" " alt="" coords="5,31,315,87"/>
-<area shape="rect" href="namespacebeliefprop.html#a473a4cdee42051ee8890136a8c381990" title="Inline function to check if data is aligned at x_val_data_start for SIMD loads/stores that require al..." alt="" coords="363,5,561,47"/>
-<area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="363,71,561,112"/>
+<div class="center"><img src="namespacebeliefprop__cpu_a95f8e5cb8763210eb634cea8ff8c93a2_cgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_a95f8e5cb8763210eb634cea8ff8c93a2_cgraph" alt=""/></div>
+<map name="anamespacebeliefprop__cpu_a95f8e5cb8763210eb634cea8ff8c93a2_cgraph" id="anamespacebeliefprop__cpu_a95f8e5cb8763210eb634cea8ff8c93a2_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,315,61"/>
+<area shape="rect" href="class_parallel_params.html#ad7c403dc0082fb66b8a75d40a56e679d" title="Get optimized parallel parameters for parallel processing kernel for kernel that is indexed as an arr..." alt="" coords="363,13,560,54"/>
 </map>
 </div>
 
@@ -3822,14 +3807,14 @@ template&lt;RunDataVectProcess_t T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00430">430</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html#l00428">428</a> of file <a class="el" href="_kernel_bp_stereo_c_p_u_8h_source.html">KernelBpStereoCPU.h</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespacebeliefprop__cpu_af0c163360371120b67ec75f4679f140a_icgraph.png" border="0" usemap="#anamespacebeliefprop__cpu_af0c163360371120b67ec75f4679f140a_icgraph" alt=""/></div>
 <map name="anamespacebeliefprop__cpu_af0c163360371120b67ec75f4679f140a_icgraph" id="anamespacebeliefprop__cpu_af0c163360371120b67ec75f4679f140a_icgraph">
 <area shape="rect" title=" " alt="" coords="285,5,488,47"/>
-<area shape="rect" href="namespacebeliefprop__cpu.html#a40deb00185bba3606692532d7af7fd00" title=" " alt="" coords="5,5,237,47"/>
+<area shape="rect" href="namespacebeliefprop__cpu.html#aa83687bc3259c02910351a8f280f912c" title=" " alt="" coords="5,5,237,47"/>
 </map>
 </div>
 

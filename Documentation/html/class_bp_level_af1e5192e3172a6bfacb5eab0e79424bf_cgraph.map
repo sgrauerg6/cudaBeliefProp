@@ -1,0 +1,5 @@
+<map id="BpLevel::TotalDataForAlignedMemoryAllLevels" name="BpLevel::TotalDataForAlignedMemoryAllLevels">
+<area shape="rect" id="node1" title="Static function to get count of total data needed for bp processing at all levels." alt="" coords="5,23,219,65"/>
+<area shape="rect" id="node2" href="$class_bp_level.html#ae46c656c6dd5d2fe0a8c398be9f54c07" title="Get bp level properties for next (higher) level in hierarchy that processes data with half width/heig..." alt="" coords="291,5,457,32"/>
+<area shape="rect" id="node3" href="$class_bp_level.html#a4ecf8946b20a208c887bdec5d4104d6b" title="Get the amount of data in each BP array (data cost/messages for each checkerboard) at the current lev..." alt="" coords="267,56,481,83"/>
+</map>

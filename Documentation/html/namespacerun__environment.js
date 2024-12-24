@@ -2,11 +2,13 @@ var namespacerun__environment =
 [
     [ "RunImpSettings", "structrun__environment_1_1_run_imp_settings.html", "structrun__environment_1_1_run_imp_settings" ],
     [ "AccSetting", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb", [
-      [ "kNone", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13", null ],
-      [ "kAVX256", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233", null ],
+      [ "kAVX512_F16", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76", null ],
       [ "kAVX512", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3", null ],
+      [ "kAVX256_F16", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2", null ],
+      [ "kAVX256", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233", null ],
       [ "kNEON", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70", null ],
-      [ "kCUDA", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7", null ]
+      [ "kCUDA", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7", null ],
+      [ "kNone", "namespacerun__environment.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13", null ]
     ] ],
     [ "OptParallelParamsSetting", "namespacerun__environment.html#ae2a548033e399bc59f63aa6a9ec75bf0", [
       [ "kSameParallelParamsAllKernels", "namespacerun__environment.html#ae2a548033e399bc59f63aa6a9ec75bf0ac9cc7ce7496f19ec2d6ec0848ef87c9d", null ],
@@ -24,14 +26,12 @@ var namespacerun__environment =
     [ "AccelerationString", "namespacerun__environment.html#a06320020557d9545768fb333d1276cf8", null ],
     [ "AccelerationString", "namespacerun__environment.html#a0a7505311f966a83b332d3fee2921848", null ],
     [ "GetBytesAlignMemory", "namespacerun__environment.html#ac68b9fea12a8756652bce761d7a0cdda", null ],
-    [ "GetNumDataAlignWidth", "namespacerun__environment.html#a1531965e4d9740a8446833f2fa7e3163", null ],
     [ "RunSettings", "namespacerun__environment.html#a9639034960aa9cbd5836e5320f1a2a35", null ],
     [ "kAccelerationDescHeader", "namespacerun__environment.html#ad0f0355486540b6e9798b3349d48a1d9", null ],
     [ "kBytesAlignMemHeader", "namespacerun__environment.html#a1c871dad08fdced4234b98ec0cbef783", null ],
     [ "kCPUThreadsPinnedHeader", "namespacerun__environment.html#a00245c690fb6c14dafd1b1106d028140", null ],
     [ "kDataSizeToNameMap", "namespacerun__environment.html#ab15f9538874f71da40e07434e820a1d7", null ],
     [ "kNumCPUThreadsHeader", "namespacerun__environment.html#a9f9b4e6013a69f63118b7d6bd8b6dd1e", null ],
-    [ "kNumDataAlignWidthHeader", "namespacerun__environment.html#a0f90572394f855a71598506533005800", null ],
     [ "kOmpPlacesHeader", "namespacerun__environment.html#a2f12e6214db0993b83063ce3ee059789", null ],
     [ "kOmpProcBindHeader", "namespacerun__environment.html#a96a0152e29108e93871a640650a65596", null ],
     [ "kOptPParmsSettingToDesc", "namespacerun__environment.html#a7203df709834249d205e9e2fc1f284af", null ],

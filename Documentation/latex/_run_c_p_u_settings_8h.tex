@@ -8,15 +8,17 @@ Contains namespace with CPU run defaults and constants.
 {\ttfamily \#include $<$vector$>$}\newline
 {\ttfamily \#include $<$array$>$}\newline
 {\ttfamily \#include $<$thread$>$}\newline
-{\ttfamily \#include \char`\"{}Run\+Settings\+Params/\+Run\+Settings.\+h\char`\"{}}\newline
-Include dependency graph for Run\+CPUSettings.\+h\+:\nopagebreak
+{\ttfamily \#include $<$set$>$}\newline
+Include dependency graph for Run\+CPUSettings.\+h\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
-\includegraphics[width=350pt]{_run_c_p_u_settings_8h__incl}
+\includegraphics[width=304pt]{_run_c_p_u_settings_8h__incl}
 \end{center}
 \end{figure}
-This graph shows which files directly or indirectly include this file\+:\nopagebreak
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -33,11 +35,15 @@ This graph shows which files directly or indirectly include this file\+:\nopageb
 \item 
 \#define \mbox{\hyperlink{_run_c_p_u_settings_8h_aa69e9a59b1abae0590236507ccd1dc4b}{AVX\+\_\+256\+\_\+\+DEFINE}}~0
 \item 
-\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}{AVX\+\_\+512\+\_\+\+DEFINE}}~1
+\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_a39632c5886bc25abb24dfb8662430e77}{AVX\+\_\+256\+\_\+\+F16\+\_\+\+DEFINE}}~1
 \item 
-\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_abfa9a0caa652efcd52f87b995ba225e2}{NEON\+\_\+\+DEFINE}}~2
+\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}{AVX\+\_\+512\+\_\+\+DEFINE}}~2
 \item 
-\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_a8a23f4491215194a44e7a91eec95c06c}{NO\+\_\+\+VECTORIZATION}}~3
+\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_ad821a207700c6fc107f29520a5994484}{AVX\+\_\+512\+\_\+\+F16\+\_\+\+DEFINE}}~3
+\item 
+\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_abfa9a0caa652efcd52f87b995ba225e2}{NEON\+\_\+\+DEFINE}}~4
+\item 
+\#define \mbox{\hyperlink{_run_c_p_u_settings_8h_a8a23f4491215194a44e7a91eec95c06c}{NO\+\_\+\+VECTORIZATION}}~5
 \item 
 \#define \mbox{\hyperlink{_run_c_p_u_settings_8h_ab9bfdbf36e88c3985abe40fcd00bbe5c}{CPU\+\_\+\+VECTORIZATION\+\_\+\+DEFINE}}~\mbox{\hyperlink{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}{AVX\+\_\+512\+\_\+\+DEFINE}}
 \end{DoxyCompactItemize}
@@ -48,12 +54,12 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__cpu_a24d7f23c61
 \begin{DoxyCompactList}\small\item\em Constant that specifies that run is simulating single CPU on a dual-\/\+CPU system. \end{DoxyCompactList}\item 
 const unsigned int \mbox{\hyperlink{namespacerun__cpu_a364fc4a944fba970d5f4342ef1efaf40}{run\+\_\+cpu\+::k\+Num\+Threads\+CPU}} \{std\+::thread\+::hardware\+\_\+concurrency()\}
 \begin{DoxyCompactList}\small\item\em Constant corresponding to number of threads on CPU. \end{DoxyCompactList}\item 
-const std\+::vector$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cpu_a10dbbcf772622f816bc1c68952b761e4}{run\+\_\+cpu\+::k\+Parallel\+Parameter\+Options}}
-\begin{DoxyCompactList}\small\item\em Parallel parameters options that are tested in order to find optimized configuration in run. \end{DoxyCompactList}\item 
 const unsigned int \mbox{\hyperlink{namespacerun__cpu_a3d0449e82d8c4c3e48aee42f8bbea0ca}{run\+\_\+cpu\+::k\+Min\+Num\+Threads\+Run}} \{std\+::min(k\+Num\+Threads\+CPU, 4u)\}
 \begin{DoxyCompactList}\small\item\em Minimum number of threads to allow for any parallel parameters setting on CPU. \end{DoxyCompactList}\item 
 const std\+::array$<$ unsigned int, 2 $>$ \mbox{\hyperlink{namespacerun__cpu_a3698d5e3de4cfbfc919051e75813686b}{run\+\_\+cpu\+::k\+Parallel\+Params\+Default}} \{\{k\+Num\+Threads\+CPU, 1\}\}
-\begin{DoxyCompactList}\small\item\em Default parallel parameters setting on CPU. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em Default parallel parameters setting on CPU. \end{DoxyCompactList}\item 
+const std\+::set$<$ std\+::array$<$ unsigned int, 2 $>$ $>$ \mbox{\hyperlink{namespacerun__cpu_af770fe096fb6d05fb88fd6ce2ce18915}{run\+\_\+cpu\+::k\+Parallel\+Parameter\+Alt\+Options}}
+\begin{DoxyCompactList}\small\item\em Parallel parameters options that are tested in order to find optimized configuration in run. OK to include default option but not required. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \doxysubsection{Detailed Description}
@@ -78,15 +84,35 @@ Copyright (c) 2024
 
 Definition at line 42 of file Run\+CPUSettings.\+h.
 
-\mbox{\Hypertarget{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}\label{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}} 
-\index{RunCPUSettings.h@{RunCPUSettings.h}!AVX\_512\_DEFINE@{AVX\_512\_DEFINE}}
-\index{AVX\_512\_DEFINE@{AVX\_512\_DEFINE}!RunCPUSettings.h@{RunCPUSettings.h}}
-\doxysubsubsection{\texorpdfstring{AVX\_512\_DEFINE}{AVX\_512\_DEFINE}}
-{\footnotesize\ttfamily \#define AVX\+\_\+512\+\_\+\+DEFINE~1}
+\mbox{\Hypertarget{_run_c_p_u_settings_8h_a39632c5886bc25abb24dfb8662430e77}\label{_run_c_p_u_settings_8h_a39632c5886bc25abb24dfb8662430e77}} 
+\index{RunCPUSettings.h@{RunCPUSettings.h}!AVX\_256\_F16\_DEFINE@{AVX\_256\_F16\_DEFINE}}
+\index{AVX\_256\_F16\_DEFINE@{AVX\_256\_F16\_DEFINE}!RunCPUSettings.h@{RunCPUSettings.h}}
+\doxysubsubsection{\texorpdfstring{AVX\_256\_F16\_DEFINE}{AVX\_256\_F16\_DEFINE}}
+{\footnotesize\ttfamily \#define AVX\+\_\+256\+\_\+\+F16\+\_\+\+DEFINE~1}
 
 
 
 Definition at line 43 of file Run\+CPUSettings.\+h.
+
+\mbox{\Hypertarget{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}\label{_run_c_p_u_settings_8h_aa79bf1a48a98e108cfb7f16b5fe4f6c2}} 
+\index{RunCPUSettings.h@{RunCPUSettings.h}!AVX\_512\_DEFINE@{AVX\_512\_DEFINE}}
+\index{AVX\_512\_DEFINE@{AVX\_512\_DEFINE}!RunCPUSettings.h@{RunCPUSettings.h}}
+\doxysubsubsection{\texorpdfstring{AVX\_512\_DEFINE}{AVX\_512\_DEFINE}}
+{\footnotesize\ttfamily \#define AVX\+\_\+512\+\_\+\+DEFINE~2}
+
+
+
+Definition at line 44 of file Run\+CPUSettings.\+h.
+
+\mbox{\Hypertarget{_run_c_p_u_settings_8h_ad821a207700c6fc107f29520a5994484}\label{_run_c_p_u_settings_8h_ad821a207700c6fc107f29520a5994484}} 
+\index{RunCPUSettings.h@{RunCPUSettings.h}!AVX\_512\_F16\_DEFINE@{AVX\_512\_F16\_DEFINE}}
+\index{AVX\_512\_F16\_DEFINE@{AVX\_512\_F16\_DEFINE}!RunCPUSettings.h@{RunCPUSettings.h}}
+\doxysubsubsection{\texorpdfstring{AVX\_512\_F16\_DEFINE}{AVX\_512\_F16\_DEFINE}}
+{\footnotesize\ttfamily \#define AVX\+\_\+512\+\_\+\+F16\+\_\+\+DEFINE~3}
+
+
+
+Definition at line 45 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{_run_c_p_u_settings_8h_ab9bfdbf36e88c3985abe40fcd00bbe5c}\label{_run_c_p_u_settings_8h_ab9bfdbf36e88c3985abe40fcd00bbe5c}} 
 \index{RunCPUSettings.h@{RunCPUSettings.h}!CPU\_VECTORIZATION\_DEFINE@{CPU\_VECTORIZATION\_DEFINE}}
@@ -96,25 +122,25 @@ Definition at line 43 of file Run\+CPUSettings.\+h.
 
 
 
-Definition at line 56 of file Run\+CPUSettings.\+h.
+Definition at line 62 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{_run_c_p_u_settings_8h_abfa9a0caa652efcd52f87b995ba225e2}\label{_run_c_p_u_settings_8h_abfa9a0caa652efcd52f87b995ba225e2}} 
 \index{RunCPUSettings.h@{RunCPUSettings.h}!NEON\_DEFINE@{NEON\_DEFINE}}
 \index{NEON\_DEFINE@{NEON\_DEFINE}!RunCPUSettings.h@{RunCPUSettings.h}}
 \doxysubsubsection{\texorpdfstring{NEON\_DEFINE}{NEON\_DEFINE}}
-{\footnotesize\ttfamily \#define NEON\+\_\+\+DEFINE~2}
+{\footnotesize\ttfamily \#define NEON\+\_\+\+DEFINE~4}
 
 
 
-Definition at line 44 of file Run\+CPUSettings.\+h.
+Definition at line 46 of file Run\+CPUSettings.\+h.
 
 \mbox{\Hypertarget{_run_c_p_u_settings_8h_a8a23f4491215194a44e7a91eec95c06c}\label{_run_c_p_u_settings_8h_a8a23f4491215194a44e7a91eec95c06c}} 
 \index{RunCPUSettings.h@{RunCPUSettings.h}!NO\_VECTORIZATION@{NO\_VECTORIZATION}}
 \index{NO\_VECTORIZATION@{NO\_VECTORIZATION}!RunCPUSettings.h@{RunCPUSettings.h}}
 \doxysubsubsection{\texorpdfstring{NO\_VECTORIZATION}{NO\_VECTORIZATION}}
-{\footnotesize\ttfamily \#define NO\+\_\+\+VECTORIZATION~3}
+{\footnotesize\ttfamily \#define NO\+\_\+\+VECTORIZATION~5}
 
 
 
-Definition at line 45 of file Run\+CPUSettings.\+h.
+Definition at line 47 of file Run\+CPUSettings.\+h.
 

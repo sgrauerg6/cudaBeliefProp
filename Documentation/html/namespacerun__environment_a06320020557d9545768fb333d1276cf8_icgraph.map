@@ -1,0 +1,4 @@
+<map id="run_environment::AccelerationString" name="run_environment::AccelerationString">
+<area shape="rect" id="node1" title="Get string corresponding to acceleration method at compile time." alt="" coords="233,5,456,47"/>
+<area shape="rect" id="node2" href="$class_run_imp_mult_types_accels.html#aa5cc09b6bc095338a6e566d3be24b168" title="Run and evaluate benchmark using multiple datatypes, inputs, and implementations if available." alt="" coords="5,5,185,47"/>
+</map>

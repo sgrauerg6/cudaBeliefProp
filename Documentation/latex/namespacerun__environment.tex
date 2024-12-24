@@ -14,12 +14,14 @@ struct \mbox{\hyperlink{structrun__environment_1_1_run_imp_settings}{Run\+Imp\+S
 \begin{DoxyCompactItemize}
 \item 
 enum class \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} \{ \newline
-\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}{k\+None}}
-, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}{k\+AVX256}}
+\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76}{k\+AVX512\+\_\+\+F16}}
 , \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}{k\+AVX512}}
-, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}{k\+NEON}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2}{k\+AVX256\+\_\+\+F16}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}{k\+AVX256}}
 , \newline
-\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}{k\+CUDA}}
+\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}{k\+NEON}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7}{k\+CUDA}}
+, \mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}{k\+None}}
  \}
 \begin{DoxyCompactList}\small\item\em Enum for acceleration setting. \end{DoxyCompactList}\item 
 enum class \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240}{Templated\+Iters\+Setting}} \{ \mbox{\hyperlink{namespacerun__environment_aef84acc019689ebf7328af250a56c240ab561bba765f5de06f13b170b1213cae1}{k\+Run\+Only\+Tempated}}
@@ -39,8 +41,6 @@ enum class \mbox{\hyperlink{namespacerun__environment_ae2a548033e399bc59f63aa6a9
 \begin{DoxyCompactItemize}
 \item 
 unsigned int \mbox{\hyperlink{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}{Get\+Bytes\+Align\+Memory}} (\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} accel\+\_\+setting)
-\item 
-unsigned int \mbox{\hyperlink{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}{Get\+Num\+Data\+Align\+Width}} (\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}} accel\+\_\+setting)
 \item 
 {\footnotesize template$<$Acc\+Setting ACCELERATION\+\_\+\+SETTING$>$ }\\\mbox{\hyperlink{class_run_data}{Run\+Data}} \mbox{\hyperlink{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}{Run\+Settings}} ()
 \begin{DoxyCompactList}\small\item\em Generate \mbox{\hyperlink{class_run_data}{Run\+Data}} object that contains description header with corresponding value for each run setting. \end{DoxyCompactList}\item 
@@ -72,8 +72,6 @@ constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a96
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}{k\+Num\+CPUThreads\+Header}} \{\char`\"{}Total number of CPU threads\char`\"{}\}
 \item 
 constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}{k\+Bytes\+Align\+Mem\+Header}} \{\char`\"{}BYTES\+\_\+\+ALIGN\+\_\+\+MEMORY\char`\"{}\}
-\item 
-constexpr std\+::string\+\_\+view \mbox{\hyperlink{namespacerun__environment_a0f90572394f855a71598506533005800}{k\+Num\+Data\+Align\+Width\+Header}} \{\char`\"{}NUM\+\_\+\+DATA\+\_\+\+ALIGN\+\_\+\+WIDTH\char`\"{}\}
 \end{DoxyCompactItemize}
 
 
@@ -92,16 +90,20 @@ Constants and enums related to run environment and settings for run.
 Enum for acceleration setting. 
 
 \begin{DoxyEnumFields}{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{kNone@{kNone}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kNone@{kNone}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}} 
-k\+None&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX256@{kAVX256}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX256@{kAVX256}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}} 
-k\+AVX256&\\
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX512\_F16@{kAVX512\_F16}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX512\_F16@{kAVX512\_F16}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76}} 
+k\+AVX512\+\_\+\+F16&\\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX512@{kAVX512}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX512@{kAVX512}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3}} 
 k\+AVX512&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX256\_F16@{kAVX256\_F16}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX256\_F16@{kAVX256\_F16}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2}} 
+k\+AVX256\+\_\+\+F16&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kAVX256@{kAVX256}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kAVX256@{kAVX256}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233}} 
+k\+AVX256&\\
 \hline
 
 \raisebox{\heightof{T}}[0pt][0pt]{\index{kNEON@{kNEON}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kNEON@{kNEON}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70}} 
@@ -112,10 +114,14 @@ k\+NEON&\\
 k\+CUDA&\\
 \hline
 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{kNone@{kNone}!run\_environment@{run\_environment}}\index{run\_environment@{run\_environment}!kNone@{kNone}}}\mbox{\Hypertarget{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}\label{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13}} 
+k\+None&\\
+\hline
+
 \end{DoxyEnumFields}
 
 
-Definition at line 58 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 63 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}\label{namespacerun__environment_ae2a548033e399bc59f63aa6a9ec75bf0}} 
 \index{run\_environment@{run\_environment}!OptParallelParamsSetting@{OptParallelParamsSetting}}
@@ -139,7 +145,7 @@ k\+Allow\+Diff\+Kernel\+Parallel\+Params\+In\+Run&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 114 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 125 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}\label{namespacerun__environment_a1ff774df4801b48d66861eb53eef88f9}} 
 \index{run\_environment@{run\_environment}!ParallelParamsSetting@{ParallelParamsSetting}}
@@ -163,7 +169,7 @@ k\+Optimized&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 108 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 119 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_aef84acc019689ebf7328af250a56c240}\label{namespacerun__environment_aef84acc019689ebf7328af250a56c240}} 
 \index{run\_environment@{run\_environment}!TemplatedItersSetting@{TemplatedItersSetting}}
@@ -191,7 +197,7 @@ k\+Run\+Templated\+And\+Not\+Templated&\\
 \end{DoxyEnumFields}
 
 
-Definition at line 101 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 112 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
@@ -217,8 +223,16 @@ constexpr std\+::string\+\_\+view
 \end{DoxyReturn}
 
 
-Definition at line 69 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 74 of file Run\+Settings\+Consts\+Enums.\+h.
 
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{namespacerun__environment_a06320020557d9545768fb333d1276cf8_icgraph}
+\end{center}
+\end{figure}
 \mbox{\Hypertarget{namespacerun__environment_a0a7505311f966a83b332d3fee2921848}\label{namespacerun__environment_a0a7505311f966a83b332d3fee2921848}} 
 \index{run\_environment@{run\_environment}!AccelerationString@{AccelerationString}}
 \index{AccelerationString@{AccelerationString}!run\_environment@{run\_environment}}
@@ -239,7 +253,7 @@ std\+::string\+\_\+view
 \end{DoxyReturn}
 
 
-Definition at line 82 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 90 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}\label{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda}} 
 \index{run\_environment@{run\_environment}!GetBytesAlignMemory@{GetBytesAlignMemory}}
@@ -249,30 +263,14 @@ Definition at line 82 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 42 of file Run\+Settings.\+h.
+Definition at line 43 of file Run\+Settings.\+h.
 
-Here is the caller graph for this function\+:\nopagebreak
+Here is the caller graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
 \includegraphics[width=350pt]{namespacerun__environment_ac68b9fea12a8756652bce761d7a0cdda_icgraph}
-\end{center}
-\end{figure}
-\mbox{\Hypertarget{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}\label{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163}} 
-\index{run\_environment@{run\_environment}!GetNumDataAlignWidth@{GetNumDataAlignWidth}}
-\index{GetNumDataAlignWidth@{GetNumDataAlignWidth}!run\_environment@{run\_environment}}
-\doxysubsubsection{\texorpdfstring{GetNumDataAlignWidth()}{GetNumDataAlignWidth()}}
-{\footnotesize\ttfamily unsigned int run\+\_\+environment\+::\+Get\+Num\+Data\+Align\+Width (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{namespacerun__environment_a2cd0a9de3e0ce6e4d99b35b89befb8bb}{Acc\+Setting}}}]{accel\+\_\+setting }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
-
-
-
-Definition at line 47 of file Run\+Settings.\+h.
-
-Here is the caller graph for this function\+:\nopagebreak
-\begin{figure}[H]
-\begin{center}
-\leavevmode
-\includegraphics[width=350pt]{namespacerun__environment_a1531965e4d9740a8446833f2fa7e3163_icgraph}
 \end{center}
 \end{figure}
 \mbox{\Hypertarget{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}\label{namespacerun__environment_a9639034960aa9cbd5836e5320f1a2a35}} 
@@ -296,9 +294,10 @@ Generate \mbox{\hyperlink{class_run_data}{Run\+Data}} object that contains descr
 \end{DoxyReturn}
 
 
-Definition at line 60 of file Run\+Settings.\+h.
+Definition at line 59 of file Run\+Settings.\+h.
 
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -320,7 +319,7 @@ Constant string for acceleration.
 
 
 
-Definition at line 55 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 60 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}\label{namespacerun__environment_a1c871dad08fdced4234b98ec0cbef783}} 
 \index{run\_environment@{run\_environment}!kBytesAlignMemHeader@{kBytesAlignMemHeader}}
@@ -330,7 +329,7 @@ Definition at line 55 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 134 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 145 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a00245c690fb6c14dafd1b1106d028140}\label{namespacerun__environment_a00245c690fb6c14dafd1b1106d028140}} 
 \index{run\_environment@{run\_environment}!kCPUThreadsPinnedHeader@{kCPUThreadsPinnedHeader}}
@@ -340,7 +339,7 @@ Definition at line 134 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 130 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 141 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_ab15f9538874f71da40e07434e820a1d7}\label{namespacerun__environment_ab15f9538874f71da40e07434e820a1d7}} 
 \index{run\_environment@{run\_environment}!kDataSizeToNameMap@{kDataSizeToNameMap}}
@@ -363,7 +362,7 @@ Mapping from data size to data type string.
 
 
 
-Definition at line 90 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 101 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}\label{namespacerun__environment_a9f9b4e6013a69f63118b7d6bd8b6dd1e}} 
 \index{run\_environment@{run\_environment}!kNumCPUThreadsHeader@{kNumCPUThreadsHeader}}
@@ -373,17 +372,7 @@ Definition at line 90 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 133 of file Run\+Settings\+Consts\+Enums.\+h.
-
-\mbox{\Hypertarget{namespacerun__environment_a0f90572394f855a71598506533005800}\label{namespacerun__environment_a0f90572394f855a71598506533005800}} 
-\index{run\_environment@{run\_environment}!kNumDataAlignWidthHeader@{kNumDataAlignWidthHeader}}
-\index{kNumDataAlignWidthHeader@{kNumDataAlignWidthHeader}!run\_environment@{run\_environment}}
-\doxysubsubsection{\texorpdfstring{kNumDataAlignWidthHeader}{kNumDataAlignWidthHeader}}
-{\footnotesize\ttfamily constexpr std\+::string\+\_\+view run\+\_\+environment\+::k\+Num\+Data\+Align\+Width\+Header \{\char`\"{}NUM\+\_\+\+DATA\+\_\+\+ALIGN\+\_\+\+WIDTH\char`\"{}\}\hspace{0.3cm}{\ttfamily [constexpr]}}
-
-
-
-Definition at line 135 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 144 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a2f12e6214db0993b83063ce3ee059789}\label{namespacerun__environment_a2f12e6214db0993b83063ce3ee059789}} 
 \index{run\_environment@{run\_environment}!kOmpPlacesHeader@{kOmpPlacesHeader}}
@@ -393,7 +382,7 @@ Definition at line 135 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 131 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 142 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a96a0152e29108e93871a640650a65596}\label{namespacerun__environment_a96a0152e29108e93871a640650a65596}} 
 \index{run\_environment@{run\_environment}!kOmpProcBindHeader@{kOmpProcBindHeader}}
@@ -403,7 +392,7 @@ Definition at line 131 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 132 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 143 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a7203df709834249d205e9e2fc1f284af}\label{namespacerun__environment_a7203df709834249d205e9e2fc1f284af}} 
 \index{run\_environment@{run\_environment}!kOptPParmsSettingToDesc@{kOptPParmsSettingToDesc}}
@@ -421,7 +410,7 @@ Definition at line 132 of file Run\+Settings\+Consts\+Enums.\+h.
 \end{DoxyCode}
 
 
-Definition at line 124 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 135 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_ac751be19deff1e638b9b4b910d240586}\label{namespacerun__environment_ac751be19deff1e638b9b4b910d240586}} 
 \index{run\_environment@{run\_environment}!kPParamsPerKernelSettingHeader@{kPParamsPerKernelSettingHeader}}
@@ -431,7 +420,7 @@ Definition at line 124 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 121 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 132 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_a6c2026450cbd095d012b6f5fc8f7e26a}\label{namespacerun__environment_a6c2026450cbd095d012b6f5fc8f7e26a}} 
 \index{run\_environment@{run\_environment}!kPParamsSameEveryKernelDesc@{kPParamsSameEveryKernelDesc}}
@@ -441,7 +430,7 @@ Definition at line 121 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 122 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 133 of file Run\+Settings\+Consts\+Enums.\+h.
 
 \mbox{\Hypertarget{namespacerun__environment_ad519e318728462fddb1a483f3e208498}\label{namespacerun__environment_ad519e318728462fddb1a483f3e208498}} 
 \index{run\_environment@{run\_environment}!kPParamsSetEachKernelDesc@{kPParamsSetEachKernelDesc}}
@@ -451,5 +440,5 @@ Definition at line 122 of file Run\+Settings\+Consts\+Enums.\+h.
 
 
 
-Definition at line 123 of file Run\+Settings\+Consts\+Enums.\+h.
+Definition at line 134 of file Run\+Settings\+Consts\+Enums.\+h.
 

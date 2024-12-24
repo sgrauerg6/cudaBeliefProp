@@ -1,34 +1,35 @@
 <map id="src/beliefprop/BpOptimizeCUDA/KernelBpStereo.cu" name="src/beliefprop/BpOptimizeCUDA/KernelBpStereo.cu">
-<area shape="rect" id="node1" title="This file defines the methods to perform belief propagation for disparity map estimation from stereo ..." alt="" coords="1382,5,1572,47"/>
-<area shape="rect" id="node2" href="$_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="1346,95,1608,136"/>
-<area shape="rect" id="node3" href="$_run_settings_8h.html" title="Declares and defines structure that stores settings for current implementation run as well as functio..." alt="" coords="1129,348,1372,375"/>
-<area shape="rect" id="node23" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="1678,512,1898,539"/>
-<area shape="rect" id="node25" href="$_utility_functs_8h.html" title="Contains namespace with utility functions for implementation." alt="" coords="1774,266,1945,293"/>
-<area shape="rect" id="node26" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1448,423,1647,464"/>
-<area shape="rect" id="node27" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="26,430,248,457"/>
-<area shape="rect" id="node28" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1446,266,1649,293"/>
-<area shape="rect" id="node30" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="765,259,960,300"/>
-<area shape="rect" id="node32" href="$_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="1326,184,1487,211"/>
-<area shape="rect" id="node4" title=" " alt="" coords="809,594,884,621"/>
-<area shape="rect" id="node5" title=" " alt="" coords="899,676,996,703"/>
-<area shape="rect" id="node6" title=" " alt="" coords="1310,430,1374,457"/>
-<area shape="rect" id="node7" title=" " alt="" coords="1169,430,1236,457"/>
-<area shape="rect" id="node8" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="612,512,758,539"/>
-<area shape="rect" id="node15" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="434,430,563,457"/>
-<area shape="rect" id="node20" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="1466,587,1696,628"/>
-<area shape="rect" id="node21" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Declares class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="828,430,1043,457"/>
-<area shape="rect" id="node9" title=" " alt="" coords="364,594,427,621"/>
-<area shape="rect" id="node10" title=" " alt="" coords="1288,676,1338,703"/>
-<area shape="rect" id="node11" title=" " alt="" coords="281,594,340,621"/>
-<area shape="rect" id="node12" title=" " alt="" coords="452,594,537,621"/>
-<area shape="rect" id="node13" title=" " alt="" coords="561,594,641,621"/>
-<area shape="rect" id="node14" title=" " alt="" coords="666,594,734,621"/>
-<area shape="rect" id="node16" title=" " alt="" coords="460,512,536,539"/>
-<area shape="rect" id="node17" title=" " alt="" coords="377,512,436,539"/>
-<area shape="rect" id="node18" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="985,512,1217,539"/>
-<area shape="rect" id="node19" title=" " alt="" coords="1317,594,1373,621"/>
-<area shape="rect" id="node22" title=" " alt="" coords="1242,512,1307,539"/>
-<area shape="rect" id="node24" title=" " alt="" coords="1742,594,1834,621"/>
-<area shape="rect" id="node29" title=" " alt="" coords="1586,348,1648,375"/>
-<area shape="rect" id="node31" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="368,348,588,375"/>
+<area shape="rect" id="node1" title="This file defines the methods to perform belief propagation for disparity map estimation from stereo ..." alt="" coords="1641,5,1831,47"/>
+<area shape="rect" id="node2" href="$_shared_bp_processing_functs_8h.html" title="Functions for belief propagation processing that are used in both optimized CPU and CUDA implementati..." alt="" coords="1605,95,1867,136"/>
+<area shape="rect" id="node3" href="$_run_settings_8h.html" title="Declares and defines structure that stores settings for current implementation run as well as functio..." alt="" coords="439,348,681,375"/>
+<area shape="rect" id="node24" href="$_run_type_constraints_8h.html" title="Define constraints for data type in processing." alt="" coords="1881,512,2101,539"/>
+<area shape="rect" id="node26" href="$_utility_functs_8h.html" title="Contains namespace with utility functions for implementation." alt="" coords="2027,266,2197,293"/>
+<area shape="rect" id="node27" href="$_bp_consts_enums_aliases_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1730,423,1929,464"/>
+<area shape="rect" id="node28" href="$_bp_run_utils_8h.html" title="File with namespace for enums, constants, structures, and functions specific to belief propagation pr..." alt="" coords="1282,430,1505,457"/>
+<area shape="rect" id="node29" href="$_bp_level_8h.html" title="Declares class to store and retrieve properties of a bp processing level." alt="" coords="1379,266,1581,293"/>
+<area shape="rect" id="node31" href="$_bp_evaluation_stereo_sets_8h.html" title="Header file that contains information about the stereo sets used for evaluation of the bp implementat..." alt="" coords="1605,259,1800,300"/>
+<area shape="rect" id="node33" href="$_shared_bp_util_functs_8h.html" title="Utility functions for belief propagation processing that are used in both optimized CPU and CUDA impl..." alt="" coords="1715,184,1877,211"/>
+<area shape="rect" id="node4" title=" " alt="" coords="5,594,80,621"/>
+<area shape="rect" id="node5" title=" " alt="" coords="1005,676,1102,703"/>
+<area shape="rect" id="node6" title=" " alt="" coords="403,430,467,457"/>
+<area shape="rect" id="node7" title=" " alt="" coords="491,430,557,457"/>
+<area shape="rect" id="node8" title=" " alt="" coords="336,430,379,457"/>
+<area shape="rect" id="node9" href="$_run_data_8h.html" title="Declares class to store headers with data corresponding to current program run and evaluation." alt="" coords="264,512,411,539"/>
+<area shape="rect" id="node16" href="$_input_signature_8h.html" title="Declares class for defining input signature for evaluation run that consists of evaluation set number..." alt="" coords="1033,430,1162,457"/>
+<area shape="rect" id="node21" href="$_run_settings_consts_enums_8h.html" title="Contains namespace with constants and enums related to run environment and settings for run." alt="" coords="549,587,779,628"/>
+<area shape="rect" id="node22" href="$_c_p_u_threads_pinned_to_socket_8h.html" title="Declares class for setting and retrieving setting of CPU threads pinned to socket." alt="" coords="97,430,311,457"/>
+<area shape="rect" id="node10" title=" " alt="" coords="462,594,525,621"/>
+<area shape="rect" id="node11" title=" " alt="" coords="365,676,416,703"/>
+<area shape="rect" id="node12" title=" " alt="" coords="1176,594,1235,621"/>
+<area shape="rect" id="node13" title=" " alt="" coords="248,594,333,621"/>
+<area shape="rect" id="node14" title=" " alt="" coords="357,594,437,621"/>
+<area shape="rect" id="node15" title=" " alt="" coords="155,594,223,621"/>
+<area shape="rect" id="node17" title=" " alt="" coords="1091,512,1167,539"/>
+<area shape="rect" id="node18" title=" " alt="" coords="1293,512,1352,539"/>
+<area shape="rect" id="node19" href="$_run_eval_consts_enums_8h.html" title="Contains namespace with enums and constants for implementation run evaluation." alt="" coords="784,512,1016,539"/>
+<area shape="rect" id="node20" title=" " alt="" coords="1579,594,1635,621"/>
+<area shape="rect" id="node23" title=" " alt="" coords="123,512,189,539"/>
+<area shape="rect" id="node25" title=" " alt="" coords="1945,594,2037,621"/>
+<area shape="rect" id="node30" title=" " alt="" coords="997,348,1059,375"/>
+<area shape="rect" id="node32" href="$_bp_settings_8h.html" title="Declares structure to store the belief propagation settings including the number of levels and iterat..." alt="" coords="1135,348,1355,375"/>
 </map>

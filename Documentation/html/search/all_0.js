@@ -20,6 +20,8 @@ var searchData=
   ['avx256templatespfuncts_2eh_17',['AVX256TemplateSpFuncts.h',['../_a_v_x256_template_sp_functs_8h.html',1,'']]],
   ['avx512templatespfuncts_2eh_18',['AVX512TemplateSpFuncts.h',['../_a_v_x512_template_sp_functs_8h.html',1,'']]],
   ['avx_5f256_5fdefine_19',['AVX_256_DEFINE',['../_run_c_p_u_settings_8h.html#aa69e9a59b1abae0590236507ccd1dc4b',1,'RunCPUSettings.h']]],
-  ['avx_5f512_5fdefine_20',['AVX_512_DEFINE',['../_run_c_p_u_settings_8h.html#aa79bf1a48a98e108cfb7f16b5fe4f6c2',1,'RunCPUSettings.h']]],
-  ['avxtemplatespfuncts_2eh_21',['AVXTemplateSpFuncts.h',['../_a_v_x_template_sp_functs_8h.html',1,'']]]
+  ['avx_5f256_5ff16_5fdefine_20',['AVX_256_F16_DEFINE',['../_run_c_p_u_settings_8h.html#a39632c5886bc25abb24dfb8662430e77',1,'RunCPUSettings.h']]],
+  ['avx_5f512_5fdefine_21',['AVX_512_DEFINE',['../_run_c_p_u_settings_8h.html#aa79bf1a48a98e108cfb7f16b5fe4f6c2',1,'RunCPUSettings.h']]],
+  ['avx_5f512_5ff16_5fdefine_22',['AVX_512_F16_DEFINE',['../_run_c_p_u_settings_8h.html#ad821a207700c6fc107f29520a5994484',1,'RunCPUSettings.h']]],
+  ['avxtemplatespfuncts_2eh_23',['AVXTemplateSpFuncts.h',['../_a_v_x_template_sp_functs_8h.html',1,'']]]
 ];

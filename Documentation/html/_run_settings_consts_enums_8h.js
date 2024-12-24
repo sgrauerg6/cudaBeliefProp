@@ -1,11 +1,13 @@
 var _run_settings_consts_enums_8h =
 [
     [ "AccSetting", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bb", [
-      [ "kNone", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13", null ],
-      [ "kAVX256", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233", null ],
+      [ "kAVX512_F16", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaf6ce4a828ba0a1a34bfb099125fc3e76", null ],
       [ "kAVX512", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba5b3095b5e5c7c45fb761b9580b0f61b3", null ],
+      [ "kAVX256_F16", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbad6648890b3f8d224b288f94b5252d9e2", null ],
+      [ "kAVX256", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba60657ccbea91c13f8e7c57182bb9c233", null ],
       [ "kNEON", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bbaffe1fb6c7e464b3e161257e7ac2f5c70", null ],
-      [ "kCUDA", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7", null ]
+      [ "kCUDA", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba15cfe9387f9c286cd8244d15c8cfa6c7", null ],
+      [ "kNone", "_run_settings_consts_enums_8h.html#a2cd0a9de3e0ce6e4d99b35b89befb8bba35c3ace1970663a16e5c65baa5941b13", null ]
     ] ],
     [ "OptParallelParamsSetting", "_run_settings_consts_enums_8h.html#ae2a548033e399bc59f63aa6a9ec75bf0", [
       [ "kSameParallelParamsAllKernels", "_run_settings_consts_enums_8h.html#ae2a548033e399bc59f63aa6a9ec75bf0ac9cc7ce7496f19ec2d6ec0848ef87c9d", null ],
@@ -27,7 +29,6 @@ var _run_settings_consts_enums_8h =
     [ "kCPUThreadsPinnedHeader", "_run_settings_consts_enums_8h.html#a00245c690fb6c14dafd1b1106d028140", null ],
     [ "kDataSizeToNameMap", "_run_settings_consts_enums_8h.html#ab15f9538874f71da40e07434e820a1d7", null ],
     [ "kNumCPUThreadsHeader", "_run_settings_consts_enums_8h.html#a9f9b4e6013a69f63118b7d6bd8b6dd1e", null ],
-    [ "kNumDataAlignWidthHeader", "_run_settings_consts_enums_8h.html#a0f90572394f855a71598506533005800", null ],
     [ "kOmpPlacesHeader", "_run_settings_consts_enums_8h.html#a2f12e6214db0993b83063ce3ee059789", null ],
     [ "kOmpProcBindHeader", "_run_settings_consts_enums_8h.html#a96a0152e29108e93871a640650a65596", null ],
     [ "kOptPParmsSettingToDesc", "_run_settings_consts_enums_8h.html#a7203df709834249d205e9e2fc1f284af", null ],

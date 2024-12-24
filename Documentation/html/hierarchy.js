@@ -5,7 +5,7 @@ var hierarchy =
       [ "DisparityMap< float >", "class_disparity_map.html", null ],
       [ "DisparityMap< T >", "class_disparity_map.html", null ]
     ] ],
-    [ "BpLevel", "class_bp_level.html", null ],
+    [ "BpLevel< T >", "class_bp_level.html", null ],
     [ "beliefprop::BpLevelProperties", "structbeliefprop_1_1_bp_level_properties.html", null ],
     [ "beliefprop::BpOnDevice< T, DISP_VALS, ACCELERATION >", "structbeliefprop_1_1_bp_on_device.html", null ],
     [ "beliefprop::BpRunOutput", "structbeliefprop_1_1_bp_run_output.html", null ],
