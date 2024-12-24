@@ -33,7 +33,8 @@ void RunImpMultTypesAccels::operator()(
   const run_environment::RunImpSettings& run_imp_settings,
   std::unique_ptr<EvaluateImpResults> evalResultsPtr) const
 {
-  //get fastest implementation available
+  //get expected fastest implementation available based on acceleration used
+  //in each implementation
   const auto fastest_acc =
     FastestAvailableAcc(run_benchmark_imps_w_acc);
   std::cout << "FASTEST_ACC: " << run_environment::AccelerationString(fastest_acc) << std::endl;
@@ -47,12 +48,18 @@ void RunImpMultTypesAccels::operator()(
     //and add results of run to overall run results with results indexed
     //by data size and acceleration setting
     for (const auto& run_imp : run_benchmark_imps_w_acc) {
-      std::cout << "acc run: " 
-                << run_environment::AccelerationString(run_imp->AccelerationSetting())
-                << std::endl;
-      run_imp_results.at(data_size).insert(
-        {run_imp->AccelerationSetting(), 
-         run_imp->operator()(run_imp_settings, data_size, evalResultsPtr)});
+      //check if set to only use expected fastest acceleration and if that's
+      //the case skip alternate implementations
+      if ((run_imp_settings.run_alt_optimized_imps) ||
+          (run_imp->AccelerationSetting() == fastest_acc))
+      {
+        std::cout << "acc run: " 
+                  << run_environment::AccelerationString(run_imp->AccelerationSetting())
+                  << std::endl;
+        run_imp_results.at(data_size).insert(
+          {run_imp->AccelerationSetting(),
+           run_imp->operator()(run_imp_settings, data_size, evalResultsPtr)});
+      }
     }
   }
 

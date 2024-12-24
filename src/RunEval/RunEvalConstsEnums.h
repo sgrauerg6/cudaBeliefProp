@@ -56,6 +56,15 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::array<size_t, 3> kDataTypesEvalSizes{sizeof(float), sizeof(double), sizeof(halftype)};
 #endif //EVAL_FLOAT_DATATYPE_ONLY
 
+//set whether or not to run and evaluate alternative optimized implementations
+//other than the expected fastest implementation available based on
+//acceleration type
+#if defined(NO_ALT_OPTIMIZED_IMPS)
+  constexpr bool kRunAltOptimizedImps{false};
+#else
+  constexpr bool kRunAltOptimizedImps{true};
+#endif //NO_ALT_OPTIMIZED_IMPS
+
 //set templated iterations setting to use in evaluation
 #if defined(EVAL_NOT_TEMPLATED_ITERS_ONLY)
   constexpr run_environment::TemplatedItersSetting kTemplatedItersEvalSettings =

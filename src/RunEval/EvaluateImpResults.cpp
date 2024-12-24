@@ -100,16 +100,32 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   const bool p_params_optimized{
     (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
 
+  //initialize optimized multi-run results from input run result
+  //run results must be writable since speedup results get added to runs and
+  //optimized run results may be adjusted if faster runs found in alternative
+  //implementations compared to expected fastest implementation
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
+
   //get speedup/slowdown using alternate accelerations and update optimized run
   //result for input with result using alternate acceleration if it is faster than
   //result with "optimal" acceleration for specific input
   std::unordered_map<size_t, std::vector<RunSpeedupAvgMedian>> alt_imp_speedup;
+  //check if setting is to run alternate optimized implementations and run and
+  //evaluate alternate optimized implementations if that's the case
+  if (run_imp_settings.run_alt_optimized_imps) {
+    for (const size_t data_size : run_imp_settings.datatypes_eval_sizes) {
+      alt_imp_speedup[data_size] = GetAltAccelSpeedups(
+        run_result_mult_runs_opt[data_size],
+        run_imp_settings, data_size,
+        opt_imp_acc);
+    }
+  }
+
+  //get speedup/slowdown using alternate datatype (double or half) compared
+  //with float
   std::unordered_map<size_t, RunSpeedupAvgMedian> alt_datatype_speedup;
   for (const size_t data_size : run_imp_settings.datatypes_eval_sizes) {
-    alt_imp_speedup[data_size] = GetAltAccelSpeedups(
-      run_result_mult_runs_opt[data_size], run_imp_settings, data_size, opt_imp_acc);
     if (data_size != sizeof(float)) {
       //get speedup or slowdown using alternate data type (double or half) compared with float
       alt_datatype_speedup[data_size] = GetAvgMedSpeedupBaseVsTarget(
@@ -119,7 +135,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
         BaseTargetDiff::kDiffDatatype);
     }
   }
-
   //initialize overall results to float results using fastest acceleration and
   //add double and half-type results to it
   auto [run_results, run_speedups] =

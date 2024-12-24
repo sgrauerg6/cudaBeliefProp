@@ -55,6 +55,10 @@ int main(int argc, char** argv)
     {run_eval::kDataTypesEvalSizes.begin(),
      run_eval::kDataTypesEvalSizes.end()};
 
+  //set whether or not to run and evaluate alternate optimized implementations
+  //in addition to the "fastest" optimized implementation available
+  run_imp_settings.run_alt_optimized_imps = run_eval::kRunAltOptimizedImps;
+
   //set setting of whether or not to use templated loop iterations in implementation
   //in evaluation runs
   run_imp_settings.templated_iters_setting =

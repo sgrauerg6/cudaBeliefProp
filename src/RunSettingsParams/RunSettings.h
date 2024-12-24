@@ -76,6 +76,7 @@ struct RunImpSettings {
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
   std::optional<std::array<std::string_view, 2>> baseline_runtimes_path_desc;
   std::vector<std::pair<std::string, std::vector<InputSignature>>> subset_desc_input_sig;
+  bool run_alt_optimized_imps;
 
   /**
    * @brief Remove parallel parameters with less than specified number of threads
