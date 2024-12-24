@@ -4,9 +4,15 @@
 USE_ONLY_SMALLER_DATA_SETTING :=
 #-DSMALLER_SETS_ONLY
 
-# set to use limited set of test parallel parameters for optimization
-LIMITED_TEST_PARAMS_SETTING :=
-#-DLIMITED_TEST_PARAMS
+# set to only run fastest and not use alternate optimized implementations in evaluation
+ALT_OPTIMIZED_IMP_SETTING =
+#-DNO_ALT_OPTIMIZED_IMPS
+
+# set to use only default parallel parameters or limited set of alternative
+# parallel parameters for optimization
+ALT_PARALLEL_PARAMS_SETTING :=
+#-DLIMITED_ALT_PARALLEL_PARAMS
+#-DDEFAULT_PARALLEL_PARAMS_ONLY
 
 # set to use fewer runs per configuration for faster results (at expense of possible accuracy)
 FEWER_RUNS_PER_CONFIG_SETTING :=
@@ -26,7 +32,8 @@ USE_NOT_TEMPLATED_LOOP_ITER_COUNTS_ONLY_SETTING :=
 # define variable with all common implementation defines to use in
 # implementation Makefiles
 COMMON_IMP_DEFINES := ${USE_ONLY_SMALLER_DATA_SETTING} \
-                      ${LIMITED_TEST_PARAMS_SETTING} \
+                      ${ALT_OPTIMIZED_IMP_SETTING} \
+                      ${ALT_PARALLEL_PARAMS_SETTING} \
                       ${FEWER_RUNS_PER_CONFIG_SETTING} \
 					  ${SINGLE_DATATYPE_ONLY_SETTING} \
                       ${USE_NOT_TEMPLATED_LOOP_ITER_COUNTS_ONLY_SETTING}
