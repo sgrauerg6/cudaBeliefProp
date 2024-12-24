@@ -95,11 +95,11 @@ void EvaluateAcrossRuns::operator()(
     {
       //check if speedup in run is included in current evaluation speedups and add it
       //in expected position in evaluation speedups if not
-      if (std::all_of(speedup_headers_eval.cbegin(), 
-                      speedup_headers_eval.cend(),
-                      [run_speedup_iter](const auto& header){
-                        return (header != *run_speedup_iter);
-                      }))
+      if (std::none_of(speedup_headers_eval.cbegin(), 
+                       speedup_headers_eval.cend(),
+                       [run_speedup_iter](const auto& header){
+                         return (header == *run_speedup_iter);
+                       }))
       {
         //add speedup header in front of previous ordered speedup header if not first
         //ordered header
@@ -107,7 +107,9 @@ void EvaluateAcrossRuns::operator()(
           //find position in evaluation speedups of previous ordered header
           //and add new header in front of it
           speedup_headers_eval.insert(
-            (std::find(speedup_headers_eval.cbegin(), speedup_headers_eval.cend(), *(run_speedup_iter-1)) + 1),
+            (std::find(speedup_headers_eval.cbegin(),
+                       speedup_headers_eval.cend(),
+                       *(run_speedup_iter-1)) + 1),
             *run_speedup_iter);
         }
         else {
