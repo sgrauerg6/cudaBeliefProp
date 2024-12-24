@@ -95,9 +95,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that simulating single CPU on dual-CPU system
-    if (run_imp_settings.run_name) {
-      *(run_imp_settings.run_name) += "_SimSingleCPUOnDualCPUSystem";
-    }
+    run_imp_settings.run_name += "_SimSingleCPUOnDualCPUSystem";
   }
   //check if running implementation with CPU threads pinned to socket (for cases with multiple CPUs)
   //TODO: currently not supported due to code for setting CPU threads to be pinned to socket not working as expected
@@ -109,15 +107,13 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
     //run_environment::CPUThreadsPinnedToSocket().operator()(true);
 
     //append run name to specify that CPU threads pinned to socket
-    if (run_imp_settings.run_name) {
-      *(run_imp_settings.run_name) += "_ThreadsPinnedToSocket";
-    }
+    run_imp_settings.run_name += "_ThreadsPinnedToSocket";
   }*/
 
   //set datatype(s) to use in run processing in evaluation
   run_imp_settings.datatypes_eval_sizes =
-    {run_eval::kDataTypesEvalSizes.begin(),
-     run_eval::kDataTypesEvalSizes.end()};
+    {run_eval::kDataTypesEvalSizes.cbegin(),
+     run_eval::kDataTypesEvalSizes.cend()};
 
   //set whether or not to run and evaluate alternate optimized implementations
   //in addition to the "fastest" optimized implementation available

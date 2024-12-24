@@ -28,51 +28,56 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunData.h"
 
 //get header to add...use input header if not yet used
-//user original header with number appended if original header is already used
+//use original header with number appended if original header is already used
 std::string RunData::GetHeaderToAdd(const std::string& in_header) const {
-  auto headerToAdd = in_header;
+  auto header_to_add = in_header;
   unsigned int num{0};
-  while (std::find(headers_in_order_.cbegin(), headers_in_order_.cend(), headerToAdd) != headers_in_order_.cend()) {
+  while (std::any_of(headers_in_order_.cbegin(),
+                     headers_in_order_.cend(),
+                     [&header_to_add](const auto& ordered_header){
+                       return (ordered_header == header_to_add);
+                     }))
+  {
     //add "_{num}" to header if header already in data
     num++;
-    headerToAdd = in_header + "_" + std::to_string(num);
+    header_to_add = in_header + "_" + std::to_string(num);
   }
-  return headerToAdd;
+  return header_to_add;
 }
 
 //add data with header describing added data
 void RunData::AddDataWHeader(const std::string& header, const std::string& data) {
-  const auto headerToAdd{GetHeaderToAdd(header)};
-  headers_in_order_.push_back(headerToAdd);
-  headers_w_data_[headerToAdd] = data;
+  const auto header_to_add{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(header_to_add);
+  headers_w_data_[header_to_add] = data;
 }
 
 //add data with header describing added data
 void RunData::AddDataWHeader(const std::string& header, const char* data) {
-  const auto headerToAdd{GetHeaderToAdd(header)};
-  headers_in_order_.push_back(headerToAdd);
-  headers_w_data_[headerToAdd] = std::string(data);
+  const auto header_to_add{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(header_to_add);
+  headers_w_data_[header_to_add] = std::string(data);
 }
 
 //add data with header describing added data
 void RunData::AddDataWHeader(const std::string& header, double data) {
-  const auto headerToAdd{GetHeaderToAdd(header)};
-  headers_in_order_.push_back(headerToAdd);
-  headers_w_data_[headerToAdd] = data;
+  const auto header_to_add{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(header_to_add);
+  headers_w_data_[header_to_add] = data;
 }
 
 //add data with header describing added data
 void RunData::AddDataWHeader(const std::string& header, bool data) {
-  const auto headerToAdd{GetHeaderToAdd(header)};
-  headers_in_order_.push_back(headerToAdd);
-  headers_w_data_[headerToAdd] = data;
+  const auto header_to_add{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(header_to_add);
+  headers_w_data_[header_to_add] = data;
 }
 
 //add data with header describing added data
 void RunData::AddDataWHeader(const std::string& header, unsigned int data) {
-  const auto headerToAdd{GetHeaderToAdd(header)};
-  headers_in_order_.push_back(headerToAdd);
-  headers_w_data_[headerToAdd] = data;
+  const auto header_to_add{GetHeaderToAdd(header)};
+  headers_in_order_.push_back(header_to_add);
+  headers_w_data_[header_to_add] = data;
 }
 
 //append current RunData with input RunData

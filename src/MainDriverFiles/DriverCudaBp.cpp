@@ -52,8 +52,8 @@ int main(int argc, char** argv)
   
   //set datatype(s) to use in run processing in evaluation
   run_imp_settings.datatypes_eval_sizes =
-    {run_eval::kDataTypesEvalSizes.begin(),
-     run_eval::kDataTypesEvalSizes.end()};
+    {run_eval::kDataTypesEvalSizes.cbegin(),
+     run_eval::kDataTypesEvalSizes.cend()};
 
   //set whether or not to run and evaluate alternate optimized implementations
   //in addition to the "fastest" optimized implementation available

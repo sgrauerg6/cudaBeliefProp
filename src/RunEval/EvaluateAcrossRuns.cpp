@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <set>
 #include <utility>
 #include <iostream>
+#include <algorithm>
 #include "RunSettingsParams/InputSignature.h"
 #include "EvaluateAcrossRuns.h"
 #include "RunResultsSpeedups.h"
@@ -48,7 +49,8 @@ void EvaluateAcrossRuns::operator()(
 
   //retrieve names of runs with results
   //run names usually correspond to architecture of run
-  const std::vector<std::string> run_names = GetRunNames(imp_results_file_path);
+  const std::vector<std::string> run_names =
+    GetRunNames(imp_results_file_path);
   
   //initialize vector of run results with speedups for each run name
   std::map<std::string, RunResultsSpeedups> run_results_by_name;
@@ -87,26 +89,31 @@ void EvaluateAcrossRuns::operator()(
     }
     //go through speedups for run and add to speedup headers if not already included
     const auto run_speedups_ordered = run_results.SpeedupHeadersOrder();
-    for (auto i = run_speedups_ordered.begin(); i < run_speedups_ordered.end(); i++)
+    for (auto run_speedup_iter = run_speedups_ordered.cbegin();
+              run_speedup_iter < run_speedups_ordered.cend();
+              run_speedup_iter++)
     {
       //check if speedup in run is included in current evaluation speedups and add it
       //in expected position in evaluation speedups if not
-      if (std::find(speedup_headers_eval.begin(), speedup_headers_eval.end(), *i) ==
-          speedup_headers_eval.end())
+      if (std::all_of(speedup_headers_eval.cbegin(), 
+                      speedup_headers_eval.cend(),
+                      [run_speedup_iter](const auto& header){
+                        return (header != *run_speedup_iter);
+                      }))
       {
         //add speedup header in front of previous ordered speedup header if not first
         //ordered header
-        if (i != run_speedups_ordered.begin()) {
+        if (run_speedup_iter != run_speedups_ordered.cbegin()) {
           //find position in evaluation speedups of previous ordered header
-          //and add new header behind it
+          //and add new header in front of it
           speedup_headers_eval.insert(
-            (std::find(speedup_headers_eval.begin(), speedup_headers_eval.end(), *(i-1)) + 1),
-            *i);
+            (std::find(speedup_headers_eval.cbegin(), speedup_headers_eval.cend(), *(run_speedup_iter-1)) + 1),
+            *run_speedup_iter);
         }
         else {
           //add speedup header to front of evaluation speedup headers if no previous
           //ordered header in speedups for run
-          speedup_headers_eval.insert(speedup_headers_eval.begin(), *i);
+          speedup_headers_eval.insert(speedup_headers_eval.cbegin(), *run_speedup_iter);
         }
       }
     }
@@ -236,7 +243,7 @@ std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
 
   //remove run name from runs to evaluate across runs if no speedup data
   //example where this could be the case is baseline data that is used for comparison with other runs
-  for (auto run_names_iter = run_names.begin(); run_names_iter != run_names.end();)
+  for (auto run_names_iter = run_names.cbegin(); run_names_iter != run_names.cend();)
   {
     const std::filesystem::path run_speedup_fp = 
       imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /

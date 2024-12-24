@@ -72,7 +72,7 @@ struct RunImpSettings {
   TemplatedItersSetting templated_iters_setting;
   OptParallelParamsSetting opt_parallel_params_setting;
   std::pair<std::array<unsigned int, 2>, std::set<std::array<unsigned int, 2>>> p_params_default_alt_options;
-  std::optional<std::string> run_name;
+  std::string run_name;
   //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
   std::optional<std::array<std::string_view, 2>> baseline_runtimes_path_desc;
   std::vector<std::pair<std::string, std::vector<InputSignature>>> subset_desc_input_sig;
