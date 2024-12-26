@@ -492,11 +492,15 @@ std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> EvaluateImpResults::Get
     {run_environment::AccSetting::kAVX256, 
      std::string(run_eval::kSpeedupVsAvx256Vectorization) + " - " + data_size_name},
     {run_environment::AccSetting::kAVX256_F16, 
-     std::string(run_eval::kSpeedupVsAvx256F16Vectorization) + " - " + data_size_name}
+     std::string(run_eval::kSpeedupVsAvx256F16Vectorization) + " - " + data_size_name},
     {run_environment::AccSetting::kAVX512, 
-     std::string(run_eval::kSpeedupVsAvx512Vectorization) + " - " + data_size_name}
+     std::string(run_eval::kSpeedupVsAvx512Vectorization) + " - " + data_size_name},
     {run_environment::AccSetting::kAVX512_F16, 
-     std::string(run_eval::kSpeedupVsAvx512F16Vectorization) + " - " + data_size_name}
+     std::string(run_eval::kSpeedupVsAvx512F16Vectorization) + " - " + data_size_name},
+    {run_environment::AccSetting::kNEON, 
+     std::string(run_eval::kSpeedupVsNEONVectorization) + " - " + data_size_name},
+    {run_environment::AccSetting::kCUDA, 
+     std::string(run_eval::kSpeedupVsCUDAAcceleration) + " - " + data_size_name}
   };
 
   if (run_imp_results_by_acc_setting.size() == 1) {

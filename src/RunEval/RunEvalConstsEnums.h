@@ -107,6 +107,8 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kSpeedupVsAvx256F16Vectorization{"Speedup over AVX256 (w/ float16) CPU vectorization"};
   constexpr std::string_view kSpeedupVsAvx512Vectorization{"Speedup over AVX512 CPU vectorization"};
   constexpr std::string_view kSpeedupVsAvx512F16Vectorization{"Speedup over AVX512 (w/ float16) CPU vectorization"};
+  constexpr std::string_view kSpeedupVsNEONVectorization{"Speedup over NEON CPU vectorization"};
+  constexpr std::string_view kSpeedupVsCUDAAcceleration{"Speedup over CUDA acceleration"};
 
   //constants for implementation result
   constexpr std::string_view kImpResultsFolderName{"ImpResults"};
