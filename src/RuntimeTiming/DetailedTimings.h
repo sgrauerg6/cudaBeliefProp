@@ -123,15 +123,16 @@ void DetailedTimings<T>::AddToCurrentTimings(
   const DetailedTimings& in_detailed_timings)
 {
   std::ranges::for_each(in_detailed_timings.segment_timings_,
-    [this](const auto& current_timing) {
-      auto iter = this->segment_timings_.find(current_timing.first);
+    [this](const auto& curr_segment_timings) {
+      const auto& [segment, segment_time_durations] = curr_segment_timings;
+      auto iter = this->segment_timings_.find(segment);
       if (iter != this->segment_timings_.cend()) {
         iter->second.insert(iter->second.cend(), 
-                            current_timing.second.cbegin(),
-                            current_timing.second.cend());
+                            segment_time_durations.second.cbegin(),
+                            segment_time_durations.second.cend());
       }
       else {
-        this->segment_timings_[current_timing.first] = current_timing.second;
+        this->segment_timings_.insert({segment, segment_time_durations});
       }
     });
 }

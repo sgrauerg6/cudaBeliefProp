@@ -79,14 +79,18 @@ DisparityMapEvaluation DisparityMap<T>::OutputComparison(
       });
   }
 
-  output_evaluation.average_disp_abs_diff_no_max_w_max_[0] = total_disp_abs_diff_no_max_w_max[0] / this->TotalPixels();
-  output_evaluation.average_disp_abs_diff_no_max_w_max_[1] = total_disp_abs_diff_no_max_w_max[1] / this->TotalPixels();
+  output_evaluation.average_disp_abs_diff_no_max_w_max_[0] =
+    total_disp_abs_diff_no_max_w_max[0] / this->TotalPixels();
+  output_evaluation.average_disp_abs_diff_no_max_w_max_[1] =
+    total_disp_abs_diff_no_max_w_max[1] / this->TotalPixels();
 
   //need to cast unsigned ints to float to get proportion of pixels that differ by more than threshold
   std::ranges::transform(output_evaluation.num_sig_diff_pixels_at_thresholds_,
-    std::inserter(output_evaluation.prop_sig_diff_pixels_at_thresholds_, output_evaluation.prop_sig_diff_pixels_at_thresholds_.end()),
-    [this](const auto& sig_diff_pixel_at_threshold_map) -> std::pair<float, float> {
-      return { sig_diff_pixel_at_threshold_map.first, ((float)sig_diff_pixel_at_threshold_map.second) / ((float)(this->TotalPixels())) };
+    std::inserter(output_evaluation.prop_sig_diff_pixels_at_thresholds_, 
+                  output_evaluation.prop_sig_diff_pixels_at_thresholds_.end()),
+    [this](const auto& sig_diff_pixel_at_threshold) -> std::pair<float, float> {
+      const auto& [threshold, num_sig_diff_pixels_thresh] = sig_diff_pixel_at_threshold;
+      return {threshold, ((float)num_sig_diff_pixels_thresh) / ((float)(this->TotalPixels()))};
     });
 
   return output_evaluation;
