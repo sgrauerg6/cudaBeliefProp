@@ -76,7 +76,7 @@ void EvaluateAcrossRuns::operator()(
       run_eval::kOptimizedRuntimeHeader);
     //go through inputs for current run results
     //need to go through every run so that all inputs in every run are included
-    for (const auto& [input_sig, runtime] : inputs_to_runtimes) {
+    for (const auto& [input_sig, _] : inputs_to_runtimes) {
       //check if input already addded to set of inputs
       if (!(inputs_to_params_disp_ordered.contains(input_sig))) {
         inputs_to_params_disp_ordered.insert({input_sig, std::vector<std::string>()});
