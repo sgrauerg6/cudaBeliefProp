@@ -104,6 +104,9 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kSpeedupLoopItersCountTemplate{"Speedup w/ templated disparity count (known at compile-time)"};
   constexpr std::string_view kSpeedupCPUVectorization{"Speedup using CPU vectorization"};
   constexpr std::string_view kSpeedupVsAvx256Vectorization{"Speedup over AVX256 CPU vectorization"};
+  constexpr std::string_view kSpeedupVsAvx256F16Vectorization{"Speedup over AVX256 (w/ float16) CPU vectorization"};
+  constexpr std::string_view kSpeedupVsAvx512Vectorization{"Speedup over AVX512 CPU vectorization"};
+  constexpr std::string_view kSpeedupVsAvx512F16Vectorization{"Speedup over AVX512 (w/ float16) CPU vectorization"};
 
   //constants for implementation result
   constexpr std::string_view kImpResultsFolderName{"ImpResults"};

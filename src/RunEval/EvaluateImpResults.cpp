@@ -115,10 +115,16 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //evaluate alternate optimized implementations if that's the case
   if (run_imp_settings.run_alt_optimized_imps) {
     for (const size_t data_size : run_imp_settings.datatypes_eval_sizes) {
-      alt_imp_speedup[data_size] = GetAltAccelSpeedups(
-        run_result_mult_runs_opt[data_size],
+      //get alternate acceleration speedups and optimized run results where
+      //fastest acceleration run results are replaced with alternate
+      //acceleration if it is faster
+      const auto [alt_acc_speedup, opt_run_results] = GetAltAccelSpeedups(
+        run_result_mult_runs_opt.at(data_size),
         run_imp_settings, data_size,
         opt_imp_acc);
+      alt_imp_speedup.insert({data_size, alt_acc_speedup});
+      run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first =
+        opt_run_results;
     }
   }
 
@@ -461,22 +467,37 @@ void EvaluateImpResults::WriteRunOutput(
   }
 }
 
-//process results for runs with alternate acceleration from optimal acceleration and
-//get speedup for each run and overall when using optimal acceleration compared to alternate accelerations
-std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
-  MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
+//process results for runs with alternate acceleration from optimal
+//acceleration and get speedup for each run and overall when using optimal
+//acceleration compared to alternate accelerations as well as optimized run
+//results where fastest acceleration result is replaced by alternate
+//acceleration result if it is faster
+std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> EvaluateImpResults::GetAltAccelSpeedups(
+  const MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size,
   run_environment::AccSetting fastest_acc) const
 {
+  //initialize optimized run results to "fastest" acceleration results
+  //results get replaced by alternate acceleration result if alternate
+  //acceleration is faster
+  auto run_imp_opt_results = run_imp_results_by_acc_setting.at(fastest_acc).first;
+
   //set up mapping from acceleration type to description
+  const auto data_size_name =
+    std::string(run_environment::kDataSizeToNameMap.at(data_type_size));
   const std::map<run_environment::AccSetting, std::string> acc_to_speedup_str{
     {run_environment::AccSetting::kNone, 
-     std::string(run_eval::kSpeedupCPUVectorization) + " - " + std::string(run_environment::kDataSizeToNameMap.at(data_type_size))},
+     std::string(run_eval::kSpeedupCPUVectorization) + " - " + data_size_name},
     {run_environment::AccSetting::kAVX256, 
-     std::string(run_eval::kSpeedupVsAvx256Vectorization) + " - " + std::string(run_environment::kDataSizeToNameMap.at(data_type_size))},
+     std::string(run_eval::kSpeedupVsAvx256Vectorization) + " - " + data_size_name},
     {run_environment::AccSetting::kAVX256_F16, 
-     std::string(run_eval::kSpeedupVsAvx256Vectorization) + " - " + std::string(run_environment::kDataSizeToNameMap.at(data_type_size))}};
+     std::string(run_eval::kSpeedupVsAvx256F16Vectorization) + " - " + data_size_name}
+    {run_environment::AccSetting::kAVX512, 
+     std::string(run_eval::kSpeedupVsAvx512Vectorization) + " - " + data_size_name}
+    {run_environment::AccSetting::kAVX512_F16, 
+     std::string(run_eval::kSpeedupVsAvx512F16Vectorization) + " - " + data_size_name}
+  };
 
   if (run_imp_results_by_acc_setting.size() == 1) {
     //no alternate run results
@@ -490,30 +511,31 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
         //process results using alternate acceleration
         //go through each result and replace initial run data with alternate
         //implementation run data if alternate implementation run is faster
-        for (auto& [run_input_sig, run_input_results] : run_imp_results_by_acc_setting.at(fastest_acc).first)
+        for (auto& [run_input_sig, sig_run_results] : run_imp_results_by_acc_setting.at(fastest_acc).first)
         {
-          if (run_input_results && acc_results.first.at(run_input_sig))
+          if (sig_run_results && acc_results.first.at(run_input_sig))
           {
             //get runtime of "fastest" acceleration run that is to contain the
             //optimized results and alternate acceleration run
             //if alternate acceleration run is faster, replace the optimized
             //result for run with alternate acceleration run since it is faster
             const double init_result_time =
-              *run_input_results->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader);
+              *sig_run_results->at(
+                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                  run_eval::kOptimizedRuntimeHeader);
             const double alt_acc_result_time =
               *acc_results.first.at(run_input_sig)->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(run_eval::kOptimizedRuntimeHeader);
+                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                  run_eval::kOptimizedRuntimeHeader);
             if (alt_acc_result_time < init_result_time) {
-              run_input_results = acc_results.first.at(run_input_sig);
+              //set optimized run results to alternate acceleration results if
+              //it is faster
+              run_imp_opt_results.at(run_input_sig) = acc_results.first.at(run_input_sig);
             }
           }
         }
         //get speedup/slowdown using alternate acceleration compared to
-        //fastest implementation and store in speedup results
-        //TODO: right now this is computed with alternate acceleration result
-        //having replaced "fastest acceleration" result if it is faster, may
-        //want to change that
+        //"fastest" acceleration and store in speedup results
         alt_acc_speedups.push_back(GetAvgMedSpeedupBaseVsTarget(
           acc_results.first,
           run_imp_results_by_acc_setting.at(fastest_acc).first,
@@ -521,7 +543,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAltAccelSpeedups(
           BaseTargetDiff::kDiffAcceleration));
       }
     }
-    return alt_acc_speedups;
+    return {alt_acc_speedups, run_imp_opt_results};
   }
 }
 
