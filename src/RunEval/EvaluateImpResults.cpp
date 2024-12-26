@@ -498,7 +498,9 @@ std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> EvaluateImpResults::Get
         alt_acc_speedups.push_back(GetAvgMedSpeedupBaseVsTarget(
           acc_results.first,
           run_imp_results_by_acc_setting.at(fastest_acc).first,
-          std::string(run_eval::kAltAccToSpeedupDesc.at(acc_setting)),
+          std::string(run_eval::kAltAccToSpeedupDesc.at(acc_setting)) + 
+            " - " + std::string(run_environment::kDataSizeToNameMap.at(
+                                data_type_size)),
           BaseTargetDiff::kDiffAcceleration));
 
         //process optimized results using alternate acceleration
