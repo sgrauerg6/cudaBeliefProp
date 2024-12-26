@@ -481,7 +481,8 @@ std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> EvaluateImpResults::Get
   //initialize optimized run results to "fastest" acceleration results
   //results get replaced by alternate acceleration result if alternate
   //acceleration is faster
-  auto run_imp_opt_results = run_imp_results_by_acc_setting.at(fastest_acc).first;
+  auto run_imp_opt_results =
+    run_imp_results_by_acc_setting.at(fastest_acc).first;
 
   if (run_imp_results_by_acc_setting.size() == 1) {
     //no alternate run results
@@ -492,32 +493,6 @@ std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> EvaluateImpResults::Get
     std::vector<RunSpeedupAvgMedian> alt_acc_speedups;
     for (auto& [acc_setting, acc_results] : run_imp_results_by_acc_setting) {
       if (acc_setting != fastest_acc) {
-        //process results using alternate acceleration
-        //go through each result and replace initial run data with alternate
-        //implementation run data if alternate implementation run is faster
-        for (auto& [run_input_sig, sig_run_results] : run_imp_results_by_acc_setting.at(fastest_acc).first)
-        {
-          if (sig_run_results && acc_results.first.at(run_input_sig))
-          {
-            //get runtime of "fastest" acceleration run that is to contain the
-            //optimized results and alternate acceleration run
-            //if alternate acceleration run is faster, replace the optimized
-            //result for run with alternate acceleration run since it is faster
-            const double init_result_time =
-              *sig_run_results->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                  run_eval::kOptimizedRuntimeHeader);
-            const double alt_acc_result_time =
-              *acc_results.first.at(run_input_sig)->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                  run_eval::kOptimizedRuntimeHeader);
-            if (alt_acc_result_time < init_result_time) {
-              //set optimized run results to alternate acceleration results if
-              //it is faster
-              run_imp_opt_results.at(run_input_sig) = acc_results.first.at(run_input_sig);
-            }
-          }
-        }
         //get speedup/slowdown using alternate acceleration compared to
         //"fastest" acceleration and store in speedup results
         alt_acc_speedups.push_back(GetAvgMedSpeedupBaseVsTarget(
@@ -525,6 +500,32 @@ std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> EvaluateImpResults::Get
           run_imp_results_by_acc_setting.at(fastest_acc).first,
           std::string(run_eval::kAltAccToSpeedupDesc.at(acc_setting)),
           BaseTargetDiff::kDiffAcceleration));
+
+        //process optimized results using alternate acceleration
+        //go through each result and replace optimized run data with alternate
+        //implementation run data if alternate implementation run is faster
+        for (auto& [run_input_sig, opt_sig_run_results] : run_imp_opt_results)
+        {
+          if (opt_sig_run_results && acc_results.first.at(run_input_sig))
+          {
+            //get runtime of current optimized run and alternate acceleration run
+            //if alternate acceleration run is faster, replace the optimized
+            //result for run with alternate acceleration run since it is faster
+            const double opt_result_time =
+              *opt_sig_run_results->at(
+                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                  run_eval::kOptimizedRuntimeHeader);
+            const double alt_acc_result_time =
+              *acc_results.first.at(run_input_sig)->at(
+                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
+                  run_eval::kOptimizedRuntimeHeader);
+            if (alt_acc_result_time < opt_result_time) {
+              //set optimized run results to alternate acceleration results if
+              //it is faster
+              opt_sig_run_results = acc_results.first.at(run_input_sig);
+            }
+          }
+        }
       }
     }
     return {alt_acc_speedups, run_imp_opt_results};
