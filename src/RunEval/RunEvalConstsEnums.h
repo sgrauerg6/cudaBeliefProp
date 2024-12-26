@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 #include <array>
 #include <string_view>
+#include <map>
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
 
 /** 
@@ -98,10 +99,20 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kCsvFileExtension{".csv"};
   constexpr std::string_view kOptimizedRuntimeHeader{"Median Optimized Runtime (including transfer time)"};
   constexpr std::string_view kSingleThreadRuntimeHeader{"Single-Thread CPU run time"};
+
+  //constant for speedup description for optimized parallel parameters
   constexpr std::string_view kSpeedupOptParParamsHeader{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
+
+  //constants for speedups descriptions for alternate data types compared to flot
   constexpr std::string_view kSpeedupDouble{"Speedup using double-precision relative to float (actually slowdown)"};
   constexpr std::string_view kSpeedupHalf{"Speedup using half-precision relative to float"};
-  constexpr std::string_view kSpeedupLoopItersCountTemplate{"Speedup w/ templated disparity count (known at compile-time)"};
+
+  //constant for speedup description for templated loop iteration count where number
+  //of loop iterations in at least some loops in benchmarks is known at compile time
+  //via template parameter
+  constexpr std::string_view kSpeedupLoopItersCountTemplate{"Speedup w/ templated loop iteration count (known at compile-time)"};
+
+  //constants for speedup descriptions compared to alternate accelerations
   constexpr std::string_view kSpeedupCPUVectorization{"Speedup using CPU vectorization"};
   constexpr std::string_view kSpeedupVsAvx256Vectorization{"Speedup over AVX256 CPU vectorization"};
   constexpr std::string_view kSpeedupVsAvx256F16Vectorization{"Speedup over AVX256 (w/ float16) CPU vectorization"};
@@ -109,6 +120,17 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kSpeedupVsAvx512F16Vectorization{"Speedup over AVX512 (w/ float16) CPU vectorization"};
   constexpr std::string_view kSpeedupVsNEONVectorization{"Speedup over NEON CPU vectorization"};
   constexpr std::string_view kSpeedupVsCUDAAcceleration{"Speedup over CUDA acceleration"};
+  
+  //mapping of alternate acceleration setting to speedup description
+  const std::map<run_environment::AccSetting, std::string_view> kAltAccToSpeedupDesc{
+    {run_environment::AccSetting::kAVX512_F16, kSpeedupVsAvx512F16Vectorization},
+    {run_environment::AccSetting::kAVX512, kSpeedupVsAvx512Vectorization},
+    {run_environment::AccSetting::kAVX256_F16, kSpeedupVsAvx256F16Vectorization},
+    {run_environment::AccSetting::kAVX256, kSpeedupVsAvx256Vectorization},
+    {run_environment::AccSetting::kNEON, kSpeedupVsNEONVectorization},
+    {run_environment::AccSetting::kCUDA, kSpeedupVsCUDAAcceleration},
+    {run_environment::AccSetting::kNone, kSpeedupCPUVectorization}
+  };
 
   //constants for implementation result
   constexpr std::string_view kImpResultsFolderName{"ImpResults"};
