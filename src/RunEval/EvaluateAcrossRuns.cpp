@@ -147,20 +147,19 @@ void EvaluateAcrossRuns::operator()(
       return a.second > b.second; };
   std::set<std::pair<std::string, float>, decltype(cmp_speedup)> run_names_in_order_w_speedup;
 
-  //add first speedup with run name to order runs from fastest to slowest based on first speedup
+  //generate and add pairs of run name with corresponding "ordering" speedup
+  //for each run to set to get sorted order of runs from fastest to slowest
+  //based on "ordering" speedup
   for (const auto& [run_name, speedup_results] : speedup_results_name_to_data) {
-    if (speedup_results.contains(speedup_ordering)) {
-      const float avgSpeedupVsBase = 
-        std::stof(std::string(speedup_results.at(speedup_ordering).at(0)));
-      run_names_in_order_w_speedup.insert({run_name, avgSpeedupVsBase});
-    }
-    else {
-      run_names_in_order_w_speedup.insert({run_name, 0});
-    }
+    run_names_in_order_w_speedup.insert(
+      {run_name, 
+       speedup_results.contains(speedup_ordering) ?
+       std::stof(std::string(speedup_results.at(speedup_ordering).at(0))) :
+       0});
   }
 
   //write all the run names in order from fastest to slowest
-  for (const auto& [run_name, run_speedup] : run_names_in_order_w_speedup) {
+  for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
     result_across_archs_sstream << run_name << ',';
   }
   result_across_archs_sstream << std::endl;
@@ -171,7 +170,7 @@ void EvaluateAcrossRuns::operator()(
     for (const auto& param_val_disp : params_display_ordered) {
       result_across_archs_sstream << param_val_disp << ',';
     }
-    for (const auto& [run_name, run_speedup] : run_names_in_order_w_speedup)
+    for (const auto& [run_name, _] : run_names_in_order_w_speedup)
     {
       if (input_to_runtime_across_archs.at(run_name).contains(input_sig))
       {
@@ -198,7 +197,7 @@ void EvaluateAcrossRuns::operator()(
       }
       //write speedup for each run in separate cells in horizontal direction
       //where each column corresponds to a different evaluation run
-      for (const auto& [run_name, run_speedup] : run_names_in_order_w_speedup) {
+      for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
         if (speedup_results_name_to_data.at(run_name).contains(speedup_header)) {
           result_across_archs_sstream <<
             speedup_results_name_to_data.at(run_name).at(speedup_header).at(0) << ',';
