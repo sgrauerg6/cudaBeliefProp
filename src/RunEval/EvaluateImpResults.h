@@ -169,13 +169,13 @@ private:
     size_t data_type_size) const;
 
   /**
-   * @brief Get baseline runtime data if available...returns null if baseline data not available
+   * @brief Get baseline runtime data (assumed to be available)
    * 
    * @param baseline_runtimes_path_desc 
    * @param key_runtime_data 
-   * @return std::optional<std::pair<std::string, std::map<InputSignature, std::string>>> 
+   * @return std::pair<std::string, std::map<InputSignature, std::string>>
    */
-  std::optional<std::pair<std::string, std::map<InputSignature, std::string>>> GetBaselineRuntimeData(
+  std::pair<std::string, std::map<InputSignature, std::string>> GetBaselineRuntimeData(
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
     std::string_view key_runtime_data) const;
 
