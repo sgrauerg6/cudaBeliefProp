@@ -409,9 +409,13 @@ void EvaluateImpResults::WriteRunOutput(
     //generate speedup results with headers on top row and write to
     //"speedup" results stream
     results_stream.at(run_eval::OutResults::kSpeedups) << ',';
+    //speedup headers for each computed speedup in top row
     for (const auto& [speedup_header, _] : speedup_headers_w_data) {
-      results_stream.at(run_eval::OutResults::kSpeedups) << speedup_header << ',';
+      results_stream.at(run_eval::OutResults::kSpeedups) << speedup_header
+                                                         << ',';
     }
+    //average and median speedup results corresponding to speedup headers in
+    //next two rows
     for (const auto& [middle_val_desc, middle_val_enum] : 
       {std::pair<std::string_view, run_eval::MiddleValData>{
         "Average Speedup", run_eval::MiddleValData::kAverage},
