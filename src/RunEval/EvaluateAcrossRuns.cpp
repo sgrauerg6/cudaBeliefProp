@@ -261,7 +261,7 @@ std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
     {
       const std::string run_name =
         file_name_no_ext.substr(
-          0, 
+          0,
           file_name_no_ext.find(
             "_" + std::string(run_eval::kRunResultsDescFileName)));
       run_names.push_back(run_name);
