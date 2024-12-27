@@ -89,14 +89,6 @@ public:
   const std::vector<std::string>& HeadersInOrder() const { return headers_in_order_; }
 
   /**
-   * @brief Return data mapped to corresponding headers
-   * 
-   * @return const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& 
-   */
-  const std::map<std::string, std::variant<unsigned int, double, bool, std::string>>& GetAllData() const {
-    return headers_w_data_; }
-
-  /**
    * @brief Return whether or not there is data corresponding to a specific header
    * 
    * @param header 
