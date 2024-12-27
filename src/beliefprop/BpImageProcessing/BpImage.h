@@ -58,12 +58,20 @@ public:
   BpImage() : width_height_{0, 0} {}
 
   explicit BpImage(const std::array<unsigned int, 2>& width_height) : 
-    width_height_{width_height}, pixels_(std::make_unique<T[]>(width_height_[0]*width_height_[1])) {}
+    width_height_{width_height},
+    pixels_(std::make_unique<T[]>(width_height_[0]*width_height_[1]))
+    {}
 
-  explicit BpImage(const std::array<unsigned int, 2>& width_height, const T* input_pixel_vals) :
-    width_height_{width_height}, pixels_(std::make_unique<T[]>(width_height_[0] * width_height_[1]))
+  explicit BpImage(
+    const std::array<unsigned int, 2>& width_height,
+    const T* input_pixel_vals) :
+      width_height_{width_height},
+      pixels_(std::make_unique<T[]>(width_height_[0] * width_height_[1]))
   {
-    std::ranges::copy(input_pixel_vals, input_pixel_vals + (TotalPixels()), pixels_.get());
+    std::ranges::copy(
+      input_pixel_vals,
+      input_pixel_vals + (TotalPixels()),
+      pixels_.get());
   }
 
   explicit BpImage(const std::string& file_name) {
@@ -99,7 +107,8 @@ public:
 
   void SaveImageAsPgm(const std::string& filename) const {
     std::ofstream file(filename, std::ios::out | std::ios::binary);
-    file << "P5\n" << width_height_[0] << " " << width_height_[1] << "\n" << UCHAR_MAX << "\n";
+    file << "P5\n" << width_height_[0] << " " << width_height_[1] << "\n"
+         << UCHAR_MAX << "\n";
     file.write((char*)(pixels_.get()), TotalPixels() * sizeof(char));
     file.close();
   }
@@ -112,8 +121,10 @@ protected:
 
   void pnm_read(std::ifstream &file, std::string& buf) const;
 
-  BpImage<unsigned char> ImageRead(const std::string& file_name,
-    beliefprop::ImageType image_type, bool weighted_rgb_conversion = true) const;
+  BpImage<unsigned char> ImageRead(
+    const std::string& file_name,
+    beliefprop::ImageType image_type,
+    bool weighted_rgb_conversion = true) const;
 
   //currently assuming single channel
   inline unsigned int TotalPixels() const {

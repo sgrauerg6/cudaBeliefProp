@@ -35,7 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpResultsEvaluation/DisparityMapEvaluation.h"
 
 /**
- * @brief Child class of BpImage to define disparity map image that is output from bp processing
+ * @brief Child class of BpImage to define disparity map image that is output
+ * from bp processing
  * 
  * @tparam T 
  */
@@ -45,10 +46,15 @@ class DisparityMap : public BpImage<T> {
 public:
   DisparityMap() : BpImage<T>() {}
 
-  explicit DisparityMap(const std::array<unsigned int, 2>& width_height) : BpImage<T>(width_height) {}
+  explicit DisparityMap(
+    const std::array<unsigned int, 2>& width_height) :
+      BpImage<T>(width_height) {}
 
-  explicit DisparityMap(const std::array<unsigned int, 2>& width_height, const T* input_disparity_map_vals,
-    unsigned int disparity_map_vals_scale = 1) : BpImage<T>(width_height, input_disparity_map_vals)
+  explicit DisparityMap(
+    const std::array<unsigned int, 2>& width_height,
+    const T* input_disparity_map_vals,
+    unsigned int disparity_map_vals_scale = 1) : 
+      BpImage<T>(width_height, input_disparity_map_vals)
   {
     std::ranges::copy(input_disparity_map_vals,
       input_disparity_map_vals + this->TotalPixels(),
@@ -59,25 +65,32 @@ public:
     }
   }
 
-  explicit DisparityMap(const std::string& file_path_disparity_map, unsigned int disparity_map_vals_scale = 1) : 
-    BpImage<T>(file_path_disparity_map)
+  explicit DisparityMap(
+    const std::string& file_path_disparity_map,
+    unsigned int disparity_map_vals_scale = 1) : 
+      BpImage<T>(file_path_disparity_map)
   {
     if (disparity_map_vals_scale > 1) {
       RemoveScaleFromDisparity_vals(disparity_map_vals_scale);
     }
   }
 
-  DisparityMapEvaluation OutputComparison(const DisparityMap& disparity_map_to_compare,
+  DisparityMapEvaluation OutputComparison(
+    const DisparityMap& disparity_map_to_compare,
     const beliefprop::DisparityMapEvaluationParams& evaluation_parameters) const;
 
-  void SaveDisparityMap(const std::string& disparity_map_file_path, unsigned int scale_factor = 1) const;
+  void SaveDisparityMap(
+    const std::string& disparity_map_file_path,
+    unsigned int scale_factor = 1) const;
 
 private:
   void RemoveScaleFromDisparity_vals(unsigned int disparity_map_vals_scale)
   {
     if (disparity_map_vals_scale > 1) {
       //divide each disparity value by disparity_map_vals_scale
-      std::ranges::transform(this->pixels_.get(), this->pixels_.get() + this->TotalPixels(),
+      std::ranges::transform(
+        this->pixels_.get(),
+        this->pixels_.get() + this->TotalPixels(),
         this->pixels_.get(),
         [disparity_map_vals_scale](const auto& disp_val) { 
           return (disp_val / disparity_map_vals_scale); });

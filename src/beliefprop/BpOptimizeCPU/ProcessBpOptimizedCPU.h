@@ -185,7 +185,7 @@ inline run_eval::Status ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>::Initi
   //initialize the data the the "bottom" of the image pyramid
   beliefprop_cpu::InitializeBottomLevelData<T, DISP_VALS, ACCELERATION>(
     current_bp_level.LevelProperties(), 
-    images_target_device[0],images_target_device[1],
+    images_target_device[0], images_target_device[1],
     data_costs_device[0], data_costs_device[1],
     alg_settings.lambda_bp, alg_settings.data_k_bp,
     alg_settings.num_disp_vals, this->parallel_params_);

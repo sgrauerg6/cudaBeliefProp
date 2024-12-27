@@ -46,13 +46,16 @@ constexpr std::array<std::array<std::string_view, 3>, 10> kLevelDCostBpTimeCTime
   std::array<std::string_view, 3>{"Level 9 Data Costs", "Level 9 BP Runtime", "Level 9 Copy Runtime"}
 };
 
-enum class Runtime_Type { kInitSettingsMalloc, kLevel0DataCosts, kLevel1DataCosts, kLevel2DataCosts,
+enum class Runtime_Type {
+  kInitSettingsMalloc, kLevel0DataCosts, kLevel1DataCosts, kLevel2DataCosts,
   kLevel3DataCosts, kLevel4DataCosts, kLevel5DataCosts, kLevel6DataCosts,
-  kLevel7DataCosts, kLevel8DataCosts, kLevel9DataCosts, kDataCostsHigherLevel, kInitMessages,
-  kInitMessagesKernel, kBpIters, kCopyData, kCopyDataKernel, kCopyDataMemManagement, kOutputDisparity, kFinalFree,
-  kTotalTimed, kSmoothing, kLevel0Bp, kLevel1Bp, kLevel2Bp, kLevel3Bp, kLevel4Bp, kLevel5Bp, kLevel6Bp, kLevel7Bp,
-  kLevel8Bp, kLevel9Bp, kLevel0Copy, kLevel1Copy, kLevel2Copy, kLevel3Copy, kLevel4Copy, kLevel5Copy, kLevel6Copy, kLevel7Copy,
-  kLevel8Copy, kLevel9Copy, kTotalBp, kTotalNoTransfer, kTotalWithTransfer };
+  kLevel7DataCosts, kLevel8DataCosts, kLevel9DataCosts, kDataCostsHigherLevel,
+  kInitMessages, kInitMessagesKernel, kBpIters, kCopyData, kCopyDataKernel,
+  kCopyDataMemManagement, kOutputDisparity, kFinalFree, kTotalTimed, kSmoothing,
+  kLevel0Bp, kLevel1Bp, kLevel2Bp, kLevel3Bp, kLevel4Bp, kLevel5Bp, kLevel6Bp,
+  kLevel7Bp, kLevel8Bp, kLevel9Bp, kLevel0Copy, kLevel1Copy, kLevel2Copy,
+  kLevel3Copy, kLevel4Copy, kLevel5Copy, kLevel6Copy, kLevel7Copy,
+  kLevel8Copy, kLevel9Copy, kTotalBp, kTotalNoTransfer, kTotalWithTransfer};
 
 const std::unordered_map<Runtime_Type, std::string_view> kTimingNames{
   {Runtime_Type::kInitSettingsMalloc, "Time init settings malloc"}, 

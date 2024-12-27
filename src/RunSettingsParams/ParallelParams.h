@@ -32,13 +32,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunData.h"
 
 /**
- * @brief Abstract class for holding and processing parallelization parameters.
+ * @brief Abstract class for holding and processing parallelization
+ * parameters.<br>
  * Child class(es) specific to implementation(s) must be defined.
  */
 class ParallelParams {
 public:
   /**
-   * @brief Set parallel parameters for each kernel to the same input dimensions
+   * @brief Set parallel parameters for each kernel to the same input
+   * dimensions
    * 
    * @param parallelDims 
    */
@@ -63,14 +65,15 @@ public:
     const RunData& curr_run_data) = 0;
 
   /**
-   * @brief Retrieve optimized parameters from results across multiple runs with different
-   * parallel parameters and set current parameters to retrieved optimized parameters
+   * @brief Retrieve optimized parameters from results across multiple runs
+   * with different parallel parameters and set current parameters to retrieved
+   * optimized parameters
    */
   virtual void SetOptimizedParams() = 0;
 
   /**
-   * @brief Get optimized parallel parameters for parallel processing kernel for
-   * kernel that is indexed as an array of two unsigned integers
+   * @brief Get optimized parallel parameters for parallel processing kernel
+   * for kernel that is indexed as an array of two unsigned integers
    * 
    * @param kernel_location 
    * @return std::array<unsigned int, 2> 

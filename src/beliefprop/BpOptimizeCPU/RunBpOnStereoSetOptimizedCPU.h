@@ -59,7 +59,8 @@ public:
   std::string BpRunDescription() const override { return std::string(beliefprop::kBpOptimizeCPUDesc); }
 
   //run the disparity map estimation BP on a series of stereo images and save the results between each set of images if desired
-  std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::BpRunOutput> operator()(
+    const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings,
     const ParallelParams& parallel_params) const override;
 };
@@ -67,7 +68,8 @@ public:
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DISP_VALS, ACCELERATION>::operator()(
   const std::array<std::string, 2>& ref_test_image_path,
-  const beliefprop::BpSettings& alg_settings, const ParallelParams& parallel_params) const
+  const beliefprop::BpSettings& alg_settings,
+  const ParallelParams& parallel_params) const
 {
   //set number of threads to use when running code in parallel using OpenMP from input parallel parameters
   //current setting on CPU is to execute all parallel processing in a run using the same number of parallel threads
@@ -77,13 +79,18 @@ inline std::optional<beliefprop::BpRunOutput> RunBpOnStereoSetOptimizedCPU<T, DI
 
   //add settings for current run to output data
   RunData run_data;
-  run_data.AddDataWHeader(std::string(beliefprop::kNumParallelCPUThreadsHeader), nthreads);
-  run_data.AddDataWHeader(std::string(beliefprop::kCPUVectorizationHeader),
+  run_data.AddDataWHeader(
+    std::string(beliefprop::kNumParallelCPUThreadsHeader),
+    nthreads);
+  run_data.AddDataWHeader(
+    std::string(beliefprop::kCPUVectorizationHeader),
     std::string(run_environment::AccelerationString<ACCELERATION>()));
 
   //generate struct with pointers to objects for running optimized CPU implementation and call
   //function to run optimized CPU implementation
-  auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings, 
+  auto process_set_output = this->ProcessStereoSet(
+    ref_test_image_path,
+    alg_settings, 
     beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
       std::make_unique<SmoothImageCPU>(parallel_params),
       std::make_unique<ProcessBpOptimizedCPU<T, DISP_VALS, ACCELERATION>>(parallel_params),

@@ -71,9 +71,13 @@ private:
    * @return std::vector<std::string> 
    */
   std::vector<std::string> GetInputParamsShow() const override {
-    return {std::string(beliefprop::kStereoSetHeader), std::string(run_eval::kDatatypeHeader), std::string(beliefprop::kImageWidthHeader),
-            std::string(beliefprop::kImageHeightHeader), std::string(beliefprop::kNumDispValsHeader),
-            std::string(run_eval::kLoopItersTemplatedHeader)};
+    return {
+      std::string(beliefprop::kStereoSetHeader),
+      std::string(run_eval::kDatatypeHeader),
+      std::string(beliefprop::kImageWidthHeader),
+      std::string(beliefprop::kImageHeightHeader),
+      std::string(beliefprop::kNumDispValsHeader),
+      std::string(run_eval::kLoopItersTemplatedHeader)};
   }
 };
 

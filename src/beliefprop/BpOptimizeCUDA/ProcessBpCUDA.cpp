@@ -33,7 +33,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //return whether or not there was an error in CUDA processing
 template<RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
-inline run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::ErrorCheck(const char *file, int line, bool abort) const {
+inline run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::ErrorCheck(
+  const char *file, int line, bool abort) const
+{
   const auto code = cudaPeekAtLastError();
   if (code != cudaSuccess) {
     std::cout << "CUDA ERROR: " << cudaGetErrorString(code) << " " << file << " " << line << std::endl;
@@ -62,17 +64,22 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RunBPAtCurrentLevel(
 {
   //set to prefer L1 cache since shared memory is not used in this implementation
   cudaDeviceSetCacheConfig(cudaFuncCachePreferL1);
-  const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), current_bp_level.LevelProperties().level_num_});
+  const auto kernel_thread_block_dims =
+    this->parallel_params_.OptParamsForKernel(
+      {static_cast<unsigned int>(beliefprop::BpKernel::kBpAtLevel), 
+       current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   //only updating half at a time
-  const dim3 grid{(unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
-                  (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  const dim3 grid{
+    (unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 
   //in cuda kernel storing data one at a time (though it is coalesced), so simd_data_size not relevant here and set to 1
   //still is a check if start of row is aligned
-  const bool data_aligned{beliefprop::MemoryAlignedAtDataStart<T>(0, 1, current_bp_level.LevelProperties().bytes_align_memory_,
-    current_bp_level.LevelProperties().padded_width_checkerboard_level_)};
+  const bool data_aligned{
+    beliefprop::MemoryAlignedAtDataStart<T>(
+      0, 1, current_bp_level.LevelProperties().bytes_align_memory_,
+      current_bp_level.LevelProperties().padded_width_checkerboard_level_)};
 
   //at each level, run BP for numIterations, alternating between updating the messages between the two "checkerboards"
   for (unsigned int iteration_num = 0; iteration_num < alg_settings.num_iterations; iteration_num++)
@@ -133,11 +140,14 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::CopyMessageValuesToN
   const beliefprop::CheckerboardMessages<T*>& messages_device_copy_to,
   unsigned int bp_settings_num_disp_vals) const
 {
-  const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel), current_bp_level.LevelProperties().level_num_});
+  const auto kernel_thread_block_dims =
+    this->parallel_params_.OptParamsForKernel(
+      {static_cast<unsigned int>(beliefprop::BpKernel::kCopyAtLevel),
+       current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-  const dim3 grid{(unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
-                  (unsigned int)ceil((float)(current_bp_level.LevelProperties().height_level_) / (float)threads.y)};
+  const dim3 grid{
+    (unsigned int)ceil((float)(current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
+    (unsigned int)ceil((float)(current_bp_level.LevelProperties().height_level_) / (float)threads.y)};
 
   cudaDeviceSynchronize();
   if (ErrorCheck(__FILE__, __LINE__) != run_eval::Status::kNoError) {
@@ -195,12 +205,15 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCosts(
 
   //setup execution parameters
   //the thread size remains constant throughout but the grid size is adjusted based on the current level/kernel to run
-  const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), 0});
+  const auto kernel_thread_block_dims =
+    this->parallel_params_.OptParamsForKernel(
+      {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel),
+       0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   //kernel run on full-sized image to retrieve data costs at the "bottom" level of the pyramid
-  const dim3 grid{(unsigned int)ceil((float)current_bp_level.LevelProperties().width_level_ / (float)threads.x),
-                  (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  const dim3 grid{
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().width_level_ / (float)threads.x),
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 
   //initialize the data the the "bottom" of the image pyramid
   beliefprop_cuda::InitializeBottomLevelData<T, DISP_VALS> <<<grid, threads>>> (
@@ -227,8 +240,9 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
   const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
     {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-  const dim3 grid{(unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
-                  (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  const dim3 grid{
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
   using namespace beliefprop;
 
   //initialize all the message values for each pixel at each possible movement to the default value in the kernel
@@ -259,14 +273,17 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
   const beliefprop::DataCostsCheckerboards<T*>& data_costs_device_write,
   unsigned int bp_settings_num_disp_vals) const
 {
-  const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel), current_bp_level.LevelProperties().level_num_});
+  const auto kernel_thread_block_dims =
+    this->parallel_params_.OptParamsForKernel(
+      {static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel),
+       current_bp_level.LevelProperties().level_num_});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   //each pixel "checkerboard" is half the width of the level and there are two of them
   //each "pixel/point" at the level belongs to one checkerboard and
   //the four-connected neighbors of the pixel are in the counterpart checkerboard
-  const dim3 grid{(unsigned int)ceil(((float)current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
-                  (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  const dim3 grid{
+    (unsigned int)ceil(((float)current_bp_level.LevelProperties().width_checkerboard_level_) / (float)threads.x),
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
 
   if (ErrorCheck(__FILE__, __LINE__ ) != run_eval::Status::kNoError) {
     return run_eval::Status::kError;
@@ -283,7 +300,6 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeDataCurren
       data_costs_device[0], data_costs_device[1],
       data_costs_write, ((unsigned int) offset_num / sizeof(float)),
       bp_settings_num_disp_vals);
-
     cudaDeviceSynchronize();
     if (ErrorCheck(__FILE__, __LINE__ ) != run_eval::Status::kNoError) {
       return run_eval::Status::kError;
@@ -304,11 +320,14 @@ float* ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::RetrieveOutputDisparity(
     (void**)&result_disp_map_device,
     current_bp_level.LevelProperties().width_level_ * current_bp_level.LevelProperties().height_level_ * sizeof(float));
 
-  const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp), 0});
+  const auto kernel_thread_block_dims =
+    this->parallel_params_.OptParamsForKernel(
+      {static_cast<unsigned int>(beliefprop::BpKernel::kOutputDisp),
+       0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
-  const dim3 grid{(unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
-                  (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
+  const dim3 grid{
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),
+    (unsigned int)ceil((float)current_bp_level.LevelProperties().height_level_ / (float)threads.y)};
   using namespace beliefprop;
 
   beliefprop_cuda::RetrieveOutputDisparity<T, DISP_VALS> <<<grid, threads>>> (

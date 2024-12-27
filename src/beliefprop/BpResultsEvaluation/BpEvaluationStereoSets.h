@@ -47,7 +47,6 @@ namespace beliefprop
   /**
    * @brief Structure with stereo set name, disparity count, and scale factor
    * for output disparity map
-   * 
    */
   struct BpStereoSet {
     const std::string_view name;
@@ -55,11 +54,8 @@ namespace beliefprop
     const unsigned int scale_factor;
   };
 
-  /**
-   * @brief Declare stereo sets to process with name, num disparity values, and scale factor
-   * currently conesFullSize is not used
-   * 
-   */
+  /** @brief Declare stereo sets to process with name, num disparity values, and scale factor
+   *  currently conesFullSize is not used */
   constexpr std::array<BpStereoSet, 8> kStereoSetsToProcess{
     BpStereoSet{"tsukubaSetHalfSize", 8, 32},
     BpStereoSet{"tsukubaSet", 16, 16},
@@ -71,12 +67,9 @@ namespace beliefprop
     BpStereoSet{"conesFullSize", 256, 1}
   };
 
-  /**
-   * @brief Define subsets for evaluating run results on specified inputs
-   * the first three stereo sets are labeled as "smallest 3 stereo sets"
-   * the last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"
-   * 
-   */
+  /** @brief Define subsets for evaluating run results on specified inputs<br>
+   *  The first three stereo sets are labeled as "smallest 3 stereo sets"<br>
+   *  The last three stereo sets (excluding "conesFullSized") are labeled as "largest 3 stereo sets"*/
   const std::vector<std::pair<std::string, std::vector<InputSignature>>> kEvalDataSubsets{
     {"smallest 3 stereo sets", 
       {InputSignature({}, 0, {}), InputSignature({}, 1, {}), InputSignature({}, 2, {})}},

@@ -34,7 +34,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
-  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const float* data_cost_checkerboard_0, const float* data_cost_checkerboard_1,
   float* message_u_checkerboard_0, float* message_d_checkerboard_0,
   float* message_l_checkerboard_0, float* message_r_checkerboard_0,
@@ -55,7 +56,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
-  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const float16_t* data_cost_checkerboard_0, const float16_t* data_cost_checkerboard_1,
   float16_t* message_u_checkerboard_0, float16_t* message_d_checkerboard_0,
   float16_t* message_l_checkerboard_0, float16_t* message_r_checkerboard_0,
@@ -76,7 +78,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
 
 template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
 void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON(
-  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const double* data_cost_checkerboard_0, const double* data_cost_checkerboard_1,
   double* message_u_checkerboard_0, double* message_d_checkerboard_0,
   double* message_l_checkerboard_0, double* message_r_checkerboard_0,
@@ -106,7 +109,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  RetrieveOutputDisparityUseSIMDVectors<float, float32x4_t, float, float32x4_t, DISP_VALS>(current_bp_level,
+  RetrieveOutputDisparityUseSIMDVectors<float, float32x4_t, float, float32x4_t, DISP_VALS>(
+    current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
     message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,
@@ -127,7 +131,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  RetrieveOutputDisparityUseSIMDVectors<float16_t, float16x4_t, float, float32x4_t, DISP_VALS>(current_bp_level,
+  RetrieveOutputDisparityUseSIMDVectors<float16_t, float16x4_t, float, float32x4_t, DISP_VALS>(
+    current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
     message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,
@@ -148,7 +153,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
   float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
   const ParallelParams& opt_cpu_params)
 {
-  RetrieveOutputDisparityUseSIMDVectors<double, float64x2_t, double, float64x2_t, DISP_VALS>(current_bp_level,
+  RetrieveOutputDisparityUseSIMDVectors<double, float64x2_t, double, float64x2_t, DISP_VALS>(
+    current_bp_level,
     data_cost_checkerboard_0, data_cost_checkerboard_1,
     message_u_prev_checkerboard_0, message_d_prev_checkerboard_0,
     message_l_prev_checkerboard_0, message_r_prev_checkerboard_0,
@@ -158,7 +164,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectorsNEON(
     opt_cpu_params);
 }
 
-template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float32x4_t>(float32x4_t& best_disparities, float32x4_t& best_vals,
+template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float32x4_t>(
+  float32x4_t& best_disparities, float32x4_t& best_vals,
   const float32x4_t& current_disparity, const float32x4_t& val_at_disp)
 {
   //get mask with value 1 where current value less then current best 1, 0 otherwise
@@ -169,7 +176,8 @@ template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float32x4_t>(float
   best_disparities = vbslq_f32(mask_update_vals, current_disparity, best_disparities);
 }
 
-template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float64x2_t>(float64x2_t& best_disparities, float64x2_t& best_vals,
+template<> inline void beliefprop_cpu::UpdateBestDispBestVals<float64x2_t>(
+  float64x2_t& best_disparities, float64x2_t& best_vals,
   const float64x2_t& current_disparity, const float64x2_t& val_at_disp)
 {
   uint64x2_t mask_update_vals = vcltq_f64(val_at_disp, best_vals);
@@ -282,7 +290,8 @@ template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t, bel
     messages_neighbor_3, data_costs, dst_message_array, disc_k_bp, data_aligned);
 }
 
-template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t>(unsigned int x_val, unsigned int y_val,
+template<> inline void beliefprop_cpu::MsgStereoSIMD<float16_t, float16x4_t>(
+  unsigned int x_val, unsigned int y_val,
   const beliefprop::BpLevelProperties& current_bp_level,
   const float16x4_t* messages_neighbor_1, const float16x4_t* messages_neighbor_2,
   const float16x4_t* messages_neighbor_3, const float16x4_t* data_costs,

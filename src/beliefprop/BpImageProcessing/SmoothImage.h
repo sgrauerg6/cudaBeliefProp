@@ -52,16 +52,22 @@ public:
   explicit SmoothImage(const ParallelParams& parallel_params) : parallel_params_{parallel_params} {}
 
   /**
-   * @brief Function to use the image filter to apply a guassian filter to the a single images
-   * input images have each pixel stored as an unsigned int (value between 0 and 255 assuming 8-bit grayscale image used)
-   * output filtered images have each pixel stored as a float after the image has been smoothed with a Gaussian filter of sigma
-   * normalize mask so it integrates to one
+   * @brief Function to use the image filter to apply a guassian filter to the
+   * a single image.<br>
+   * Input images have each pixel stored as an unsigned int (value between 0
+   * and 255 assuming 8-bit grayscale image used).<br>
+   * Output filtered images have each pixel stored as a float after the image
+   * has been smoothed with a Gaussian filter of sigma.<br>
+   * Mask is normalized so it integrates to one.
    * 
    * @param in_image 
    * @param sigma 
    * @param smoothed_image 
    */
-  virtual void operator()(const BpImage<unsigned int>& in_image, float sigma, float* smoothed_image) const = 0;
+  virtual void operator()(
+    const BpImage<unsigned int>& in_image,
+    float sigma,
+    float* smoothed_image) const = 0;
 
 protected:
   /**

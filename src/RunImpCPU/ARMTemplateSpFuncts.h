@@ -40,13 +40,15 @@ float16_t util_functs::ZeroVal<float16_t>()
 }
 
 template<> inline
-float util_functs::ConvertValToDifferentDataTypeIfNeeded<float16_t, float>(float16_t valToConvert)
+float util_functs::ConvertValToDifferentDataTypeIfNeeded<float16_t, float>(
+  float16_t valToConvert)
 {
   return (float)valToConvert;
 }
 
 template<> inline
-float16_t util_functs::ConvertValToDifferentDataTypeIfNeeded<float, float16_t>(float valToConvert)
+float16_t util_functs::ConvertValToDifferentDataTypeIfNeeded<float, float16_t>(
+  float valToConvert)
 {
   //seems like simple cast function works
   return (float16_t)valToConvert;

@@ -36,13 +36,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpCPU/RunCPUSettings.h"
 
 /**
- * @brief General functions for processing using SIMD vector data types on CPU.
+ * @brief General functions for processing using SIMD vector data types on CPU.<br>
  * Template specializations must be defined to support specific SIMD vector data types.
  */
 namespace simd_processing
 {
   /**
-   * @brief Load multiple values of primitive type data from inData array to SIMD vector data type
+   * @brief Load multiple values of primitive type data from inData array to
+   * SIMD vector data type<br>
    * inData array must be aligned according to the rules of the specified SIMD type to
    * use this operation
    * 
@@ -58,13 +59,15 @@ namespace simd_processing
    */
   template<RunData_t T, RunDataVect_t U>
   U LoadPackedDataAligned(unsigned int x, unsigned int y, unsigned int current_disparity,
-    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const T* inData)
+    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals,
+    const T* inData)
   {
     std::cout << "Data type not supported for loading aligned data" << std::endl;
   }
 
   /**
-   * @brief Load multiple values of primitive type data from inData array to SIMD vector data type
+   * @brief Load multiple values of primitive type data from inData array to
+   * SIMD vector data type<br>
    * inData array does not need to be aligned to use this operation
    * 
    * @tparam T 
@@ -79,13 +82,15 @@ namespace simd_processing
    */
   template<RunData_t T, RunDataVect_t U>
   U LoadPackedDataUnaligned(unsigned int x, unsigned int y, unsigned int current_disparity,
-    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const T* inData)
+    const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals,
+    const T* inData)
   {
     std::cout << "Data type not supported for loading unaligned data" << std::endl;
   }
 
   /**
-   * @brief Create a SIMD vector of the specified type with all elements containing the same data
+   * @brief Create a SIMD vector of the specified type with all elements containing
+   * the same data
    * 
    * @tparam T 
    * @param data 
@@ -98,7 +103,7 @@ namespace simd_processing
 
   //
   /**
-   * @brief Add values of specified types and return sum as specified type
+   * @brief Add values of specified types and return sum as specified type<br>
    * Define template specialization to support addition of specific SIMD vector types
    * 
    * @tparam T 
@@ -126,7 +131,7 @@ namespace simd_processing
   V SubtractVals(const T& val1, const U& val2) { return (val1 - val2); }
 
   /**
-   * @brief Divide values of specified types and return quotient as specified type
+   * @brief Divide values of specified types and return quotient as specified type<br>
    * Define template specialization to support division of specific SIMD vector types
    * 
    * @tparam T 
@@ -140,7 +145,7 @@ namespace simd_processing
   V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
 
   /**
-   * @brief Convert value of specified type to value of another specified type
+   * @brief Convert value of specified type to value of another specified type<br>
    * Define template specialization to support conversion between specific types
    * for SIMD vector processing
    * 
@@ -153,8 +158,8 @@ namespace simd_processing
   T ConvertValToDatatype(V val) { return (T)val; }
 
   /**
-   * @brief Get element-wise minimum of two inputs which may be of a SIMD vector type where corresponding
-   * values within the SIMD vector are compared
+   * @brief Get element-wise minimum of two inputs which may be of a SIMD
+   * vector type where corresponding values within the SIMD vector are compared<br>
    * Define template specialization to support function for specific vector type
    * 
    * @tparam T 
@@ -166,9 +171,10 @@ namespace simd_processing
   T GetMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }
 
   /**
-   * @brief Write data in SIMD vector (or single element) to specified location in array
-   * Array that data is written to must be aligned according to the rules of the specified SIMD type to
-   * use this operation
+   * @brief Write data in SIMD vector (or single element) to specified location
+   * in array<br>
+   * Array that data is written to must be aligned according to the rules of
+   * the specified SIMD type to use this operation
    * 
    * @tparam T 
    * @tparam U 
@@ -182,8 +188,10 @@ namespace simd_processing
   }
 
   /**
-   * @brief Write data in SIMD vector (or single element) to specified location in array
-   * Array that data is written does not need to be aligned to use this operation
+   * @brief Write data in SIMD vector (or single element) to specified
+   * location in array<br>
+   * Array that data is written does not need to be aligned to use this
+   * operation
    * 
    * @tparam T 
    * @tparam U 

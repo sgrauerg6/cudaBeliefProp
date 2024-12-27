@@ -40,8 +40,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "SmoothImageCUDA.h"
 
 /**
- * @brief Child class of RunBpOnStereoSet to run CUDA implementation of belief propagation on a
- * given stereo set as defined by reference and test image file paths
+ * @brief Child class of RunBpOnStereoSet to run CUDA implementation of belief
+ * propagation on a given stereo set as defined by reference and test image
+ * file paths
  * 
  * @tparam T 
  * @tparam DISP_VALS 
@@ -63,7 +64,8 @@ public:
    * @param parallel_params 
    * @return std::optional<beliefprop::BpRunOutput> 
    */
-  std::optional<beliefprop::BpRunOutput> operator()(const std::array<std::string, 2>& ref_test_image_path,
+  std::optional<beliefprop::BpRunOutput> operator()(
+    const std::array<std::string, 2>& ref_test_image_path,
     const beliefprop::BpSettings& alg_settings, 
     const ParallelParams& parallel_params) const override
   {
@@ -76,12 +78,15 @@ public:
     //function to run CUDA implementation
     RunData run_data;
     run_data.AppendData(run_cuda::retrieveDeviceProperties(0));
-    auto process_set_output = this->ProcessStereoSet(ref_test_image_path, alg_settings,
-      beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
-        std::make_unique<SmoothImageCUDA>(parallel_params),
-        std::make_unique<ProcessBpCUDA<T, DISP_VALS, ACCELERATION>>(parallel_params),
-        std::make_unique<MemoryManagementCUDA<T>>(),
-        std::make_unique<MemoryManagementCUDA<float>>()});
+    auto process_set_output = 
+      this->ProcessStereoSet(
+        ref_test_image_path,
+        alg_settings,
+        beliefprop::BpOnDevice<T, DISP_VALS, ACCELERATION>{
+          std::make_unique<SmoothImageCUDA>(parallel_params),
+          std::make_unique<ProcessBpCUDA<T, DISP_VALS, ACCELERATION>>(parallel_params),
+          std::make_unique<MemoryManagementCUDA<T>>(),
+          std::make_unique<MemoryManagementCUDA<float>>()});
     if (process_set_output) {
       run_data.AppendData(process_set_output->run_data);
       process_set_output->run_data = run_data;

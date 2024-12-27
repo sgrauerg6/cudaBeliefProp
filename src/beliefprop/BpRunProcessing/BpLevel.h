@@ -59,11 +59,17 @@ template <RunData_t T>
 class BpLevel
 {
 public:
-  explicit BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
-    unsigned int level_num, run_environment::AccSetting acc_setting);
+  explicit BpLevel(
+    const std::array<unsigned int, 2>& width_height,
+    std::size_t offset_into_arrays,
+    unsigned int level_num,
+    run_environment::AccSetting acc_setting);
   
-  explicit BpLevel(const std::array<unsigned int, 2>& width_height, std::size_t offset_into_arrays,
-    unsigned int level_num, unsigned int bytes_align_memory);
+  explicit BpLevel(
+    const std::array<unsigned int, 2>& width_height,
+    std::size_t offset_into_arrays,
+    unsigned int level_num,
+    unsigned int bytes_align_memory);
 
   /**
    * @brief Get bp level properties for next (higher) level in hierarchy that

@@ -68,7 +68,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 namespace run_cpu {
 
-/** @brief Constant that specifies that run is simulating single CPU on a dual-CPU system */
+/** @brief Constant that specifies that run is simulating single CPU on a
+ *  dual-CPU system */
 constexpr std::string_view kSimulateSingleCPU{"SimulateSingleCPU"};
 
 /** @brief Constant corresponding to number of threads on CPU. */
@@ -79,7 +80,8 @@ const unsigned int kNumThreadsCPU{std::thread::hardware_concurrency()};
 const unsigned int kMinNumThreadsRun{std::min(kNumThreadsCPU, 4u)};
 
 /** @brief Default parallel parameters setting on CPU. */
-const std::array<unsigned int, 2> kParallelParamsDefault{{kNumThreadsCPU, 1}};
+const std::array<unsigned int, 2> kParallelParamsDefault{
+  {kNumThreadsCPU, 1}};
 
 #if defined(DEFAULT_PARALLEL_PARAMS_ONLY)
 
@@ -92,15 +94,20 @@ const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{};
 /** @brief Parallel parameters options that are tested in order to find optimized
  *  configuration in run. OK to include default option but not required.*/
 const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{
-  { kNumThreadsCPU, 1},{ kNumThreadsCPU / 2, 1}};
+  { kNumThreadsCPU, 1},
+  { kNumThreadsCPU / 2, 1}};
 
 #else
 
-/** @brief Parallel parameters options that are tested in order to find optimized
- *  configuration in run. OK to include default option but not required.*/
+/** @brief Parallel parameters options that are tested in order to find
+ *  optimized configuration in run. OK to include default option but not
+ *  required.*/
 const std::set<std::array<unsigned int, 2>> kParallelParameterAltOptions{
-  { kNumThreadsCPU, 1}, { (3 * kNumThreadsCPU) / 4 , 1}, { kNumThreadsCPU / 2, 1},
-  { kNumThreadsCPU / 4, 1}, { kNumThreadsCPU / 8, 1}};
+  { kNumThreadsCPU, 1}, 
+  { (3 * kNumThreadsCPU) / 4 , 1}, 
+  { kNumThreadsCPU / 2, 1},
+  { kNumThreadsCPU / 4, 1},
+  { kNumThreadsCPU / 8, 1}};
 
 #endif
 

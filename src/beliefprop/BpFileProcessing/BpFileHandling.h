@@ -38,7 +38,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 class BpFileHandling {
 public:
   /**
-   * @brief Constructor takes stereo set name as input, which must match the directory name of the stereo set
+   * @brief Constructor takes stereo set name as input, which must match the
+   * directory name of the stereo set
    * 
    * @param stereo_set_name 
    */
@@ -46,21 +47,24 @@ public:
     stereo_set_path_{StereoSetsPath() / stereo_set_name}, num_out_disp_map_{1} { }
 
   /**
-   * @brief Return path to reference image with valid extension if found, otherwise throw filesystem error
+   * @brief Return path to reference image with valid extension if found,
+   * otherwise throw filesystem error
    * 
    * @return std::filesystem::path 
    */
   std::filesystem::path RefImagePath() const;
 
   /**
-   * @brief Return path to test image with valid extension if found, otherwise throw filesystem error
+   * @brief Return path to test image with valid extension if found,
+   * otherwise throw filesystem error
    * 
    * @return std::filesystem::path 
    */
   std::filesystem::path TestImagePath() const;
 
   /**
-   * @brief Return path to use for current output disparity and then increment (to support multiple computed output disparity maps)
+   * @brief Return path to use for current output disparity and then increment
+   * (to support multiple computed output disparity maps)
    * 
    * @return const std::filesystem::path 
    */

@@ -37,8 +37,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 
 /**
- * @brief Class defines input signature for evaluation run that contains evaluation set
- * number, data type, and whether or not to use templated loop iteration count
+ * @brief Class defines input signature for evaluation run that contains
+ * evaluation set number, data type, and whether or not to use templated
+ * loop iteration count
  */
 class InputSignature {
 public:
@@ -65,9 +66,9 @@ public:
 
   /**
    * @brief Less than operator for comparing evaluation input signatures
-   * so they can be ordered
+   * so they can be ordered<br>
    * Operator needed to support ordering since input signature
-   * is used as std::map key and also for evaluation output order
+   * is used as std::map key and also for evaluation output order<br>
    * If any InputSignature member is "no value" that property is considered
    * "any" and is ignored in the comparison
    * 
@@ -165,7 +166,9 @@ public:
    * @param eval_input_sig 
    * @return std::ostream& 
    */
-  friend std::ostream& operator<<(std::ostream& os, const InputSignature& eval_input_sig);
+  friend std::ostream& operator<<(
+    std::ostream& os,
+    const InputSignature& eval_input_sig);
 
 private:
   std::optional<unsigned int> data_type_size_;
@@ -174,7 +177,10 @@ private:
 };
 
 //overloaded << operator to write InputSignature object to stream
-inline std::ostream& operator<<(std::ostream& os, const InputSignature& eval_input_sig) {
+inline std::ostream& operator<<(
+  std::ostream& os,
+  const InputSignature& eval_input_sig)
+{
   os << eval_input_sig.DataTypeStr() << " "  << eval_input_sig.EvalSetNumStr()
      << " " << eval_input_sig.UseTemplatedLoopItersStr();
   return os;

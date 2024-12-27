@@ -40,8 +40,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunEvalConstsEnums.h"
 
 /**
- * @brief Class to store timings of one or more segments taken during the run(s)
- * of an implementation or across multiple implementations.
+ * @brief Class to store timings of one or more segments taken during the
+ * run(s) of an implementation or across multiple implementations.<br>
  * Index for timing segments must be enum type.
  * 
  * @tparam T 
@@ -85,7 +85,8 @@ public:
   }
 
   /**
-   * @brief Get median timing for a specified segment that may have been run multiple times
+   * @brief Get median timing for a specified segment that may have been run
+   * multiple times
    * 
    * @param run_segment_index 
    * @return std::chrono::duration<double> 
@@ -111,9 +112,13 @@ DetailedTimings<T>::DetailedTimings(
   const std::unordered_map<T, std::string_view>& timing_segment_names) :
   timing_seg_to_str_{timing_segment_names}
 {
-  std::ranges::transform(timing_seg_to_str_, std::inserter(segment_timings_, segment_timings_.end()),
-    [](const auto& segment) -> std::pair<T, std::vector<std::chrono::duration<double>>> {
-      return {segment.first, std::vector<std::chrono::duration<double>>()}; });
+  std::ranges::transform(
+    timing_seg_to_str_,
+    std::inserter(segment_timings_, segment_timings_.end()),
+      [](const auto& segment) ->
+        std::pair<T, std::vector<std::chrono::duration<double>>> {
+          return {segment.first, std::vector<std::chrono::duration<double>>()};
+        });
 }
 
 //add instance of DetailedTimings to current DetailedTimings
@@ -137,7 +142,8 @@ void DetailedTimings<T>::AddToCurrentTimings(
     });
 }
 
-//get median timing for a specified segment that may have been run multiple times
+//get median timing for a specified segment that may have been run multiple
+//times
 template <typename T>
 requires std::is_enum_v<T>
 std::chrono::duration<double> DetailedTimings<T>::MedianTiming(

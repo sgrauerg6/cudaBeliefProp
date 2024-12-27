@@ -37,7 +37,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 template<> inline __m256d simd_processing::LoadPackedDataAligned<double, __m256d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const double* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const double* inData)
 {
   return _mm256_load_pd(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -46,7 +47,8 @@ template<> inline __m256d simd_processing::LoadPackedDataAligned<double, __m256d
 
 template<> inline __m256 simd_processing::LoadPackedDataAligned<float, __m256>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const float* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const float* inData)
 {
   return _mm256_load_ps(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -55,7 +57,8 @@ template<> inline __m256 simd_processing::LoadPackedDataAligned<float, __m256>(
 
 template<> inline __m128i simd_processing::LoadPackedDataAligned<halftype, __m128i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const halftype* inData)
 {
   return _mm_load_si128((__m128i *)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -67,7 +70,8 @@ template<> inline __m128i simd_processing::LoadPackedDataAligned<halftype, __m12
 
 template<> inline __m256h simd_processing::LoadPackedDataAligned<halftype, __m256h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const halftype* inData)
 {
   return _mm256_load_ph((__m256h *)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -79,7 +83,8 @@ template<> inline __m256h simd_processing::LoadPackedDataAligned<halftype, __m25
 
 template<> inline __m256 simd_processing::LoadPackedDataUnaligned<float, __m256>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const float* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const float* inData)
 {
   return _mm256_loadu_ps(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -88,7 +93,8 @@ template<> inline __m256 simd_processing::LoadPackedDataUnaligned<float, __m256>
 
 template<> inline __m128i simd_processing::LoadPackedDataUnaligned<halftype, __m128i>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const halftype* inData)
 {
   return _mm_loadu_si128((__m128i*)(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -97,7 +103,8 @@ template<> inline __m128i simd_processing::LoadPackedDataUnaligned<halftype, __m
 
 template<> inline __m256d simd_processing::LoadPackedDataUnaligned<double, __m256d>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const double* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const double* inData)
 {
   return _mm256_loadu_pd(&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -108,7 +115,8 @@ template<> inline __m256d simd_processing::LoadPackedDataUnaligned<double, __m25
 
 template<> inline __m256h simd_processing::LoadPackedDataUnaligned<halftype, __m256h>(
   unsigned int x, unsigned int y, unsigned int current_disparity,
-  const beliefprop::BpLevelProperties& current_bp_level, unsigned int numDispVals, const halftype* inData)
+  const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int numDispVals, const halftype* inData)
 {
   return _mm256_loadu_ph((__m256h *)&inData[beliefprop::RetrieveIndexInDataAndMessage(
     x, y, current_bp_level.padded_width_checkerboard_level_,
@@ -137,61 +145,85 @@ template<> inline __m256h simd_processing::createSIMDVectorSameData<__m256h>(flo
 
 #endif //FLOAT16_VECTORIZATION
 
-template<> inline __m256 simd_processing::AddVals<__m256, __m256, __m256>(const __m256& val1, const __m256& val2) {
+template<> inline __m256 simd_processing::AddVals<__m256, __m256, __m256>(
+  const __m256& val1, const __m256& val2)
+{
   return _mm256_add_ps(val1, val2);
 }
 
-template<> inline __m256d simd_processing::AddVals<__m256d, __m256d, __m256d>(const __m256d& val1, const __m256d& val2) {
+template<> inline __m256d simd_processing::AddVals<__m256d, __m256d, __m256d>(
+  const __m256d& val1, const __m256d& val2)
+{
   return _mm256_add_pd(val1, val2);
 }
 
-template<> inline __m256 simd_processing::AddVals<__m256, __m128i, __m256>(const __m256& val1, const __m128i& val2) {
+template<> inline __m256 simd_processing::AddVals<__m256, __m128i, __m256>(
+  const __m256& val1, const __m128i& val2)
+{
   return _mm256_add_ps(val1, _mm256_cvtph_ps(val2));
 }
 
-template<> inline __m256 simd_processing::AddVals<__m128i, __m256, __m256>(const __m128i& val1, const __m256& val2) {
+template<> inline __m256 simd_processing::AddVals<__m128i, __m256, __m256>(
+  const __m128i& val1, const __m256& val2)
+{
   return _mm256_add_ps(_mm256_cvtph_ps(val1), val2);
 }
 
-template<> inline __m256 simd_processing::AddVals<__m128i, __m128i, __m256>(const __m128i& val1, const __m128i& val2) {
+template<> inline __m256 simd_processing::AddVals<__m128i, __m128i, __m256>(
+  const __m128i& val1, const __m128i& val2)
+{
   return _mm256_add_ps(_mm256_cvtph_ps(val1), _mm256_cvtph_ps(val2));
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
-template<> inline __m256h simd_processing::AddVals<__m256h, __m256h, __m256h>(const __m256h& val1, const __m256h& val2) {
+template<> inline __m256h simd_processing::AddVals<__m256h, __m256h, __m256h>(
+  const __m256h& val1, const __m256h& val2)
+{
   return _mm256_add_ph(val1, val2);
 }
 
 #endif //FLOAT16_VECTORIZATION
 
-template<> inline __m256 simd_processing::SubtractVals<__m256, __m256, __m256>(const __m256& val1, const __m256& val2) {
+template<> inline __m256 simd_processing::SubtractVals<__m256, __m256, __m256>(
+  const __m256& val1, const __m256& val2)
+{
   return _mm256_sub_ps(val1, val2);
 }
 
-template<> inline __m256d simd_processing::SubtractVals<__m256d, __m256d, __m256d>(const __m256d& val1, const __m256d& val2) {
+template<> inline __m256d simd_processing::SubtractVals<__m256d, __m256d, __m256d>(
+  const __m256d& val1, const __m256d& val2)
+{
   return _mm256_sub_pd(val1, val2);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
-template<> inline __m256h simd_processing::SubtractVals<__m256h, __m256h, __m256h>(const __m256h& val1, const __m256h& val2) {
+template<> inline __m256h simd_processing::SubtractVals<__m256h, __m256h, __m256h>(
+  const __m256h& val1, const __m256h& val2)
+{
   return _mm256_sub_ph(val1, val2);
 }
 
 #endif //FLOAT16_VECTORIZATION
 
-template<> inline __m256 simd_processing::divideVals<__m256, __m256, __m256>(const __m256& val1, const __m256& val2) {
+template<> inline __m256 simd_processing::divideVals<__m256, __m256, __m256>(
+  const __m256& val1, const __m256& val2)
+{
   return _mm256_div_ps(val1, val2);
 }
 
-template<> inline __m256d simd_processing::divideVals<__m256d, __m256d, __m256d>(const __m256d& val1, const __m256d& val2) {
+template<> inline __m256d simd_processing::divideVals<__m256d, __m256d, __m256d>(
+  const __m256d& val1, const __m256d& val2)
+{
   return _mm256_div_pd(val1, val2);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
-template<> inline __m256h simd_processing::divideVals<__m256h, __m256h, __m256h>(const __m256h& val1, const __m256h& val2) {
+template<> inline __m256h simd_processing::divideVals<__m256h, __m256h, __m256h>(
+  const __m256h& val1, const __m256h& val2)
+{
   return _mm256_div_ph(val1, val2);
 }
 
@@ -213,17 +245,23 @@ template<> inline __m256h simd_processing::ConvertValToDatatype<__m256h, halftyp
 
 #endif //FLOAT16_VECTORIZATION
 
-template<> inline __m256 simd_processing::GetMinByElement<__m256>(const __m256& val1, const __m256& val2) {
+template<> inline __m256 simd_processing::GetMinByElement<__m256>(
+  const __m256& val1, const __m256& val2)
+{
   return _mm256_min_ps(val1, val2);
 }
 
-template<> inline __m256d simd_processing::GetMinByElement<__m256d>(const __m256d& val1, const __m256d& val2) {
+template<> inline __m256d simd_processing::GetMinByElement<__m256d>(
+  const __m256d& val1, const __m256d& val2)
+{
   return _mm256_min_pd(val1, val2);
 }
 
 #if defined(FLOAT16_VECTORIZATION)
 
-template<> inline __m256h simd_processing::GetMinByElement<__m256h>(const __m256h& val1, const __m256h& val2) {
+template<> inline __m256h simd_processing::GetMinByElement<__m256h>(
+  const __m256h& val1, const __m256h& val2)
+{
   return _mm256_min_ph(val1, val2);
 }
 

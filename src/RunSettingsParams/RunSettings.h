@@ -56,11 +56,25 @@ inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
  * @return RunData 
  */
 template <AccSetting ACCELERATION_SETTING>
-inline RunData RunSettings()  {
+inline RunData RunSettings() {
+  //initialize run data to store run settings
   RunData curr_run_data;
-  curr_run_data.AddDataWHeader(std::string(kNumCPUThreadsHeader), std::thread::hardware_concurrency());
-  curr_run_data.AddDataWHeader(std::string(kBytesAlignMemHeader), GetBytesAlignMemory(ACCELERATION_SETTING));
-  curr_run_data.AppendData(CPUThreadsPinnedToSocket().SettingsAsRunData());
+
+  //add number of CPU threads to run data
+  curr_run_data.AddDataWHeader(
+    std::string(kNumCPUThreadsHeader),
+    std::thread::hardware_concurrency());
+
+  //add acceleration setting to run data
+  curr_run_data.AddDataWHeader(
+    std::string(kBytesAlignMemHeader),
+    GetBytesAlignMemory(ACCELERATION_SETTING));
+
+  //add CPU threads picked to socket info to run data
+  curr_run_data.AppendData(
+    CPUThreadsPinnedToSocket().SettingsAsRunData());
+  
+  //return run data that corresponds to current run settings
   return curr_run_data;
 }
 
@@ -71,11 +85,14 @@ struct RunImpSettings {
   std::vector<unsigned int> datatypes_eval_sizes;
   TemplatedItersSetting templated_iters_setting;
   OptParallelParamsSetting opt_parallel_params_setting;
-  std::pair<std::array<unsigned int, 2>, std::set<std::array<unsigned int, 2>>> p_params_default_alt_options;
+  std::pair<std::array<unsigned int, 2>, std::set<std::array<unsigned int, 2>>>
+    p_params_default_alt_options;
   std::string run_name;
-  //path to baseline runtimes for optimized and single thread runs and template setting used to generate baseline runtimes
+  //path to baseline runtimes for optimized and single thread runs along with
+  //description
   std::optional<std::array<std::string_view, 2>> baseline_runtimes_path_desc;
-  std::vector<std::pair<std::string, std::vector<InputSignature>>> subset_desc_input_sig;
+  std::vector<std::pair<std::string, std::vector<InputSignature>>>
+    subset_desc_input_sig;
   bool run_alt_optimized_imps;
 
   /**
@@ -85,7 +102,8 @@ struct RunImpSettings {
    */
   void RemoveParallelParamBelowMinThreads(unsigned int min_threads) {
     std::erase_if(p_params_default_alt_options.second,
-      [min_threads](const auto& p_params) { return p_params[0] < min_threads; });
+      [min_threads](const auto& p_params) { 
+        return p_params[0] < min_threads; });
   }
 
   /**
@@ -95,7 +113,8 @@ struct RunImpSettings {
    */
   void RemoveParallelParamAboveMaxThreads(unsigned int max_threads) {
     std::erase_if(p_params_default_alt_options.second,
-      [max_threads](const auto& p_params) { return p_params[0] > max_threads; });
+      [max_threads](const auto& p_params) { 
+        return p_params[0] > max_threads; });
   }
 };
 

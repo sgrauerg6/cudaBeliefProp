@@ -30,7 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 std::vector<float> SmoothImage::MakeFilter(float sigma) const
 {
   const float sigma_use{std::max(sigma, 0.01f)};
-  const unsigned int size_filter{(unsigned int)std::ceil(sigma_use * kWidthSigma1) + 1u};
+  const unsigned int size_filter{
+    (unsigned int)std::ceil(sigma_use * kWidthSigma1) + 1u};
   std::vector<float> mask(size_filter);
   for (unsigned int i = 0; i < size_filter; i++) {
     mask[i] = std::exp(-0.5*((i/sigma_use) * (i/sigma_use)));
