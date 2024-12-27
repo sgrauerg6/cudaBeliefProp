@@ -321,9 +321,9 @@ private:
    * @return std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> 
    */
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
-    AllocateAndOrganizeDataCostsAndMessageDataAllLevels(
-      std::size_t num_data_allocate_per_data_costs_message_data_array,
-      const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
+  AllocateAndOrganizeDataCostsAndMessageDataAllLevels(
+    std::size_t num_data_allocate_per_data_costs_message_data_array,
+    const std::unique_ptr<MemoryManagement<T>>& mem_management_bp_run) const
   {
     T* data_all_levels = mem_management_bp_run->AllocateAlignedMemoryOnDevice(
       10*num_data_allocate_per_data_costs_message_data_array, ACCELERATION);
@@ -339,8 +339,8 @@ private:
    * @return std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> 
    */
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
-    OrganizeDataCostsAndMessageDataAllLevels(
-      T* data_all_levels, std::size_t num_data_allocate_per_data_costs_message_data_array) const
+  OrganizeDataCostsAndMessageDataAllLevels(
+    T* data_all_levels, std::size_t num_data_allocate_per_data_costs_message_data_array) const
   {
     beliefprop::DataCostsCheckerboards<T*> data_costs_device_checkerboard_all_levels;
     data_costs_device_checkerboard_all_levels[0] = data_all_levels;
@@ -553,7 +553,8 @@ ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
         mem_management_bp_run);
   }
 
-  start_end_times[beliefprop::Runtime_Type::kInitMessagesKernel][0] = std::chrono::system_clock::now();
+  start_end_times[beliefprop::Runtime_Type::kInitMessagesKernel][0] =
+    std::chrono::system_clock::now();
 
   //initialize all the BP message values at every pixel for every disparity to 0
   error_code =
@@ -639,7 +640,6 @@ ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
       data_copy_timings[level_num][0] = copy_message_values_kernel_start_time;
       data_copy_timings[level_num][1] = copy_message_values_kernel_end_time;
 
-      //assuming that width includes padding
       if constexpr (!beliefprop::kUseOptMemManagement) {
         //free the now-copied from computed data of the completed level
         FreeCheckerboardMessagesMemory(
@@ -647,8 +647,10 @@ ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
           mem_management_bp_run);
       }
 
-      //update current and next level messages indices for processing at next level
-      //specifically indices of each which are 0 and 1 are swapped with each other
+      //update current and next level messages indices for processing at next
+      //level; specifically indices of each are swapped with each other
+      //where one level has an index values of 0 and the other one has an index
+      //value of 1
       current_level_messages_idx = (current_level_messages_idx + 1) % 2;
       next_level_messages_idx = (current_level_messages_idx + 1) % 2;
     }
@@ -661,7 +663,8 @@ ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
     bp_timings[level_num][1] = bp_iter_end_time;
   }
 
-  start_end_times[beliefprop::Runtime_Type::kOutputDisparity][0] = std::chrono::system_clock::now();
+  start_end_times[beliefprop::Runtime_Type::kOutputDisparity][0] =
+    std::chrono::system_clock::now();
 
   //assume in bottom level when retrieving output disparity
   float* result_disp_map_device =
@@ -689,7 +692,8 @@ ProcessBp<T, DISP_VALS, ACCELERATION>::operator()(
     }
   }
   else {
-    //free the device storage allocated to the message values used to retrieve the output movement values
+    //free the device storage allocated to the message values used to retrieve
+    //the output movement values
     FreeCheckerboardMessagesMemory(
       messages_curr_next_level[current_level_messages_idx],
       mem_management_bp_run);
