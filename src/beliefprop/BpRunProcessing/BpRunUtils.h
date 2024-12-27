@@ -103,14 +103,14 @@ inline unsigned int NumBpStereoRuns(unsigned int disparity_vals) {
 #endif //FEWER_RUNS_PER_CONFIG
 }
 
-//by default, optimized GPU memory management and optimized indexing used
+//by default, optimized memory management and optimized indexing used
 //See http://scottgg.net/OptimizingGlobalStereoMatchingOnNVIDIAGPUs.pdf for more info on these
 //optimizations (note that the optimized indexing was present in the initial implementation)
-//Can remove optimized GPU memory management (making the processing more similar to the initial work)
-//by setting kUseOptGPUMemManagement to false
+//Can remove optimized memory management (making the processing more similar to the initial work)
+//by setting kUseOptMemManagement to false
 //Optimized indexing can be turned off by changing the kOptimizedIndexingSetting value to false
 //(not recommended; this slows down processing)
-constexpr bool kUseOptGPUMemManagement{true};
+constexpr bool kUseOptMemManagement{true};
 constexpr bool kOptimizedIndexingSetting{true};
 constexpr bool kAllocateFreeBpMemoryOutsideRuns{true};
 
@@ -128,7 +128,7 @@ inline RunData RunSettings()  {
   RunData curr_run_data;
   curr_run_data.AddDataWHeader(
     std::string(kMemAllocOptHeader),
-    kUseOptGPUMemManagement);
+    kUseOptMemManagement);
   curr_run_data.AddDataWHeader(
     std::string(kMemoryCoalescedBpDataHeader),
     kOptimizedIndexingSetting);
