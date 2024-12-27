@@ -263,65 +263,7 @@ void EvaluateImpResults::WriteRunOutput(
 
   //check if there was at least one successful run
   if (first_success_run_iter != run_results.cend())
-  {
-    //get run implementation results file path
-    const auto imp_results_fp = GetImpResultsPath();
-    
-    //create any results directories if needed
-    if (!(std::filesystem::is_directory(
-      imp_results_fp / run_eval::kImpResultsRunDataFolderName)))
-    {
-      std::filesystem::create_directory(
-        imp_results_fp / run_eval::kImpResultsRunDataFolderName);
-    }
-    if (!(std::filesystem::is_directory(
-      imp_results_fp / run_eval::kImpResultsRunDataDefaultPParamsFolderName)))
-    {
-      std::filesystem::create_directory(
-        imp_results_fp / run_eval::kImpResultsRunDataDefaultPParamsFolderName);
-    }
-    if (!(std::filesystem::is_directory(
-      imp_results_fp /run_eval::kImpResultsRunDataWSpeedupsFolderName)))
-    {
-      std::filesystem::create_directory(
-        imp_results_fp / run_eval::kImpResultsRunDataWSpeedupsFolderName);
-    }
-    if (!(std::filesystem::is_directory(
-      imp_results_fp / run_eval::kImpResultsSpeedupsFolderName)))
-    {
-      std::filesystem::create_directory(
-        imp_results_fp / run_eval::kImpResultsSpeedupsFolderName);
-    }
-
-    //get file paths for run result and speedup files for implementation run
-    //optimized run results file path
-    const std::filesystem::path opt_results_file_path{
-      imp_results_fp / run_eval::kImpResultsRunDataFolderName /
-      std::filesystem::path(run_imp_settings.run_name + "_"  +
-      std::string(run_eval::kRunResultsDescFileName) +
-      std::string(run_eval::kCsvFileExtension))};
-
-    //default parallel params results file path
-    const std::filesystem::path default_params_results_file_path{
-      imp_results_fp / run_eval::kImpResultsRunDataDefaultPParamsFolderName /
-      std::filesystem::path(run_imp_settings.run_name + "_" +
-      std::string(run_eval::kRunResultsDefaultPParamsDescFileName) +
-      std::string(run_eval::kCsvFileExtension))};
-
-    //optimized run results with speedups file path
-    const std::filesystem::path opt_results_w_speedup_file_path{
-      imp_results_fp / run_eval::kImpResultsRunDataWSpeedupsFolderName /
-      std::filesystem::path(run_imp_settings.run_name + "_" +
-      std::string(run_eval::kRunResultsWSpeedupsDescFileName) +
-      std::string(run_eval::kCsvFileExtension))};
-
-    //speedup results file path
-    const std::filesystem::path speedups_results_file_path{
-      imp_results_fp / run_eval::kImpResultsSpeedupsFolderName /
-      std::filesystem::path(run_imp_settings.run_name + "_" +
-      std::string(run_eval::kSpeedupsDescFileName) +
-      std::string(run_eval::kCsvFileExtension))};
-    
+  { 
     //initialize parallel params setting enum and set of parallel params
     //settings that are enabled in run
     const auto parallel_param_settings =
@@ -407,51 +349,68 @@ void EvaluateImpResults::WriteRunOutput(
     //parallel parameters), one results file contains speedup results, and another
     //contains run results followed by speedups
 
+    //get run implementation results file path
+    const auto imp_results_fp = GetImpResultsPath();
+
+    //initialize mapping from output results type to file path where each
+    //results type is saved
+    std::map<run_eval::OutResults, const std::filesystem::path> output_file_paths;
+
+    //create any results directories if needed
+    //and generate file paths for each output results type
+    for (const auto& [out_results_type, file_info] : run_eval::kOutResultsFileInfo) {
+      if (!(std::filesystem::is_directory(file_info.dir_path))) {
+        std::filesystem::create_directory(file_info.dir_path);
+      }
+      output_file_paths.insert(
+        {out_results_type,
+         imp_results_fp / file_info.dir_path /
+           std::filesystem::path(run_imp_settings.run_name + "_" +
+           std::string(file_info.desc_file_name) +
+           std::string(run_eval::kCsvFileExtension))});
+    }
+
     //write run results with and without optimized parallel parameters to files
     //if run without optimized parallel parameters then results with default
-    //parallel parameters written to optimized parallel parameters file
-    enum class OutResults{
-      kDefaultPParams, kOptPParams, kSpeedups, kOptWSpeedups};
-    std::map<OutResults, std::ofstream> results_stream;
-    results_stream.insert({OutResults::kDefaultPParams,
-                           std::ofstream(default_params_results_file_path)});
-    results_stream.insert({OutResults::kOptPParams,
-                           std::ofstream(opt_results_file_path)});
-    results_stream.insert({OutResults::kSpeedups,
-                           std::ofstream(speedups_results_file_path)});
-    results_stream.insert({OutResults::kOptWSpeedups,
-                           std::ofstream(opt_results_w_speedup_file_path)});
+    //parallel parameters also written to optimized parallel parameters file
+    std::map<run_eval::OutResults, std::ofstream> results_stream;
+    for (const auto& [out_results_type, file_path] : output_file_paths) {
+      results_stream.insert(
+        {out_results_type,
+         file_path});
+    }
+
     //write run results file with default parallel params
-    results_stream.at(OutResults::kDefaultPParams) <<
+    results_stream.at(run_eval::OutResults::kDefaultPParams) <<
       run_data_sstr.at(run_environment::ParallelParamsSetting::kDefault).str();
     if (p_params_optimized) {
       //write run results with optimized parallel params to optimized
       //run results file stream
-      results_stream.at(OutResults::kOptPParams) <<
+      results_stream.at(run_eval::OutResults::kOptPParams) <<
         run_data_sstr.at(
           run_environment::ParallelParamsSetting::kOptimized).str();
-      //add optimized run results to ostringstream for output containing run
+      //write optimized run results to ostringstream for output containing run
       //results and speedups
-      results_stream.at(OutResults::kOptWSpeedups) <<
+      results_stream.at(run_eval::OutResults::kOptWSpeedups) <<
         run_data_sstr.at(
           run_environment::ParallelParamsSetting::kOptimized).str();
     }
     else {
       //write results with default parallel parameters to optimized results
       //file stream if parallel parameters not optimized in run
-      results_stream.at(OutResults::kOptPParams) <<
+      results_stream.at(run_eval::OutResults::kOptPParams) <<
         run_data_sstr.at(
           run_environment::ParallelParamsSetting::kDefault).str();     
-      results_stream.at(OutResults::kOptWSpeedups) << 
+      results_stream.at(run_eval::OutResults::kOptWSpeedups) << 
         run_data_sstr.at(
           run_environment::ParallelParamsSetting::kDefault).str();        
     }
 
     //generate speedup results with headers on top row and write to
     //"speedup" results stream
-    results_stream.at(OutResults::kSpeedups) << ',';
+    results_stream.at(run_eval::OutResults::kSpeedups) << ',';
     for (const auto& [speedup_header, _] : speedup_headers_w_data) {
-      results_stream.at(OutResults::kSpeedups) << speedup_header << ',';
+      results_stream.at(run_eval::OutResults::kSpeedups) << speedup_header << ',';
     }
     for (const auto& [middle_val_desc, middle_val_enum] : 
       {std::pair<std::string_view, run_eval::MiddleValData>{
@@ -459,35 +418,35 @@ void EvaluateImpResults::WriteRunOutput(
        std::pair<std::string_view, run_eval::MiddleValData>{
         "Median Speedup", run_eval::MiddleValData::kMedian}})
     {
-      results_stream.at(OutResults::kSpeedups) << std::endl <<
+      results_stream.at(run_eval::OutResults::kSpeedups) << std::endl <<
         middle_val_desc << ',';
       for (const auto& [_, speedup_data] : speedup_headers_w_data) {
         if (speedup_data.contains(middle_val_enum)) {
-          results_stream.at(OutResults::kSpeedups) <<
+          results_stream.at(run_eval::OutResults::kSpeedups) <<
             speedup_data.at(middle_val_enum) << ',';
         }
         else {
-          results_stream.at(OutResults::kSpeedups) << ',';
+          results_stream.at(run_eval::OutResults::kSpeedups) << ',';
         }
       }
     }
 
     //generate speedup results with headers on left side
     //and add to results stream for run results with speedups
-    results_stream.at(OutResults::kOptWSpeedups) << std::endl <<
+    results_stream.at(run_eval::OutResults::kOptWSpeedups) << std::endl <<
       "Speedup Results,Average Speedup,Median Speedup" << std::endl;
     for (const auto& [speedup_header, speedup_data] : speedup_headers_w_data) {
-      results_stream.at(OutResults::kOptWSpeedups) << speedup_header;
+      results_stream.at(run_eval::OutResults::kOptWSpeedups) << speedup_header;
       if ((speedup_data.contains(run_eval::MiddleValData::kAverage)) &&
           (speedup_data.at(run_eval::MiddleValData::kAverage) > 0)) {
-        results_stream.at(OutResults::kOptWSpeedups) << ',' <<
+        results_stream.at(run_eval::OutResults::kOptWSpeedups) << ',' <<
           speedup_data.at(run_eval::MiddleValData::kAverage) << ',' <<
           speedup_data.at(run_eval::MiddleValData::kMedian);
       }
       else {
-        results_stream.at(OutResults::kOptWSpeedups) << ",,";
+        results_stream.at(run_eval::OutResults::kOptWSpeedups) << ",,";
       }
-      results_stream.at(OutResults::kOptWSpeedups) << std::endl;
+      results_stream.at(run_eval::OutResults::kOptWSpeedups) << std::endl;
     }
 
     //close streams for writing to results files since file writing is done
@@ -496,15 +455,12 @@ void EvaluateImpResults::WriteRunOutput(
     }
 
     //print location of output evaluation files to standard output
-    std::cout << "Input/settings/parameters info, detailed timings, and "
-              << "evaluation for each run and across runs in "
-              << opt_results_w_speedup_file_path << std::endl;
-    std::cout << "Run inputs and results in " << opt_results_file_path
-              << std::endl;
-    std::cout << "Speedup results in " << speedups_results_file_path
-              << std::endl;
-    std::cout << "Run inputs and results using default parallel parameters in "
-              << default_params_results_file_path << std::endl;
+    for (const auto& [out_results_type, out_results_desc_str] :
+         run_eval::kOutResultsDesc)
+    {
+      std::cout << out_results_desc_str << " in " <<
+        output_file_paths.at(out_results_type) << std::endl;
+    }
 
     //run evaluation across current and previous runs across architectures
     //using run results and speedups saved from previous runs along with

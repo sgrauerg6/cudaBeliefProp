@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <array>
 #include <string_view>
 #include <map>
+#include <filesystem>
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
 
 /** 
@@ -123,7 +124,7 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kSpeedupVsCUDAAcceleration{"Speedup over CUDA acceleration"};
   
   //mapping of alternate acceleration setting to speedup description
-  const std::map<run_environment::AccSetting, std::string_view> kAltAccToSpeedupDesc{
+  const std::map<run_environment::AccSetting, const std::string_view> kAltAccToSpeedupDesc{
     {run_environment::AccSetting::kAVX512_F16, kSpeedupVsAvx512F16Vectorization},
     {run_environment::AccSetting::kAVX512, kSpeedupVsAvx512Vectorization},
     {run_environment::AccSetting::kAVX256_F16, kSpeedupVsAvx256F16Vectorization},
@@ -147,6 +148,48 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::size_t kRunInputNumInputIdx{0};
   constexpr std::size_t kRunInputDatatypeIdx{1};
   constexpr std::size_t kRunInputLoopItersTemplatedIdx{2};
+
+  //declare output results type and array containing all output results types
+   enum class OutResults{
+    kDefaultPParams, kOptPParams, kSpeedups, kOptWSpeedups
+  };
+    
+  //structure containing directory path and description in file name for
+  //each output result file
+  struct OutFileInfo{
+    std::filesystem::path dir_path;
+    std::string_view desc_file_name;
+  };
+
+  //mapping from output result type to full directory path where results for
+  //type stored and description part of file name 
+  const std::map<OutResults, const OutFileInfo> kOutResultsFileInfo{
+    {OutResults::kDefaultPParams,
+     {kImpResultsRunDataDefaultPParamsFolderName,
+      kRunResultsDefaultPParamsDescFileName}},
+    {OutResults::kOptPParams,
+     {kImpResultsRunDataFolderName,
+      kRunResultsDescFileName}},
+    {OutResults::kSpeedups,
+     {kImpResultsSpeedupsFolderName,
+      kSpeedupsDescFileName}},
+    {OutResults::kOptWSpeedups,
+     {kImpResultsRunDataWSpeedupsFolderName,
+      kRunResultsWSpeedupsDescFileName}}
+  };
+
+  //mapping from output type to description shown to user
+  const std::map<OutResults, const std::string_view> kOutResultsDesc{
+    {OutResults::kDefaultPParams,
+     "Run inputs and results using default parallel parameters"},
+    {OutResults::kOptPParams,
+     "Run inputs and optimized results"},
+    {OutResults::kSpeedups,
+     "Speedup results"},
+    {OutResults::kOptWSpeedups, 
+     "Input/settings/parameters info, detailed timings, and evaluation for "
+     "each run including speedup results"}
+  };
 };
 
 #endif //RUN_EVAL_CONSTS_ENUMS_H_
