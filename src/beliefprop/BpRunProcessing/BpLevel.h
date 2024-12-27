@@ -127,7 +127,9 @@ public:
    * 
    * @return const BpLevelProperties& 
    */
-  const beliefprop::BpLevelProperties& LevelProperties() const { return level_properties_; }
+  const beliefprop::BpLevelProperties& LevelProperties() const {
+    return level_properties_;
+  }
 
 private:
   beliefprop::BpLevelProperties level_properties_;
@@ -171,7 +173,8 @@ BpLevel<T>::BpLevel(
     PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);
 }
 
-//get bp level properties for next (higher) level in hierarchy that processes data with half width/height of current level
+//get bp level properties for next (higher) level in hierarchy that processes
+//data with half width/height of current level
 template <RunData_t T>
 BpLevel<T> BpLevel<T>::NextBpLevel(unsigned int num_disparity_values) const
 {
@@ -186,8 +189,9 @@ BpLevel<T> BpLevel<T>::NextBpLevel(unsigned int num_disparity_values) const
     level_properties_.bytes_align_memory_);
 }
 
-//get the amount of data in each BP array (data cost/messages for each checkerboard) at the current level
-//with the specified number of possible disparity values
+//get the amount of data in each BP array (data cost/messages for each
+//checkerboard) at the current level with the specified number of possible
+//disparity values
 template <RunData_t T>
 std::size_t BpLevel<T>::NumDataInBpArrays(
   unsigned int num_disparity_values) const

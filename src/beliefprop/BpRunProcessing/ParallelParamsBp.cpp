@@ -32,21 +32,29 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //constructor to set parallel parameters with default dimensions for each kernel
 ParallelParamsBp::ParallelParamsBp(
     run_environment::OptParallelParamsSetting opt_parallel_params_setting,
-    unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims) : 
+    unsigned int num_levels,
+    const std::array<unsigned int, 2>& default_parallel_dims) : 
     opt_parallel_params_setting_{opt_parallel_params_setting},
     num_levels_{num_levels}
 {
   SetParallelDims(default_parallel_dims);
-  //set up mapping of parallel parameters to runtime for each kernel at each level and total runtime
+  //set up mapping of parallel parameters to runtime for each kernel at each
+  //level and total runtime
   for (unsigned int i=0; i < beliefprop::kNumKernels; i++) {
-    //set to vector length for each kernel to corresponding vector length of kernel in parallel_params.parallel_dims_each_kernel_
-    p_params_to_run_time_each_kernel_[i] = std::vector<std::map<std::array<unsigned int, 2>, double>>(parallel_dims_each_kernel_[i].size()); 
+    //set to vector length for each kernel to corresponding vector length of
+    //kernel in parallel_params.parallel_dims_each_kernel_
+    p_params_to_run_time_each_kernel_[i] =
+      std::vector<std::map<std::array<unsigned int, 2>, double>>(
+        parallel_dims_each_kernel_[i].size());
   }
-  p_params_to_run_time_each_kernel_[beliefprop::kNumKernels] = std::vector<std::map<std::array<unsigned int, 2>, double>>(1); 
+  p_params_to_run_time_each_kernel_[beliefprop::kNumKernels] =
+    std::vector<std::map<std::array<unsigned int, 2>, double>>(1); 
 }
 
 //set parallel parameters for each kernel to the same input dimensions
-void ParallelParamsBp::SetParallelDims(const std::array<unsigned int, 2>& parallel_dims) {
+void ParallelParamsBp::SetParallelDims(
+  const std::array<unsigned int, 2>& parallel_dims)
+{
   parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kBlurImages)] =
     {parallel_dims};
   parallel_dims_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)] =
@@ -68,8 +76,10 @@ RunData ParallelParamsBp::AsRunData() const
   RunData curr_run_data;
 
   //add parallel parameters setting
-  curr_run_data.AddDataWHeader(std::string(run_environment::kPParamsPerKernelSettingHeader),
-    std::string((run_environment::kOptPParmsSettingToDesc.at(opt_parallel_params_setting_))));
+  curr_run_data.AddDataWHeader(
+    std::string(run_environment::kPParamsPerKernelSettingHeader),
+    std::string((run_environment::kOptPParmsSettingToDesc.at(
+      opt_parallel_params_setting_))));
 
   //add parallel parameters for each kernel
   curr_run_data.AddDataWHeader(std::string(beliefprop::kBlurImagesPDimsHeader),
@@ -106,7 +116,9 @@ RunData ParallelParamsBp::AsRunData() const
 //add results from run with same specified parallel parameters used every parallel component
 void ParallelParamsBp::AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data)
 {
-  if (opt_parallel_params_setting_ == run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun) {
+  if (opt_parallel_params_setting_ ==
+      run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun)
+  {
     for (unsigned int level=0; level < num_levels_; level++) {
       p_params_to_run_time_each_kernel_[static_cast<unsigned int>(beliefprop::BpKernel::kDataCostsAtLevel)][level][p_params_curr_run] =
         *curr_run_data.GetDataAsDouble(
@@ -133,23 +145,40 @@ void ParallelParamsBp::AddTestResultsForParallelParams(const std::array<unsigned
     *curr_run_data.GetDataAsDouble(run_eval::kOptimizedRuntimeHeader);
 }
 
-//retrieve optimized parameters from results across multiple runs with different parallel parameters and set current parameters
-//to retrieved optimized parameters
+//retrieve optimized parameters from results across multiple runs with different
+//parallel parameters and set current parameters to retrieved optimized
+//parameters
 void ParallelParamsBp::SetOptimizedParams() {
-  if (opt_parallel_params_setting_ == run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun) {
-    for (unsigned int num_kernel_set = 0; num_kernel_set < parallel_dims_each_kernel_.size(); num_kernel_set++) {
-      //retrieve and set optimized parallel parameters for final run
-      //std::min_element used to retrieve parallel parameters corresponding to lowest runtime from previous runs
+  if (opt_parallel_params_setting_ ==
+      run_environment::OptParallelParamsSetting::kAllowDiffKernelParallelParamsInRun)
+  {
+    for (unsigned int num_kernel_set = 0;
+         num_kernel_set < parallel_dims_each_kernel_.size();
+         num_kernel_set++)
+    {
+      //retrieve and set optimized parallel parameters for each kernel at each
+      //level for optimized run by finding and setting the parallel parameters
+      //with the lowest runtime for each kernel at each level from test runs
+      //with each possible parallel parameter setting
+      //std::min_element used to retrieve parallel parameters corresponding to
+      //lowest runtime for each kernel at each level across test runs
       std::ranges::transform(p_params_to_run_time_each_kernel_[num_kernel_set], 
                              parallel_dims_each_kernel_[num_kernel_set].begin(),
-                             [](const auto& tDimsToRunTimeCurrLevel) { 
-                             return (std::ranges::min_element(tDimsToRunTimeCurrLevel,
-                               [](const auto& a, const auto& b) { return a.second < b.second; }))->first; });
+                             [](const auto& p_params_to_runtime_kernel_at_level) {
+                               return (std::ranges::min_element(
+                                 p_params_to_runtime_kernel_at_level,
+                                 [](const auto& a, const auto& b) { 
+                                   return a.second < b.second;
+                                 }))->first;
+                             });
     }
   }
   else {
-    //set optimized parallel parameters for all kernels to parallel parameters that got the best runtime across all kernels
-    //seems like setting different parallel parameters for different kernels on GPU decrease runtime but increases runtime on CPU
+    //set optimized parallel parameters for all kernels to parallel parameters
+    //that got the best runtime across all kernels in test runs where each
+    //possible parallel parameter setting was used
+    //seems like setting different parallel parameters for different kernels on
+    //GPU decreases runtime but increases runtime on CPU
     const auto best_parallel_params = std::ranges::min_element(
       p_params_to_run_time_each_kernel_[beliefprop::kNumKernels][0],
       [](const auto& a, const auto& b) { return a.second < b.second; })->first;

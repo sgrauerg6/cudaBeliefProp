@@ -193,7 +193,8 @@ ARCHITECTURE_ADDITION inline void MsgStereo(
   const beliefprop::BpLevelProperties& current_bp_level,
   const U* messages_neighbor_1, const U* messages_neighbor_2,
   const U* messages_neighbor_3, const U* data_costs,
-  T* dst_message_array, U disc_k_bp, bool data_aligned, unsigned int bp_settings_disp_vals)
+  T* dst_message_array, U disc_k_bp, bool data_aligned,
+  unsigned int bp_settings_disp_vals)
 {
   // aggregate and find min
   U minimum{(U)beliefprop::kHighValBpKernel};
@@ -561,8 +562,10 @@ ARCHITECTURE_ADDITION inline void InitializeBottomLevelDataPixel(
  */
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void InitializeCurrentLevelDataPixel(
-  unsigned int x_val, unsigned int y_val, beliefprop::CheckerboardPart checkerboard_part,
-  const beliefprop::BpLevelProperties& current_bp_level, const beliefprop::BpLevelProperties& prev_bp_level,
+  unsigned int x_val, unsigned int y_val,
+  beliefprop::CheckerboardPart checkerboard_part,
+  const beliefprop::BpLevelProperties& current_bp_level,
+  const beliefprop::BpLevelProperties& prev_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   T* data_cost_current_level, unsigned int offset_num,
   unsigned int bp_settings_disp_vals)
@@ -767,7 +770,8 @@ ARCHITECTURE_ADDITION inline void InitializeMessageValsToDefaultKernelPixel(
  */
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
-  unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int x_val, unsigned int y_val,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const U prev_u_message[DISP_VALS], const U prev_d_message[DISP_VALS],
   const U prev_l_message[DISP_VALS], const U prev_r_message[DISP_VALS],
   const U data_message[DISP_VALS],
@@ -794,7 +798,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
 
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
-  unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int x_val, unsigned int y_val,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const U* prev_u_message, const U* prev_d_message,
   const U* prev_l_message, const U* prev_r_message,
   const U* data_message,
@@ -821,7 +826,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
 
 template<RunData_t T, RunData_t U>
 ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
-  unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int x_val, unsigned int y_val,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const T* prev_u_message_array, const T* prev_d_message_array,
   const T* prev_l_message_array, const T* prev_r_message_array,
   const T* data_message_array,
@@ -883,7 +889,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUpdateMsgVals(
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   T* message_u_checkerboard_0, T* message_d_checkerboard_0,
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
@@ -1051,7 +1058,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::CheckerboardPart checkerboard_to_update, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_to_update,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   T* message_u_checkerboard_0, T* message_d_checkerboard_0,
   T* message_l_checkerboard_0, T* message_r_checkerboard_0,
@@ -1126,7 +1134,8 @@ ARCHITECTURE_ADDITION inline void RunBPIterationUsingCheckerboardUpdatesKernel(
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
   unsigned int x_val, unsigned int y_val,
-  beliefprop::CheckerboardPart checkerboard_part, const beliefprop::BpLevelProperties& current_bp_level,
+  beliefprop::CheckerboardPart checkerboard_part,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const beliefprop::BpLevelProperties& next_bp_level,
   const T* message_u_prev_checkerboard_0, const T* message_d_prev_checkerboard_0,
   const T* message_l_prev_checkerboard_0, const T* message_r_prev_checkerboard_0,
@@ -1276,7 +1285,8 @@ ARCHITECTURE_ADDITION inline void CopyMsgDataToNextLevelPixel(
 
 template<RunData_t T, RunData_t U, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void RetrieveOutputDisparityPixel(
-  unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int x_val, unsigned int y_val,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
   const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,
@@ -1581,7 +1591,8 @@ ARCHITECTURE_ADDITION inline void PrintDataAndMessageValsAtPointKernel(
 
 template<RunData_t T, unsigned int DISP_VALS>
 ARCHITECTURE_ADDITION inline void PrintDataAndMessageValsToPointKernel(
-  unsigned int x_val, unsigned int y_val, const beliefprop::BpLevelProperties& current_bp_level,
+  unsigned int x_val, unsigned int y_val,
+  const beliefprop::BpLevelProperties& current_bp_level,
   const T* data_cost_checkerboard_0, const T* data_cost_checkerboard_1,
   const T* message_u_checkerboard_0, const T* message_d_checkerboard_0,
   const T* message_l_checkerboard_0, const T* message_r_checkerboard_0,

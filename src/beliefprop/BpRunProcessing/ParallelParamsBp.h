@@ -51,8 +51,8 @@ namespace beliefprop {
 };
 
 /**
- * @brief Child class of ParallelParams to store and process parallelization parameters
- * to use in each BP kernel at each level
+ * @brief Child class of ParallelParams to store and process parallelization
+ * parameters to use in each BP kernel at each level
  */
 class ParallelParamsBp final : public ParallelParams {
 public:
@@ -64,23 +64,29 @@ public:
    * @param num_levels 
    * @param default_parallel_dims 
    */
-  explicit ParallelParamsBp(run_environment::OptParallelParamsSetting opt_parallel_params_setting,
-    unsigned int num_levels, const std::array<unsigned int, 2>& default_parallel_dims);
+  explicit ParallelParamsBp(
+    run_environment::OptParallelParamsSetting opt_parallel_params_setting,
+    unsigned int num_levels,
+    const std::array<unsigned int, 2>& default_parallel_dims);
 
   /**
    * @brief Set parallel parameters for each kernel to the same input dimensions
    * 
    * @param parallel_dims 
    */
-  void SetParallelDims(const std::array<unsigned int, 2>& parallel_dims) override;
+  void SetParallelDims(
+    const std::array<unsigned int, 2>& parallel_dims) override;
 
   /**
-   * @brief Add results from run with same specified parallel parameters used every parallel component
+   * @brief Add results from run with same specified parallel parameters used
+   * every parallel component
    * 
    * @param p_params_curr_run 
    * @param curr_run_data 
    */
-  void AddTestResultsForParallelParams(const std::array<unsigned int, 2>& p_params_curr_run, const RunData& curr_run_data);
+  void AddTestResultsForParallelParams(
+    const std::array<unsigned int, 2>& p_params_curr_run,
+    const RunData& curr_run_data);
 
   /**
    * @brief Retrieve optimized parameters from results across multiple runs
@@ -97,7 +103,9 @@ public:
    * @param kernel_location 
    * @return std::array<unsigned int, 2> 
    */
-  std::array<unsigned int, 2> OptParamsForKernel(const std::array<unsigned int, 2>& kernel_location) const override {
+  std::array<unsigned int, 2> OptParamsForKernel(
+    const std::array<unsigned int, 2>& kernel_location) const override
+  {
     return parallel_dims_each_kernel_[kernel_location[0]][kernel_location[1]];
   }
 
@@ -118,10 +126,14 @@ private:
   const unsigned int num_levels_;
 
   /** @brief Stores the current parallel parameters for each processing kernel */
-  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels> parallel_dims_each_kernel_;
+  std::array<std::vector<std::array<unsigned int, 2>>, beliefprop::kNumKernels>
+  parallel_dims_each_kernel_;
   
-  /** @brief Mapping of parallel parameters to runtime for each kernel at each level and total runtime */
-  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>, (beliefprop::kNumKernels + 1)> p_params_to_run_time_each_kernel_;
+  /** @brief Mapping of parallel parameters to runtime for each kernel at each
+   *  level and total runtime */
+  std::array<std::vector<std::map<std::array<unsigned int, 2>, double>>,
+             (beliefprop::kNumKernels + 1)>
+  p_params_to_run_time_each_kernel_;
 };
 
 #endif //BP_PARALLEL_PARAMS_H

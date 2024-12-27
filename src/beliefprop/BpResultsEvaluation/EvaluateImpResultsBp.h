@@ -38,8 +38,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 /**
  * @brief Child class of EvaluateImpResults that defines member functions for
- * belief propagation evaluation which override pure virtual functions in parent
- * class
+ * belief propagation evaluation which override pure virtual functions in
+ * parent class
  */
 class EvaluateImpResultsBp final : public EvaluateImpResults {
 private:

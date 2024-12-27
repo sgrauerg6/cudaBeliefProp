@@ -50,9 +50,10 @@ constexpr unsigned int kNumCheckerboardParts{2};
 constexpr unsigned int kNumMessageArrays{4};
 
 /**
- * @brief Each checkerboard messages element corresponds to an array of message values
- * could use a map/unordered map to map MessageArrays enum to corresponding message array
- * but using array structure is likely faster
+ * @brief Define alias for array with message costs for each bp
+ * processing checkerboard.<br>
+ * Each checkerboard messages element corresponds to an array of message values
+ * and message values must be pointers to a bp data type.
  * 
  * @tparam T 
  */
@@ -60,8 +61,10 @@ template <RunData_ptr T>
 using CheckerboardMessages = std::array<std::array<T, kNumMessageArrays>, kNumCheckerboardParts>;
 
 /**
- * @brief Belief propagation checkerboard messages and data costs must be pointers to a bp data type
- * define alias for two-element array with data costs for each bp processing checkerboard
+ * @brief Define alias for two-element array with data costs for each bp
+ * processing checkerboard.<br>
+ * Belief propagation data costs must be pointers to a bp data type.
+ * 
  * 
  * @tparam T 
  */

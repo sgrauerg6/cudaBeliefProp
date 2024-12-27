@@ -52,8 +52,9 @@ namespace beliefprop {
  *  
  */
 template <BpImData_t T>
-ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_val, unsigned int y_val,
-  const T* image_to_filter, float* filtered_image, unsigned int width_images, unsigned int height_images,
+ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(
+  unsigned int x_val, unsigned int y_val, const T* image_to_filter,
+  float* filtered_image, unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter)
 {
   float filtered_pixel_val = image_filter[0] * ((float)image_to_filter[y_val*width_images + x_val]);
@@ -85,8 +86,9 @@ ARCHITECTURE_ADDITION inline void FilterImageAcrossProcessPixel(unsigned int x_v
  *  
  */
 template <BpImData_t T>
-ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(unsigned int x_val, unsigned int y_val,
-  const T* image_to_filter, float* filtered_image, unsigned int width_images, unsigned int height_images,
+ARCHITECTURE_ADDITION inline void FilterImageVerticalProcessPixel(
+  unsigned int x_val, unsigned int y_val, const T* image_to_filter,
+  float* filtered_image, unsigned int width_images, unsigned int height_images,
   const float* image_filter, unsigned int size_filter)
 {
   float filtered_pixel_val = image_filter[0] * ((float)image_to_filter[y_val*width_images + x_val]);

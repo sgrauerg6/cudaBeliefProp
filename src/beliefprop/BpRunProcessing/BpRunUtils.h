@@ -156,8 +156,10 @@ inline bool MemoryAlignedAtDataStart(
   unsigned int data_bytes_align_width,
   unsigned int padded_width_data)
 {
-  //assuming that the padded checkerboard width divides evenly by beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
-  return (((x_val_data_start % simd_data_size) == 0) && (padded_width_data % ((data_bytes_align_width / sizeof(T))) == 0));
+  //assuming that the padded checkerboard width divides evenly by
+  //beliefprop::NUM_DATA_ALIGN_WIDTH (if that's not the case it's a bug)
+  return (((x_val_data_start % simd_data_size) == 0) &&
+          (padded_width_data % ((data_bytes_align_width / sizeof(T))) == 0));
 }
 
 };

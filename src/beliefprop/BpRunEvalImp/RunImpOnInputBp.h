@@ -130,8 +130,10 @@ protected:
     bool loop_iters_templated) const override;
 
   /**
-   * @brief Run and compare output disparity maps using the given optimized and single-threaded stereo implementations
-   * on the reference and test images specified by NUM_INPUT given as class template integral constant parameter.
+   * @brief Run and compare output disparity maps using the given optimized and
+   * single-threaded stereo implementations on the reference and test images
+   * specified by NUM_INPUT given as class template integral constant
+   * parameter.
    * Run only optimized implementation if run_opt_imp_only is true.
    * 
    * @param parallel_params 
@@ -190,17 +192,24 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
 
   //set up unoptimized single threaded bp stereo implementation
   run_bp_stereo_single_thread_ =
-    std::make_unique<RunBpOnStereoSetSingleThreadCPU<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>();
+    std::make_unique<RunBpOnStereoSetSingleThreadCPU<
+      T,
+      beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
+      run_environment::AccSetting::kNone>>();
 
   //set up and run bp stereo using optimized implementation (optimized CPU and
   //CUDA implementations supported) as well as unoptimized implementation for
   //comparison
   //run optimized implementation with and/or without disparity value count
   //templated depending on setting
-  if (run_imp_settings.templated_iters_setting != run_environment::TemplatedItersSetting::kRunOnlyNonTemplated)
+  if (run_imp_settings.templated_iters_setting !=
+      run_environment::TemplatedItersSetting::kRunOnlyNonTemplated)
   {
     run_opt_bp_num_iters_templated_ =
-      std::make_unique<RunBpOptimized<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, OPT_IMP_ACCEL>>();
+      std::make_unique<RunBpOptimized<
+        T,
+        beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
+        OPT_IMP_ACCEL>>();
     constexpr bool run_w_loop_iters_templated{true};
     InputSignature input_sig(
       sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
@@ -210,7 +219,8 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
         run_imp_settings,
         run_w_loop_iters_templated)});
   }
-  if (run_imp_settings.templated_iters_setting != run_environment::TemplatedItersSetting::kRunOnlyTempated)
+  if (run_imp_settings.templated_iters_setting !=
+      run_environment::TemplatedItersSetting::kRunOnlyTempated)
   {
     run_opt_bp_num_iters_no_template_ =
       std::make_unique<RunBpOptimized<T, 0, OPT_IMP_ACCEL>>();
@@ -243,7 +253,8 @@ RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
     run_imp_settings.p_params_default_alt_options.first);
 }
 
-//get input data and parameter info about current benchmark (belief propagation in this case) and return as RunData type
+//get input data and parameter info about current benchmark (belief propagation
+//in this case) and return as RunData type
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 RunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBenchmark(
   bool loop_iters_templated) const
@@ -258,8 +269,9 @@ RunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::InputAndParamsForCurrBench
   return curr_run_data;
 }
 
-//run and compare output disparity maps using the given optimized and single-threaded stereo implementations
-//on the reference and test images specified by numStereoSet
+//run and compare output disparity maps using the given optimized and
+//single-threaded stereo implementations on the reference and test images
+//specified by numStereoSet
 //run only optimized implementation if run_opt_imp_only is true
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndCompare(

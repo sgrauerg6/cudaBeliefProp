@@ -69,8 +69,9 @@ ARCHITECTURE_ADDITION inline bool WithinImageBounds(
  * @param offset_data 
  *  
  */
-ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(unsigned int x_val, unsigned int y_val,
-  unsigned int width, unsigned int height, unsigned int current_disparity, unsigned int total_num_disp_vals,
+ARCHITECTURE_ADDITION inline unsigned int RetrieveIndexInDataAndMessage(
+  unsigned int x_val, unsigned int y_val, unsigned int width, unsigned int height,
+  unsigned int current_disparity, unsigned int total_num_disp_vals,
   unsigned int offset_data = 0u)
 {
   if constexpr (beliefprop::kOptimizedIndexingSetting) {
