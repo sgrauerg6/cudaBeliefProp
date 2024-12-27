@@ -79,8 +79,8 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
       run_imp_opt_results, speedup_header_optimized_p_params));
   }
 
-  //compute and add speedup info for using templated loop iteration counts compared to
-  //loop iteration counts not being known at compile time
+  //compute and add speedup info for using templated loop iteration counts
+  //compared to loop iteration counts not being known at compile time
   if (run_imp_settings.templated_iters_setting ==
       run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated)
   {
@@ -120,9 +120,9 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //evaluate alternate optimized implementations if that's the case
   std::unordered_map<size_t, std::vector<RunSpeedupAvgMedian>> alt_imp_speedup;
   if (run_imp_settings.run_alt_optimized_imps) {
-    //get speedup/slowdown using alternate accelerations and update optimized run
-    //result for input with result using alternate acceleration if it is faster than
-    //result with "optimal" acceleration for specific input
+    //get speedup/slowdown using alternate accelerations and update optimized
+    //run result for input with result using alternate acceleration if it is
+    //faster than result with "optimal" acceleration for specific input
     for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
     {
       //get alternate acceleration speedups and optimized run results where
@@ -332,7 +332,8 @@ void EvaluateImpResults::WriteRunOutput(
       std::set<run_environment::ParallelParamsSetting>{
         run_environment::ParallelParamsSetting::kDefault};
 
-    //get headers from first successful run and write headers to top of output files
+    //get headers from first successful run and write headers to top of output
+    //files
     auto headers_in_order = first_success_run_iter->second->at(
       run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
 
@@ -409,7 +410,8 @@ void EvaluateImpResults::WriteRunOutput(
     //write run results with and without optimized parallel parameters to files
     //if run without optimized parallel parameters then results with default
     //parallel parameters written to optimized parallel parameters file
-    enum class OutResults {kDefaultPParams, kOptPParams, kSpeedups, kOptWSpeedups};
+    enum class OutResults{
+      kDefaultPParams, kOptPParams, kSpeedups, kOptWSpeedups};
     std::map<OutResults, std::ofstream> results_stream;
     results_stream.insert({OutResults::kDefaultPParams,
                            std::ofstream(default_params_results_file_path)});
@@ -426,19 +428,23 @@ void EvaluateImpResults::WriteRunOutput(
       //write run results with optimized parallel params to optimized
       //run results file stream
       results_stream.at(OutResults::kOptPParams) <<
-        run_data_sstr.at(run_environment::ParallelParamsSetting::kOptimized).str();
-      //add optimized run results to ostringstream for output containing run results
-      //and speedups
+        run_data_sstr.at(
+          run_environment::ParallelParamsSetting::kOptimized).str();
+      //add optimized run results to ostringstream for output containing run
+      //results and speedups
       results_stream.at(OutResults::kOptWSpeedups) <<
-        run_data_sstr.at(run_environment::ParallelParamsSetting::kOptimized).str();
+        run_data_sstr.at(
+          run_environment::ParallelParamsSetting::kOptimized).str();
     }
     else {
-      //write results with default parallel parameters to optimized results file
-      //stream if parallel parameters not optimized in run
+      //write results with default parallel parameters to optimized results
+      //file stream if parallel parameters not optimized in run
       results_stream.at(OutResults::kOptPParams) <<
-        run_data_sstr.at(run_environment::ParallelParamsSetting::kDefault).str();     
+        run_data_sstr.at(
+          run_environment::ParallelParamsSetting::kDefault).str();     
       results_stream.at(OutResults::kOptWSpeedups) << 
-        run_data_sstr.at(run_environment::ParallelParamsSetting::kDefault).str();        
+        run_data_sstr.at(
+          run_environment::ParallelParamsSetting::kDefault).str();        
     }
 
     //generate speedup results with headers on top row and write to
@@ -453,7 +459,8 @@ void EvaluateImpResults::WriteRunOutput(
        std::pair<std::string_view, run_eval::MiddleValData>{
         "Median Speedup", run_eval::MiddleValData::kMedian}})
     {
-      results_stream.at(OutResults::kSpeedups) << std::endl << middle_val_desc << ',';
+      results_stream.at(OutResults::kSpeedups) << std::endl <<
+        middle_val_desc << ',';
       for (const auto& [_, speedup_data] : speedup_headers_w_data) {
         if (speedup_data.contains(middle_val_enum)) {
           results_stream.at(OutResults::kSpeedups) <<
@@ -492,8 +499,10 @@ void EvaluateImpResults::WriteRunOutput(
     std::cout << "Input/settings/parameters info, detailed timings, and "
               << "evaluation for each run and across runs in "
               << opt_results_w_speedup_file_path << std::endl;
-    std::cout << "Run inputs and results in " << opt_results_file_path << std::endl;
-    std::cout << "Speedup results in " << speedups_results_file_path << std::endl;
+    std::cout << "Run inputs and results in " << opt_results_file_path
+              << std::endl;
+    std::cout << "Speedup results in " << speedups_results_file_path
+              << std::endl;
     std::cout << "Run inputs and results using default parallel parameters in "
               << default_params_results_file_path << std::endl;
 
@@ -556,17 +565,18 @@ EvaluateImpResults::GetAltAccelSpeedups(
         {
           if (opt_sig_run_results && acc_results.first.at(run_input_sig))
           {
-            //get runtime of current optimized run and alternate acceleration run
+            //get runtime of current optimized run and alternate acceleration
+            //run
             //if alternate acceleration run is faster, replace the optimized
-            //result for run with alternate acceleration run since it is faster
+            //result for run with alternate acceleration run
             const double opt_result_time =
               *opt_sig_run_results->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                  run_eval::kOptimizedRuntimeHeader);
+                run_environment::ParallelParamsSetting::kOptimized).
+                  GetDataAsDouble(run_eval::kOptimizedRuntimeHeader);
             const double alt_acc_result_time =
               *acc_results.first.at(run_input_sig)->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                  run_eval::kOptimizedRuntimeHeader);
+                run_environment::ParallelParamsSetting::kOptimized).
+                  GetDataAsDouble(run_eval::kOptimizedRuntimeHeader);
             if (alt_acc_result_time < opt_result_time) {
               //set optimized run results to alternate acceleration results if
               //it is faster
@@ -607,7 +617,8 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaseline(
 
 //get speedup over baseline run for subsets of smallest and largest sets
 //if data available
-std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetSpeedupOverBaselineSubsets(
+std::vector<RunSpeedupAvgMedian>
+EvaluateImpResults::GetSpeedupOverBaselineSubsets(
   const run_environment::RunImpSettings& run_imp_settings,
   MultRunData& run_data_all_runs,
   size_t data_type_size) const
@@ -660,8 +671,10 @@ RunSpeedupAvgMedian::second_type EvaluateImpResults::GetAvgMedSpeedup(
           {run_eval::MiddleValData::kMedian, median_speedup}};
 }
 
-//get average and median speedup of specified subset(s) of runs compared to baseline data from file
-std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
+//get average and median speedup of specified subset(s) of runs compared to
+//baseline data from file
+std::vector<RunSpeedupAvgMedian>
+EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
   MultRunData& run_results,
   std::string_view data_type_str,
   const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
@@ -694,8 +707,8 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
     //go through each input signature of current subset
     for (const auto& subset_input_signature : subset_inputs)
     {
-      //go through each run output and compute speedup for each run that matches
-      //subset input signature
+      //go through each run output and compute speedup for each run that
+      //matches subset input signature
       for (auto& [run_sig, run_sig_results] : run_results)
       {
         //check if results present for current run signature
@@ -707,8 +720,8 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
             speedups_vect.push_back(
               std::stod(baseline_runtimes_to_sig.at(run_sig)) /
               *run_sig_results->at(
-                run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
-                  run_eval::kOptimizedRuntimeHeader));
+                run_environment::ParallelParamsSetting::kOptimized).
+                  GetDataAsDouble(run_eval::kOptimizedRuntimeHeader));
             for (auto& run_data : *run_sig_results) {
               run_data.second.AddDataWHeader(
                 std::string(speedup_header),
@@ -718,7 +731,8 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
         }
       }
       if (!(speedups_vect.empty())) {
-        speedup_data.push_back({speedup_header, GetAvgMedSpeedup(speedups_vect)});
+        speedup_data.push_back(
+          {speedup_header, GetAvgMedSpeedup(speedups_vect)});
       }
     }
   }

@@ -19,7 +19,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 /**
  * @file EvaluateAcrossRuns.cpp
  * @author Scott Grauer-Gray
- * @brief Definition of functions in class for evaluating results across multiple runs, potentially on different architectures.
+ * @brief Definitions of functions in class for evaluating results across
+ * multiple runs, potentially on different architectures.
  * 
  * @copyright Copyright (c) 2024
  */
@@ -34,10 +35,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "EvaluateAcrossRuns.h"
 #include "RunResultsSpeedups.h"
 
-//process runtime and speedup data across multiple runs (likely on different architectures)
-//from csv files corresponding to each run and
-//write results to file where the runtimes and speedups for each run are shown in a single file
-//where the runs are displayed from fastest to slowest
+//process runtime and speedup data across multiple runs (likely on different
+//architectures) from csv files corresponding to each run and write results to
+//file where the runtimes and speedups for each run are shown in a single file
+//and where the runs are displayed left to right from fastest to slowest
 void EvaluateAcrossRuns::operator()(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
@@ -62,10 +63,14 @@ void EvaluateAcrossRuns::operator()(
   //get header to data of run results and speedups for each run, mapping from
   //input signature to runtime, and run inputs to parameters to display in
   //evaluation across runs
-  std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
-  std::map<std::string, std::map<InputSignature, std::string>> input_to_runtime_across_archs;
-  std::map<InputSignature, std::vector<std::string>> inputs_to_params_disp_ordered;
-  for (const auto& [run_name, run_results] : run_results_by_name) {
+  std::map<std::string, std::map<std::string, std::vector<std::string>>>
+    speedup_results_name_to_data;
+  std::map<std::string, std::map<InputSignature, std::string>>
+    input_to_runtime_across_archs;
+  std::map<InputSignature, std::vector<std::string>>
+    inputs_to_params_disp_ordered;
+  for (const auto& [run_name, run_results] : run_results_by_name)
+  {
     speedup_results_name_to_data.insert(
       {run_name,
        run_results.Speedups()});
@@ -79,7 +84,8 @@ void EvaluateAcrossRuns::operator()(
     for (const auto& [input_sig, _] : inputs_to_runtimes) {
       //check if input already addded to set of inputs
       if (!(inputs_to_params_disp_ordered.contains(input_sig))) {
-        inputs_to_params_disp_ordered.insert({input_sig, std::vector<std::string>()});
+        inputs_to_params_disp_ordered.insert(
+          {input_sig, std::vector<std::string>()});
         //add input parameters to display in evaluation across runs
         for (const auto& disp_param : eval_across_runs_in_params_show) {
           inputs_to_params_disp_ordered.at(input_sig).push_back(
@@ -87,22 +93,23 @@ void EvaluateAcrossRuns::operator()(
         }
       }
     }
-    //go through speedups for run and add to speedup headers if not already included
+    //go through speedups for run and add to speedup headers if not already
+    //included
     const auto run_speedups_ordered = run_results.SpeedupHeadersOrder();
     for (auto run_speedup_iter = run_speedups_ordered.cbegin();
               run_speedup_iter < run_speedups_ordered.cend();
               run_speedup_iter++)
     {
-      //check if speedup in run is included in current evaluation speedups and add it
-      //in expected position in evaluation speedups if not
+      //check if speedup in run is included in current evaluation speedups and
+      //add it in expected position in evaluation speedups if not
       if (std::none_of(speedup_headers_eval.cbegin(), 
                        speedup_headers_eval.cend(),
                        [run_speedup_iter](const auto& header){
                          return (header == *run_speedup_iter);
                        }))
       {
-        //add speedup header in front of previous ordered speedup header if not first
-        //ordered header
+        //add speedup header in front of previous ordered speedup header if not
+        //first ordered header
         if (run_speedup_iter != run_speedups_ordered.cbegin()) {
           //find position in evaluation speedups of previous ordered header
           //and add new header in front of it
@@ -113,9 +120,11 @@ void EvaluateAcrossRuns::operator()(
             *run_speedup_iter);
         }
         else {
-          //add speedup header to front of evaluation speedup headers if no previous
-          //ordered header in speedups for run
-          speedup_headers_eval.insert(speedup_headers_eval.cbegin(), *run_speedup_iter);
+          //add speedup header to front of evaluation speedup headers if no
+          //previous ordered header in speedups for run
+          speedup_headers_eval.insert(
+            speedup_headers_eval.cbegin(),
+            *run_speedup_iter);
         }
       }
     }
@@ -139,18 +148,21 @@ void EvaluateAcrossRuns::operator()(
   //of runs from fastest to slowest
   const auto speedup_ordering = speedup_headers.front();
 
-  //write each evaluation run name and save order of runs with speedup corresponding to first
-  //speedup header
+  //write each evaluation run name and save order of runs with speedup
+  //corresponding to first speedup header
   //order of run names is in speedup from largest to smallest
   auto cmp_speedup = 
-    [](const std::pair<std::string, float>& a, const std::pair<std::string, float>& b) {
-      return a.second > b.second; };
-  std::set<std::pair<std::string, float>, decltype(cmp_speedup)> run_names_in_order_w_speedup;
+    [](const std::pair<std::string, float>& a,
+       const std::pair<std::string, float>& b)
+       { return a.second > b.second; };
+  std::set<std::pair<std::string, float>, decltype(cmp_speedup)>
+    run_names_in_order_w_speedup;
 
   //generate and add pairs of run name with corresponding "ordering" speedup
   //for each run to set to get sorted order of runs from fastest to slowest
   //based on "ordering" speedup
-  for (const auto& [run_name, speedup_results] : speedup_results_name_to_data) {
+  for (const auto& [run_name, speedup_results] : speedup_results_name_to_data)
+  {
     run_names_in_order_w_speedup.insert(
       {run_name, 
        speedup_results.contains(speedup_ordering) ?
@@ -164,9 +176,11 @@ void EvaluateAcrossRuns::operator()(
   }
   result_across_archs_sstream << std::endl;
 
-  //write evaluation stereo set info, bp parameters, and total runtime for optimized bp implementation
-  //across each run in the evaluation
-  for (const auto& [input_sig, params_display_ordered] : inputs_to_params_disp_ordered) {
+  //write evaluation stereo set info, bp parameters, and total runtime for
+  //optimized bp implementation across each run in the evaluation
+  for (const auto& [input_sig, params_display_ordered] :
+       inputs_to_params_disp_ordered)
+  {
     for (const auto& param_val_disp : params_display_ordered) {
       result_across_archs_sstream << param_val_disp << ',';
     }
@@ -190,17 +204,20 @@ void EvaluateAcrossRuns::operator()(
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       result_across_archs_sstream << speedup_header << ',';
-      //add empty cell for each input parameter after the first that's displayed
-      //so speedup shown in the same column same line as runtime
+      //add empty cell for each input parameter after the first that's
+      //displayed so speedup shown in the same column same line as runtime
       for (size_t i = 1; i < eval_across_runs_in_params_show.size(); i++) {
         result_across_archs_sstream << ',';
       }
       //write speedup for each run in separate cells in horizontal direction
       //where each column corresponds to a different evaluation run
       for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
-        if (speedup_results_name_to_data.at(run_name).contains(speedup_header)) {
+        if (speedup_results_name_to_data.at(run_name).contains(
+              speedup_header))
+        {
           result_across_archs_sstream <<
-            speedup_results_name_to_data.at(run_name).at(speedup_header).at(0) << ',';
+            speedup_results_name_to_data.at(run_name).at(
+              speedup_header).at(0) << ',';
         }
         else {
           result_across_archs_sstream << ',';
@@ -211,50 +228,64 @@ void EvaluateAcrossRuns::operator()(
     }
   }
 
-  //get file path for evaluation across runs and save evaluation across runs to csv file
-  const std::filesystem::path results_across_run_fp = imp_results_file_path /
-    (std::string(run_eval::kEvalAcrossRunsFileName) + std::string(run_eval::kCsvFileExtension));
+  //get file path for evaluation across runs and save evaluation across runs to
+  //csv file
+  const std::filesystem::path results_across_run_fp = 
+    imp_results_file_path /
+    (std::string(run_eval::kEvalAcrossRunsFileName) +
+     std::string(run_eval::kCsvFileExtension));
   std::ofstream eval_results_across_run_str(results_across_run_fp);
   eval_results_across_run_str << result_across_archs_sstream.str();
-  std::cout << "Evaluation of results across all runs in " << results_across_run_fp << std::endl;
+  std::cout << "Evaluation of results across all runs in "
+            << results_across_run_fp << std::endl;
 }
 
-//function to get names of runs with results from implementation results file path
+//function to get names of runs with results from implementation results
+//file path
 std::vector<std::string> EvaluateAcrossRuns::GetRunNames(
   const std::filesystem::path& imp_results_file_path) const
 {
-  //iterate through all run results files all run names with results and speedups
-  //create directory iterator with all results files
+  //iterate through all run results files
+  //create directory iterator with path to run results files
   std::filesystem::directory_iterator results_files_iter =
-    std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
-  std::filesystem::directory_iterator speedups_files_iter =
-    std::filesystem::directory_iterator(imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName);
+    std::filesystem::directory_iterator(
+      imp_results_file_path / run_eval::kImpResultsRunDataFolderName);
   std::vector<std::string> run_names;
   for (const auto& results_fp : results_files_iter)
   {
+    //get run name from run results file name
+    //and add to vector of run names
     std::string file_name_no_ext = results_fp.path().stem();
-    if (file_name_no_ext.ends_with("_" + std::string(run_eval::kRunResultsDescFileName)))
+    if (file_name_no_ext.ends_with(
+      "_" + std::string(run_eval::kRunResultsDescFileName)))
     {
       const std::string run_name =
         file_name_no_ext.substr(
-          0, file_name_no_ext.find("_" + std::string(run_eval::kRunResultsDescFileName)));
+          0, 
+          file_name_no_ext.find(
+            "_" + std::string(run_eval::kRunResultsDescFileName)));
       run_names.push_back(run_name);
     }
   }
 
   //remove run name from runs to evaluate across runs if no speedup data
-  //example where this could be the case is baseline data that is used for comparison with other runs
-  for (auto run_names_iter = run_names.cbegin(); run_names_iter != run_names.cend();)
+  //example where this could be the case is baseline data that is used for
+  //comparison with other runs
+  for (auto run_names_iter = run_names.cbegin();
+       run_names_iter != run_names.cend();)
   {
     const std::filesystem::path run_speedup_fp = 
       imp_results_file_path / run_eval::kImpResultsSpeedupsFolderName /
-      (std::string(*run_names_iter) + '_' + std::string(run_eval::kSpeedupsDescFileName) +
-        std::string(run_eval::kCsvFileExtension));
-    //remove run from evaluation if no valid speedup data file that corresponds to run results data file
+      (std::string(*run_names_iter) + '_' +
+       std::string(run_eval::kSpeedupsDescFileName) +
+       std::string(run_eval::kCsvFileExtension));
+    //remove run from evaluation if no valid speedup data file that corresponds
+    //to run results data file
     if ((!(std::filesystem::exists(run_speedup_fp))) ||
         (!(std::filesystem::is_regular_file(run_speedup_fp))))
     {
-      run_names_iter = run_names.erase(std::ranges::find(run_names, *run_names_iter));
+      run_names_iter =
+        run_names.erase(std::ranges::find(run_names, *run_names_iter));
     }
     else {
       run_names_iter++;

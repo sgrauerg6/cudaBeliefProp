@@ -27,7 +27,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/EvaluateImpAliases.h"
 #include "RunImpMultTypesAccels.h"
 
-//run and evaluate benchmark using multiple datatypes, inputs, and implementations if available
+//run and evaluate benchmark using multiple datatypes, inputs, and
+//implementations if available
 void RunImpMultTypesAccels::operator()(
   const std::vector<std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_w_acc,
   const run_environment::RunImpSettings& run_imp_settings,
@@ -37,7 +38,9 @@ void RunImpMultTypesAccels::operator()(
   //in each implementation
   const auto fastest_acc =
     FastestAvailableAcc(run_benchmark_imps_w_acc);
-  std::cout << "FASTEST_ACC: " << run_environment::AccelerationString(fastest_acc) << std::endl;
+  std::cout << "FASTEST_ACC: " 
+            << run_environment::AccelerationString(fastest_acc)
+            << std::endl;
 
   //get results using each datatype and possible acceleration
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_imp_results;
@@ -76,20 +79,24 @@ run_environment::AccSetting RunImpMultTypesAccels::FastestAvailableAcc(
   //check if any input run implementation contains that acceleration
   //return fastest acceleration across input run implementations
   for (const auto& acceleration : 
-    {run_environment::AccSetting::kCUDA, run_environment::AccSetting::kAVX512_F16,
-     run_environment::AccSetting::kAVX512, run_environment::AccSetting::kAVX256_F16,
-     run_environment::AccSetting::kAVX256, run_environment::AccSetting::kNEON})
+    {run_environment::AccSetting::kCUDA,
+     run_environment::AccSetting::kAVX512_F16,
+     run_environment::AccSetting::kAVX512,
+     run_environment::AccSetting::kAVX256_F16,
+     run_environment::AccSetting::kAVX256,
+     run_environment::AccSetting::kNEON})
   {
     if (std::any_of(run_benchmark_imps_w_acc.cbegin(), run_benchmark_imps_w_acc.cend(),
                     [&acceleration](const auto& run_imp) { 
                       return run_imp->AccelerationSetting() == acceleration;
                     }))
     {
-      //return acceleration as fastest acceleration if equal to acceleration setting
-      //of any input run implementation
+      //return acceleration as fastest acceleration if equal to acceleration
+      //setting of any input run implementation
       return acceleration;
     }
   }
-  //return "no acceleration" as fastest if no faster acceleration in input run implementations
+  //return "no acceleration" as fastest if no faster acceleration in input run
+  //implementations
   return run_environment::AccSetting::kNone;
 }

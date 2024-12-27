@@ -29,7 +29,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 //get header to add...use input header if not yet used
 //use original header with number appended if original header is already used
-std::string RunData::GetHeaderToAdd(const std::string& in_header) const {
+std::string RunData::GetHeaderToAdd(const std::string& in_header) const
+{
   auto header_to_add = in_header;
   unsigned int num{0};
   while (std::any_of(headers_in_order_.cbegin(),
@@ -46,43 +47,58 @@ std::string RunData::GetHeaderToAdd(const std::string& in_header) const {
 }
 
 //add data with header describing added data
-void RunData::AddDataWHeader(const std::string& header, const std::string& data) {
+void RunData::AddDataWHeader(
+  const std::string& header,
+  const std::string& data)
+{
   const auto header_to_add{GetHeaderToAdd(header)};
   headers_in_order_.push_back(header_to_add);
   headers_w_data_[header_to_add] = data;
 }
 
 //add data with header describing added data
-void RunData::AddDataWHeader(const std::string& header, const char* data) {
+void RunData::AddDataWHeader(
+  const std::string& header,
+  const char* data)
+{
   const auto header_to_add{GetHeaderToAdd(header)};
   headers_in_order_.push_back(header_to_add);
   headers_w_data_[header_to_add] = std::string(data);
 }
 
 //add data with header describing added data
-void RunData::AddDataWHeader(const std::string& header, double data) {
+void RunData::AddDataWHeader(
+  const std::string& header,
+  double data)
+{
   const auto header_to_add{GetHeaderToAdd(header)};
   headers_in_order_.push_back(header_to_add);
   headers_w_data_[header_to_add] = data;
 }
 
 //add data with header describing added data
-void RunData::AddDataWHeader(const std::string& header, bool data) {
+void RunData::AddDataWHeader(
+  const std::string& header,
+  bool data)
+{
   const auto header_to_add{GetHeaderToAdd(header)};
   headers_in_order_.push_back(header_to_add);
   headers_w_data_[header_to_add] = data;
 }
 
 //add data with header describing added data
-void RunData::AddDataWHeader(const std::string& header, unsigned int data) {
+void RunData::AddDataWHeader(
+  const std::string& header,
+  unsigned int data)
+{
   const auto header_to_add{GetHeaderToAdd(header)};
   headers_in_order_.push_back(header_to_add);
   headers_w_data_[header_to_add] = data;
 }
 
 //append current RunData with input RunData
-void RunData::AppendData(const RunData& rundata) {
-  //const auto& rundataMapping = rundata.GetAllData();
+void RunData::AppendData(const RunData& rundata)
+{
   for (const auto& header : rundata.HeadersInOrder()) {
     if (rundata.GetDataAsDouble(header)) {
       AddDataWHeader(header, *(rundata.GetDataAsDouble(header)));
@@ -100,7 +116,8 @@ void RunData::AppendData(const RunData& rundata) {
 }
 
 //get data corresponding to header
-std::string RunData::GetDataAsStr(const std::string_view header) const {
+std::string RunData::GetDataAsStr(const std::string_view header) const
+{
   const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<std::string>(variantVal)) {
     return std::get<std::string>(variantVal);
@@ -121,7 +138,9 @@ std::string RunData::GetDataAsStr(const std::string_view header) const {
 
 //get data as double if variant corresponding to header is double type
 //return null if data corresponds to a different data type
-std::optional<double> RunData::GetDataAsDouble(const std::string_view header) const {
+std::optional<double> RunData::GetDataAsDouble(
+  const std::string_view header) const
+{
   const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<double>(variantVal)) {
     return std::get<double>(variantVal);
@@ -129,9 +148,12 @@ std::optional<double> RunData::GetDataAsDouble(const std::string_view header) co
   return {};
 }
 
-//get data as unsigned integer if variant corresponding to header is unsigned integer type
+//get data as unsigned integer if variant corresponding to header is
+//unsigned integer type
 //return null if data corresponds to a different data type
-std::optional<unsigned int> RunData::GetDataAsUInt(const std::string_view header) const {
+std::optional<unsigned int> RunData::GetDataAsUInt(
+  const std::string_view header) const
+{
   const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<unsigned int>(variantVal)) {
     return std::get<unsigned int>(variantVal);
@@ -141,7 +163,9 @@ std::optional<unsigned int> RunData::GetDataAsUInt(const std::string_view header
 
 //get data as boolean if variant corresponding to header is boolean type
 //return null if data corresponds to a different data type
-std::optional<bool> RunData::GetDataAsBool(const std::string_view header) const {
+std::optional<bool> RunData::GetDataAsBool(
+  const std::string_view header) const
+{
   const auto variantVal = headers_w_data_.at(std::string(header));
   if (std::holds_alternative<bool>(variantVal)) {
     return std::get<bool>(variantVal);

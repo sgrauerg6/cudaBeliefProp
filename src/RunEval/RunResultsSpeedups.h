@@ -101,23 +101,17 @@ public:
   }
 
 private:
-  /**
-   * @brief Name for run results where it's recommended that run name contain
-   * information about processor architecture used in run
-   */
+  /** @brief Name for run results where it's recommended that run name contain
+   *  information about processor architecture used in run */
   std::string run_name_;
   
-  /**
-   * @brief Pair with first element being mapping of speedups headers to
-   * speedup results and second element being speedup headers in order
-   */ 
+  /** @brief Pair with first element being mapping of speedups headers to
+   *  speedup results and second element being speedup headers in order */ 
   std::optional<std::pair<std::map<std::string, std::vector<std::string>>,
                           std::vector<std::string>>>
     speedup_header_to_result_speedup_order_;
 
-  /**
-   * @brief Mapping of input signature to run data for each run
-   */
+  /** @brief Mapping of input signature to run data for each run */
   std::optional<std::map<InputSignature, std::map<std::string, std::string>>>
     input_sig_to_run_data_;
 

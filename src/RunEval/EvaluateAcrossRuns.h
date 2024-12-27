@@ -61,7 +61,8 @@ public:
 
 private:
   /**
-   * @brief Function to get names of runs with results from implementation results file path
+   * @brief Function to get names of runs with results from implementation
+   * results file path
    * 
    * @param imp_results_file_path 
    * @return std::vector<std::string> 

@@ -44,9 +44,9 @@ using halftype = half;
 #endif //USE_BFLOAT16_FOR_HALF_PRECISION
 
 /**
- * @brief Namespace with constants and functions to get CUDA device properties as
- * well as default and test parallel parameters to use in CUDA implementation run
- * optimization
+ * @brief Namespace with constants and functions to get CUDA device properties
+ * as well as default and test parallel parameters to use in CUDA
+ * implementation run optimization
  */
 namespace run_cuda {
 
@@ -63,12 +63,16 @@ inline RunData retrieveDeviceProperties(int num_device)
   cudaRuntimeGetVersion(&(cuda_version_driver_runtime[1]));
 
   RunData run_data;
-  run_data.AddDataWHeader("Device " + std::to_string(num_device),
-    std::string(prop.name) + " with " + std::to_string(prop.multiProcessorCount) +
-    " multiprocessors");
-  run_data.AddDataWHeader(std::string(kCUDAVersionHeader),
+  run_data.AddDataWHeader(
+    "Device " + std::to_string(num_device),
+    std::string(prop.name) + " with " + 
+      std::to_string(prop.multiProcessorCount) +
+      " multiprocessors");
+  run_data.AddDataWHeader(
+    std::string(kCUDAVersionHeader),
     std::to_string(cuda_version_driver_runtime[0]));
-  run_data.AddDataWHeader(std::string(kCUDARuntimeHeader),
+  run_data.AddDataWHeader(
+    std::string(kCUDARuntimeHeader),
     std::to_string(cuda_version_driver_runtime[1]));
   return run_data;
 }

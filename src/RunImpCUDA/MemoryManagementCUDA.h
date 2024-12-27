@@ -35,8 +35,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 /**
  * @brief Child class of MemoryManagement with overriden member functions to
- * manage memory on CUDA device including transferring data between host and CUDA
- * device.
+ * manage memory on CUDA device including transferring data between host and
+ * CUDA device.
  * 
  * @tparam T 
  */
@@ -68,7 +68,8 @@ public:
   }
 
   /**
-   * @brief Allocate aligned memory on CUDA device (same as default allocating of memory for CUDA)
+   * @brief Allocate aligned memory on CUDA device (same as default allocating
+   * of memory for CUDA)
    * 
    * @param numData 
    * @param acc_setting 
@@ -82,7 +83,8 @@ public:
   }
 
   /**
-   * @brief Free aligned memory on CUDA device (same as default free memory for CUDA)
+   * @brief Free aligned memory on CUDA device (same as default free memory for
+   * CUDA)
    * 
    * @param memory_to_free 
    */

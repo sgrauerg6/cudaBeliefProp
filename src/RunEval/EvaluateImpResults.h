@@ -46,41 +46,44 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * @brief Enum to define difference between "base" and "target" result sets
  * when evaluating speedup
  */
-enum class BaseTargetDiff { kDiffAcceleration, kDiffDatatype, kDiffTemplatedSetting };
+enum class BaseTargetDiff {
+  kDiffAcceleration, kDiffDatatype, kDiffTemplatedSetting};
 
 /**
- * @brief Class with operator function to evaluate implementations of the same algorithm across
- * different data types and acceleration methods
+ * @brief Class with operator function to evaluate implementations of the same
+ * algorithm across different data types and acceleration methods
  */
 class EvaluateImpResults {
 public:
   /**
-   * @brief Evaluate results for implementation runs on multiple inputs with all the runs having the
-   * same data type and acceleration method
-   * return run data results with run speedups added as well as average and median
-   * speedups with headers describing speedups
+   * @brief Evaluate results for implementation runs on multiple inputs with
+   * all the runs having the same data type and acceleration method
+   * return run data results with run speedups added as well as average and
+   * median speedups with headers describing speedups
    * 
    * @param run_results 
    * @param run_imp_settings 
    * @param data_size 
    * @return std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> 
    */
-  std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> EvalResultsSingDataTypeAcc(
+  std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>
+  EvalResultsSingDataTypeAcc(
     const MultRunData& run_results,
     const run_environment::RunImpSettings run_imp_settings,
     size_t data_size) const;
 
   /**
-   * @brief Evaluate results for all implementation runs on multiple inputs with the runs
-   * potentially having different data types and acceleration methods and
-   * write run result and speedup outputs to files
+   * @brief Evaluate results for all implementation runs on multiple inputs
+   * with the runs potentially having different data types and acceleration
+   * methods and write run result and speedup outputs to files
    * 
    * @param run_results_mult_runs 
    * @param run_imp_settings 
    * @param opt_imp_acc 
    */
   void EvalAllResultsWriteOutput(
-    const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>& run_results_mult_runs,
+    const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>&
+      run_results_mult_runs,
     const run_environment::RunImpSettings run_imp_settings,
     run_environment::AccSetting opt_imp_acc) const;
 
@@ -94,8 +97,8 @@ private:
   virtual std::filesystem::path GetImpResultsPath() const = 0;
   
   /**
-   * @brief Get text at top of results across runs with each string in the vector
-   * corresponding to a separate line
+   * @brief Get text at top of results across runs with each string in the
+   * vector corresponding to a separate line<br>
    * Must be defined in child class
    * 
    * @return std::vector<std::string> 
@@ -103,7 +106,8 @@ private:
   virtual std::vector<std::string> GetCombResultsTopText() const = 0;
 
   /**
-   * @brief Get input parameters that are shown in results across runs with runtimes
+   * @brief Get input parameters that are shown in results across runs with
+   * runtimes<br>
    * Must be defined in child class
    * 
    * @return std::vector<std::string> 
@@ -111,8 +115,10 @@ private:
   virtual std::vector<std::string> GetInputParamsShow() const = 0;
 
   /**
-   * @brief Write data for file corresponding to runs for a specified data type or across all data type
-   * Includes results for each run as well as average and median speedup data across multiple runs
+   * @brief Write data for file corresponding to runs for a specified data type
+   * or across all data type<br>
+   * Includes results for each run as well as average and median speedup data
+   * across multiple runs
    * 
    * @param run_results_w_speedups 
    * @param run_imp_settings 
@@ -128,8 +134,6 @@ private:
    * vectorization vs "lesser" vectorization and no vectorization
    * if there are runs with "lesser" vectorization and/or no
    * vectorization
-   * CPU vectorization does not apply to CUDA acceleration
-   * so "NO_DATA" output is returned in that case
    * 
    * @param run_imp_results_by_acc_setting 
    * @param run_imp_settings 
@@ -139,7 +143,8 @@ private:
    */
   std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> GetAltAccelSpeedups(
     const MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
-    const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size,
+    const run_environment::RunImpSettings& run_imp_settings,
+    size_t data_type_size,
     run_environment::AccSetting fastest_acc) const;
 
   /**
@@ -152,7 +157,8 @@ private:
    */
   std::vector<RunSpeedupAvgMedian> GetSpeedupOverBaseline(
     const run_environment::RunImpSettings& run_imp_settings,
-    MultRunData& run_data_all_runs, size_t data_type_size) const;
+    MultRunData& run_data_all_runs,
+    size_t data_type_size) const;
 
   /**
    * @brief Get speedup over baseline run for subsets of smallest and largest
@@ -175,7 +181,8 @@ private:
    * @param key_runtime_data 
    * @return std::pair<std::string, std::map<InputSignature, std::string>>
    */
-  std::pair<std::string, std::map<InputSignature, std::string>> GetBaselineRuntimeData(
+  std::pair<std::string, std::map<InputSignature, std::string>>
+  GetBaselineRuntimeData(
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
     std::string_view key_runtime_data) const;
 
@@ -185,7 +192,8 @@ private:
    * @param speedups_vect 
    * @return RunSpeedupAvgMedian::second_type
    */
-  RunSpeedupAvgMedian::second_type GetAvgMedSpeedup(const std::vector<double>& speedups_vect) const;
+  RunSpeedupAvgMedian::second_type GetAvgMedSpeedup(
+    const std::vector<double>& speedups_vect) const;
 
   /**
    * @brief Get average and median speedup of specified subset(s) of runs
@@ -201,11 +209,14 @@ private:
     MultRunData& run_results,
     std::string_view data_type_str,
     const std::array<std::string_view, 2>& baseline_runtimes_path_desc,
-    const std::vector<std::pair<std::string, std::vector<InputSignature>>>& subset_desc_input_sig =
-      std::vector<std::pair<std::string, std::vector<InputSignature>>>()) const;
+    const std::vector<std::pair<std::string, std::vector<InputSignature>>>&
+      subset_desc_input_sig =
+        std::vector<std::pair<std::string, std::vector<InputSignature>>>())
+    const;
 
   /**
-   * @brief Get average and median speedup of current runs compared to baseline data from file
+   * @brief Get average and median speedup of current runs compared to baseline
+   * data from file
    * 
    * @param run_results 
    * @param data_type_str 
@@ -252,7 +263,8 @@ private:
    * @param speedup_header 
    * @return RunSpeedupAvgMedian 
    */
-  RunSpeedupAvgMedian GetAvgMedSpeedupLoopItersInTemplate(MultRunData& run_results,
+  RunSpeedupAvgMedian GetAvgMedSpeedupLoopItersInTemplate(
+    MultRunData& run_results,
     std::string_view speedup_header) const;
 };
 

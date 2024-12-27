@@ -36,15 +36,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/EvaluateImpAliases.h"
 
 /**
- * @brief Base class for running and evaluating multiple runs of an implementation
- * that may be optimized on CPU or GPU
+ * @brief Base class for running and evaluating multiple runs of an
+ * implementation that may be optimized on CPU or GPU
  */
 class RunImpMultInputs {
 public:
-  explicit RunImpMultInputs(run_environment::AccSetting opt_imp_accel) : opt_imp_accel_(opt_imp_accel) {}
+  explicit RunImpMultInputs(run_environment::AccSetting opt_imp_accel) :
+    opt_imp_accel_(opt_imp_accel) {}
 
   /**
-   * @brief Run and evaluate runs on one or more input of benchmark implementation using multiple settings
+   * @brief Run and evaluate runs on one or more input of benchmark
+   * implementation using multiple settings
    * 
    * @param run_imp_settings 
    * @param data_type_size 
@@ -61,7 +63,8 @@ public:
    * 
    * @return run_environment::AccSetting 
    */
-  run_environment::AccSetting AccelerationSetting() const { return opt_imp_accel_; }
+  run_environment::AccSetting AccelerationSetting() const {
+    return opt_imp_accel_; }
 
 protected:
   const run_environment::AccSetting opt_imp_accel_;

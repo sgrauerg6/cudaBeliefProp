@@ -35,8 +35,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEval/RunTypeConstraints.h"
 
 /**
- * @brief Class for memory management with functions defined for standard memory allocation using CPU.
- * Class functions can be overridden to support other computation devices such as GPU.
+ * @brief Class for memory management with functions defined for standard
+ * memory allocation using CPU.<br>
+ * Class functions can be overridden to support other computation devices such
+ * as GPU.
  * 
  * @tparam T 
  */
