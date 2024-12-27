@@ -237,8 +237,9 @@ run_eval::Status ProcessBpCUDA<T, DISP_VALS, ACCELERATION>::InitializeMessageVal
   const beliefprop::CheckerboardMessages<T*>& messages_device,
   unsigned int bp_settings_num_disp_vals) const
 {
-  const auto kernel_thread_block_dims = this->parallel_params_.OptParamsForKernel(
-    {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0});
+  const auto kernel_thread_block_dims =
+    this->parallel_params_.OptParamsForKernel(
+      {static_cast<unsigned int>(beliefprop::BpKernel::kInitMessageVals), 0});
   const dim3 threads{kernel_thread_block_dims[0], kernel_thread_block_dims[1]};
   const dim3 grid{
     (unsigned int)ceil((float)current_bp_level.LevelProperties().width_checkerboard_level_ / (float)threads.x),

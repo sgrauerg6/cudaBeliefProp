@@ -105,7 +105,8 @@ public:
    * @param run_imp_settings 
    * @return MultRunData 
    */
-  MultRunData operator()(const run_environment::RunImpSettings& run_imp_settings) override;
+  MultRunData operator()(
+    const run_environment::RunImpSettings& run_imp_settings) override;
   
 protected:
   /**
@@ -125,7 +126,8 @@ protected:
    * @param loop_iters_templated 
    * @return RunData 
    */
-  RunData InputAndParamsForCurrBenchmark(bool loop_iters_templated) const override;
+  RunData InputAndParamsForCurrBenchmark(
+    bool loop_iters_templated) const override;
 
   /**
    * @brief Run and compare output disparity maps using the given optimized and single-threaded stereo implementations
@@ -143,7 +145,8 @@ protected:
     bool run_imp_templated_loop_iters) const override;
 
 private:
-  /** @brief Unique pointer to run bp implementation object for single thread implementation */
+  /** @brief Unique pointer to run bp implementation object for single thread
+   *  implementation */
   std::unique_ptr<RunBpOnStereoSet<
     T,
     beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
@@ -156,18 +159,19 @@ private:
     T,
     beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals,
     OPT_IMP_ACCEL>>
-  run_opt_bp_num_iters_templated_;
+      run_opt_bp_num_iters_templated_;
 
   /** @brief Unique pointer to run bp implementation object for optimized
    *  implementation with loop iters not templated */
-  std::unique_ptr<RunBpOnStereoSet<T, 0, OPT_IMP_ACCEL>> run_opt_bp_num_iters_no_template_;
+  std::unique_ptr<RunBpOnStereoSet<T, 0, OPT_IMP_ACCEL>>
+    run_opt_bp_num_iters_no_template_;
 
   /** @brief Bp parameter settings */
   beliefprop::BpSettings alg_settings_;
 };
 
-//run and evaluate optimized belief propagation implementation on evaluation stereo set
-//specified by NUM_INPUT
+//run and evaluate optimized belief propagation implementation on evaluation
+//stereo set specified by NUM_INPUT
 //data type used in implementation specified by T
 //bp implemenation optimization specified by OPT_IMP_ACCEL
 //evaluation stereo set to run implementation on specified by NUM_INPUT
@@ -188,10 +192,11 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
   run_bp_stereo_single_thread_ =
     std::make_unique<RunBpOnStereoSetSingleThreadCPU<T, beliefprop::kStereoSetsToProcess[NUM_INPUT].num_disp_vals, run_environment::AccSetting::kNone>>();
 
-  //set up and run bp stereo using optimized implementation (optimized CPU and CUDA implementations supported)
-  //as well as unoptimized implementation for comparison
-  //run optimized implementation with and/or without disparity value count templated depending on setting
-  //for running implementation with disparity values templated
+  //set up and run bp stereo using optimized implementation (optimized CPU and
+  //CUDA implementations supported) as well as unoptimized implementation for
+  //comparison
+  //run optimized implementation with and/or without disparity value count
+  //templated depending on setting
   if (run_imp_settings.templated_iters_setting != run_environment::TemplatedItersSetting::kRunOnlyNonTemplated)
   {
     run_opt_bp_num_iters_templated_ =
@@ -201,7 +206,9 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
       sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
     run_results.insert(
       {input_sig,
-       this->RunEvalBenchmark(run_imp_settings, run_w_loop_iters_templated)});
+       this->RunEvalBenchmark(
+        run_imp_settings,
+        run_w_loop_iters_templated)});
   }
   if (run_imp_settings.templated_iters_setting != run_environment::TemplatedItersSetting::kRunOnlyTempated)
   {
@@ -212,20 +219,24 @@ MultRunData RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::operator()(
       sizeof(T), NUM_INPUT, run_w_loop_iters_templated);
     run_results.insert(
       {input_sig,
-       this->RunEvalBenchmark(run_imp_settings, run_w_loop_iters_templated)});
+       this->RunEvalBenchmark(
+        run_imp_settings,
+        run_w_loop_iters_templated)});
   }
 
   //return bp run results across multiple implementations
   return run_results; 
 }
 
-//set up parallel parameters for running belief propagation in parallel on CPU or GPU
+//set up parallel parameters for running belief propagation in parallel on
+//CPU or GPU
 template<RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL, unsigned int NUM_INPUT>
 std::shared_ptr<ParallelParams>
 RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::SetUpParallelParams(
   const run_environment::RunImpSettings& run_imp_settings) const
 {
-  //parallel parameters initialized with default thread count dimensions at every level
+  //parallel parameters initialized with default thread count dimensions at
+  //every level
   return std::make_shared<ParallelParamsBp>(
     run_imp_settings.opt_parallel_params_setting,
     alg_settings_.num_levels,
@@ -273,7 +284,8 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
       bp_file_settings.GetCurrentOutputDisparityFilePathAndIncrement();
   }
 
-  //get optimized implementation description and write info about run to std::cout stream
+  //get optimized implementation description and write info about run to
+  //std::cout stream
   const std::string opt_imp_run_description{
     run_imp_templated_loop_iters ?
       run_opt_bp_num_iters_templated_->BpRunDescription() :
@@ -290,8 +302,10 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
   std::cout << "Acceleration: " << run_environment::AccelerationString<OPT_IMP_ACCEL>() << std::endl;
   std::cout << std::endl;
       
-  //run optimized implementation and retrieve structure with runtime and output disparity map
-  std::map<run_environment::AccSetting, std::optional<beliefprop::BpRunOutput>> run_output;
+  //run optimized implementation and retrieve structure with runtime and output
+  //disparity map
+  std::map<run_environment::AccSetting, std::optional<beliefprop::BpRunOutput>>
+    run_output;
   if (run_imp_templated_loop_iters) {
     run_output[OPT_IMP_ACCEL] = run_opt_bp_num_iters_templated_->operator()(
       {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
@@ -325,13 +339,16 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
     output_disp[0].string(),
     beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);
 
-  //check if only running optimized implementation or if also running single-threaded implementation
+  //check if only running optimized implementation or if also running
+  //single-threaded implementation
   if (!run_opt_imp_only) {
-    //check if running single threaded implementation or using stored results from previous run
+    //check if running single threaded implementation or using stored results
+    //from previous run
     if ((!(bp_single_thread::kRunSingleThreadOnceForSet)) ||
         (!(bp_single_thread::single_thread_run_output.contains(ref_test_image_path))))
     {
-      //run single-threaded implementation and retrieve structure with runtime and output disparity map
+      //run single-threaded implementation and retrieve structure with runtime
+      //and output disparity map
       run_output[run_environment::AccSetting::kNone] =
         run_bp_stereo_single_thread_->operator()(
           {ref_test_image_path[0].string(), ref_test_image_path[1].string()},
@@ -346,24 +363,26 @@ std::optional<RunData> RunImpOnInputBp<T, OPT_IMP_ACCEL, NUM_INPUT>::RunImpsAndC
         output_disp[1].string(),
         beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);
 
-      //save run data and result if setting to only run single thread implementation once for each set
+      //save run data and result if setting to only run single thread
+      //implementation once for each set
       if (bp_single_thread::kRunSingleThreadOnceForSet) {
-        bp_single_thread::single_thread_run_output[ref_test_image_path] =
-          {run_output[run_environment::AccSetting::kNone]->run_time,
-           run_output[run_environment::AccSetting::kNone]->run_data,
-           output_disp[1]};
+        bp_single_thread::single_thread_run_output.insert(
+          {ref_test_image_path,
+           {run_output[run_environment::AccSetting::kNone]->run_time,
+            run_output[run_environment::AccSetting::kNone]->run_data,
+            output_disp[1]}});
       }
     }
     else {
       run_output[run_environment::AccSetting::kNone] = beliefprop::BpRunOutput();
       //retrieve stored results from previous run on single threaded implementation
       run_output[run_environment::AccSetting::kNone]->run_time =
-        std::get<0>(bp_single_thread::single_thread_run_output[ref_test_image_path]);
+        std::get<0>(bp_single_thread::single_thread_run_output.at(ref_test_image_path));
       run_output[run_environment::AccSetting::kNone]->run_data =
-        std::get<1>(bp_single_thread::single_thread_run_output[ref_test_image_path]);
+        std::get<1>(bp_single_thread::single_thread_run_output.at(ref_test_image_path));
       run_output[run_environment::AccSetting::kNone]->out_disparity_map = 
         DisparityMap<float>(
-          std::get<2>(bp_single_thread::single_thread_run_output[ref_test_image_path]).string(),
+          std::get<2>(bp_single_thread::single_thread_run_output.at(ref_test_image_path)).string(),
           beliefprop::kStereoSetsToProcess[NUM_INPUT].scale_factor);
     }
     //append run data for single thread run to evaluation run data

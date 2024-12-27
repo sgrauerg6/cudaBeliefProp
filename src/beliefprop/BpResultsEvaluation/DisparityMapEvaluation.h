@@ -74,7 +74,8 @@ public:
    * 
    * @param eval_params 
    */
-  void InitializeWithEvalParams(const beliefprop::DisparityMapEvaluationParams& eval_params);
+  void InitializeWithEvalParams(
+    const beliefprop::DisparityMapEvaluationParams& eval_params);
 
   /**
    * @brief Retrieve evaluation results as RunData

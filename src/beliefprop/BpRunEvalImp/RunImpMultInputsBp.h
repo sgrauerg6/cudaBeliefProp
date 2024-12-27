@@ -40,7 +40,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
 class RunImpMultInputsBp final : public RunImpMultInputs {
 public:
-  explicit RunImpMultInputsBp(run_environment::AccSetting opt_imp_accel) : RunImpMultInputs(opt_imp_accel) {}
+  explicit RunImpMultInputsBp(
+    run_environment::AccSetting opt_imp_accel) : 
+    RunImpMultInputs(opt_imp_accel) {}
 
 private:
   /**
@@ -50,7 +52,9 @@ private:
    * @param data_type_size 
    * @return MultRunData 
    */
-  MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const override;
+  MultRunData RunEvalImpMultDataSets(
+    const run_environment::RunImpSettings& run_imp_settings,
+    size_t data_type_size) const override;
   
   /**
    * @brief Run and evaluate implementation on multiple data sets
@@ -61,7 +65,9 @@ private:
    * @return MultRunData 
    */
   template <run_environment::AccSetting OPT_IMP_ACCEL>
-  MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const;
+  MultRunData RunEvalImpMultDataSets(
+    const run_environment::RunImpSettings& run_imp_settings,
+    size_t data_type_size) const;
 
   /**
    * @brief Run and evaluate implementation on multiple data sets
@@ -72,7 +78,8 @@ private:
    * @return MultRunData 
    */
   template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
-  MultRunData RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const;
+  MultRunData RunEvalImpMultDataSets(
+    const run_environment::RunImpSettings& run_imp_settings) const;
 };
 
 #endif /* RUN_IMP_MULT_INPUTS_BP_H_ */

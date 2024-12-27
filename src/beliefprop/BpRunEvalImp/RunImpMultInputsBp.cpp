@@ -28,7 +28,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunImpMultInputsBp.h"
 
 MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
-  const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const 
+  const run_environment::RunImpSettings& run_imp_settings,
+  size_t data_type_size) const 
 {
   if (this->opt_imp_accel_ == run_environment::AccSetting::kCUDA) {
     return RunEvalImpMultDataSets<run_environment::AccSetting::kCUDA>(run_imp_settings, data_type_size);
@@ -54,7 +55,8 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
 
 template <run_environment::AccSetting OPT_IMP_ACCEL>
 MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
-  const run_environment::RunImpSettings& run_imp_settings, size_t data_type_size) const
+  const run_environment::RunImpSettings& run_imp_settings,
+  size_t data_type_size) const
 {
   if (data_type_size == sizeof(float)) {
     return RunEvalImpMultDataSets<float, OPT_IMP_ACCEL>(run_imp_settings);
@@ -69,7 +71,9 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
 
 //run and evaluate optimized bp implementation on evaluation stereo sets
 template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
-MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(const run_environment::RunImpSettings& run_imp_settings) const {
+MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
+  const run_environment::RunImpSettings& run_imp_settings) const
+{
   //run and evaluate bp implementation on all stereo sets used for benchmarking
   std::vector<MultRunData> run_results;
   run_results.push_back(RunImpOnInputBp<T, OPT_IMP_ACCEL, 0>().operator()(run_imp_settings));

@@ -104,7 +104,6 @@ private:
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     T* allocated_memory) const override;
 
-  
   /**
    * @brief Copy the computed BP message values from the current now-completed level
    * to the corresponding slots in the next level "down" in the computation
@@ -133,7 +132,10 @@ private:
     const beliefprop::CheckerboardMessages<T*>& messages_device,
     unsigned int bp_settings_num_disp_vals) const override;
   
-  run_eval::Status ErrorCheck(const char *file = "", int line = 0, bool abort = false) const override;
+  run_eval::Status ErrorCheck(
+    const char *file = "",
+    int line = 0,
+    bool abort = false) const override;
 };
 
 #endif //RUN_BP_STEREO_HOST_HEADER_H
