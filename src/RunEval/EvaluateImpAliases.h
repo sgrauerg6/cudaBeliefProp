@@ -39,9 +39,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/InputSignature.h"
 #include "RunEval/RunEvalConstsEnums.h"
 
-using MultRunData = std::map<InputSignature, std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
-using RunSpeedupAvgMedian = std::pair<std::string, std::map<run_eval::MiddleValData, double>>;
+//alias mapping input signature to run data for each parallel parameters setting
+//run data is null if run failed for input signature
+using MultRunData = 
+  std::map<InputSignature, 
+           std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
+
+//alias for speedup data with speedup name paired with mapping that contains
+//average and median speedup values
+using RunSpeedupAvgMedian = 
+  std::pair<std::string, std::map<run_eval::MiddleValData, double>>;
+
+//mapping of acceleration setting to run and speedup data
 using MultRunDataWSpeedupByAcc =
-  std::unordered_map<run_environment::AccSetting, std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
+  std::unordered_map<run_environment::AccSetting, 
+                     std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
 
 #endif //EVALUATE_IMP_ALIASES_H_
