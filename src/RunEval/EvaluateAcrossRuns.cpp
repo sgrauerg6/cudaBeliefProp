@@ -33,7 +33,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <algorithm>
 #include "RunSettingsParams/InputSignature.h"
 #include "EvaluateAcrossRuns.h"
-#include "RunResultsSpeedups.h"
 
 /**
   * @brief Generate data for evaluating results across runs

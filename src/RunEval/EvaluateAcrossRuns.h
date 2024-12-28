@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include <vector>
 #include <filesystem>
 #include "RunEvalConstsEnums.h"
+#include "RunResultsSpeedups.h"
 
 /**
  * @brief Structure to store data with mappings for evaluating results across
