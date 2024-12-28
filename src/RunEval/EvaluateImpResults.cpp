@@ -194,8 +194,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   }
   std::cout << "DONE RESULTS" << std::endl;
 
-  //add speedup data from alternate acceleration runs and double and half
-  //precision runs to speedup results
+  //add speedup data from alternate acceleration runs and speedup results from
+  //double and half precision runs to speedup results
   if (alt_imp_speedup.contains(sizeof(float))) {
     run_speedups.insert(run_speedups.cend(),
       alt_imp_speedup.at(sizeof(float)).cbegin(),
