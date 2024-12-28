@@ -132,79 +132,14 @@ void EvaluateAcrossRuns::operator()(
       {run_name, RunResultsSpeedups(imp_results_file_path, run_name)});
   }
 
-  //get header to data of run results and speedups for each run, mapping from
-  //input signature to runtime, and run inputs to parameters to display in
-  //evaluation across runs
-  std::map<std::string, std::map<std::string, std::vector<std::string>>>
-    speedup_results_name_to_data;
-  std::map<std::string, std::map<InputSignature, std::string>>
-    input_to_runtime_across_archs;
-  std::map<InputSignature, std::vector<std::string>>
-    inputs_to_params_disp_ordered;
+  //genereation data mappings for evaluation including run results and speedups
+  //for each run, mapping from input signature to runtime, and run inputs to
+  //parameters to display in evaluation across runs as well as speedup headers
+  //in order
   const EvalAcrossRunsData eval_data =
     GenEvalAcrossRunsData(
       run_results_by_name,
       eval_across_runs_in_params_show);
-  /*for (const auto& [run_name, run_results] : run_results_by_name)
-  {
-    speedup_results_name_to_data.insert(
-      {run_name,
-       run_results.Speedups()});
-    input_to_runtime_across_archs.insert(
-      {run_name,
-       run_results.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader)});
-    const auto& inputs_to_runtimes = run_results.InputsToKeyVal(
-      run_eval::kOptimizedRuntimeHeader);
-    //go through inputs for current run results
-    //need to go through every run so that all inputs in every run are included
-    for (const auto& [input_sig, _] : inputs_to_runtimes) {
-      //check if input already addded to set of inputs
-      if (!(inputs_to_params_disp_ordered.contains(input_sig))) {
-        inputs_to_params_disp_ordered.insert(
-          {input_sig, std::vector<std::string>()});
-        //add input parameters to display in evaluation across runs
-        for (const auto& disp_param : eval_across_runs_in_params_show) {
-          inputs_to_params_disp_ordered.at(input_sig).push_back(
-            run_results.DataForInput(input_sig).at(disp_param));
-        }
-      }
-    }
-    //go through speedups for run and add to speedup headers if not already
-    //included
-    const auto run_speedups_ordered = run_results.SpeedupHeadersOrder();
-    for (auto run_speedup_iter = run_speedups_ordered.cbegin();
-              run_speedup_iter < run_speedups_ordered.cend();
-              run_speedup_iter++)
-    {
-      //check if speedup in run is included in current evaluation speedups and
-      //add it in expected position in evaluation speedups if not
-      if (std::none_of(speedup_headers_eval.cbegin(), 
-                       speedup_headers_eval.cend(),
-                       [run_speedup_iter](const auto& header){
-                         return (header == *run_speedup_iter);
-                       }))
-      {
-        //add speedup header in front of previous ordered speedup header if not
-        //first ordered header
-        if (run_speedup_iter != run_speedups_ordered.cbegin()) {
-          //find position in evaluation speedups of previous ordered header
-          //and add new header in front of it
-          speedup_headers_eval.insert(
-            (std::find(speedup_headers_eval.cbegin(),
-                       speedup_headers_eval.cend(),
-                       *(run_speedup_iter-1)) + 1),
-            *run_speedup_iter);
-        }
-        else {
-          //add speedup header to front of evaluation speedup headers if no
-          //previous ordered header in speedups for run
-          speedup_headers_eval.insert(
-            speedup_headers_eval.cbegin(),
-            *run_speedup_iter);
-        }
-      }
-    }
-  }*/
 
   //get header to use for speedup ordering
   //use first speedup in speedup headers for ordering
