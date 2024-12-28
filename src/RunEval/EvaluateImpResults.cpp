@@ -646,19 +646,10 @@ EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
 
   //get baseline name and mapping of runtimes to input signatures
   //auto baseline_runtime_data =
-  const auto& [baseline_name, baseline_runtimes_to_sig] =
+  const auto [baseline_name, baseline_runtimes_to_sig] =
     GetBaselineRuntimeData(
       baseline_runtimes_path_desc,
       run_eval::kOptimizedRuntimeHeader);
-  //const auto& [baseline_name, baseline_runtimes_to_sig] =
-  //  baseline_runtime_data;
-  //auto& baseline_name = baseline_runtime_data.first;
-  //auto& baseline_runtimes_to_sig = baseline_runtime_data.second;
-  //TODO: figure out how below gets error
-  /*const auto [baseline_name, baseline_runtimes_to_sig] =
-    GetBaselineRuntimeData(
-      baseline_runtimes_path_desc,
-      run_eval::kOptimizedRuntimeHeader);*/
   
   //retrieve speedup data for subsets of optimized runs over corresponding
   //run in baseline data
