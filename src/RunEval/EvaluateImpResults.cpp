@@ -178,7 +178,12 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   std::cout << "RUN RESULTS:" << std::endl;
   for (const auto& [sig, result] : run_results) {
     std::cout << sig << std::endl;
-    std::cout << result << std::endl;
+    if (result) {
+      std::cout << *result << std::endl;
+    }
+    else {
+      std::cout << "NO RESULT" << std::endl;
+    }
     std::cout << std::endl;
   }
 
