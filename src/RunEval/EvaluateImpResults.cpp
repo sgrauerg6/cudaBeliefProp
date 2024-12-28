@@ -106,7 +106,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   run_environment::AccSetting opt_imp_acc) const
 {
   std::cout << "RUN RESULTS 3:" << std::endl;
-  for (const auto& [sig, result] : run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first)
+  for (const auto& [sig, result] : run_results_mult_runs.at(sizeof(float)).at(opt_imp_acc).first)
   {
     std::cout << sig << std::endl;
     if (result) {
