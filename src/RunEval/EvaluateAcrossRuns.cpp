@@ -209,7 +209,7 @@ void EvaluateAcrossRuns::operator()(
       if (eval_data.input_to_runtime_across_archs.at(run_name).contains(input_sig))
       {
         eval_results_across_run_str << 
-          input_to_runtime_across_archs.at(run_name).at(input_sig);
+          eval_data.input_to_runtime_across_archs.at(run_name).at(input_sig);
       }
       eval_results_across_run_str << ',';
     }
