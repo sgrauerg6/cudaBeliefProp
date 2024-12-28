@@ -105,11 +105,13 @@ private:
    * @brief Write output evaluation across runs to file
    * 
    * @param imp_results_file_path
+   * @param eval_across_runs_in_params_show
    * @param eval_data
    * @param run_names_ordered
    */
   void WriteEvalAcrossRunsToFile(
     const std::filesystem::path& imp_results_file_path,
+    const std::vector<std::string>& eval_across_runs_in_params_show,
     const EvalAcrossRunsData& eval_data,
     const std::vector<std::string>& run_names_ordered) const;
 };

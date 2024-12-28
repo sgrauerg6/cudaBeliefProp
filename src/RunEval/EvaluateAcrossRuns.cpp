@@ -204,6 +204,7 @@ void EvaluateAcrossRuns::operator()(
 //write output evaluation across runs to file
 void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
   const std::filesystem::path& imp_results_file_path,
+  const std::vector<std::string>& eval_across_runs_in_params_show,
   const EvalAcrossRunsData& eval_data,
   const std::vector<std::string>& run_names_ordered) const
 {
