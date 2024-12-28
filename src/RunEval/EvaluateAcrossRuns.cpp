@@ -121,12 +121,14 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
               run_speedup_iter < run_speedups_ordered.cend();
               run_speedup_iter++)
     {
+      std::cout << "Sppedup iter: " << *run_speedup_iter << std::endl;
       //ignore speedup if all whitespace
       if (std::all_of(
             run_speedup_iter->begin(),
             run_speedup_iter->end(),
             [](const auto c){ return std::isspace(c); }));
       {
+        std::cout << "Speedup is all whitespace" << std::endl;
         continue;
       }
       //check if speedup in run is included in current evaluation speedups and
@@ -161,6 +163,7 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
           eval_data.speedup_headers.insert(
             iter_prev_ordered_header + 1,
             *run_speedup_iter);
+          std::cout << "Add speedup in front of << *iter_prev_ordered_header" << std::endl;
           /*eval_data.speedup_headers.insert(
             (std::find(eval_data.speedup_headers.cbegin(),
                        eval_data.speedup_headers.cend(),
@@ -173,12 +176,14 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
           eval_data.speedup_headers.insert(
             eval_data.speedup_headers.cbegin(),
             *run_speedup_iter);
+          std::cout << "Add speedup to front" << std::endl;
         }
       }
     }
   }
 
   std::cout << "Speedups in order" << std::endl;
+  std::cout << "Number of speedups: " << eval_data.speedup_headers.size() << std::endl;
   std::for_each(eval_data.speedup_headers.cbegin(),
                 eval_data.speedup_headers.cend(),
                 [](const auto& header) {
