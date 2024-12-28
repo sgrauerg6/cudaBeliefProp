@@ -83,6 +83,15 @@ private:
     const std::vector<std::string>& eval_across_runs_in_params_show) const;
 
   /**
+   * @brief Get run names in order from fastest to slowest based on first
+   * speedup header
+   * 
+   * @param eval_data
+   */
+  std::vector<std::string> OrderedRunNames(
+    const EvalAcrossRunsData& eval_data) const;
+
+  /**
    * @brief Function to get names of runs with results from implementation
    * results file path
    * 

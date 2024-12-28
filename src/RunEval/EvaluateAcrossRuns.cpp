@@ -111,6 +111,54 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
   return eval_data;
 }
 
+/**
+ * @brief Get run names in order from fastest to slowest based on first
+ * speedup header
+ * 
+ * @param eval_data
+ */
+std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
+  const EvalAcrossRunsData& eval_data) const
+{
+  //get header to use for speedup ordering
+  //use first speedup in speedup headers for ordering
+  //of runs from fastest to slowest
+  const auto speedup_ordering = eval_data.speedup_headers.front();
+
+  //write each evaluation run name and save order of runs with speedup
+  //corresponding to first speedup header
+  //order of run names is in speedup from largest to smallest
+  auto cmp_speedup = 
+    [](const std::pair<std::string, float>& a,
+       const std::pair<std::string, float>& b)
+       { return a.second > b.second; };
+  std::set<std::pair<std::string, float>, decltype(cmp_speedup)>
+    run_names_in_order_w_speedup;
+
+  //generate and add pairs of run name with corresponding "ordering" speedup
+  //for each run to set to get sorted order of runs from fastest to slowest
+  //based on "ordering" speedup
+  for (const auto& [run_name, speedup_results] :
+       eval_data.speedup_results_name_to_data)
+  {
+    run_names_in_order_w_speedup.insert(
+      {run_name, 
+       speedup_results.contains(speedup_ordering) ?
+       std::stof(std::string(speedup_results.at(speedup_ordering).at(0))) :
+       0});
+  }
+
+  //generate ordered run names from fastest to slowest
+  std::vector<std::string> ordered_run_names;
+  std::transform(
+    run_names_in_order_w_speedup.cbegin(),
+    run_names_in_order_w_speedup.cend(),
+    std::back_inserter(ordered_run_names),
+    [](const auto& run_name_speedup) { return run_name_speedup.first; });
+  
+  return ordered_run_names;
+}
+
 //process runtime and speedup data across multiple runs (likely on different
 //architectures) from csv files corresponding to each run and write results to
 //file where the runtimes and speedups for each run are shown in a single file
@@ -141,33 +189,10 @@ void EvaluateAcrossRuns::operator()(
       run_results_by_name,
       eval_across_runs_in_params_show);
 
-  //get header to use for speedup ordering
-  //use first speedup in speedup headers for ordering
-  //of runs from fastest to slowest
-  const auto speedup_ordering = eval_data.speedup_headers.front();
-
-  //write each evaluation run name and save order of runs with speedup
-  //corresponding to first speedup header
-  //order of run names is in speedup from largest to smallest
-  auto cmp_speedup = 
-    [](const std::pair<std::string, float>& a,
-       const std::pair<std::string, float>& b)
-       { return a.second > b.second; };
-  std::set<std::pair<std::string, float>, decltype(cmp_speedup)>
-    run_names_in_order_w_speedup;
-
-  //generate and add pairs of run name with corresponding "ordering" speedup
-  //for each run to set to get sorted order of runs from fastest to slowest
-  //based on "ordering" speedup
-  for (const auto& [run_name, speedup_results] :
-       eval_data.speedup_results_name_to_data)
-  {
-    run_names_in_order_w_speedup.insert(
-      {run_name, 
-       speedup_results.contains(speedup_ordering) ?
-       std::stof(std::string(speedup_results.at(speedup_ordering).at(0))) :
-       0});
-  }
+  //get run names in order from fastest to slowest based on first speedup
+  //header
+  std::vector<std::string> run_names_ordered =
+    OrderedRunNames(eval_data);
 
   //write results across architectures to output file
   //file path for evaluation across runs
