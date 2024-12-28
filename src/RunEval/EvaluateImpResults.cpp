@@ -645,10 +645,16 @@ EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
   std::vector<RunSpeedupAvgMedian> speedup_data;
 
   //get baseline name and mapping of runtimes to input signatures
-  const auto [baseline_name, baseline_runtimes_to_sig] =
+  auto baseline_runtime_data =
     GetBaselineRuntimeData(
       baseline_runtimes_path_desc,
       run_eval::kOptimizedRuntimeHeader);
+  auto& baseline_name = baseline_runtime_data.first;
+  auto& baseline_runtimes_to_sig = baseline_runtime_data.second;
+  /*const auto [baseline_name, baseline_runtimes_to_sig] =
+    GetBaselineRuntimeData(
+      baseline_runtimes_path_desc,
+      run_eval::kOptimizedRuntimeHeader);*/
   
   //retrieve speedup data for subsets of optimized runs over corresponding
   //run in baseline data
