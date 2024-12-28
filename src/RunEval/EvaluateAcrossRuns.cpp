@@ -206,7 +206,7 @@ void EvaluateAcrossRuns::operator()(
     }
     for (const auto& [run_name, _] : run_names_in_order_w_speedup)
     {
-      if (input_to_runtime_across_archs.at(run_name).contains(input_sig))
+      if (eval_data.input_to_runtime_across_archs.at(run_name).contains(input_sig))
       {
         eval_results_across_run_str << 
           input_to_runtime_across_archs.at(run_name).at(input_sig);
