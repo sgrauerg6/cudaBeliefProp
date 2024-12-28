@@ -71,10 +71,10 @@ void RunImpMultTypesAccels::operator()(
   for (const auto& [data_size, run_result_by_acc] : run_imp_results)
   {
     std::cout << "DATA SIZE: " << data_size << std::endl;
-    for (const auto& [acc, run_result_set] : run_result_by_acc)
+    for (const auto& [acc, run_results_w_speedup] : run_result_by_acc)
     {
       std::cout << "ACC: " << run_environment::AccelerationString(acc) << std::endl;
-      for (const auto& [input_sig, run_results] : run_result_set) {
+      for (const auto& [input_sig, run_results] : run_results_w_speedup.first) {
         std::cout << "SIG 2: " << input_sig << std::endl;
         if (run_results) {
           std::cout << run_results->begin()->second << std::endl;
