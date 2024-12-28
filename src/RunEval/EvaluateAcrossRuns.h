@@ -39,11 +39,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * runs as well as speedup headers in order
  */
 struct EvalAcrossRunsData {
-  using namespace std;
-  map<string, map<string, vector<string>>> speedup_results_name_to_data;
-  map<string, map<InputSignature, string>> input_to_runtime_across_archs;
-  map<InputSignature, vector<string>> inputs_to_params_disp_ordered;
-  vector<string> speedup_headers;
+  std::map<std::string, std::map<std::string, std::vector<std::string>>> speedup_results_name_to_data;
+  std::map<std::string, std::map<InputSignature, std::string>> input_to_runtime_across_archs;
+  std::map<InputSignature, std::vector<std::string>> inputs_to_params_disp_ordered;
+  std::vector<std::string> speedup_headers;
 };
 
 /**
