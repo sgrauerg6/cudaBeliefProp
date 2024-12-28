@@ -33,6 +33,9 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunImpMultInputs::opera
   size_t data_type_size,
   std::unique_ptr<EvaluateImpResults>& evalResults) const
 {
+  //using MultRunData = 
+  //std::map<InputSignature, 
+  //         std::optional<std::map<run_environment::ParallelParamsSetting, RunData>>>;
   //run belief propagation implementation on multiple datasets and
   //return run data for all runs
   MultRunData run_data_all_runs =
@@ -42,7 +45,7 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunImpMultInputs::opera
   for (const auto& [input_sig, run_results] : run_data_all_runs) {
     std::cout << "SIG: " << input_sig << std::endl;
     if (run_results) {
-      std::cout << *(run_results->begin()) << std::endl;
+      std::cout << run_results->begin()->second << std::endl;
     }
     std::cout << std::endl;
   }
