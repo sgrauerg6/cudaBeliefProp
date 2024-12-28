@@ -123,6 +123,11 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
     {
       std::cout << "Speedup iter: " << *run_speedup_iter << std::endl;
       //ignore speedup if all whitespace
+      std::for_each(run_speedup_iter->cbegin(),
+                    run_speedup_iter->cend(),
+                    [](char c) {
+                      std::cout << "Char: " << c << " ";
+                    });
       if (std::all_of(
             run_speedup_iter->begin(),
             run_speedup_iter->end(),
