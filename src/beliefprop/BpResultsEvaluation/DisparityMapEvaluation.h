@@ -38,18 +38,21 @@ namespace beliefprop {
  
 constexpr std::string_view kAvgRMSErrorHeader{"Average RMS error"};
 
-/** @brief Difference thresholds in output disparity for a computed disparity at a pixel
- *  to be considered a "bad pixel" when compared to the ground truth in the evaluation */
+/** @brief Difference thresholds in output disparity for a computed disparity
+ *  at a pixel to be considered a "bad pixel" when compared to the ground truth
+ *  in the evaluation */
 constexpr std::array<float, 4> kDisparityDiffThresholds{
   0.001, 2.01, 5.01, 10.01};
 
-/** @brief Max difference in disparity for evaluation where disparity difference for each pixel is capped to minimize influence of outliers
+/** @brief Max difference in disparity for evaluation where disparity
+ *  difference for each pixel is capped to minimize influence of outliers
  *  in the average difference across all pixels */
 constexpr float kMaxDiffCap{
   kDisparityDiffThresholds[std::size(kDisparityDiffThresholds) - 1]};
 
 /**
- * @brief Struct to store parameters for evaluation of disparity map from stereo processing
+ * @brief Struct to store parameters for evaluation of disparity map from
+ * stereo processing
  */
 struct DisparityMapEvaluationParams {
   /** @brief Difference thresholds for comparing disparity maps */
@@ -91,8 +94,8 @@ public:
   float disparity_error_max_{std::numeric_limits<float>::max()};
 
   /** @brief Proportion of pixels where the difference between the disparity
-   *  values in disparity images 1 and 2 is greater than SIG_DIFF_THRESHOLD_STEREO_EVAL
-   *  (not including border regions) */
+   *  values in disparity images 1 and 2 is greater than
+   *  SIG_DIFF_THRESHOLD_STEREO_EVAL (not including border regions) */
   std::map<float, float> prop_sig_diff_pixels_at_thresholds_;
 
   /** @brief Stores the number of pixels where the difference between the

@@ -31,24 +31,31 @@ void DisparityMapEvaluation::InitializeWithEvalParams(
   const beliefprop::DisparityMapEvaluationParams& eval_params)
 {
   disparity_error_max_ = eval_params.max_diff_cap;
-  for (const auto& output_diff_threshold : eval_params.output_diff_thresholds) {
+  for (const auto& output_diff_threshold :
+       eval_params.output_diff_thresholds)
+  {
     num_sig_diff_pixels_at_thresholds_[output_diff_threshold] = 0;
   }
 }
 
 //retrieve evaluation results as RunData for output
-RunData DisparityMapEvaluation::AsRunData() const {
+RunData DisparityMapEvaluation::AsRunData() const
+{
   RunData evalRunData;
   evalRunData.AddDataWHeader(
     std::string(beliefprop::kAvgRMSErrorHeader),
     (double)average_disp_abs_diff_no_max_w_max_[0]);
   evalRunData.AddDataWHeader(
-    std::string(beliefprop::kAvgRMSErrorHeader) + " (with disparity error cap at " + 
+    std::string(beliefprop::kAvgRMSErrorHeader) + 
+      " (with disparity error cap at " + 
       std::to_string(disparity_error_max_) + ")",
     (double)average_disp_abs_diff_no_max_w_max_[1]);
-  for (const auto& [threshold, prop_bad_pixels] : prop_sig_diff_pixels_at_thresholds_) {
+  for (const auto& [threshold, prop_bad_pixels] :
+       prop_sig_diff_pixels_at_thresholds_)
+  {
     evalRunData.AddDataWHeader(
-      "Proportion bad pixels (error less than " + std::to_string(threshold) + ")",
+      "Proportion bad pixels (error less than " +
+        std::to_string(threshold) + ")",
       (double)prop_bad_pixels);
   }
 
