@@ -210,8 +210,6 @@ inline void RunBpOnStereoSetSingleThreadCPU<T, DISP_VALS, ACCELERATION>::bp_cb(b
   unsigned int height{(unsigned int)data->height()};
 
   for (unsigned int t = 0; t < iter; t++) {
-    //std::cout << "iter " << t << "\n";
-
     for (unsigned int y = 1; y < height - 1; y++) {
       for (unsigned int x = ((y + t) % 2) + 1; x < width - 1; x += 2) {
 

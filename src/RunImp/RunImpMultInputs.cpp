@@ -40,15 +40,6 @@ std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> RunImpMultInputs::opera
   //return run data for all runs
   MultRunData run_data_all_runs =
     RunEvalImpMultDataSets(run_imp_settings, data_type_size);
-  
-  std::cout << "RUN DATA 1:" << std::endl;
-  for (const auto& [input_sig, run_results] : run_data_all_runs) {
-    std::cout << "SIG: " << input_sig << std::endl;
-    if (run_results) {
-      std::cout << run_results->begin()->second << std::endl;
-    }
-    std::cout << std::endl;
-  }
 
   //evaluate results
   //return data for each run and average and median
