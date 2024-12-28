@@ -35,6 +35,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunEvalConstsEnums.h"
 
 /**
+ * @brief Structure to store data with mappings for evaluating results across
+ * runs as well as speedup headers in order
+ */
+struct EvalAcrossRunsData {
+  using namespace std;
+  map<string, map<string, vector<string>>> speedup_results_name_to_data;
+  map<string, map<InputSignature, string>> input_to_runtime_across_archs;
+  map<InputSignature, vector<string>> inputs_to_params_disp_ordered;
+  vector<string> speedup_headers;
+};
+
+/**
  * @brief Class with operator function to evaluate implementation runs across
  * multiple architectures. Outputs a file with speedup data on every run
  * with the runs ordered from fastest to slowest.
@@ -51,15 +63,25 @@ public:
    * @param imp_results_file_path 
    * @param eval_across_runs_top_text 
    * @param eval_across_runs_in_params_show 
-   * @param speedup_headers 
    */
   void operator()(
     const std::filesystem::path& imp_results_file_path,
     const std::vector<std::string>& eval_across_runs_top_text,
-    const std::vector<std::string>& eval_across_runs_in_params_show,
-    const std::vector<std::string>& speedup_headers) const;
+    const std::vector<std::string>& eval_across_runs_in_params_show) const;
 
 private:
+  
+  /**
+   * @brief Generate data for evaluating results across runs
+   * 
+   * @param run_results_by_name
+   * @param eval_across_runs_in_params_show
+   * @return EvalAcrossRunsData
+   */
+  EvalAcrossRunsData GenEvalAcrossRunsData(
+    const std::map<std::string, RunResultsSpeedups>& run_results_by_name,
+    const std::vector<std::string>& eval_across_runs_in_params_show) const;
+
   /**
    * @brief Function to get names of runs with results from implementation
    * results file path

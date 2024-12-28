@@ -35,6 +35,83 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "EvaluateAcrossRuns.h"
 #include "RunResultsSpeedups.h"
 
+/**
+  * @brief Generate data for evaluating results across runs
+  * 
+  * @param run_results_by_name
+  * @param eval_across_runs_in_params_show
+  * @return EvalAcrossRunsData
+  */
+EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
+  const std::map<std::string, RunResultsSpeedups>& run_results_by_name,
+  const std::vector<std::string>& eval_across_runs_in_params_show) const
+{
+  EvalAcrossRunsData eval_data;
+  for (const auto& [run_name, run_results] : run_results_by_name)
+  {
+    eval_data.speedup_results_name_to_data.insert(
+      {run_name,
+       run_results.Speedups()});
+    eval_data.input_to_runtime_across_archs.insert(
+      {run_name,
+       run_results.InputsToKeyVal(run_eval::kOptimizedRuntimeHeader)});
+    const auto& inputs_to_runtimes = run_results.InputsToKeyVal(
+      run_eval::kOptimizedRuntimeHeader);
+    //go through inputs for current run results
+    //need to go through every run so that all inputs in every run are included
+    for (const auto& [input_sig, _] : inputs_to_runtimes) {
+      //check if input already addded to set of inputs
+      if (!(eval_data.inputs_to_params_disp_ordered.contains(input_sig))) {
+        eval_data.inputs_to_params_disp_ordered.insert(
+          {input_sig, std::vector<std::string>()});
+        //add input parameters to display in evaluation across runs
+        for (const auto& disp_param : eval_across_runs_in_params_show) {
+          eval_data.inputs_to_params_disp_ordered.at(input_sig).push_back(
+            run_results.DataForInput(input_sig).at(disp_param));
+        }
+      }
+    }
+    //go through speedups for run and add to speedup headers if not already
+    //included
+    const auto run_speedups_ordered = run_results.SpeedupHeadersOrder();
+    for (auto run_speedup_iter = run_speedups_ordered.cbegin();
+              run_speedup_iter < run_speedups_ordered.cend();
+              run_speedup_iter++)
+    {
+      //check if speedup in run is included in current evaluation speedups and
+      //add it in expected position in evaluation speedups if not
+      if (std::none_of(eval_data.speedup_headers.cbegin(), 
+                       eval_data.speedup_headers.cend(),
+                       [run_speedup_iter](const auto& header){
+                         return (header == *run_speedup_iter);
+                       }))
+      {
+        //add speedup header in front of previous ordered speedup header if not
+        //first ordered header
+        if (run_speedup_iter != run_speedups_ordered.cbegin()) {
+          //find position in evaluation speedups of previous ordered header
+          //and add new header in front of it
+          eval_data.speedup_headers.insert(
+            (std::find(eval_data.speedup_headers.cbegin(),
+                       eval_data.speedup_headers.cend(),
+                       *(run_speedup_iter-1)) + 1),
+            *run_speedup_iter);
+        }
+        else {
+          //add speedup header to front of evaluation speedup headers if no
+          //previous ordered header in speedups for run
+          eval_data.speedup_headers.insert(
+            eval_data.speedup_headers.cbegin(),
+            *run_speedup_iter);
+        }
+      }
+    }
+  }
+
+  //return resulting evaluation data
+  return eval_data;
+}
+
 //process runtime and speedup data across multiple runs (likely on different
 //architectures) from csv files corresponding to each run and write results to
 //file where the runtimes and speedups for each run are shown in a single file
@@ -42,12 +119,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 void EvaluateAcrossRuns::operator()(
   const std::filesystem::path& imp_results_file_path,
   const std::vector<std::string>& eval_across_runs_top_text,
-  const std::vector<std::string>& eval_across_runs_in_params_show,
-  const std::vector<std::string>& speedup_headers) const
+  const std::vector<std::string>& eval_across_runs_in_params_show) const
 {
-  //initialize speedup headers for output results across runs
-  auto speedup_headers_eval = speedup_headers;
-
   //retrieve names of runs with results
   //run names usually correspond to architecture of run
   const std::vector<std::string> run_names =
@@ -69,7 +142,11 @@ void EvaluateAcrossRuns::operator()(
     input_to_runtime_across_archs;
   std::map<InputSignature, std::vector<std::string>>
     inputs_to_params_disp_ordered;
-  for (const auto& [run_name, run_results] : run_results_by_name)
+  const EvalAcrossRunsData eval_data =
+    GenEvalAcrossRunsData(
+      run_results_by_name,
+      eval_across_runs_in_params_show);
+  /*for (const auto& [run_name, run_results] : run_results_by_name)
   {
     speedup_results_name_to_data.insert(
       {run_name,
@@ -128,12 +205,12 @@ void EvaluateAcrossRuns::operator()(
         }
       }
     }
-  }
+  }*/
 
   //get header to use for speedup ordering
   //use first speedup in speedup headers for ordering
   //of runs from fastest to slowest
-  const auto speedup_ordering = speedup_headers.front();
+  const auto speedup_ordering = eval_data.speedup_headers.front();
 
   //write each evaluation run name and save order of runs with speedup
   //corresponding to first speedup header
@@ -148,7 +225,8 @@ void EvaluateAcrossRuns::operator()(
   //generate and add pairs of run name with corresponding "ordering" speedup
   //for each run to set to get sorted order of runs from fastest to slowest
   //based on "ordering" speedup
-  for (const auto& [run_name, speedup_results] : speedup_results_name_to_data)
+  for (const auto& [run_name, speedup_results] :
+       eval_data.speedup_results_name_to_data)
   {
     run_names_in_order_w_speedup.insert(
       {run_name, 
@@ -187,7 +265,7 @@ void EvaluateAcrossRuns::operator()(
   //write evaluation stereo set info, bp parameters, and total runtime for
   //optimized bp implementation across each run in the evaluation
   for (const auto& [input_sig, params_display_ordered] :
-       inputs_to_params_disp_ordered)
+       eval_data.inputs_to_params_disp_ordered)
   {
     for (const auto& param_val_disp : params_display_ordered) {
       eval_results_across_run_str << param_val_disp << ',';
@@ -208,7 +286,7 @@ void EvaluateAcrossRuns::operator()(
   //write average speedup results for each run that correspond to a number of
   //different evaluations of runtimes compared to a baseline
   eval_results_across_run_str << "Average Speedups" << std::endl;
-  for (const auto& speedup_header : speedup_headers_eval) {
+  for (const auto& speedup_header : eval_data.speedup_headers) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
       eval_results_across_run_str << speedup_header << ',';
@@ -220,11 +298,11 @@ void EvaluateAcrossRuns::operator()(
       //write speedup for each run in separate cells in horizontal direction
       //where each column corresponds to a different evaluation run
       for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
-        if (speedup_results_name_to_data.at(run_name).contains(
+        if (eval_data.speedup_results_name_to_data.at(run_name).contains(
               speedup_header))
         {
           eval_results_across_run_str <<
-            speedup_results_name_to_data.at(run_name).at(
+            eval_data.speedup_results_name_to_data.at(run_name).at(
               speedup_header).at(0) << ',';
         }
         else {
@@ -235,7 +313,7 @@ void EvaluateAcrossRuns::operator()(
       eval_results_across_run_str << std::endl;
     }
   }
-
+  
   //write location of evaluation results across runs to output console
   std::cout << "Evaluation of results across all runs in "
             << results_across_run_fp << std::endl;
