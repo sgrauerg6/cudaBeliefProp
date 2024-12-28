@@ -34,6 +34,50 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "RunSettingsParams/InputSignature.h"
 #include "EvaluateAcrossRuns.h"
 
+//process runtime and speedup data across multiple runs (likely on different
+//architectures) from csv files corresponding to each run and write results to
+//file where the runtimes and speedups for each run are shown in a single file
+//and where the runs are displayed left to right from fastest to slowest
+void EvaluateAcrossRuns::operator()(
+  const std::filesystem::path& imp_results_file_path,
+  const std::vector<std::string>& eval_across_runs_top_text,
+  const std::vector<std::string>& eval_across_runs_in_params_show) const
+{
+  //retrieve names of runs with results
+  //run names usually correspond to architecture of run
+  const std::vector<std::string> run_names =
+    GetRunNames(imp_results_file_path);
+  
+  //initialize vector of run results with speedups for each run name
+  std::map<std::string, RunResultsSpeedups> run_results_by_name;
+  for (const auto& run_name : run_names) {
+    run_results_by_name.insert(
+      {run_name, RunResultsSpeedups(imp_results_file_path, run_name)});
+  }
+
+  //genereation data mappings for evaluation including run results and speedups
+  //for each run, mapping from input signature to runtime, and run inputs to
+  //parameters to display in evaluation across runs as well as speedup headers
+  //in order
+  const EvalAcrossRunsData eval_data =
+    GenEvalAcrossRunsData(
+      run_results_by_name,
+      eval_across_runs_in_params_show);
+
+  //get run names in order from fastest to slowest based on first speedup
+  //header
+  const std::vector<std::string> run_names_ordered =
+    OrderedRunNames(eval_data);
+
+  //write output evaluation across runs to file
+  WriteEvalAcrossRunsToFile(
+    imp_results_file_path,
+    eval_across_runs_top_text,
+    eval_across_runs_in_params_show,
+    eval_data,
+    run_names_ordered);
+}
+
 /**
   * @brief Generate data for evaluating results across runs
   * 
@@ -157,50 +201,6 @@ std::vector<std::string> EvaluateAcrossRuns::OrderedRunNames(
     [](const auto& run_name_speedup) { return run_name_speedup.first; });
   
   return ordered_run_names;
-}
-
-//process runtime and speedup data across multiple runs (likely on different
-//architectures) from csv files corresponding to each run and write results to
-//file where the runtimes and speedups for each run are shown in a single file
-//and where the runs are displayed left to right from fastest to slowest
-void EvaluateAcrossRuns::operator()(
-  const std::filesystem::path& imp_results_file_path,
-  const std::vector<std::string>& eval_across_runs_top_text,
-  const std::vector<std::string>& eval_across_runs_in_params_show) const
-{
-  //retrieve names of runs with results
-  //run names usually correspond to architecture of run
-  const std::vector<std::string> run_names =
-    GetRunNames(imp_results_file_path);
-  
-  //initialize vector of run results with speedups for each run name
-  std::map<std::string, RunResultsSpeedups> run_results_by_name;
-  for (const auto& run_name : run_names) {
-    run_results_by_name.insert(
-      {run_name, RunResultsSpeedups(imp_results_file_path, run_name)});
-  }
-
-  //genereation data mappings for evaluation including run results and speedups
-  //for each run, mapping from input signature to runtime, and run inputs to
-  //parameters to display in evaluation across runs as well as speedup headers
-  //in order
-  const EvalAcrossRunsData eval_data =
-    GenEvalAcrossRunsData(
-      run_results_by_name,
-      eval_across_runs_in_params_show);
-
-  //get run names in order from fastest to slowest based on first speedup
-  //header
-  const std::vector<std::string> run_names_ordered =
-    OrderedRunNames(eval_data);
-
-  //write output evaluation across runs to file
-  WriteEvalAcrossRunsToFile(
-    imp_results_file_path,
-    eval_across_runs_top_text,
-    eval_across_runs_in_params_show,
-    eval_data,
-    run_names_ordered);
 }
 
 //write output evaluation across runs to file
