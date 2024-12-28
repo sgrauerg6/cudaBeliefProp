@@ -160,15 +160,15 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
         {
           //find position in evaluation speedups of previous ordered header
           //and add new header in front of it
-          eval_data.speedup_headers.insert(
-            iter_prev_ordered_header + 1,
-            *run_speedup_iter);
-          std::cout << "Add speedup in front of << *iter_prev_ordered_header" << std::endl;
+          std::cout << "Add speedup in front of " << *iter_prev_ordered_header << std::endl;
           /*eval_data.speedup_headers.insert(
+            iter_prev_ordered_header + 1,
+            *run_speedup_iter);*/
+          eval_data.speedup_headers.insert(
             (std::find(eval_data.speedup_headers.cbegin(),
                        eval_data.speedup_headers.cend(),
-                       *(iter_prev_ordered_header)) + 1),
-            *run_speedup_iter);*/
+                       *iter_prev_ordered_header) + 1),
+            *run_speedup_iter);
         }
         else {
           //add speedup header to front of evaluation speedup headers if no
