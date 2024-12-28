@@ -65,6 +65,27 @@ void RunImpMultTypesAccels::operator()(
       }
     }
   }
+  
+  //print outputs
+  std::cout << "RUN RESULTS 2" << std::endl;
+  for (const auto& [data_size, run_result_by_acc] : run_imp_results)
+  {
+    std::cout << "DATA SIZE: " << data_size << std::endl;
+    for (const auto& [acc, run_result_set] : run_result_by_acc)
+    {
+      std::cout << "ACC: " << run_environment::AccelerationString(acc) << std::endl;
+      for (const auto& [input_sig, run_results] : run_result_set) {
+        std::cout << "SIG 2: " << input_sig << std::endl;
+        if (run_results) {
+          std::cout << run_results->begin()->second << std::endl;
+        }
+        else {
+          std::cout << "RESULTS MISSING" << std::endl;
+        }
+      }
+    }
+  }
+  std::cout << "RUN RESULTS 2 DONE" << std::endl;
 
   //evaluate results including writing results to output file
   evalResultsPtr->EvalAllResultsWriteOutput(
