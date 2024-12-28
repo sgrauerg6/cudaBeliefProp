@@ -648,7 +648,7 @@ EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
   const auto [baseline_name, baseline_runtimes_to_sig] =
     GetBaselineRuntimeData(
       baseline_runtimes_path_desc,
-      run_eval::kOptimizedRuntimeHeader).second;
+      run_eval::kOptimizedRuntimeHeader);
   
   //retrieve speedup data for subsets of optimized runs over corresponding
   //run in baseline data
