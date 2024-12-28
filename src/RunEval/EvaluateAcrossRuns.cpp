@@ -114,6 +114,7 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
         }
       }
     }
+    std::cout << std::endl << "RUN NAME: " << run_name << std::endl;
     //go through speedups for run and add to speedup headers if not already
     //included
     const auto run_speedups_ordered = run_results.SpeedupHeadersOrder();
