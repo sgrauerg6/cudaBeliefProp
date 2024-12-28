@@ -105,20 +105,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   const run_environment::RunImpSettings run_imp_settings,
   run_environment::AccSetting opt_imp_acc) const
 {
-  std::cout << "RUN RESULTS 3:" << std::endl;
-  for (const auto& [sig, result] : run_results_mult_runs.at(sizeof(float)).at(opt_imp_acc).first)
-  {
-    std::cout << sig << std::endl;
-    if (result) {
-      std::cout << result->at(run_environment::ParallelParamsSetting::kOptimized) << std::endl;
-    }
-    else {
-      std::cout << "NO RESULT" << std::endl;
-    }
-    std::cout << std::endl;
-  }
-  std::cout << "RUN RESULTS 3 DONE:" << std::endl;
-
   //store whether or not parallel parameters optimized in run
   const bool p_params_optimized{
     (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
@@ -129,6 +115,20 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //implementations compared to expected fastest implementation
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
+
+  std::cout << "RUN RESULTS 3a:" << std::endl;
+  for (const auto& [sig, result] : run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first)
+  {
+    std::cout << sig << std::endl;
+    if (result) {
+      std::cout << result->at(run_environment::ParallelParamsSetting::kOptimized) << std::endl;
+    }
+    else {
+      std::cout << "NO RESULT" << std::endl;
+    }
+    std::cout << std::endl;
+  }
+  std::cout << "RUN RESULTS 3a DONE:" << std::endl;
   
   //check if setting is to run alternate optimized implementations and run and
   //evaluate alternate optimized implementations if that's the case
@@ -147,14 +147,19 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
         run_imp_settings, data_size,
         opt_imp_acc);
       
-      //add alternate acceleration speedups for current data size
-      alt_imp_speedup.insert({data_size, alt_acc_speedup});
-
+      //if speedup output for alternate acceleration is generated,
+      //add alternate acceleration speedups for current data size and      
       //update optimized acceleration run results with results from alternate
       //accelerations evaluation where run data for each input is set to
       //fastest of all evaluated accelerations
-      run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first =
-        opt_run_results;
+      if (!(alt_acc_speedup.empty())) {
+        //add alternate acceleration speedups for current data size
+        alt_imp_speedup.insert({data_size, alt_acc_speedup});
+        
+        //update optimized acceleration run results
+        run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first =
+          opt_run_results;
+      }
     }
   }
 
@@ -518,17 +523,19 @@ EvaluateImpResults::GetAltAccelSpeedups(
   size_t data_type_size,
   run_environment::AccSetting fastest_acc) const
 {
-  //initialize optimized run results to "fastest" acceleration results
-  //results get replaced by alternate acceleration result if alternate
-  //acceleration is faster
-  auto run_imp_opt_results =
-    run_imp_results_by_acc_setting.at(fastest_acc).first;
-
   if (run_imp_results_by_acc_setting.size() == 1) {
     //no alternate run results
-    return {};
+    //return empty vector for speedup results
+    //return run implementation results that are the same as input
+    return {{}, run_imp_results_by_acc_setting.at(fastest_acc).first};
   }
   else {
+    //initialize optimized run results to "fastest" acceleration results
+    //results get replaced by alternate acceleration result if alternate
+    //acceleration is faster
+    auto run_imp_opt_results =
+      run_imp_results_by_acc_setting.at(fastest_acc).first;
+
     //initialize speedup/slowdown using alternate acceleration
     std::vector<RunSpeedupAvgMedian> alt_acc_speedups;
     for (auto& [acc_setting, acc_results] : run_imp_results_by_acc_setting) {
