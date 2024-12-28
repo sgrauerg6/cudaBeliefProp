@@ -121,6 +121,14 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
               run_speedup_iter < run_speedups_ordered.cend();
               run_speedup_iter++)
     {
+      //ignore speedup if all whitespace
+      if (std::all_of(
+            run_speedup_iter->begin(),
+            run_speedup_iter->end(),
+            [](const auto c){ return std::isspace(c); }));
+      {
+        continue;
+      }
       //check if speedup in run is included in current evaluation speedups and
       //add it in expected position in evaluation speedups if not
       if (std::none_of(eval_data.speedup_headers.cbegin(), 
