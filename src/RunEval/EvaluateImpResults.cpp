@@ -487,7 +487,7 @@ void EvaluateImpResults::WriteRunOutput(
 //acceleration result if it is faster
 std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData>
 EvaluateImpResults::GetAltAccelSpeedups(
-  const MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
+  MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
   const run_environment::RunImpSettings& run_imp_settings,
   size_t data_type_size,
   run_environment::AccSetting fastest_acc) const
@@ -503,6 +503,8 @@ EvaluateImpResults::GetAltAccelSpeedups(
     return {};
   }
   else {
+    std::unordered_map<run_environment::AccSetting, 
+                     std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
     //initialize speedup/slowdown using alternate acceleration
     std::vector<RunSpeedupAvgMedian> alt_acc_speedups;
     for (auto& [acc_setting, acc_results] : run_imp_results_by_acc_setting) {

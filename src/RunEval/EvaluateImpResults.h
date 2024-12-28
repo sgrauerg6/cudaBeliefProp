@@ -142,7 +142,7 @@ private:
    * @return std::vector<RunSpeedupAvgMedian> 
    */
   std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> GetAltAccelSpeedups(
-    const MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
+    MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
     const run_environment::RunImpSettings& run_imp_settings,
     size_t data_type_size,
     run_environment::AccSetting fastest_acc) const;
