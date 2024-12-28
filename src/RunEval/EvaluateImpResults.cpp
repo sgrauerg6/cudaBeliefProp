@@ -175,6 +175,13 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
       run_result_mult_runs_opt.at(sizeof(halftype)).at(opt_imp_acc).first);
   }
 
+  std::cout << "RUN RESULTS:" << std::endl;
+  for (const auto& [sig, result] : run_results.first) {
+    std::cout << sig << std::endl;
+    std::cout << result << std::endl;
+    std::cout << std::endl;
+  }
+
   //add speedup data from double and half precision runs to speedup results
   run_speedups.insert(run_speedups.cend(),
     alt_imp_speedup.at(sizeof(float)).cbegin(),
