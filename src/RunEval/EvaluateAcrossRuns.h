@@ -100,6 +100,18 @@ private:
    */
   std::vector<std::string> GetRunNames(
     const std::filesystem::path& imp_results_file_path) const;
+
+  /**
+   * @brief Write output evaluation across runs to file
+   * 
+   * @param imp_results_file_path
+   * @param eval_data
+   * @param run_names_ordered
+   */
+  void WriteEvalAcrossRunsToFile(
+    const std::filesystem::path& imp_results_file_path,
+    const EvalAcrossRunsData& eval_data,
+    const std::vector<std::string>& run_names_ordered) const;
 };
 
 #endif //EVALUATE_ACROSS_RUNS_H_

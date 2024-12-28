@@ -191,9 +191,22 @@ void EvaluateAcrossRuns::operator()(
 
   //get run names in order from fastest to slowest based on first speedup
   //header
-  std::vector<std::string> run_names_ordered =
+  const std::vector<std::string> run_names_ordered =
     OrderedRunNames(eval_data);
 
+  //write output evaluation across runs to file
+  WriteEvalAcrossRunsToFile(
+    imp_results_file_path,
+    eval_data,
+    run_names_ordered);
+}
+
+//write output evaluation across runs to file
+void EvaluateAcrossRuns::WriteEvalAcrossRunsToFile(
+  const std::filesystem::path& imp_results_file_path,
+  const EvalAcrossRunsData& eval_data,
+  const std::vector<std::string>& run_names_ordered) const
+{
   //write results across architectures to output file
   //file path for evaluation across runs
   const std::filesystem::path results_across_run_fp = 
@@ -231,7 +244,8 @@ void EvaluateAcrossRuns::operator()(
     }
     for (const auto& run_name : run_names_ordered)
     {
-      if (eval_data.input_to_runtime_across_archs.at(run_name).contains(input_sig))
+      if (eval_data.input_to_runtime_across_archs.at(
+            run_name).contains(input_sig))
       {
         eval_results_across_run_str << 
           eval_data.input_to_runtime_across_archs.at(run_name).at(input_sig);
