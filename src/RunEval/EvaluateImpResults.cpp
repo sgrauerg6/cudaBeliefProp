@@ -194,14 +194,19 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   }
   std::cout << "DONE RESULTS" << std::endl;
 
-  //add speedup data from double and half precision runs to speedup results
-  run_speedups.insert(run_speedups.cend(),
-    alt_imp_speedup.at(sizeof(float)).cbegin(),
-    alt_imp_speedup.at(sizeof(float)).cend());
+  //add speedup data from alternate acceleration runs and double and half
+  //precision runs to speedup results
+  if (alt_imp_speedup.contains(sizeof(float))) {
+    run_speedups.insert(run_speedups.cend(),
+      alt_imp_speedup.at(sizeof(float)).cbegin(),
+      alt_imp_speedup.at(sizeof(float)).cend());
+  }
   if (run_result_mult_runs_opt.contains(sizeof(double))) {
     run_speedups.insert(run_speedups.cend(),
       run_result_mult_runs_opt.at(sizeof(double)).at(opt_imp_acc).second.cbegin(),
       run_result_mult_runs_opt.at(sizeof(double)).at(opt_imp_acc).second.cend());
+  }
+  if (alt_imp_speedup.contains(sizeof(double))) {
     run_speedups.insert(run_speedups.cend(), 
       alt_imp_speedup.at(sizeof(double)).cbegin(),
       alt_imp_speedup.at(sizeof(double)).cend());
@@ -210,6 +215,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     run_speedups.insert(run_speedups.cend(),
       run_result_mult_runs_opt.at(sizeof(halftype)).at(opt_imp_acc).second.cbegin(),
       run_result_mult_runs_opt.at(sizeof(halftype)).at(opt_imp_acc).second.cend());
+  }
+  if (alt_imp_speedup.contains(sizeof(halftype))) {
     run_speedups.insert(run_speedups.cend(),
       alt_imp_speedup.at(sizeof(halftype)).cbegin(),
       alt_imp_speedup.at(sizeof(halftype)).cend());
