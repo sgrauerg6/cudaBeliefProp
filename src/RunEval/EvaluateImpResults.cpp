@@ -105,6 +105,20 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   const run_environment::RunImpSettings run_imp_settings,
   run_environment::AccSetting opt_imp_acc) const
 {
+  std::cout << "RUN RESULTS 3:" << std::endl;
+  for (const auto& [sig, result] : run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first)
+  {
+    std::cout << sig << std::endl;
+    if (result) {
+      std::cout << result->at(run_environment::ParallelParamsSetting::kOptimized) << std::endl;
+    }
+    else {
+      std::cout << "NO RESULT" << std::endl;
+    }
+    std::cout << std::endl;
+  }
+  std::cout << "RUN RESULTS 3 DONE:" << std::endl;
+
   //store whether or not parallel parameters optimized in run
   const bool p_params_optimized{
     (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
