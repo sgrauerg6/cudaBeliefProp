@@ -152,7 +152,7 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
   }
 
   std::cout << "Speedups in order" << std::endl;
-  std::for_each(eval_data.speedup_headers.cbegin,
+  std::for_each(eval_data.speedup_headers.cbegin(),
                 eval_data.speedup_headers.cend(),
                 [](const auto& header) {
                   std::cout << header << std::endl;
