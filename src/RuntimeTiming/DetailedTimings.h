@@ -133,8 +133,8 @@ void DetailedTimings<T>::AddToCurrentTimings(
       auto iter = this->segment_timings_.find(segment);
       if (iter != this->segment_timings_.cend()) {
         iter->second.insert(iter->second.cend(), 
-                            segment_time_durations.second.cbegin(),
-                            segment_time_durations.second.cend());
+                            segment_time_durations.cbegin(),
+                            segment_time_durations.cend());
       }
       else {
         this->segment_timings_.insert({segment, segment_time_durations});
