@@ -216,7 +216,7 @@ void EvaluateAcrossRuns::operator()(
   }
 
   //write all the run names in order from fastest to slowest
-  for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
+  for (const auto& run_name : run_names_ordered) {
     eval_results_across_run_str << run_name << ',';
   }
   eval_results_across_run_str << std::endl;
@@ -229,7 +229,7 @@ void EvaluateAcrossRuns::operator()(
     for (const auto& param_val_disp : params_display_ordered) {
       eval_results_across_run_str << param_val_disp << ',';
     }
-    for (const auto& [run_name, _] : run_names_in_order_w_speedup)
+    for (const auto& run_name : run_names_ordered)
     {
       if (eval_data.input_to_runtime_across_archs.at(run_name).contains(input_sig))
       {
@@ -256,7 +256,7 @@ void EvaluateAcrossRuns::operator()(
       }
       //write speedup for each run in separate cells in horizontal direction
       //where each column corresponds to a different evaluation run
-      for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
+      for (const auto& run_name : run_names_ordered) {
         if (eval_data.speedup_results_name_to_data.at(run_name).contains(
               speedup_header))
         {
