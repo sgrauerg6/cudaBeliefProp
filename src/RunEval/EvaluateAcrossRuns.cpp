@@ -130,19 +130,6 @@ void EvaluateAcrossRuns::operator()(
     }
   }
 
-  //generate results across architectures
-  std::ostringstream result_across_archs_sstream;
-  //add text to display on top of results across architecture comparison file
-  for (const auto& comp_file_top_text_line : eval_across_runs_top_text) {
-    result_across_archs_sstream << comp_file_top_text_line << std::endl;
-  }
-  result_across_archs_sstream << std::endl;
-
-  //write out the name of each input parameter to be displayed
-  for (const auto& input_param_disp_header : eval_across_runs_in_params_show) {
-    result_across_archs_sstream << input_param_disp_header << ',';
-  }
-
   //get header to use for speedup ordering
   //use first speedup in speedup headers for ordering
   //of runs from fastest to slowest
@@ -170,11 +157,32 @@ void EvaluateAcrossRuns::operator()(
        0});
   }
 
+  //write results across architectures to output file
+  //file path for evaluation across runs
+  const std::filesystem::path results_across_run_fp = 
+    imp_results_file_path /
+    (std::string(run_eval::kEvalAcrossRunsFileName) +
+     std::string(run_eval::kCsvFileExtension));
+  
+  //initialize output stream for file showing evaluation across runs
+  std::ofstream eval_results_across_run_str(results_across_run_fp);
+
+  //add text to display on top of results across architecture comparison file
+  for (const auto& comp_file_top_text_line : eval_across_runs_top_text) {
+    eval_results_across_run_str << comp_file_top_text_line << std::endl;
+  }
+  eval_results_across_run_str << std::endl;
+
+  //write out the name of each input parameter to be displayed
+  for (const auto& input_param_disp_header : eval_across_runs_in_params_show) {
+    eval_results_across_run_str << input_param_disp_header << ',';
+  }
+
   //write all the run names in order from fastest to slowest
   for (const auto& [run_name, _] : run_names_in_order_w_speedup) {
-    result_across_archs_sstream << run_name << ',';
+    eval_results_across_run_str << run_name << ',';
   }
-  result_across_archs_sstream << std::endl;
+  eval_results_across_run_str << std::endl;
 
   //write evaluation stereo set info, bp parameters, and total runtime for
   //optimized bp implementation across each run in the evaluation
@@ -182,32 +190,32 @@ void EvaluateAcrossRuns::operator()(
        inputs_to_params_disp_ordered)
   {
     for (const auto& param_val_disp : params_display_ordered) {
-      result_across_archs_sstream << param_val_disp << ',';
+      eval_results_across_run_str << param_val_disp << ',';
     }
     for (const auto& [run_name, _] : run_names_in_order_w_speedup)
     {
       if (input_to_runtime_across_archs.at(run_name).contains(input_sig))
       {
-        result_across_archs_sstream << 
+        eval_results_across_run_str << 
           input_to_runtime_across_archs.at(run_name).at(input_sig);
       }
-      result_across_archs_sstream << ',';
+      eval_results_across_run_str << ',';
     }
-    result_across_archs_sstream << std::endl;
+    eval_results_across_run_str << std::endl;
   }
-  result_across_archs_sstream << std::endl;
+  eval_results_across_run_str << std::endl;
 
   //write average speedup results for each run that correspond to a number of
   //different evaluations of runtimes compared to a baseline
-  result_across_archs_sstream << "Average Speedups" << std::endl;
+  eval_results_across_run_str << "Average Speedups" << std::endl;
   for (const auto& speedup_header : speedup_headers_eval) {
     //don't process if header is empty
     if (!(speedup_header.empty())) {
-      result_across_archs_sstream << speedup_header << ',';
+      eval_results_across_run_str << speedup_header << ',';
       //add empty cell for each input parameter after the first that's
       //displayed so speedup shown in the same column same line as runtime
       for (size_t i = 1; i < eval_across_runs_in_params_show.size(); i++) {
-        result_across_archs_sstream << ',';
+        eval_results_across_run_str << ',';
       }
       //write speedup for each run in separate cells in horizontal direction
       //where each column corresponds to a different evaluation run
@@ -215,27 +223,20 @@ void EvaluateAcrossRuns::operator()(
         if (speedup_results_name_to_data.at(run_name).contains(
               speedup_header))
         {
-          result_across_archs_sstream <<
+          eval_results_across_run_str <<
             speedup_results_name_to_data.at(run_name).at(
               speedup_header).at(0) << ',';
         }
         else {
-          result_across_archs_sstream << ',';
+          eval_results_across_run_str << ',';
         }
       }
       //continue to next row of table to write data for next speedup result
-      result_across_archs_sstream << std::endl;
+      eval_results_across_run_str << std::endl;
     }
   }
 
-  //get file path for evaluation across runs and save evaluation across runs to
-  //csv file
-  const std::filesystem::path results_across_run_fp = 
-    imp_results_file_path /
-    (std::string(run_eval::kEvalAcrossRunsFileName) +
-     std::string(run_eval::kCsvFileExtension));
-  std::ofstream eval_results_across_run_str(results_across_run_fp);
-  eval_results_across_run_str << result_across_archs_sstream.str();
+  //write location of evaluation results across runs to output console
   std::cout << "Evaluation of results across all runs in "
             << results_across_run_fp << std::endl;
 }
