@@ -131,7 +131,7 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
       if (std::all_of(
             run_speedup_iter->begin(),
             run_speedup_iter->end(),
-            [](char c){ return std::isspace(c); }));
+            [](unsigned char c){ return std::isspace(c); }));
       {
         std::cout << "Speedup is all whitespace" << std::endl;
         continue;
