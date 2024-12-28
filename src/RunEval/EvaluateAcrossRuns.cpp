@@ -142,7 +142,8 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
         while (iter_prev_ordered_header != run_speedups_ordered.cbegin())
         {
           iter_prev_ordered_header--;
-          if (eval_data.speedup_headers.contains(*iter_prev_ordered_header))
+          if (eval_data.speedup_headers.find(*iter_prev_ordered_header) !=
+              eval_data.speedup_headers.end())
           {
             break;
           }
