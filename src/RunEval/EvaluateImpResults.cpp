@@ -116,19 +116,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
 
-  std::cout << "RUN RESULTS 3a:" << std::endl;
-  for (const auto& [sig, result] : run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first)
-  {
-    std::cout << sig << std::endl;
-    if (result) {
-      std::cout << result->at(run_environment::ParallelParamsSetting::kOptimized) << std::endl;
-    }
-    else {
-      std::cout << "NO RESULT" << std::endl;
-    }
-    std::cout << std::endl;
-  }
-  std::cout << "RUN RESULTS 3a DONE:" << std::endl;
   
   //check if setting is to run alternate optimized implementations and run and
   //evaluate alternate optimized implementations if that's the case
@@ -155,7 +142,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
       if (!(alt_acc_speedup.empty())) {
         //add alternate acceleration speedups for current data size
         alt_imp_speedup.insert({data_size, alt_acc_speedup});
-        
+
         //update optimized acceleration run results
         run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first =
           opt_run_results;
@@ -205,6 +192,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     }
     std::cout << std::endl;
   }
+  std::cout << "DONE RESULTS" << std::endl;
 
   //add speedup data from double and half precision runs to speedup results
   run_speedups.insert(run_speedups.cend(),
@@ -226,6 +214,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
       alt_imp_speedup.at(sizeof(halftype)).cbegin(),
       alt_imp_speedup.at(sizeof(halftype)).cend());
   }
+
+  std::cout << "1" << std::endl;
 
   //get and add speedups over baseline runtimes
   if (run_imp_settings.baseline_runtimes_path_desc)
@@ -295,6 +285,7 @@ void EvaluateImpResults::WriteRunOutput(
   //check if there was at least one successful run
   if (first_success_run_iter != run_results.cend())
   { 
+    std::cout << "2" << std::endl;
     //initialize parallel params setting enum and set of parallel params
     //settings that are enabled in run
     const auto parallel_param_settings =
@@ -316,6 +307,7 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& [speedup_header, _] : speedup_headers_w_data) {
       speedup_headers.push_back(speedup_header);
     }
+    std::cout << "3" << std::endl;
 
     //delete any speedup headers already in headers_in_order
     //since they will be added in order to end of vector
@@ -328,6 +320,7 @@ void EvaluateImpResults::WriteRunOutput(
         headers_in_order.erase(speedup_header_iter);
       }
     }
+    std::cout << "4" << std::endl;
     
     //add speedup headers to the end of headers in order
     headers_in_order.insert(
@@ -342,6 +335,7 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& p_param_setting : parallel_param_settings) {
       run_data_sstr.insert({p_param_setting, std::ostringstream()});
     }
+    std::cout << "5" << std::endl;
 
     //write each results header in order in first row of results string
     //for each results set and then write newline to go to next line
@@ -353,6 +347,7 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& p_param_setting : parallel_param_settings) {
       run_data_sstr.at(p_param_setting) << std::endl;
     }
+    std::cout << "6" << std::endl;
 
     //write output for run on each input with each data type
     //write data for default parallel parameters and for optimized parallel
@@ -374,6 +369,7 @@ void EvaluateImpResults::WriteRunOutput(
         }
       }
     }
+    std::cout << "7" << std::endl;
 
     //write run results strings to output streams corresponding to results files
     //two results files contain run results (with and without optimized
@@ -386,6 +382,7 @@ void EvaluateImpResults::WriteRunOutput(
     //initialize mapping from output results type to file path where each
     //results type is saved
     std::map<run_eval::OutResults, const std::filesystem::path> output_file_paths;
+    std::cout << "8" << std::endl;
 
     //create any results directories if needed
     //and generate file paths for each output results type
@@ -400,6 +397,7 @@ void EvaluateImpResults::WriteRunOutput(
            std::string(file_info.desc_file_name) +
            std::string(run_eval::kCsvFileExtension))});
     }
+    std::cout << "9" << std::endl;
 
     //write run results with and without optimized parallel parameters to files
     //if run without optimized parallel parameters then results with default
@@ -410,6 +408,7 @@ void EvaluateImpResults::WriteRunOutput(
         {out_results_type,
          file_path});
     }
+    std::cout << "10" << std::endl;
 
     //write run results file with default parallel params
     results_stream.at(run_eval::OutResults::kDefaultPParams) <<
@@ -436,6 +435,7 @@ void EvaluateImpResults::WriteRunOutput(
         run_data_sstr.at(
           run_environment::ParallelParamsSetting::kDefault).str();        
     }
+    std::cout << "11" << std::endl;
 
     //generate speedup results with headers on top row and write to
     //"speedup" results stream
@@ -465,6 +465,7 @@ void EvaluateImpResults::WriteRunOutput(
         }
       }
     }
+    std::cout << "12" << std::endl;
 
     //generate speedup results with headers on left side
     //and add to results stream for run results with speedups
@@ -483,6 +484,7 @@ void EvaluateImpResults::WriteRunOutput(
       }
       results_stream.at(run_eval::OutResults::kOptWSpeedups) << std::endl;
     }
+    std::cout << "13" << std::endl;
 
     //close streams for writing to results files since file writing is done
     for (auto& [_, curr_results_stream] : results_stream) {
@@ -496,6 +498,7 @@ void EvaluateImpResults::WriteRunOutput(
       std::cout << out_results_desc_str << " in " <<
         output_file_paths.at(out_results_type) << std::endl;
     }
+    std::cout << "14" << std::endl;
 
     //run evaluation across current and previous runs across architectures
     //using run results and speedups saved from previous runs along with
