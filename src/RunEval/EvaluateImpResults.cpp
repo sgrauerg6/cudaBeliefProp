@@ -503,8 +503,6 @@ EvaluateImpResults::GetAltAccelSpeedups(
     return {};
   }
   else {
-    std::unordered_map<run_environment::AccSetting, 
-                     std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>>;
     //initialize speedup/slowdown using alternate acceleration
     std::vector<RunSpeedupAvgMedian> alt_acc_speedups;
     for (auto& [acc_setting, acc_results] : run_imp_results_by_acc_setting) {
