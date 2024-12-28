@@ -178,8 +178,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   std::cout << "RUN RESULTS:" << std::endl;
   for (const auto& [sig, result] : run_results) {
     std::cout << sig << std::endl;
-    if (result) {
-      std::cout << *result << std::endl;
+    if (result.at(run_environment::ParallelParamsSetting::kOptimized)) {
+      std::cout << result.at(run_environment::ParallelParamsSetting::kOptimized).value() << std::endl;
     }
     else {
       std::cout << "NO RESULT" << std::endl;
