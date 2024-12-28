@@ -137,16 +137,32 @@ EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
                          return (header == *run_speedup_iter);
                        }))
       {
-        //add speedup header in front of previous ordered speedup header if not
-        //first ordered header
-        if (run_speedup_iter != run_speedups_ordered.cbegin()) {
+        //get relative position of previous ordered speedup header
+        auto iter_prev_ordered_header = run_speedup_iter;
+        while (iter_prev_ordered_header != run_speedups_ordered.cbegin())
+        {
+          iter_prev_ordered_header--;
+          if (eval_data.speedup_headers.contains(*iter_prev_ordered_header))
+          {
+            break;
+          }
+        }
+        
+        //add speedup header in front of previous ordered speedup header if
+        //not first speedup header for run and previous ordered header exists
+        //in speedup headers
+        if (iter_prev_ordered_header != run_speedups_ordered.cbegin())
+        {
           //find position in evaluation speedups of previous ordered header
           //and add new header in front of it
           eval_data.speedup_headers.insert(
+            iter_prev_ordered_header + 1,
+            *run_speedup_iter);
+          /*eval_data.speedup_headers.insert(
             (std::find(eval_data.speedup_headers.cbegin(),
                        eval_data.speedup_headers.cend(),
-                       *(run_speedup_iter-1)) + 1),
-            *run_speedup_iter);
+                       *(iter_prev_ordered_header)) + 1),
+            *run_speedup_iter);*/
         }
         else {
           //add speedup header to front of evaluation speedup headers if no
