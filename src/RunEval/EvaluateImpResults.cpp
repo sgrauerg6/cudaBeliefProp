@@ -183,48 +183,42 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   }
   std::cout << "12" << std::endl;
 
-  //initialize overall results to float results using fastest acceleration and
-  //add double and half-type results to it
+  //initialize overall results to first data size results using fastest
+  //acceleration and add results using alternate datatypes to it
+  const size_t first_datatype_size =
+    run_imp_settings.datatypes_eval_sizes.front();
   auto [run_results, run_speedups] =
-    run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc);
-  if (run_result_mult_runs_opt.contains(sizeof(double))) {
-    run_results.merge(
-      run_result_mult_runs_opt.at(sizeof(double)).at(opt_imp_acc).first);
-  }
-  if (run_result_mult_runs_opt.contains(sizeof(halftype))) {
-    run_results.merge(
-      run_result_mult_runs_opt.at(sizeof(halftype)).at(opt_imp_acc).first);
+    run_result_mult_runs_opt.at(first_datatype_size).at(opt_imp_acc);
+  
+  //go through each datatype and add run results and speedups to overall
+  //results
+  for (const auto run_datatype_size : run_imp_settings.datatypes_eval_sizes) {
+    if (run_datatype_size != first_data_size) {
+      run_results.merge(
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first);
+    }
+    //add speedup data from alternate acceleration runs and speedup results from
+    //double and half precision runs to speedup results
+    if (run_datatype_size == first_datatype_size) {
+      if (alt_imp_speedup.contains(run_datatype_size)) {
+        run_speedups.insert(run_speedups.cend(),
+          alt_imp_speedup.at(run_datatype_size).cbegin(),
+          alt_imp_speedup.at(run_datatype_size).cend());
+      }
+    }
+    else {
+      run_speedups.insert(run_speedups.cend(),
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).second.cbegin(),
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).second.cend());
+      if (alt_imp_speedup.contains(run_datatype_size)) {
+        run_speedups.insert(run_speedups.cend(), 
+          alt_imp_speedup.at(run_datatype_size).cbegin(),
+          alt_imp_speedup.at(run_datatype_size).cend());
+      }
+    }
   }
   std::cout << "13" << std::endl;
 
-  //add speedup data from alternate acceleration runs and speedup results from
-  //double and half precision runs to speedup results
-  if (alt_imp_speedup.contains(sizeof(float))) {
-    run_speedups.insert(run_speedups.cend(),
-      alt_imp_speedup.at(sizeof(float)).cbegin(),
-      alt_imp_speedup.at(sizeof(float)).cend());
-  }
-  if (run_result_mult_runs_opt.contains(sizeof(double))) {
-    run_speedups.insert(run_speedups.cend(),
-      run_result_mult_runs_opt.at(sizeof(double)).at(opt_imp_acc).second.cbegin(),
-      run_result_mult_runs_opt.at(sizeof(double)).at(opt_imp_acc).second.cend());
-  }
-  if (alt_imp_speedup.contains(sizeof(double))) {
-    run_speedups.insert(run_speedups.cend(), 
-      alt_imp_speedup.at(sizeof(double)).cbegin(),
-      alt_imp_speedup.at(sizeof(double)).cend());
-  }
-  if (run_result_mult_runs_opt.contains(sizeof(halftype))) {
-    run_speedups.insert(run_speedups.cend(),
-      run_result_mult_runs_opt.at(sizeof(halftype)).at(opt_imp_acc).second.cbegin(),
-      run_result_mult_runs_opt.at(sizeof(halftype)).at(opt_imp_acc).second.cend());
-  }
-  if (alt_imp_speedup.contains(sizeof(halftype))) {
-    run_speedups.insert(run_speedups.cend(),
-      alt_imp_speedup.at(sizeof(halftype)).cbegin(),
-      alt_imp_speedup.at(sizeof(halftype)).cend());
-  }
-  std::cout << "14" << std::endl;
 
   //get and add speedups over baseline runtimes
   if (run_imp_settings.baseline_runtimes_path_desc)
