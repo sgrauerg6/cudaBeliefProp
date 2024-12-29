@@ -42,7 +42,6 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
   const run_environment::RunImpSettings run_imp_settings,
   size_t data_size) const
 {
-  std::cout << "1" << std::endl;
   //store whether or not parallel parameters optimized in run
   const bool p_params_optimized{
     (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
@@ -60,7 +59,6 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
       run_imp_settings,
       run_imp_opt_results,
       data_size);
-  std::cout << "2" << std::endl;
 
   //initialize implementation run speedups
   std::vector<RunSpeedupAvgMedian> run_imp_speedups;
@@ -70,7 +68,6 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
   run_imp_speedups.insert(run_imp_speedups.cend(),
                           speedup_over_baseline_subsets.cbegin(),
                           speedup_over_baseline_subsets.cend());
-  std::cout << "3" << std::endl;
 
   //compute and add speedup info for using optimized parallel parameters
   //compared to default parallel parameters
@@ -81,7 +78,6 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
     run_imp_speedups.push_back(GetAvgMedSpeedupOptPParams(
       run_imp_opt_results, speedup_header_optimized_p_params));
   }
-  std::cout << "4" << std::endl;
 
   //compute and add speedup info for using templated loop iteration counts
   //compared to loop iteration counts not being known at compile time
@@ -94,7 +90,6 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
     run_imp_speedups.push_back(GetAvgMedSpeedupLoopItersInTemplate(
       run_imp_opt_results, speedup_header_loop_iters_templated));
   }
-  std::cout << "5" << std::endl;
 
   //return run data with speedup from evaluation of implementation runs using
   //multiple inputs with runs having the same data type and acceleration method
@@ -110,7 +105,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   const run_environment::RunImpSettings run_imp_settings,
   run_environment::AccSetting opt_imp_acc) const
 {
-  std::cout << "6" << std::endl;
   //store whether or not parallel parameters optimized in run
   const bool p_params_optimized{
     (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
@@ -121,8 +115,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //implementations compared to expected fastest implementation
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
-  std::cout << "7" << std::endl;
-
   
   //check if setting is to run alternate optimized implementations and run and
   //evaluate alternate optimized implementations if that's the case
@@ -133,7 +125,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     //faster than result with "optimal" acceleration for specific input
     for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
     {
-  std::cout << "8" << std::endl;
       //get alternate acceleration speedups and optimized run results where
       //fastest acceleration run results are replaced with alternate
       //acceleration if it is faster
@@ -141,7 +132,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
         run_result_mult_runs_opt.at(data_size),
         run_imp_settings, data_size,
         opt_imp_acc);
-  std::cout << "9" << std::endl;
       
       //if speedup output for alternate acceleration is generated,
       //add alternate acceleration speedups for current data size and      
@@ -156,10 +146,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
         run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first =
           opt_run_results;
       }
-  std::cout << "10" << std::endl;
     }
   }
-  std::cout << "11" << std::endl;
 
   //get speedup/slowdown using alternate datatype (double or half) compared
   //with float
@@ -219,8 +207,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   }
   std::cout << "13" << std::endl;
 
-
-  //get and add speedups over baseline runtimes
+  //get and add speedups over baseline runtimes for all runs
   if (run_imp_settings.baseline_runtimes_path_desc)
   {
     const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
@@ -234,7 +221,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   std::cout << "15" << std::endl;
 
   //get and add speedup for using optimized parallel parameters
-  //compared to default
+  //compared to default for all runs
   if (p_params_optimized) {
     run_speedups.push_back(
       GetAvgMedSpeedupOptPParams(
@@ -245,7 +232,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   std::cout << "16" << std::endl;
 
   //get and add speedup when using templated loop iteration count
-  //where loop iteration count is known at compile time
+  //where loop iteration count is known at compile time for all runs
   if (run_imp_settings.templated_iters_setting ==
       run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated)
   {
