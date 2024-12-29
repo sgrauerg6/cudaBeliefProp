@@ -149,6 +149,7 @@ concept RunDataVect_t =
   std::is_same_v<T, __m512d> ||
   std::is_same_v<T, __m512> ||
   std::is_same_v<T, __m256i>;
+
 template <typename T>
 concept RunDataVectProcess_t =
   std::is_same_v<T, __m256d> ||
