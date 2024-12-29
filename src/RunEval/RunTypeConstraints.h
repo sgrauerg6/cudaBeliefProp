@@ -126,7 +126,7 @@ concept RunDataProcess_t =
 #endif //FLOAT16_VECTORIZATION
 
 //SIMD types for AVX processing on x86
-#if defined(AVX_512_VECTORIZATION)
+#if defined(AVX_512_VECTORIZATION) || defined(AVX_512_F16_VECTORIZATION)
 
 //check if float16 vectorization is supported
 #if defined(FLOAT16_VECTORIZATION)
@@ -167,7 +167,7 @@ concept RunDataVectProcess_t =
   std::is_same_v<T, __m512>;
 #endif //FLOAT16_VECTORIZATION
 
-#elif defined(AVX_256_VECTORIZATION)
+#elif defined(AVX_256_VECTORIZATION) || defined(AVX_256_F16_VECTORIZATION)
 
 //check if float16 vectorization is supported
 #if defined(FLOAT16_VECTORIZATION)
@@ -216,7 +216,7 @@ concept RunDataVectProcess_t =
   std::is_same_v<T, __m512d> ||
   std::is_same_v<T, __m512>;
 
-#endif //defined(AVX_512_VECTORIZATION)
+#endif //defined(AVX_512_VECTORIZATION) || defined(AVX_512_F16_VECTORIZATION)
 #endif //defined(COMPILING_FOR_ARM)
 
 //concepts that allow both single and vectorized types
