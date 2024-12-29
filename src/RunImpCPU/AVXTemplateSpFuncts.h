@@ -41,19 +41,19 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //used code from https://github.com/microsoft/DirectXMath/blob/master/Extensions/DirectXMathF16C.h
 //for the values conversion on Windows since _cvtsh_ss and _cvtss_sh not supported in Visual Studio
 template<> inline
-halftype util_functs::ZeroVal<halftype>()
+short util_functs::ZeroVal<short>()
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(0.0);
   __m128i convertedData = _mm_cvtps_ph(dataInAvxReg, 0);
-  return ((halftype*)& convertedData)[0];
+  return ((short*)& convertedData)[0];
 #else
   return _cvtss_sh(0.0f, 0);
 #endif
 }
 
 template<> inline
-float util_functs::ConvertValToDifferentDataTypeIfNeeded<halftype, float>(halftype data)
+float util_functs::ConvertValToDifferentDataTypeIfNeeded<short, float>(short data)
 {
 #ifdef _WIN32
   __m128i dataInAvxReg = _mm_cvtsi32_si128(static_cast<int>(data));
@@ -65,12 +65,12 @@ float util_functs::ConvertValToDifferentDataTypeIfNeeded<halftype, float>(halfty
 }
 
 template<> inline
-halftype util_functs::ConvertValToDifferentDataTypeIfNeeded<float, halftype>(float data)
+short util_functs::ConvertValToDifferentDataTypeIfNeeded<float, short>(float data)
 {
 #ifdef _WIN32
   __m128 dataInAvxReg = _mm_set_ss(data);
   __m128i convertedData = _mm_cvtps_ph(dataInAvxReg, 0);
-  return ((halftype*)&convertedData)[0];
+  return ((short*)&convertedData)[0];
 #else
   return _cvtss_sh(data, 0);
 #endif

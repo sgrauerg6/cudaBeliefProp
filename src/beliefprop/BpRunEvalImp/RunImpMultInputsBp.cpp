@@ -65,7 +65,22 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
     return RunEvalImpMultDataSets<double, OPT_IMP_ACCEL>(run_imp_settings);
   }
   else {
-    return RunEvalImpMultDataSets<halftype, OPT_IMP_ACCEL>(run_imp_settings);
+    //if using AVX, need to check if using float16 vectorization
+    //data stored as _Float16 if using float16 vectorization and as short if
+    //not
+    if constexpr ((OPT_IMP_ACCEL == run_environment::AccSetting::kAVX512_F16) ||
+                  (OPT_IMP_ACCEL == run_environment::AccSetting::kAVX256_F16))
+    {
+      return RunEvalImpMultDataSets<_Float16, OPT_IMP_ACCEL>(run_imp_settings);
+    }
+    else if constexpr ((OPT_IMP_ACCEL == run_environment::AccSetting::kAVX512) ||
+                       (OPT_IMP_ACCEL == run_environment::AccSetting::kAVX256))
+    {
+      return RunEvalImpMultDataSets<short, OPT_IMP_ACCEL>(run_imp_settings);
+    }
+    else {
+      return RunEvalImpMultDataSets<halftype, OPT_IMP_ACCEL>(run_imp_settings);
+    }
   }
 }
 
