@@ -170,13 +170,28 @@ namespace beliefprop_cpu
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
-    const halftype* message_u_prev_checkerboard_0, const halftype* message_d_prev_checkerboard_0,
-    const halftype* message_l_prev_checkerboard_0, const halftype* message_r_prev_checkerboard_0,
-    const halftype* message_u_prev_checkerboard_1, const halftype* message_d_prev_checkerboard_1,
-    const halftype* message_l_prev_checkerboard_1, const halftype* message_r_prev_checkerboard_1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
+    const short* message_l_prev_checkerboard_0, const short* message_r_prev_checkerboard_0,
+    const short* message_u_prev_checkerboard_1, const short* message_d_prev_checkerboard_1,
+    const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
+
+#if defined(FLOAT16_VECTORIZATION)
+
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+  void RetrieveOutputDisparityUseSIMDVectorsAVX256(
+    const beliefprop::BpLevelProperties& current_bp_level,
+    const _Float16* data_cost_checkerboard_0, const _Float16* data_cost_checkerboard_1,
+    const _Float16* message_u_prev_checkerboard_0, const _Float16* message_d_prev_checkerboard_0,
+    const _Float16* message_l_prev_checkerboard_0, const _Float16* message_r_prev_checkerboard_0,
+    const _Float16* message_u_prev_checkerboard_1, const _Float16* message_d_prev_checkerboard_1,
+    const _Float16* message_l_prev_checkerboard_1, const _Float16* message_r_prev_checkerboard_1,
+    float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
+    const ParallelParams& opt_cpu_params);
+
+#endif //FLOAT16_VECTORIZATION
 
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX256(
@@ -204,13 +219,28 @@ namespace beliefprop_cpu
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
     const beliefprop::BpLevelProperties& current_bp_level,
-    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
-    const halftype* message_u_prev_checkerboard_0, const halftype* message_d_prev_checkerboard_0,
-    const halftype* message_l_prev_checkerboard_0, const halftype* message_r_prev_checkerboard_0,
-    const halftype* message_u_prev_checkerboard_1, const halftype* message_d_prev_checkerboard_1,
-    const halftype* message_l_prev_checkerboard_1, const halftype* message_r_prev_checkerboard_1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    const short* message_u_prev_checkerboard_0, const short* message_d_prev_checkerboard_0,
+    const short* message_l_prev_checkerboard_0, const short* message_r_prev_checkerboard_0,
+    const short* message_u_prev_checkerboard_1, const short* message_d_prev_checkerboard_1,
+    const short* message_l_prev_checkerboard_1, const short* message_r_prev_checkerboard_1,
     float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
+
+#if defined(FLOAT16_VECTORIZATION)
+
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+  void RetrieveOutputDisparityUseSIMDVectorsAVX512(
+    const beliefprop::BpLevelProperties& current_bp_level,
+    const _Float16* data_cost_checkerboard_0, const _Float16* data_cost_checkerboard_1,
+    const _Float16* message_u_prev_checkerboard_0, const _Float16* message_d_prev_checkerboard_0,
+    const _Float16* message_l_prev_checkerboard_0, const _Float16* message_r_prev_checkerboard_0,
+    const _Float16* message_u_prev_checkerboard_1, const _Float16* message_d_prev_checkerboard_1,
+    const _Float16* message_l_prev_checkerboard_1, const _Float16* message_r_prev_checkerboard_1,
+    float* disparity_between_images_device, unsigned int bp_settings_disp_vals,
+    const ParallelParams& opt_cpu_params);
+
+#endif //FLOAT16_VECTORIZATION
 
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RetrieveOutputDisparityUseSIMDVectorsAVX512(
@@ -300,13 +330,29 @@ namespace beliefprop_cpu
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
     beliefprop::CheckerboardPart checkerboard_to_update,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
-    halftype* message_u_checkerboard_0, halftype* message_d_checkerboard_0,
-    halftype* message_l_checkerboard_0, halftype* message_r_checkerboard_0,
-    halftype* message_u_checkerboard_1, halftype* message_d_checkerboard_1,
-    halftype* message_l_checkerboard_1, halftype* message_r_checkerboard_1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    short* message_u_checkerboard_0, short* message_d_checkerboard_0,
+    short* message_l_checkerboard_0, short* message_r_checkerboard_0,
+    short* message_u_checkerboard_1, short* message_d_checkerboard_1,
+    short* message_l_checkerboard_1, short* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
+
+#if defined(FLOAT16_VECTORIZATION)
+
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
+    beliefprop::CheckerboardPart checkerboard_to_update,
+    const beliefprop::BpLevelProperties& current_bp_level,
+    const _Float16* data_cost_checkerboard_0, const _Float16* data_cost_checkerboard_1,
+    _Float16* message_u_checkerboard_0, _Float16* message_d_checkerboard_0,
+    _Float16* message_l_checkerboard_0, _Float16* message_r_checkerboard_0,
+    _Float16* message_u_checkerboard_1, _Float16* message_d_checkerboard_1,
+    _Float16* message_l_checkerboard_1, _Float16* message_r_checkerboard_1,
+    float disc_k_bp, unsigned int bp_settings_disp_vals,
+    const ParallelParams& opt_cpu_params);
+
+#endif //FLOAT16_VECTORIZATION
 
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256(
@@ -337,13 +383,29 @@ namespace beliefprop_cpu
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
     beliefprop::CheckerboardPart checkerboard_to_update,
     const beliefprop::BpLevelProperties& current_bp_level,
-    const halftype* data_cost_checkerboard_0, const halftype* data_cost_checkerboard_1,
-    halftype* message_u_checkerboard_0, halftype* message_d_checkerboard_0,
-    halftype* message_l_checkerboard_0, halftype* message_r_checkerboard_0,
-    halftype* message_u_checkerboard_1, halftype* message_d_checkerboard_1,
-    halftype* message_l_checkerboard_1, halftype* message_r_checkerboard_1,
+    const short* data_cost_checkerboard_0, const short* data_cost_checkerboard_1,
+    short* message_u_checkerboard_0, short* message_d_checkerboard_0,
+    short* message_l_checkerboard_0, short* message_r_checkerboard_0,
+    short* message_u_checkerboard_1, short* message_d_checkerboard_1,
+    short* message_l_checkerboard_1, short* message_r_checkerboard_1,
     float disc_k_bp, unsigned int bp_settings_disp_vals,
     const ParallelParams& opt_cpu_params);
+  
+#if defined(FLOAT16_VECTORIZATION)
+
+  template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
+  void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
+    beliefprop::CheckerboardPart checkerboard_to_update,
+    const beliefprop::BpLevelProperties& current_bp_level,
+    const _Float16* data_cost_checkerboard_0, const _Float16* data_cost_checkerboard_1,
+    _Float16* message_u_checkerboard_0, _Float16* message_d_checkerboard_0,
+    _Float16* message_l_checkerboard_0, _Float16* message_r_checkerboard_0,
+    _Float16* message_u_checkerboard_1, _Float16* message_d_checkerboard_1,
+    _Float16* message_l_checkerboard_1, _Float16* message_r_checkerboard_1,
+    float disc_k_bp, unsigned int bp_settings_disp_vals,
+    const ParallelParams& opt_cpu_params);
+
+#endif //FLOAT16_VECTORIZATION
 
   template<unsigned int DISP_VALS, run_environment::AccSetting ACCELERATION>
   void RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512(
