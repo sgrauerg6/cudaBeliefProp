@@ -165,7 +165,9 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //with float
   std::unordered_map<size_t, RunSpeedupAvgMedian> alt_datatype_speedup;
   for (const size_t data_size : run_imp_settings.datatypes_eval_sizes) {
-    if (data_size != sizeof(float)) {
+    if ((data_size != sizeof(float)) &&
+        (run_result_mult_runs_opt.contains(sizeof(float))))
+    {
       //get speedup or slowdown using alternate data type (double or half)
       //compared with float
       alt_datatype_speedup.insert(
