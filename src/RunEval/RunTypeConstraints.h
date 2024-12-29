@@ -99,11 +99,11 @@ concept RunData_t =
   std::is_same_v<T, double> ||
   std::is_same_v<T, halftype>;
 
-//data processing on CPU only uses float or double unless half precision
+//data processing on CPU only uses float or double unless float16
 //vectorization is supported
-//if half precision vectorization not supported, half type gets converted to
+//if float16 vectorization not supported, half type gets converted to
 //float for processing and then back to half for storage
-#if defined(HALF_PRECISION_VECTORIZATION)
+#if defined(FLOAT16_VECTORIZATION)
 template <typename T>
 concept RunDataProcess_t =
   std::is_same_v<T, float> ||
@@ -114,13 +114,13 @@ template <typename T>
 concept RunDataProcess_t =
   std::is_same_v<T, float> ||
   std::is_same_v<T, double>;
-#endif //HALF_PRECISION_VECTORIZATION
+#endif //FLOAT16_VECTORIZATION
 
 //SIMD types for AVX processing on x86
 #if defined(AVX_512_VECTORIZATION)
 
-//check if half precision vectorization is supported
-#if defined(HALF_PRECISION_VECTORIZATION)
+//check if float16 vectorization is supported
+#if defined(FLOAT16_VECTORIZATION)
 template <typename T>
 concept RunDataVect_t =
   std::is_same_v<T, __m256d> ||
@@ -156,12 +156,12 @@ concept RunDataVectProcess_t =
   std::is_same_v<T, __m256> ||
   std::is_same_v<T, __m512d> ||
   std::is_same_v<T, __m512>;
-#endif //HALF_PRECISION_VECTORIZATION
+#endif //FLOAT16_VECTORIZATION
 
 #elif defined(AVX_256_VECTORIZATION)
 
-//check if half precision vectorization is supported
-#if defined(HALF_PRECISION_VECTORIZATION)
+//check if float16 vectorization is supported
+#if defined(FLOAT16_VECTORIZATION)
 template <typename T>
 concept RunDataVect_t =
   std::is_same_v<T, __m256d> ||
@@ -185,11 +185,11 @@ template <typename T>
 concept RunDataVectProcess_t =
   std::is_same_v<T, __m256d> ||
   std::is_same_v<T, __m256>;
-#endif //HALF_PRECISION_VECTORIZATION
+#endif //FLOAT16_VECTORIZATION
 
 #else
 
-//AVX 512 without half precision vectorization used by default if AVX
+//AVX 512 without float16 vectorization used by default if AVX
 //vectorization setting not specified
 template <typename T>
 concept RunDataVect_t =
