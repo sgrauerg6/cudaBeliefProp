@@ -169,7 +169,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
            BaseTargetDiff::kDiffDatatype)});
     }
   }
-  std::cout << "12" << std::endl;
 
   //initialize overall results to first data size results using fastest
   //acceleration and add results using alternate datatypes to it
@@ -205,7 +204,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
       }
     }
   }
-  std::cout << "13" << std::endl;
 
   //get and add speedups over baseline runtimes for all runs
   if (run_imp_settings.baseline_runtimes_path_desc)
@@ -218,7 +216,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
       speedup_over_baseline.cbegin(),
       speedup_over_baseline.cend());
   }
-  std::cout << "15" << std::endl;
 
   //get and add speedup for using optimized parallel parameters
   //compared to default for all runs
@@ -229,7 +226,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
         std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
           std::string(run_eval::kAllRunsStr)));
   }
-  std::cout << "16" << std::endl;
 
   //get and add speedup when using templated loop iteration count
   //where loop iteration count is known at compile time for all runs
@@ -242,7 +238,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
         std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " + 
           std::string(run_eval::kAllRunsStr)));
   }
-  std::cout << "17" << std::endl;
 
   //add speedups when using doubles and half precision compared to float
   for (const auto& alt_speedup : alt_datatype_speedup) {
@@ -261,7 +256,6 @@ void EvaluateImpResults::WriteRunOutput(
   const run_environment::RunImpSettings& run_imp_settings,
   run_environment::AccSetting acceleration_setting) const
 {
-  std::cout << "18" << std::endl;
   //get references to run results and speedups
   const auto& [run_results, speedup_headers_w_data] = run_results_w_speedups;
 
@@ -275,7 +269,6 @@ void EvaluateImpResults::WriteRunOutput(
   const auto first_success_run_iter =
     std::find_if(run_results.cbegin(), run_results.cend(),
       [](const auto& run_result) { return run_result.second; } );
-  std::cout << "19" << std::endl;
 
   //check if there was at least one successful run
   if (first_success_run_iter != run_results.cend())
@@ -313,7 +306,6 @@ void EvaluateImpResults::WriteRunOutput(
         headers_in_order.erase(speedup_header_iter);
       }
     }
-  std::cout << "20" << std::endl;
     
     //add speedup headers to the end of headers in order
     headers_in_order.insert(
@@ -360,7 +352,6 @@ void EvaluateImpResults::WriteRunOutput(
         }
       }
     }
-  std::cout << "21" << std::endl;
 
     //write run results strings to output streams corresponding to results files
     //two results files contain run results (with and without optimized
@@ -387,7 +378,6 @@ void EvaluateImpResults::WriteRunOutput(
            std::string(file_info.desc_file_name) +
            std::string(run_eval::kCsvFileExtension))});
     }
-  std::cout << "22" << std::endl;
 
     //write run results with and without optimized parallel parameters to files
     //if run without optimized parallel parameters then results with default
@@ -398,7 +388,6 @@ void EvaluateImpResults::WriteRunOutput(
         {out_results_type,
          file_path});
     }
-  std::cout << "21" << std::endl;
 
     //write run results file with default parallel params
     results_stream.at(run_eval::OutResults::kDefaultPParams) <<
@@ -425,7 +414,6 @@ void EvaluateImpResults::WriteRunOutput(
         run_data_sstr.at(
           run_environment::ParallelParamsSetting::kDefault).str();        
     }
-  std::cout << "22" << std::endl;
 
     //generate speedup results with headers on top row and write to
     //"speedup" results stream
@@ -455,7 +443,6 @@ void EvaluateImpResults::WriteRunOutput(
         }
       }
     }
-  std::cout << "23" << std::endl;
 
     //generate speedup results with headers on left side
     //and add to results stream for run results with speedups
