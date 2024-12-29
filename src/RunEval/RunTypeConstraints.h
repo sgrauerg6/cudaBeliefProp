@@ -93,11 +93,20 @@ concept RunDataVectProcess_t =
 #include "RunSettingsParams/RunSettingsConstsEnums.h"
 
 //halftype alias is used for half data type in x86 processing
+#if defined(FLOAT16_VECTORIZATION)
 template <typename T>
 concept RunData_t =
   std::is_same_v<T, float> ||
   std::is_same_v<T, double> ||
-  std::is_same_v<T, halftype>;
+  std::is_same_v<T, _Float16> ||
+  std::is_same_v<T, short>;
+#else
+template <typename T>
+concept RunData_t =
+  std::is_same_v<T, float> ||
+  std::is_same_v<T, double> ||
+  std::is_same_v<T, short>;
+#endif //FLOAT16_VECTORIZATION
 
 //data processing on CPU only uses float or double unless float16
 //vectorization is supported
@@ -108,7 +117,7 @@ template <typename T>
 concept RunDataProcess_t =
   std::is_same_v<T, float> ||
   std::is_same_v<T, double> ||
-  std::is_same_v<T, halftype>;
+  std::is_same_v<T, _Float16>;
 #else
 template <typename T>
 concept RunDataProcess_t =
