@@ -42,12 +42,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 using halftype = float16_t;
 #else
 #include "RunImpCPU/RunCPUSettings.h"
-#if defined(FLOAT16_VECTORIZATION)
-#include <x86intrin.h>
-using halftype = _Float16;
-#else
 using halftype = short;
-#endif //FLOAT16_VECTORIZATION
 #endif //COMPILING_FOR_ARM
 #endif //OPTIMIZED_CPU_RUN
 
