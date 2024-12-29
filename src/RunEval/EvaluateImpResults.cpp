@@ -697,18 +697,18 @@ EvaluateImpResults::GetAvgMedSpeedupOverBaselineSubsets(
               *run_sig_results->at(
                 run_environment::ParallelParamsSetting::kOptimized).
                   GetDataAsDouble(run_eval::kOptimizedRuntimeHeader));
-            for (auto& run_data : *run_sig_results) {
-              run_data.second.AddDataWHeader(
+            for (auto& [_, run_data] : *run_sig_results) {
+              run_data.AddDataWHeader(
                 std::string(speedup_header),
                 speedups_vect.back());
             }
           }
         }
       }
-      if (!(speedups_vect.empty())) {
-        speedup_data.push_back(
-          {speedup_header, GetAvgMedSpeedup(speedups_vect)});
-      }
+    }
+    if (!(speedups_vect.empty())) {
+      speedup_data.push_back(
+        {speedup_header, GetAvgMedSpeedup(speedups_vect)});
     }
   }
 
@@ -774,12 +774,12 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::GetAvgMedSpeedupOverBaselin
           run_data.AddDataWHeader(speedup_header, speedups_vect.back());
         }
       }
-      if (!(speedups_vect.empty())) {
-        //get average and median speedups across all runs compared to
-        //baseline runtimes
-        speedup_data.push_back(
-          {speedup_header, GetAvgMedSpeedup(speedups_vect)});
-      }
+    }
+    if (!(speedups_vect.empty())) {
+      //get average and median speedups across all runs compared to
+      //baseline runtimes
+      speedup_data.push_back(
+        {speedup_header, GetAvgMedSpeedup(speedups_vect)});
     }
   }
 
