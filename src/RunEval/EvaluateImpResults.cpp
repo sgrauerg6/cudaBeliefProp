@@ -193,7 +193,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //go through each datatype and add run results and speedups to overall
   //results
   for (const auto run_datatype_size : run_imp_settings.datatypes_eval_sizes) {
-    if (run_datatype_size != first_data_size) {
+    if (run_datatype_size != first_datatype_size) {
       run_results.merge(
         run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first);
     }
