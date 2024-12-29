@@ -43,6 +43,7 @@ using halftype = float16_t;
 #else
 #include "RunImpCPU/RunCPUSettings.h"
 #if defined(FLOAT16_VECTORIZATION)
+#include <x86intrin.h>
 using halftype = _Float16;
 #else
 using halftype = short;
