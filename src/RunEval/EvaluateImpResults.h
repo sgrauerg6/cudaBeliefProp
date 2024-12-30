@@ -121,7 +121,7 @@ private:
    * @param run_imp_settings
    * @return std::vector<RunSpeedupAvgMedian>
    */
-  std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
+  std::vector<RunSpeedupAvgMedian> SpeedupsAllRuns(
     const MultRunData& run_results,
     const run_environment::RunImpSettings& run_imp_settings) const;
 
