@@ -106,8 +106,8 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kSpeedupOptParParamsHeader{"Speedup Over Default OMP Thread Count / CUDA Thread Block Dimensions"};
 
   //constants for speedups descriptions for alternate data types compared to flot
-  constexpr std::string_view kSpeedupDouble{"Speedup using double-precision relative to float (actually slowdown)"};
-  constexpr std::string_view kSpeedupHalf{"Speedup using half-precision relative to float"};
+  constexpr std::string_view kSpeedupDoubleHeader{"Speedup using double-precision relative to float (actually slowdown)"};
+  constexpr std::string_view kSpeedupHalfHeader{"Speedup using half-precision relative to float"};
 
   //constant for speedup description for templated loop iteration count where number
   //of loop iterations in at least some loops in benchmarks is known at compile time

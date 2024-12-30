@@ -96,19 +96,65 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
   return {run_imp_opt_results, run_imp_speedups};
 }
 
+//get speedups across all runs
+std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
+  const MultRunData& run_results,
+  const run_environment::RunImpSettings& run_imp_settings) const
+{
+  //store whether or not parallel parameters optimized in run
+  const bool p_params_optimized{
+    (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
+
+  //initialize vector for speedups across all runs
+  std::vector<RunSpeedupAvgMedian> speedups_all_runs;
+  
+  //get and add speedups over baseline runtimes for all runs
+  if (run_imp_settings.baseline_runtimes_path_desc)
+  {
+    const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
+      run_results, run_eval::kAllRunsStr,
+      *run_imp_settings.baseline_runtimes_path_desc);
+    speedups_all_runs.insert(
+      run_speedups.cend(),
+      speedup_over_baseline.cbegin(),
+      speedup_over_baseline.cend());
+  }
+
+  //get and add speedup for using optimized parallel parameters
+  //compared to default for all runs
+  if (p_params_optimized) {
+    speedups_all_runs.push_back(
+      GetAvgMedSpeedupOptPParams(
+        run_results,
+        std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
+          std::string(run_eval::kAllRunsStr)));
+  }
+
+  //get and add speedup when using templated loop iteration count
+  //where loop iteration count is known at compile time for all runs
+  if (run_imp_settings.templated_iters_setting ==
+      run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated)
+  {
+    speedups_all_runs.push_back(
+      GetAvgMedSpeedupLoopItersInTemplate(
+        run_results,
+        std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " + 
+          std::string(run_eval::kAllRunsStr)));
+  }
+
+  //return speedups across all runs
+  return speedups_all_runs;
+}
+
 //evaluate results for all implementation runs on multiple inputs with the runs
 //potentially having different data types and acceleration methods and
 //write run result and speedup outputs to files
 void EvaluateImpResults::EvalAllResultsWriteOutput(
   const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>&
     run_results_mult_runs,
-  const run_environment::RunImpSettings run_imp_settings,
+  const run_environment::RunImpSettings& run_imp_settings,
   run_environment::AccSetting opt_imp_acc) const
 {
-  //store whether or not parallel parameters optimized in run
-  const bool p_params_optimized{
-    (!(run_imp_settings.p_params_default_alt_options.second.empty()))};
-
   //initialize optimized multi-run results from input run result
   //run results must be writable since speedup results get added to runs and
   //optimized run results may be adjusted if faster runs found in alternative
@@ -149,27 +195,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     }
   }
 
-  //get speedup/slowdown using alternate datatype (double or half) compared
-  //with float
-  std::unordered_map<size_t, RunSpeedupAvgMedian> alt_datatype_speedup;
-  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes) {
-    if ((data_size != sizeof(float)) &&
-        (run_result_mult_runs_opt.contains(sizeof(float))))
-    {
-      //get speedup or slowdown using alternate data type (double or half)
-      //compared with float
-      alt_datatype_speedup.insert(
-        {data_size,
-         GetAvgMedSpeedupBaseVsTarget(
-           run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
-           run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
-           (data_size > sizeof(float)) ?
-             run_eval::kSpeedupDouble :
-             run_eval::kSpeedupHalf,
-           BaseTargetDiff::kDiffDatatype)});
-    }
-  }
-
   //initialize overall results to first data size results using fastest
   //acceleration and add results using alternate datatypes to it
   const size_t first_datatype_size =
@@ -205,43 +230,31 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     }
   }
 
-  //get and add speedups over baseline runtimes for all runs
-  if (run_imp_settings.baseline_runtimes_path_desc)
+  //compute and add speedups for all runs across all data types
+  auto speedups_all_runs = SpeedupsAllRuns(run_results, run_imp_settings);
+  run_speedups.insert(
+    run_speedups.cend(),
+    speedups_all_runs.cbegin(),
+    speedups_all_runs.cend());
+  
+  //get speedup/slowdown using alternate datatype (double or half) compared
+  //with float and add to overall run speedup results
+  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
   {
-    const auto speedup_over_baseline = GetAvgMedSpeedupOverBaseline(
-      run_results, run_eval::kAllRunsStr,
-      *run_imp_settings.baseline_runtimes_path_desc);
-    run_speedups.insert(
-      run_speedups.cend(),
-      speedup_over_baseline.cbegin(),
-      speedup_over_baseline.cend());
-  }
-
-  //get and add speedup for using optimized parallel parameters
-  //compared to default for all runs
-  if (p_params_optimized) {
-    run_speedups.push_back(
-      GetAvgMedSpeedupOptPParams(
-        run_results,
-        std::string(run_eval::kSpeedupOptParParamsHeader) + " - " +
-          std::string(run_eval::kAllRunsStr)));
-  }
-
-  //get and add speedup when using templated loop iteration count
-  //where loop iteration count is known at compile time for all runs
-  if (run_imp_settings.templated_iters_setting ==
-      run_environment::TemplatedItersSetting::kRunTemplatedAndNotTemplated)
-  {
-    run_speedups.push_back(
-      GetAvgMedSpeedupLoopItersInTemplate(
-        run_results,
-        std::string(run_eval::kSpeedupLoopItersCountTemplate) + " - " + 
-          std::string(run_eval::kAllRunsStr)));
-  }
-
-  //add speedups when using doubles and half precision compared to float
-  for (const auto& alt_speedup : alt_datatype_speedup) {
-    run_speedups.push_back(alt_speedup.second);
+    if ((data_size != sizeof(float)) &&
+        (run_result_mult_runs_opt.contains(sizeof(float))))
+    {
+      //get speedup or slowdown using alternate data type (double or half)
+      //compared with float and add to run speedups
+      run_speedups.push_back(
+        GetAvgMedSpeedupBaseVsTarget(
+          run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
+          run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
+          (data_size > sizeof(float)) ?
+          run_eval::kSpeedupDoubleHeader :
+          run_eval::kSpeedupHalfHeader,
+          BaseTargetDiff::kDiffDatatype));
+    }
   }
 
   //write output corresponding to results and run_speedups for all data types

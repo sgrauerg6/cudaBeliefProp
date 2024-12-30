@@ -84,7 +84,7 @@ public:
   void EvalAllResultsWriteOutput(
     const std::unordered_map<size_t, MultRunDataWSpeedupByAcc>&
       run_results_mult_runs,
-    const run_environment::RunImpSettings run_imp_settings,
+    const run_environment::RunImpSettings& run_imp_settings,
     run_environment::AccSetting opt_imp_acc) const;
 
 private:
@@ -113,6 +113,17 @@ private:
    * @return std::vector<std::string> 
    */
   virtual std::vector<std::string> GetInputParamsShow() const = 0;
+
+  /**
+   * @brief Get speedups across runs of all data types
+   * 
+   * @param run_results
+   * @param run_imp_settings
+   * @return std::vector<RunSpeedupAvgMedian>
+   */
+  std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
+    const MultRunData& run_results,
+    const run_environment::RunImpSettings& run_imp_settings) const;
 
   /**
    * @brief Write data for file corresponding to runs for a specified data type
