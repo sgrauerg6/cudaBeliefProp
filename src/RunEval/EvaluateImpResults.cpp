@@ -115,7 +115,7 @@ std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
       run_results, run_eval::kAllRunsStr,
       *run_imp_settings.baseline_runtimes_path_desc);
     speedups_all_runs.insert(
-      run_speedups.cend(),
+      speedups_all_runs.cend(),
       speedup_over_baseline.cbegin(),
       speedup_over_baseline.cend());
   }
