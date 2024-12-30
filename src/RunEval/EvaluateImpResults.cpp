@@ -98,7 +98,7 @@ EvaluateImpResults::EvalResultsSingDataTypeAcc(
 
 //get speedups across all runs
 std::vector<RunSpeedupAvgMedian> EvaluateImpResults::SpeedupsAllRuns(
-  const MultRunData& run_results,
+  MultRunData& run_results,
   const run_environment::RunImpSettings& run_imp_settings) const
 {
   //store whether or not parallel parameters optimized in run

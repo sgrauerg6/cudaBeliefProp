@@ -122,7 +122,7 @@ private:
    * @return std::vector<RunSpeedupAvgMedian>
    */
   std::vector<RunSpeedupAvgMedian> SpeedupsAllRuns(
-    const MultRunData& run_results,
+    MultRunData& run_results,
     const run_environment::RunImpSettings& run_imp_settings) const;
 
   /**
