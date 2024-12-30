@@ -92,7 +92,13 @@ supported on target CPU but AVX-256 is supported, set vectorization
 to AVX-256 by changing line in
 beliefprop/LinuxMakeAndRunBPOptimizedCPU/Makefile.h from
 "CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION" to
-"CPU_VECTORIZATION_DEFINE = -DAVX_256_VECTORIZATION".
+"CPU_VECTORIZATION_DEFINE = -DAVX_256_VECTORIZATION".  If AVX-512 _Float16
+vectorization is supported on CPU (currently only Intel Sapphire Rapids and
+Emerald Rapids CPUs), can enable AVX512 _Float16 vectorization by setting
+"CPU_VECTORIZATION_DEFINE = -DAVX_512_VECTORIZATION" to
+"CPU_VECTORIZATION_DEFINE = -DAVX_512_F16_VECTORIZATION" and
+FLOAT16_VECTORIZATION_DEFINE = -DFLOAT16_VECTORIZATION in
+beliefprop/LinuxMakeAndRunBPOptimizedCPU/Makefile.h.
 
 -If on a multi-CPU system, may want to adjust environment variables OMP_PLACES
 and OMP_PROC_BIND to optimize OpenMP thread configuration. In some tests on
