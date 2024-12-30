@@ -75,7 +75,8 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
     }
 #if defined(FLOAT16_VECTORIZATION)
     else if constexpr ((OPT_IMP_ACCEL == run_environment::AccSetting::kAVX512_F16) ||
-                       (OPT_IMP_ACCEL == run_environment::AccSetting::kAVX256_F16))
+                       (OPT_IMP_ACCEL == run_environment::AccSetting::kAVX256_F16) ||
+                       (OPT_IMP_ACCEL == run_environment::AccSetting::kNone))
     {
       return RunEvalImpMultDataSets<_Float16, OPT_IMP_ACCEL>(run_imp_settings);
     }
