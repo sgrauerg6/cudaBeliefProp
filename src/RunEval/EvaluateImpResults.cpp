@@ -171,9 +171,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     //faster than result with "optimal" acceleration for specific input
     for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
     {
-      std::cout << "Opt imp acc: " << run_environment::AccelerationString(opt_imp_acc)
-                << std::endl;
-
       //get alternate acceleration speedups and optimized run results where
       //fastest acceleration run results are replaced with alternate
       //acceleration if it is faster
@@ -526,8 +523,6 @@ EvaluateImpResults::GetAltAccelSpeedups(
     //initialize optimized run results to "fastest" acceleration results
     //results get replaced by alternate acceleration result if alternate
     //acceleration is faster
-    std::cout << "Fastest acc: " << run_environment::AccelerationString(fastest_acc)
-              << std::endl;
     auto run_imp_opt_results =
       run_imp_results_by_acc_setting.at(fastest_acc).first;
 
