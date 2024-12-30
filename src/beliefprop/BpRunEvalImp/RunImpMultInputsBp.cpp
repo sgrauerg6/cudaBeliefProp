@@ -78,6 +78,7 @@ MultRunData RunImpMultInputsBp::RunEvalImpMultDataSets(
                        (OPT_IMP_ACCEL == run_environment::AccSetting::kAVX256_F16) ||
                        (OPT_IMP_ACCEL == run_environment::AccSetting::kNone))
     {
+      std::cout << "FLOAT16 USED" << std::endl;
       return RunEvalImpMultDataSets<_Float16, OPT_IMP_ACCEL>(run_imp_settings);
     }
 #endif //FLOAT16_VECTORIZATION
