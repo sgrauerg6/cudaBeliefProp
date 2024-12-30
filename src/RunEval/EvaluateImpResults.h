@@ -64,7 +64,7 @@ public:
    * @param run_results 
    * @param run_imp_settings 
    * @param data_size 
-   * @return std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> 
+   * @return Run results with additional data and computed speedups from run
    */
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>>
   EvalResultsSingDataTypeAcc(
@@ -92,7 +92,7 @@ private:
    * @brief Retrieve file path of implementation run results
    * must be defined in child class
    * 
-   * @return std::filesystem::path 
+   * @return File path of implementation run results
    */
   virtual std::filesystem::path GetImpResultsPath() const = 0;
   
@@ -101,7 +101,8 @@ private:
    * vector corresponding to a separate line<br>
    * Must be defined in child class
    * 
-   * @return std::vector<std::string> 
+   * @return Vector of strings corresponding to text to display at top of file
+   * showing results across runs
    */
   virtual std::vector<std::string> GetCombResultsTopText() const = 0;
 
@@ -110,7 +111,8 @@ private:
    * runtimes<br>
    * Must be defined in child class
    * 
-   * @return std::vector<std::string> 
+   * @return Vector of strings corresponding to input parameters to show in
+   * results across runs
    */
   virtual std::vector<std::string> GetInputParamsShow() const = 0;
 
@@ -119,7 +121,7 @@ private:
    * 
    * @param run_results
    * @param run_imp_settings
-   * @return std::vector<RunSpeedupAvgMedian>
+   * @return Speedup results across runs of all data type
    */
   std::vector<RunSpeedupAvgMedian> SpeedupsAllRuns(
     MultRunData& run_results,
@@ -150,7 +152,8 @@ private:
    * @param run_imp_settings 
    * @param data_type_size 
    * @param fastest_acc 
-   * @return std::vector<RunSpeedupAvgMedian> 
+   * @return Speedups (or slowdowns) with optimized run results from using
+   * alternate acceleration as opposed to assumed fastest acceleration
    */
   std::pair<std::vector<RunSpeedupAvgMedian>, MultRunData> GetAltAccelSpeedups(
     MultRunDataWSpeedupByAcc& run_imp_results_by_acc_setting,
@@ -164,7 +167,7 @@ private:
    * @param run_imp_settings 
    * @param run_data_all_runs 
    * @param data_type_size 
-   * @return std::vector<RunSpeedupAvgMedian> 
+   * @return Speedup over baseline data
    */
   std::vector<RunSpeedupAvgMedian> GetSpeedupOverBaseline(
     const run_environment::RunImpSettings& run_imp_settings,
@@ -172,13 +175,13 @@ private:
     size_t data_type_size) const;
 
   /**
-   * @brief Get speedup over baseline run for subsets of smallest and largest
-   * sets if data available
+   * @brief Get speedup over baseline run for subsets of baseline data if data
+   * available
    * 
    * @param run_imp_settings 
    * @param run_data_all_runs 
    * @param data_type_size 
-   * @return std::vector<RunSpeedupAvgMedian> 
+   * @return Speedups over subsets of baseline data
    */
   std::vector<RunSpeedupAvgMedian> GetSpeedupOverBaselineSubsets(
     const run_environment::RunImpSettings& run_imp_settings,
@@ -190,7 +193,7 @@ private:
    * 
    * @param baseline_runtimes_path_desc 
    * @param key_runtime_data 
-   * @return std::pair<std::string, std::map<InputSignature, std::string>>
+   * @return Baseline runtime data
    */
   std::pair<std::string, std::map<InputSignature, std::string>>
   GetBaselineRuntimeData(
@@ -201,7 +204,7 @@ private:
    * @brief Get average and median speedup from vector of speedup values
    * 
    * @param speedups_vect 
-   * @return RunSpeedupAvgMedian::second_type
+   * @return Average and median speedups
    */
   RunSpeedupAvgMedian::second_type GetAvgMedSpeedup(
     const std::vector<double>& speedups_vect) const;
@@ -214,7 +217,8 @@ private:
    * @param data_type_str 
    * @param baseline_runtimes_path_desc 
    * @param subset_desc_input_sig 
-   * @return std::vector<RunSpeedupAvgMedian> 
+   * @return Average and median speedups over basline data for specified
+   * subsets of runs
    */
   std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupOverBaselineSubsets(
     MultRunData& run_results,
@@ -232,7 +236,7 @@ private:
    * @param run_results 
    * @param data_type_str 
    * @param baseline_runtimes_path_desc 
-   * @return std::vector<RunSpeedupAvgMedian> 
+   * @return Average and median speedups over basline data
    */
   std::vector<RunSpeedupAvgMedian> GetAvgMedSpeedupOverBaseline(
     MultRunData& run_results,
@@ -245,7 +249,8 @@ private:
    * 
    * @param run_results 
    * @param speedup_header 
-   * @return RunSpeedupAvgMedian 
+   * @return Average and median speedups using optimized parallel parameters
+   * compared to default parallel parameters 
    */
   RunSpeedupAvgMedian GetAvgMedSpeedupOptPParams(
     MultRunData& run_results,
@@ -258,7 +263,7 @@ private:
    * @param run_results_target 
    * @param speedup_header 
    * @param base_target_diff 
-   * @return RunSpeedupAvgMedian 
+   * @return Average and median speedups between base and target runtime data 
    */
   RunSpeedupAvgMedian GetAvgMedSpeedupBaseVsTarget(
     MultRunData& run_results_base,
@@ -272,7 +277,9 @@ private:
    * 
    * @param run_results 
    * @param speedup_header 
-   * @return RunSpeedupAvgMedian 
+   * @return Average and median speedups when loop iterations are given at
+   * compile time as template value compared to when iteration count only known
+   * at runtime 
    */
   RunSpeedupAvgMedian GetAvgMedSpeedupLoopItersInTemplate(
     MultRunData& run_results,

@@ -53,7 +53,7 @@ inline unsigned int GetBytesAlignMemory(AccSetting accel_setting) {
  * corresponding value for each run setting
  * 
  * @tparam ACCELERATION_SETTING 
- * @return RunData 
+ * @return RunData object with run settings 
  */
 template <AccSetting ACCELERATION_SETTING>
 inline RunData RunSettings() {

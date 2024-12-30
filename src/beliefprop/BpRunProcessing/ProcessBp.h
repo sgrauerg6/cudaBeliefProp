@@ -111,7 +111,7 @@ private:
    * @param current_bp_level 
    * @param images_target_device 
    * @param data_costs_device 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status InitializeDataCosts(
     const beliefprop::BpSettings& alg_settings,
@@ -127,7 +127,7 @@ private:
    * @param data_costs_device 
    * @param data_costs_device_write 
    * @param bp_settings_num_disp_vals 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status InitializeDataCurrentLevel(
     const BpLevel<T>& current_bp_level,
@@ -142,7 +142,7 @@ private:
    * @param current_bp_level 
    * @param messages_device 
    * @param bp_settings_num_disp_vals 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status InitializeMessageValsToDefault(
     const BpLevel<T>& current_bp_level,
@@ -157,7 +157,7 @@ private:
    * @param data_costs_device 
    * @param messages_device 
    * @param allocated_memory 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status RunBPAtCurrentLevel(
     const beliefprop::BpSettings& alg_settings,
@@ -174,7 +174,7 @@ private:
    * @param messages_device_copy_from 
    * @param messages_device_copy_to 
    * @param bp_settings_num_disp_vals 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   virtual run_eval::Status CopyMessageValuesToNextLevelDown(
     const BpLevel<T>& current_bp_level,
@@ -191,7 +191,7 @@ private:
    * @param data_costs_device 
    * @param messages_device 
    * @param bp_settings_num_disp_vals 
-   * @return float* 
+   * @return Output disparity map from belief propagation run as a raw array
    */
   virtual float* RetrieveOutputDisparity(
     const BpLevel<T>& BpLevel,
@@ -223,7 +223,8 @@ private:
    * 
    * @param num_data_allocate_per_message 
    * @param mem_management_bp_run 
-   * @return beliefprop::CheckerboardMessages<T*> 
+   * @return Checkerboard messages structure to use in belief propagation run
+   * with allocated memory for each message
    */
   virtual beliefprop::CheckerboardMessages<T*> AllocateMemoryForCheckerboardMessages(
     std::size_t num_data_allocate_per_message,
@@ -251,12 +252,13 @@ private:
   }
 
   /**
-   * @brief Retrieve pointer to bp message data at current level using
+   * @brief Retrieve pointers to bp message data at current level using
    * specified offset
    * 
    * @param all_checkerboard_messages 
    * @param offset_into_messages 
-   * @return beliefprop::CheckerboardMessages<T*> 
+   * @return Checkerboard messages structure with pointers to starts of belief
+   * propagation message data at current level
    */
   virtual beliefprop::CheckerboardMessages<T*> RetrieveLevelMessageData(
     const beliefprop::CheckerboardMessages<T*>& all_checkerboard_messages,
@@ -298,7 +300,8 @@ private:
    * 
    * @param num_data_costs_checkerboards 
    * @param mem_management_bp_run 
-   * @return beliefprop::DataCostsCheckerboards<T*> 
+   * @return DataCostsCheckerboards structure to use in belief propagation run
+   * with memory allocated
    */
   virtual beliefprop::DataCostsCheckerboards<T*> AllocateMemoryForDataCosts(
     std::size_t num_data_costs_checkerboards,
@@ -318,7 +321,8 @@ private:
    * 
    * @param num_data_allocate_per_data_costs_message_data_array 
    * @param mem_management_bp_run 
-   * @return std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> 
+   * @return Data cost and checkerboard message structures with allocated
+   * and organized memory to use in belief propagation run
    */
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
   AllocateAndOrganizeDataCostsAndMessageDataAllLevels(
@@ -336,7 +340,8 @@ private:
    * 
    * @param data_all_levels 
    * @param num_data_allocate_per_data_costs_message_data_array 
-   * @return std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>> 
+   * @return Data cost and checkerboard message structures with organized
+   * memory to use in belief propagation run
    */
   virtual std::pair<beliefprop::DataCostsCheckerboards<T*>, beliefprop::CheckerboardMessages<T*>>
   OrganizeDataCostsAndMessageDataAllLevels(
@@ -385,7 +390,8 @@ private:
    * 
    * @param all_data_costs 
    * @param offset 
-   * @return beliefprop::DataCostsCheckerboards<T*> 
+   * @return DataCostsCheckerboards structure with pointers to data costs with
+   * specified offset
    */
   virtual beliefprop::DataCostsCheckerboards<T*> RetrieveLevelDataCosts(
     const beliefprop::DataCostsCheckerboards<T*>& all_data_costs,

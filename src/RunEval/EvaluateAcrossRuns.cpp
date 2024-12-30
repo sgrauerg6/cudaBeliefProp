@@ -83,7 +83,8 @@ void EvaluateAcrossRuns::operator()(
   * 
   * @param run_results_by_name
   * @param eval_across_runs_in_params_show
-  * @return EvalAcrossRunsData
+  * @return EvalAcrossRunsData structure with data for evaluating results
+  * across runs
   */
 EvalAcrossRunsData EvaluateAcrossRuns::GenEvalAcrossRunsData(
   const std::map<std::string, RunResultsSpeedups>& run_results_by_name,

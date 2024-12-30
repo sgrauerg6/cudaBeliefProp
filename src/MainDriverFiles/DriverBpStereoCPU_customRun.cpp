@@ -46,7 +46,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  * 
  * @param argc 
  * @param argv 
- * @return int 
+ * @return 0 if successful, another another indicating error if not
  */
 int main(int argc, char** argv)
 {

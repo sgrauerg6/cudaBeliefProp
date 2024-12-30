@@ -73,8 +73,8 @@ public:
    * "any" and is ignored in the comparison
    * 
    * @param rhs 
-   * @return true 
-   * @return false 
+   * @return true if current input signature is less than rhs input signature,
+   * false otherwise
    */
   bool operator<(const InputSignature& rhs) const;
 
@@ -82,8 +82,8 @@ public:
    * @brief Equality operator for comparing evaluation input signatures
    * 
    * @param rhs 
-   * @return true 
-   * @return false 
+   * @return true if current input signature is same as rhs input signature,
+   * false otherwise
    */
   bool operator==(const InputSignature& rhs) const;
 
@@ -93,8 +93,9 @@ public:
    * by "no value" for std::optional object
    * 
    * @param rhs 
-   * @return true 
-   * @return false 
+   * @return true if current input signature is same as rhs input signature
+   * where an attribute is considered "equal" in cases where one side is "ANY"
+   * for the attribute
    */
   bool EqualsUsingAny(const InputSignature& rhs) const;
 
@@ -164,7 +165,7 @@ public:
    * 
    * @param os 
    * @param eval_input_sig 
-   * @return std::ostream& 
+   * @return Output stream with InputSignature object written to it
    */
   friend std::ostream& operator<<(
     std::ostream& os,

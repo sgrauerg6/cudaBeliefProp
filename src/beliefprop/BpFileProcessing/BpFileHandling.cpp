@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "BpFileHandling.h"
 
 /**
- * @brief Retrieve path of stereo images to process using
+ * @brief Retrieve path of stereo image sets directory to process using
  * kBeliefPropDirectoryName and kStereoSetsDirectoryName constants
  * 
- * @return std::filesystem::path 
+ * @return Path of stereo image sets directory
  */
 std::filesystem::path BpFileHandling::StereoSetsPath() const
 {
@@ -85,7 +85,7 @@ std::filesystem::path BpFileHandling::StereoSetsPath() const
  * @brief Return path to reference image with valid extension if found,
  * otherwise throw filesystem error
  * 
- * @return std::filesystem::path 
+ * @return File path of reference image for current stereo set
  */
 std::filesystem::path BpFileHandling::RefImagePath() const
 {
@@ -110,7 +110,7 @@ std::filesystem::path BpFileHandling::RefImagePath() const
  * @brief Return path to test image with valid extension if found,
  * otherwise throw filesystem error
  * 
- * @return std::filesystem::path 
+ * @return File path of test image for current stereo set
  */
 std::filesystem::path BpFileHandling::TestImagePath() const
 {

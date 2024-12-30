@@ -48,7 +48,7 @@ public:
    * @brief Allocate specified amount of data of type T on CUDA device
    * 
    * @param numData 
-   * @return T* 
+   * @return Pointer to allocated memory on CUDA device
    */
   T* AllocateMemoryOnDevice(std::size_t numData) const override
   {
@@ -73,7 +73,7 @@ public:
    * 
    * @param numData 
    * @param acc_setting 
-   * @return T* 
+   * @return Pointer to allocated memory on CUDA device
    */
   T* AllocateAlignedMemoryOnDevice(
     std::size_t numData,

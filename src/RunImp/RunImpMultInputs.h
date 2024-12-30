@@ -51,7 +51,7 @@ public:
    * @param run_imp_settings 
    * @param data_type_size 
    * @param evalResults 
-   * @return std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> 
+   * @return Run results and speedup data from runs
    */
   std::pair<MultRunData, std::vector<RunSpeedupAvgMedian>> operator()(
     const run_environment::RunImpSettings& run_imp_settings,
@@ -61,7 +61,7 @@ public:
   /**
    * @brief Return acceleration setting for implementation
    * 
-   * @return run_environment::AccSetting 
+   * @return Acceleration setting for implementation
    */
   run_environment::AccSetting AccelerationSetting() const {
     return opt_imp_accel_; }
@@ -75,7 +75,7 @@ private:
    * 
    * @param run_imp_settings 
    * @param data_type_size 
-   * @return MultRunData 
+   * @return Run results from running implmenetatino on multiple data sets
    */
   virtual MultRunData RunEvalImpMultDataSets(
     const run_environment::RunImpSettings& run_imp_settings,

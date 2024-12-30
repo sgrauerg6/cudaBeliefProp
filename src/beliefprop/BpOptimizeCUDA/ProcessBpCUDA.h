@@ -58,7 +58,7 @@ private:
    * @param current_bp_level 
    * @param images_target_device 
    * @param data_costs_device 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   run_eval::Status InitializeDataCosts(
     const beliefprop::BpSettings& alg_settings,
@@ -79,7 +79,7 @@ private:
    * @param current_bp_level 
    * @param messages_device 
    * @param bp_settings_num_disp_vals 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   run_eval::Status InitializeMessageValsToDefault(
     const BpLevel<T>& current_bp_level,
@@ -95,7 +95,7 @@ private:
    * @param data_costs_device 
    * @param messages_device 
    * @param allocated_memory 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   run_eval::Status RunBPAtCurrentLevel(
     const beliefprop::BpSettings& alg_settings,
@@ -117,7 +117,7 @@ private:
    * @param messages_device_copy_from 
    * @param messages_device_copy_to 
    * @param bp_settings_num_disp_vals 
-   * @return run_eval::Status 
+   * @return Status of "no error" if successful, "error" status otherwise
    */
   run_eval::Status CopyMessageValuesToNextLevelDown(
     const BpLevel<T>& current_bp_level,

@@ -103,7 +103,8 @@ public:
    * integral constant NUM_INPUT.
    * 
    * @param run_imp_settings 
-   * @return MultRunData 
+   * @return Run results from running and evaluating optimized belief
+   * propagation implementation 
    */
   MultRunData operator()(
     const run_environment::RunImpSettings& run_imp_settings) override;
@@ -114,7 +115,7 @@ protected:
    * parallel on CPU or GPU
    * 
    * @param run_imp_settings 
-   * @return std::shared_ptr<ParallelParams> 
+   * @return Shared pointer to parallel parameters as set up for run
    */
   std::shared_ptr<ParallelParams> SetUpParallelParams(
     const run_environment::RunImpSettings& run_imp_settings) const override;
@@ -124,22 +125,24 @@ protected:
    * propagation in this case) and return as RunData type
    * 
    * @param loop_iters_templated 
-   * @return RunData 
+   * @return RunData object containing input data and parameters for current
+   * benchmark 
    */
   RunData InputAndParamsForCurrBenchmark(
     bool loop_iters_templated) const override;
 
   /**
    * @brief Run and compare output disparity maps using the given optimized and
-   * single-threaded stereo implementations on the reference and test images
+   * single-threaded bp implementations on the reference and test images
    * specified by NUM_INPUT given as class template integral constant
-   * parameter.
+   * parameter.<br>
    * Run only optimized implementation if run_opt_imp_only is true.
    * 
    * @param parallel_params 
    * @param run_opt_imp_only 
    * @param run_imp_templated_loop_iters 
-   * @return std::optional<RunData> 
+   * @return Run data from running optimized and single-threaded bp
+   * implementations
    */
   std::optional<RunData> RunImpsAndCompare(
     std::shared_ptr<ParallelParams> parallel_params,

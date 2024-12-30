@@ -50,7 +50,8 @@ private:
    * 
    * @param run_imp_settings 
    * @param data_type_size 
-   * @return MultRunData 
+   * @return Run results from running implmenetatino on multiple data sets
+   * using specified data size
    */
   MultRunData RunEvalImpMultDataSets(
     const run_environment::RunImpSettings& run_imp_settings,
@@ -58,11 +59,13 @@ private:
   
   /**
    * @brief Run and evaluate implementation on multiple data sets
+   * using specified data size with templated acceleration setting
    * 
    * @tparam OPT_IMP_ACCEL 
    * @param run_imp_settings 
    * @param data_type_size 
-   * @return MultRunData 
+   * @return Run results from running implmenetatino on multiple data sets
+   * using specified data size
    */
   template <run_environment::AccSetting OPT_IMP_ACCEL>
   MultRunData RunEvalImpMultDataSets(
@@ -70,12 +73,14 @@ private:
     size_t data_type_size) const;
 
   /**
-   * @brief Run and evaluate implementation on multiple data sets
+   * @brief Run and evaluate implementation on multiple data sets and data
+   * sizes
    * 
    * @tparam T 
    * @tparam OPT_IMP_ACCEL 
    * @param run_imp_settings 
-   * @return MultRunData 
+   * @return Run results from running implmenetatino on multiple data sets and
+   * data sizes
    */
   template <RunData_t T, run_environment::AccSetting OPT_IMP_ACCEL>
   MultRunData RunEvalImpMultDataSets(

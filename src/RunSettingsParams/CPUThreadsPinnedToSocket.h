@@ -66,10 +66,11 @@ public:
   }
 
   /**
-   * @brief Retrieve environment variable values corresponding to CPU threads being pinned to socket and return
-   * as RunData structure
+   * @brief Retrieve environment variable values corresponding to CPU threads
+   * being pinned to socket and return as RunData object
    * 
-   * @return RunData 
+   * @return RunData object with environment variables settings corresponding
+   * to CPU threads being pinned to socket 
    */
   RunData SettingsAsRunData() const {
     RunData pinned_threads_settings;

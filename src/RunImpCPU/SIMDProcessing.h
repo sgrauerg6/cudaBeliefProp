@@ -55,7 +55,7 @@ namespace simd_processing
    * @param current_bp_level 
    * @param numDispVals 
    * @param inData 
-   * @return U 
+   * @return SIMD structure with data loaded
    */
   template<RunData_t T, RunDataVect_t U>
   U LoadPackedDataAligned(unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -78,7 +78,7 @@ namespace simd_processing
    * @param current_bp_level 
    * @param numDispVals 
    * @param inData 
-   * @return U 
+   * @return SIMD structure with data loaded
    */
   template<RunData_t T, RunDataVect_t U>
   U LoadPackedDataUnaligned(unsigned int x, unsigned int y, unsigned int current_disparity,
@@ -94,7 +94,7 @@ namespace simd_processing
    * 
    * @tparam T 
    * @param data 
-   * @return T 
+   * @return SIMD structure with all elements containing the same data
    */
   template<RunDataVect_t T>
   T createSIMDVectorSameData(float data) {
@@ -111,7 +111,7 @@ namespace simd_processing
    * @tparam V 
    * @param val1 
    * @param val2 
-   * @return V 
+   * @return SIMD structure with sum of values
    */
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   V AddVals(const T& val1, const U& val2) { return (val1 + val2); }
@@ -125,7 +125,7 @@ namespace simd_processing
    * @tparam V 
    * @param val1 
    * @param val2 
-   * @return V 
+   * @return SIMD structure with difference of values
    */
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   V SubtractVals(const T& val1, const U& val2) { return (val1 - val2); }
@@ -139,7 +139,7 @@ namespace simd_processing
    * @tparam V 
    * @param val1 
    * @param val2 
-   * @return V 
+   * @return SIMD structure with quotient of values
    */
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t U, RunDataSingOrVect_t V>
   V divideVals(const T& val1, const U& val2) { return (val1 / val2); }
@@ -152,7 +152,7 @@ namespace simd_processing
    * @tparam T 
    * @tparam V 
    * @param val 
-   * @return T 
+   * @return Value converted to specified type
    */
   template<RunDataSingOrVect_t T, RunDataSingOrVect_t V>
   T ConvertValToDatatype(V val) { return (T)val; }
@@ -165,7 +165,7 @@ namespace simd_processing
    * @tparam T 
    * @param val1 
    * @param val2 
-   * @return T 
+   * @return Element-wise minimum of two inputs (may be SIMD structures)
    */
   template<RunDataSingOrVect_t T>
   T GetMinByElement(const T& val1, const T& val2) { return std::min(val1, val2); }

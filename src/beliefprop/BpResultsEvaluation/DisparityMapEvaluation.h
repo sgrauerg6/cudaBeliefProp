@@ -83,7 +83,7 @@ public:
   /**
    * @brief Retrieve evaluation results as RunData
    * 
-   * @return RunData 
+   * @return RunData object containing evaluation results 
    */
   RunData AsRunData() const;
 

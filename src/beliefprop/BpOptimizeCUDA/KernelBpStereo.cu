@@ -63,7 +63,6 @@ namespace beliefprop_cuda {
  * @param lambda_bp 
  * @param data_k_bp 
  * @param bp_settings_disp_vals 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeBottomLevelData(
@@ -104,7 +103,6 @@ __global__ void InitializeBottomLevelData(
  * @param data_cost_current_level 
  * @param offset_num 
  * @param bp_settings_disp_vals 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeCurrentLevelData(
@@ -143,7 +141,6 @@ __global__ void InitializeCurrentLevelData(
  * @param message_l_checkerboard_1 
  * @param message_r_checkerboard_1 
  * @param bp_settings_disp_vals 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void InitializeMessageValsToDefaultKernel(
@@ -195,7 +192,6 @@ __global__ void InitializeMessageValsToDefaultKernel(
  * @param disc_k_bp 
  * @param data_aligned 
  * @param bp_settings_disp_vals 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
@@ -251,7 +247,6 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
  * @param data_aligned 
  * @param bp_settings_disp_vals 
  * @param dst_processing 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RunBPIterationUsingCheckerboardUpdates(
@@ -310,7 +305,6 @@ __global__ void RunBPIterationUsingCheckerboardUpdates(
  * @param message_l_checkerboard_1 
  * @param message_r_checkerboard_1 
  * @param bp_settings_disp_vals 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void CopyMsgDataToNextLevel(
@@ -366,7 +360,6 @@ __global__ void CopyMsgDataToNextLevel(
  * @param message_r_checkerboard_1 
  * @param disparity_between_images_device 
  * @param bp_settings_disp_vals 
- * @return __global__ 
  */
 template<RunData_t T, unsigned int DISP_VALS>
 __global__ void RetrieveOutputDisparity(

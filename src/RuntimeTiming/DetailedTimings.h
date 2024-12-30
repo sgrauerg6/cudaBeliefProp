@@ -89,14 +89,14 @@ public:
    * multiple times
    * 
    * @param run_segment_index 
-   * @return std::chrono::duration<double> 
+   * @return Median timing of segment
    */
   std::chrono::duration<double> MedianTiming(const T run_segment_index) const;
 
   /**
    * @brief Return current timing data as a RunData object for evaluation
    * 
-   * @return RunData 
+   * @return RunData object containing timing data 
    */
   RunData AsRunData() const;
 

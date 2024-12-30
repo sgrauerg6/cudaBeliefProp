@@ -50,7 +50,7 @@ public:
    * @brief Return path to reference image with valid extension if found,
    * otherwise throw filesystem error
    * 
-   * @return std::filesystem::path 
+   * @return File path of reference image for current stereo set
    */
   std::filesystem::path RefImagePath() const;
 
@@ -58,7 +58,7 @@ public:
    * @brief Return path to test image with valid extension if found,
    * otherwise throw filesystem error
    * 
-   * @return std::filesystem::path 
+   * @return File path of test image for current stereo set
    */
   std::filesystem::path TestImagePath() const;
 
@@ -66,7 +66,7 @@ public:
    * @brief Return path to use for current output disparity and then increment
    * (to support multiple computed output disparity maps)
    * 
-   * @return const std::filesystem::path 
+   * @return File path for output disparity map 
    */
   const std::filesystem::path GetCurrentOutputDisparityFilePathAndIncrement() {
     return stereo_set_path_ / 
@@ -76,7 +76,7 @@ public:
   /**
    * @brief Get file path to ground truth disparity map
    * 
-   * @return const std::filesystem::path 
+   * @return File path for ground truth disparity map of current stereo set
    */
   const std::filesystem::path GroundTruthDisparityFilePath() const {
     return stereo_set_path_ / (std::string(beliefprop::kGroundTruthDispFile));
@@ -84,10 +84,10 @@ public:
 
 private:
   /**
-   * @brief Retrieve path of stereo images to process using
+   * @brief Retrieve path of stereo images sets directory to process using
    * kBeliefPropDirectoryName and kStereoSetsDirectoryName constants
    * 
-   * @return std::filesystem::path 
+   * @return Path of stereo image sets directory
    */
   std::filesystem::path StereoSetsPath() const;
 

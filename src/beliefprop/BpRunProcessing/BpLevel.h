@@ -76,7 +76,7 @@ public:
    * processes data with half width/height of current level
    * 
    * @param num_disparity_values 
-   * @return BpLevel 
+   * @return BpLevel object for next level in hierarchy 
    */
   BpLevel NextBpLevel(unsigned int num_disparity_values) const;
 
@@ -86,7 +86,7 @@ public:
    * possible disparity values
    * 
    * @param num_disparity_values 
-   * @return std::size_t 
+   * @return Num data needed in each "belief propagation" array at level
    */
   std::size_t NumDataInBpArrays(unsigned int num_disparity_values) const;
 
@@ -99,7 +99,7 @@ public:
    * 
    * @param width_height_level 
    * @param num_possible_disparities 
-   * @return std::size_t 
+   * @return Count of total data needed for bp processing at level
    */
   std::size_t NumDataForAlignedMemoryAtLevel(
     const std::array<unsigned int, 2>& width_height_level,
@@ -113,7 +113,7 @@ public:
    * @param num_possible_disparities 
    * @param num_levels 
    * @param acceleration 
-   * @return std::size_t 
+   * @return Count of total data needed for bp processing
    */
   static std::size_t TotalDataForAlignedMemoryAllLevels(
     const std::array<unsigned int, 2>& width_height_bottom_level,
@@ -125,7 +125,7 @@ public:
    * @brief Return level properties as const reference to avoid copying
    * and not allow it to be modified
    * 
-   * @return const BpLevelProperties& 
+   * @return BpLevelProperties "POD" struct with level properties
    */
   const beliefprop::BpLevelProperties& LevelProperties() const {
     return level_properties_;

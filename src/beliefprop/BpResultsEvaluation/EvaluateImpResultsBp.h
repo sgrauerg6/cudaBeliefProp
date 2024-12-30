@@ -46,15 +46,16 @@ private:
   /**
    * @brief Retrieve path of belief propagation implementation results
    * 
-   * @return std::filesystem::path 
+   * @return Path of belief propagation implementation results directory
    */
   std::filesystem::path GetImpResultsPath() const override;
 
   /**
-   * @brief Get text at top of results summary file with each string_view
-   * in the vector corresponding to a separate line
+   * @brief Get text at top of evaluation across runs file with each
+   * string in the vector corresponding to a separate line
    * 
-   * @return std::vector<std::string> 
+   * @return Vector of strings corresponding to text to show at top of
+   * evaluation across architectures
    */
   std::vector<std::string> GetCombResultsTopText() const override {
     return {{"Stereo Processing using optimized CUDA and optimized CPU belief propagation implementations"},
@@ -66,9 +67,10 @@ private:
   }
 
   /**
-   * @brief Input parameters that are showed in results summary with runtimes
+   * @brief Input parameters that are showed in evaluation across runs with
+   * runtimes
    * 
-   * @return std::vector<std::string> 
+   * @return BP input parameters to show in evaluation across runtimes
    */
   std::vector<std::string> GetInputParamsShow() const override {
     return {

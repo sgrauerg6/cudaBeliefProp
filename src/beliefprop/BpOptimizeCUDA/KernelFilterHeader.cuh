@@ -47,7 +47,6 @@ namespace beliefprop_cuda {
  * @param float_image_pixels 
  * @param width_images 
  * @param height_images 
- * @return __global__ 
  */
 __global__ void convertUnsignedIntImageToFloat(
   const unsigned int* uint_image_pixels, float* float_image_pixels,
@@ -65,7 +64,6 @@ __global__ void convertUnsignedIntImageToFloat(
  * @param height_images 
  * @param image_filter 
  * @param size_filter 
- * @return __global__ 
  */
 template<BpImData_t T>
 __global__ void FilterImageAcross(
@@ -85,7 +83,6 @@ __global__ void FilterImageAcross(
  * @param height_images 
  * @param image_filter 
  * @param size_filter 
- * @return __global__ 
  */
 template<BpImData_t T>
 __global__ void FilterImageVertical(

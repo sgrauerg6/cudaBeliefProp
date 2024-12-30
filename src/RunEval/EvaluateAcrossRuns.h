@@ -76,7 +76,8 @@ private:
    * 
    * @param run_results_by_name
    * @param eval_across_runs_in_params_show
-   * @return EvalAcrossRunsData
+   * @return EvalAcrossRunsData structure with data for evaluating results
+  * across runs
    */
   EvalAcrossRunsData GenEvalAcrossRunsData(
     const std::map<std::string, RunResultsSpeedups>& run_results_by_name,
@@ -96,7 +97,7 @@ private:
    * results file path
    * 
    * @param imp_results_file_path 
-   * @return std::vector<std::string> 
+   * @return Vector of run names with results to use in evaluation across runs
    */
   std::vector<std::string> GetRunNames(
     const std::filesystem::path& imp_results_file_path) const;

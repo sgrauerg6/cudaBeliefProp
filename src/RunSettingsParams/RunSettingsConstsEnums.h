@@ -64,7 +64,7 @@ enum class AccSetting {
  * @brief Get string corresponding to acceleration method at compile time
  * 
  * @tparam ACCELERATION_SETTING 
- * @return constexpr std::string_view 
+ * @return String view corresponding to acceleration method
  */
 template <AccSetting ACCELERATION_SETTING>
 constexpr std::string_view AccelerationString() {
@@ -81,7 +81,7 @@ constexpr std::string_view AccelerationString() {
  * @brief Get string corresponding to acceleration method at run time
  * 
  * @param acceleration_setting 
- * @return std::string_view 
+ * @return String view corresponding to acceleration method
  */
 inline std::string_view AccelerationString(AccSetting acceleration_setting) {
   if (acceleration_setting == AccSetting::kNEON) { return AccelerationString<AccSetting::kNEON>(); }

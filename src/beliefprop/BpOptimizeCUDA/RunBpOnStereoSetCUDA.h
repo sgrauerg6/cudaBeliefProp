@@ -52,6 +52,10 @@ template <RunData_t T, unsigned int DISP_VALS, run_environment::AccSetting ACCEL
 class RunBpOnStereoSetCUDA final : public RunBpOnStereoSet<T, DISP_VALS, ACCELERATION>
 {
 public:
+  /**
+   * @brief Returns description of bp implementation using CUDA
+   * @return Description of BP implementation using CUDA
+   */
   std::string BpRunDescription() const override { 
     return std::string(run_cuda::kOptimizeCUDADesc); }
 
@@ -62,7 +66,8 @@ public:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param parallel_params 
-   * @return std::optional<beliefprop::BpRunOutput> 
+   * @return Output from BP implementation run using CUDA or null of error in
+   * run
    */
   std::optional<beliefprop::BpRunOutput> operator()(
     const std::array<std::string, 2>& ref_test_image_path,

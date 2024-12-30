@@ -101,7 +101,7 @@ public:
    * correspond to the kernel name and bp level
    * 
    * @param kernel_location 
-   * @return std::array<unsigned int, 2> 
+   * @return Optimized parallel parameters for indexed kernel
    */
   std::array<unsigned int, 2> OptParamsForKernel(
     const std::array<unsigned int, 2>& kernel_location) const override
@@ -112,7 +112,7 @@ public:
   /**
    * @brief Retrieve current parallel parameters as RunData object
    * 
-   * @return RunData 
+   * @return RunData object containing current parallel parameters 
    */
   RunData AsRunData() const override;
 

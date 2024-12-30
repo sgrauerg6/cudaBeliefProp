@@ -74,7 +74,7 @@ protected:
    * @brief Create a Gaussian filter from a sigma value
    * 
    * @param sigma 
-   * @return std::pair<std::vector<float>, unsigned int> 
+   * @return Generated Gaussian filter
    */
   std::vector<float> MakeFilter(float sigma) const;
 

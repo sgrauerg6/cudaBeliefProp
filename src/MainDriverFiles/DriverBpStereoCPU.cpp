@@ -194,7 +194,7 @@ void runImp(int argc, char** argv, RunImpSetting impSetting)
  * 
  * @param argc 
  * @param argv 
- * @return int 
+ * @return 0 if successful, another number indicating error if not 
  */
 int main(int argc, char** argv)
 {

@@ -84,7 +84,7 @@ public:
   /**
    * @brief Return data headers in order
    * 
-   * @return const std::vector<std::string>& 
+   * @return Data headers in order
    */
   const std::vector<std::string>& HeadersInOrder() const { return headers_in_order_; }
 
@@ -92,8 +92,7 @@ public:
    * @brief Return whether or not there is data corresponding to a specific header
    * 
    * @param header 
-   * @return true 
-   * @return false 
+   * @return true if there is run data corresponding to header, false if not 
    */
   bool IsData(const std::string_view header) const {
     std::string header_str(header);
@@ -108,7 +107,7 @@ public:
    * Returns data as string regardless of underlying data type
    * 
    * @param header 
-   * @return std::string 
+   * @return Data corresponding to header as a string
    */
   std::string GetDataAsStr(const std::string_view header) const;
   
@@ -117,7 +116,8 @@ public:
    * Return null if data corresponds to a different data type
    * 
    * @param header 
-   * @return std::optional<double> 
+   * @return Data corresponding to header as double if data is double, null if
+   * not
    */
   std::optional<double> GetDataAsDouble(const std::string_view header) const;
 
@@ -126,7 +126,8 @@ public:
    * Return null if data corresponds to a different data type
    * 
    * @param header 
-   * @return std::optional<double> 
+   * @return Data corresponding to header as unsigned int if data is unsigned
+   * int, null if not
    */
   std::optional<unsigned int> GetDataAsUInt(const std::string_view header) const;
 
@@ -135,7 +136,7 @@ public:
    * Return null if data corresponds to a different data type
    * 
    * @param header 
-   * @return std::optional<double> 
+   * @return Data corresponding to header as bool if data is bool, null if not
    */
   std::optional<bool> GetDataAsBool(const std::string_view header) const;
 
@@ -151,7 +152,7 @@ public:
    * 
    * @param os 
    * @param run_data 
-   * @return std::ostream& 
+   * @return Output stream with run data added
    */
   friend std::ostream& operator<<(std::ostream& os, const RunData& run_data);
 
@@ -161,7 +162,7 @@ private:
    * Generates and returns input header with number appended if header already used
    * 
    * @param in_header 
-   * @return std::string 
+   * @return Unique header to add to run data
    */
   std::string GetHeaderToAdd(const std::string& in_header) const;
 

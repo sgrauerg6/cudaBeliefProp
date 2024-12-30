@@ -59,10 +59,11 @@ public:
 
 private:
   /**
-   * @brief Get fastest acceleration across input run implementations
+   * @brief Get expected fastest acceleration available across input run
+   * implementations
    * 
    * @param run_benchmark_imps_w_acc 
-   * @return run_environment::AccSetting 
+   * @return Expected fastest acceleration available across run implementations
    */
   run_environment::AccSetting FastestAvailableAcc(
     const std::vector<std::shared_ptr<RunImpMultInputs>>& run_benchmark_imps_w_acc) const;

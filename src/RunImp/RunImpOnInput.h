@@ -60,7 +60,7 @@ protected:
    * @brief Set up parallel parameters for benchmark
    * 
    * @param run_imp_settings 
-   * @return std::shared_ptr<ParallelParams> 
+   * @return Shared pointer to parallel parameters as set up for run
    */
   virtual std::shared_ptr<ParallelParams> SetUpParallelParams(
     const run_environment::RunImpSettings& run_imp_settings) const = 0;
@@ -69,7 +69,8 @@ protected:
    * @brief Retrieve input and parameters for run of current benchmark
    * 
    * @param loop_iters_templated 
-   * @return RunData
+   * @return RunData object with input data and parameter info about current
+   * benchmark
    */
   virtual RunData InputAndParamsForCurrBenchmark(
     bool loop_iters_templated) const = 0;
@@ -81,7 +82,8 @@ protected:
    * @param parallel_params 
    * @param run_opt_imp_only 
    * @param run_imp_templated_loop_iters 
-   * @return std::optional<RunData>
+   * @return Restults of running and comparing implementations or null output
+   * if error in run
    */
   virtual std::optional<RunData> RunImpsAndCompare(
     std::shared_ptr<ParallelParams> parallel_params,
@@ -92,7 +94,7 @@ protected:
    * @brief Get current run inputs and parameters in RunData structure
    * 
    * @param loop_iters_templated 
-   * @return RunData 
+   * @return Current run inputs and parameters in RunData structure 
    */
   RunData InputAndParamsRunData(bool loop_iters_templated) const {
     RunData curr_run_data;
@@ -113,7 +115,7 @@ protected:
    * 
    * @param run_imp_settings 
    * @param run_w_loop_iters_templated 
-   * @return MultRunData::mapped_type 
+   * @return Run results from running and evaluating benchmark
    */
   MultRunData::mapped_type RunEvalBenchmark(
     const run_environment::RunImpSettings& run_imp_settings,

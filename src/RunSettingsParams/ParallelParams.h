@@ -49,7 +49,7 @@ public:
   /**
    * @brief Retrieve current parallel parameters as RunData type
    * 
-   * @return RunData 
+   * @return Current parallel parameters data 
    */
   virtual RunData AsRunData() const = 0;
 
@@ -76,7 +76,7 @@ public:
    * for kernel that is indexed as an array of two unsigned integers
    * 
    * @param kernel_location 
-   * @return std::array<unsigned int, 2> 
+   * @return Optimized parallel parameters for indexed kernel
    */
   virtual std::array<unsigned int, 2> OptParamsForKernel(
     const std::array<unsigned int, 2>& kernel_location) const = 0;

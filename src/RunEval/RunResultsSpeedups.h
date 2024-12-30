@@ -62,9 +62,9 @@ public:
   explicit RunResultsSpeedups(const std::filesystem::path& run_results_file_path);
 
   /**
-   * @brief Return speedups from evaluation across all runs on an architecture
+   * @brief Return speedups from run results data with speedups
    * 
-   * @return std::map<std::string, std::vector<std::string>> 
+   * @return Speedups from run results data with speedups
    */
   std::map<std::string, std::vector<std::string>> Speedups() const {
     return speedup_header_to_result_speedup_order_->first;
@@ -73,7 +73,7 @@ public:
   /**
    * @brief Return order of speedup headers
    * 
-   * @return std::vector<std::string>
+   * @return Speedup headers in order
    */
   std::vector<std::string> SpeedupHeadersOrder() const {
     return speedup_header_to_result_speedup_order_->second;
@@ -84,7 +84,7 @@ public:
    * key for each run result
    * 
    * @param key 
-   * @return std::map<InputSignature, std::string> 
+   * @return Mapping of run input signature to value corresponding to input key
    */
   std::map<InputSignature, std::string> InputsToKeyVal(std::string_view key) const;
 
@@ -92,7 +92,7 @@ public:
    * @brief Return data for specified input signature
    * 
    * @param input_sig 
-   * @return std::map<std::string, std::string> 
+   * @return Data for run corresponding to input signature
    */
   std::map<std::string, std::string> DataForInput(
     const InputSignature& input_sig) const
@@ -127,15 +127,15 @@ private:
 
   /**
    * @brief Get mapping of headers to data as well as headers in order in csv
-   * file for run results and speedups.
+   * files for run results and speedups.<br>
    * Assumed that there are no commas in data since it is used as delimiter
-   * between data<br>
+   * between data.<br>
    * First output is mapping of headers to results, second output is headers
-   * in order
+   * in order.
    * 
    * @param csv_file_path 
-   * @return std::pair<std::map<std::string, std::vector<std::string>>,
-   *                   std::vector<std::string>>
+   * @return Mapping of headers to data as well as headers in order in csv
+   * files for run results and speedups
    */
     std::pair<std::map<std::string, std::vector<std::string>>,
               std::vector<std::string>>

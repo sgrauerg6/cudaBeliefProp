@@ -86,7 +86,7 @@ const half kHighValBp<half>{CUDART_MAX_NORMAL_FP16};
  * less variance between runs and therefore less need to have as many runs.
  * 
  * @param disparity_vals 
- * @return unsigned int 
+ * @return Number of Runs to use in benchmarking implementation on stereo set
  */
 inline unsigned int NumBpStereoRuns(unsigned int disparity_vals) {
 #if defined(FEWER_RUNS_PER_CONFIG)
@@ -122,7 +122,7 @@ constexpr std::string_view kAllocateFreeMemOutsideRunsHeader{"Memory for BP allo
 /**
  * @brief Retrieve run settings as a RunData object for output
  * 
- * @return RunData 
+ * @return RunData object containing run settings
  */
 inline RunData RunSettings()  {
   RunData curr_run_data;
@@ -146,8 +146,7 @@ inline RunData RunSettings()  {
  * @param simd_data_size 
  * @param data_bytes_align_width 
  * @param padded_width_data 
- * @return true 
- * @return false 
+ * @return true if memory aligned at start, false if not
  */
 template <RunData_t T>
 inline bool MemoryAlignedAtDataStart(

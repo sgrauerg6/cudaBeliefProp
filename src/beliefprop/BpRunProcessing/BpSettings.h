@@ -104,7 +104,7 @@ struct BpSettings
    * @brief Retrieve bp settings as RunData object containing description headers
    * with corresponding values for each setting
    * 
-   * @return RunData 
+   * @return RunData object containing belief propagation settings 
    */
   RunData AsRunData() const {
     RunData curr_run_data;

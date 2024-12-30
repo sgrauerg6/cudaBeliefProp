@@ -96,7 +96,7 @@ public:
    * @brief Pure virtual function to return run description corresponding to
    * target acceleration
    * 
-   * @return std::string 
+   * @return Description of run using specified acceleration
    */
   virtual std::string BpRunDescription() const = 0;
 
@@ -106,7 +106,7 @@ public:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param parallel_params 
-   * @return std::optional<beliefprop::BpRunOutput> 
+   * @return Output from belief propagation run or null output if error
    */
   virtual std::optional<beliefprop::BpRunOutput> operator()(
     const std::array<std::string, 2>& ref_test_image_path,
@@ -122,7 +122,8 @@ protected:
    * @param ref_test_image_path 
    * @param alg_settings 
    * @param run_bp_on_device 
-   * @return std::optional<beliefprop::BpRunOutput> 
+   * @return Output from running belief propagation on stereo set or null if
+   * error in run
    */
   std::optional<beliefprop::BpRunOutput> ProcessStereoSet(
     const std::array<std::string, 2>& ref_test_image_path,
