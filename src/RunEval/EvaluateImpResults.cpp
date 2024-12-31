@@ -163,12 +163,13 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     run_results_mult_runs;
   
   //write run results with each acceleration
-  for (const auto& [acc, run_results] : run_result_mult_runs_opt.begin()->second) {
+  for (const auto& [acc, run_results_w_speedups] : run_result_mult_runs_opt.begin()->second) {
     //generate combined run results for each acceleration across data types
     MultRunData run_results_acc;
-    for (const auto& [data_size, run_results] : run_results_mult_runs) {
+    for (const auto& [data_size, run_results_w_speedups_by_acc] : run_results_mult_runs) {
       run_results_acc.insert(
-        run_results_acc.at(acc).first.begin(), run_results_acc.at(acc).first.end());
+        run_results_w_speedups_by_acc.at(acc).first.begin(),
+        run_results_w_speedups_by_acc.at(acc).first.end());
     }
 
     //write run results for acceleration 
