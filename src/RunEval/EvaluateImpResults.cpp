@@ -915,10 +915,6 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
 {
   //initialize empty vector where speedups will be added
   std::vector<double> speedups_vect;
-  if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-    std::cout << "Size base run results: " << run_results_base.size() << std::endl;
-    std::cout << "Size target run results: " << run_results_target.size() << std::endl;
-  }
 
   //go through all base runtime data and compute speedups
   for (auto& [input_sig_base, sig_run_results_base] : run_results_base)
