@@ -849,8 +849,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         std::min(
           current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
           width_checkerboard_run_processing);
-      const unsigned int end_x_simd_vect_start =
-        (end_final / simd_data_size) * simd_data_size - simd_data_size;
+      const int end_x_simd_vect_start =
+        std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
@@ -860,7 +860,9 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         //set to simd_data_size from the final pixel so processing the last
         //numDataInAvxVector in avx
         //may be a few pixels that are computed twice but that's OK
-        if (x_val_process > end_x_simd_vect_start) {
+        if (((int)x_val_process > end_x_simd_vect_start) &&
+            (end_final > simd_data_size))
+        {
           x_val_process = end_final - simd_data_size;
         }
 
@@ -1004,8 +1006,8 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         std::min(
           current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
           width_checkerboard_run_processing);
-      const unsigned int end_x_simd_vect_start =
-        (end_final / simd_data_size) * simd_data_size - simd_data_size;
+      const int end_x_simd_vect_start =
+        std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
@@ -1015,7 +1017,9 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
         //set to simd_data_size from the final pixel so processing the last
         //numDataInAvxVector in avx
         //may be a few pixels that are computed twice but that's OK
-        if (x_val_process > end_x_simd_vect_start) {
+        if (((int)x_val_process > end_x_simd_vect_start) &&
+            (end_final > simd_data_size))
+        {
           x_val_process = end_final - simd_data_size;
         }
 
@@ -1178,7 +1182,16 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdates(
 #if defined(COMPILING_FOR_ARM)
   if constexpr (ACCELERATION == run_environment::AccSetting::kNEON)
   {
-    if (current_bp_level.width_checkerboard_level_ > 5)
+    //only use NEON if width of processing checkerboard w/ padding over the number of
+    //elements in SIMD vector plus one to account for case when getting
+    //messages from the right neighbor
+    //if type is half, float vectorization is used and check is adjusted using
+    //float size
+    //NEON vectors are 128 bits and divided by 8 to get bytes in vector
+    constexpr size_t kNEONSimdBytes{128 / 8};
+    if ((current_bp_level.padded_width_checkerboard_level_ > ((kNEONSimdBytes / sizeof(T)) + 1)) ||
+         ((sizeof(T) == 2) &&
+          (current_bp_level.padded_width_checkerboard_level_ > ((kNEONSimdBytes / sizeof(float)) + 1))))
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsNEON<DISP_VALS, ACCELERATION>(
         checkerboard_to_update, current_bp_level,
@@ -1198,11 +1211,16 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdates(
   if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX256) ||
                 (ACCELERATION == run_environment::AccSetting::kAVX256_F16))
   {
-    //only use AVX-256 if width of processing checkerboard is over 10
-    //if using AVX-256 w/ fp16 processing width needs to be greater than 20 for half type
-    if ((((sizeof(T) > 2) || (ACCELERATION != run_environment::AccSetting::kAVX256_F16)) &&
-            (current_bp_level.width_checkerboard_level_ > 10)) ||
-        (current_bp_level.width_checkerboard_level_ > 20))
+    //only use AVX-256 if width of processing checkerboard w/ padding over the number of
+    //elements in SIMD vector plus one to account for case when getting
+    //messages from the right neighbor
+    //if type is half but acceleration doesn't support half vectorization, then
+    //float vectorization is used and check is adjusted using float size
+    //AVX256 vectors are 256 bits and divided by 8 to get bytes in vector
+    constexpr size_t kAVX256SimdBytes{256 / 8};
+    if ((current_bp_level.padded_width_checkerboard_level_ > ((kAVX256SimdBytes / sizeof(T)) + 1)) ||
+         (((sizeof(T) == 2) && (ACCELERATION != run_environment::AccSetting::kAVX256_F16)) &&
+          (current_bp_level.padded_width_checkerboard_level_ > ((kAVX256SimdBytes / sizeof(float)) + 1))))
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX256<DISP_VALS, ACCELERATION>(
         checkerboard_to_update, current_bp_level,
@@ -1222,11 +1240,16 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdates(
   else if constexpr ((ACCELERATION == run_environment::AccSetting::kAVX512) ||
                      (ACCELERATION == run_environment::AccSetting::kAVX512_F16))
   {
-    //only use AVX-512 if width of processing checkerboard is over 20
-    //if using AVX-512 w/ fp16 processing width needs to be greater than 35 for half type
-    if ((((sizeof(T) > 2) || (ACCELERATION != run_environment::AccSetting::kAVX512_F16)) &&
-            (current_bp_level.width_checkerboard_level_ > 20)) ||
-        (current_bp_level.width_checkerboard_level_ > 35))
+    //only use AVX-512 if width of processing checkerboard w/ padding over the number of
+    //elements in SIMD vector plus one to account for case when getting
+    //messages from the right neighbor
+    //if type is half but acceleration doesn't support half vectorization, then
+    //float vectorization is used and check is adjusted using float size
+    //AVX512 vectors are 512 bits and divided by 8 to get bytes in vector
+    constexpr size_t kAVX512SimdBytes{512 / 8};
+    if ((current_bp_level.padded_width_checkerboard_level_ > ((kAVX512SimdBytes / sizeof(T)) + 1)) ||
+         (((sizeof(T) == 2) && (ACCELERATION != run_environment::AccSetting::kAVX256_F16)) &&
+          (current_bp_level.padded_width_checkerboard_level_ > ((kAVX512SimdBytes / sizeof(float)) + 1))))
     {
       RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsAVX512<DISP_VALS, ACCELERATION>(
         checkerboard_to_update, current_bp_level,
@@ -1462,8 +1485,8 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         std::min(
           current_bp_level.width_checkerboard_level_ - checkerboard_adjustment,
           width_checkerboard_run_processing);
-      const unsigned int end_x_simd_vect_start =
-        (end_final / simd_data_size) * simd_data_size - simd_data_size;
+      const int end_x_simd_vect_start =
+        std::max(0, (int)(end_final / simd_data_size) * (int)simd_data_size - (int)simd_data_size);
 
       for (unsigned int x_val = 0; x_val < end_final; x_val += simd_data_size) {
         unsigned int x_val_process = x_val;
@@ -1472,7 +1495,9 @@ void beliefprop_cpu::RetrieveOutputDisparityUseSIMDVectors(
         //if past the last AVX start (since the next one would go beyond the row),
         //set to simd_data_size from the final pixel so processing the last numDataInAvxVector in avx
         //may be a few pixels that are computed twice but that's OK
-        if (x_val_process > end_x_simd_vect_start) {
+        if (((int)x_val_process > end_x_simd_vect_start) &&
+            (end_final > simd_data_size))
+        {
           x_val_process = end_final - simd_data_size;
         }
 
