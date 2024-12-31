@@ -143,6 +143,18 @@ private:
     run_environment::AccSetting acceleration_setting) const;
 
   /**
+   * @brief Write run results for a specific acceleration setting to file
+   * 
+   * @param run_results
+   * @param acceleration_setting
+   * @param run_imp_settings
+   */
+  void WriteRunResultsForAcc(
+    MultRunData run_results,
+    run_environment::AccSetting acceleration_setting,
+    const run_environment::RunImpSettings& run_imp_settings) const;
+  /**
+   * 
    * @brief Get speedup for each run and overall when using optimized
    * vectorization vs "lesser" vectorization and no vectorization
    * if there are runs with "lesser" vectorization and/or no

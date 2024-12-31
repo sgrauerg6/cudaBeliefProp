@@ -162,6 +162,22 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   std::unordered_map<size_t, MultRunDataWSpeedupByAcc> run_result_mult_runs_opt =
     run_results_mult_runs;
   
+  //write run results with each acceleration
+  for (const auto& [acc, run_results] : run_result_mult_runs_opt.begin()->second) {
+    //generate combined run results for each acceleration across data types
+    MultRunData run_results_acc;
+    for (const auto& [data_size, run_results] : run_results_mult_runs) {
+      run_results_acc.insert(
+        run_results_acc.at(acc).first.begin(), run_results_acc.at(acc).first.end());
+    }
+
+    //write run results for acceleration 
+    WriteRunResultsForAcc(
+      run_results_acc,
+      acc,
+      run_imp_settings);
+  }
+  
   //check if setting is to run alternate optimized implementations and run and
   //evaluate alternate optimized implementations if that's the case
   std::unordered_map<size_t, std::vector<RunSpeedupAvgMedian>> alt_imp_speedup;
@@ -277,10 +293,34 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   WriteRunOutput({run_results, run_speedups}, run_imp_settings, opt_imp_acc);
 }
 
-/*void EvaluateImpResults::WriteRunResultsForAcc(
+void EvaluateImpResults::WriteRunResultsForAcc(
   MultRunData run_results,
-  run_environment::AccSetting acceleration_setting)
+  run_environment::AccSetting acceleration_setting,
+  const run_environment::RunImpSettings& run_imp_settings) const
 {
+  //get run implementation results file path
+  const auto imp_results_fp = GetImpResultsPath();
+
+  //generate directory for results if not already created
+  if (!(std::filesystem::is_directory(
+    imp_results_fp / run_eval::kImpResultsRunDataAccFolderName)))
+  {
+    std::filesystem::create_directory(
+      imp_results_fp / run_eval::kImpResultsRunDataAccFolderName);
+  }
+
+  //get file path for results with fastest acceleration
+  const auto path_acc_results = 
+    imp_results_fp /
+    run_eval::kImpResultsRunDataAccFolderName /
+    std::filesystem::path(run_imp_settings.run_name + 
+    std::string(run_eval::kRunResultsDescFileName) + "_" +
+    std::string(run_environment::AccelerationString(acceleration_setting)) +
+    std::string(run_eval::kCsvFileExtension));
+
+  //initialize output file stream for results
+  std::ofstream out_results_str(path_acc_results);
+    
   //get iterator to first run with success
   //run_result corresponds to a std::optional object that contains run data if
   //run successful and returns false if no data (indicating run not successful)
@@ -288,43 +328,43 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     std::find_if(run_results.cbegin(), run_results.cend(),
       [](const auto& run_result) { return run_result.second; } );
   
-    //get headers from first successful run and write headers to top of output
-    //files
-    auto headers_in_order = first_success_run_iter->second->at(
-      run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
+  //get headers from first successful run and write headers to top of output
+  //files
+  auto headers_in_order = first_success_run_iter->second->at(
+    run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
 
   //write each results header in order in first row of results string
   //for each results set and then write newline to go to next line
   for (const auto& curr_header : headers_in_order) {
-    for (const auto& p_param_setting : parallel_param_settings) {
-        run_data_sstr.at(p_param_setting) << curr_header << ',';
-      }
-    }
-    for (const auto& p_param_setting : parallel_param_settings) {
-      run_data_sstr.at(p_param_setting) << std::endl;
-    }
+    out_results_str << curr_header << ',';
+  }
+  out_results_str << std::endl;
 
-    //write output for run on each input with each data type
-    //write data for default parallel parameters and for optimized parallel
-    //parameters
-    for (const auto& p_param_setting : parallel_param_settings) {
-      for (const auto& [_, run_sig_data] : run_results) {
-        //if run not successful only have single set of output data from run
-        //don't write data if no data for run
-        if (run_sig_data) {
-          for (const auto& curr_header : headers_in_order) {
-            if (run_sig_data->at(p_param_setting).IsData(curr_header))
-            {
-              run_data_sstr.at(p_param_setting) <<
-                run_sig_data->at(p_param_setting).GetDataAsStr(curr_header);
-            }
-            run_data_sstr.at(p_param_setting) << ',';            
-          }
-          run_data_sstr.at(p_param_setting) << std::endl;
+  //write output for run on each input with each data type
+  //write data for optimized parallel parameters
+  for (const auto& [_, run_sig_data] : run_results) {
+    //if run not successful only have single set of output data from run
+    //don't write data if no data for run
+    if (run_sig_data) {
+      for (const auto& curr_header : headers_in_order) {
+        if (run_sig_data->at(run_environment::ParallelParamsSetting::kOptimized).IsData(curr_header))
+        {
+          out_results_str <<
+            run_sig_data->at(run_environment::ParallelParamsSetting::kOptimized).GetDataAsStr(curr_header);
         }
+        out_results_str << ',';            
       }
+      out_results_str << std::endl;
     }
-}*/
+  }
+
+  std::cout << "Run results for using " 
+            << run_environment::AccelerationString(acceleration_setting)
+            << " acceleration written to " << path_acc_results << std::endl;
+
+  //close output file stream
+  out_results_str.close();
+}
 
 //write current run results and speedup data to files
 //that can be read to evaluate results across runs
@@ -446,8 +486,8 @@ void EvaluateImpResults::WriteRunOutput(
     //create any results directories if needed
     //and generate file paths for each output results type
     for (const auto& [out_results_type, file_info] : run_eval::kOutResultsFileInfo) {
-      if (!(std::filesystem::is_directory(file_info.dir_path))) {
-        std::filesystem::create_directory(file_info.dir_path);
+      if (!(std::filesystem::is_directory(imp_results_fp / file_info.dir_path))) {
+        std::filesystem::create_directory(imp_results_fp / file_info.dir_path);
       }
       output_file_paths.insert(
         {out_results_type,

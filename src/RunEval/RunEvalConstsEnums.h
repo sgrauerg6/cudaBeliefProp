@@ -141,6 +141,7 @@ enum class MiddleValData { kAverage, kMedian };
   constexpr std::string_view kImpResultsRunDataWSpeedupsFolderName{"RunResultsWSpeedups"};
   constexpr std::string_view kImpResultsSpeedupsFolderName{"Speedups"};
   constexpr std::string_view kImpResultsAcrossArchsFolderName{"ResultsAcrossArchitectures"};
+  constexpr std::string_view kImpResultsRunDataAccFolderName{"RunResultsAcc"};
   
   //headers that correspond to unique "signature" set of inputs in run
   constexpr std::array<std::string_view, 3> kRunInputSigHeaders{
