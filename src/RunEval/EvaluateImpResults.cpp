@@ -688,13 +688,6 @@ EvaluateImpResults::GetAltAccelSpeedups(
               //it is faster
               opt_sig_run_results = acc_results.first.at(run_input_sig);
             }
-            else {
-              //update optimized run results with results that contain added
-              //speedup info
-              opt_sig_run_results =
-                run_imp_results_by_acc_setting.at(fastest_acc).first.at(
-                  run_input_sig);
-            }
           }
         }
       }
