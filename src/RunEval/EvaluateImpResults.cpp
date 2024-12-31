@@ -227,8 +227,9 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   //results
   for (const auto run_datatype_size : run_imp_settings.datatypes_eval_sizes) {
     if (run_datatype_size != first_datatype_size) {
-      run_results.merge(
-        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first);
+      run_results.insert(
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first.cbegin(),
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first.cend());
     }
     //add speedup data from alternate acceleration runs and speedup results from
     //double and half precision runs to speedup results
