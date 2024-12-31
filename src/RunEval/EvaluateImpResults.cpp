@@ -195,6 +195,29 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     }
   }
 
+  //get speedup/slowdown using alternate datatype (double or half) compared
+  //with float
+  //needs to be run after alternate acceleration since run results can be
+  //updated with faster runs from alternate accelerations
+  std::vector<RunSpeedupAvgMedian> speedups_alt_datatypes;
+  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
+  {
+    if ((data_size != sizeof(float)) &&
+        (run_result_mult_runs_opt.contains(sizeof(float))))
+    {
+      //get speedup or slowdown using alternate data type (double or half)
+      //compared with float and add to run speedups
+      speedups_alt_datatypes.push_back(
+        GetAvgMedSpeedupBaseVsTarget(
+          run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
+          run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
+          (data_size > sizeof(float)) ?
+          run_eval::kSpeedupDoubleHeader :
+          run_eval::kSpeedupHalfHeader,
+          BaseTargetDiff::kDiffDatatype));
+    }
+  }
+
   //initialize overall results to first data size results using fastest
   //acceleration and add results using alternate datatypes to it
   const size_t first_datatype_size =
@@ -225,27 +248,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     }
   }
 
-  //get speedup/slowdown using alternate datatype (double or half) compared
-  //with float
-  std::vector<RunSpeedupAvgMedian> speedups_alt_datatypes;
-  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
-  {
-    if ((data_size != sizeof(float)) &&
-        (run_result_mult_runs_opt.contains(sizeof(float))))
-    {
-      //get speedup or slowdown using alternate data type (double or half)
-      //compared with float and add to run speedups
-      speedups_alt_datatypes.push_back(
-        GetAvgMedSpeedupBaseVsTarget(
-          run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
-          run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
-          (data_size > sizeof(float)) ?
-          run_eval::kSpeedupDoubleHeader :
-          run_eval::kSpeedupHalfHeader,
-          BaseTargetDiff::kDiffDatatype));
-    }
-  }
-
   //go through alternate datatypes and add run results for datatype to overall
   //run results
   for (const auto run_datatype_size : run_imp_settings.datatypes_eval_sizes) {
@@ -257,13 +259,15 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   }
 
   //compute and add speedups for all runs across all data types
-  auto speedups_all_runs = SpeedupsAllRuns(run_results, run_imp_settings);
+  const auto speedups_all_runs =
+    SpeedupsAllRuns(run_results, run_imp_settings);
   run_speedups.insert(
     run_speedups.cend(),
     speedups_all_runs.cbegin(),
     speedups_all_runs.cend());
   
-  //add speedups for alternate data types to overall speedups
+  //speedups for alternate data types added at end of to overall speedups so
+  //they are final speedups displayed in speedups list
   run_speedups.insert(
     run_speedups.cend(),
     speedups_alt_datatypes.cbegin(),
