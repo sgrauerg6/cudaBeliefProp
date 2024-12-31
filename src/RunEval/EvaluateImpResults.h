@@ -143,7 +143,9 @@ private:
     run_environment::AccSetting acceleration_setting) const;
 
   /**
-   * @brief Write run results for a specific acceleration setting to file
+   * @brief Write run results corresponding to runs using a specific
+   * acceleration to a file with the acceleration setting as part of the file
+   * name
    * 
    * @param run_results
    * @param acceleration_setting
@@ -153,6 +155,7 @@ private:
     MultRunData run_results,
     run_environment::AccSetting acceleration_setting,
     const run_environment::RunImpSettings& run_imp_settings) const;
+    
   /**
    * 
    * @brief Get speedup for each run and overall when using optimized

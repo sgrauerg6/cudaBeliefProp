@@ -294,6 +294,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   WriteRunOutput({run_results, run_speedups}, run_imp_settings, opt_imp_acc);
 }
 
+//Write run results corresponding to runs using a specific acceleration to a
+//file with the acceleration setting as part of the file name
 void EvaluateImpResults::WriteRunResultsForAcc(
   MultRunData run_results,
   run_environment::AccSetting acceleration_setting,

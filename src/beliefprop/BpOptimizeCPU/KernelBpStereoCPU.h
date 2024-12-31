@@ -870,8 +870,6 @@ void beliefprop_cpu::RunBPIterationUsingCheckerboardUpdatesUseSIMDVectorsProcess
 
         //check if the memory is aligned for AVX instructions at x_val_process
         //location
-        //for now set data to unaligned if using half type since got error
-        //with aligned using using half-type (TODO: need to check this)
         const bool data_aligned_x_val = 
           beliefprop::MemoryAlignedAtDataStart<T>(
             x_val_process, 
