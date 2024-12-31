@@ -848,9 +848,11 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   std::string_view speedup_header,
   BaseTargetDiff base_target_diff) const
 {
-   if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-     std::cout << "GetAvgMedSpeedupBaseVsTarget datatypes" << std::endl;
-   }
+  if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+    std::cout << "GetAvgMedSpeedupBaseVsTarget datatypes" << std::endl;
+    std::cout << "run_results_base size: " << run_results_base.size() << std::endl;
+    std::cout << "run_results_target size: " << run_results_target.size() << std::endl;
+  }
   //initialize empty vector where speedups will be added
   std::vector<double> speedups_vect;
 
@@ -858,6 +860,9 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   for (auto& [input_sig_base, sig_run_results_base] : run_results_base)
   {
     InputSignature base_in_sig_adjusted(input_sig_base);
+      if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+        std::cout << "Base sig: " << base_target_diff << std::endl;
+      }
     //go through all target runtime data and find speedup for data
     //that corresponds with current base runtime data
     for (auto& [input_sig_target, sig_run_results_target] : run_results_target)
