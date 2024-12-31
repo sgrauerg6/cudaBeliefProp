@@ -70,9 +70,9 @@ template <AccSetting ACCELERATION_SETTING>
 constexpr std::string_view AccelerationString() {
   if constexpr (ACCELERATION_SETTING == AccSetting::kNEON) { return "NEON"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256) { return "AVX256"; }
-  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256_F16) { return "AVX256 w/ float16"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX256_F16) { return "AVX256_float16Vect"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512) { return "AVX512"; }
-  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512_F16) { return "AVX512 w/ float16"; }
+  else if constexpr (ACCELERATION_SETTING == AccSetting::kAVX512_F16) { return "AVX512_float16Vect"; }
   else if constexpr (ACCELERATION_SETTING == AccSetting::kCUDA) { return "CUDA"; }
   else { return "DEFAULT"; }
 }
