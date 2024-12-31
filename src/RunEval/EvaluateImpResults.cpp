@@ -201,27 +201,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     run_imp_settings.datatypes_eval_sizes.front();
   auto [run_results, run_speedups] =
     run_result_mult_runs_opt.at(first_datatype_size).at(opt_imp_acc);
-
-  std::cout << "TEST 1" << std::endl;
-       //get speedup/slowdown using alternate datatype (double or half) compared
-  //with float and add to overall run speedup results
-  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
-  {
-    if ((data_size != sizeof(float)) &&
-        (run_result_mult_runs_opt.contains(sizeof(float))))
-    {
-      //get speedup or slowdown using alternate data type (double or half)
-      //compared with float and add to run speedups
-      run_speedups.push_back(
-        GetAvgMedSpeedupBaseVsTarget(
-          run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
-          run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
-          (data_size > sizeof(float)) ?
-          run_eval::kSpeedupDoubleHeader :
-          run_eval::kSpeedupHalfHeader,
-          BaseTargetDiff::kDiffDatatype));
-    }
-  }
   
   //go through each datatype and add run results and speedups to overall
   //results
@@ -249,27 +228,6 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
           alt_imp_speedup.at(run_datatype_size).cbegin(),
           alt_imp_speedup.at(run_datatype_size).cend());
       }
-    }
-  }
-
-  std::cout << "TEST 2" << std::endl;
-       //get speedup/slowdown using alternate datatype (double or half) compared
-  //with float and add to overall run speedup results
-  for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
-  {
-    if ((data_size != sizeof(float)) &&
-        (run_result_mult_runs_opt.contains(sizeof(float))))
-    {
-      //get speedup or slowdown using alternate data type (double or half)
-      //compared with float and add to run speedups
-      run_speedups.push_back(
-        GetAvgMedSpeedupBaseVsTarget(
-          run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
-          run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
-          (data_size > sizeof(float)) ?
-          run_eval::kSpeedupDoubleHeader :
-          run_eval::kSpeedupHalfHeader,
-          BaseTargetDiff::kDiffDatatype));
     }
   }
 
@@ -891,11 +849,6 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   std::string_view speedup_header,
   BaseTargetDiff base_target_diff) const
 {
-  if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-    std::cout << "GetAvgMedSpeedupBaseVsTarget datatypes" << std::endl;
-    std::cout << "run_results_base size: " << run_results_base.size() << std::endl;
-    std::cout << "run_results_target size: " << run_results_target.size() << std::endl;
-  }
   //initialize empty vector where speedups will be added
   std::vector<double> speedups_vect;
 
@@ -903,23 +856,11 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   for (auto& [input_sig_base, sig_run_results_base] : run_results_base)
   {
     InputSignature base_in_sig_adjusted(input_sig_base);
-      if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-        std::cout << "Base sig: " << input_sig_base << std::endl;
-        std::cout << "Base sig: " << base_in_sig_adjusted << std::endl;
-      }
     //go through all target runtime data and find speedup for data
     //that corresponds with current base runtime data
     for (auto& [input_sig_target, sig_run_results_target] : run_results_target)
     {
       InputSignature target_in_sig_adjusted(input_sig_target);
-      if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-        //remove datatype from input signature if different datatype
-        //between base and target output
-        base_in_sig_adjusted.RemoveDatatypeSetting();
-        target_in_sig_adjusted.RemoveDatatypeSetting();
-        std::cout << "BASE SIG ADJ: " << base_in_sig_adjusted << std::endl;
-        std::cout << "TARGET SIG ADJ: " << target_in_sig_adjusted << std::endl;
-      }
       else if (base_target_diff == BaseTargetDiff::kDiffTemplatedSetting) {
         //remove templated setting from input signature if different template
         //setting between base and target output
@@ -929,15 +870,9 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
       if (base_in_sig_adjusted == target_in_sig_adjusted) {
         //compute speedup between corresponding base and target data and
         //add it to vector of speedups across all data
-        if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-          std::cout << "SIGS EQUAL" << std::endl;
-        }
         if (sig_run_results_base && 
             sig_run_results_target)
         {
-          if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-            std::cout << "ADD COMPARISON DATA" << std::endl;
-          }
           speedups_vect.push_back(
             *sig_run_results_base->at(
               run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
