@@ -333,6 +333,23 @@ void EvaluateImpResults::WriteRunResultsForAcc(
   //files
   auto headers_in_order = first_success_run_iter->second->at(
     run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
+  
+  //go through remaining runs and add headers that aren't already there
+  for (const auto& [_, run_sig_data] : run_results) {
+    if (run_sig_data) {
+      for (const auto& curr_header : run_sig_data->at(
+             run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder())
+      {
+        if (auto header_iter = std::find(headers_in_order.cbegin(),
+                                         headers_in_order.cend(),
+                                         curr_header);
+            header_iter == headers_in_order.cend())
+        {
+          headers_in_order.push_back(curr_header);
+        }
+      }
+    }
+  }
 
   //write each results header in order in first row of results string
   //for each results set and then write newline to go to next line
