@@ -202,14 +202,8 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   auto [run_results, run_speedups] =
     run_result_mult_runs_opt.at(first_datatype_size).at(opt_imp_acc);
   
-  //go through each datatype and add run results and speedups to overall
-  //results
+  //go through each datatype and add speedups to overall speedup results
   for (const auto run_datatype_size : run_imp_settings.datatypes_eval_sizes) {
-    if (run_datatype_size != first_datatype_size) {
-      run_results.insert(
-        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first.cbegin(),
-        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first.cend());
-    }
     //add speedup data from alternate acceleration runs and speedup results from
     //double and half precision runs to speedup results
     if (run_datatype_size == first_datatype_size) {
@@ -231,15 +225,9 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     }
   }
 
-  //compute and add speedups for all runs across all data types
-  auto speedups_all_runs = SpeedupsAllRuns(run_results, run_imp_settings);
-  run_speedups.insert(
-    run_speedups.cend(),
-    speedups_all_runs.cbegin(),
-    speedups_all_runs.cend());
-  
   //get speedup/slowdown using alternate datatype (double or half) compared
-  //with float and add to overall run speedup results
+  //with float
+  std::vector<RunSpeedupAvgMedian> speedups_alt_datatypes;
   for (const size_t data_size : run_imp_settings.datatypes_eval_sizes)
   {
     if ((data_size != sizeof(float)) &&
@@ -247,7 +235,7 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
     {
       //get speedup or slowdown using alternate data type (double or half)
       //compared with float and add to run speedups
-      run_speedups.push_back(
+      speedups_alt_datatypes.push_back(
         GetAvgMedSpeedupBaseVsTarget(
           run_result_mult_runs_opt.at(sizeof(float)).at(opt_imp_acc).first,
           run_result_mult_runs_opt.at(data_size).at(opt_imp_acc).first,
@@ -257,6 +245,29 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
           BaseTargetDiff::kDiffDatatype));
     }
   }
+
+  //go through alternate datatypes and add run results for datatype to overall
+  //run results
+  for (const auto run_datatype_size : run_imp_settings.datatypes_eval_sizes) {
+    if (run_datatype_size != first_datatype_size) {
+      run_results.insert(
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first.cbegin(),
+        run_result_mult_runs_opt.at(run_datatype_size).at(opt_imp_acc).first.cend());
+    }
+  }
+
+  //compute and add speedups for all runs across all data types
+  auto speedups_all_runs = SpeedupsAllRuns(run_results, run_imp_settings);
+  run_speedups.insert(
+    run_speedups.cend(),
+    speedups_all_runs.cbegin(),
+    speedups_all_runs.cend());
+  
+  //add speedups for alternate data types to overall speedups
+  run_speedups.insert(
+    run_speedups.cend(),
+    speedups_alt_datatypes.cbegin(),
+    speedups_alt_datatypes.cend());
 
   //write output corresponding to results and run_speedups for all data types
   WriteRunOutput({run_results, run_speedups}, run_imp_settings, opt_imp_acc);
