@@ -861,6 +861,12 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
     for (auto& [input_sig_target, sig_run_results_target] : run_results_target)
     {
       InputSignature target_in_sig_adjusted(input_sig_target);
+      if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+        //remove datatype from input signature if different datatype
+        //between base and target output
+        base_in_sig_adjusted.RemoveDatatypeSetting();
+        target_in_sig_adjusted.RemoveDatatypeSetting();
+      }
       else if (base_target_diff == BaseTargetDiff::kDiffTemplatedSetting) {
         //remove templated setting from input signature if different template
         //setting between base and target output
