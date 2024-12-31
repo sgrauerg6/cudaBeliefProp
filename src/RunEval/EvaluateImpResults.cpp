@@ -277,6 +277,55 @@ void EvaluateImpResults::EvalAllResultsWriteOutput(
   WriteRunOutput({run_results, run_speedups}, run_imp_settings, opt_imp_acc);
 }
 
+/*void EvaluateImpResults::WriteRunResultsForAcc(
+  MultRunData run_results,
+  run_environment::AccSetting acceleration_setting)
+{
+  //get iterator to first run with success
+  //run_result corresponds to a std::optional object that contains run data if
+  //run successful and returns false if no data (indicating run not successful)
+  const auto first_success_run_iter =
+    std::find_if(run_results.cbegin(), run_results.cend(),
+      [](const auto& run_result) { return run_result.second; } );
+  
+    //get headers from first successful run and write headers to top of output
+    //files
+    auto headers_in_order = first_success_run_iter->second->at(
+      run_environment::ParallelParamsSetting::kOptimized).HeadersInOrder();
+
+  //write each results header in order in first row of results string
+  //for each results set and then write newline to go to next line
+  for (const auto& curr_header : headers_in_order) {
+    for (const auto& p_param_setting : parallel_param_settings) {
+        run_data_sstr.at(p_param_setting) << curr_header << ',';
+      }
+    }
+    for (const auto& p_param_setting : parallel_param_settings) {
+      run_data_sstr.at(p_param_setting) << std::endl;
+    }
+
+    //write output for run on each input with each data type
+    //write data for default parallel parameters and for optimized parallel
+    //parameters
+    for (const auto& p_param_setting : parallel_param_settings) {
+      for (const auto& [_, run_sig_data] : run_results) {
+        //if run not successful only have single set of output data from run
+        //don't write data if no data for run
+        if (run_sig_data) {
+          for (const auto& curr_header : headers_in_order) {
+            if (run_sig_data->at(p_param_setting).IsData(curr_header))
+            {
+              run_data_sstr.at(p_param_setting) <<
+                run_sig_data->at(p_param_setting).GetDataAsStr(curr_header);
+            }
+            run_data_sstr.at(p_param_setting) << ',';            
+          }
+          run_data_sstr.at(p_param_setting) << std::endl;
+        }
+      }
+    }
+}*/
+
 //write current run results and speedup data to files
 //that can be read to evaluate results across runs
 void EvaluateImpResults::WriteRunOutput(
@@ -415,7 +464,7 @@ void EvaluateImpResults::WriteRunOutput(
     for (const auto& [out_results_type, file_path] : output_file_paths) {
       results_stream.insert(
         {out_results_type,
-         file_path});
+         std::ofstream(file_path)});
     }
 
     //write run results file with default parallel params
