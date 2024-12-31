@@ -861,7 +861,8 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   {
     InputSignature base_in_sig_adjusted(input_sig_base);
       if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
-        std::cout << "Base sig: " << base_target_diff << std::endl;
+        std::cout << "Base sig: " << input_sig_base << std::endl;
+        std::cout << "Base sig: " << base_in_sig_adjusted << std::endl;
       }
     //go through all target runtime data and find speedup for data
     //that corresponds with current base runtime data
