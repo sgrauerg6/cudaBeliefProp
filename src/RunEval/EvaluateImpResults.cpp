@@ -865,6 +865,8 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
         //between base and target output
         base_in_sig_adjusted.RemoveDatatypeSetting();
         target_in_sig_adjusted.RemoveDatatypeSetting();
+        std::cout << "BASE SIG ADJ: " << base_in_sig_adjusted << std::endl;
+        std::cout << "TARGET SIG ADJ: " << target_in_sig_adjusted << std::endl;
       }
       else if (base_target_diff == BaseTargetDiff::kDiffTemplatedSetting) {
         //remove templated setting from input signature if different template
@@ -875,9 +877,13 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
       if (base_in_sig_adjusted == target_in_sig_adjusted) {
         //compute speedup between corresponding base and target data and
         //add it to vector of speedups across all data
+        if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+          std::cout << "SIGS EQUAL" << std::endl;
+        }
         if (sig_run_results_base && 
             sig_run_results_target)
         {
+          std::cout << "ADD COMPARISON DATA" << std::endl;
           speedups_vect.push_back(
             *sig_run_results_base->at(
               run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
