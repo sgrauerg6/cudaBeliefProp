@@ -848,6 +848,9 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
   std::string_view speedup_header,
   BaseTargetDiff base_target_diff) const
 {
+   if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+     std::cout << "GetAvgMedSpeedupBaseVsTarget datatypes" << std::endl;
+   }
   //initialize empty vector where speedups will be added
   std::vector<double> speedups_vect;
 
@@ -883,7 +886,9 @@ RunSpeedupAvgMedian EvaluateImpResults::GetAvgMedSpeedupBaseVsTarget(
         if (sig_run_results_base && 
             sig_run_results_target)
         {
-          std::cout << "ADD COMPARISON DATA" << std::endl;
+          if (base_target_diff == BaseTargetDiff::kDiffDatatype) {
+            std::cout << "ADD COMPARISON DATA" << std::endl;
+          }
           speedups_vect.push_back(
             *sig_run_results_base->at(
               run_environment::ParallelParamsSetting::kOptimized).GetDataAsDouble(
