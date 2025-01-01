@@ -55,10 +55,10 @@ class EvaluateAcrossRuns {
 public:
   /**
    * @brief Evaluate all runs with results in specified file path and
-   * generate csv file with evaluation of results across runs
-   * generated file starts with specified top text and includes
+   * generate csv file with evaluation of results across runs.<br>
+   * Generated file starts with specified top text and includes
    * specified input parameters for each input as well as the optimized
-   * implementation runtime for each run on each input
+   * implementation runtime for each run on each input.
    * 
    * @param imp_results_file_path 
    * @param eval_across_runs_top_text 

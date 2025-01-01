@@ -129,9 +129,9 @@ private:
 
   /**
    * @brief Write data for file corresponding to runs for a specified data type
-   * or across all data type<br>
+   * or across all data type.<br>
    * Includes results for each run as well as average and median speedup data
-   * across multiple runs
+   * across multiple runs.
    * 
    * @param run_results_w_speedups 
    * @param run_imp_settings 
@@ -155,7 +155,7 @@ private:
     MultRunData run_results,
     run_environment::AccSetting acceleration_setting,
     const run_environment::RunImpSettings& run_imp_settings) const;
-    
+
   /**
    * 
    * @brief Get speedup for each run and overall when using optimized
