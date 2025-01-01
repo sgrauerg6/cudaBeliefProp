@@ -33,6 +33,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 
 namespace beliefprop {
 
+/** @brief Constant consisting of arrays of string views for headers
+ * corresponding to timing of computation of data costs, bp runtime, and copy
+ * data runtime of each level */
 constexpr std::array<std::array<std::string_view, 3>, 10> kLevelDCostBpTimeCTimeNames{
   std::array<std::string_view, 3>{"Level 0 Data Costs", "Level 0 BP Runtime", "Level 0 Copy Runtime"},
   std::array<std::string_view, 3>{"Level 1 Data Costs", "Level 1 BP Runtime", "Level 1 Copy Runtime"},
@@ -46,6 +49,8 @@ constexpr std::array<std::array<std::string_view, 3>, 10> kLevelDCostBpTimeCTime
   std::array<std::string_view, 3>{"Level 9 Data Costs", "Level 9 BP Runtime", "Level 9 Copy Runtime"}
 };
 
+/** @brief Enum for each runtime segment in belief propagation
+ * implementation shown in timing outputs */
 enum class Runtime_Type {
   kInitSettingsMalloc, kLevel0DataCosts, kLevel1DataCosts, kLevel2DataCosts,
   kLevel3DataCosts, kLevel4DataCosts, kLevel5DataCosts, kLevel6DataCosts,
@@ -57,6 +62,8 @@ enum class Runtime_Type {
   kLevel3Copy, kLevel4Copy, kLevel5Copy, kLevel6Copy, kLevel7Copy,
   kLevel8Copy, kLevel9Copy, kTotalBp, kTotalNoTransfer, kTotalWithTransfer};
 
+/** @brief Mapping of runtime segment enum to header describing timing of the
+ * segment */
 const std::unordered_map<Runtime_Type, std::string_view> kTimingNames{
   {Runtime_Type::kInitSettingsMalloc, "Time init settings malloc"}, 
   {Runtime_Type::kLevel0DataCosts, kLevelDCostBpTimeCTimeNames[0][0]}, 

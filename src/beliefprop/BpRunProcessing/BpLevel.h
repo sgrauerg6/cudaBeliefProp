@@ -59,12 +59,30 @@ template <RunData_t T>
 class BpLevel
 {
 public:
+  /**
+   * @brief Construct a new BpLevel object with specified height/wdith, offset
+   * into data/message arrays, level number, and acceleration setting
+   * 
+   * @param width_height
+   * @param offset_into_arrays
+   * @param level_num
+   * @param acc_setting
+   */
   explicit BpLevel(
     const std::array<unsigned int, 2>& width_height,
     std::size_t offset_into_arrays,
     unsigned int level_num,
     run_environment::AccSetting acc_setting);
   
+  /**
+   * @brief Construct a new BpLevel object with specified height/wdith, offset
+   * into data/message arrays, level number, and byte alignment for memory
+   * 
+   * @param width_height
+   * @param offset_into_arrays
+   * @param level_num
+   * @param bytes_align_memory
+   */
   explicit BpLevel(
     const std::array<unsigned int, 2>& width_height,
     std::size_t offset_into_arrays,
@@ -90,8 +108,25 @@ public:
    */
   std::size_t NumDataInBpArrays(unsigned int num_disparity_values) const;
 
-  unsigned int CheckerboardWidthTargetDevice(unsigned int width_level) const;
+  /**
+   * @brief Get width of checkerboard to use in bp processing at level.<br>
+   * Checkerboard width is half of the width of the level.
+   * 
+   * @param width_level
+   * @return Width of checkerboard used in bp processing at level
+   */
+  unsigned int CheckerboardWidth(unsigned int width_level) const;
 
+  /**
+   * @brief Get width of padded checkerboard to use in bp processing at
+   * level.<br>
+   * Padding can add additional width to checkerboard so that reading/writing
+   * data starting at x=0 in the checkerboard is aligned for processing using
+   * target acceleration (SIMD, CUDA, etc.).
+   * 
+   * @param width_level
+   * @return Width of checkerboard used in bp processing at level
+   */
   unsigned int PaddedCheckerboardWidth(unsigned int checkerboard_width) const;
 
   /**
@@ -149,7 +184,7 @@ BpLevel<T>::BpLevel(
   level_properties_.bytes_align_memory_ = 
     run_environment::GetBytesAlignMemory(acc_setting);
   level_properties_.width_checkerboard_level_ =
-    CheckerboardWidthTargetDevice(level_properties_.width_level_);
+    CheckerboardWidth(level_properties_.width_level_);
   level_properties_.padded_width_checkerboard_level_ =
     PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);
 }
@@ -168,7 +203,7 @@ BpLevel<T>::BpLevel(
   level_properties_.offset_into_arrays_ = offset_into_arrays;
   level_properties_.bytes_align_memory_ = bytes_align_memory;
   level_properties_.width_checkerboard_level_ =
-    CheckerboardWidthTargetDevice(level_properties_.width_level_);
+    CheckerboardWidth(level_properties_.width_level_);
   level_properties_.padded_width_checkerboard_level_ =
     PaddedCheckerboardWidth(level_properties_.width_checkerboard_level_);
 }
@@ -207,7 +242,7 @@ std::size_t BpLevel<T>::NumDataForAlignedMemoryAtLevel(
   unsigned int num_possible_disparities) const
 {
   const std::size_t numDataAtLevel =
-    (std::size_t)PaddedCheckerboardWidth(CheckerboardWidthTargetDevice(width_height_level[0])) *
+    (std::size_t)PaddedCheckerboardWidth(CheckerboardWidth(width_height_level[0])) *
     ((std::size_t)width_height_level[1]) *
     (std::size_t)num_possible_disparities;
   std::size_t numBytesAtLevel = numDataAtLevel * sizeof(T);
@@ -224,7 +259,7 @@ std::size_t BpLevel<T>::NumDataForAlignedMemoryAtLevel(
 }
 
 template <RunData_t T>
-unsigned int BpLevel<T>::CheckerboardWidthTargetDevice(
+unsigned int BpLevel<T>::CheckerboardWidth(
   unsigned int width_level) const
 {
   return (unsigned int)std::ceil(((float)width_level) / 2.0f);

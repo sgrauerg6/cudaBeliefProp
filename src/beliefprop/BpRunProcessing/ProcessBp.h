@@ -50,9 +50,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 #include "ParallelParamsBp.h"
 #include "BpLevel.h"
 
-/**
- * @brief Alias for time point for start and end time for each timing segment
- */
+/** @brief Alias for time point for start and end time for each timing
+ *  segment */
 using timingType = std::chrono::time_point<std::chrono::system_clock>;
 
 /**
